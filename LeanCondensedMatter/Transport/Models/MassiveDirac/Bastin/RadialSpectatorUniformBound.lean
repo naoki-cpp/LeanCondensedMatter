@@ -44,68 +44,36 @@ theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
   unfold radialBastinMassWindowMargin
   linarith
 
-/-- The same real separation lower-bounds the norm of the retarded complex spectator denominator,
-for arbitrary broadening. -/
-theorem radialBastinMassWindowMargin_le_norm_retardedDenominator
-    (band : Band) (v m p offset radius broadening : ℝ)
+/-- The real separation lower-bounds the norm of either physical spectral-side
+spectator denominator, for arbitrary broadening. -/
+private theorem radialBastinMassWindowMargin_le_norm_spectralDenominator
+    (side : SpectralSide) (band : Band) (v m p offset radius broadening : ℝ)
     (hoffset : |offset| ≤ radius) :
     radialBastinMassWindowMargin m radius ≤
       ‖((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-        (broadening : ℂ) * Complex.I‖ := by
+        (((side.regulator broadening : ℝ) : ℂ) * Complex.I)‖ := by
   have hreal := radialBastinMassWindowMargin_le_abs_gap_add_offset
     band v m p offset radius hoffset
   have hre := Complex.abs_re_le_norm
     (((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-      (broadening : ℂ) * Complex.I)
+      (((side.regulator broadening : ℝ) : ℂ) * Complex.I))
   exact hreal.trans (by simpa using hre)
 
-/-- The advanced complex spectator denominator has the same uniform norm lower bound. -/
-theorem radialBastinMassWindowMargin_le_norm_advancedDenominator
-    (band : Band) (v m p offset radius broadening : ℝ)
-    (hoffset : |offset| ≤ radius) :
-    radialBastinMassWindowMargin m radius ≤
-      ‖((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
-        (broadening : ℂ) * Complex.I‖ := by
-  have hreal := radialBastinMassWindowMargin_le_abs_gap_add_offset
-    band v m p offset radius hoffset
-  have hre := Complex.abs_re_le_norm
-    (((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
-      (broadening : ℂ) * Complex.I)
-  exact hreal.trans (by simpa using hre)
-
-/-- The retarded opposite-band resolvent is uniformly bounded by the inverse mass-window margin. -/
-theorem norm_retardedRadialSpectatorResolvent_le_inv_margin
-    (band : Band) (v m p offset radius broadening : ℝ)
+/-- Either physical spectral-side opposite-band resolvent is uniformly bounded by the
+inverse mass-window margin. -/
+theorem norm_radialSpectatorResolvent_le_inv_margin
+    (side : SpectralSide) (band : Band) (v m p offset radius broadening : ℝ)
     (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
     ‖((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-        (broadening : ℂ) * Complex.I)⁻¹)‖ ≤
+        (((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹)‖ ≤
       (radialBastinMassWindowMargin m radius)⁻¹ := by
   have hmargin : 0 < radialBastinMassWindowMargin m radius :=
     radialBastinMassWindowMargin_pos m radius hradius
-  have hden := radialBastinMassWindowMargin_le_norm_retardedDenominator
-    band v m p offset radius broadening hoffset
+  have hden := radialBastinMassWindowMargin_le_norm_spectralDenominator
+    side band v m p offset radius broadening hoffset
   have hnorm : 0 <
       ‖((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-        (broadening : ℂ) * Complex.I‖ :=
-    lt_of_lt_of_le hmargin hden
-  rw [norm_inv, inv_le_inv₀ hnorm hmargin]
-  exact hden
-
-/-- The advanced opposite-band resolvent obeys the same momentum- and broadening-independent
-inverse-margin bound. -/
-theorem norm_advancedRadialSpectatorResolvent_le_inv_margin
-    (band : Band) (v m p offset radius broadening : ℝ)
-    (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
-    ‖((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
-        (broadening : ℂ) * Complex.I)⁻¹)‖ ≤
-      (radialBastinMassWindowMargin m radius)⁻¹ := by
-  have hmargin : 0 < radialBastinMassWindowMargin m radius :=
-    radialBastinMassWindowMargin_pos m radius hradius
-  have hden := radialBastinMassWindowMargin_le_norm_advancedDenominator
-    band v m p offset radius broadening hoffset
-  have hnorm : 0 <
-      ‖((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
-        (broadening : ℂ) * Complex.I‖ :=
+        (((side.regulator broadening : ℝ) : ℂ) * Complex.I)‖ :=
     lt_of_lt_of_le hmargin hden
   rw [norm_inv, inv_le_inv₀ hnorm hmargin]
   exact hden
@@ -135,12 +103,14 @@ theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
   let A : ℂ := radialInterbandCurrentAmplitude band e v m p
   have hr : ‖r‖ ≤ (radialBastinMassWindowMargin m radius)⁻¹ := by
     dsimp [r]
-    exact norm_retardedRadialSpectatorResolvent_le_inv_margin
-      band v m p offset radius broadening hradius hoffset
+    simpa only [SpectralSide.regulator_retarded] using
+      norm_radialSpectatorResolvent_le_inv_margin
+        .retarded band v m p offset radius broadening hradius hoffset
   have ha : ‖a‖ ≤ (radialBastinMassWindowMargin m radius)⁻¹ := by
     dsimp [a]
-    exact norm_advancedRadialSpectatorResolvent_le_inv_margin
-      band v m p offset radius broadening hradius hoffset
+    simpa [SpectralSide.regulator_advanced] using
+      norm_radialSpectatorResolvent_le_inv_margin
+        .advanced band v m p offset radius broadening hradius hoffset
   have hr2 : ‖r ^ 2‖ ≤ (radialBastinMassWindowMargin m radius)⁻¹ ^ 2 := by
     rw [norm_pow]
     exact pow_le_pow_left₀ (norm_nonneg r) hr 2
