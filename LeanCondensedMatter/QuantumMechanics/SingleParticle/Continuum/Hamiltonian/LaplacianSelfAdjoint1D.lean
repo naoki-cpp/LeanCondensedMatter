@@ -29,7 +29,6 @@ private noncomputable def schwartzConj1D (f : SchwartzMap ℝ ℂ) : SchwartzMap
   f.postcompCLM
     ((RCLike.conjCLE (K := ℂ)).toContinuousLinearMap : ℂ →L[ℝ] ℂ)
 
-@[simp]
 private theorem schwartzConj1D_apply (f : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzConj1D f x = star (f x) :=
   rfl
@@ -43,7 +42,7 @@ private theorem derivCLM_schwartzConj1D (f : SchwartzMap ℝ ℂ) :
     SchwartzMap.derivCLM ℂ ℂ (schwartzConj1D f) =
       schwartzConj1D (SchwartzMap.derivCLM ℂ ℂ f) := by
   ext x
-  simpa using deriv_schwartzConj1D f x
+  simpa [schwartzConj1D_apply] using deriv_schwartzConj1D f x
 
 private theorem schwartz_laplacian_eq_second_deriv (f : SchwartzMap ℝ ℂ) :
     Δ f = SchwartzMap.derivCLM ℂ ℂ (SchwartzMap.derivCLM ℂ ℂ f) := by
@@ -116,7 +115,7 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
       apply integral_congr_ae
       filter_upwards [(schwartzConj1D g).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
       rw [hx]
-      simp [RCLike.inner_apply, mul_comm]
+      simp [schwartzConj1D_apply, RCLike.inner_apply, mul_comm]
     _ = inner ℂ ((Δ (schwartzConj1D g)).toLp 2 (volume : Measure ℝ)) u := hcore
     _ = inner ℂ ((schwartzConj1D (Δ g)).toLp 2 (volume : Measure ℝ)) u := by
       rw [laplacian_schwartzConj1D]
@@ -125,7 +124,7 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
       apply integral_congr_ae
       filter_upwards [(schwartzConj1D (Δ g)).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
       rw [hx]
-      simp [RCLike.inner_apply, mul_comm]
+      simp [schwartzConj1D_apply, RCLike.inner_apply, mul_comm]
   all_goals rfl
 
 /-- The free distributional Laplacian on `H²(ℝ)` is self-adjoint on physical `L²(ℝ, ℂ)`. -/

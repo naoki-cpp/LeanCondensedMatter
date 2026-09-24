@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Tactic
 
@@ -25,25 +25,6 @@ noncomputable section
 
 open MeasureTheory
 
-/-- Real part of a complex Schwartz wavefunction, still a Schwartz function. -/
-private def schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
-  ψ.postcompCLM Complex.reCLM
-
-/-- Imaginary part of a complex Schwartz wavefunction, still a Schwartz function. -/
-private def schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
-  ψ.postcompCLM Complex.imCLM
-
-@[simp]
-private theorem schwartzRealPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    schwartzRealPart1D ψ x = (ψ x).re :=
-  rfl
-
-@[simp]
-private theorem schwartzImaginaryPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    schwartzImaginaryPart1D ψ x = (ψ x).im :=
-  rfl
-
-@[simp]
 private theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzRealPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).re := by
   have h : HasDerivAt (schwartzRealPart1D ψ)
@@ -53,7 +34,6 @@ private theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     exact hasDerivAt_schwartzSpatialDerivative1D_re ψ x
   exact h.deriv
 
-@[simp]
 private theorem deriv_schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzImaginaryPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).im := by
   have h : HasDerivAt (schwartzImaginaryPart1D ψ)
@@ -82,7 +62,8 @@ theorem integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero
       (∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im) =
         -∫ x, (schwartzSpatialDerivative1D ψ x).re *
           (schwartzSpatialDerivative1D ψ x).im := by
-    simpa [schwartzSpatialSecondDerivative1D] using
+    simpa [schwartzSpatialSecondDerivative1D, deriv_schwartzRealPart1D,
+      deriv_schwartzImaginaryPart1D] using
       (SchwartzMap.integral_mul_deriv_eq_neg_deriv_mul
         (schwartzRealPart1D ψ)
         (schwartzImaginaryPart1D (schwartzSpatialDerivative1D ψ)))
@@ -90,7 +71,8 @@ theorem integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero
       (∫ x, (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re) =
         -∫ x, (schwartzSpatialDerivative1D ψ x).im *
           (schwartzSpatialDerivative1D ψ x).re := by
-    simpa [schwartzSpatialSecondDerivative1D] using
+    simpa [schwartzSpatialSecondDerivative1D, deriv_schwartzRealPart1D,
+      deriv_schwartzImaginaryPart1D] using
       (SchwartzMap.integral_mul_deriv_eq_neg_deriv_mul
         (schwartzImaginaryPart1D ψ)
         (schwartzRealPart1D (schwartzSpatialDerivative1D ψ)))
