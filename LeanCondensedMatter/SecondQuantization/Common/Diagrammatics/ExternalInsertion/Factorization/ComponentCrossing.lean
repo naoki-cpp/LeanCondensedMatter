@@ -107,22 +107,12 @@ private theorem ExternalInsertionDiagram.componentCrossingCount_self
     (B : d.vertexGraph.componentPartition.parts) :
     d.pairing.componentCrossingCount d.componentPairEquiv B B =
       (d.restrictComponent B).pairing.crossingCount := by
-  classical
-  rw [Combinatorics.Pairing.componentCrossingCount, Fintype.sum_prod_type,
-    Combinatorics.Pairing.crossingCount_eq_sum_sum_crosses]
-  exact Combinatorics.sum_sum_crosses_eq_of_equiv
-    (fun p : (d.restrictComponent B).pairing.NormalizedPair =>
-      (d.componentPairEquiv ⟨B, p⟩).1)
-    (fun p : (d.restrictComponent B).pairing.NormalizedPair => p.1)
+  exact Combinatorics.Pairing.componentCrossingCount_self_eq
+    d.pairing (d.restrictComponent B).pairing d.componentPairEquiv B
     (Equiv.refl (d.restrictComponent B).pairing.NormalizedPair)
-    (fun p q => by
-      simp only [Equiv.refl_apply]
-      rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
-      have hmono : StrictMono (fun i => d.componentDiagramLeg B i) := by
-        exact (d.componentDiagramLegOrderEmbedding B).strictMono
-      exact Combinatorics.crosses_map_iff
-        (d.componentDiagramLeg B) hmono
-        p.1.1 p.1.2 q.1.1 q.1.2)
+    (d.componentDiagramLeg B)
+    (d.componentDiagramLegOrderEmbedding B).strictMono
+    (fun pr => by simpa using d.componentPairEquiv_apply B pr)
 
 /-- The ambient crossing count is the sum of all component-local crossing counts plus the residual
 crossing count between distinct connected components. -/
