@@ -64,6 +64,20 @@ theorem hasDerivAt_resolvent_spectralParameterOfRegulator_energy
     energy
   simpa only [one_smul] using hcomp
 
+/-- The canonical side-indexed spectral resolvent differentiates to minus its square along the real
+energy axis at nonzero physical broadening. -/
+theorem hasDerivAt_spectralResolvent_energy
+    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    HasDerivAt
+      (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
+      (-(spectralResolvent side hamiltonian energy broadening) ^ 2)
+      energy := by
+  simpa only [spectralResolvent, spectralParameter] using
+    hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+      hamiltonian hself energy (side.regulator broadening)
+      (side.regulator_ne_zero hbroadening)
+
 /-- At fixed nonzero signed regulator, the resolvent is continuous along the real-energy axis. -/
 theorem continuous_resolvent_spectralParameterOfRegulator_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
@@ -75,6 +89,18 @@ theorem continuous_resolvent_spectralParameterOfRegulator_energy
   exact
     (hasDerivAt_resolvent_spectralParameterOfRegulator_energy
       hamiltonian hself energy regulator hregulator).continuousAt
+
+/-- The canonical side-indexed spectral resolvent is continuous along the real-energy axis at
+nonzero physical broadening. -/
+theorem continuous_spectralResolvent_energy
+    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Continuous (fun energy : ℝ =>
+      spectralResolvent side hamiltonian energy broadening) := by
+  simpa only [spectralResolvent, spectralParameter] using
+    continuous_resolvent_spectralParameterOfRegulator_energy
+      hamiltonian hself (side.regulator broadening)
+      (side.regulator_ne_zero hbroadening)
 
 end
 
