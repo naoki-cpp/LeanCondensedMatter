@@ -274,6 +274,42 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
     (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
       hbar pMax radius 0 (entryHarmonics i j))
 
+private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
+    (i j : Fin 2) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax (-radius) p i j =
+      -(sigmaZ i i *
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j *
+          sigmaZ j j) := by
+  have harg : p * (-radius) / hbar = -(p * radius / hbar) := by
+    ring
+  fin_cases source <;> fin_cases i <;> fin_cases j <;>
+    unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel <;>
+    rw [harg] <;>
+    simp [gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
+      InternalSpace.pauliZ]
+
+/-- Reversing the radial coordinate changes the crossed current block by `σ_z`
+conjugation together with the sign of the in-plane current insertion. -/
+@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax (-radius) =
+      -(sigmaZ *
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            source v m probeEnergy broadening disorderStrength hbar pMax radius *
+          sigmaZ) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius]
+
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
