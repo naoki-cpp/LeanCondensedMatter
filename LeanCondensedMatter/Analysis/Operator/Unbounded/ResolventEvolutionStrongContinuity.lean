@@ -43,16 +43,16 @@ theorem norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain
 
 /-- The limiting Stone evolution inherits the domain displacement estimate
 `‖U(t)x - x‖ ≤ ‖A x‖ |t|`. -/
-theorem norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain
+theorem norm_stoneEvolution_apply_sub_le_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
-    ‖resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H)‖ ≤
+    ‖stoneEvolution A hA t (x : H) - (x : H)‖ ≤
       ‖A x‖ * |t| := by
   have hconv :
       Tendsto
         (fun r : ℝ =>
           ‖resolventApproximationEvolutionAtScale A hA r t (x : H) - (x : H)‖)
         atTop
-        (𝓝 ‖resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H)‖) := by
+        (𝓝 ‖stoneEvolution A hA t (x : H) - (x : H)‖) := by
     simpa using
       ((tendsto_resolventApproximationEvolutionAtScale_apply A hA t (x : H)).sub_const
         (x : H)).norm
@@ -61,9 +61,9 @@ theorem norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain
       norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain A hA r t x
 
 /-- For a vector in the generator domain, the limiting evolution is continuous at time zero. -/
-theorem resolventEvolutionStrongLimitOperator_apply_continuousAt_zero_domain
+theorem stoneEvolution_apply_continuousAt_zero_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
-    ContinuousAt (fun t : ℝ => resolventEvolutionStrongLimitOperator A hA t (x : H)) 0 := by
+    ContinuousAt (fun t : ℝ => stoneEvolution A hA t (x : H)) 0 := by
   rw [Metric.continuousAt_iff]
   intro ε hε
   let M : ℝ := ‖A x‖
@@ -92,16 +92,16 @@ theorem resolventEvolutionStrongLimitOperator_apply_continuousAt_zero_domain
         _ < ε * 1 := mul_lt_mul_of_pos_left hfrac hε
         _ = ε := by ring
     exact lt_of_le_of_lt hle hMδ
-  rw [resolventEvolutionStrongLimitOperator_zero]
-  change dist (resolventEvolutionStrongLimitOperator A hA t (x : H)) (x : H) < ε
+  rw [stoneEvolution_zero]
+  change dist (stoneEvolution A hA t (x : H)) (x : H) < ε
   rw [dist_eq_norm]
   exact lt_of_le_of_lt
-    (norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain A hA t x) hprod
+    (norm_stoneEvolution_apply_sub_le_domain A hA t x) hprod
 
 /-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
-theorem resolventEvolutionStrongLimitOperator_apply_continuousAt_zero
+theorem stoneEvolution_apply_continuousAt_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (y : H) :
-    ContinuousAt (fun t : ℝ => resolventEvolutionStrongLimitOperator A hA t y) 0 := by
+    ContinuousAt (fun t : ℝ => stoneEvolution A hA t y) 0 := by
   rw [Metric.continuousAt_iff]
   intro ε hε
   have hε4 : 0 < ε / 4 := by positivity
@@ -110,68 +110,68 @@ theorem resolventEvolutionStrongLimitOperator_apply_continuousAt_zero
   have hε2 : 0 < ε / 2 := by positivity
   obtain ⟨δ, hδ, hxcont⟩ :=
     (Metric.continuousAt_iff.mp
-      (resolventEvolutionStrongLimitOperator_apply_continuousAt_zero_domain A hA xA))
+      (stoneEvolution_apply_continuousAt_zero_domain A hA xA))
       (ε / 2) hε2
   refine ⟨δ, hδ, ?_⟩
   intro t ht
   have hmid := hxcont ht
   have hleft :
-      dist (resolventEvolutionStrongLimitOperator A hA t y)
-          (resolventEvolutionStrongLimitOperator A hA t x) = dist y x :=
-    resolventEvolutionStrongLimitOperator_dist_eq A hA t y x
+      dist (stoneEvolution A hA t y)
+          (stoneEvolution A hA t x) = dist y x :=
+    stoneEvolution_dist_eq A hA t y x
   have hright :
-      dist (resolventEvolutionStrongLimitOperator A hA 0 x)
-          (resolventEvolutionStrongLimitOperator A hA 0 y) = dist x y :=
-    resolventEvolutionStrongLimitOperator_dist_eq A hA 0 x y
+      dist (stoneEvolution A hA 0 x)
+          (stoneEvolution A hA 0 y) = dist x y :=
+    stoneEvolution_dist_eq A hA 0 x y
   have hxy : dist x y < ε / 4 := by
     simpa [dist_comm] using hyx
   have htri := dist_triangle4
-    (resolventEvolutionStrongLimitOperator A hA t y)
-    (resolventEvolutionStrongLimitOperator A hA t x)
-    (resolventEvolutionStrongLimitOperator A hA 0 x)
-    (resolventEvolutionStrongLimitOperator A hA 0 y)
+    (stoneEvolution A hA t y)
+    (stoneEvolution A hA t x)
+    (stoneEvolution A hA 0 x)
+    (stoneEvolution A hA 0 y)
   rw [hleft, hright] at htri
   exact lt_of_le_of_lt htri (by linarith)
 
 /-- Time differences for the limiting unitary group reduce isometrically to a displacement from
 zero time. -/
-theorem resolventEvolutionStrongLimitOperator_dist_time_eq_sub
+theorem stoneEvolution_dist_time_eq_sub
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H) :
-    dist (resolventEvolutionStrongLimitOperator A hA t x)
-        (resolventEvolutionStrongLimitOperator A hA s x) =
-      dist (resolventEvolutionStrongLimitOperator A hA (t - s) x) x := by
+    dist (stoneEvolution A hA t x)
+        (stoneEvolution A hA s x) =
+      dist (stoneEvolution A hA (t - s) x) x := by
   rw [show
-    resolventEvolutionStrongLimitOperator A hA t x =
-      resolventEvolutionStrongLimitOperator A hA s
-        (resolventEvolutionStrongLimitOperator A hA (t - s) x) by
-    simpa only [resolventEvolutionStrongLimitOperator_apply,
+    stoneEvolution A hA t x =
+      stoneEvolution A hA s
+        (stoneEvolution A hA (t - s) x) by
+    simpa only [stoneEvolution_apply,
       show s + (t - s) = t by ring] using
       resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) x]
-  exact resolventEvolutionStrongLimitOperator_dist_eq A hA s _ x
+  exact stoneEvolution_dist_eq A hA s _ x
 
 /-- The limiting evolution is strongly continuous at every time, for every vector. -/
-theorem resolventEvolutionStrongLimitOperator_apply_continuousAt
+theorem stoneEvolution_apply_continuousAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ) :
-    ContinuousAt (fun t : ℝ => resolventEvolutionStrongLimitOperator A hA t x) s := by
+    ContinuousAt (fun t : ℝ => stoneEvolution A hA t x) s := by
   rw [Metric.continuousAt_iff]
   intro ε hε
   obtain ⟨δ, hδ, hzero⟩ :=
     (Metric.continuousAt_iff.mp
-      (resolventEvolutionStrongLimitOperator_apply_continuousAt_zero A hA x)) ε hε
+      (stoneEvolution_apply_continuousAt_zero A hA x)) ε hε
   refine ⟨δ, hδ, ?_⟩
   intro t ht
   have hshift : dist (t - s) 0 < δ := by
     simpa [Real.dist_eq] using ht
   have hz := hzero hshift
-  rw [resolventEvolutionStrongLimitOperator_dist_time_eq_sub A hA t s x]
+  rw [stoneEvolution_dist_time_eq_sub A hA t s x]
   simpa using hz
 
 /-- The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. -/
-theorem resolventEvolutionStrongLimitOperator_apply_continuous
+theorem stoneEvolution_apply_continuous
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
-    Continuous (fun t : ℝ => resolventEvolutionStrongLimitOperator A hA t x) := by
+    Continuous (fun t : ℝ => stoneEvolution A hA t x) := by
   rw [continuous_iff_continuousAt]
-  exact resolventEvolutionStrongLimitOperator_apply_continuousAt A hA x
+  exact stoneEvolution_apply_continuousAt A hA x
 
 end
 
