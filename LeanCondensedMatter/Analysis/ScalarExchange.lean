@@ -25,6 +25,13 @@ noncomputable def zetaCommutator {A : Type*} [Ring A] [Algebra ℂ A]
     (ζ : ℂ) (a b : A) : A :=
   a * b - ζ • (b * a)
 
+/-- Evaluation of the generic fixed-sign bracket on complex-linear endomorphisms. -/
+@[simp]
+theorem zetaCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (ζ : ℂ) (A B : V →ₗ[ℂ] V) (v : V) :
+    zetaCommutator ζ A B v = A (B v) - ζ • B (A v) := by
+  simp [zetaCommutator, Module.End.mul_eq_comp]
+
 /-- Additivity in the left argument. -/
 theorem zetaCommutator_add_left {A : Type*} [Ring A] [Algebra ℂ A]
     (ζ : ℂ) (a b c : A) :
