@@ -192,12 +192,12 @@ order for later sign-sensitive constructions. `ExternalInsertionDiagram.restrict
 combines that external-sector ordering with the extracted interaction sector and the
 partner-invariant restricted pairing to produce a standalone external-insertion diagram for any
 connected component.
-Higher-point imaginary-time ordering is owned by `Common.ImaginaryTime` through the
-`ExternalInsertionMixedOrder` and `ExternalInsertionMixedLegOrder` modules. They order the
-`2 * E` external events together with interaction events using the fixed external-first rank at
-equal times, then expose order transport along strictly monotone external and interaction slot
-reindexings. This is the canonical mixed-order boundary for higher-point component amplitudes;
-the mature two-point mixed-order representation remains independent.
+Higher-point imaginary-time ordering is owned by
+`Common.ImaginaryTime.ExternalInsertionMixedOrder`. It orders the `2 * E` external events
+together with interaction events using the fixed external-first rank at equal times, expands that
+order to atomic legs, and exposes the permutation from fixed flattened legs to mixed-time positions.
+Transport and locality lemmas are added only when a concrete higher-point amplitude proof needs them.
+The mature two-point mixed-order representation remains independent.
 
 `componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
 its partner-transport theorem states that this embedding intertwines the restricted and ambient
