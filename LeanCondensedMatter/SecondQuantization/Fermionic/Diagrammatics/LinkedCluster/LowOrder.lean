@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 
