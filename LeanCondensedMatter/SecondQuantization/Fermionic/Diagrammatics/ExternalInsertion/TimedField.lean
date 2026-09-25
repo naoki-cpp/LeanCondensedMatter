@@ -84,7 +84,7 @@ def ExternalInsertionWickDiagram.vertexLabelSequence {E n : ℕ}
   fun v => d.vertexLabel ⟨v, Finset.mem_univ v⟩
 
 /-- Cast the pairing cardinality from the `Finset.univ` representation to the explicit slot count. -/
-noncomputable def externalInsertionPairingCastEquiv (E n : ℕ) :
+private noncomputable def externalInsertionPairingCastEquiv (E n : ℕ) :
     Pairing (2 * (Finset.univ : Finset (Fin n)).card + E) ≃ Pairing (2 * n + E) :=
   Equiv.cast (by simp)
 
