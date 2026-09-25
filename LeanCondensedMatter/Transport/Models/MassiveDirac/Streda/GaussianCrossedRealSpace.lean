@@ -291,8 +291,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryK
     rw [harg] <;>
     simp [gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] <;>
-    ring
+      InternalSpace.pauliZ]
 
 /-- Reversing the radial coordinate changes the crossed current block by `σ_z`
 conjugation together with the sign of the in-plane current insertion. -/
