@@ -102,6 +102,63 @@ noncomputable def finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
     (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
       side v m probeEnergy broadening disorderStrength hbar pMax radius) axis
 
+/-- Pointwise scalar Pauli kernel of the positive-axis radial Born-Dyson Green integrand. -/
+noncomputable def finiteCutoffContinuumBornDysonRadialGreenScalarKernel
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) : ℂ :=
+  let a := finiteCutoffContinuumBornDysonScalarCoefficient
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+  (p : ℂ) * (k0 * a)
+
+/-- Pointwise Pauli-vector kernel of the positive-axis radial Born-Dyson Green integrand. -/
+noncomputable def finiteCutoffContinuumBornDysonRadialGreenPauliKernel
+    (axis : PauliAxis) (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) : ℂ :=
+  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+  let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
+  match axis with
+  | .x => (p : ℂ) * (k1 * b)
+  | .y => 0
+  | .z => (p : ℂ) * (k0 * d)
+
+/-- The pointwise radial Green entry kernel has exactly the scalar coefficient carried by the
+zeroth angular Fourier channel. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
+    InternalSpace.pauliScalarCoefficient
+        (fun i j =>
+          finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+            side v m probeEnergy broadening disorderStrength hbar pMax radius p i j) =
+      finiteCutoffContinuumBornDysonRadialGreenScalarKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  simp [InternalSpace.pauliScalarCoefficient,
+    finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
+    finiteCutoffContinuumBornDysonRadialGreenScalarKernel]
+  ring
+
+/-- The pointwise radial Green entry kernel carries the first angular Fourier channel in the
+in-plane x component, no y component on the radial axis, and the zeroth channel in z. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
+    (axis : PauliAxis) (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
+    InternalSpace.pauliVectorCoefficient
+        (fun i j =>
+          finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+            side v m probeEnergy broadening disorderStrength hbar pMax radius p i j) axis =
+      finiteCutoffContinuumBornDysonRadialGreenPauliKernel
+        axis side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  cases axis <;>
+    simp [InternalSpace.pauliVectorCoefficient,
+      finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
+      finiteCutoffContinuumBornDysonRadialGreenPauliKernel]
+  all_goals ring
+
 /-- Each entry of the radial Born-Dyson Green matrix is the physical momentum-measure prefactor
 times the integral of its scalar radial kernel. -/
 theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral
