@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
 
 set_option linter.style.header false
@@ -14,7 +14,7 @@ annihilation operators defined in `CreationAnnihilation.lean`:
 * `{aᵢ, aⱼ†} = δᵢⱼ` (`anticomm_annihilate_create`)
 
 The endpoint theorems state these relations directly through the canonical `ζ = -1`
-`LinearMap.zetaCommutator`; this module does not define a second raw anticommutator operator.
+`ScalarExchange.zetaCommutator`; this module does not define a second raw anticommutator operator.
 -/
 
 namespace SecondQuantization
@@ -73,8 +73,8 @@ private theorem annihilate_basisState_toggle (i : Mode) (n : Occupation Mode) :
 /-! ## `{aᵢ†, aⱼ†} = 0` -/
 
 private theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
-    LinearMap.zetaCommutator (-1) (create i) (create j) (basisState n) = 0 := by
-  rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
+    ScalarExchange.zetaCommutator (-1) (create i) (create j) (basisState n) = 0 := by
+  rw [ScalarExchange.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
     create_basisState_toggle, map_smul, create_basisState_toggle,
     create_basisState_toggle, map_smul, create_basisState_toggle,
     toggleOccupation_comm i j n]
@@ -94,25 +94,25 @@ private theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation M
         simpa [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij] using hsign
 
 theorem anticomm_create_create (i j : Mode) :
-    LinearMap.zetaCommutator (-1) (create i) (create j) = 0 := by
+    ScalarExchange.zetaCommutator (-1) (create i) (create j) = 0 := by
   apply Common.linearMap_ext_basisState
   intro n
-  change LinearMap.zetaCommutator (-1) (create i) (create j) (basisState n) =
+  change ScalarExchange.zetaCommutator (-1) (create i) (create j) (basisState n) =
     (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
   rw [anticomm_create_create_basisState, LinearMap.zero_apply]
 
 /-- **`cᵢ† cᵢ† = 0`**: the same-mode consequence of `{cᵢ†, cᵢ†} = 0`. -/
 theorem create_comp_self (i : Mode) : (create i).comp (create i) = 0 := by
   have h := anticomm_create_create (Mode := Mode) i i
-  rw [LinearMap.zetaCommutator_self] at h
+  rw [ScalarExchange.zetaCommutator_self] at h
   norm_num at h
   exact h
 
 /-! ## `{aᵢ, aⱼ} = 0` -/
 
 private theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
-    LinearMap.zetaCommutator (-1) (annihilate i) (annihilate j) (basisState n) = 0 := by
-  rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
+    ScalarExchange.zetaCommutator (-1) (annihilate i) (annihilate j) (basisState n) = 0 := by
+  rw [ScalarExchange.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
     annihilate_basisState_toggle, map_smul, annihilate_basisState_toggle,
     annihilate_basisState_toggle, map_smul, annihilate_basisState_toggle,
     toggleOccupation_comm i j n]
@@ -131,26 +131,26 @@ private theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occu
         simp [annihilateCoeff, hi, hj, removeOccupation]
 
 theorem anticomm_annihilate_annihilate (i j : Mode) :
-    LinearMap.zetaCommutator (-1) (annihilate i) (annihilate j) = 0 := by
+    ScalarExchange.zetaCommutator (-1) (annihilate i) (annihilate j) = 0 := by
   apply Common.linearMap_ext_basisState
   intro n
-  change LinearMap.zetaCommutator (-1) (annihilate i) (annihilate j) (basisState n) =
+  change ScalarExchange.zetaCommutator (-1) (annihilate i) (annihilate j) (basisState n) =
     (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
   rw [anticomm_annihilate_annihilate_basisState, LinearMap.zero_apply]
 
 /-- **`cᵢ cᵢ = 0`**: the same-mode consequence of `{cᵢ, cᵢ} = 0`. -/
 theorem annihilate_comp_self (i : Mode) : (annihilate i).comp (annihilate i) = 0 := by
   have h := anticomm_annihilate_annihilate (Mode := Mode) i i
-  rw [LinearMap.zetaCommutator_self] at h
+  rw [ScalarExchange.zetaCommutator_self] at h
   norm_num at h
   exact h
 
 /-! ## `{aᵢ, aⱼ†} = δᵢⱼ` -/
 
 theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
-    LinearMap.zetaCommutator (-1) (annihilate i) (create j) (basisState n) =
+    ScalarExchange.zetaCommutator (-1) (annihilate i) (create j) (basisState n) =
       if i = j then basisState n else 0 := by
-  rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
+  rw [ScalarExchange.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
     create_basisState_toggle, map_smul, annihilate_basisState_toggle,
     annihilate_basisState_toggle, map_smul, create_basisState_toggle]
   rcases eq_or_ne i j with rfl | hij
@@ -183,30 +183,30 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
           hij, Ne.symm hij]
 
 theorem anticomm_annihilate_create (i j : Mode) :
-    LinearMap.zetaCommutator (-1) (annihilate i) (create j) =
+    ScalarExchange.zetaCommutator (-1) (annihilate i) (create j) =
       if i = j then LinearMap.id else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
     exact Common.linearMap_ext_basisState fun n => by
-      change LinearMap.zetaCommutator (-1) (annihilate i) (create i) (basisState n) =
+      change ScalarExchange.zetaCommutator (-1) (annihilate i) (create i) (basisState n) =
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
       rw [anticomm_annihilate_create_basisState, if_pos rfl, LinearMap.id_apply]
   · rw [if_neg hij]
     exact Common.linearMap_ext_basisState fun n => by
-      change LinearMap.zetaCommutator (-1) (annihilate i) (create j) (basisState n) =
+      change ScalarExchange.zetaCommutator (-1) (annihilate i) (create j) (basisState n) =
         (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
       rw [anticomm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
 
 /-- **`{cᵢ†, cⱼ} = δᵢⱼ`**: the creation-first mirror of `anticomm_annihilate_create`, obtained
 from the generic `ζ = -1` swap rule. -/
 theorem anticomm_create_annihilate (i j : Mode) :
-    LinearMap.zetaCommutator (-1) (create i) (annihilate j) =
+    ScalarExchange.zetaCommutator (-1) (create i) (annihilate j) =
       if i = j then LinearMap.id else 0 := by
   calc
-    LinearMap.zetaCommutator (-1) (create i) (annihilate j) =
-        LinearMap.zetaCommutator (-1) (annihilate j) (create i) := by
+    ScalarExchange.zetaCommutator (-1) (create i) (annihilate j) =
+        ScalarExchange.zetaCommutator (-1) (annihilate j) (create i) := by
       simpa using
-        (LinearMap.zetaCommutator_swap_of_sq_eq_one
+        (ScalarExchange.zetaCommutator_swap_of_sq_eq_one
           (-1 : ℂ) (by norm_num) (annihilate j) (create i))
     _ = if j = i then LinearMap.id else 0 := anticomm_annihilate_create j i
     _ = if i = j then LinearMap.id else 0 := by simp only [eq_comm]
