@@ -91,13 +91,11 @@ theorem resummedLadderVertex_charge_ward_consistency
     bare +
       solution.selfEnergy .retarded * charge -
       charge * solution.selfEnergy .advanced
-
   change solution.green .retarded *
       resummedLadderVertex ladder hinvertible bare *
         solution.green .advanced =
     solution.green .retarded * charge -
       charge * solution.green .advanced
-
   have hshift :
       charge *
           ensemble.scbaShift .advanced energy broadening
@@ -110,7 +108,6 @@ theorem resummedLadderVertex_charge_ward_consistency
     simp only [mul_sub, sub_mul]
     rw [symmetry.baseHamiltonian_commute.eq]
     noncomm_ring
-
   have hinsertion :
       solution.green .retarded * dressed * solution.green .advanced =
         solution.green .retarded * charge -
@@ -137,7 +134,6 @@ theorem resummedLadderVertex_charge_ward_consistency
             rw [solution.shift_mul_green .advanced,
               solution.green_mul_shift .retarded]
             simp
-
   have hfixed : dressed = bare + ladder dressed := by
     change dressed = bare +
       ensemble.exactSecondMoment
@@ -151,7 +147,6 @@ theorem resummedLadderVertex_charge_ward_consistency
       ← solution.selfEnergy_eq_secondMoment .advanced]
     dsimp [dressed]
     noncomm_ring
-
   have hunique :
       dressed = resummedLadderVertex ladder hinvertible bare :=
     eq_resummedLadderVertex_of_fixedPoint
