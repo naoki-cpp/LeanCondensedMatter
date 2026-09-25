@@ -57,10 +57,10 @@ private theorem resolventApproximationEvolutionAtScale_eq_generatorScale
 
 /-- A fixed bounded approximating evolution differs from the limiting evolution by at most its
 generator error times `|t|`, on the original generator domain. -/
-theorem norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvolution_le
+theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
     (r : ℝ) (hr : 0 < r) (t : ℝ) (x : A.domain) :
-    ‖resolventEvolutionStrongLimitOperator A hA t (x : H) -
+    ‖stoneEvolution A hA t (x : H) -
         resolventApproximationEvolution A hA r hr t (x : H)‖ ≤
       ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| := by
   let Ur : H →L[ℂ] H := resolventApproximationEvolution A hA r hr t
@@ -70,7 +70,7 @@ theorem norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvo
         (fun s : ℝ =>
           ‖Ur (x : H) - resolventApproximationEvolutionAtScale A hA s t (x : H)‖)
         atTop
-        (𝓝 ‖Ur (x : H) - resolventEvolutionStrongLimitOperator A hA t (x : H)‖) := by
+        (𝓝 ‖Ur (x : H) - stoneEvolution A hA t (x : H)‖) := by
     exact (tendsto_const_nhds.sub
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t (x : H))).norm
   have hAconv :
@@ -87,7 +87,7 @@ theorem norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvo
     exact (tendsto_const_nhds.sub hAconv).norm.mul_const |t|
   have hdiff := hU.sub hgen
   have hle :
-      ‖Ur (x : H) - resolventEvolutionStrongLimitOperator A hA t (x : H)‖ -
+      ‖Ur (x : H) - stoneEvolution A hA t (x : H)‖ -
           ‖Ar (x : H) - A x‖ * |t| ≤ 0 := by
     apply le_of_tendsto hdiff
     exact Filter.Eventually.of_forall fun s => by
@@ -107,27 +107,27 @@ private theorem norm_slope_sub_resolventApproximationEvolution_le
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
     (r : ℝ) (hr : 0 < r) (t : ℝ) (ht : t ≠ 0) (x : A.domain) :
     ‖t⁻¹ •
-          (resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H)) -
+          (stoneEvolution A hA t (x : H) - (x : H)) -
         t⁻¹ •
           (resolventApproximationEvolution A hA r hr t (x : H) - (x : H))‖ ≤
       ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ := by
   have hbound :=
-    norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvolution_le
+    norm_stoneEvolution_sub_resolventApproximationEvolution_le
       A hA r hr t x
   have hvec :
-      (resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H)) -
+      (stoneEvolution A hA t (x : H) - (x : H)) -
           (resolventApproximationEvolution A hA r hr t (x : H) - (x : H)) =
-        resolventEvolutionStrongLimitOperator A hA t (x : H) -
+        stoneEvolution A hA t (x : H) -
           resolventApproximationEvolution A hA r hr t (x : H) := by
     abel
   rw [← smul_sub, hvec, norm_smul]
   change |t⁻¹| *
-      ‖resolventEvolutionStrongLimitOperator A hA t (x : H) -
+      ‖stoneEvolution A hA t (x : H) -
         resolventApproximationEvolution A hA r hr t (x : H)‖ ≤ _
   rw [abs_inv]
   calc
     |t|⁻¹ *
-        ‖resolventEvolutionStrongLimitOperator A hA t (x : H) -
+        ‖stoneEvolution A hA t (x : H) -
           resolventApproximationEvolution A hA r hr t (x : H)‖
         ≤ |t|⁻¹ *
             (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) := by
@@ -136,16 +136,16 @@ private theorem norm_slope_sub_resolventApproximationEvolution_le
       field_simp [abs_ne_zero.mpr ht]
 
 /-- At zero time, the strong Stone evolution has infinitesimal generator `-i A` on `A.domain`. -/
-theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero
+theorem stoneEvolution_apply_hasDerivAt_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
-    HasDerivAt (fun t : ℝ => resolventEvolutionStrongLimitOperator A hA t (x : H))
+    HasDerivAt (fun t : ℝ => stoneEvolution A hA t (x : H))
       ((-I : ℂ) • A x) 0 := by
   rw [hasDerivAt_iff_tendsto_slope_zero]
   simp only [zero_add]
   have hzero :
-      resolventEvolutionStrongLimitOperator A hA 0 (x : H) = (x : H) := by
+      stoneEvolution A hA 0 (x : H) = (x : H) := by
     have h := congrArg (fun T : H →L[ℂ] H => T (x : H))
-      (resolventEvolutionStrongLimitOperator_zero A hA)
+      (stoneEvolution_zero A hA)
     simpa using h
   rw [hzero]
   rw [Metric.tendsto_nhds]
@@ -178,7 +178,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero
     norm_slope_sub_resolventApproximationEvolution_le A hA r hr t ht x
   have hfirst' :
       dist
-          (t⁻¹ • (resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H)))
+          (t⁻¹ • (stoneEvolution A hA t (x : H) - (x : H)))
           (t⁻¹ • (resolventApproximationEvolution A hA r hr t (x : H) - (x : H))) <
         ε / 3 := by
     rw [dist_eq_norm]
@@ -200,7 +200,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero
     rw [dist_eq_norm, ← smul_sub, norm_smul]
     simpa using hgen
   have htri := dist_triangle4
-    (t⁻¹ • (resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H)))
+    (t⁻¹ • (stoneEvolution A hA t (x : H) - (x : H)))
     (t⁻¹ • (resolventApproximationEvolution A hA r hr t (x : H) - (x : H)))
     ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H))
     ((-I : ℂ) • A x)
@@ -208,65 +208,65 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero
 
 /-- The limiting evolution satisfies its strong generator equation at arbitrary time, with the
 right-hand side written as the evolved generator. -/
-private theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined
+private theorem stoneEvolution_apply_hasDerivAt_intertwined
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) (s : ℝ) :
-    HasDerivAt (fun t : ℝ => resolventEvolutionStrongLimitOperator A hA t (x : H))
-      ((-I : ℂ) • resolventEvolutionStrongLimitOperator A hA s (A x)) s := by
+    HasDerivAt (fun t : ℝ => stoneEvolution A hA t (x : H))
+      ((-I : ℂ) • stoneEvolution A hA s (A x)) s := by
   rw [hasDerivAt_iff_tendsto_slope_zero]
   have hzero :=
-    (resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero A hA x).tendsto_slope_zero
+    (stoneEvolution_apply_hasDerivAt_zero A hA x).tendsto_slope_zero
   have hmapped :
       Tendsto
         (fun h : ℝ =>
-          resolventEvolutionStrongLimitOperator A hA s
+          stoneEvolution A hA s
             (h⁻¹ •
-              (resolventEvolutionStrongLimitOperator A hA (0 + h) (x : H) -
-                resolventEvolutionStrongLimitOperator A hA 0 (x : H))))
+              (stoneEvolution A hA (0 + h) (x : H) -
+                stoneEvolution A hA 0 (x : H))))
         (𝓝[≠] 0)
-        (𝓝 (resolventEvolutionStrongLimitOperator A hA s ((-I : ℂ) • A x))) := by
-    exact ((resolventEvolutionStrongLimitOperator A hA s).continuous.tendsto _).comp hzero
+        (𝓝 (stoneEvolution A hA s ((-I : ℂ) • A x))) := by
+    exact ((stoneEvolution A hA s).continuous.tendsto _).comp hzero
   have hfun :
       (fun h : ℝ =>
         h⁻¹ •
-          (resolventEvolutionStrongLimitOperator A hA (s + h) (x : H) -
-            resolventEvolutionStrongLimitOperator A hA s (x : H))) =
+          (stoneEvolution A hA (s + h) (x : H) -
+            stoneEvolution A hA s (x : H))) =
       (fun h : ℝ =>
-        resolventEvolutionStrongLimitOperator A hA s
+        stoneEvolution A hA s
           (h⁻¹ •
-            (resolventEvolutionStrongLimitOperator A hA (0 + h) (x : H) -
-              resolventEvolutionStrongLimitOperator A hA 0 (x : H)))) := by
+            (stoneEvolution A hA (0 + h) (x : H) -
+              stoneEvolution A hA 0 (x : H)))) := by
     funext h
     rw [show
-      resolventEvolutionStrongLimitOperator A hA (s + h) (x : H) =
-        resolventEvolutionStrongLimitOperator A hA s
-          (resolventEvolutionStrongLimitOperator A hA h (x : H)) by
-      simpa only [resolventEvolutionStrongLimitOperator_apply] using
+      stoneEvolution A hA (s + h) (x : H) =
+        stoneEvolution A hA s
+          (stoneEvolution A hA h (x : H)) by
+      simpa only [stoneEvolution_apply] using
         resolventEvolutionStrongLimit_add_time_apply A hA s h (x : H)]
-    rw [show resolventEvolutionStrongLimitOperator A hA 0 (x : H) = (x : H) by
-      simpa only [resolventEvolutionStrongLimitOperator_apply] using
+    rw [show stoneEvolution A hA 0 (x : H) = (x : H) by
+      simpa only [stoneEvolution_apply] using
         resolventEvolutionStrongLimit_zero_apply A hA (x : H)]
     simp only [zero_add]
-    rw [← (resolventEvolutionStrongLimitOperator A hA s).map_sub]
+    rw [← (stoneEvolution A hA s).map_sub]
     symm
-    exact (resolventEvolutionStrongLimitOperator A hA s).toLinearMap.map_smul_of_tower
-      h⁻¹ (resolventEvolutionStrongLimitOperator A hA h (x : H) - (x : H))
+    exact (stoneEvolution A hA s).toLinearMap.map_smul_of_tower
+      h⁻¹ (stoneEvolution A hA h (x : H) - (x : H))
   rw [hfun]
   have hmapgen :
-      resolventEvolutionStrongLimitOperator A hA s ((-I : ℂ) • A x) =
-        (-I : ℂ) • resolventEvolutionStrongLimitOperator A hA s (A x) := by
-    exact (resolventEvolutionStrongLimitOperator A hA s).map_smul _ _
+      stoneEvolution A hA s ((-I : ℂ) • A x) =
+        (-I : ℂ) • stoneEvolution A hA s (A x) := by
+    exact (stoneEvolution A hA s).map_smul _ _
   rw [hmapgen] at hmapped
   exact hmapped
 
 /-- Strong Stone derivative on the preserved generator domain. -/
-theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt
+theorem stoneEvolution_apply_hasDerivAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) (t : ℝ) :
-    HasDerivAt (fun s : ℝ => resolventEvolutionStrongLimitOperator A hA s (x : H))
+    HasDerivAt (fun s : ℝ => stoneEvolution A hA s (x : H))
       ((-I : ℂ) •
-        A ⟨resolventEvolutionStrongLimitOperator A hA t (x : H),
-          resolventEvolutionStrongLimitOperator_mem_domain A hA t x⟩) t := by
-  have h := resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined A hA x t
-  rw [resolventEvolutionStrongLimitOperator_apply_domain A hA t x]
+        A ⟨stoneEvolution A hA t (x : H),
+          stoneEvolution_mem_domain A hA t x⟩) t := by
+  have h := stoneEvolution_apply_hasDerivAt_intertwined A hA x t
+  rw [stoneEvolution_apply_domain A hA t x]
   exact h
 
 end
