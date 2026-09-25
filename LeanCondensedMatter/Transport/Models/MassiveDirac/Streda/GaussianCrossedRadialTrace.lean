@@ -140,7 +140,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
   cases axis with
   | x =>
-    simp only\n    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+    simp only
+    rw [pauliVectorCoefficient_prefactor_intervalIntegral
       (axis := .x)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
@@ -151,7 +152,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
     exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
       .x side v m probeEnergy broadening disorderStrength hbar pMax radius p
   | y =>
-    simp only\n    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+    simp only
+    rw [pauliVectorCoefficient_prefactor_intervalIntegral
       (axis := .y)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
@@ -162,7 +164,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
     exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
       .y side v m probeEnergy broadening disorderStrength hbar pMax radius p
   | z =>
-    simp only\n    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+    simp only
+    rw [pauliVectorCoefficient_prefactor_intervalIntegral
       (axis := .z)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
