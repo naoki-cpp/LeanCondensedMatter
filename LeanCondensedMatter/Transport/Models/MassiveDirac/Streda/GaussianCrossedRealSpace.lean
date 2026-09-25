@@ -316,7 +316,7 @@ conjugation together with the sign of the in-plane current insertion. -/
           sigmaZ) := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two,
+    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius]
 
