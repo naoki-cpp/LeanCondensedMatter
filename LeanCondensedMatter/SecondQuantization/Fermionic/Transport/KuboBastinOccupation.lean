@@ -35,26 +35,6 @@ variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
-/-- The current matrix elements and retarded-resolvent factor of one finite directional Bastin
-transition, with the occupation difference removed. -/
-noncomputable def finiteKuboBastinDirectionalTransitionFactor
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) : ℂ :=
-  inner ℂ (data.basis mn.1)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K (data.basis mn.2)) *
-    inner ℂ (data.basis mn.2)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K (data.basis mn.1)) *
-    inner ℂ (data.basis mn.2)
-      (QuantumTheory.Transport.retardedResolvent system.hamiltonian.1
-        (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
-        (kuboBastinEnergyBroadening system.hbar eta)
-        (data.basis mn.2))
-
 /-- One finite directional Kubo–Bastin transition with its discrete occupation difference replaced
 by an oriented energy integral of the occupation derivative. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
