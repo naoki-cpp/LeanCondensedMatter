@@ -1,4 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.Positive
+import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.LinearAlgebra.Complex.Module
 
 /-!
@@ -102,5 +103,42 @@ theorem diagonalExpectationValue_eq_of_inner_eq
     diagonalExpectationValue T hT x = diagonalExpectationValue S hS x := by
   apply Complex.ofReal_injective
   rw [coe_diagonalExpectationValue_right, coe_diagonalExpectationValue_right, h]
+
+
+/-- In finite dimension, the lossless diagonal expectation of a self-adjoint operator is the
+weighted sum of the eigenvalues in any supplied orthonormal eigenbasis, with squared basis
+coordinates as weights. -/
+theorem diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
+    {ι : Type*} [Fintype ι] (T : H →L[ℂ] H) (hT : IsSelfAdjoint T)
+    (b : OrthonormalBasis ι ℂ H) (E : ι → ℝ)
+    (hE : ∀ i, (T : H →ₗ[ℂ] H) (b i) = (E i : ℂ) • b i) (x : H) :
+    diagonalExpectationValue T hT x =
+      ∑ i, E i * ‖b.repr x i‖ ^ 2 := by
+  have hcoord (i : ι) : b.repr (T x) i = (E i : ℂ) * b.repr x i := by
+    calc
+      b.repr (T x) i = inner ℂ (b i) (T x) := b.repr_apply_apply (T x) i
+      _ = inner ℂ (T (b i)) x := (hT.isSymmetric (b i) x).symm
+      _ = inner ℂ ((E i : ℂ) • b i) x := by
+        apply congrArg (fun y : H => inner ℂ y x)
+        exact hE i
+      _ = (E i : ℂ) * inner ℂ (b i) x := by
+        rw [inner_smul_left]
+        simp
+      _ = (E i : ℂ) * b.repr x i := by rw [b.repr_apply_apply]
+  apply Complex.ofReal_injective
+  rw [coe_diagonalExpectationValue]
+  have hinner := b.repr.inner_map_map (T x) x
+  rw [PiLp.inner_apply] at hinner
+  rw [← hinner]
+  push_cast
+  apply Finset.sum_congr rfl
+  intro i hi
+  rw [hcoord i]
+  change
+    inner ℂ ((E i : ℂ) * b.repr x i) (b.repr x i) =
+      (E i : ℂ) * (‖b.repr x i‖ : ℂ) ^ 2
+  rw [show (E i : ℂ) * b.repr x i = (E i : ℂ) • b.repr x i from rfl]
+  rw [inner_smul_left, inner_self_eq_norm_sq_to_K]
+  simp
 
 end ContinuousLinearMap
