@@ -25096,80 +25096,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ) (C : Label), LinearMap.operatorPeelSum operator exchangeCoeff ζ C [] = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.operatorPeelSum_nil",
-    "module": "LeanCondensedMatter.Analysis.Operator.ExchangePeel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), operator C ∘ₗ operator D = exchangeCoeff C D • LinearMap.id + ζ • operator D ∘ₗ operator C) →\n    ∀ (C : Label) (l : List Label),\n      operator C ∘ₗ (List.map operator l).prod =\n        LinearMap.operatorPeelSum operator exchangeCoeff ζ C l + ζ ^ l.length • (List.map operator l).prod ∘ₗ operator C",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.operator_comp_prod_eq_operatorPeelSum",
-    "module": "LeanCondensedMatter.Analysis.Operator.ExchangePeel",
-    "externalAxioms": [],
-    "docString": "Repeatedly apply a scalar exchange relation while pushing one endomorphism through a finite\nordered product. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A B C : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator ζ (A + B) C = LinearMap.zetaCommutator ζ A C + LinearMap.zetaCommutator ζ B C",
     "standardAxioms": [
       "Classical.choice",
@@ -58191,7 +58117,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n      source v m probeEnergy broadening disorderStrength hbar pMax (-radius) =\n    -(QuantumTheory.Transport.Models.MassiveDirac.sigmaZ *\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n            source v m probeEnergy broadening disorderStrength hbar pMax radius *\n        QuantumTheory.Transport.Models.MassiveDirac.sigmaZ)",
     "standardAxioms": [
       "Classical.choice",
@@ -58199,7 +58125,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -58210,15 +58136,19 @@
     "docString": "Reversing the radial coordinate changes the crossed current block by `σ_z`\nconjugation together with the sign of the in-plane current insertion. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58230,7 +58160,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ j,\n          ∑ k,\n            ∑ l,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax (-radius) j k *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    radius k l *\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                  1 v m probeEnergy broadening disorderStrength hbar pMax (-radius) l i;\n    amplitude + (starRingEnd ℂ) amplitude",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ j,\n          ∑ k,\n            ∑ l,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                    (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j *\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                          pMax radius j k *\n                      QuantumTheory.Transport.Models.MassiveDirac.sigmaZ k k) *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    radius k l *\n                -(QuantumTheory.Transport.Models.MassiveDirac.sigmaZ l l *\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                        1 v m probeEnergy broadening disorderStrength hbar pMax radius l i *\n                    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i);\n    amplitude + (starRingEnd ℂ) amplitude",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58245,13 +58175,16 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The radial `Psi` topology is the Hermitian-conjugate pair of one finite scalar entry sum. The\nentry sum is the scalar boundary consumed by later radial-kernel evaluation. ",
+    "docString": "The radial `Psi` topology is the Hermitian-conjugate pair of one positive-radius finite\nscalar entry sum. The negative-radius Green and current blocks are replaced by their exact\n`σ_z` conjugation laws. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.sigmaZ_conjugate_apply",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.trace_four_mul_eq_entry_sum"
     ],
     "crossModuleDirectWrapper": false,
@@ -58271,7 +58204,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ j,\n          ∑ k,\n            ∑ l,\n              (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                      ∫ (p : ℝ) in 0..pMax,\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                          0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n                    (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                      ∫ (p : ℝ) in 0..pMax,\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                          pMax (-radius) p j k) *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                        pMax radius p k l) *\n                (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                  ∫ (p : ℝ) in 0..pMax,\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                      1 v m probeEnergy broadening disorderStrength hbar pMax (-radius) p l i);\n    amplitude + (starRingEnd ℂ) amplitude",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ j,\n          ∑ k,\n            ∑ l,\n              (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                      ∫ (p : ℝ) in 0..pMax,\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                          0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n                    (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j *\n                        (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                          ∫ (p : ℝ) in 0..pMax,\n                            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength\n                              hbar pMax radius p j k) *\n                      QuantumTheory.Transport.Models.MassiveDirac.sigmaZ k k) *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                        pMax radius p k l) *\n                -(QuantumTheory.Transport.Models.MassiveDirac.sigmaZ l l *\n                      (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                        ∫ (p : ℝ) in 0..pMax,\n                          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                            1 v m probeEnergy broadening disorderStrength hbar pMax radius p l i) *\n                    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i);\n    amplitude + (starRingEnd ℂ) amplitude",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58286,7 +58219,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The radial `Psi` amplitude is a finite sum of products of one-dimensional scalar momentum\nintegrals; the full kernel adds its complex-conjugate partner. ",
+    "docString": "The radial `Psi` amplitude is a finite sum of products of positive-radius one-dimensional\nscalar momentum integrals; the full kernel adds its complex-conjugate partner. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -58347,7 +58280,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                    0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    (-radius) j k *\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                  1 v m probeEnergy broadening disorderStrength hbar pMax radius k l *\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n                (-radius) l i",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                    0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                  (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j *\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                        pMax radius j k *\n                    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ k k) *\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                  1 v m probeEnergy broadening disorderStrength hbar pMax radius k l *\n              (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ l l *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n                    radius l i *\n                QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58362,13 +58295,15 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The radial `X` topology is a finite scalar sum of radial Green/current matrix entries. This\nremoves the remaining matrix multiplication and trace operations without changing any regulator or\nFourier normalization. ",
+    "docString": "The radial `X` topology is a finite scalar sum of positive-radius Green/current entries.\nThe two negative-radius Green blocks are replaced by their exact `σ_z` conjugates. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.sigmaZ_conjugate_apply",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.trace_four_mul_eq_entry_sum"
     ],
     "crossModuleDirectWrapper": false,
@@ -58388,7 +58323,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                        0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                        pMax (-radius) p j k) *\n                (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                  ∫ (p : ℝ) in 0..pMax,\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                      1 v m probeEnergy broadening disorderStrength hbar pMax radius p k l) *\n              (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                ∫ (p : ℝ) in 0..pMax,\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                    QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n                    (-radius) p l i)",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                        0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n                  (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j *\n                      (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                        ∫ (p : ℝ) in 0..pMax,\n                          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength\n                            hbar pMax radius p j k) *\n                    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ k k) *\n                (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                  ∫ (p : ℝ) in 0..pMax,\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                      1 v m probeEnergy broadening disorderStrength hbar pMax radius p k l) *\n              (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ l l *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax radius p l i) *\n                QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58403,7 +58338,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The radial `X` topology is a finite sum of products of one-dimensional scalar momentum\nintegrals. Each real-space Fourier block retains exactly one physical momentum-measure prefactor. ",
+    "docString": "The radial `X` topology is a finite sum of products of positive-radius one-dimensional\nscalar momentum integrals. Each real-space Fourier block retains exactly one physical\nmomentum-measure prefactor. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -59005,7 +58940,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n      probeEnergy broadening disorderStrength hbar pMax (-radius) =\n    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ *\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n          probeEnergy broadening disorderStrength hbar pMax radius *\n      QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
       "Classical.choice",
@@ -59024,15 +58959,21 @@
     "docString": "Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by\n`σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic\nchannel is odd. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79743,6 +79684,82 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Label : Type u_1} {A : Type u_2} [inst : Semiring A] [inst_1 : Algebra ℂ A] (element : Label → A)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), element C * element D = exchangeCoeff C D • 1 + ζ • (element D * element C)) →\n    ∀ (C : Label) (l : List Label),\n      element C * (List.map element l).prod =\n        ScalarExchange.peelSum element exchangeCoeff ζ C l + ζ ^ l.length • ((List.map element l).prod * element C)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.mul_prod_eq_peelSum",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Repeatedly apply a scalar exchange relation while pushing one algebra element through a finite\nordered product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Label : Type u_1} {A : Type u_2} [inst : Semiring A] [inst_1 : Algebra ℂ A] (element : Label → A)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ) (C : Label), ScalarExchange.peelSum element exchangeCoeff ζ C [] = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.peelSum_nil",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (f : SchwartzKinetic1D.Space) (x : ℝ), (SchwartzKinetic1D.derivative f) x = deriv (⇑f) x",
     "standardAxioms": [
@@ -80980,7 +80997,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "dependencies": [
-      "LinearMap.operator_comp_prod_eq_operatorPeelSum",
+      "ScalarExchange.mul_prod_eq_peelSum",
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue"
     ],
     "crossModuleDirectWrapper": false,
@@ -111299,7 +111316,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -111312,7 +111329,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_thermalPeelSum"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_mul_operator_eq_exchange"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.operator_annihilate",
@@ -111325,7 +111342,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_thermalPeelSum"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_mul_operator_eq_exchange"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -111457,7 +111474,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (n : ℕ)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  l.length = 2 * n + 1 →\n    1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C ≠ 0 →\n      SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C :: l) =\n        SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C /\n            (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C) *\n          (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation (C.thermalPeelSum l)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (n : ℕ)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  l.length = 2 * n + 1 →\n    1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C ≠ 0 →\n      SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C :: l) =\n        SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C /\n            (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C) *\n          (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation\n            (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n              SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111500,7 +111517,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C₁ :: l) =\n    (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation (C₁.thermalPeelSum l) +\n      (-1) ^ l.length *\n        SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l ++ [C₁])",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C₁ :: l) =\n    (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation\n        (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n          SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l) +\n      (-1) ^ l.length *\n        SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l ++ [C₁])",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111524,7 +111541,7 @@
     "dependencies": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
       "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_cons",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_thermalPeelSum"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -111711,44 +111728,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation (C₁.thermalPeelSum l) =\n    ∑ j,\n      (-1) ^ ↑j * C₁.anticommutatorValue l[↑j] *\n        SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l.eraseIdx ↑j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_thermalPeelSum_eq_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelSum_eq_thermalPeelTerms_sum",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelTerms_eq_ofFn"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (i : Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β\n      (SecondQuantization.Fermionic.CompletedThermalLadder.annihilate i) =\n    Complex.exp (↑β * ↑(ε i))",
     "standardAxioms": [
       "Classical.choice",
@@ -111883,7 +111862,8 @@
     "dependents": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_eq_prod"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -111891,9 +111871,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_eq_prod"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111979,47 +111960,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  C₁.operator ∘SL SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l =\n    C₁.thermalPeelSum l +\n      (-1) ^ l.length • SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l ∘SL C₁.operator",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_thermalPeelSum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Repeated completed CAR exchange: the first ladder is peeled through an arbitrary tail. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  (SecondQuantization.Fermionic.CompletedThermalLadder.create i).operator =\n    SecondQuantization.Fermionic.completedCreate i",
     "standardAxioms": [
       "Classical.choice",
@@ -112046,119 +111986,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  C₁.thermalPeelSum l = (C₁.thermalPeelTerms l).sum",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelSum_eq_thermalPeelTerms_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "The recursive completed peel sum is the sum of its individual terms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_thermalPeelSum_eq_sum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_thermalPeelSum_eq_sum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  C₁.thermalPeelSum [] = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelSum_nil",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  C₁.thermalPeelTerms l =\n    List.ofFn fun j =>\n      ((-1) ^ ↑j * C₁.anticommutatorValue l[↑j]) •\n        SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct (l.eraseIdx ↑j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelTerms_eq_ofFn",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Closed position-indexed form of the completed CAR peel terms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_thermalPeelSum_eq_sum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_thermalPeelSum_eq_sum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154940,6 +154767,251 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation\n      (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n        SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l) =\n    ∑ j,\n      (-1) ^ ↑j * C₁.anticommutatorValue l[↑j] *\n        SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l.eraseIdx ↑j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.peelSum_eq_thermalPeelTerms_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelTerms_eq_ofFn"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l =\n    (List.map SecondQuantization.Fermionic.CompletedThermalLadder.operator l).prod",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_eq_prod",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.peelSum_eq_thermalPeelTerms_sum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_cons"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.peelSum_eq_thermalPeelTerms_sum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  C₁.operator ∘SL SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l =\n    ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n        SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l +\n      (-1) ^ l.length • SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l ∘SL C₁.operator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+    ],
+    "dependencies": [
+      "ScalarExchange.mul_prod_eq_peelSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_mul_operator_eq_exchange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  C.operator * D.operator = C.anticommutatorValue D • 1 + -1 • (D.operator * C.operator)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_mul_operator_eq_exchange",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n      SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l =\n    (SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelTerms✝ C₁ l).sum",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.peelSum_eq_thermalPeelTerms_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "The recursive completed peel sum is the sum of its individual terms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_eq_prod"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelTerms✝ C₁ l =\n    List.ofFn fun j =>\n      ((-1) ^ ↑j * C₁.anticommutatorValue l[↑j]) •\n        SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct (l.eraseIdx ↑j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.thermalPeelTerms_eq_ofFn",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Closed position-indexed form of the completed CAR peel terms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β\n        (SecondQuantization.Fermionic.insertOccupation i n) =\n      Real.exp (-β * ε i) * QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n",
     "standardAxioms": [
@@ -161499,6 +161571,47 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (M : QuantumTheory.Transport.Models.MassiveDirac.Matrix2) (i j : Fin 2),\n  (QuantumTheory.Transport.Models.MassiveDirac.sigmaZ * M * QuantumTheory.Transport.Models.MassiveDirac.sigmaZ) i j =\n    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i * M i j *\n      QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.sigmaZ_conjugate_apply",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
