@@ -135,5 +135,29 @@ theorem realMultiplicationOperator_isFormalAdjoint
       inner ℂ (ψ : ComplexL2) (multiplicationOperator (realMultiplier f hf) (φ : ComplexL2))
   exact realMultiplicationOperator_symmetric f hf (ψ : ComplexL2) (φ : ComplexL2)
 
+
+/-- Multiplication on `L²(ℝ, ℂ)` depends complex-linearly on the `L∞` multiplier, after forgetting
+continuity of each individual operator. -/
+noncomputable def multiplicationLinear :
+    ComplexLInf →ₗ[ℂ] (ComplexL2 →ₗ[ℂ] ComplexL2) where
+  toFun := fun f => (multiplicationOperator f).toLinearMap
+  map_add' := by
+    intro f g
+    apply LinearMap.ext
+    intro ψ
+    change (f + g) • ψ = f • ψ + g • ψ
+    exact Lp.smul_add f g ψ
+  map_smul' := by
+    intro c f
+    apply LinearMap.ext
+    intro ψ
+    change (c • f) • ψ = c • (f • ψ)
+    exact Lp.smul_assoc c f ψ
+
+@[simp]
+theorem multiplicationLinear_apply (f : ComplexLInf) (ψ : ComplexL2) :
+    multiplicationLinear f ψ = multiplicationOperator f ψ :=
+  rfl
+
 end
 end L2MultiplicationRealLine
