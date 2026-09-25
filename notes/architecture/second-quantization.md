@@ -197,7 +197,9 @@ Higher-point imaginary-time ordering is owned by
 together with interaction events using the fixed external-first rank at equal times, expands that
 order to atomic legs, and exposes the permutation from fixed flattened legs to mixed-time positions.
 Transport and locality lemmas are added only when a concrete higher-point amplitude proof needs them.
-The mature two-point mixed-order representation remains independent.
+The fermionic layer attaches `TimedField` semantics directly to canonical external-insertion legs
+and pulls that family to mixed positions through the Common-owned equivalence, avoiding a parallel
+mixed-field-list representation. The mature two-point mixed-order representation remains independent.
 
 `componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
 its partner-transport theorem states that this embedding intertwines the restricted and ambient
