@@ -82,9 +82,7 @@
         {"id": "intrinsicBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw"]},
         {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.BalanceLaw"]},
         {"id": "balanceLawAdapter", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter"]},
-        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]},
-        {"id": "intrinsicSymmetricLocalization", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization"]},
-        {"id": "symmetricLocalization", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"]}
+        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]}
       ],
       "edges": [
         {"upstream": "zetaCommutator", "downstream": "linearCommutator"},
@@ -93,11 +91,7 @@
         {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
         {"upstream": "intrinsicBalanceLaw", "downstream": "balanceLawAdapter"},
         {"upstream": "balanceLaw", "downstream": "balanceLawAdapter"},
-        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"},
-        {"upstream": "intrinsicBalanceLaw", "downstream": "intrinsicSymmetricLocalization"},
-        {"upstream": "symmetricLocalizationAlgebra", "downstream": "intrinsicSymmetricLocalization"},
-        {"upstream": "balanceLaw", "downstream": "symmetricLocalization"},
-        {"upstream": "symmetricLocalizationAlgebra", "downstream": "symmetricLocalization"}
+        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"}
       ]
     },
     {
@@ -116,9 +110,7 @@
           "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw",
           "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
           "LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter",
-          "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
-          "LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization",
-          "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"
+          "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
         ]},
         {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
         {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}

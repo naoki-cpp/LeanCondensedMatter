@@ -31,8 +31,6 @@
         "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
         "LeanCondensedMatter/Analysis/Calculus/BalanceLawAdapter.lean",
         "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
-        "LeanCondensedMatter/Analysis/Calculus/IntrinsicSymmetricLocalization.lean",
-        "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalization.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/ConventionalCurrent.lean",
@@ -324,22 +322,6 @@
       "id": "generalizedCurrentSymmetricLocalizationAlgebra",
       "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
       "modules": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]
-    },
-    {
-      "id": "generalizedCurrentSymmetricLocalization",
-      "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalization.lean",
-      "modules": [
-        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
-        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
-      ]
-    },
-    {
-      "id": "generalizedCurrentIntrinsicSymmetricLocalization",
-      "path": "LeanCondensedMatter/Analysis/Calculus/IntrinsicSymmetricLocalization.lean",
-      "modules": [
-        "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw",
-        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
-      ]
     },
     {
       "id": "generalizedCurrentLocalizedTransport",

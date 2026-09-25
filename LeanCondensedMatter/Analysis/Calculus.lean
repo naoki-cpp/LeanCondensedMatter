@@ -6,9 +6,7 @@ import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter
 import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
 import LeanCondensedMatter.Analysis.Calculus.CorrectedCurrentFlux
-import LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 
 set_option linter.style.header false
