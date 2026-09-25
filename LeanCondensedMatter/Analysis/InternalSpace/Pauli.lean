@@ -239,11 +239,11 @@ theorem trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentit
   simp [hI]
 
 /-- Scalar coefficient of a complex two-level matrix in the Pauli-affine basis. -/
-def pauliScalarCoefficient (M : PauliMatrix) : ℂ :=
+noncomputable def pauliScalarCoefficient (M : PauliMatrix) : ℂ :=
   (M 0 0 + M 1 1) / 2
 
 /-- Axis-indexed Pauli coefficient of a complex two-level matrix. -/
-def pauliVectorCoefficient (M : PauliMatrix) : PauliAxis → ℂ
+noncomputable def pauliVectorCoefficient (M : PauliMatrix) : PauliAxis → ℂ
   | .x => (M 0 1 + M 1 0) / 2
   | .y => Complex.I * (M 0 1 - M 1 0) / 2
   | .z => (M 0 0 - M 1 1) / 2
@@ -254,16 +254,20 @@ theorem eq_pauliAffine_coefficients (M : PauliMatrix) :
     M =
       pauliScalarCoefficient M • (1 : PauliMatrix) +
         pauliCombination (pauliVectorCoefficient M) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
-      pauliX, pauliY, pauliZ, Complex.I_mul_I]
-    <;> ring
+      pauliX, pauliY, pauliZ] <;>
+    ring_nf <;>
+    simp [hI]
 
 /-- Conjugation by `σ_z` leaves the scalar Pauli coefficient unchanged. -/
 @[simp] theorem pauliScalarCoefficient_pauliZ_conjugate (M : PauliMatrix) :
     pauliScalarCoefficient (pauliZ * M * pauliZ) = pauliScalarCoefficient M := by
-  simp [pauliScalarCoefficient, pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+  simp [pauliScalarCoefficient, pauliZ, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
+    Fin.sum_univ_two]
   ring
 
 /-- Axis action induced by conjugation with `σ_z`: the in-plane components change sign while the
@@ -280,7 +284,7 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
   funext axis
   cases axis <;>
     simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
-      Matrix.mul_apply, Fin.sum_univ_two]
+      Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
     <;> ring
 
 @[simp] theorem pauliScalarCoefficient_neg (M : PauliMatrix) :
@@ -300,8 +304,10 @@ theorem trace_pauliAffine_mul_pauliAffine
         ((a • (1 : PauliMatrix) + pauliCombination u) *
           (b • (1 : PauliMatrix) + pauliCombination v)) =
       2 * (a * b + dotProduct u v) := by
-  rw [pauliAffine_mul_pauliAffine, Matrix.trace_add, Matrix.trace_smul]
+  rw [pauliAffine_mul_pauliAffine, Matrix.trace_add, Matrix.trace_smul,
+    trace_pauliCombination]
   simp [Matrix.trace]
+  ring
 
 /-- Trace of four Pauli-affine matrices as one scalar expression. Pairing the first two and last
 two factors keeps the result compact and exposes only dot and cross products of Pauli coefficients. -/
@@ -342,9 +348,20 @@ theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
           dotProduct
             (a • v + b • u + Complex.I • pauliCross u v)
             (c • x + d • w + Complex.I • pauliCross w x)) := by
-  rw [eq_pauliAffine_coefficients A, eq_pauliAffine_coefficients B,
-    eq_pauliAffine_coefficients C, eq_pauliAffine_coefficients D]
-  exact trace_four_pauliAffine _ _ _ _ _ _ _ _
+  calc
+    Matrix.trace (A * B * C * D) =
+        Matrix.trace
+          ((pauliScalarCoefficient A • (1 : PauliMatrix) +
+              pauliCombination (pauliVectorCoefficient A)) *
+            (pauliScalarCoefficient B • (1 : PauliMatrix) +
+              pauliCombination (pauliVectorCoefficient B)) *
+            (pauliScalarCoefficient C • (1 : PauliMatrix) +
+              pauliCombination (pauliVectorCoefficient C)) *
+            (pauliScalarCoefficient D • (1 : PauliMatrix) +
+              pauliCombination (pauliVectorCoefficient D))) := by
+          rw [← eq_pauliAffine_coefficients A, ← eq_pauliAffine_coefficients B,
+            ← eq_pauliAffine_coefficients C, ← eq_pauliAffine_coefficients D]
+    _ = _ := trace_four_pauliAffine _ _ _ _ _ _ _ _
 
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
