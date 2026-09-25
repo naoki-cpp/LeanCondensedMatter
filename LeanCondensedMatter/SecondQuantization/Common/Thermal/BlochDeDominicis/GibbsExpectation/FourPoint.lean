@@ -38,9 +38,9 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
         p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
     intro p hp
     fin_cases hp
-    · simpa [ScalarExchange.zetaCommutator] using hcomm12
-    · simpa [ScalarExchange.zetaCommutator] using hcomm13
-    · simpa [ScalarExchange.zetaCommutator] using hcomm14
+    · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm12
+    · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm13
+    · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm14
   have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
     (traceFock (Config := Config)).map_zero
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
