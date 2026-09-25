@@ -73,11 +73,11 @@ theorem resolventApproximationEvolutionAtScale_nonrealResolvent_commute
   exact resolventApproximationEvolution_nonrealResolvent_commute A hA _ _ t z hz
 
 /-- Nonreal resolvent commutation passes through the vectorwise strong limit. -/
-theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_apply
+theorem stoneEvolution_nonrealResolvent_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
     (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) (y : H) :
-    resolventEvolutionStrongLimitOperator A hA t (nonrealResolvent A hA z hz y) =
-      nonrealResolvent A hA z hz (resolventEvolutionStrongLimitOperator A hA t y) := by
+    stoneEvolution A hA t (nonrealResolvent A hA z hz y) =
+      nonrealResolvent A hA z hz (stoneEvolution A hA t y) := by
   have hleft :=
     tendsto_resolventApproximationEvolutionAtScale_apply A hA t
       (nonrealResolvent A hA z hz y)
@@ -88,7 +88,7 @@ theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_apply
             (resolventApproximationEvolutionAtScale A hA r t y))
         atTop
         (𝓝 (nonrealResolvent A hA z hz
-          (resolventEvolutionStrongLimitOperator A hA t y))) := by
+          (stoneEvolution A hA t y))) := by
     exact ((nonrealResolvent A hA z hz).continuous.tendsto _).comp
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
   exact tendsto_nhds_unique
@@ -99,18 +99,18 @@ theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_apply
     hright
 
 /-- Operator form of nonreal resolvent commutation for the limiting Stone evolution. -/
-theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm
+theorem stoneEvolution_nonrealResolvent_mul_comm
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
     (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    resolventEvolutionStrongLimitOperator A hA t * nonrealResolvent A hA z hz =
-      nonrealResolvent A hA z hz * resolventEvolutionStrongLimitOperator A hA t := by
+    stoneEvolution A hA t * nonrealResolvent A hA z hz =
+      nonrealResolvent A hA z hz * stoneEvolution A hA t := by
   ext y
-  simpa using resolventEvolutionStrongLimitOperator_nonrealResolvent_apply A hA t z hz y
+  simpa using stoneEvolution_nonrealResolvent_apply A hA t z hz y
 
 /-- The limiting Stone evolution preserves the original self-adjoint operator domain. -/
-theorem resolventEvolutionStrongLimitOperator_mem_domain
+theorem stoneEvolution_mem_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
-    resolventEvolutionStrongLimitOperator A hA t (x : H) ∈ A.domain := by
+    stoneEvolution A hA t (x : H) ∈ A.domain := by
   let z : ℂ := I
   have hz : z.im ≠ 0 := by
     simpa [z] using I_im_ne_zero
@@ -122,28 +122,28 @@ theorem resolventEvolutionStrongLimitOperator_mem_domain
       nonrealResolvent_apply_operator A hA z hz x]
     module
   have hcomm :=
-    resolventEvolutionStrongLimitOperator_nonrealResolvent_apply A hA t z hz y
+    stoneEvolution_nonrealResolvent_apply A hA t z hz y
   have hrepr :
-      resolventEvolutionStrongLimitOperator A hA t (x : H) =
+      stoneEvolution A hA t (x : H) =
         nonrealResolvent A hA z hz
-          (resolventEvolutionStrongLimitOperator A hA t y) := by
+          (stoneEvolution A hA t y) := by
     calc
-      resolventEvolutionStrongLimitOperator A hA t (x : H) =
-          resolventEvolutionStrongLimitOperator A hA t
+      stoneEvolution A hA t (x : H) =
+          stoneEvolution A hA t
             (nonrealResolvent A hA z hz y) := by rw [hxrepr]
       _ = nonrealResolvent A hA z hz
-            (resolventEvolutionStrongLimitOperator A hA t y) := hcomm
+            (stoneEvolution A hA t y) := hcomm
   rw [hrepr]
   exact nonrealResolvent_mem_domain A hA z hz _
 
 /-- On its original domain, the unbounded self-adjoint generator intertwines with the limiting
 Stone evolution. -/
-theorem resolventEvolutionStrongLimitOperator_apply_domain
+theorem stoneEvolution_apply_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
-    A ⟨resolventEvolutionStrongLimitOperator A hA t (x : H),
-        resolventEvolutionStrongLimitOperator_mem_domain A hA t x⟩ =
-      resolventEvolutionStrongLimitOperator A hA t (A x) := by
-  let U : H →L[ℂ] H := resolventEvolutionStrongLimitOperator A hA t
+    A ⟨stoneEvolution A hA t (x : H),
+        stoneEvolution_mem_domain A hA t x⟩ =
+      stoneEvolution A hA t (A x) := by
+  let U : H →L[ℂ] H := stoneEvolution A hA t
   let z : ℂ := I
   have hz : z.im ≠ 0 := by
     simpa [z] using I_im_ne_zero
@@ -156,13 +156,13 @@ theorem resolventEvolutionStrongLimitOperator_apply_domain
       nonrealResolvent_apply_operator A hA z hz x]
     module
   have hcomm : U (R y) = R (U y) := by
-    exact resolventEvolutionStrongLimitOperator_nonrealResolvent_apply A hA t z hz y
+    exact stoneEvolution_nonrealResolvent_apply A hA t z hz y
   have hUrepr : U (x : H) = R (U y) := by
     calc
       U (x : H) = U (R y) := by rw [hxrepr]
       _ = R (U y) := hcomm
   let ux : A.domain :=
-    ⟨U (x : H), resolventEvolutionStrongLimitOperator_mem_domain A hA t x⟩
+    ⟨U (x : H), stoneEvolution_mem_domain A hA t x⟩
   let rx : A.domain :=
     ⟨R (U y), nonrealResolvent_mem_domain A hA z hz (U y)⟩
   have huxrx : ux = rx := by

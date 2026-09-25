@@ -54,9 +54,9 @@ theorem resolventEvolutionStrongLimit_zero_apply
 
 /-- The bundled strong-limit evolution is the identity at time zero. -/
 @[simp]
-theorem resolventEvolutionStrongLimitOperator_zero
+theorem stoneEvolution_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) :
-    resolventEvolutionStrongLimitOperator A hA 0 = 1 := by
+    stoneEvolution A hA 0 = 1 := by
   ext x
   simpa using resolventEvolutionStrongLimit_zero_apply A hA x
 
@@ -69,8 +69,8 @@ private theorem tendsto_resolventApproximationEvolutionAtScale_comp_apply
         resolventApproximationEvolutionAtScale A hA r t
           (resolventApproximationEvolutionAtScale A hA r s x))
       atTop
-      (𝓝 (resolventEvolutionStrongLimitOperator A hA t
-        (resolventEvolutionStrongLimitOperator A hA s x))) := by
+      (𝓝 (stoneEvolution A hA t
+        (stoneEvolution A hA s x))) := by
   rw [Metric.tendsto_nhds]
   intro ε hε
   have hε2 : 0 < ε / 2 := by positivity
@@ -78,33 +78,33 @@ private theorem tendsto_resolventApproximationEvolutionAtScale_comp_apply
     (tendsto_resolventApproximationEvolutionAtScale_apply A hA s x)) (ε / 2) hε2
   have ht := (Metric.tendsto_nhds.mp
     (tendsto_resolventApproximationEvolutionAtScale_apply A hA t
-      (resolventEvolutionStrongLimitOperator A hA s x))) (ε / 2) hε2
+      (stoneEvolution A hA s x))) (ε / 2) hε2
   filter_upwards [hs, ht] with r hrs hrt
   have hrs' :
       dist (resolventApproximationEvolutionAtScale A hA r s x)
-          (resolventEvolutionStrongLimitOperator A hA s x) < ε / 2 := by
+          (stoneEvolution A hA s x) < ε / 2 := by
     simpa using hrs
   have hrt' :
       dist (resolventApproximationEvolutionAtScale A hA r t
-          (resolventEvolutionStrongLimitOperator A hA s x))
-        (resolventEvolutionStrongLimitOperator A hA t
-          (resolventEvolutionStrongLimitOperator A hA s x)) < ε / 2 := by
+          (stoneEvolution A hA s x))
+        (stoneEvolution A hA t
+          (stoneEvolution A hA s x)) < ε / 2 := by
     simpa using hrt
   have htri := dist_triangle
     (resolventApproximationEvolutionAtScale A hA r t
       (resolventApproximationEvolutionAtScale A hA r s x))
     (resolventApproximationEvolutionAtScale A hA r t
-      (resolventEvolutionStrongLimitOperator A hA s x))
-    (resolventEvolutionStrongLimitOperator A hA t
-      (resolventEvolutionStrongLimitOperator A hA s x))
+      (stoneEvolution A hA s x))
+    (stoneEvolution A hA t
+      (stoneEvolution A hA s x))
   have hiso :
       dist
         (resolventApproximationEvolutionAtScale A hA r t
           (resolventApproximationEvolutionAtScale A hA r s x))
         (resolventApproximationEvolutionAtScale A hA r t
-          (resolventEvolutionStrongLimitOperator A hA s x)) =
+          (stoneEvolution A hA s x)) =
         dist (resolventApproximationEvolutionAtScale A hA r s x)
-          (resolventEvolutionStrongLimitOperator A hA s x) :=
+          (stoneEvolution A hA s x) :=
     resolventApproximationEvolutionAtScale_dist_eq A hA r t _ _
   rw [hiso] at htri
   exact lt_of_le_of_lt htri (by linarith)
@@ -113,8 +113,8 @@ private theorem tendsto_resolventApproximationEvolutionAtScale_comp_apply
 theorem resolventEvolutionStrongLimit_add_time_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H) :
     resolventEvolutionStrongLimit A hA (t + s) x =
-      resolventEvolutionStrongLimitOperator A hA t
-        (resolventEvolutionStrongLimitOperator A hA s x) := by
+      stoneEvolution A hA t
+        (stoneEvolution A hA s x) := by
   have hleft := tendsto_resolventApproximationEvolutionAtScale_apply A hA (t + s) x
   have hright :=
     tendsto_resolventApproximationEvolutionAtScale_comp_apply A hA t s x
@@ -130,75 +130,75 @@ theorem resolventEvolutionStrongLimit_add_time_apply
         (congrArg (fun T : H →L[ℂ] H => T x) hgroup).symm)
 
 /-- The bundled strong-limit operators form an additive one-parameter group. -/
-theorem resolventEvolutionStrongLimitOperator_add
+theorem stoneEvolution_add
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) :
-    resolventEvolutionStrongLimitOperator A hA (t + s) =
-      resolventEvolutionStrongLimitOperator A hA t *
-        resolventEvolutionStrongLimitOperator A hA s := by
+    stoneEvolution A hA (t + s) =
+      stoneEvolution A hA t *
+        stoneEvolution A hA s := by
   ext x
   simpa using resolventEvolutionStrongLimit_add_time_apply A hA t s x
 
 /-- Negative time is a left inverse. -/
-theorem resolventEvolutionStrongLimitOperator_neg_mul
+theorem stoneEvolution_neg_mul
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    resolventEvolutionStrongLimitOperator A hA (-t) *
-        resolventEvolutionStrongLimitOperator A hA t = 1 := by
-  rw [← resolventEvolutionStrongLimitOperator_add]
+    stoneEvolution A hA (-t) *
+        stoneEvolution A hA t = 1 := by
+  rw [← stoneEvolution_add]
   simp
 
 /-- Negative time is a right inverse. -/
-theorem resolventEvolutionStrongLimitOperator_mul_neg
+theorem stoneEvolution_mul_neg
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    resolventEvolutionStrongLimitOperator A hA t *
-        resolventEvolutionStrongLimitOperator A hA (-t) = 1 := by
-  rw [← resolventEvolutionStrongLimitOperator_add]
+    stoneEvolution A hA t *
+        stoneEvolution A hA (-t) = 1 := by
+  rw [← stoneEvolution_add]
   simp
 
 /-- The limiting evolution preserves the Hilbert-space inner product. -/
-theorem resolventEvolutionStrongLimitOperator_inner_map_map
+theorem stoneEvolution_inner_map_map
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x y : H) :
-    inner ℂ (resolventEvolutionStrongLimitOperator A hA t x)
-        (resolventEvolutionStrongLimitOperator A hA t y) = inner ℂ x y := by
+    inner ℂ (stoneEvolution A hA t x)
+        (stoneEvolution A hA t y) = inner ℂ x y := by
   exact (LinearMap.norm_map_iff_inner_map_map
-    (resolventEvolutionStrongLimitOperator A hA t)).mp
+    (stoneEvolution A hA t)).mp
       (fun z => by
         simpa using resolventEvolutionStrongLimit_apply_norm A hA t z) x y
 
 /-- Star/adjoint reverses time for the limiting evolution. -/
-theorem resolventEvolutionStrongLimitOperator_star
+theorem stoneEvolution_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    star (resolventEvolutionStrongLimitOperator A hA t) =
-      resolventEvolutionStrongLimitOperator A hA (-t) := by
+    star (stoneEvolution A hA t) =
+      stoneEvolution A hA (-t) := by
   rw [ContinuousLinearMap.star_eq_adjoint]
   symm
   rw [ContinuousLinearMap.eq_adjoint_iff]
   intro x y
-  have hinner := resolventEvolutionStrongLimitOperator_inner_map_map A hA t
-    (resolventEvolutionStrongLimitOperator A hA (-t) x) y
+  have hinner := stoneEvolution_inner_map_map A hA t
+    (stoneEvolution A hA (-t) x) y
   have hcancel :
-      resolventEvolutionStrongLimitOperator A hA t
-        (resolventEvolutionStrongLimitOperator A hA (-t) x) = x := by
-    simpa only [resolventEvolutionStrongLimitOperator_apply, add_neg_cancel,
+      stoneEvolution A hA t
+        (stoneEvolution A hA (-t) x) = x := by
+    simpa only [stoneEvolution_apply, add_neg_cancel,
       resolventEvolutionStrongLimit_zero_apply] using
       (resolventEvolutionStrongLimit_add_time_apply A hA t (-t) x).symm
   rw [hcancel] at hinner
   exact hinner.symm
 
 /-- The limiting evolution is unitary, left-inverse form. -/
-theorem resolventEvolutionStrongLimitOperator_star_mul
+theorem stoneEvolution_star_mul
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    star (resolventEvolutionStrongLimitOperator A hA t) *
-        resolventEvolutionStrongLimitOperator A hA t = 1 := by
-  rw [resolventEvolutionStrongLimitOperator_star]
-  exact resolventEvolutionStrongLimitOperator_neg_mul A hA t
+    star (stoneEvolution A hA t) *
+        stoneEvolution A hA t = 1 := by
+  rw [stoneEvolution_star]
+  exact stoneEvolution_neg_mul A hA t
 
 /-- The limiting evolution is unitary, right-inverse form. -/
-theorem resolventEvolutionStrongLimitOperator_mul_star
+theorem stoneEvolution_mul_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    resolventEvolutionStrongLimitOperator A hA t *
-        star (resolventEvolutionStrongLimitOperator A hA t) = 1 := by
-  rw [resolventEvolutionStrongLimitOperator_star]
-  exact resolventEvolutionStrongLimitOperator_mul_neg A hA t
+    stoneEvolution A hA t *
+        star (stoneEvolution A hA t) = 1 := by
+  rw [stoneEvolution_star]
+  exact stoneEvolution_mul_neg A hA t
 
 end
 
