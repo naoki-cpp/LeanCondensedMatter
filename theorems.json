@@ -164634,46 +164634,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} {f : (Fin n → ℝ) → ℂ},\n  intervalIntegral.MeasurableLocallyBounded f →\n    ∀ (β : ℝ), IntervalIntegrable (fun t => intervalIntegral.orderedSimplexIntegral n t f) MeasureTheory.volume 0 β",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableIntegralBound",
-    "externalAxioms": [],
-    "docString": "For a measurable locally bounded integrand, its recursively oriented ordered-simplex integral\nis interval integrable as a function of the outer bound on every finite interval. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "intervalIntegral.abs_le_abs_of_mem_uIcc_zero",
-      "intervalIntegral.measurable_orderedSimplexIntegral_bound",
-      "intervalIntegral.norm_orderedSimplexIntegral_le_of_cube_bound",
-      "intervalIntegral.orderedSimplexTimeCube_mono"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} {f : (Fin (n + 1) → ℝ) → ℂ},\n  intervalIntegral.MeasurableLocallyBounded f →\n    ∀ (β : ℝ),\n      IntervalIntegrable (fun t => intervalIntegral.orderedSimplexIntegral n t fun rest => f (Fin.cons t rest))\n        MeasureTheory.volume 0 β",
     "standardAxioms": [
@@ -164777,7 +164737,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -164789,17 +164749,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -165069,7 +165027,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n : ℕ} (f : (Fin n → ℝ) → ℂ), Measurable f → Measurable fun β => intervalIntegral.orderedSimplexIntegral n β f",
     "standardAxioms": [
       "Classical.choice",
@@ -165077,7 +165035,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -165088,18 +165046,14 @@
     "docString": "For a measurable integrand, its ordered-simplex integral is measurable as a function of the\nrecursively oriented upper bound. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
-    ],
+    "dependents": [],
     "dependencies": [
       "intervalIntegral.measurable_orderedSimplexIntegral_of_measurable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -165194,7 +165148,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -165206,17 +165160,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -165906,7 +165858,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -165918,17 +165870,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
-      "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound"
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
