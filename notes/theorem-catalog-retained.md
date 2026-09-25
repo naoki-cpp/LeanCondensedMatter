@@ -183,7 +183,7 @@ or consumer structure changes.
   the named fermionic two-point time-ordering operator, exposing the fermionic minus sign.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time` — canonical equal-time branch of
   the named fermionic two-point time-ordering operator, fixing the project's equal-time convention.
-- `LinearPMap.norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvolution_le` —
+- `LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le` —
   canonical generator-domain error estimate comparing the limiting Stone evolution with one bounded
   resolvent approximant; it is reusable independently of the downstream slope argument.
 - `LinearPMap.resolventApproximationEvolutionAtScale_dist_eq` — canonical isometry property of the
