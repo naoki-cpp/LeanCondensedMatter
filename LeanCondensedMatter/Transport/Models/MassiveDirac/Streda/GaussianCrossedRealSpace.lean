@@ -261,8 +261,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel,
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] <;>
-    ring
+      InternalSpace.pauliZ]
+  all_goals ring
 
 /-- The pointwise Gaussian-crossed radial current entry kernel has the explicit source-indexed
 Pauli-vector coefficients in the zeroth, first-cosine, and second-cosine Fourier channels. -/
@@ -275,14 +275,23 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
             source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) axis =
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
         axis source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  have hI3 : Complex.I ^ 3 = -Complex.I := by
+    calc
+      Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
+      _ = (-1 : ℂ) * Complex.I := by rw [hI2]
+      _ = -Complex.I := by ring
   fin_cases source <;> cases axis <;>
     simp [InternalSpace.pauliVectorCoefficient,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel,
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] <;>
-    ring
+      InternalSpace.pauliZ]
+  all_goals
+    ring_nf
+    simp [hI2, hI3]
 
 /-- Each entry of the Gaussian-crossed radial current block is the physical momentum-measure
 prefactor times the integral of its scalar radial kernel. -/
