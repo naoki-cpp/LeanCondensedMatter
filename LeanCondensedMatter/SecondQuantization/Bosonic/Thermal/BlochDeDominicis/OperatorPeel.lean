@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Bosonic free-thermal operator peel
 
-Instantiates the generic linear-map exchange peel identity for free bosonic creation/annihilation
+Instantiates the generic scalar-exchange peel identity for free bosonic creation/annihilation
 fields.
 -/
 
