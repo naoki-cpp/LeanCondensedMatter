@@ -206,7 +206,6 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero
     ((-I : ℂ) • A x)
   exact lt_of_le_of_lt htri (by linarith)
 
-
 /-- The limiting evolution satisfies its strong generator equation at arbitrary time, with the
 right-hand side written as the evolved generator. -/
 private theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined
