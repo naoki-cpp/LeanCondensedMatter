@@ -296,14 +296,17 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
   cases axis
   · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
       Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
+    ring
   · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
       Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
+    ring
   · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
       Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
 
 @[simp] theorem pauliScalarCoefficient_neg (M : PauliMatrix) :
     pauliScalarCoefficient (-M) = -pauliScalarCoefficient M := by
-  simp [pauliScalarCoefficient] <;> ring
+  simp [pauliScalarCoefficient]
+  ring
 
 @[simp] theorem pauliVectorCoefficient_neg (M : PauliMatrix) :
     pauliVectorCoefficient (-M) = -pauliVectorCoefficient M := by
@@ -312,6 +315,7 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
   · simp [pauliVectorCoefficient] <;> ring
   · simp [pauliVectorCoefficient] <;> ring
   · simp [pauliVectorCoefficient]
+    ring
 
 /-- Trace of two Pauli-affine matrices in scalar/vector coefficient form. -/
 theorem trace_pauliAffine_mul_pauliAffine
