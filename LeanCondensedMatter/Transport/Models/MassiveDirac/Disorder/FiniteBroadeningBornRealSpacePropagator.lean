@@ -216,6 +216,31 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
         hbar pMax radius 0 (entryHarmonics 1 1))
 
 
+private theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
+    (i j : Fin 2) :
+    finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax (-radius) p i j =
+      sigmaZ i i *
+        finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+          side v m probeEnergy broadening disorderStrength hbar pMax radius p i j *
+        sigmaZ j j := by
+  have hk0 :
+      polarFourierZerothAngularKernel (p * (-radius) / hbar) =
+        polarFourierZerothAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierZerothAngularKernel_neg]
+  have hk1 :
+      polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) =
+        -polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierFirstCosineAngularKernel_neg]
+  fin_cases i <;> fin_cases j <;>
+    simp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel, hk0, hk1,
+      sigmaZ, InternalSpace.pauliZ] <;>
+    ring
+
 /-- Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by
 `σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic
 channel is odd. -/
@@ -228,40 +253,14 @@ channel is odd. -/
         finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
           side v m probeEnergy broadening disorderStrength hbar pMax radius *
         sigmaZ := by
-  let a : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonScalarCoefficient
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .x
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .z
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  have hk0 (p : ℝ) :
-      polarFourierZerothAngularKernel (p * (-radius) / hbar) =
-        polarFourierZerothAngularKernel (p * radius / hbar) := by
-    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
-      polarFourierZerothAngularKernel_neg]
-  have hk1 (p : ℝ) :
-      polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) =
-        -polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
-    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
-      polarFourierFirstCosineAngularKernel_neg]
   ext i j
-  fin_cases i <;> fin_cases j
-  · simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      a, b, d, prefactor, hk0, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
-  · simp only [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      Matrix.cons_val_zero, Matrix.cons_val_one]
-    simp_rw [hk1]
-    simp [InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
-  · simp only [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      Matrix.cons_val_zero, Matrix.cons_val_one]
-    simp_rw [hk1]
-    simp [InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
-  · simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      a, b, d, prefactor, hk0, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+  rw [
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral,
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral]
+  simp_rw [finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius]
+  fin_cases i <;> fin_cases j <;>
+    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+
 
 end
 
