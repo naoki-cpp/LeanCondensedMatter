@@ -285,20 +285,17 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryK
             source v m probeEnergy broadening disorderStrength hbar pMax radius p i j *
           sigmaZ j j) := by
   have hk0 :
-      polarFourierZerothAngularKernel (p * (-radius) / hbar) =
-        polarFourierZerothAngularKernel (p * radius / hbar) := by
-    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
-      polarFourierZerothAngularKernel_neg]
+      polarFourierZerothAngularKernel (-(p * radius * hbar⁻¹)) =
+        polarFourierZerothAngularKernel (p * radius * hbar⁻¹) :=
+    polarFourierZerothAngularKernel_neg _
   have hk1 :
-      polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) =
-        -polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
-    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
-      polarFourierFirstCosineAngularKernel_neg]
+      polarFourierFirstCosineAngularKernel (-(p * radius * hbar⁻¹)) =
+        -polarFourierFirstCosineAngularKernel (p * radius * hbar⁻¹) :=
+    polarFourierFirstCosineAngularKernel_neg _
   have hk2 :
-      polarFourierSecondCosineAngularKernel (p * (-radius) / hbar) =
-        polarFourierSecondCosineAngularKernel (p * radius / hbar) := by
-    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
-      polarFourierSecondCosineAngularKernel_neg]
+      polarFourierSecondCosineAngularKernel (-(p * radius * hbar⁻¹)) =
+        polarFourierSecondCosineAngularKernel (p * radius * hbar⁻¹) :=
+    polarFourierSecondCosineAngularKernel_neg _
   fin_cases source <;> fin_cases i <;> fin_cases j <;>
     simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
