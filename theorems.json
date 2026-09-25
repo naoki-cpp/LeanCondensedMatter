@@ -3404,9 +3404,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "Equiv.changeCoordinates_apply"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -3441,9 +3439,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "Equiv.changeCoordinates_apply"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -18876,152 +18872,6 @@
     "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (source : α ≃ β) (target : α ≃ γ) (y : β),\n  (source.changeCoordinates target) y = target (source.symm y)",
-    "standardAxioms": [
-      "Quot.sound"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Equiv.changeCoordinates_apply",
-    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
-    "externalAxioms": [],
-    "docString": "Evaluate a coordinate change at an arbitrary point in the source coordinate space. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.FamilySlotShuffle.mem_headSlots_iff",
-      "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
-      "Equiv.changeCoordinates_self",
-      "Equiv.changeCoordinates_trans",
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.mem_headSlots_iff",
-      "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
-      "Equiv.changeCoordinates_self",
-      "Equiv.changeCoordinates_trans",
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Quot.sound"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} (e : α ≃ β), e.changeCoordinates e = Equiv.refl β",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Equiv.changeCoordinates_self",
-    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
-    "externalAxioms": [],
-    "docString": "A coordinate system differs from itself by the identity equivalence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Equiv.changeCoordinates_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (source : α ≃ β) (target : α ≃ γ),\n  (source.changeCoordinates target).symm = target.changeCoordinates source",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Equiv.changeCoordinates_symm",
-    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
-    "externalAxioms": [],
-    "docString": "Reversing a coordinate change swaps its source and target systems. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} {δ : Type u_4} (first : α ≃ β) (middle : α ≃ γ) (last : α ≃ δ),\n  (first.changeCoordinates middle).trans (middle.changeCoordinates last) = first.changeCoordinates last",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Equiv.changeCoordinates_trans",
-    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
-    "externalAxioms": [],
-    "docString": "Coordinate changes compose through an intermediate representation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Equiv.changeCoordinates_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
       "Quot.sound",
       "propext"
     ],
@@ -74070,6 +73920,120 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (-z) =\n    -QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The first-cosine full-angle radial Fourier kernel is odd in its radial argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (-z) =\n    QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The second-cosine full-angle radial Fourier kernel is even in its radial argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierZerothAngularKernel (-z) =\n    QuantumTheory.Transport.polarFourierZerothAngularKernel z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The zeroth full-angle radial Fourier kernel is even in its radial argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ) (mn : ι × ι),\n  QuantumTheory.Transport.purePointKuboBastinSpectralVertexTerm system data measured source omega eta mn =\n    QuantumTheory.Transport.purePointKuboBastinOccupationResolvedVertexTerm system data interpolation measured source\n      omega eta mn",
     "standardAxioms": [
@@ -89468,9 +89432,7 @@
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder"
     ],
-    "dependencies": [
-      "Equiv.changeCoordinates_apply"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -156697,8 +156659,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -156710,15 +156672,64 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z θ : ℝ),\n  QuantumTheory.Transport.polarFourierRadialPhase (-z) θ =\n    QuantumTheory.Transport.polarFourierRadialPhase z (θ - Real.pi)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Reversing the radial Fourier argument is equivalent to shifting the polar angle by π. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
