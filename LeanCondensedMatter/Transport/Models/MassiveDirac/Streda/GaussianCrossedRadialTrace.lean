@@ -138,15 +138,17 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
           finiteCutoffContinuumBornDysonRadialGreenPauliKernel
             axis side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
-  rw [pauliVectorCoefficient_prefactor_intervalIntegral
-    (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-      side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-    (hkernel := hentry)]
-  apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-  apply intervalIntegral.integral_congr
-  intro p _
-  exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
-    axis side v m probeEnergy broadening disorderStrength hbar pMax radius p
+  cases axis <;>
+    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      (hkernel := hentry)]
+  all_goals
+    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
+      _ side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
 /-- The radial `X` topology is a finite scalar sum of positive-radius Green/current entries.
 The two negative-radius Green blocks are replaced by their exact `σ_z` conjugates. -/
