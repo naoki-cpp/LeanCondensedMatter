@@ -28,94 +28,20 @@ variable [Fintype Site] [Fintype ι]
 variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- The full-line localized integrand associated with one finite directional Bastin transition. -/
-noncomputable def finiteKuboBastinCommonTransitionIntegrand
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) (energy : ℝ) : ℂ :=
-  orientedIntervalIntegrand
-    ((-finiteKuboBastinDirectionalTransitionFactor
-      system data geometry direction K q omega eta mn) •
-      interpolation.occupationDerivative)
-    (data.energy mn.2) (data.energy mn.1) energy
-
-omit [Fintype ι] in
-private theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) :
-    finiteKuboBastinCommonTransitionIntegrand
-        system data interpolation geometry direction K q omega eta mn =
-      purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        omega eta mn := by
-  rfl
-
-omit [Fintype ι] in
-private theorem integrable_finiteKuboBastinCommonTransitionIntegrand
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) (mn : ι × ι) :
-    Integrable (finiteKuboBastinCommonTransitionIntegrand
-      system data interpolation geometry direction K q omega eta mn) := by
-  apply integrable_orientedIntervalIntegrand
-  exact (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul
-    (-finiteKuboBastinDirectionalTransitionFactor
-      system data geometry direction K q omega eta mn)
-
-omit [Fintype ι] in
-private theorem integral_finiteKuboBastinCommonTransitionIntegrand
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) (mn : ι × ι) :
-    (∫ energy : ℝ, finiteKuboBastinCommonTransitionIntegrand
-      system data interpolation geometry direction K q omega eta mn energy) =
-      finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-        system data interpolation geometry direction K q omega eta mn := by
-  rw [finiteKuboBastinCommonTransitionIntegrand_eq_vertex
-    system data interpolation geometry direction K q omega eta mn]
-  rw [integral_purePointKuboBastinCommonVertexTransitionIntegrand]
-  rfl
-
-/-- The finite sum of all localized directional transition integrands on the full energy axis. -/
+/-- The finite directional common-energy kernel, obtained by specializing the generic
+measured/source vertex kernel to the bounded directional current. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) (energy : ℝ) : ℂ :=
-  ∑ mn : ι × ι, finiteKuboBastinCommonTransitionIntegrand
-    system data interpolation geometry direction K q omega eta mn energy
-
-private theorem finiteKuboBastinCommonEnergyKernel_eq_vertex
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteKuboBastinCommonEnergyKernel
-        system data interpolation geometry direction K q omega eta =
-      finiteKuboBastinCommonVertexEnergyKernel system data interpolation
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        omega eta := by
-  funext energy
-  rfl
+  finiteKuboBastinCommonVertexEnergyKernel system data interpolation
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    omega eta energy
 
 theorem integrable_finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -125,11 +51,14 @@ theorem integrable_finiteKuboBastinCommonEnergyKernel
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     Integrable (finiteKuboBastinCommonEnergyKernel
       system data interpolation geometry direction K q omega eta) := by
-  unfold finiteKuboBastinCommonEnergyKernel
-  apply integrable_finsetSum
-  intro mn _
-  exact integrable_finiteKuboBastinCommonTransitionIntegrand
-    system data interpolation geometry direction K q omega eta mn
+  simpa [finiteKuboBastinCommonEnergyKernel] using
+    (integrable_finiteKuboBastinCommonVertexEnergyKernel
+      system data interpolation
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      omega eta)
 
 theorem integral_finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -141,15 +70,15 @@ theorem integral_finiteKuboBastinCommonEnergyKernel
       system data interpolation geometry direction K q omega eta energy) =
       ∑ mn : ι × ι, finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
         system data interpolation geometry direction K q omega eta mn := by
-  unfold finiteKuboBastinCommonEnergyKernel
-  rw [MeasureTheory.integral_finsetSum]
-  · apply Finset.sum_congr rfl
-    intro mn _
-    exact integral_finiteKuboBastinCommonTransitionIntegrand
-      system data interpolation geometry direction K q omega eta mn
-  · intro mn _
-    exact integrable_finiteKuboBastinCommonTransitionIntegrand
-      system data interpolation geometry direction K q omega eta mn
+  simpa [finiteKuboBastinCommonEnergyKernel,
+    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm] using
+    (integral_finiteKuboBastinCommonVertexEnergyKernel
+      system data interpolation
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      omega eta)
 
 /-- The common-energy-kernel conductivity with contact and finite-volume normalization. -/
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
@@ -188,9 +117,7 @@ private theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_com
     (boundedDirectionalContact geometry direction
       (system.hbar : ℂ) (q : ℂ) K)
     omega eta]
-  unfold finiteKuboBastinCommonEnergyVertexResponse
-  rw [← finiteKuboBastinCommonEnergyKernel_eq_vertex
-    system data interpolation geometry direction K q omega eta]
+  rfl
 
 /-- The finite spectral conductivity equals its common-energy representation, without introducing
 an artificial ordinary-trace carrier. -/
