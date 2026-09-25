@@ -107,6 +107,7 @@ theorem resummedLadderVertex_charge_ward_consistency
       dressed := by
     dsimp [dressed, bare]
     unfold FiniteDisorderEnsemble.scbaShift
+    simp only [mul_sub, sub_mul]
     rw [symmetry.baseHamiltonian_commute.eq]
     noncomm_ring
 
