@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
+import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -71,22 +72,23 @@ physical zero-broadening conductivity tensor. The off-diagonal `yx` and diagonal
 obtained from the finite-`η` rotational identities rather than assigned independently. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero
     (measured source : Fin 2)
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (e : ℝ) (regime : FixedCutoffMetallicBornRegime)
     (hrenorm : finiteCutoffContinuumBornBoundaryRealRenormalization
-      v m probeEnergy disorderStrength hbar pMax < 1)
+      regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1)
     (hdet : finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
-      v m probeEnergy disorderStrength hbar pMax ≠ 0) :
+      regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-          e v m probeEnergy broadening disorderStrength hbar pMax).component measured source)
+          e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+          regime.pMax).component measured source)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         ((finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax).component measured source)) := by
+          e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax).component
+          measured source)) := by
+  rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
+    hdisorder, hmetal, hcutoff⟩
   have hxx :=
     tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivity_broadening_zero
       e v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar

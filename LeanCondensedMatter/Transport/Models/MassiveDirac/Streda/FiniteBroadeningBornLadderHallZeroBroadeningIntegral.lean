@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -140,30 +141,42 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
 /-- At fixed positive disorder and finite cutoff, the ordered `xy` Středa momentum integral converges
 to its zero-broadening boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (e : ℝ) (regime : FixedCutoffMetallicBornRegime)
     (hrenorm : finiteCutoffContinuumBornBoundaryRealRenormalization
-      v m probeEnergy disorderStrength hbar pMax < 1)
+      regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1)
     (hdet : finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
-      v m probeEnergy disorderStrength hbar pMax ≠ 0) :
+      regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-          0 1 e v m probeEnergy broadening disorderStrength hbar pMax)
+          0 1 e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+          regime.pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax)) := by
+          e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
+  rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
+    hdisorder, hmetal, hcutoff⟩
+  let regime' : FixedCutoffMetallicBornRegime :=
+    { v := v
+      m := m
+      probeEnergy := probeEnergy
+      disorderStrength := disorderStrength
+      hbar := hbar
+      pMax := pMax
+      cutoff_nonneg := hpMax
+      velocity_ne_zero := hvelocity
+      hbar_ne_zero := hhbar
+      disorder_pos := hdisorder
+      metallic := hmetal
+      cutoff_shell := hcutoff }
   have hSolved :=
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
       v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
       hdisorder hmetal hcutoff hrenorm hdet
   have hRung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
-      hdisorder hmetal hcutoff hrenorm
+      regime' hrenorm
   have hAction := tendsto_inPlaneLadderAction hRung hSolved
   have hEndpoint :
       Tendsto

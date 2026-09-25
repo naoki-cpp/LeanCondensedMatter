@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false
 
@@ -50,8 +51,20 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
           e v m probeEnergy disorderStrength hbar pMax)) := by
   have h :=
     tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero
-      e v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
-      hdisorder hmetal hcutoff hrenorm hdet
+      e
+      { v := v
+        m := m
+        probeEnergy := probeEnergy
+        disorderStrength := disorderStrength
+        hbar := hbar
+        pMax := pMax
+        cutoff_nonneg := hpMax
+        velocity_ne_zero := hvelocity
+        hbar_ne_zero := hhbar
+        disorder_pos := hdisorder
+        metallic := hmetal
+        cutoff_shell := hcutoff }
+      hrenorm hdet
   simpa [
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
