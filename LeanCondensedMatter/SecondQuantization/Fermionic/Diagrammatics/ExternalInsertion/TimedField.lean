@@ -2,6 +2,8 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 
