@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false
 
@@ -54,8 +55,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_
           v m probeEnergy disorderStrength hbar pMax)) := by
   have hrung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      v m probeEnergy disorderStrength hbar pMax
-      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
+      { v := v
+        m := m
+        probeEnergy := probeEnergy
+        disorderStrength := disorderStrength
+        hbar := hbar
+        pMax := pMax
+        cutoff_nonneg := hpMax
+        velocity_ne_zero := hvelocity
+        hbar_ne_zero := hhbar
+        disorder_pos := hdisorder
+        metallic := hmetal
+        cutoff_shell := hcutoff }
+      hrenorm
   simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using
     tendsto_inPlaneLadderDeterminant hrung
 
@@ -105,8 +117,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
           v m probeEnergy disorderStrength hbar pMax)) := by
   have hrung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      v m probeEnergy disorderStrength hbar pMax
-      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
+      { v := v
+        m := m
+        probeEnergy := probeEnergy
+        disorderStrength := disorderStrength
+        hbar := hbar
+        pMax := pMax
+        cutoff_nonneg := hpMax
+        velocity_ne_zero := hvelocity
+        hbar_ne_zero := hhbar
+        disorder_pos := hdisorder
+        metallic := hmetal
+        cutoff_shell := hcutoff }
+      hrenorm
   have hdet' :
       inPlaneLadderDeterminant
         (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Tactic
 
@@ -451,21 +452,21 @@ component, thereby discharging the compact nonvanishing hypothesis required by d
 convergence. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
     (i j : Fin 2)
-    (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (regime : FixedCutoffMetallicBornRegime)
     (hrenorm :
       finiteCutoffContinuumBornBoundaryRealRenormalization
-        v m probeEnergy disorderStrength hbar pMax < 1) :
+        regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1) :
     Tendsto
       (fun broadening : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-          i j v m probeEnergy broadening disorderStrength hbar pMax)
+          i j regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+          regime.pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-          i j v m probeEnergy disorderStrength hbar pMax)) := by
+          i j regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
+  rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
+    hdisorder, hmetal, hcutoff⟩
   apply
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero
       i j v m probeEnergy disorderStrength hbar pMax hpMax hdisorder.le
@@ -479,28 +480,24 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
 /-- The finite-`η` canonical current-rung vector converges to its fixed-disorder zero-broadening
 boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-    (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (regime : FixedCutoffMetallicBornRegime)
     (hrenorm :
       finiteCutoffContinuumBornBoundaryRealRenormalization
-        v m probeEnergy disorderStrength hbar pMax < 1) :
+        regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1) :
     Tendsto
       (fun broadening : ℝ =>
         finiteCutoffContinuumBornDysonCurrentRungVector
-          v m probeEnergy broadening disorderStrength hbar pMax)
+          regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax)) := by
+          regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
   rw [tendsto_pi_nhds]
   intro output
   simpa [finiteCutoffContinuumBornDysonCurrentRungVector,
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-      output 0 v m probeEnergy disorderStrength hbar pMax
-      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
+      output 0 regime hrenorm
 
 end
 
