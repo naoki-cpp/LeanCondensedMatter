@@ -223,6 +223,30 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_position {E n : ℕ}
   exact
     (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).apply_symm_apply leg
 
+/-- Legs in one mixed-time event block have identical comparison with every leg outside that block. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegPosition_lt_uniform
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (event : ExternalInsertionTimedEvent E n)
+    (x y z : OrderedExternalInsertionLeg E n)
+    (hEvent : event ∈ orderedExternalInsertionTimedEvents externalTime σ)
+    (hx : x ∈ externalInsertionTimedEventAtomicLegs event)
+    (hy : y ∈ externalInsertionTimedEventAtomicLegs event)
+    (hz : z ∈ externalInsertionMixedTimeOrderedAtomicLegs externalTime σ)
+    (hzOutside : z ∉ externalInsertionTimedEventAtomicLegs event) :
+    (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ x <
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ z) =
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ y <
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ z) := by
+  classical
+  letI : BEq (OrderedExternalInsertionLeg E n) := instBEqOfDecidableEq
+  have h :=
+    List.idxOf_flatMap_block_lt_uniform externalInsertionTimedEventAtomicLegs
+      (orderedExternalInsertionTimedEvents externalTime σ) event x y z
+      (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
+      hEvent hx hy hz hzOutside
+  simpa [externalInsertionMixedTimeOrderedAtomicLegPosition,
+    externalInsertionMixedTimeOrderedAtomicLegs] using h
+
 private theorem
     externalInsertionMixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt
     {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
