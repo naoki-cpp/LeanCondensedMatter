@@ -17,7 +17,7 @@ namespace Fermionic
 
 open Common
 
-variable {Mode : Type*} [LinearOrder Mode]
+variable {Mode : Type*}
 
 /-- Reindex one connected component by consecutive interaction slots while preserving the canonical
 component external order and restricted pairing. -/
@@ -34,11 +34,11 @@ noncomputable def ExternalInsertionWickDiagram.componentWickDiagram {E n : ℕ}
   exact {
     externalLabel := r.externalLabel
     vertexLabel := fun v => r.vertexLabel (T.orderIsoOfFin rfl v.1)
-    pairing := Equiv.cast (by simp [T]) r.pairing
+    pairing := Equiv.cast (by simp) r.pairing
   }
 
 /-- External times of one component in its canonical increasing external-slot order. -/
-def ExternalInsertionWickDiagram.componentExternalTime {E n : ℕ}
+noncomputable def ExternalInsertionWickDiagram.componentExternalTime {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (externalTime : Fin (2 * E) → ℝ)
     (B : d.vertexGraph.componentPartition.parts) :
