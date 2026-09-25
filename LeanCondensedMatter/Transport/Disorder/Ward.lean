@@ -10,15 +10,17 @@ set_option linter.style.header false
 This module connects the supplied finite SCBA one-particle identities to the generic
 retarded-advanced ladder without introducing an SCBA-specific ladder API.
 
-A bounded charge vertex `Q` is conserved when it commutes with the clean Hamiltonian and every
-finite-ensemble impurity potential. The impurity condition implies the left/right equivariance of
-the canonical second moment proved in `Transport.Disorder.Moments`. With the same `C₂` in the
-SCBA self-energy and generic RA ladder, the SCBA inverse relations then produce a ladder fixed point
-whose resummation satisfies the finite Ward-consistency insertion
+The Ward bridge needs only a bounded charge vertex `Q` that commutes with the clean Hamiltonian
+and for which the canonical second moment is equivariant on both sides. Pointwise commutation with
+every finite-ensemble impurity potential is provided as a sufficient condition for that equivariance.
+With the same `C₂` in the SCBA self-energy and generic RA ladder, the SCBA inverse relations then
+give the finite Ward-consistency insertion
 
 ```text
-Ḡᴿ Γ_Q Ḡᴬ = Ḡᴿ Q - Q Ḡᴬ.
+(zᴬ - zᴿ) • (Ḡᴿ Γ_Q Ḡᴬ) = Ḡᴿ Q - Q Ḡᴬ,
 ```
+
+where `Γ_Q = (I - L_RA)⁻¹ Q` is exactly the generic resummed ladder vertex with bare vertex `Q`.
 
 The theorem is conditional on `IsUnit (1 - L_RA)`, exactly as in the generic ladder resummation.
 No nonlinear SCBA existence theorem, electromagnetic Ward--Takahashi identity, conductivity
@@ -36,15 +38,36 @@ variable [Fintype Ω]
 
 namespace FiniteDisorderEnsemble
 
-/-- Minimal bounded charge symmetry for a finite disorder ensemble. The charge vertex commutes with
-both the clean Hamiltonian and every impurity potential; no conservation property is hidden in the
-ladder definition itself. -/
+/-- Minimal bounded charge-symmetry interface used by the finite Ward bridge. Besides commuting
+with the clean Hamiltonian, the charge must act equivariantly on both sides of the canonical exact
+second moment. Pointwise commutation with each impurity potential is a sufficient, but not required,
+condition. -/
 structure ChargeSymmetry
     (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
     (charge : H →L[ℂ] H) : Prop where
   baseHamiltonian_commute : Commute ensemble.baseHamiltonian.1 charge
-  impurityPotential_commute :
-    ∀ ω, Commute (ensemble.impurityPotential ω).1 charge
+  secondMoment_mul_charge :
+    ∀ kernel,
+      ensemble.exactSecondMoment kernel * charge =
+        ensemble.exactSecondMoment (kernel * charge)
+  charge_mul_secondMoment :
+    ∀ kernel,
+      charge * ensemble.exactSecondMoment kernel =
+        ensemble.exactSecondMoment (charge * kernel)
+
+/-- Pointwise commutation of every impurity potential with the charge is sufficient for the
+second-moment equivariance required by `ChargeSymmetry`. -/
+theorem ChargeSymmetry.of_impurityPotential_commute
+    {ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω)}
+    {charge : H →L[ℂ] H}
+    (hbase : Commute ensemble.baseHamiltonian.1 charge)
+    (himpurity : ∀ ω, Commute (ensemble.impurityPotential ω).1 charge) :
+    ChargeSymmetry ensemble charge where
+  baseHamiltonian_commute := hbase
+  secondMoment_mul_charge := fun kernel =>
+    ensemble.exactSecondMoment_mul_of_commutes kernel charge himpurity
+  charge_mul_secondMoment := fun kernel =>
+    ensemble.mul_exactSecondMoment_of_commutes charge kernel himpurity
 
 namespace FiniteSCBASolution
 
@@ -52,14 +75,13 @@ variable {ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω)}
 variable {energy broadening : ℝ}
 variable (solution : FiniteSCBASolution ensemble energy broadening)
 
-/-- Finite SCBA/RA charge-vertex Ward consistency. Under explicit charge symmetry and the same
-conditional ladder invertibility used by the generic resummation, inserting the resummed charge
-vertex between the SCBA retarded and advanced Green operators gives the conserved-charge resolvent
-difference. For `Q = 1`, the right-hand side is `Ḡᴿ - Ḡᴬ`.
+/-- Finite SCBA/RA charge-vertex Ward consistency. Under the minimal charge-symmetry interface and
+the same conditional ladder invertibility used by the generic resummation, the generic corrected
+charge vertex `Γ_Q = (I - L_RA)⁻¹ Q` obeys
 
-The bare RA charge source is written as
-`Q zᴬ - zᴿ Q` in the bounded-operator algebra so the theorem does not require a separate
-SCBA-specific vertex definition. -/
+`(zᴬ - zᴿ) • (Ḡᴿ Γ_Q Ḡᴬ) = Ḡᴿ Q - Q Ḡᴬ`.
+
+For `Q = 1`, the right-hand side is `Ḡᴿ - Ḡᴬ`. -/
 theorem resummedLadderVertex_charge_ward_consistency
     (charge : H →L[ℂ] H)
     (symmetry : ChargeSymmetry ensemble charge)
@@ -67,21 +89,23 @@ theorem resummedLadderVertex_charge_ward_consistency
       IsUnit
         (1 - ensemble.retardedAdvancedLadderCLM
           (solution.green .retarded) (solution.green .advanced))) :
-    solution.green .retarded *
+    (spectralParameter .advanced energy broadening -
+        spectralParameter .retarded energy broadening) •
+      (solution.green .retarded *
         resummedLadderVertex
           (ensemble.retardedAdvancedLadderCLM
             (solution.green .retarded) (solution.green .advanced))
           hinvertible
-          (charge * algebraMap ℂ (H →L[ℂ] H)
-              (spectralParameter .advanced energy broadening) -
-            algebraMap ℂ (H →L[ℂ] H)
-              (spectralParameter .retarded energy broadening) * charge) *
-        solution.green .advanced =
+          charge *
+        solution.green .advanced) =
       solution.green .retarded * charge -
         charge * solution.green .advanced := by
   let ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
     ensemble.retardedAdvancedLadderCLM
       (solution.green .retarded) (solution.green .advanced)
+  let scale : ℂ :=
+    spectralParameter .advanced energy broadening -
+      spectralParameter .retarded energy broadening
   let bare : H →L[ℂ] H :=
     charge * algebraMap ℂ (H →L[ℂ] H)
         (spectralParameter .advanced energy broadening) -
@@ -91,11 +115,16 @@ theorem resummedLadderVertex_charge_ward_consistency
     bare +
       solution.selfEnergy .retarded * charge -
       charge * solution.selfEnergy .advanced
-  change solution.green .retarded *
-      resummedLadderVertex ladder hinvertible bare *
-        solution.green .advanced =
+  change scale •
+      (solution.green .retarded *
+        resummedLadderVertex ladder hinvertible charge *
+          solution.green .advanced) =
     solution.green .retarded * charge -
       charge * solution.green .advanced
+  have hbare : bare = scale • charge := by
+    dsimp [bare, scale]
+    rw [sub_smul]
+    simp [Algebra.algebraMap_eq_smul_one]
   have hshift :
       charge *
           ensemble.scbaShift .advanced energy broadening
@@ -139,10 +168,8 @@ theorem resummedLadderVertex_charge_ward_consistency
       ensemble.exactSecondMoment
         (solution.green .retarded * dressed * solution.green .advanced)
     rw [hinsertion, ensemble.exactSecondMoment_sub]
-    rw [← ensemble.exactSecondMoment_mul_of_commutes
-      (solution.green .retarded) charge symmetry.impurityPotential_commute]
-    rw [← ensemble.mul_exactSecondMoment_of_commutes
-      charge (solution.green .advanced) symmetry.impurityPotential_commute]
+    rw [← symmetry.secondMoment_mul_charge (solution.green .retarded)]
+    rw [← symmetry.charge_mul_secondMoment (solution.green .advanced)]
     rw [← solution.selfEnergy_eq_secondMoment .retarded,
       ← solution.selfEnergy_eq_secondMoment .advanced]
     dsimp [dressed]
@@ -151,8 +178,13 @@ theorem resummedLadderVertex_charge_ward_consistency
       dressed = resummedLadderVertex ladder hinvertible bare :=
     eq_resummedLadderVertex_of_fixedPoint
       ladder hinvertible bare dressed hfixed
-  rw [← hunique]
-  exact hinsertion
+  have hresummed :
+      resummedLadderVertex ladder hinvertible bare =
+        scale • resummedLadderVertex ladder hinvertible charge := by
+    rw [hbare]
+    exact resummedLadderVertex_smul ladder hinvertible scale charge
+  rw [hunique, hresummed] at hinsertion
+  simpa only [mul_smul_comm, smul_mul_assoc] using hinsertion
 
 end FiniteSCBASolution
 
