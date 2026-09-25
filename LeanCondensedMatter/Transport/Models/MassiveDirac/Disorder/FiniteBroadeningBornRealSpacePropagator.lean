@@ -286,7 +286,7 @@ channel is odd. -/
         sigmaZ := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two,
+    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two,
       finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral,
       finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius]
 
