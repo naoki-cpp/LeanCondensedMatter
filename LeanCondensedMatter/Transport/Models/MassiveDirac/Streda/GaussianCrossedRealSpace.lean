@@ -172,6 +172,118 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPaul
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
       source v m probeEnergy broadening disorderStrength hbar pMax radius) axis
 
+/-- Pointwise scalar Pauli kernel of the positive-axis Gaussian-crossed radial current integrand.
+The source-x channel carries the first-cosine scalar harmonic, while source-y carries its mixed
+partner. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) : ℂ :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let scalar := aR * bA + aA * bR
+  let scalarMix := bR * dA - bA * dR
+  let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
+  if source = 0 then
+    (p : ℂ) * (k1 * (scalar * factor))
+  else
+    (p : ℂ) * (k1 * (-Complex.I * scalarMix * factor))
+
+/-- Pointwise Pauli-vector kernel of the positive-axis Gaussian-crossed radial current integrand.
+The two source directions expose the explicit zeroth/first/second angular Fourier channels needed
+by the crossed trace. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+    (axis : PauliAxis) (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) : ℂ :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let c0 := aA * aR - dA * dR
+  let cxy := Complex.I * (aR * dA - aA * dR)
+  let mass := bR * dA + bA * dR
+  let massMix := aA * bR - aR * bA
+  let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+  let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
+  let k2 := polarFourierSecondCosineAngularKernel (p * radius / hbar)
+  match axis with
+  | .x =>
+      if source = 0 then
+        (p : ℂ) * (k0 * (c0 * factor) + k2 * (bA * bR * factor))
+      else
+        (p : ℂ) * (k0 * (-cxy * factor))
+  | .y =>
+      if source = 0 then
+        (p : ℂ) * (k0 * (cxy * factor))
+      else
+        (p : ℂ) * (k0 * (c0 * factor) - k2 * (bA * bR * factor))
+  | .z =>
+      if source = 0 then
+        (p : ℂ) * (k1 * (mass * factor))
+      else
+        (p : ℂ) * (k1 * (-Complex.I * massMix * factor))
+
+/-- The pointwise Gaussian-crossed radial current entry kernel has the explicit scalar
+first-cosine Pauli coefficient selected by the source direction. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
+    InternalSpace.pauliScalarCoefficient
+        (fun i j =>
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) =
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  fin_cases source <;>
+    simp [InternalSpace.pauliScalarCoefficient,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel,
+      gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
+      InternalSpace.pauliZ] <;>
+    ring
+
+/-- The pointwise Gaussian-crossed radial current entry kernel has the explicit source-indexed
+Pauli-vector coefficients in the zeroth, first-cosine, and second-cosine Fourier channels. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
+    (axis : PauliAxis) (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
+    InternalSpace.pauliVectorCoefficient
+        (fun i j =>
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) axis =
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+        axis source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  fin_cases source <;> cases axis <;>
+    simp [InternalSpace.pauliVectorCoefficient,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel,
+      gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
+      InternalSpace.pauliZ] <;>
+    ring
+
 /-- Each entry of the Gaussian-crossed radial current block is the physical momentum-measure
 prefactor times the integral of its scalar radial kernel. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
