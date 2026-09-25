@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffleIntegrand
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableIntegralBound
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 
 set_option linter.style.header false
