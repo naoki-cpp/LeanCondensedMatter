@@ -56,7 +56,7 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
       unfold FreeThermalField.operatorPeelSum
       rw [ScalarExchange.operatorPeelSum]
       simp only [one_smul]
-      rw [orderedProduct]
+      rw [Module.End.mul_eq_comp, orderedProduct]
 
 /-- Closed position-indexed form of the bosonic CCR peel terms. -/
 theorem operatorPeelTerms_eq_ofFn
