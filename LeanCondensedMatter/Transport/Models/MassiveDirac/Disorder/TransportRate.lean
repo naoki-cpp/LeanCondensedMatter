@@ -173,8 +173,18 @@ private theorem upperBandProjectorOverlap_eq
       (((1 +
         (v ^ 2 * (px * qx + py * qy) + m ^ 2) /
           (energy v m px py * energy v m qx qy)) / 2 : ℝ) : ℂ) := by
-  rw [bandProjector_eq_pauliCombination, bandProjector_eq_pauliCombination,
-    InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination]
+  have htrace (u v : InternalSpace.PauliAxis → ℂ) :
+      Matrix.trace
+          (((1 / 2 : ℂ) •
+              ((1 : InternalSpace.PauliMatrix) + InternalSpace.pauliCombination u)) *
+            ((1 / 2 : ℂ) •
+              ((1 : InternalSpace.PauliMatrix) + InternalSpace.pauliCombination v))) =
+        (1 + dotProduct u v) / 2 := by
+    rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+    rw [add_mul, one_mul, mul_add, mul_one]
+    simp [InternalSpace.trace_pauliCombination_mul_pauliCombination]
+    ring
+  rw [bandProjector_eq_pauliCombination, bandProjector_eq_pauliCombination, htrace]
   rw [InternalSpace.dotProduct_pauliAxis]
   simp [diracPauliCoefficients]
   field_simp [hp, hq]
