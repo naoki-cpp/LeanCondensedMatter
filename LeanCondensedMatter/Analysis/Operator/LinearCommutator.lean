@@ -13,9 +13,9 @@ particular quantum representation or second-quantization construction.
 [S,T] = S ∘ T - T ∘ S.
 ```
 
-The raw fixed-sign bracket algebra is owned by `Analysis.Operator.ZetaCommutator`; this module keeps
-the ordinary commutator as the semantic API used by conservation-law and current code. It also
-packages commutation with a fixed left operator as a linear endomorphism of the operator space.
+The raw fixed-sign bracket algebra is owned by `Analysis.ScalarExchange`; this module keeps the
+ordinary endomorphism commutator as the semantic API used by conservation-law and current code. It
+also packages commutation with a fixed left operator as a linear endomorphism of the operator space.
 -/
 
 namespace ConservationLaw
