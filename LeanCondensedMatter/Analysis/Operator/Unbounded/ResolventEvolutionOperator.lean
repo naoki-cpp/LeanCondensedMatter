@@ -75,7 +75,7 @@ theorem resolventEvolutionStrongLimit_apply_norm
   exact tendsto_nhds_unique hlimit happ
 
 /-- The vectorwise Stone limit, bundled as a bounded complex-linear operator. -/
-noncomputable def resolventEvolutionStrongLimitOperator
+noncomputable def stoneEvolution
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) : H →L[ℂ] H :=
   (resolventEvolutionStrongLimitLinearMap A hA t).mkContinuous 1 (by
     intro x
@@ -83,18 +83,18 @@ noncomputable def resolventEvolutionStrongLimitOperator
     rw [resolventEvolutionStrongLimit_apply_norm, one_mul])
 
 @[simp]
-theorem resolventEvolutionStrongLimitOperator_apply
+theorem stoneEvolution_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
-    resolventEvolutionStrongLimitOperator A hA t x =
+    stoneEvolution A hA t x =
       resolventEvolutionStrongLimit A hA t x := by
   rfl
 
 /-- The bundled limiting evolution is an isometry. -/
-theorem resolventEvolutionStrongLimitOperator_dist_eq
+theorem stoneEvolution_dist_eq
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x y : H) :
-    dist (resolventEvolutionStrongLimitOperator A hA t x)
-        (resolventEvolutionStrongLimitOperator A hA t y) = dist x y := by
-  rw [dist_eq_norm, dist_eq_norm, ← (resolventEvolutionStrongLimitOperator A hA t).map_sub]
+    dist (stoneEvolution A hA t x)
+        (stoneEvolution A hA t y) = dist x y := by
+  rw [dist_eq_norm, dist_eq_norm, ← (stoneEvolution A hA t).map_sub]
   simpa using resolventEvolutionStrongLimit_apply_norm A hA t (x - y)
 
 end
