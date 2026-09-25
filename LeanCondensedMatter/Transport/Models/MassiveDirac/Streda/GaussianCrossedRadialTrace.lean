@@ -141,11 +141,14 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
   cases axis with
   | x =>
     simp only
-    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
       (axis := .x)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (hkernel := hentry)]
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      (a := 0) (b := pMax) (hkernel := hentry)
+    simp only at hmove
+    rw [hmove]
     apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
     apply intervalIntegral.integral_congr
     intro p _
@@ -153,11 +156,14 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
       .x side v m probeEnergy broadening disorderStrength hbar pMax radius p
   | y =>
     simp only
-    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
       (axis := .y)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (hkernel := hentry)]
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      (a := 0) (b := pMax) (hkernel := hentry)
+    simp only at hmove
+    rw [hmove]
     apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
     apply intervalIntegral.integral_congr
     intro p _
@@ -165,11 +171,14 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
       .y side v m probeEnergy broadening disorderStrength hbar pMax radius p
   | z =>
     simp only
-    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
       (axis := .z)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (hkernel := hentry)]
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      (a := 0) (b := pMax) (hkernel := hentry)
+    simp only at hmove
+    rw [hmove]
     apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
     apply intervalIntegral.integral_congr
     intro p _
