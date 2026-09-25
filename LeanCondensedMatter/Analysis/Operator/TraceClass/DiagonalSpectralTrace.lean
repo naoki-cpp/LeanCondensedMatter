@@ -4,8 +4,7 @@ import LeanCondensedMatter.Analysis.Operator.Diagonal
 /-!
 # Spectral trace of positive diagonal operators
 
-This module also establishes positivity of summable nonnegative diagonal operators. A positive
-compact operator is spectrally trace-class whenever its lossless diagonal expectation
+A positive compact operator is spectrally trace-class whenever its lossless diagonal expectation
 values against one Hilbert basis are summable. The proof bounds every finite sum of nonzero
 eigenvalues by that basis-diagonal sum, using the compact spectral expansion and Parseval. This
 criterion packages diagonal operators with summable nonnegative weights as `SpectralTraceClass`
