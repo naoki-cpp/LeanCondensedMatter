@@ -156,8 +156,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoeffici
   cases axis <;>
     simp [InternalSpace.pauliVectorCoefficient,
       finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
-      finiteCutoffContinuumBornDysonRadialGreenPauliKernel] <;>
-    ring
+      finiteCutoffContinuumBornDysonRadialGreenPauliKernel]
+  all_goals ring
 
 /-- Each entry of the radial Born-Dyson Green matrix is the physical momentum-measure prefactor
 times the integral of its scalar radial kernel. -/
