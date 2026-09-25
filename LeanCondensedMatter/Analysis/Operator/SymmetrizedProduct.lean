@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
-import LeanCondensedMatter.Analysis.ScalarExchange
+import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false

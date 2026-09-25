@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.AffineFixedPoint
 import LeanCondensedMatter.Transport.Disorder.Moments
 
 set_option linter.style.header false
@@ -134,9 +133,15 @@ theorem eq_resummedLadderVertex_of_fixedPoint
     intro left right h
     apply hinjectiveShifted
     simpa using h
-  exact Function.eq_of_eq_add_apply_of_eq_add_apply_of_injective_sub_apply
-    (fun vertex => ladder vertex) hinjective hfixed
-    (resummedLadderVertex_fixedPoint ladder hinvertible bareVertex)
+  apply hinjective
+  have hfixedShifted : dressedVertex - ladder dressedVertex = bareVertex :=
+    (sub_eq_iff_eq_add).2 hfixed
+  have hresummedShifted :
+      resummedLadderVertex ladder hinvertible bareVertex -
+          ladder (resummedLadderVertex ladder hinvertible bareVertex) = bareVertex :=
+    (sub_eq_iff_eq_add).2
+      (resummedLadderVertex_fixedPoint ladder hinvertible bareVertex)
+  exact hfixedShifted.trans hresummedShifted.symm
 
 end
 end Transport
