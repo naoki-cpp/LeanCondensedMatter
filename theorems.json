@@ -12000,8 +12000,43 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "LinearMap.zetaCommutator_comp_right"
+      "ScalarExchange.zetaCommutator_mul_right"
     ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (S T : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator S T = ScalarExchange.zetaCommutator 1 S T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ConservationLaw.linearCommutator_eq_zetaCommutator_one",
+    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
+    "externalAxioms": [],
+    "docString": "The semantic endomorphism commutator is the `ζ = 1` specialization of the generic\nscalar-exchange bracket. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -12901,7 +12936,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A B : W →ₗ[ℂ] W),\n  ConservationLaw.symmetrizedProduct A B = (1 / 2) • LinearMap.zetaCommutator (-1) A B",
+    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A B : W →ₗ[ℂ] W),\n  ConservationLaw.symmetrizedProduct A B = (1 / 2) • ScalarExchange.zetaCommutator (-1) A B",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25376,385 +25411,6 @@
       "_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) {A B C : V →ₗ[ℂ] V},\n  LinearMap.zetaCommutator ζ A B = C → A ∘ₗ B = C + ζ • B ∘ₗ A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Reorder a product from a supplied bracket value. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
-      "SecondQuantization.Bosonic.create_comp_annihilate_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Common.annihilate_comp_create_self",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
-      "SecondQuantization.Bosonic.create_comp_annihilate_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Common.annihilate_comp_create_self",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
-    ],
-    "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A B C : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator ζ (A + B) C = LinearMap.zetaCommutator ζ A C + LinearMap.zetaCommutator ζ B C",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_add_left",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Additivity in the left argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A B C : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator ζ A (B + C) = LinearMap.zetaCommutator ζ A B + LinearMap.zetaCommutator ζ A C",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_add_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Additivity in the right argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A B : V →ₗ[ℂ] V) (v : V),\n  (LinearMap.zetaCommutator ζ A B) v = A (B v) - ζ • B (A v)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearMap.zetaCommutator_comp_left",
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
-      "SecondQuantization.Fermionic.completedAnticomm_create_create",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_create_create_basisState"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearMap.zetaCommutator_comp_left",
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
-      "SecondQuantization.Fermionic.completedAnticomm_create_create",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_create_create_basisState"
-    ],
-    "compiledConsumerCount": 11,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ η : ℂ) (A B C : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator (ζ * η) (A ∘ₗ B) C =\n    A ∘ₗ LinearMap.zetaCommutator η B C + η • LinearMap.zetaCommutator ζ A C ∘ₗ B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_comp_left",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Mixed-sign product rule in the left argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LinearMap.zetaCommutator_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ η : ℂ) (A B C : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator (ζ * η) A (B ∘ₗ C) =\n    LinearMap.zetaCommutator ζ A B ∘ₗ C + ζ • B ∘ₗ LinearMap.zetaCommutator η A C",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_comp_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Mixed-sign product rule in the right argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_comp_right"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_comp_right"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator ζ A A = (1 - ζ) • A ∘ₗ A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_self",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "The self bracket is `(1 - ζ) A²`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.annihilate_comp_self",
-      "SecondQuantization.Fermionic.create_comp_self"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.annihilate_comp_self",
-      "SecondQuantization.Fermionic.create_comp_self"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ c d : ℂ) (A B : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator ζ (c • A) (d • B) = (c * d) • LinearMap.zetaCommutator ζ A B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_smul_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Scalar multiples factor out of both arguments. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
-      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
-      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ),\n  ζ * ζ = 1 → ∀ (A B : V →ₗ[ℂ] V), LinearMap.zetaCommutator ζ B A = -ζ • LinearMap.zetaCommutator ζ A B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearMap.zetaCommutator_swap_of_sq_eq_one",
-    "module": "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-    "externalAxioms": [],
-    "docString": "Reversal for an involutive sign. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.comm_create_annihilate",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-      "SecondQuantization.Fermionic.anticomm_create_annihilate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.comm_create_annihilate",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-      "SecondQuantization.Fermionic.anticomm_create_annihilate"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58710,6 +58366,80 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (source : Fin 2)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n      axis source v m probeEnergy broadening disorderStrength hbar pMax radius =\n    match axis with\n    | InternalSpace.PauliAxis.x =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.y =>\n      Complex.I *\n          ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.z =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n        2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "Each Pauli-vector component of a radial crossed-current block is a scalar combination of its\nentry-kernel integrals. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n      source v m probeEnergy broadening disorderStrength hbar pMax radius =\n    ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n              source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +\n        ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n              source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n      2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The scalar Pauli coefficient of a radial crossed-current block is a scalar combination of its\nentry-kernel integrals. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n      source v m probeEnergy broadening disorderStrength hbar pMax radius i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n          source v m probeEnergy broadening disorderStrength hbar pMax radius p i j",
     "standardAxioms": [
@@ -58730,6 +58460,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
@@ -58738,11 +58470,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58842,7 +58576,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have jx :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have gr :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have jy :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n        1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have a := InternalSpace.pauliScalarCoefficient jx;\n    have b := InternalSpace.pauliScalarCoefficient gr;\n    have c := InternalSpace.pauliScalarCoefficient gr;\n    have d := -InternalSpace.pauliScalarCoefficient jy;\n    have u := InternalSpace.pauliVectorCoefficient jx;\n    have vr := InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient gr);\n    have w := InternalSpace.pauliVectorCoefficient gr;\n    have vy := -InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient jy);\n    have amplitude :=\n      2 *\n        ((a * b + u ⬝ᵥ vr) * (c * d + w ⬝ᵥ vy) +\n          (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr) ⬝ᵥ\n            (c • vy + d • w + Complex.I • InternalSpace.pauliCross w vy));\n    amplitude + (starRingEnd ℂ) amplitude",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have a :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have b :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have c := b;\n    have d :=\n      -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n          1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have u := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        axis 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vr :=\n      InternalSpace.pauliZConjugateVector fun axis =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have w := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vy :=\n      -InternalSpace.pauliZConjugateVector fun axis =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            axis 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have amplitude :=\n      2 *\n        ((a * b + u ⬝ᵥ vr) * (c * d + w ⬝ᵥ vy) +\n          (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr) ⬝ᵥ\n            (c • vy + d • w + Complex.I • InternalSpace.pauliCross w vy));\n    amplitude + (starRingEnd ℂ) amplitude",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59004,7 +58738,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have jx :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have gr :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have jy :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n        1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have ga :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have a := InternalSpace.pauliScalarCoefficient jx;\n    have b := InternalSpace.pauliScalarCoefficient gr;\n    have c := InternalSpace.pauliScalarCoefficient jy;\n    have d := InternalSpace.pauliScalarCoefficient ga;\n    have u := InternalSpace.pauliVectorCoefficient jx;\n    have vr := InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient gr);\n    have w := InternalSpace.pauliVectorCoefficient jy;\n    have va := InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient ga);\n    2 *\n      ((a * b + u ⬝ᵥ vr) * (c * d + w ⬝ᵥ va) +\n        (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr) ⬝ᵥ\n          (c • va + d • w + Complex.I • InternalSpace.pauliCross w va))",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have a :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have b :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have c :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n        1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have d :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have u := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        axis 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vr :=\n      InternalSpace.pauliZConjugateVector fun axis =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have w := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        axis 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have va :=\n      InternalSpace.pauliZConjugateVector fun axis =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n          QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax radius;\n    2 *\n      ((a * b + u ⬝ᵥ vr) * (c * d + w ⬝ᵥ va) +\n        (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr) ⬝ᵥ\n          (c • va + d • w + Complex.I • InternalSpace.pauliCross w va))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59616,6 +59350,80 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis side v m\n      probeEnergy broadening disorderStrength hbar pMax radius =\n    match axis with\n    | InternalSpace.PauliAxis.x =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.y =>\n      Complex.I *\n          ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v\n                  m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v\n                  m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.z =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n        2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Each Pauli-vector component of the radial Green matrix is a scalar combination of entry-kernel\nintegrals. This is the matrix-free boundary consumed by crossed radial traces. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m\n      probeEnergy broadening disorderStrength hbar pMax radius =\n    ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n              probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +\n        ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n              probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n      2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "The scalar Pauli coefficient of the radial Green matrix is a combination of its two\nscalar entry-kernel integrals; no matrix operation remains on the right-hand side. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)\n  (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n      probeEnergy broadening disorderStrength hbar pMax radius i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n          probeEnergy broadening disorderStrength hbar pMax radius p i j",
     "standardAxioms": [
@@ -59639,6 +59447,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
     ],
     "dependencies": [],
@@ -59648,9 +59458,11 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80455,6 +80267,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) {a b c : A},\n  ScalarExchange.zetaCommutator ζ a b = c → a * b = c + ζ • (b * a)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Reorder a product from a supplied fixed-sign bracket value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
+      "SecondQuantization.Bosonic.create_comp_annihilate_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Common.annihilate_comp_create_self",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
+      "SecondQuantization.Bosonic.create_comp_annihilate_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Common.annihilate_comp_create_self",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
+    ],
+    "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Label : Type u_1} {A : Type u_2} [inst : Semiring A] [inst_1 : Algebra ℂ A] (element : Label → A)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), element C * element D = exchangeCoeff C D • 1 + ζ • (element D * element C)) →\n    ∀ (C : Label) (l : List Label),\n      element C * (List.map element l).prod =\n        ScalarExchange.peelSum element exchangeCoeff ζ C l + ζ ^ l.length • ((List.map element l).prod * element C)",
     "standardAxioms": [
       "Classical.choice",
@@ -80520,6 +80381,332 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (a b c : A),\n  ScalarExchange.zetaCommutator ζ (a + b) c = ScalarExchange.zetaCommutator ζ a c + ScalarExchange.zetaCommutator ζ b c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_add_left",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Additivity in the left argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (a b c : A),\n  ScalarExchange.zetaCommutator ζ a (b + c) = ScalarExchange.zetaCommutator ζ a b + ScalarExchange.zetaCommutator ζ a c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_add_right",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Additivity in the right argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A B : V →ₗ[ℂ] V) (v : V),\n  (ScalarExchange.zetaCommutator ζ A B) v = A (B v) - ζ • B (A v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_apply",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Evaluation of the generic fixed-sign bracket on complex-linear endomorphisms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
+      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
+      "SecondQuantization.Fermionic.completedAnticomm_create_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_create_create_basisState"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
+      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
+      "SecondQuantization.Fermionic.completedAnticomm_create_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_create_create_basisState"
+    ],
+    "compiledConsumerCount": 10,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ η : ℂ) (a b c : A),\n  ScalarExchange.zetaCommutator (ζ * η) (a * b) c =\n    a * ScalarExchange.zetaCommutator η b c + η • (ScalarExchange.zetaCommutator ζ a c * b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_mul_left",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Mixed-sign product rule in the left argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ η : ℂ) (a b c : A),\n  ScalarExchange.zetaCommutator (ζ * η) a (b * c) =\n    ScalarExchange.zetaCommutator ζ a b * c + ζ • (b * ScalarExchange.zetaCommutator η a c)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_mul_right",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Mixed-sign product rule in the right argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ConservationLaw.linearCommutator_comp_right"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ConservationLaw.linearCommutator_comp_right"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (a : A),\n  ScalarExchange.zetaCommutator ζ a a = (1 - ζ) • (a * a)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_self",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "The self bracket is `(1 - ζ) A²`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.annihilate_comp_self",
+      "SecondQuantization.Fermionic.create_comp_self"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.annihilate_comp_self",
+      "SecondQuantization.Fermionic.create_comp_self"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ c d : ℂ) (a b : A),\n  ScalarExchange.zetaCommutator ζ (c • a) (d • b) = (c * d) • ScalarExchange.zetaCommutator ζ a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_smul_smul",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Scalar multiples factor out of both arguments. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
+      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
+      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ : ℂ),\n  ζ * ζ = 1 → ∀ (a b : A), ScalarExchange.zetaCommutator ζ b a = -ζ • ScalarExchange.zetaCommutator ζ a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange",
+    "externalAxioms": [],
+    "docString": "Reversal for an involutive exchange scalar. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.comm_create_annihilate",
+      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
+      "SecondQuantization.Fermionic.anticomm_create_annihilate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.comm_create_annihilate",
+      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
+      "SecondQuantization.Fermionic.anticomm_create_annihilate"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -81722,7 +81909,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
     ],
     "dependencies": [
-      "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_annihilate",
@@ -82798,7 +82985,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.annihilate j) = 0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.annihilate j) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82840,7 +83027,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create j) =\n    if i = j then LinearMap.id else 0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create j) =\n    if i = j then LinearMap.id else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82890,7 +83077,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.annihilate j) =\n    if i = j then -LinearMap.id else 0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.annihilate j) =\n    if i = j then -LinearMap.id else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82912,7 +83099,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_swap_of_sq_eq_one",
+      "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
       "SecondQuantization.Bosonic.comm_annihilate_create"
     ],
     "crossModuleDirectWrapper": false,
@@ -82932,7 +83119,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.create j) = 0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.create j) = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83396,7 +83583,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain"
     ],
     "dependencies": [
-      "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.freeGibbsSummable_annihilate_comp_create",
       "SecondQuantization.Bosonic.linearMap_id_mem_freeGibbsDomain"
@@ -84214,7 +84401,7 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
-      "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.freeGibbsExpectation_add",
       "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
@@ -88593,7 +88780,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ) (n : ℕ)\n  (C :\n    Fin (2 * n) → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n  (∀ (i : Fin (2 * n)),\n      (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n    (∀ (i j : Fin (2 * n)), i ≠ j → LinearMap.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n      (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (List.ofFn C).prod =\n          ∑ pairing,\n            Combinatorics.Pairing.weight s pairing *\n              ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ) (n : ℕ)\n  (C :\n    Fin (2 * n) → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n  (∀ (i : Fin (2 * n)),\n      (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n    (∀ (i j : Fin (2 * n)), i ≠ j → ScalarExchange.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n      (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (List.ofFn C).prod =\n          ∑ pairing,\n            Combinatorics.Pairing.weight s pairing *\n              ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95474,7 +95661,7 @@
       "SecondQuantization.Fermionic.annihilate_comp_create_self"
     ],
     "dependencies": [
-      "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Common.exchangeCommutator_annihilate_create_self"
     ],
     "crossModuleDirectWrapper": false,
@@ -95815,7 +96002,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n    C1 ∘ₗ (List.map Prod.fst l).prod =\n      SecondQuantization.Common.peelSum ζ l + ζ ^ l.length • (List.map Prod.fst l).prod ∘ₗ C1",
+    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n    C1 ∘ₗ (List.map Prod.fst l).prod =\n      SecondQuantization.Common.peelSum ζ l + ζ ^ l.length • (List.map Prod.fst l).prod ∘ₗ C1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99434,7 +99621,7 @@
       "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_swap_of_sq_eq_one",
+      "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
       "SecondQuantization.Common.ExchangeAlgebra.annihilate_create",
       "SecondQuantization.Common.Statistics.zeta_sq"
     ],
@@ -100160,7 +100347,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    LinearMap.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) = c1j / (1 - ζ * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    ScalarExchange.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) = c1j / (1 - ζ * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100471,7 +100658,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100556,7 +100743,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          (∑ j,\n              ζ ^ ↑j * l[↑j].2 *\n                SecondQuantization.Common.finiteGibbsExpectation energy β (List.map Prod.fst (l.eraseIdx ↑j)).prod) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          (∑ j,\n              ζ ^ ↑j * l[↑j].2 *\n                SecondQuantization.Common.finiteGibbsExpectation energy β (List.map Prod.fst (l.eraseIdx ↑j)).prod) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107853,7 +108040,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n          SecondQuantization.Common.traceFock\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ (List.map Prod.fst l).prod) =\n        SecondQuantization.Common.traceFock\n          (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n          SecondQuantization.Common.traceFock\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ (List.map Prod.fst l).prod) =\n        SecondQuantization.Common.traceFock\n          (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107941,7 +108128,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    LinearMap.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      (1 - ζ * Complex.exp ↑(q1 * β)) *\n          SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ Cj) =\n        c1j * SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    ScalarExchange.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      (1 - ζ * Complex.exp ↑(q1 * β)) *\n          SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ Cj) =\n        c1j * SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107963,7 +108150,7 @@
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator"
     ],
     "dependencies": [
-      "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_rotate"
     ],
     "crossModuleDirectWrapper": false,
@@ -108244,7 +108431,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (Summable fun n =>\n          SecondQuantization.Common.matrixCoeff\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l) n n) →\n        Summable\n            (Function.uncurry fun n k =>\n              SecondQuantization.Common.matrixCoeff\n                  (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ (List.map Prod.fst l).prod) n k *\n                SecondQuantization.Common.matrixCoeff C1 k n) →\n          (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n              SecondQuantization.Common.tsumTrace\n                (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ (List.map Prod.fst l).prod) =\n            SecondQuantization.Common.tsumTrace\n              (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (Summable fun n =>\n          SecondQuantization.Common.matrixCoeff\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l) n n) →\n        Summable\n            (Function.uncurry fun n k =>\n              SecondQuantization.Common.matrixCoeff\n                  (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ (List.map Prod.fst l).prod) n k *\n                SecondQuantization.Common.matrixCoeff C1 k n) →\n          (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n              SecondQuantization.Common.tsumTrace\n                (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ (List.map Prod.fst l).prod) =\n            SecondQuantization.Common.tsumTrace\n              (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108328,7 +108515,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    LinearMap.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      (Summable fun n =>\n          SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalEvolution energy (-β)) n n) →\n        Summable\n            (Function.uncurry fun n k =>\n              SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ Cj) n\n                  k *\n                SecondQuantization.Common.matrixCoeff C1 k n) →\n          (1 - ζ * Complex.exp ↑(q1 * β)) *\n              SecondQuantization.Common.tsumTrace\n                (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ Cj) =\n            c1j * SecondQuantization.Common.tsumTrace (SecondQuantization.Common.diagonalEvolution energy (-β))",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    ScalarExchange.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      (Summable fun n =>\n          SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalEvolution energy (-β)) n n) →\n        Summable\n            (Function.uncurry fun n k =>\n              SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ Cj) n\n                  k *\n                SecondQuantization.Common.matrixCoeff C1 k n) →\n          (1 - ζ * Complex.exp ↑(q1 * β)) *\n              SecondQuantization.Common.tsumTrace\n                (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ Cj) =\n            c1j * SecondQuantization.Common.tsumTrace (SecondQuantization.Common.diagonalEvolution energy (-β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108350,7 +108537,7 @@
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "dependencies": [
-      "LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq",
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate"
     ],
@@ -121772,7 +121959,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator.0.SecondQuantization.Fermionic.numberOperator_comp_annihilate"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_self",
+      "ScalarExchange.zetaCommutator_self",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate"
     ],
     "crossModuleDirectWrapper": false,
@@ -121829,7 +122016,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i)\n      (SecondQuantization.Fermionic.annihilate j) =\n    0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i)\n      (SecondQuantization.Fermionic.annihilate j) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121877,7 +122064,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.create j) =\n    if i = j then LinearMap.id else 0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i)\n      (SecondQuantization.Fermionic.create j) =\n    if i = j then LinearMap.id else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121925,7 +122112,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.create j))\n      (SecondQuantization.Fermionic.basisState n) =\n    if i = j then SecondQuantization.Fermionic.basisState n else 0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i)\n        (SecondQuantization.Fermionic.create j))\n      (SecondQuantization.Fermionic.basisState n) =\n    if i = j then SecondQuantization.Fermionic.basisState n else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121948,7 +122135,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
       "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_not_lt",
       "SecondQuantization.Fermionic.fermionSign_sq",
@@ -121979,7 +122166,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.annihilate j) =\n    if i = j then LinearMap.id else 0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.create i)\n      (SecondQuantization.Fermionic.annihilate j) =\n    if i = j then LinearMap.id else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122003,7 +122190,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_swap_of_sq_eq_one",
+      "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
       "SecondQuantization.Fermionic.anticomm_annihilate_create"
     ],
     "crossModuleDirectWrapper": false,
@@ -122025,7 +122212,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.create j) = 0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.create j) = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122814,7 +123001,7 @@
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.completedAnticomm_apply",
@@ -122860,7 +123047,7 @@
       "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.completedAnticomm_apply",
@@ -123031,7 +123218,7 @@
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "SecondQuantization.Fermionic.anticomm_create_create",
       "SecondQuantization.Fermionic.completedAnticomm_apply",
@@ -125037,7 +125224,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "LinearMap.zetaCommutator_self",
+      "ScalarExchange.zetaCommutator_self",
       "SecondQuantization.Fermionic.anticomm_create_create"
     ],
     "crossModuleDirectWrapper": false,
@@ -132116,7 +132303,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))),\n  LinearMap.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p)\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p') =\n    SecondQuantization.Fermionic.flatVertexLegCommutatorCoeff ε q τ p p' • LinearMap.id",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))),\n  ScalarExchange.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p)\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p') =\n    SecondQuantization.Fermionic.flatVertexLegCommutatorCoeff ε q τ p p' • LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132138,7 +132325,7 @@
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_smul_smul",
+      "ScalarExchange.zetaCommutator_smul_smul",
       "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator",
       "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul"
     ],
@@ -132159,7 +132346,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (A B : SecondQuantization.Fermionic.TimedField Mode),\n  LinearMap.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.timedFieldOperator ε A) (SecondQuantization.Fermionic.timedFieldOperator ε B) =\n    SecondQuantization.Fermionic.timedFieldCommutatorCoeff ε A B • LinearMap.id",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (A B : SecondQuantization.Fermionic.TimedField Mode),\n  ScalarExchange.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.timedFieldOperator ε A) (SecondQuantization.Fermionic.timedFieldOperator ε B) =\n    SecondQuantization.Fermionic.timedFieldCommutatorCoeff ε A B • LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132181,7 +132368,7 @@
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_smul_smul",
+      "ScalarExchange.zetaCommutator_smul_smul",
       "SecondQuantization.Fermionic.timedFieldOperator_eq_smul",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
@@ -145367,7 +145554,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.annihilate j))\n      (SecondQuantization.Bosonic.basisState n) =\n    0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.annihilate j))\n      (SecondQuantization.Bosonic.basisState n) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145389,7 +145576,7 @@
       "SecondQuantization.Bosonic.comm_annihilate_annihilate"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.removeOccupation_apply_ne",
       "SecondQuantization.Bosonic.removeOccupation_comm"
@@ -145411,7 +145598,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create j))\n      (SecondQuantization.Bosonic.basisState n) =\n    if i = j then SecondQuantization.Bosonic.basisState n else 0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create j))\n      (SecondQuantization.Bosonic.basisState n) =\n    if i = j then SecondQuantization.Bosonic.basisState n else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145433,7 +145620,7 @@
       "SecondQuantization.Bosonic.comm_annihilate_create"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -145459,7 +145646,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (LinearMap.zetaCommutator 1 (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.create j))\n      (SecondQuantization.Bosonic.basisState n) =\n    0",
+    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (ScalarExchange.zetaCommutator 1 (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.create j))\n      (SecondQuantization.Bosonic.basisState n) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145481,7 +145668,7 @@
       "SecondQuantization.Bosonic.comm_create_create"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
       "SecondQuantization.Bosonic.createOccupation_comm",
       "SecondQuantization.Bosonic.create_basisState_eq"
@@ -151543,6 +151730,479 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (E n : ℕ) (event : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n  event ∈ SecondQuantization.Common.canonicalExternalInsertionTimedEvents✝ E n",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.canonicalExternalInsertionTimedEvents_all_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (E n : ℕ), (SecondQuantization.Common.canonicalExternalInsertionTimedEvents✝ E n).Nodup",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.canonicalExternalInsertionTimedEvents_nodup",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  leg ∈ SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).length = 2 * (2 * n + E)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).Nodup",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventAtomicLegs_disjoint",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventAtomicLegs_nodup",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} {a b : SecondQuantization.Common.ExternalInsertionTimedEvent E n},\n  a ≠ b →\n    (SecondQuantization.Common.externalInsertionTimedEventAtomicLegs a).Disjoint\n      (SecondQuantization.Common.externalInsertionTimedEventAtomicLegs b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventAtomicLegs_disjoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (event : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n  (SecondQuantization.Common.externalInsertionTimedEventAtomicLegs event).Nodup",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventAtomicLegs_nodup",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (a b : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n  SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime σ a b ∨\n    SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime σ b a",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_total",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  {a b c : SecondQuantization.Common.ExternalInsertionTimedEvent E n},\n  SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime σ a b →\n    SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime σ b c →\n      SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime σ a c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_trans",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (event : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n  event ∈ SecondQuantization.Common.orderedExternalInsertionTimedEvents externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.canonicalExternalInsertionTimedEvents_all_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.orderedExternalInsertionTimedEvents externalTime σ).Nodup",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.canonicalExternalInsertionTimedEvents_nodup",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.orderedExternalInsertionTimedEvents externalTime σ).Perm\n    (SecondQuantization.Common.canonicalExternalInsertionTimedEvents✝ E n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b ↔\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b",
     "standardAxioms": [
       "Classical.choice",
@@ -152675,7 +153335,7 @@
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
@@ -152871,7 +153531,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i)\n        (SecondQuantization.Fermionic.annihilate j))\n      (SecondQuantization.Fermionic.basisState n) =\n    0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.annihilate i)\n        (SecondQuantization.Fermionic.annihilate j))\n      (SecondQuantization.Fermionic.basisState n) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152893,7 +153553,7 @@
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Fermionic.toggleOccupation_comm",
       "SecondQuantization.Fermionic.toggleOccupation_of_mem",
       "SecondQuantization.Fermionic.toggleOccupation_of_not_mem",
@@ -152918,7 +153578,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (LinearMap.zetaCommutator (-1) (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.create j))\n      (SecondQuantization.Fermionic.basisState n) =\n    0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.create j))\n      (SecondQuantization.Fermionic.basisState n) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152940,7 +153600,7 @@
       "SecondQuantization.Fermionic.anticomm_create_create"
     ],
     "dependencies": [
-      "LinearMap.zetaCommutator_apply",
+      "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Fermionic.toggleOccupation_comm",
       "SecondQuantization.Fermionic.toggleOccupation_of_mem",
       "SecondQuantization.Fermionic.toggleOccupation_of_not_mem",
@@ -155151,7 +155811,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (A B : SecondQuantization.Fermionic.ExternalFieldLabel Mode),\n  LinearMap.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator A)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator B) =\n    (if\n          SecondQuantization.Fermionic.externalFieldLabelIsCreate✝ A =\n            SecondQuantization.Fermionic.externalFieldLabelIsCreate✝ B then\n        0\n      else\n        if\n            SecondQuantization.Fermionic.externalFieldLabelMode✝ A =\n              SecondQuantization.Fermionic.externalFieldLabelMode✝ B then\n          1\n        else 0) •\n      LinearMap.id",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (A B : SecondQuantization.Fermionic.ExternalFieldLabel Mode),\n  ScalarExchange.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator A)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator B) =\n    (if\n          SecondQuantization.Fermionic.externalFieldLabelIsCreate✝ A =\n            SecondQuantization.Fermionic.externalFieldLabelIsCreate✝ B then\n        0\n      else\n        if\n            SecondQuantization.Fermionic.externalFieldLabelMode✝ A =\n              SecondQuantization.Fermionic.externalFieldLabelMode✝ B then\n          1\n        else 0) •\n      LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
