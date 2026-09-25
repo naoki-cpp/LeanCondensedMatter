@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.AffineFixedPoint
 import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.Analysis.InternalSpace
 import LeanCondensedMatter.Analysis.PowerSeries
