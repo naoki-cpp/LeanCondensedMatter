@@ -200,7 +200,7 @@ private theorem operator_mul_operator_eq_exchange
   simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
   change C.operator (D.operator ψ) =
     C.anticommutatorValue D • ψ + (-1 : ℂ) • D.operator (C.operator ψ)
-  module
+  simpa [sub_eq_add_neg] using (eq_sub_of_add_eq hcar)
 
 /-- Repeated completed CAR exchange: the first ladder is peeled through an arbitrary tail. -/
 theorem operator_comp_operatorProduct_eq_thermalPeelSum
