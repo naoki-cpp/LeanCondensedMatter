@@ -37,29 +37,34 @@ L_RA(Γ) = C₂(Gᴿ Γ Gᴬ).
 
 It keeps the reusable algebra at the level actually needed downstream: the supplied-Green RA kernel,
 finite fixed-point iteration, and a corrected vertex represented by `(I - L_RA)⁻¹ J` under the
-canonical `IsUnit (1 - L_RA)` hypothesis. The corresponding fixed-point equation and uniqueness are
-proved under that hypothesis. Separate inverse-data, one-rung, and residual-routing declarations are
-not public APIs. No geometric-series convergence or Ward identity is inferred from the ladder
-algebra alone.
+canonical `IsUnit (1 - L_RA)` hypothesis. The corresponding fixed-point equation, uniqueness, and
+complex linearity in the bare vertex are proved under that hypothesis. Separate inverse-data,
+one-rung, and residual-routing declarations are not public APIs. No geometric-series convergence or
+Ward identity is inferred from the ladder algebra alone.
 
 ## Conservation bridge
 
-`Transport.Disorder.Ward` packages the minimal bounded charge symmetry as
+`Transport.Disorder.Ward` packages the minimal bounded charge-symmetry data used by the proof:
 
 ```text
-H₀ Q = Q H₀
-Vω Q = Q Vω
+H₀ Q = Q H₀,
+C₂(X) Q = C₂(X Q),
+Q C₂(X) = C₂(Q X).
 ```
 
-and combines the resulting `C₂` equivariance with the supplied SCBA inverse relations and the
-generic retarded-advanced ladder. Under the canonical `IsUnit (1 - L_RA)` hypothesis, the resummed
-charge vertex satisfies the finite Ward-consistency insertion
+For a finite ensemble, pointwise impurity commutation `Vω Q = Q Vω` is proved sufficient to
+construct this interface; it is not required as part of the public Ward assumption.
+
+Combining that equivariance with the supplied SCBA inverse relations and the generic
+retarded-advanced ladder gives, under `IsUnit (1 - L_RA)`,
 
 ```text
-Ḡᴿ Γ_Q Ḡᴬ = Ḡᴿ Q - Q Ḡᴬ.
+Γ_Q = (I - L_RA)⁻¹ Q,
+(zᴬ - zᴿ) • (Ḡᴿ Γ_Q Ḡᴬ) = Ḡᴿ Q - Q Ḡᴬ.
 ```
 
-The proof reuses the generic ladder fixed-point uniqueness theorem; there is no SCBA-specific ladder
+Thus the Ward theorem uses the generic corrected charge vertex with bare vertex `Q` directly.
+The proof reuses generic ladder fixed-point uniqueness; there is no SCBA-specific ladder
 resummation API. This finite bounded identity is weaker than a full electromagnetic
 Ward--Takahashi identity.
 
