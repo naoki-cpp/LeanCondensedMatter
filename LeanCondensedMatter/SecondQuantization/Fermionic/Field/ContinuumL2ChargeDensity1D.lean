@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
+import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import Mathlib.Tactic
 
