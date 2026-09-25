@@ -380,13 +380,15 @@ theorem externalInsertionTimedEventRank_map_le_iff
       | inr w =>
           have ha := a.isLt
           have hw := w.isLt
-          simp [externalInsertionTimedEventRank] <;> omega
+          simp [externalInsertionTimedEventRank]
+          all_goals omega
   | inr v =>
       cases b with
       | inl b =>
           have hv := v.isLt
           have hb := b.isLt
-          simp [externalInsertionTimedEventRank] <;> omega
+          simp [externalInsertionTimedEventRank]
+          all_goals omega
       | inr w =>
           simpa [externalInsertionTimedEventRank] using hInteractionLe v w
 
