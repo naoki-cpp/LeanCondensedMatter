@@ -148,7 +148,8 @@ theorem resummedLadderVertex_charge_ward_consistency
       charge (solution.green .advanced) symmetry.impurityPotential_commute]
     rw [← solution.selfEnergy_eq_secondMoment .retarded,
       ← solution.selfEnergy_eq_secondMoment .advanced]
-    rfl
+    dsimp [dressed]
+    noncomm_ring
 
   have hunique :
       dressed = resummedLadderVertex ladder hinvertible bare :=
