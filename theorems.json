@@ -11979,7 +11979,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M A B : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (A ∘ₗ B) =\n    ConservationLaw.linearCommutator M A ∘ₗ B + A ∘ₗ ConservationLaw.linearCommutator M B",
     "standardAxioms": [
       "Classical.choice",
@@ -11987,7 +11987,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -11998,14 +11998,18 @@
     "docString": "Leibniz rule for a commutator with a composition on the right:\n`[M, A B] = [M,A] B + A [M,B]`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
+    ],
     "dependencies": [
       "ScalarExchange.zetaCommutator_mul_right"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12220,7 +12224,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M A B : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (A - B) =\n    ConservationLaw.linearCommutator M A - ConservationLaw.linearCommutator M B",
     "standardAxioms": [
       "Classical.choice",
@@ -12228,7 +12232,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -12239,12 +12243,16 @@
     "docString": "A commutator is additive over subtraction in its second argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37667,6 +37675,206 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.factorsThroughDifferential_nestedVelocityTransportFlux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n    ConservationLaw.linearCommutator M X ∘ₗ Py + X ∘ₗ ConservationLaw.linearCommutator M Py -\n      (ConservationLaw.linearCommutator M Y ∘ₗ Px + Y ∘ₗ ConservationLaw.linearCommutator M Px)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "Expansion of a localization commutator with algebraic orbital angular momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+    ],
+    "dependencies": [
+      "ConservationLaw.linearCommutator_comp_right",
+      "ConservationLaw.linearCommutator_sub_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (ℏ : ℝ),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M Px = (Complex.I * ↑ℏ) • Dx →\n        ConservationLaw.linearCommutator M Py = (Complex.I * ↑ℏ) • Dy →\n          ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n            X ∘ₗ ((Complex.I * ↑ℏ) • Dy) - Y ∘ₗ ((Complex.I * ↑ℏ) • Dx)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "Continuum-sign specialization for `Pᵢ = -i ℏ ∂ᵢ`:\n`[M_f,L_z] = X (iℏ D_y) - Y (iℏ D_x)` once the momentum commutators have been identified with\nmultiplication by the derivatives of the localizer. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "directWrapperOf": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers",
+    "dependents": [],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      (ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) ≠ 0 ↔\n        X ∘ₗ ConservationLaw.linearCommutator M Py - Y ∘ₗ ConservationLaw.linearCommutator M Px ≠ 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "Exact nonvanishing criterion under position-localizer commutation.\n\nThis makes the obstruction explicit: continuum-like `L_z` fails to commute with localization exactly\nwhen the derivative-localization combination on the right is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n        X ∘ₗ ConservationLaw.linearCommutator M Py - Y ∘ₗ ConservationLaw.linearCommutator M Px",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "If localization commutes with position, its orbital commutator is controlled entirely by the\nmomentum-localization commutators:\n\n`[M,L_z] = X [M,Pᵧ] - Y [M,Pₓ]`.\n",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
+    ],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M Px = c • Dx →\n        ConservationLaw.linearCommutator M Py = c • Dy →\n          ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n            X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "Specialization when the momentum-localization commutators are represented by supplied\n\"derivative localizer\" operators `Dx` and `Dy` with a common scalar coefficient `c`.\n\nFor continuum momentum `Pᵢ = -i ℏ ∂ᵢ`, the physical coefficient is `c = i ℏ` and `Di` is\nmultiplication by `∂ᵢ f`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign"
+    ],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
