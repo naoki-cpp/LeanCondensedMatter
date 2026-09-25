@@ -177,28 +177,15 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
         e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
+  have hRung :=
+    tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
+      regime hrenorm
   rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
     hdisorder, hmetal, hcutoff⟩
-  let regime' : FixedCutoffMetallicBornRegime :=
-    { v := v
-      m := m
-      probeEnergy := probeEnergy
-      disorderStrength := disorderStrength
-      hbar := hbar
-      pMax := pMax
-      cutoff_nonneg := hpMax
-      velocity_ne_zero := hvelocity
-      hbar_ne_zero := hhbar
-      disorder_pos := hdisorder
-      metallic := hmetal
-      cutoff_shell := hcutoff }
   have hSolved :=
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
       v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
       hdisorder hmetal hcutoff hrenorm hdet
-  have hRung :=
-    tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      regime' hrenorm
   have hAction := tendsto_inPlaneLadderAction hRung hSolved
   have hden (side : SpectralSide) (p : ℝ) :=
     finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero

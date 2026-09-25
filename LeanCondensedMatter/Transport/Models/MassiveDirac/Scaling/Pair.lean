@@ -166,23 +166,15 @@ theorem AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero
       (0 : Fin 2) (0 : Fin 2)
       params.e
-      { v := params.v
-        m := params.m
-        probeEnergy := params.fermiEnergy
-        disorderStrength := params.disorderStrength
-        hbar := params.hbar
-        pMax := params.pMax
-        cutoff_nonneg := params.cutoff_nonneg
-        velocity_ne_zero := params.velocity_ne_zero
-        hbar_ne_zero := ne_of_gt params.hbar_pos
-        disorder_pos := params.disorder_pos
-        metallic := params.metallic
-        cutoff_shell := params.cutoff_shell }
+      (FixedCutoffMetallicBornRegime.ofScalarBoundaryData params.v params.m params.fermiEnergy
+        params.disorderStrength params.hbar params.pMax params.cutoff_nonneg params.velocity_ne_zero
+        (ne_of_gt params.hbar_pos) params.disorder_pos params.metallic params.cutoff_shell)
       hrenorm hdet
   have hnormalized :=
     h.const_mul
       (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
-  simpa [AheScalingParameters.normalizedComplexConductivity] using hnormalized
+  simpa [AheScalingParameters.normalizedComplexConductivity,
+    FixedCutoffMetallicBornRegime.ofScalarBoundaryData] using hnormalized
 
 /-- At fixed positive disorder, the normalized Hall coordinate converges to the Hall projection of
 the zero-broadening tensor boundary. -/
@@ -200,24 +192,16 @@ theorem AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero
       (0 : Fin 2) (1 : Fin 2)
       params.e
-      { v := params.v
-        m := params.m
-        probeEnergy := params.fermiEnergy
-        disorderStrength := params.disorderStrength
-        hbar := params.hbar
-        pMax := params.pMax
-        cutoff_nonneg := params.cutoff_nonneg
-        velocity_ne_zero := params.velocity_ne_zero
-        hbar_ne_zero := ne_of_gt params.hbar_pos
-        disorder_pos := params.disorder_pos
-        metallic := params.metallic
-        cutoff_shell := params.cutoff_shell }
+      (FixedCutoffMetallicBornRegime.ofScalarBoundaryData params.v params.m params.fermiEnergy
+        params.disorderStrength params.hbar params.pMax params.cutoff_nonneg params.velocity_ne_zero
+        (ne_of_gt params.hbar_pos) params.disorder_pos params.metallic params.cutoff_shell)
       hrenorm hdet
   have hnormalized :=
     h.const_mul
       (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
   simpa [AheScalingParameters.normalizedComplexConductivity,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary]
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary,
+    FixedCutoffMetallicBornRegime.ofScalarBoundaryData]
     using hnormalized
 
 /-- The normalized Hall coordinate inherits the existing sequential zero-broadening then

@@ -52,22 +52,13 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   have h :=
     tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero
       e
-      { v := v
-        m := m
-        probeEnergy := probeEnergy
-        disorderStrength := disorderStrength
-        hbar := hbar
-        pMax := pMax
-        cutoff_nonneg := hpMax
-        velocity_ne_zero := hvelocity
-        hbar_ne_zero := hhbar
-        disorder_pos := hdisorder
-        metallic := hmetal
-        cutoff_shell := hcutoff }
+      (FixedCutoffMetallicBornRegime.ofScalarBoundaryData v m probeEnergy disorderStrength hbar pMax
+        hpMax hvelocity hhbar hdisorder hmetal hcutoff)
       hrenorm hdet
   simpa [
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary,
+    FixedCutoffMetallicBornRegime.ofScalarBoundaryData] using
     h.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
 
 end
