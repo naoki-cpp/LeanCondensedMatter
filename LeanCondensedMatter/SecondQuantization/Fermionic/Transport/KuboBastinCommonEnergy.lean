@@ -35,13 +35,13 @@ noncomputable def finiteKuboBastinCommonEnergyKernel
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) (energy : ℝ) : ℂ :=
+    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℝ → ℂ :=
   finiteKuboBastinCommonVertexEnergyKernel system data interpolation
     (boundedDirectionalCurrent geometry direction
       (system.hbar : ℂ) (q : ℂ) K)
     (boundedDirectionalCurrent geometry direction
       (system.hbar : ℂ) (q : ℂ) K)
-    omega eta energy
+    omega eta
 
 theorem integrable_finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
