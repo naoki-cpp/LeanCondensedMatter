@@ -38,7 +38,7 @@ theorem finiteGibbsExpectation_prod_eq_sum_pairing (s : Statistics)
     ∀ (n : ℕ) (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
       (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
       (∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i) →
-      (∀ i j, i ≠ j → LinearMap.zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
+      (∀ i j, i ≠ j → ScalarExchange.zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
         c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) →
       (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0) →
       finiteGibbsExpectation energy β (List.prod (List.ofFn C)) =

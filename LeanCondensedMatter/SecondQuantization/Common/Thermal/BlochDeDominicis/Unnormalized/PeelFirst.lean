@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Tactic.Module
 
@@ -14,7 +14,7 @@ through an arbitrary-length list by induction rather than maintaining separately
 fixed-length identities.
 
 Given `C₁` and a list `l` of `(operator Bⱼ, scalar ζ-commutator coefficient cⱼ)` pairs satisfying
-`[C₁, Bⱼ]_ζ = cⱼ•id` (`LinearMap.zetaCommutator`), repeatedly rewriting `C₁Bⱼ` as
+`[C₁, Bⱼ]_ζ = cⱼ•id` (`ScalarExchange.zetaCommutator`), repeatedly rewriting `C₁Bⱼ` as
 `cⱼ • id + ζ•(BⱼC₁)` and pushing `C₁` rightward through the whole list picks up one factor of `ζ`
 per operator it passes, landing `C₁` at the very end:
 
@@ -89,7 +89,7 @@ picked up `ζ^{l.length}`. -/
 theorem comp_prod_eq_of_zetaCommutator (ζ : ℂ)
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
-    (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
+    (hcomm : ∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     C1.comp ((l.map Prod.fst).prod) =
       peelSum ζ l + ζ ^ l.length • ((l.map Prod.fst).prod.comp C1) := by

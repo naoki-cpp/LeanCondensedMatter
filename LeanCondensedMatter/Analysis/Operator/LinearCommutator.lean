@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -13,9 +13,9 @@ particular quantum representation or second-quantization construction.
 [S,T] = S ∘ T - T ∘ S.
 ```
 
-The raw fixed-sign bracket algebra is owned by `Analysis.Operator.ZetaCommutator`; this module keeps
-the ordinary commutator as the semantic API used by conservation-law and current code. It also
-packages commutation with a fixed left operator as a linear endomorphism of the operator space.
+The raw fixed-sign bracket algebra is owned by `Analysis.ScalarExchange`; this module keeps the
+ordinary endomorphism commutator as the semantic API used by conservation-law and current code. It
+also packages commutation with a fixed left operator as a linear endomorphism of the operator space.
 -/
 
 namespace ConservationLaw
@@ -31,6 +31,14 @@ theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     linearCommutator S T v = S (T v) - T (S v) :=
   rfl
 
+/-- The semantic endomorphism commutator is the `ζ = 1` specialization of the generic
+scalar-exchange bracket. -/
+theorem linearCommutator_eq_zetaCommutator_one
+    {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S T : V →ₗ[ℂ] V) :
+    linearCommutator S T = ScalarExchange.zetaCommutator 1 S T := by
+  simp [linearCommutator, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp]
+
 /-- Leibniz rule for a commutator with a composition on the right:
 `[M, A B] = [M,A] B + A [M,B]`. -/
 theorem linearCommutator_comp_right
@@ -38,8 +46,8 @@ theorem linearCommutator_comp_right
     (M A B : V →ₗ[ℂ] V) :
     linearCommutator M (A.comp B) =
       (linearCommutator M A).comp B + A.comp (linearCommutator M B) := by
-  simpa [linearCommutator, LinearMap.zetaCommutator] using
-    (LinearMap.zetaCommutator_comp_right (1 : ℂ) 1 M A B)
+  simpa [linearCommutator, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using
+    (ScalarExchange.zetaCommutator_mul_right (1 : ℂ) 1 M A B)
 
 /-- A commutator is additive over subtraction in its second argument. -/
 theorem linearCommutator_sub_right

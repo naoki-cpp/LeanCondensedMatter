@@ -12,10 +12,11 @@ identified with composition by `Module.End.mul_eq_comp`. The pinned API survey f
 `zetaCommutator`, q-commutator, or fixed-scalar twisted-commutator family matching
 `A ∘ B - ζ • (B ∘ A)`.
 
-Accordingly, `Analysis/Operator/ZetaCommutator.lean` owns the minimal representation-independent
-`LinearMap.zetaCommutator` extension. Ordinary commutator APIs remain semantic `ζ = 1`
-specializations, while second-quantization code selects `ζ` through `Statistics.zetaInt`. Re-check
-this ownership after Mathlib upgrades.
+Accordingly, `Analysis/ScalarExchange.lean` owns the representation-independent
+`ScalarExchange.zetaCommutator` for associative complex algebras. The operator layer keeps the
+ordinary commutator as a semantic `ζ = 1` endomorphism specialization, while second-quantization
+code uses the generic bracket directly and selects `ζ` through `Statistics.zetaInt`. Re-check this
+ownership after Mathlib upgrades.
 
 ## Infinite sums and spectral analysis
 

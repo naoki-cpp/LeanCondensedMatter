@@ -100,8 +100,13 @@ theorem create_comp_annihilate_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     (create j).comp (annihilate i) ∈ freeGibbsDomain ε β := by
   have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i j
-  have hreorder := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (1 : ℂ)
-    (comm_annihilate_create i j)
+  have hreorder :
+      (annihilate i).comp (create j) =
+        (if i = j then (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0) +
+          (create j).comp (annihilate i) := by
+    simpa [Module.End.mul_eq_comp] using
+      (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
+        (comm_annihilate_create i j))
   by_cases hij : i = j
   · subst j
     have hId := linearMap_id_mem_freeGibbsDomain ε β hpos
@@ -152,8 +157,13 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
         Complex.exp (((-(ε j) * β : ℝ) : ℂ)) *
           (1 - Complex.exp (((-(ε j) * β : ℝ) : ℂ)))⁻¹
       else 0 := by
-  have hreorder := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (1 : ℂ)
-    (comm_annihilate_create j i)
+  have hreorder :
+      (annihilate j).comp (create i) =
+        (if j = i then (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0) +
+          (create i).comp (annihilate j) := by
+    simpa [Module.End.mul_eq_comp] using
+      (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
+        (comm_annihilate_create j i))
   by_cases hij : i = j
   · subst j
     have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i i

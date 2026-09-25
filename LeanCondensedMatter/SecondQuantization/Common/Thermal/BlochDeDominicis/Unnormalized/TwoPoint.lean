@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 
 set_option linter.style.header false
@@ -37,12 +37,16 @@ theorem traceFock_diagonalEvolution_comp_two_point [Fintype Config]
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)
     (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : LinearMap.zetaCommutator ζ C1 Cj =
+    (hcomm : ScalarExchange.zetaCommutator ζ C1 Cj =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         traceFock ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * traceFock (diagonalEvolution energy (-β)) := by
-  have hcomm' := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq ζ hcomm
+  have hcomm' : C1.comp Cj =
+      c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
+        ζ • Cj.comp C1 := by
+    simpa [Module.End.mul_eq_comp] using
+      (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq ζ hcomm)
   have hrot := traceFock_diagonalEvolution_comp_rotate energy β q1 Cj C1 hC1
   have hstep : traceFock ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * traceFock (diagonalEvolution energy (-β)) +
@@ -64,7 +68,7 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)
     (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : LinearMap.zetaCommutator ζ C1 Cj =
+    (hcomm : ScalarExchange.zetaCommutator ζ C1 Cj =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hSummD : Summable (fun n => matrixCoeff (diagonalEvolution energy (-β)) n n))
     (h : Summable (Function.uncurry (fun n k =>
@@ -72,7 +76,11 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
     (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         tsumTrace ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * tsumTrace (diagonalEvolution energy (-β)) := by
-  have hcomm' := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq ζ hcomm
+  have hcomm' : C1.comp Cj =
+      c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
+        ζ • Cj.comp C1 := by
+    simpa [Module.End.mul_eq_comp] using
+      (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq ζ hcomm)
   have hrot := tsumTrace_diagonalEvolution_comp_rotate energy β q1 Cj C1 hC1 h
   have hSummDCjC1 : Summable
       (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n) := by

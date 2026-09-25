@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 
 set_option linter.style.header false
@@ -79,7 +79,7 @@ theorem externalFieldOperator_eq_smul_bare (ε : Mode → ℝ) (τ : ℝ)
 /-- The bare fermionic zeta-commutator of two labelled fields is a scalar identity operator. -/
 private theorem zetaCommutator_bareExternalFieldOperator
     (A B : ExternalFieldLabel Mode) :
-    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    ScalarExchange.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
       (if externalFieldLabelIsCreate A = externalFieldLabelIsCreate B then (0 : ℂ)
        else if externalFieldLabelMode A = externalFieldLabelMode B then 1 else 0) •
@@ -108,12 +108,12 @@ theorem timedFieldOperator_eq_smul (ε : Mode → ℝ) (field : TimedField Mode)
 /-- Two evolved fields satisfy the scalar zeta-commutator hypothesis. -/
 theorem zetaCommutator_timedFieldOperator (ε : Mode → ℝ)
     (A B : TimedField Mode) :
-    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    ScalarExchange.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (timedFieldOperator ε A) (timedFieldOperator ε B) =
       timedFieldCommutatorCoeff ε A B •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
-    LinearMap.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
+    ScalarExchange.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
     timedFieldCommutatorCoeff]
 
 /-- A time-labelled field remains an eigenoperator after a further evolution by `-β`. -/

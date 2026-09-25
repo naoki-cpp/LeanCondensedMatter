@@ -52,7 +52,7 @@ theorem exchangeCommutator_create_annihilate (i j : Mode) :
         (ExchangeAlgebra.annihilate (s := s) (Config := Config) j)
         (ExchangeAlgebra.create (s := s) (Config := Config) i) := by
           simpa [exchangeCommutator] using
-            (LinearMap.zetaCommutator_swap_of_sq_eq_one (s.zetaInt : ℂ) hζ
+            (ScalarExchange.zetaCommutator_swap_of_sq_eq_one (s.zetaInt : ℂ) hζ
               (ExchangeAlgebra.annihilate (s := s) (Config := Config) j)
               (ExchangeAlgebra.create (s := s) (Config := Config) i))
     _ = if i = j then (-(s.zetaInt : ℂ)) •
@@ -70,8 +70,11 @@ theorem annihilate_comp_create_self (i : Mode) :
       (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
         (s.zetaInt : ℂ) • ((ExchangeAlgebra.create (s := s) (Config := Config) i).comp
           (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)) := by
-  apply LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (s.zetaInt : ℂ)
-  simpa [exchangeCommutator] using (exchangeCommutator_annihilate_create_self i)
+  have hcomm := exchangeCommutator_annihilate_create_self
+    (s := s) (Mode := Mode) (Config := Config) i
+  have h := ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (s.zetaInt : ℂ)
+    (by simpa [exchangeCommutator] using hcomm)
+  simpa [Module.End.mul_eq_comp] using h
 
 end Common
 end SecondQuantization
