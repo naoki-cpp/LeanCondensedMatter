@@ -48,27 +48,27 @@ noncomputable def continuumSchrodingerEvolution1D
     { hbar := hbar
       hbar_pos := hbar_pos
       propagator := fun t =>
-        LinearPMap.resolventEvolutionStrongLimitOperator H hH (t / hbar)
+        LinearPMap.stoneEvolution H hH (t / hbar)
       propagator_zero := ?_
       propagator_add := ?_
       propagator_star := ?_
       preserves_domain := ?_
       hasDerivAt_propagator_apply := ?_ }
-  · simpa using LinearPMap.resolventEvolutionStrongLimitOperator_zero H hH
+  · simpa using LinearPMap.stoneEvolution_zero H hH
   · intro t s
     rw [add_div]
-    exact LinearPMap.resolventEvolutionStrongLimitOperator_add H hH (t / hbar) (s / hbar)
+    exact LinearPMap.stoneEvolution_add H hH (t / hbar) (s / hbar)
   · intro t
     simpa only [neg_div] using
-      LinearPMap.resolventEvolutionStrongLimitOperator_star H hH (t / hbar)
+      LinearPMap.stoneEvolution_star H hH (t / hbar)
   · intro t ψ
     have hmem :=
-      LinearPMap.resolventEvolutionStrongLimitOperator_mem_domain H hH (t / hbar)
+      LinearPMap.stoneEvolution_mem_domain H hH (t / hbar)
         (show H.domain from ψ)
     simpa [H] using hmem
   · intro t ψ
     have hU :=
-      LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt H hH
+      LinearPMap.stoneEvolution_apply_hasDerivAt H hH
         (show H.domain from ψ) (t / hbar)
     have hscale : HasDerivAt (fun τ : ℝ => τ / hbar) (1 / hbar) t := by
       simpa [div_eq_mul_inv] using (hasDerivAt_id t).mul_const hbar⁻¹
