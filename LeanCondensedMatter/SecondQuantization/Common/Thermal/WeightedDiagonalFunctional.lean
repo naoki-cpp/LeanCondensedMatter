@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.NormalizedEndomorphismFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 
@@ -56,13 +55,6 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
 theorem normalizedWeightedDiagonal_id (w : Config → ℂ) (hw : weightSum w ≠ 0) :
     normalizedWeightedDiagonal w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = 1 := by
   rw [normalizedWeightedDiagonal_eq_weightedTrace_div, weightedTrace_id, div_self hw]
-
-/-- The normalized weighted diagonal as a normalized endomorphism functional when its total weight
-is nonzero. -/
-noncomputable def normalizedWeightedDiagonalFunctional (w : Config → ℂ) (hw : weightSum w ≠ 0) :
-    NormalizedEndomorphismFunctional ℂ (AlgebraicFock Config) where
-  toLinearMap := normalizedWeightedDiagonal w
-  map_id := normalizedWeightedDiagonal_id w hw
 
 /-- Coordinate formula for the normalized weighted diagonal of a diagonal operator. -/
 theorem normalizedWeightedDiagonal_diagonalOperator (w a : Config → ℂ) :
