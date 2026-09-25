@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import Mathlib.Analysis.Analytic.Uniqueness
