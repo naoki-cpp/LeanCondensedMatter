@@ -274,6 +274,66 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
     (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
       hbar pMax radius 0 (entryHarmonics i j))
 
+/-- Reversing the radial coordinate changes the crossed current block by `σ_z`
+conjugation together with the sign of the in-plane current insertion. -/
+@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax (-radius) =
+      -(sigmaZ *
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            source v m probeEnergy broadening disorderStrength hbar pMax radius *
+          sigmaZ) := by
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let coefficients := gaussianCrossedCurrentCoefficientVector source factor
+  let aA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let harmonics : ℝ → AngularHarmonicCoefficients Matrix2 := fun p =>
+    polarPauliInPlaneHarmonics
+      (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
+  have hk0 (p : ℝ) :
+      polarFourierZerothAngularKernel (p * (-radius) / hbar) =
+        polarFourierZerothAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierZerothAngularKernel_neg]
+  have hk1 (p : ℝ) :
+      polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) =
+        -polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierFirstCosineAngularKernel_neg]
+  have hk2 (p : ℝ) :
+      polarFourierSecondCosineAngularKernel (p * (-radius) / hbar) =
+        polarFourierSecondCosineAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierSecondCosineAngularKernel_neg]
+  fin_cases source <;>
+    ext i j <;>
+    fin_cases i <;> fin_cases j <;>
+    simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
+      factor, coefficients, harmonics, gaussianCrossedCurrentCoefficientVector,
+      polarPauliInPlaneHarmonics, aA, bA, dA, aR, bR, dR, hk0, hk1, hk2,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
+      InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two] <;>
+    ring
+
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
