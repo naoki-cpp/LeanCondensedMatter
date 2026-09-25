@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.ExchangePeel
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import Mathlib.Tactic.Module
@@ -155,6 +156,15 @@ theorem operatorProduct_append (l₁ l₂ : List (CompletedThermalLadder Mode)) 
       rw [List.cons_append, operatorProduct_cons, operatorProduct_cons, ih,
         ContinuousLinearMap.comp_assoc]
 
+private theorem operatorProduct_eq_prod
+    (l : List (CompletedThermalLadder Mode)) :
+    operatorProduct l = (l.map operator).prod := by
+  induction l with
+  | nil => rfl
+  | cons C t ih =>
+      rw [operatorProduct_cons, List.map_cons, List.prod_cons, ih]
+      rfl
+
 /-- The sum of contraction terms generated while pushing `C₁` through a ladder list. -/
 noncomputable def thermalPeelSum (C₁ : CompletedThermalLadder Mode) :
     List (CompletedThermalLadder Mode) →
@@ -168,31 +178,40 @@ noncomputable def thermalPeelSum (C₁ : CompletedThermalLadder Mode) :
 theorem thermalPeelSum_nil (C₁ : CompletedThermalLadder Mode) :
     thermalPeelSum C₁ [] = 0 := rfl
 
+private theorem thermalPeelSum_eq_operatorPeelSum
+    (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
+    thermalPeelSum C₁ l =
+      ScalarExchange.operatorPeelSum operator anticommutatorValue (-1 : ℂ) C₁ l := by
+  induction l with
+  | nil => rfl
+  | cons D t ih =>
+      rw [thermalPeelSum, ScalarExchange.operatorPeelSum, ih, ← operatorProduct_eq_prod t]
+      simp [ContinuousLinearMap.mul_def, sub_eq_add_neg]
+
+private theorem operator_mul_operator_eq_exchange
+    (C D : CompletedThermalLadder Mode) :
+    C.operator * D.operator =
+      C.anticommutatorValue D •
+          (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) +
+        (-1 : ℂ) • (D.operator * C.operator) := by
+  apply ContinuousLinearMap.ext
+  intro ψ
+  have hcar := DFunLike.congr_fun (completedAnticomm_operator_operator C D) ψ
+  simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
+  change C.operator (D.operator ψ) =
+    C.anticommutatorValue D • ψ + (-1 : ℂ) • D.operator (C.operator ψ)
+  module
+
 /-- Repeated completed CAR exchange: the first ladder is peeled through an arbitrary tail. -/
 theorem operator_comp_operatorProduct_eq_thermalPeelSum
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     C₁.operator.comp (operatorProduct l) =
       thermalPeelSum C₁ l + ((-1 : ℂ) ^ l.length) • ((operatorProduct l).comp C₁.operator) := by
-  induction l with
-  | nil =>
-      simp [thermalPeelSum]
-  | cons D t ih =>
-      apply ContinuousLinearMap.ext
-      intro ψ
-      have hcar := DFunLike.congr_fun (completedAnticomm_operator_operator C₁ D) (operatorProduct t ψ)
-      simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
-      have hexchange :
-          C₁.operator (D.operator (operatorProduct t ψ)) =
-            C₁.anticommutatorValue D • operatorProduct t ψ -
-              D.operator (C₁.operator (operatorProduct t ψ)) :=
-        eq_sub_of_add_eq hcar
-      have hih := DFunLike.congr_fun ih ψ
-      simp only [ContinuousLinearMap.comp_apply, add_apply, smul_apply] at hih
-      simp only [operatorProduct_cons, thermalPeelSum, List.length_cons,
-        ContinuousLinearMap.comp_apply, add_apply, sub_apply, smul_apply]
-      rw [hexchange, hih]
-      simp only [map_add, map_smul, pow_succ]
-      module
+  have h := ScalarExchange.operator_mul_prod_eq_operatorPeelSum
+    operator anticommutatorValue (-1 : ℂ)
+    operator_mul_operator_eq_exchange C₁ l
+  rw [← operatorProduct_eq_prod l] at h
+  simpa [ContinuousLinearMap.mul_def, thermalPeelSum_eq_operatorPeelSum] using h
 
 /-- Canonical completed free-Gibbs expectation of an ordered thermal-ladder list. -/
 noncomputable def completedFreeGibbsExpectation
