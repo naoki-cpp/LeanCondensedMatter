@@ -23,12 +23,20 @@ namespace ConservationLaw
 /-- Ordinary commutator of two complex-linear endomorphisms. -/
 noncomputable def linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  ScalarExchange.zetaCommutator 1 S T
+  S.comp T - T.comp S
 
 @[simp]
 theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) (v : V) :
-    linearCommutator S T v = S (T v) - T (S v) := by
+    linearCommutator S T v = S (T v) - T (S v) :=
+  rfl
+
+/-- The semantic endomorphism commutator is the `ζ = 1` specialization of the generic
+scalar-exchange bracket. -/
+theorem linearCommutator_eq_zetaCommutator_one
+    {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S T : V →ₗ[ℂ] V) :
+    linearCommutator S T = ScalarExchange.zetaCommutator 1 S T := by
   simp [linearCommutator, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp]
 
 /-- Leibniz rule for a commutator with a composition on the right:
@@ -38,7 +46,7 @@ theorem linearCommutator_comp_right
     (M A B : V →ₗ[ℂ] V) :
     linearCommutator M (A.comp B) =
       (linearCommutator M A).comp B + A.comp (linearCommutator M B) := by
-  simpa [linearCommutator, Module.End.mul_eq_comp] using
+  simpa [linearCommutator, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using
     (ScalarExchange.zetaCommutator_mul_right (1 : ℂ) 1 M A B)
 
 /-- A commutator is additive over subtraction in its second argument. -/
