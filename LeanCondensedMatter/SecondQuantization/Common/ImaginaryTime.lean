@@ -23,7 +23,8 @@ set_option linter.style.header false
 
 Statistics-aware pair time ordering, basis-diagonal free evolution, fixed energy-shift eigenoperators,
 algebraic Heisenberg evolution, interaction-picture operators, KMS rotation identities, generic
-quartic-interaction evolution, the arbitrary-external mixed event/leg order, and the statistics-independent mixed two-point event/leg order with
+quartic-interaction evolution, the arbitrary-external mixed event/leg order, and the
+statistics-independent mixed two-point event/leg order with
 monotone slot transport, interaction-slot relabeling and mixed-position covariance, order chambers,
 null walls, and measurable finite signatures.
 -/
