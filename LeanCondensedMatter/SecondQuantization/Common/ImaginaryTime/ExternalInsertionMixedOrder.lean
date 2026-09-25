@@ -1,42 +1,42 @@
-import Mathlib
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import Mathlib.Data.List.NodupEquivFin
+import Mathlib.Data.Fintype.EquivFin
 
 set_option linter.style.header false
 
 /-!
-# Statistics-independent mixed ordering for external insertions
+# Mixed-time order for arbitrary external insertions
 
-An external-insertion expansion contains `2 * E` distinguished external events and `n`
-interaction events. This module orders the combined finite event family by decreasing imaginary time,
-using the canonical external/interaction slot order to break equal-time ties.
+This module provides only the ordering data needed by the higher-point fermionic consumer:
 
-The construction is statistics-independent. It also exposes transport along strictly monotone
-reindexings of both external and interaction slots, which is the form needed when a connected
-component is compared with its ambient diagram.
+* sort the `2 * E` external events together with `n` interaction events by imaginary time;
+* expand that event order to the corresponding atomic legs;
+* identify the time-ordered atomic positions with the fixed flattened
+  `ExternalInsertionDiagram` positions.
+
+Further transport and locality lemmas are intentionally deferred until a concrete amplitude
+factorization proof needs them.
 -/
 
 namespace SecondQuantization
 namespace Common
 
-/-- Timed events for an even external sector with `2 * E` external insertions and `n`
-interaction vertices. -/
+/-- Timed events for `2 * E` external insertions and `n` interaction vertices. -/
 abbrev ExternalInsertionTimedEvent (E n : ℕ) : Type :=
   Fin (2 * E) ⊕ Fin n
 
-/-- The imaginary time attached to an external or interaction event. -/
+/-- The imaginary time carried by an external or interaction event. -/
 def externalInsertionTimedEventTime {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ExternalInsertionTimedEvent E n → ℝ
   | .inl e => externalTime e
   | .inr v => σ v
 
-/-- Stable equal-time rank: external slots come first, followed by interaction slots. -/
-def externalInsertionTimedEventRank {E n : ℕ}
+private def externalInsertionTimedEventRank {E n : ℕ}
     (event : ExternalInsertionTimedEvent E n) : ℕ :=
   ((finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event).val
 
-/-- Stable non-strict event precedence: later imaginary time comes first, with the canonical rank
-breaking equal-time ties. -/
-def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
+private def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E n) : Prop :=
   externalInsertionTimedEventTime externalTime σ b <
@@ -44,12 +44,6 @@ def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
     (externalInsertionTimedEventTime externalTime σ a =
         externalInsertionTimedEventTime externalTime σ b ∧
       externalInsertionTimedEventRank a ≤ externalInsertionTimedEventRank b)
-
-/-- Strict stable event precedence. -/
-def externalInsertionTimedEventBefore {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E n) : Prop :=
-  externalInsertionTimedEventBeforeOrEqual externalTime σ a b ∧ a ≠ b
 
 private theorem externalInsertionTimedEventBeforeOrEqual_total {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
@@ -84,41 +78,7 @@ private theorem externalInsertionTimedEventBeforeOrEqual_trans {E n : ℕ}
     · exact Or.inl (habTime ▸ hbc)
     · exact Or.inr ⟨habTime.trans hbcTime, habRank.trans hbcRank⟩
 
-private theorem externalInsertionTimedEventBeforeOrEqual_antisymm {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    {a b : ExternalInsertionTimedEvent E n}
-    (hab : externalInsertionTimedEventBeforeOrEqual externalTime σ a b)
-    (hba : externalInsertionTimedEventBeforeOrEqual externalTime σ b a) :
-    a = b := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hba with hba | ⟨hbaTime, _⟩
-    · exact (lt_asymm hab hba).elim
-    · rw [hbaTime] at hab
-      exact (lt_irrefl _ hab).elim
-  · rcases hba with hba | ⟨_, hbaRank⟩
-    · rw [habTime] at hba
-      exact (lt_irrefl _ hba).elim
-    · apply
-        (finSumFinEquiv :
-          ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).injective
-      apply Fin.ext
-      exact habRank.antisymm hbaRank
-
-/-- Stable comparison of two fixed events is unchanged when their event times are unchanged. -/
-theorem externalInsertionTimedEventBeforeOrEqual_congr {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E n)
-    (ha : externalInsertionTimedEventTime externalTime σ a =
-      externalInsertionTimedEventTime externalTime υ a)
-    (hb : externalInsertionTimedEventTime externalTime σ b =
-      externalInsertionTimedEventTime externalTime υ b) :
-    externalInsertionTimedEventBeforeOrEqual externalTime σ a b ↔
-      externalInsertionTimedEventBeforeOrEqual externalTime υ a b := by
-  simp only [externalInsertionTimedEventBeforeOrEqual]
-  rw [ha, hb]
-
-/-- Canonical event enumeration: external slots first, then interaction slots. -/
-def canonicalExternalInsertionTimedEvents (E n : ℕ) :
+private def canonicalExternalInsertionTimedEvents (E n : ℕ) :
     List (ExternalInsertionTimedEvent E n) :=
   List.ofFn fun p : Fin (2 * E + n) =>
     (finSumFinEquiv :
@@ -141,7 +101,8 @@ private theorem canonicalExternalInsertionTimedEvents_all_mem (E n : ℕ) :
       ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event,
     by simp⟩
 
-/-- All external and interaction events sorted by decreasing time with stable equal-time rank. -/
+/-- All external and interaction events sorted by decreasing imaginary time.
+Equal-time events use the fixed flattened external-first rank. -/
 noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List (ExternalInsertionTimedEvent E n) := by
@@ -150,45 +111,20 @@ noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
     (externalInsertionTimedEventBeforeOrEqual externalTime σ)
     (canonicalExternalInsertionTimedEvents E n)
 
-@[simp]
-theorem orderedExternalInsertionTimedEvents_length {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (orderedExternalInsertionTimedEvents externalTime σ).length = 2 * E + n := by
-  classical
-  rw [orderedExternalInsertionTimedEvents, List.length_insertionSort]
-  simp [canonicalExternalInsertionTimedEvents]
-
-/-- Time ordering permutes, but neither duplicates nor removes, the canonical mixed events. -/
-theorem orderedExternalInsertionTimedEvents_perm {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_perm {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List.Perm (orderedExternalInsertionTimedEvents externalTime σ)
       (canonicalExternalInsertionTimedEvents E n) := by
   classical
   exact List.perm_insertionSort _ _
 
-/-- The fully ordered mixed-event list is pairwise sorted by stable time precedence. -/
-theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (orderedExternalInsertionTimedEvents externalTime σ).Pairwise
-      (externalInsertionTimedEventBeforeOrEqual externalTime σ) := by
-  classical
-  letI : Std.Total (externalInsertionTimedEventBeforeOrEqual externalTime σ) :=
-    ⟨externalInsertionTimedEventBeforeOrEqual_total externalTime σ⟩
-  letI : IsTrans (ExternalInsertionTimedEvent E n)
-      (externalInsertionTimedEventBeforeOrEqual externalTime σ) :=
-    ⟨fun _ _ _ =>
-      externalInsertionTimedEventBeforeOrEqual_trans externalTime σ⟩
-  exact List.pairwise_insertionSort _ _
-
-/-- The fully ordered mixed-event list contains no duplicate events. -/
-theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Nodup :=
   (orderedExternalInsertionTimedEvents_perm externalTime σ).nodup_iff.mpr
     (canonicalExternalInsertionTimedEvents_nodup E n)
 
-/-- Every external or interaction event occurs in the fully ordered event list. -/
-theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ event : ExternalInsertionTimedEvent E n,
       event ∈ orderedExternalInsertionTimedEvents externalTime σ := by
@@ -196,262 +132,121 @@ theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
   exact (orderedExternalInsertionTimedEvents_perm externalTime σ).symm.subset
     (canonicalExternalInsertionTimedEvents_all_mem E n event)
 
-/-- Exact enumeration of all mixed events by their time-ordered positions. -/
-noncomputable def orderedExternalInsertionTimedEventEquiv {E n : ℕ}
+/-- The standard external-insertion leg type with `n` ordered interaction slots. -/
+abbrev OrderedExternalInsertionLeg (E n : ℕ) : Type :=
+  ExternalInsertionLeg E (Finset.univ : Finset (Fin n))
+
+/-- Atomic legs contributed by one mixed event. -/
+def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
+    ExternalInsertionTimedEvent E n → List (OrderedExternalInsertionLeg E n)
+  | .inl e => [Sum.inl e]
+  | .inr v => List.ofFn fun l : Fin 4 =>
+      Sum.inr (⟨v, Finset.mem_univ v⟩, l)
+
+/-- Atomic leg identities in mixed-time event order. -/
+noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    Fin (2 * E + n) ≃ ExternalInsertionTimedEvent E n :=
-  (finCongr (orderedExternalInsertionTimedEvents_length externalTime σ).symm).trans
-    (List.Nodup.getEquivOfForallMemList
-      (orderedExternalInsertionTimedEvents externalTime σ)
-      (orderedExternalInsertionTimedEvents_nodup externalTime σ)
-      (orderedExternalInsertionTimedEvents_all_mem externalTime σ))
+    List (OrderedExternalInsertionLeg E n) :=
+  (orderedExternalInsertionTimedEvents externalTime σ).flatMap
+    externalInsertionTimedEventAtomicLegs
 
-/-- Position occupied by one event in the fully ordered mixed-event list. -/
-noncomputable def orderedExternalInsertionTimedEventPosition {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (event : ExternalInsertionTimedEvent E n) : Fin (2 * E + n) :=
-  (orderedExternalInsertionTimedEventEquiv externalTime σ).symm event
-
-@[simp]
-theorem orderedExternalInsertionTimedEventEquiv_position {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+private theorem externalInsertionTimedEventAtomicLegs_nodup {E n : ℕ}
     (event : ExternalInsertionTimedEvent E n) :
-    orderedExternalInsertionTimedEventEquiv externalTime σ
-        (orderedExternalInsertionTimedEventPosition externalTime σ event) = event :=
-  (orderedExternalInsertionTimedEventEquiv externalTime σ).apply_symm_apply event
+    (externalInsertionTimedEventAtomicLegs event).Nodup := by
+  cases event with
+  | inl e => simp [externalInsertionTimedEventAtomicLegs]
+  | inr v =>
+      rw [externalInsertionTimedEventAtomicLegs]
+      apply List.nodup_ofFn_ofInjective
+      intro a b h
+      exact congrArg Prod.snd (Sum.inr.inj h)
 
-private theorem externalInsertionTimedEventBeforeOrEqual_of_position_lt {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    {a b : ExternalInsertionTimedEvent E n}
-    (h : orderedExternalInsertionTimedEventPosition externalTime σ a <
-      orderedExternalInsertionTimedEventPosition externalTime σ b) :
-    externalInsertionTimedEventBeforeOrEqual externalTime σ a b := by
-  let l := orderedExternalInsertionTimedEvents externalTime σ
-  let pa : Fin l.length :=
-    Fin.cast (orderedExternalInsertionTimedEvents_length externalTime σ).symm
-      (orderedExternalInsertionTimedEventPosition externalTime σ a)
-  let pb : Fin l.length :=
-    Fin.cast (orderedExternalInsertionTimedEvents_length externalTime σ).symm
-      (orderedExternalInsertionTimedEventPosition externalTime σ b)
-  have hp : pa < pb := by
-    simpa [pa, pb] using h
-  have hrel :=
-    (orderedExternalInsertionTimedEvents_pairwise externalTime σ).rel_get_of_lt hp
-  have ha : l.get pa = a := by
-    simpa [l, pa, orderedExternalInsertionTimedEventPosition,
-      orderedExternalInsertionTimedEventEquiv] using
-      (List.idxOf_get
-        ((List.idxOf_lt_length_iff).2
-          (orderedExternalInsertionTimedEvents_all_mem externalTime σ a)))
-  have hb : l.get pb = b := by
-    simpa [l, pb, orderedExternalInsertionTimedEventPosition,
-      orderedExternalInsertionTimedEventEquiv] using
-      (List.idxOf_get
-        ((List.idxOf_lt_length_iff).2
-          (orderedExternalInsertionTimedEvents_all_mem externalTime σ b)))
-  rw [ha, hb] at hrel
-  exact hrel
-
-/-- Event-position comparison is exactly strict stable time precedence. -/
-theorem orderedExternalInsertionTimedEventPosition_lt_iff {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E n) :
-    orderedExternalInsertionTimedEventPosition externalTime σ a <
-        orderedExternalInsertionTimedEventPosition externalTime σ b ↔
-      externalInsertionTimedEventBefore externalTime σ a b := by
-  constructor
-  · intro h
-    refine ⟨
-      externalInsertionTimedEventBeforeOrEqual_of_position_lt externalTime σ h,
-      ?_⟩
-    intro hab
-    subst b
-    exact (lt_irrefl _ h)
-  · rintro ⟨hab, hne⟩
-    rcases lt_trichotomy
-        (orderedExternalInsertionTimedEventPosition externalTime σ a)
-        (orderedExternalInsertionTimedEventPosition externalTime σ b) with h | h | h
-    · exact h
-    · exact
-        (hne
-          ((orderedExternalInsertionTimedEventEquiv externalTime σ).symm.injective h)).elim
-    · have hba :=
-        externalInsertionTimedEventBeforeOrEqual_of_position_lt externalTime σ h
-      exact
-        (hne
-          (externalInsertionTimedEventBeforeOrEqual_antisymm
-            externalTime σ hab hba)).elim
-
-/-- Relative ordered positions of two events depend only on the times of those two events. -/
-theorem orderedExternalInsertionTimedEventPosition_lt_iff_of_eventTime_eq {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E n)
-    (ha : externalInsertionTimedEventTime externalTime σ a =
-      externalInsertionTimedEventTime externalTime υ a)
-    (hb : externalInsertionTimedEventTime externalTime σ b =
-      externalInsertionTimedEventTime externalTime υ b) :
-    (orderedExternalInsertionTimedEventPosition externalTime σ a <
-        orderedExternalInsertionTimedEventPosition externalTime σ b) ↔
-      (orderedExternalInsertionTimedEventPosition externalTime υ a <
-        orderedExternalInsertionTimedEventPosition externalTime υ b) := by
-  rw [orderedExternalInsertionTimedEventPosition_lt_iff,
-    orderedExternalInsertionTimedEventPosition_lt_iff]
-  unfold externalInsertionTimedEventBefore
-  rw [externalInsertionTimedEventBeforeOrEqual_congr
-    externalTime σ υ a b ha hb]
-
-variable {E₁ E₂ m n : ℕ}
-
-/-- Transport a mixed event along external- and interaction-slot reindexings. -/
-def externalInsertionTimedEventMap
-    (externalMap : Fin (2 * E₁) → Fin (2 * E₂))
-    (interactionMap : Fin m → Fin n) :
-    ExternalInsertionTimedEvent E₁ m → ExternalInsertionTimedEvent E₂ n :=
-  Sum.map externalMap interactionMap
-
-@[simp]
-theorem externalInsertionTimedEventMap_inl
-    (externalMap : Fin (2 * E₁) → Fin (2 * E₂))
-    (interactionMap : Fin m → Fin n) (e : Fin (2 * E₁)) :
-    externalInsertionTimedEventMap externalMap interactionMap (Sum.inl e) =
-      Sum.inl (externalMap e) :=
-  rfl
-
-@[simp]
-theorem externalInsertionTimedEventMap_inr
-    (externalMap : Fin (2 * E₁) → Fin (2 * E₂))
-    (interactionMap : Fin m → Fin n) (v : Fin m) :
-    externalInsertionTimedEventMap externalMap interactionMap (Sum.inr v) =
-      Sum.inr (interactionMap v) :=
-  rfl
-
-theorem externalInsertionTimedEventMap_injective
-    {externalMap : Fin (2 * E₁) → Fin (2 * E₂)}
-    {interactionMap : Fin m → Fin n}
-    (hExternal : Function.Injective externalMap)
-    (hInteraction : Function.Injective interactionMap) :
-    Function.Injective
-      (externalInsertionTimedEventMap externalMap interactionMap) := by
-  simpa [externalInsertionTimedEventMap] using
-    (Sum.map_injective.mpr ⟨hExternal, hInteraction⟩)
-
-@[simp]
-theorem externalInsertionTimedEventTime_map
-    (externalMap : Fin (2 * E₁) → Fin (2 * E₂))
-    (interactionMap : Fin m → Fin n)
-    (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
-    (a : ExternalInsertionTimedEvent E₁ m) :
-    externalInsertionTimedEventTime externalTime σ
-        (externalInsertionTimedEventMap externalMap interactionMap a) =
-      externalInsertionTimedEventTime (externalTime ∘ externalMap)
-        (σ ∘ interactionMap) a := by
-  cases a <;> rfl
-
-theorem externalInsertionTimedEventRank_map_le_iff
-    {externalMap : Fin (2 * E₁) → Fin (2 * E₂)}
-    {interactionMap : Fin m → Fin n}
-    (hExternal : StrictMono externalMap)
-    (hInteraction : StrictMono interactionMap)
-    (a b : ExternalInsertionTimedEvent E₁ m) :
-    externalInsertionTimedEventRank
-        (externalInsertionTimedEventMap externalMap interactionMap a) ≤
-        externalInsertionTimedEventRank
-          (externalInsertionTimedEventMap externalMap interactionMap b) ↔
-      externalInsertionTimedEventRank a ≤ externalInsertionTimedEventRank b := by
-  have hExternalLe :
-      ∀ x y : Fin (2 * E₁),
-        ((externalMap x : ℕ) ≤ (externalMap y : ℕ)) ↔
-          ((x : ℕ) ≤ (y : ℕ)) := by
-    intro x y
-    rw [← Fin.le_def, ← Fin.le_def]
-    exact hExternal.le_iff_le
-  have hInteractionLe :
-      ∀ x y : Fin m,
-        ((interactionMap x : ℕ) ≤ (interactionMap y : ℕ)) ↔
-          ((x : ℕ) ≤ (y : ℕ)) := by
-    intro x y
-    rw [← Fin.le_def, ← Fin.le_def]
-    exact hInteraction.le_iff_le
+private theorem externalInsertionTimedEventAtomicLegs_disjoint {E n : ℕ}
+    {a b : ExternalInsertionTimedEvent E n} (h : a ≠ b) :
+    List.Disjoint (externalInsertionTimedEventAtomicLegs a)
+      (externalInsertionTimedEventAtomicLegs b) := by
   cases a with
-  | inl a =>
+  | inl e =>
       cases b with
-      | inl b =>
-          simpa [externalInsertionTimedEventRank] using hExternalLe a b
-      | inr w =>
-          have ha := a.isLt
-          have hw := w.isLt
-          simp [externalInsertionTimedEventRank]
-          all_goals omega
+      | inl e' => simpa [externalInsertionTimedEventAtomicLegs] using h.symm
+      | inr v => simp [externalInsertionTimedEventAtomicLegs]
   | inr v =>
       cases b with
-      | inl b =>
-          have hv := v.isLt
-          have hb := b.isLt
-          simp [externalInsertionTimedEventRank]
-          all_goals omega
-      | inr w =>
-          simpa [externalInsertionTimedEventRank] using hInteractionLe v w
+      | inl e => simp [externalInsertionTimedEventAtomicLegs]
+      | inr v' =>
+          have hv : v ≠ v' := by
+            intro hv
+            apply h
+            cases hv
+            rfl
+          simpa [externalInsertionTimedEventAtomicLegs] using hv.symm
 
-theorem externalInsertionTimedEventBeforeOrEqual_map_iff
-    {externalMap : Fin (2 * E₁) → Fin (2 * E₂)}
-    {interactionMap : Fin m → Fin n}
-    (hExternal : StrictMono externalMap)
-    (hInteraction : StrictMono interactionMap)
-    (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E₁ m) :
-    externalInsertionTimedEventBeforeOrEqual externalTime σ
-        (externalInsertionTimedEventMap externalMap interactionMap a)
-        (externalInsertionTimedEventMap externalMap interactionMap b) ↔
-      externalInsertionTimedEventBeforeOrEqual
-        (externalTime ∘ externalMap) (σ ∘ interactionMap) a b := by
-  simp only [externalInsertionTimedEventBeforeOrEqual,
-    externalInsertionTimedEventTime_map]
-  rw [externalInsertionTimedEventRank_map_le_iff hExternal hInteraction]
+private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).Nodup := by
+  rw [externalInsertionMixedTimeOrderedAtomicLegs, List.nodup_flatMap]
+  refine ⟨
+    fun event _ => externalInsertionTimedEventAtomicLegs_nodup event,
+    ?_⟩
+  exact
+    (orderedExternalInsertionTimedEvents_nodup externalTime σ).pairwise_of_forall_ne
+      (fun _ _ _ _ h => externalInsertionTimedEventAtomicLegs_disjoint h)
 
-theorem externalInsertionTimedEventBefore_map_iff
-    {externalMap : Fin (2 * E₁) → Fin (2 * E₂)}
-    {interactionMap : Fin m → Fin n}
-    (hExternal : StrictMono externalMap)
-    (hInteraction : StrictMono interactionMap)
-    (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E₁ m) :
-    externalInsertionTimedEventBefore externalTime σ
-        (externalInsertionTimedEventMap externalMap interactionMap a)
-        (externalInsertionTimedEventMap externalMap interactionMap b) ↔
-      externalInsertionTimedEventBefore
-        (externalTime ∘ externalMap) (σ ∘ interactionMap) a b := by
-  simp only [externalInsertionTimedEventBefore]
-  rw [externalInsertionTimedEventBeforeOrEqual_map_iff
-    hExternal hInteraction]
-  constructor
-  · rintro ⟨h, hne⟩
-    exact ⟨h, fun hab =>
-      hne (congrArg
-        (externalInsertionTimedEventMap externalMap interactionMap) hab)⟩
-  · rintro ⟨h, hne⟩
-    exact ⟨h, fun hab =>
-      hne
-        (externalInsertionTimedEventMap_injective
-          hExternal.injective hInteraction.injective hab)⟩
+private theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    ∀ leg : OrderedExternalInsertionLeg E n,
+      leg ∈ externalInsertionMixedTimeOrderedAtomicLegs externalTime σ := by
+  intro leg
+  rw [externalInsertionMixedTimeOrderedAtomicLegs, List.mem_flatMap]
+  cases leg with
+  | inl e =>
+      exact ⟨
+        Sum.inl e,
+        orderedExternalInsertionTimedEvents_all_mem externalTime σ (Sum.inl e),
+        by simp [externalInsertionTimedEventAtomicLegs]⟩
+  | inr p =>
+      rcases p with ⟨⟨v, hv⟩, l⟩
+      refine ⟨
+        Sum.inr v,
+        orderedExternalInsertionTimedEvents_all_mem externalTime σ (Sum.inr v),
+        ?_⟩
+      rw [externalInsertionTimedEventAtomicLegs, List.mem_ofFn]
+      exact ⟨l, rfl⟩
 
-theorem orderedExternalInsertionTimedEventPosition_map_lt_iff
-    {externalMap : Fin (2 * E₁) → Fin (2 * E₂)}
-    {interactionMap : Fin m → Fin n}
-    (hExternal : StrictMono externalMap)
-    (hInteraction : StrictMono interactionMap)
-    (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E₁ m) :
-    orderedExternalInsertionTimedEventPosition externalTime σ
-        (externalInsertionTimedEventMap externalMap interactionMap a) <
-        orderedExternalInsertionTimedEventPosition externalTime σ
-          (externalInsertionTimedEventMap externalMap interactionMap b) ↔
-      orderedExternalInsertionTimedEventPosition
-          (externalTime ∘ externalMap) (σ ∘ interactionMap) a <
-        orderedExternalInsertionTimedEventPosition
-          (externalTime ∘ externalMap) (σ ∘ interactionMap) b := by
-  rw [orderedExternalInsertionTimedEventPosition_lt_iff,
-    orderedExternalInsertionTimedEventPosition_lt_iff,
-    externalInsertionTimedEventBefore_map_iff hExternal hInteraction]
+private theorem externalInsertionMixedTimeOrderedAtomicLegs_length {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).length =
+      2 * (2 * n + E) := by
+  let l := externalInsertionMixedTimeOrderedAtomicLegs externalTime σ
+  have hcard :
+      l.length = Fintype.card (OrderedExternalInsertionLeg E n) := by
+    simpa using
+      Fintype.card_congr
+        (List.Nodup.getEquivOfForallMemList l
+          (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
+          (externalInsertionMixedTimeOrderedAtomicLegs_all_mem externalTime σ))
+  rw [hcard]
+  simp [OrderedExternalInsertionLeg]
+  omega
+
+/-- Exact bijection from mixed-time atomic positions to canonical external-insertion legs. -/
+noncomputable def externalInsertionMixedTimeOrderedAtomicLegEquiv {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + E)) ≃ OrderedExternalInsertionLeg E n :=
+  (finCongr
+    (externalInsertionMixedTimeOrderedAtomicLegs_length externalTime σ).symm).trans
+    (List.Nodup.getEquivOfForallMemList
+      (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ)
+      (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
+      (externalInsertionMixedTimeOrderedAtomicLegs_all_mem externalTime σ))
+
+/-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
+noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    Equiv.Perm (Fin (2 * (2 * n + E))) :=
+  (finCongr (by simp)).trans
+    ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).trans
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm)
 
 end Common
 end SecondQuantization
