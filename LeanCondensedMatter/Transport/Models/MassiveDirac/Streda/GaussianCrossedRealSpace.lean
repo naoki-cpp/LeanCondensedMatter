@@ -284,23 +284,14 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryK
           finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
             source v m probeEnergy broadening disorderStrength hbar pMax radius p i j *
           sigmaZ j j) := by
-  have hk0 :
-      polarFourierZerothAngularKernel (-(p * radius * hbar⁻¹)) =
-        polarFourierZerothAngularKernel (p * radius * hbar⁻¹) :=
-    polarFourierZerothAngularKernel_neg _
-  have hk1 :
-      polarFourierFirstCosineAngularKernel (-(p * radius * hbar⁻¹)) =
-        -polarFourierFirstCosineAngularKernel (p * radius * hbar⁻¹) :=
-    polarFourierFirstCosineAngularKernel_neg _
-  have hk2 :
-      polarFourierSecondCosineAngularKernel (-(p * radius * hbar⁻¹)) =
-        polarFourierSecondCosineAngularKernel (p * radius * hbar⁻¹) :=
-    polarFourierSecondCosineAngularKernel_neg _
+  have harg : p * (-radius) / hbar = -(p * radius / hbar) := by
+    ring
   fin_cases source <;> fin_cases i <;> fin_cases j <;>
-    simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
-      gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
-      hk0, hk1, hk2, sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX,
-      InternalSpace.pauliY, InternalSpace.pauliZ] <;>
+    unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel <;>
+    rw [harg] <;>
+    simp [gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
+      InternalSpace.pauliZ] <;>
     ring
 
 /-- Reversing the radial coordinate changes the crossed current block by `σ_z`
