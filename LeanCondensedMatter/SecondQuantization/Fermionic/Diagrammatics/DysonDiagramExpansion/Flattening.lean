@@ -133,18 +133,18 @@ positions** — pulls out both imaginary-time evolution scalars and uses the Com
 exchange theorem for the remaining bare operators. -/
 theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) :
-    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    ScalarExchange.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLegOperatorForSequence ε q τ p) (quarticLegOperatorForSequence ε q τ p') =
       flatVertexLegCommutatorCoeff ε q τ p p' •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
-    LinearMap.zetaCommutator_smul_smul]
+    ScalarExchange.zetaCommutator_smul_smul]
   have hlocal := Common.QuarticLocalLeg.exchangeCommutator_operator
     (Mode := Mode) (Config := Occupation Mode) Common.Statistics.fermion
     (Common.quarticLocalLeg (q (flatVertexIndex n p)) (flatLocalLeg n p))
     (Common.quarticLocalLeg (q (flatVertexIndex n p')) (flatLocalLeg n p'))
   change
-    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    ScalarExchange.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
         (quarticLocalLegOperator (q (flatVertexIndex n p')) (flatLocalLeg n p')) =
       Common.QuarticLocalLeg.exchangeCoeff Common.Statistics.fermion
