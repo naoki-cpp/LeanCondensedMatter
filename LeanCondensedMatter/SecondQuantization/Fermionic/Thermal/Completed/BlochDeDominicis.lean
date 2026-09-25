@@ -574,9 +574,13 @@ theorem completedFreeGibbsExpectation_pair_eq
   have h := completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     ε β hsum 0 C [D] (by simp) hne
   have hpeel :
-      (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C [D]) =
+      (completedFreeGibbsDensityOperator ε β hsum).expectation
+          (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C [D]) =
         C.anticommutatorValue D := by
-    simp [ScalarExchange.peelSum]
+    have hone :
+        (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) =
+          ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := rfl
+    simp [ScalarExchange.peelSum, hone]
   rw [hpeel] at h
   exact h
 
