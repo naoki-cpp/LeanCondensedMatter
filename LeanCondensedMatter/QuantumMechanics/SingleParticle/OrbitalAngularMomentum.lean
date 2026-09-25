@@ -3,10 +3,10 @@ import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 set_option linter.style.header false
 
 /-!
-# Algebraic orbital-angular-momentum commutators
+# Single-particle orbital-angular-momentum commutators
 
-This module records the representation-independent linear-map algebra needed to distinguish
-continuum-like orbital angular momentum from an internal degree of freedom.
+This module records the one-particle operator algebra needed to distinguish continuum-like orbital
+angular momentum from an internal degree of freedom.
 
 For four endomorphisms playing the roles of `X`, `Y`, `Pₓ`, and `Pᵧ`, define
 
@@ -27,10 +27,14 @@ continuum specialization `Pᵢ = -i ℏ ∂ᵢ`, one has schematically
 may automatically be fed through a localizer-commuting conventional-current theorem.
 
 No unbounded-operator or second-quantization structure is used here. Generic commutator product and
-additivity rules are owned upstream by `Analysis.Operator.LinearCommutator`.
+additivity rules remain owned upstream by `Analysis.Operator.LinearCommutator`; this module owns
+the orbital-angular-momentum interpretation and continuum-sign specialization.
 -/
 
-namespace ConservationLaw
+namespace QuantumMechanics
+namespace SingleParticle
+
+open ConservationLaw
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
@@ -108,4 +112,5 @@ theorem linearCommutator_orbitalAngularMomentumZ_continuum_sign
   exact linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers
     M X Y Px Py Dx Dy (Complex.I * (ℏ : ℂ)) hX hY hPx hPy
 
-end ConservationLaw
+end SingleParticle
+end QuantumMechanics

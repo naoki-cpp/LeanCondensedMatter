@@ -80,7 +80,7 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
   for the named time-ordered external-field construction: swapping both fields and times produces
   the fermionic statistics sign.
-- `ConservationLaw.linearCommutator_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
+- `QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
   specialization fixing the derivative-localizer coefficient to `iℏ`; it records the expected
   orbital-angular-momentum localization commutator rather than a proof-routing alias.
 - `LinearPMap.resolventApproximationEvolution_continuous` — canonical operator-norm continuity
