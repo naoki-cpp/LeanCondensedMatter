@@ -53491,6 +53491,216 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime), 0 ≤ self.pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime.cutoff_nonneg",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain",
+    "externalAxioms": [],
+    "docString": "The radial integration interval is oriented in the physical direction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  self.probeEnergy ^ 2 - self.m ^ 2 < self.v ^ 2 * self.pMax ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime.cutoff_shell",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain",
+    "externalAxioms": [],
+    "docString": "The cutoff contains the metallic shell. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime), 0 < self.disorderStrength",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime.disorder_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain",
+    "externalAxioms": [],
+    "docString": "The fixed-disorder boundary is taken at positive scalar disorder strength. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime), self.hbar ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime.hbar_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain",
+    "externalAxioms": [],
+    "docString": "The momentum-measure normalization is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime), |self.m| < self.probeEnergy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime.metallic",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain",
+    "externalAxioms": [],
+    "docString": "The probe energy lies in the metallic shell. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime), self.v ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime.velocity_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain",
+    "externalAxioms": [],
+    "docString": "The velocity enters denominator and radial-change-of-variable formulas nontrivially. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters), 0 < self.impurityDensity",
     "standardAxioms": [
       "Classical.choice",
@@ -67142,7 +67352,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                Filter.Tendsto\n                  (fun broadening =>\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector v m\n                      probeEnergy broadening disorderStrength hbar pMax)\n                  (nhdsWithin 0 (Set.Ioi 0))\n                  (nhds\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector regime.v regime.m\n          regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n          regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67502,7 +67712,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                        0 0 e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (e : ℝ) (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n          regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n            0 0 e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n            e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67672,7 +67882,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                        0 1 e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (e : ℝ) (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n          regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n            0 1 e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n            e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67886,7 +68096,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                Filter.Tendsto\n                  (fun broadening =>\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                      i j v m probeEnergy broadening disorderStrength hbar pMax)\n                  (nhdsWithin 0 (Set.Ioi 0))\n                  (nhds\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                      i j v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (i j : Fin 2) (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n          i j regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          i j regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68175,7 +68385,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured source : Fin 2) (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        measured source)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                            e v m probeEnergy disorderStrength hbar pMax).component\n                        measured source))",
+    "statement": "∀ (measured source : Fin 2) (e : ℝ)\n  (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n          regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar\n                regime.pMax).component\n            measured source)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax).component\n            measured source))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
