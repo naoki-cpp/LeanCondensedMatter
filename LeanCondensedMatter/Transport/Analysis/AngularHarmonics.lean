@@ -50,13 +50,13 @@ def eval {E : Type*} [AddCommMonoid E] [Module ℂ E]
 end AngularHarmonicCoefficients
 
 /-- Full-angle integral of the complexified first cosine harmonic. -/
-theorem integral_complex_cos_zero_two_pi :
+private theorem integral_complex_cos_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
   simpa using
     (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
 
 /-- Full-angle integral of the complexified first sine harmonic. -/
-theorem integral_complex_sin_zero_two_pi :
+private theorem integral_complex_sin_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
   simpa using
     (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
@@ -90,7 +90,7 @@ theorem integral_cos_sq_zero_two_pi :
   linarith
 
 /-- The complexified second cosine harmonic integrates to zero over a full polar angle. -/
-theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
+private theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) = 0 := by
   calc
@@ -112,7 +112,7 @@ theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
       simp
 
 /-- The complexified mixed second harmonic integrates to zero over a full polar angle. -/
-theorem integral_complex_cos_mul_sin_zero_two_pi :
+private theorem integral_complex_cos_mul_sin_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
   calc
@@ -183,27 +183,17 @@ theorem AngularHarmonicCoefficients.integral_eval
     integral_complex_cos_mul_sin_zero_two_pi]
   simp
 
-/-- Full-angle integration of a constant plus first complex harmonics in a complex Banach space. -/
-theorem integral_const_add_complex_cos_smul_add_complex_sin_smul
-    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
-    (x₀ xCos xSin : E) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      x₀ + ((Real.cos θ : ℝ) : ℂ) • xCos + ((Real.sin θ : ℝ) : ℂ) • xSin) =
-      (2 * Real.pi : ℝ) • x₀ := by
-  let coefficients : AngularHarmonicCoefficients E :=
-    { constant := x₀
-      firstCosine := xCos
-      firstSine := xSin
-      secondCosine := 0
-      secondMixed := 0 }
-  simpa [coefficients, AngularHarmonicCoefficients.eval] using coefficients.integral_eval
-
 /-- A complex linear combination of the first sine and cosine harmonics integrates to zero. -/
 theorem integral_complex_cos_mul_add_sin_mul_zero_two_pi (cCos cSin : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
-  simpa [smul_eq_mul] using
-    (integral_const_add_complex_cos_smul_add_complex_sin_smul (0 : ℂ) cCos cSin)
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := cCos
+      firstSine := cSin
+      secondCosine := 0
+      secondMixed := 0 }
+  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using coefficients.integral_eval
 
 /-- Full-angle integral of a real quadratic polynomial in the first cosine harmonic. -/
 theorem integral_quadratic_cos_zero_two_pi (a b c : ℝ) :
