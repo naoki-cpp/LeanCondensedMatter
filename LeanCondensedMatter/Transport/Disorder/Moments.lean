@@ -163,7 +163,7 @@ theorem mul_exactSecondMoment_of_commutes
           simp only [mul_assoc]
     _ = ((ensemble.impurityPotential ω).1 * left) * kernel *
         (ensemble.impurityPotential ω).1 := by
-          rw [(hcommute ω).eq]
+          rw [← (hcommute ω).eq]
     _ = (ensemble.impurityPotential ω).1 * (left * kernel) *
         (ensemble.impurityPotential ω).1 := by
           simp only [mul_assoc]
