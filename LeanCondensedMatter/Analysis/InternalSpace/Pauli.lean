@@ -258,7 +258,8 @@ theorem eq_pauliAffine_coefficients (M : PauliMatrix) :
     simpa [pow_two] using Complex.I_mul_I
   ext i j
   fin_cases i <;> fin_cases j
-  · change M 0 0 = (M 0 0 + M 1 1) / 2 + (M 0 0 - M 1 1) / 2
+  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
+      pauliX, pauliY, pauliZ]
     ring
   · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
       pauliX, pauliY, pauliZ]
@@ -270,7 +271,8 @@ theorem eq_pauliAffine_coefficients (M : PauliMatrix) :
     ring_nf
     simp only [hI]
     ring
-  · change M 1 1 = (M 0 0 + M 1 1) / 2 - (M 0 0 - M 1 1) / 2
+  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
+      pauliX, pauliY, pauliZ]
     ring
 
 /-- Conjugation by `σ_z` leaves the scalar Pauli coefficient unchanged. -/
@@ -306,7 +308,10 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
 @[simp] theorem pauliVectorCoefficient_neg (M : PauliMatrix) :
     pauliVectorCoefficient (-M) = -pauliVectorCoefficient M := by
   funext axis
-  cases axis <;> simp [pauliVectorCoefficient] <;> ring
+  cases axis
+  · simp [pauliVectorCoefficient] <;> ring
+  · simp [pauliVectorCoefficient] <;> ring
+  · simp [pauliVectorCoefficient]
 
 /-- Trace of two Pauli-affine matrices in scalar/vector coefficient form. -/
 theorem trace_pauliAffine_mul_pauliAffine
