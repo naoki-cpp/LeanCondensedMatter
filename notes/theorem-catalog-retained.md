@@ -240,3 +240,25 @@ or consumer structure changes.
 - `Combinatorics.Pairing.insertFirstPair_eraseZeroPair` — canonical erase/insert round-trip law:
   erasing the pair containing position zero and reinserting it recovers the original pairing. It is
   the left-inverse law underlying `Pairing.equivSigma`, not merely one-use proof routing.
+- `SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even` — canonical
+  component-parity theorem: every connected external-insertion component carries an even number of
+  one-legged external insertions.
+- `SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem` — semantic
+  normalization rule for the external-insertion flattened-leg component predicate, identifying it
+  with membership of the incident vertex in the component part.
+- `Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv` — canonical reconstruction law for
+  flattened finite block coordinates; it is the inverse-direction companion to
+  `blockEquiv_cast_mul_add` and is useful independently of its compiled-consumer count.
+- `LeanCondensedMatter.Crystal.reciprocalPairing_isSymm` — canonical symmetry property of the
+  normalized reciprocal pairing used to construct crystallographic reciprocal bases and lattices.
+- `LinearPMap.stoneEvolution_apply_hasDerivAt_zero` — Stone-generator endpoint identifying the
+  derivative at zero of the strong Stone evolution with `-iA` on the operator domain.
+- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral`
+  — model-level T-matrix provenance theorem exposing the finite-cutoff radial Green-loop integral
+  and its single physical momentum-measure prefactor.
+- `QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset`
+  — model-specific uniform separation bound between the mass-window margin and the shifted
+  opposite-band energy denominator.
+- `SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator` —
+  canonical completed-space CAR statement for the unified thermal ladder operator, expressing its
+  anticommutator as the scalar CAR coefficient times the identity.

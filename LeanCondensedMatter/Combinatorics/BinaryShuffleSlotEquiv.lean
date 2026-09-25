@@ -187,13 +187,6 @@ noncomputable def SlotShuffle.sdiffLeftSlotsOrderEquiv {m n : ℕ}
   (((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots).orderIsoOfFin
     σ.card_sdiff_leftSlots).toEquiv
 
-theorem SlotShuffle.sdiffLeftSlotsOrderEquiv_val {m n : ℕ}
-    (σ : SlotShuffle m n) (j : Fin n) :
-    ((σ.sdiffLeftSlotsOrderEquiv j :
-      ↥((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots)) : Fin (m + n)) =
-      σ.slotEquiv (Sum.inr j) := by
-  exact σ.sdiffLeftSlots_orderEmbOfFin j
-
 /-- A slot shuffle is uniquely determined by the ambient positions of its left slots. -/
 theorem SlotShuffle.eq_of_leftSlots_eq {m n : ℕ} {σ τ : SlotShuffle m n}
     (hslots : σ.leftSlots = τ.leftSlots) : σ = τ := by
