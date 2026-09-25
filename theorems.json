@@ -14446,9 +14446,9 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
-      "ContinuousLinearMap.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
       "QuantumTheory.exp_neg_beta_energy_le_gibbs_diagonal",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
+      "_private.LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality.0.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
       "gibbs_peierls_bogoliubov_eq_iff_eigenvector",
       "peierls_bogoliubov"
     ],
@@ -14457,9 +14457,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
-      "ContinuousLinearMap.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
       "QuantumTheory.exp_neg_beta_energy_le_gibbs_diagonal",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
+      "_private.LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality.0.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
       "gibbs_peierls_bogoliubov_eq_iff_eigenvector",
       "peierls_bogoliubov"
     ],
@@ -14664,47 +14664,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.spectralTrace_comp_comm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (b : OrthonormalBasis ι ℂ H) (E : ι → ℝ),\n  (∀ (i : ι), ↑T (b i) = ↑(E i) • b i) → ∀ (x : H), T.diagonalExpectationValue hT x = ∑ i, E i * ‖(b.repr x).ofLp i‖ ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
-    "module": "LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite",
-    "externalAxioms": [],
-    "docString": "In finite dimension, the lossless diagonal expectation of a self-adjoint operator is the\nweighted sum of the eigenvalues in any supplied orthonormal eigenbasis, with squared basis\ncoordinates as weights. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -15910,45 +15869,6 @@
       "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {α : Type u_2} {l : Filter α} [l.NeBot]\n  {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}, Filter.Tendsto F l (nhds T) → (∀ᶠ (i : α) in l, (F i).IsPositive) → T.IsPositive",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.isPositive_of_tendsto",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive",
-    "externalAxioms": [],
-    "docString": "Positivity is closed under convergence in the continuous-linear-map topology. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "HilbertBasis.diagonalOp_isPositive"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "HilbertBasis.diagonalOp_isPositive"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21905,64 +21825,25 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "HilbertBasis.diagonalOp_isPositive",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive",
+    "module": "LeanCondensedMatter.Analysis.Operator.Diagonal",
     "externalAxioms": [],
     "docString": "A diagonal operator with summable real nonnegative coefficients is positive. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "HilbertBasis.diagonalOpSpectralTraceClass",
-      "HilbertBasis.diagonalOp_isSelfAdjoint"
+      "HilbertBasis.diagonalOpSpectralTraceClass"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isPositive_of_tendsto",
-      "HilbertBasis.hasSum_diagonalTerm"
+      "HilbertBasis.hasSum_diagonalTerm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Diagonal.0.HilbertBasis.isPositive_of_tendsto"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "HilbertBasis.diagonalOpSpectralTraceClass",
-      "HilbertBasis.diagonalOp_isSelfAdjoint",
       "QuantumTheory.diagonalDensityOperator"
     ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (b : HilbertBasis ι ℂ H) (a : ι → ℝ),\n  (Summable fun i => ‖a i‖) → (∀ (i : ι), 0 ≤ a i) → IsSelfAdjoint (b.diagonalOp fun i => ↑(a i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "HilbertBasis.diagonalOp_isSelfAdjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive",
-    "externalAxioms": [],
-    "docString": "A diagonal operator with summable real nonnegative coefficients is self-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "HilbertBasis.diagonalOp_isPositive"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23369,7 +23250,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "L2MultiplicationRealLine.multiplicationLinear_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear",
+    "module": "LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -26112,43 +25993,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (B : H →L[ℂ] H)\n  (x : H), Continuous fun t => (LinearPMap.boundedUnitaryEvolution B t) x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.boundedUnitaryEvolution_apply_continuous",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise",
-    "externalAxioms": [],
-    "docString": "Operator-norm continuity of the bounded evolution implies strong continuity on every vector. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_continuous"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (B : H →L[ℂ] H)\n  (t : ℝ) (x : H),\n  HasDerivAt (fun τ => (LinearPMap.boundedUnitaryEvolution B τ) x)\n    ((LinearPMap.boundedUnitaryEvolution B t * -Complex.I • B) x) t",
     "standardAxioms": [
@@ -26163,7 +26007,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "The bounded-generator differential equation after evaluating the propagator on a vector. ",
     "directWrapperTargetModule": null,
@@ -26247,7 +26091,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -26259,17 +26103,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_apply_continuous",
       "LinearPMap.resolventApproximationEvolution_continuous"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_apply_continuous",
       "LinearPMap.resolventApproximationEvolution_continuous"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28409,10 +28251,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.resolventApproximationEvolution_apply_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
     "dependents": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero"
@@ -28904,13 +28746,13 @@
       "LinearPMap.norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain",
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_continuousAt",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_eq",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
       "LinearPMap.resolventEvolutionStrongLimitOperator_inner_map_map",
       "LinearPMap.resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm",
       "LinearPMap.resolventEvolutionStrongLimitOperator_star",
       "LinearPMap.resolventEvolutionStrongLimitOperator_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
     "dependencies": [],
@@ -28920,13 +28762,13 @@
       "LinearPMap.norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain",
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_continuousAt",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_eq",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
       "LinearPMap.resolventEvolutionStrongLimitOperator_inner_map_map",
       "LinearPMap.resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm",
       "LinearPMap.resolventEvolutionStrongLimitOperator_star",
       "LinearPMap.resolventEvolutionStrongLimitOperator_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
     "compiledConsumerCount": 11,
@@ -29166,7 +29008,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
     "externalAxioms": [],
     "docString": "Strong Stone derivative on the preserved generator domain. ",
     "directWrapperTargetModule": null,
@@ -29174,57 +29016,13 @@
     "dependents": [],
     "dependencies": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_domain",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_mem_domain"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_mem_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain) (s : ℝ),\n  HasDerivAt (fun t => (A.resolventEvolutionStrongLimitOperator hA t) ↑x)\n    (-Complex.I • (A.resolventEvolutionStrongLimitOperator hA s) (↑A x)) s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation",
-    "externalAxioms": [],
-    "docString": "The limiting evolution satisfies its strong generator equation at arbitrary time, with the\nright-hand side written as the evolved generator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29242,7 +29040,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -29255,7 +29053,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_apply",
@@ -29272,7 +29070,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29863,9 +29661,9 @@
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "dependencies": [
       "LinearPMap.resolventApproximationEvolution_add",
@@ -29877,9 +29675,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -29995,9 +29793,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_star",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_zero"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "dependencies": [
       "LinearPMap.resolventApproximationEvolutionAtScale_zero",
@@ -30006,9 +29804,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_star",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_zero"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -50589,20 +50387,20 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul",
+      "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
-      "QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
-      "QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
-      "QuantumTheory.Transport.integral_complex_sin_zero_two_pi"
+      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
+      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
+      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
+      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_sin_zero_two_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul",
+      "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
     ],
     "compiledConsumerCount": 3,
@@ -58370,6 +58168,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
     ],
@@ -58377,10 +58176,49 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n      source v m probeEnergy broadening disorderStrength hbar pMax (-radius) =\n    -(QuantumTheory.Transport.Models.MassiveDirac.sigmaZ *\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n            source v m probeEnergy broadening disorderStrength hbar pMax radius *\n        QuantumTheory.Transport.Models.MassiveDirac.sigmaZ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "Reversing the radial coordinate changes the crossed current block by `σ_z`\nconjugation together with the sign of the in-plane current insertion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59144,7 +58982,8 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -59152,9 +58991,48 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n      probeEnergy broadening disorderStrength hbar pMax (-radius) =\n    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ *\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n          probeEnergy broadening disorderStrength hbar pMax radius *\n      QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by\n`σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic\nchannel is odd. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72689,209 +72567,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * ↑(Real.sin θ) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "The complexified mixed second harmonic integrates to zero over a full polar angle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "The complexified second cosine harmonic integrates to zero over a full polar angle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integral of the complexified first cosine harmonic. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.sin θ) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_complex_sin_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integral of the complexified first sine harmonic. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E] [CompleteSpace E] (x₀ xCos xSin : E),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, x₀ + ↑(Real.cos θ) • xCos + ↑(Real.sin θ) • xSin = (2 * Real.pi) • x₀",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integration of a constant plus first complex harmonics in a complex Banach space. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -73920,7 +73601,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (-z) =\n    -QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
@@ -73939,15 +73620,21 @@
     "docString": "The first-cosine full-angle radial Fourier kernel is odd in its radial argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73958,15 +73645,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (-z) =\n    QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -73977,15 +73664,19 @@
     "docString": "The second-cosine full-angle radial Fourier kernel is even in its radial argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73996,7 +73687,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierZerothAngularKernel (-z) =\n    QuantumTheory.Transport.polarFourierZerothAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
@@ -74015,15 +73706,21 @@
     "docString": "The zeroth full-angle radial Fourier kernel is even in its radial argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132413,6 +132110,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (b : OrthonormalBasis ι ℂ H) (E : ι → ℝ),\n  (∀ (i : ι), ↑T (b i) = ↑(E i) • b i) → ∀ (x : H), T.diagonalExpectationValue hT x = ∑ i, E i * ‖(b.repr x).ofLp i‖ ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality.0.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality",
+    "externalAxioms": [],
+    "docString": "In finite dimension, the lossless diagonal expectation of a self-adjoint operator is the\nweighted sum of the eigenvalues in any supplied orthonormal eigenbasis, with squared basis\ncoordinates as weights. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {R : Type u_3} [inst : Fintype α] [inst_1 : Fintype β] [inst_2 : NormedCommRing R]\n  (e : α ≃ β) (f : β → ℕ → R) (a : β → R),\n  HasSum (fun n => ∏ i, f (e i) (n i)) (∏ i, a (e i)) → HasSum (fun n => ∏ i, f i (n i)) (∏ i, a i)",
     "standardAxioms": [
       "Classical.choice",
@@ -133930,6 +133668,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {α : Type u_2} {l : Filter α} [l.NeBot]\n  {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}, Filter.Tendsto F l (nhds T) → (∀ᶠ (i : α) in l, (F i).IsPositive) → T.IsPositive",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Diagonal.0.HilbertBasis.isPositive_of_tendsto",
+    "module": "LeanCondensedMatter.Analysis.Operator.Diagonal",
+    "externalAxioms": [],
+    "docString": "Positivity is closed under convergence in the continuous-linear-map topology. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "HilbertBasis.diagonalOp_isPositive"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "HilbertBasis.diagonalOp_isPositive"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (r : ℝ) (z w : ℂ), inner ℂ (↑r * z) w = inner ℂ z (↑r * w)",
     "standardAxioms": [
       "Classical.choice",
@@ -135105,6 +134882,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvolution_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain) (s : ℝ),\n  HasDerivAt (fun t => (A.resolventEvolutionStrongLimitOperator hA t) ↑x)\n    (-Complex.I • (A.resolventEvolutionStrongLimitOperator hA s) (↑A x)) s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
+    "externalAxioms": [],
+    "docString": "The limiting evolution satisfies its strong generator equation at arbitrary time, with the\nright-hand side written as the evolved generator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt"
+    ],
+    "dependencies": [
+      "LinearPMap.resolventEvolutionStrongLimitOperator_apply",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero",
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "LinearPMap.resolventEvolutionStrongLimit_zero_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -156571,6 +156392,162 @@
   },
   {
     "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * ↑(Real.sin θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
+    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "The complexified mixed second harmonic integrates to zero over a full polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
+    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "The complexified second cosine harmonic integrates to zero over a full polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
+    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Full-angle integral of the complexified first cosine harmonic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.sin θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_sin_zero_two_pi",
+    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Full-angle integral of the complexified first sine harmonic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (angle θ : ℝ) (a b c d e : ℂ),\n  a + ↑(Real.cos (θ + angle)) * b + ↑(Real.sin (θ + angle)) * c +\n        (↑(Real.cos (θ + angle)) ^ 2 - ↑(Real.sin (θ + angle)) ^ 2) * d +\n      ↑(Real.cos (θ + angle)) * ↑(Real.sin (θ + angle)) * e =\n    a + ↑(Real.cos θ) * (↑(Real.cos angle) * b + ↑(Real.sin angle) * c) +\n          ↑(Real.sin θ) * (-↑(Real.sin angle) * b + ↑(Real.cos angle) * c) +\n        (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) *\n          ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * d + ↑(Real.cos angle) * ↑(Real.sin angle) * e) +\n      ↑(Real.cos θ) * ↑(Real.sin θ) *\n        (-4 * (↑(Real.cos angle) * ↑(Real.sin angle)) * d + (↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * e)",
     "standardAxioms": [
       "Classical.choice",
@@ -159442,6 +159419,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)\n  (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n      broadening disorderStrength hbar pMax (-radius) p i j =\n    QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i *\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n          probeEnergy broadening disorderStrength hbar pMax radius p i j *\n      QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (hbar : ℝ), hbar ≠ 0 → 0 < QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar",
     "standardAxioms": [
       "Classical.choice",
@@ -161532,6 +161551,49 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n      source v m probeEnergy broadening disorderStrength hbar pMax (-radius) p i j =\n    -(QuantumTheory.Transport.Models.MassiveDirac.sigmaZ i i *\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j *\n        QuantumTheory.Transport.Models.MassiveDirac.sigmaZ j j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (factor : ℂ),\n  QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector✝ source factor 0 •\n        QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n      QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector✝ source factor 1 •\n        QuantumTheory.Transport.Models.MassiveDirac.sigmaY =\n    factor • QuantumTheory.Transport.Models.MassiveDirac.directionPauli source",
     "standardAxioms": [
       "Classical.choice",
@@ -162430,7 +162492,7 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue",
-      "ContinuousLinearMap.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
+      "_private.LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality.0.diagonalExpectationValue_eq_sum_orthonormal_eigenbasis",
       "cfc_apply_eigenvector",
       "exp_tangent_weighted_sum_eq_support"
     ],
