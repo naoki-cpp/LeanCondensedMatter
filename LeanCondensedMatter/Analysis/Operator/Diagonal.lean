@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.Compact
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
+import Mathlib.Analysis.InnerProductSpace.Positive
 
 /-!
 # Hilbert-basis diagonal operators
@@ -10,13 +11,45 @@ This module constructs the bounded operator
 `∑' i, a i • |b i⟩⟨b i|`
 
 from a Hilbert basis `b` and an absolutely summable scalar family `a`. This neutral operator layer
-is reused by Fredholm, density-state, and Gibbs constructions; it does not assert positivity or
-spectral trace-class membership.
+is reused by Fredholm, density-state, and Gibbs constructions. It also records positivity for
+summable nonnegative real coefficients, while spectral trace-class membership remains downstream.
 -/
 
 noncomputable section
 
+open Filter Topology
+open scoped ComplexOrder
+
 namespace HilbertBasis
+
+/-- Positivity is closed under convergence in the continuous-linear-map topology. -/
+private theorem isPositive_of_tendsto {α : Type*} {l : Filter α} [NeBot l]
+    {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}
+    (hF : Tendsto F l (𝓝 T)) (hpos : ∀ᶠ i in l, (F i).IsPositive) : T.IsPositive := by
+  rw [ContinuousLinearMap.isPositive_iff]
+  constructor
+  · intro x y
+    have happly_x : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
+      ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
+    have happly_y : Tendsto (fun i => F i y) l (𝓝 (T y)) :=
+      ((ContinuousLinearMap.apply ℂ H y).continuous.tendsto T).comp hF
+    have hleft : Tendsto (fun i => inner ℂ (F i x) y) l (𝓝 (inner ℂ (T x) y)) :=
+      happly_x.inner tendsto_const_nhds
+    have hright : Tendsto (fun i => inner ℂ x (F i y)) l (𝓝 (inner ℂ x (T y))) :=
+      tendsto_const_nhds.inner happly_y
+    have heq : ∀ᶠ i in l, inner ℂ (F i x) y = inner ℂ x (F i y) :=
+      hpos.mono fun i hi => hi.isSymmetric x y
+    have hright' : Tendsto (fun i => inner ℂ (F i x) y) l (𝓝 (inner ℂ x (T y))) :=
+      (tendsto_congr' heq).mpr hright
+    exact tendsto_nhds_unique hleft hright'
+  · intro x
+    have happly : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
+      ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
+    have hinner : Tendsto (fun i => inner ℂ (F i x) x) l (𝓝 (inner ℂ (T x) x)) :=
+      happly.inner tendsto_const_nhds
+    exact isClosed_Ici.mem_of_tendsto hinner
+      (hpos.mono fun i hi => hi.inner_nonneg_left x)
+
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -86,5 +119,28 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (f := diagonalOp b a) ?_ ?_
   · exact hasSum_diagonalTerm b a ha
   · exact Filter.Eventually.of_forall hfinite
+
+
+/-- A diagonal operator with summable real nonnegative coefficients is positive. -/
+theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
+    (diagonalOp b (fun i => (a i : ℂ))).IsPositive := by
+  classical
+  let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
+  let F : Finset ι → H →L[ℂ] H := fun s =>
+    ∑ i ∈ s, diagonalTerm b (fun i => (a i : ℂ)) i
+  have hFpos (s : Finset ι) : (F s).IsPositive := by
+    unfold F
+    apply ContinuousLinearMap.isPositive_sum
+    intro i hi
+    have hcoeff : 0 ≤ (a i : ℂ) :=
+      (RCLike.ofReal_nonneg (K := ℂ)).mpr (ha_nonneg i)
+    simpa [diagonalTerm] using
+      (InnerProductSpace.isPositive_rankOne_self (𝕜 := ℂ) (b i)).smul_of_nonneg hcoeff
+  apply isPositive_of_tendsto
+    (l := Filter.atTop)
+    (F := F) (T := diagonalOp b (fun i => (a i : ℂ)))
+  · exact hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac
+  · exact Filter.Eventually.of_forall hFpos
 
 end HilbertBasis
