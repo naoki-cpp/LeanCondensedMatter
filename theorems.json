@@ -50461,6 +50461,161 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] {ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble}\n  {charge : H →L[ℂ] H}, ensemble.ChargeSymmetry charge → Commute (↑ensemble.baseHamiltonian) charge",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.baseHamiltonian_commute",
+    "module": "LeanCondensedMatter.Transport.Disorder.Ward",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] {ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble}\n  {charge : H →L[ℂ] H},\n  ensemble.ChargeSymmetry charge →\n    ∀ (kernel : H →L[ℂ] H), charge * ensemble.exactSecondMoment kernel = ensemble.exactSecondMoment (charge * kernel)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.charge_mul_secondMoment",
+    "module": "LeanCondensedMatter.Transport.Disorder.Ward",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] {ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble}\n  {charge : H →L[ℂ] H},\n  Commute (↑ensemble.baseHamiltonian) charge →\n    (∀ (ω : Ω), Commute (↑(ensemble.impurityPotential ω)) charge) → ensemble.ChargeSymmetry charge",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute",
+    "module": "LeanCondensedMatter.Transport.Disorder.Ward",
+    "externalAxioms": [],
+    "docString": "Pointwise commutation of every impurity potential with the charge is sufficient for the\nsecond-moment equivariance required by `ChargeSymmetry`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] {ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble}\n  {charge : H →L[ℂ] H},\n  ensemble.ChargeSymmetry charge →\n    ∀ (kernel : H →L[ℂ] H), ensemble.exactSecondMoment kernel * charge = ensemble.exactSecondMoment (kernel * charge)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.secondMoment_mul_charge",
+    "module": "LeanCondensedMatter.Transport.Disorder.Ward",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] {ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble}\n  {energy broadening : ℝ} (self : ensemble.FiniteSCBASolution energy broadening), 0 < broadening",
     "standardAxioms": [
       "Classical.choice",
@@ -50599,7 +50754,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_isUnit",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_mul_retardedShift",
@@ -50610,9 +50766,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_isUnit",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50650,6 +50807,53 @@
       "QuantumTheory.Transport.IsSelfEnergy.of_shift",
       "QuantumTheory.Transport.spectralResolvent_mul_spectralShift",
       "QuantumTheory.Transport.spectralShift_mul_spectralResolvent"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] {ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble}\n  {energy broadening : ℝ} (solution : ensemble.FiniteSCBASolution energy broadening) (charge : H →L[ℂ] H),\n  ensemble.ChargeSymmetry charge →\n    ∀\n      (hinvertible :\n        IsUnit\n          (1 -\n            ensemble.retardedAdvancedLadderCLM (solution.green QuantumTheory.Transport.SpectralSide.retarded)\n              (solution.green QuantumTheory.Transport.SpectralSide.advanced))),\n      (QuantumTheory.Transport.spectralParameter QuantumTheory.Transport.SpectralSide.advanced energy broadening -\n            QuantumTheory.Transport.spectralParameter QuantumTheory.Transport.SpectralSide.retarded energy broadening) •\n          (solution.green QuantumTheory.Transport.SpectralSide.retarded *\n              QuantumTheory.Transport.resummedLadderVertex\n                (ensemble.retardedAdvancedLadderCLM (solution.green QuantumTheory.Transport.SpectralSide.retarded)\n                  (solution.green QuantumTheory.Transport.SpectralSide.advanced))\n                hinvertible charge *\n            solution.green QuantumTheory.Transport.SpectralSide.advanced) =\n        solution.green QuantumTheory.Transport.SpectralSide.retarded * charge -\n          charge * solution.green QuantumTheory.Transport.SpectralSide.advanced",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
+    "module": "LeanCondensedMatter.Transport.Disorder.Ward",
+    "externalAxioms": [],
+    "docString": "Finite SCBA/RA charge-vertex Ward consistency. Under the minimal charge-symmetry interface and\nthe same conditional ladder invertibility used by the generic resummation, the generic corrected\ncharge vertex `Γ_Q = (I - L_RA)⁻¹ Q` obeys\n\n`(zᴬ - zᴿ) • (Ḡᴿ Γ_Q Ḡᴬ) = Ḡᴿ Q - Q Ḡᴬ`.\n\nFor `Q = 1`, the right-hand side is `Ḡᴿ - Ḡᴬ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.baseHamiltonian_commute",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.charge_mul_secondMoment",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.secondMoment_mul_charge",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_mul_shift",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.selfEnergy_eq_secondMoment",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.shift_mul_green",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_sub",
+      "QuantumTheory.Transport.eq_resummedLadderVertex_of_fixedPoint",
+      "QuantumTheory.Transport.resummedLadderVertex_smul",
+      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -50753,7 +50957,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -50765,6 +50969,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub"
     ],
     "dependencies": [
@@ -50774,9 +50979,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50846,7 +51052,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_isUnit",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_mul_retardedShift",
@@ -50857,9 +51064,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_isUnit",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51133,16 +51341,20 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51182,6 +51394,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.FiniteScalarDisorderModel.exactSecondMoment_eq_strength_smul"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (kernel right : H →L[ℂ] H),\n  (∀ (ω : Ω), Commute (↑(ensemble.impurityPotential ω)) right) →\n    ensemble.exactSecondMoment kernel * right = ensemble.exactSecondMoment (kernel * right)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
+    "module": "LeanCondensedMatter.Transport.Disorder.Moments",
+    "externalAxioms": [],
+    "docString": "Right equivariance of the exact second moment. If every impurity potential commutes with a\nbounded operator, that operator can be moved through the right side of the second-moment action. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -51245,7 +51498,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -51257,15 +51510,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51345,6 +51600,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSelfEnergyOfRegulator_isSelfEnergy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left kernel : H →L[ℂ] H),\n  (∀ (ω : Ω), Commute (↑(ensemble.impurityPotential ω)) left) →\n    left * ensemble.exactSecondMoment kernel = ensemble.exactSecondMoment (left * kernel)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes",
+    "module": "LeanCondensedMatter.Transport.Disorder.Moments",
+    "externalAxioms": [],
+    "docString": "Left equivariance of the exact second moment. If every impurity potential commutes with a\nbounded operator, that operator can be moved through the left side of the second-moment action. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -71881,6 +72177,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
@@ -71891,10 +72188,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74423,6 +74721,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℂ V] (ladder : V →L[ℂ] V)\n  (hinvertible : IsUnit (1 - ladder)) (scalar : ℂ) (bareVertex : V),\n  QuantumTheory.Transport.resummedLadderVertex ladder hinvertible (scalar • bareVertex) =\n    scalar • QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.resummedLadderVertex_smul",
+    "module": "LeanCondensedMatter.Transport.Disorder.Ladder",
+    "externalAxioms": [],
+    "docString": "Resummed ladder vertices depend complex-linearly on the supplied bare vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (energy regulator : ℝ), (QuantumTheory.Transport.spectralParameterOfRegulator energy regulator).im = regulator",
     "standardAxioms": [
       "Classical.choice",
@@ -74587,6 +74924,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
@@ -74603,6 +74941,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
@@ -74613,7 +74952,7 @@
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74726,6 +75065,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
@@ -74744,6 +75084,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
@@ -74756,7 +75097,7 @@
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
