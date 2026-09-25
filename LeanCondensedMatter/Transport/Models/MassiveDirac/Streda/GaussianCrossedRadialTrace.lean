@@ -176,6 +176,89 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_sc
     finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
     finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral]
 
+/-- The radial `X` trace is a closed scalar expression in the canonical Pauli coefficients
+of the four positive-radius blocks. The two Green vectors are transformed by the exact `σ_z`
+conjugation action, so no negative-radius block or matrix trace remains on the right-hand side. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius =
+      let jx :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let gr :=
+        finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      let jy :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let ga :=
+        finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+      let a := InternalSpace.pauliScalarCoefficient jx
+      let b := InternalSpace.pauliScalarCoefficient gr
+      let c := InternalSpace.pauliScalarCoefficient jy
+      let d := InternalSpace.pauliScalarCoefficient ga
+      let u := InternalSpace.pauliVectorCoefficient jx
+      let vr :=
+        InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient gr)
+      let w := InternalSpace.pauliVectorCoefficient jy
+      let va :=
+        InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient ga)
+      2 *
+        ((a * b + dotProduct u vr) * (c * d + dotProduct w va) +
+          dotProduct
+            (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr)
+            (c • va + d • w + Complex.I • InternalSpace.pauliCross w va)) := by
+  simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
+    gaussianCrossedTraceKernel]
+  simp_rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius]
+  rw [InternalSpace.trace_four_eq_pauliCoefficients]
+  simp only [InternalSpace.pauliScalarCoefficient_pauliZ_conjugate,
+    InternalSpace.pauliVectorCoefficient_pauliZ_conjugate]
+
+/-- The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex
+conjugate. The final current vector and scalar carry the overall sign from
+`J_y(-r) = -σ_z J_y(r) σ_z`; all blocks on the right are evaluated at positive radius. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius =
+      let jx :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let gr :=
+        finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      let jy :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let a := InternalSpace.pauliScalarCoefficient jx
+      let b := InternalSpace.pauliScalarCoefficient gr
+      let c := InternalSpace.pauliScalarCoefficient gr
+      let d := -InternalSpace.pauliScalarCoefficient jy
+      let u := InternalSpace.pauliVectorCoefficient jx
+      let vr :=
+        InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient gr)
+      let w := InternalSpace.pauliVectorCoefficient gr
+      let vy :=
+        -InternalSpace.pauliZConjugateVector (InternalSpace.pauliVectorCoefficient jy)
+      let amplitude :=
+        2 *
+          ((a * b + dotProduct u vr) * (c * d + dotProduct w vy) +
+            dotProduct
+              (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr)
+              (c • vy + d • w + Complex.I • InternalSpace.pauliCross w vy))
+      amplitude + (starRingEnd ℂ) amplitude := by
+  simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
+    gaussianCrossedTraceKernel]
+  simp_rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius,
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius]
+  rw [InternalSpace.trace_four_eq_pauliCoefficients]
+  simp only [InternalSpace.pauliScalarCoefficient_pauliZ_conjugate,
+    InternalSpace.pauliVectorCoefficient_pauliZ_conjugate,
+    InternalSpace.pauliScalarCoefficient_neg, InternalSpace.pauliVectorCoefficient_neg]
+
 private theorem neg_polarPoint2D_zero (radius : ℝ) :
     -(polarPoint2D radius 0) = polarPoint2D (-radius) 0 := by
   funext i
