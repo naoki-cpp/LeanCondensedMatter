@@ -156,6 +156,22 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
             polarFourierSecondCosineAngularKernel (p * radius / hbar) *
               (harmonics p).secondCosine i j)
 
+/-- Scalar Pauli coefficient of a positive-radius Gaussian-crossed current block. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  InternalSpace.pauliScalarCoefficient
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      source v m probeEnergy broadening disorderStrength hbar pMax radius)
+
+/-- Axis-indexed Pauli coefficient of a positive-radius Gaussian-crossed current block. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+    (axis : PauliAxis) (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  InternalSpace.pauliVectorCoefficient
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      source v m probeEnergy broadening disorderStrength hbar pMax radius) axis
+
 /-- Each entry of the Gaussian-crossed radial current block is the physical momentum-measure
 prefactor times the integral of its scalar radial kernel. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
@@ -169,6 +185,68 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
           finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
             source v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
   rfl
+
+/-- The scalar Pauli coefficient of a radial crossed-current block is a scalar combination of its
+entry-kernel integrals. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+        source v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+          (∫ p in (0 : ℝ)..pMax,
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+              source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +
+        ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+          (∫ p in (0 : ℝ)..pMax,
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+              source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1)) / 2 := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+  rw [InternalSpace.pauliScalarCoefficient]
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral]
+
+/-- Each Pauli-vector component of a radial crossed-current block is a scalar combination of its
+entry-kernel integrals. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals
+    (axis : PauliAxis) (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        axis source v m probeEnergy broadening disorderStrength hbar pMax radius =
+      match axis with
+      | .x =>
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
+                finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +
+            ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
+                finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0)) / 2
+      | .y =>
+          Complex.I *
+            (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+                (∫ p in (0 : ℝ)..pMax,
+                  finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                    source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -
+              ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+                (∫ p in (0 : ℝ)..pMax,
+                  finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                    source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0)) / 2
+      | .z =>
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
+                finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -
+            ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
+                finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1)) / 2 := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+  cases axis <;>
+    simp only [InternalSpace.pauliVectorCoefficient] <;>
+    rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral]
 
 /-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to
 the one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. -/
