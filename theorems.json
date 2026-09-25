@@ -30235,7 +30235,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -30247,17 +30247,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58785,6 +58783,76 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  (InternalSpace.pauliScalarCoefficient fun i j =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel\n      source v m probeEnergy broadening disorderStrength hbar pMax radius p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The pointwise Gaussian-crossed radial current entry kernel has the explicit scalar\nfirst-cosine Pauli coefficient selected by the source direction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (source : Fin 2)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  InternalSpace.pauliVectorCoefficient\n      (fun i j =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n          source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)\n      axis =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel\n      axis source v m probeEnergy broadening disorderStrength hbar pMax radius p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The pointwise Gaussian-crossed radial current entry kernel has the explicit source-indexed\nPauli-vector coefficients in the zeroth, first-cosine, and second-cosine Fourier channels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (source : Fin 2)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n      axis source v m probeEnergy broadening disorderStrength hbar pMax radius =\n    match axis with\n    | InternalSpace.PauliAxis.x =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.y =>\n      Complex.I *\n          ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.z =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n        2",
     "standardAxioms": [
       "Classical.choice",
@@ -59754,6 +59822,76 @@
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y"
     ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  (InternalSpace.pauliScalarCoefficient fun i j =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n        probeEnergy broadening disorderStrength hbar pMax radius p i j) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarKernel side v m\n      probeEnergy broadening disorderStrength hbar pMax radius p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "The pointwise radial Green entry kernel has exactly the scalar coefficient carried by the\nzeroth angular Fourier channel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  InternalSpace.pauliVectorCoefficient\n      (fun i j =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n          probeEnergy broadening disorderStrength hbar pMax radius p i j)\n      axis =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliKernel axis side v m\n      probeEnergy broadening disorderStrength hbar pMax radius p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "The pointwise radial Green entry kernel carries the first angular Fourier channel in the\nin-plane x component, no y component on the radial axis, and the zeroth channel in z. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -70470,8 +70608,7 @@
     "dependents": [
       "QuantumTheory.Transport.PurePointOccupationInterpolation.probability_sub_eq_integral",
       "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "QuantumTheory.Transport.integral_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integral_purePointKuboBastinCommonVertexTransitionIntegrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -70479,10 +70616,9 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.PurePointOccupationInterpolation.probability_sub_eq_integral",
       "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "QuantumTheory.Transport.integral_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integral_purePointKuboBastinCommonVertexTransitionIntegrand"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73401,7 +73537,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ) (mn : ι × ι),\n  MeasureTheory.Integrable\n    (QuantumTheory.Transport.purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation measured\n      source omega eta mn)\n    MeasureTheory.volume",
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ),\n  MeasureTheory.Integrable\n    (QuantumTheory.Transport.finiteKuboBastinCommonVertexEnergyKernel system data interpolation measured source omega\n      eta)\n    MeasureTheory.volume",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73413,6 +73549,47 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel",
+    "module": "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonEnergyKernel"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonEnergyKernel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ) (mn : ι × ι),\n  MeasureTheory.Integrable\n    (QuantumTheory.Transport.purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation measured\n      source omega eta mn)\n    MeasureTheory.volume",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand",
     "module": "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
     "externalAxioms": [],
@@ -73420,6 +73597,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel",
       "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
     "dependencies": [
@@ -73429,9 +73607,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel",
       "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73532,7 +73711,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -73544,7 +73723,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy"
+      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy",
+      "SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonEnergyKernel"
     ],
     "dependencies": [
       "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand",
@@ -73553,9 +73733,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy"
+      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy",
+      "SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonEnergyKernel"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73935,7 +74116,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -73947,8 +74128,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
     "dependencies": [
       "MeasureTheory.integral_orientedIntervalIntegrand",
@@ -73957,10 +74137,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118703,7 +118882,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -118740,8 +118919,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonTransitionIntegrand"
+      "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -157441,84 +157619,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {ι : Type u_2} {E : Type u_3} [inst : Fintype Site] [inst_1 : Fintype ι] [inst_2 : LinearOrder Site]\n  [inst_3 : AddCommGroup E] [inst_4 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q omega eta : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonEnergyKernel system data interpolation geometry direction\n      K q omega eta =\n    QuantumTheory.Transport.finiteKuboBastinCommonVertexEnergyKernel system data interpolation\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K) omega\n      eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonEnergyKernel_eq_vertex",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {ι : Type u_2} {E : Type u_3} [inst : Fintype Site] [inst_1 : LinearOrder Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q omega eta : ℝ) (mn : ι × ι),\n  SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonTransitionIntegrand system data interpolation geometry\n      direction K q omega eta mn =\n    QuantumTheory.Transport.purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K) omega\n      eta mn",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonTransitionIntegrand_eq_vertex",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonTransitionIntegrand"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonTransitionIntegrand"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Site : Type u_1} {ι : Type u_2} {E : Type u_3} [inst : Fintype Site] [inst_1 : Fintype ι] [inst_2 : LinearOrder Site]\n  [inst_3 : AddCommGroup E] [inst_4 : _root_.Module ℝ E] (convention : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q omega eta : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteKuboBastinOccupationResolvedDirectionalConductivity convention system\n      data interpolation geometry direction K q omega eta =\n    SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonEnergyDirectionalConductivity convention system data\n      interpolation geometry direction K q omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -157541,99 +157641,12 @@
       "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonEnergyKernel_eq_vertex"
+      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {ι : Type u_2} {E : Type u_3} [inst : Fintype Site] [inst_1 : LinearOrder Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q omega eta : ℝ) (mn : ι × ι),\n  MeasureTheory.Integrable\n    (SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonTransitionIntegrand system data interpolation geometry\n      direction K q omega eta mn)\n    MeasureTheory.volume",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonTransitionIntegrand",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonEnergyKernel",
-      "SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonEnergyKernel"
-    ],
-    "dependencies": [
-      "MeasureTheory.integrable_orientedIntervalIntegrand",
-      "QuantumTheory.Transport.PurePointOccupationInterpolation.occupationDerivative_intervalIntegrable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.integrable_finiteKuboBastinCommonEnergyKernel",
-      "SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonEnergyKernel"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {ι : Type u_2} {E : Type u_3} [inst : Fintype Site] [inst_1 : LinearOrder Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q omega eta : ℝ) (mn : ι × ι),\n  ∫ (energy : ℝ),\n      SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonTransitionIntegrand system data interpolation\n        geometry direction K q omega eta mn energy =\n    SecondQuantization.Fermionic.Transport.finiteKuboBastinOccupationResolvedDirectionalCurrentTerm system data\n      interpolation geometry direction K q omega eta mn",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonTransitionIntegrand",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonEnergyKernel"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_purePointKuboBastinCommonVertexTransitionIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy.0.SecondQuantization.Fermionic.Transport.finiteKuboBastinCommonTransitionIntegrand_eq_vertex"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.integral_finiteKuboBastinCommonEnergyKernel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
