@@ -193,14 +193,14 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoeffici
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
         source v m probeEnergy broadening disorderStrength hbar pMax radius =
-      ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+          (∫ p in (0 : ℝ)..pMax,
             finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-              source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0 +
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
+              source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +
+        ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+          (∫ p in (0 : ℝ)..pMax,
             finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-              source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) / 2 := by
+              source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1)) / 2 := by
   unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
   rw [InternalSpace.pauliScalarCoefficient]
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
@@ -215,33 +215,33 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
         axis source v m probeEnergy broadening disorderStrength hbar pMax radius =
       match axis with
       | .x =>
-          ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-              ∫ p in (0 : ℝ)..pMax,
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
                 finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1 +
-            (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-              ∫ p in (0 : ℝ)..pMax,
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +
+            ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
                 finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) / 2
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0)) / 2
       | .y =>
           Complex.I *
-            ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-                ∫ p in (0 : ℝ)..pMax,
+            (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+                (∫ p in (0 : ℝ)..pMax,
                   finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                    source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1 -
-              (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-                ∫ p in (0 : ℝ)..pMax,
+                    source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -
+              ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+                (∫ p in (0 : ℝ)..pMax,
                   finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                    source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) / 2
+                    source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0)) / 2
       | .z =>
-          ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-              ∫ p in (0 : ℝ)..pMax,
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
                 finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0 -
-            (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-              ∫ p in (0 : ℝ)..pMax,
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -
+            ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+              (∫ p in (0 : ℝ)..pMax,
                 finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) / 2 := by
+                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1)) / 2 := by
   unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
   cases axis <;>
     simp only [InternalSpace.pauliVectorCoefficient] <;>
