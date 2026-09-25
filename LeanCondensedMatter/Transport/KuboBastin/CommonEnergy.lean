@@ -95,6 +95,20 @@ noncomputable def finiteKuboBastinCommonVertexEnergyKernel
   ∑ mn : ι × ι, purePointKuboBastinCommonVertexTransitionIntegrand
     system data interpolation measured source omega eta mn energy
 
+theorem integrable_finiteKuboBastinCommonVertexEnergyKernel
+    (system : BoundedFreeSystem H)
+    (data : PurePointLehmannData system ι)
+    (interpolation : PurePointOccupationInterpolation system data)
+    (measured source : H →L[ℂ] H)
+    (omega eta : ℝ) :
+    Integrable (finiteKuboBastinCommonVertexEnergyKernel
+      system data interpolation measured source omega eta) := by
+  unfold finiteKuboBastinCommonVertexEnergyKernel
+  apply integrable_finsetSum
+  intro mn _
+  exact integrable_purePointKuboBastinCommonVertexTransitionIntegrand
+    system data interpolation measured source omega eta mn
+
 theorem integral_finiteKuboBastinCommonVertexEnergyKernel
     (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
