@@ -291,6 +291,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
       InternalSpace.pauliZ]
   all_goals ring_nf
   all_goals simp [hI2, hI3]
+  all_goals ring
 
 /-- Each entry of the Gaussian-crossed radial current block is the physical momentum-measure
 prefactor times the integral of its scalar radial kernel. -/
