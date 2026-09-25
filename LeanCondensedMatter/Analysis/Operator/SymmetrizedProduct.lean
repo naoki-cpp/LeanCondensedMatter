@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -37,8 +38,8 @@ theorem symmetrizedProduct_eq_smul_zetaCommutator_neg_one
     {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
     symmetrizedProduct A B =
-      (1 / 2 : ℂ) • LinearMap.zetaCommutator (-1) A B := by
-  simp [symmetrizedProduct, LinearMap.zetaCommutator]
+      (1 / 2 : ℂ) • ScalarExchange.zetaCommutator (-1) A B := by
+  simp [symmetrizedProduct, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp]
 
 /-- The symmetrized product is symmetric in its two arguments. -/
 theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module ℂ W]
