@@ -55,20 +55,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_
           v m probeEnergy disorderStrength hbar pMax)) := by
   have hrung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      { v := v
-        m := m
-        probeEnergy := probeEnergy
-        disorderStrength := disorderStrength
-        hbar := hbar
-        pMax := pMax
-        cutoff_nonneg := hpMax
-        velocity_ne_zero := hvelocity
-        hbar_ne_zero := hhbar
-        disorder_pos := hdisorder
-        metallic := hmetal
-        cutoff_shell := hcutoff }
+      (FixedCutoffMetallicBornRegime.ofScalarBoundaryData v m probeEnergy disorderStrength hbar pMax
+        hpMax hvelocity hhbar hdisorder hmetal hcutoff)
       hrenorm
-  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using
+  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary,
+    FixedCutoffMetallicBornRegime.ofScalarBoundaryData] using
     tendsto_inPlaneLadderDeterminant hrung
 
 /-- A nonzero boundary determinant implies finite-`η` ladder regularity for all sufficiently small
@@ -117,18 +108,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
           v m probeEnergy disorderStrength hbar pMax)) := by
   have hrung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      { v := v
-        m := m
-        probeEnergy := probeEnergy
-        disorderStrength := disorderStrength
-        hbar := hbar
-        pMax := pMax
-        cutoff_nonneg := hpMax
-        velocity_ne_zero := hvelocity
-        hbar_ne_zero := hhbar
-        disorder_pos := hdisorder
-        metallic := hmetal
-        cutoff_shell := hcutoff }
+      (FixedCutoffMetallicBornRegime.ofScalarBoundaryData v m probeEnergy disorderStrength hbar pMax
+        hpMax hvelocity hhbar hdisorder hmetal hcutoff)
       hrenorm
   have hdet' :
       inPlaneLadderDeterminant
@@ -136,7 +117,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
           v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
     simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using hdet
   simpa [finiteCutoffContinuumBornDysonLadderSolvedVector,
-    finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary] using
+    finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
+    FixedCutoffMetallicBornRegime.ofScalarBoundaryData] using
     (tendsto_inPlaneLadderSolvedVector hrung hdet')
 
 end

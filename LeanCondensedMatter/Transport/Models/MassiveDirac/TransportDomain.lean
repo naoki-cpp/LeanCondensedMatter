@@ -42,6 +42,29 @@ structure FixedCutoffMetallicBornRegime where
   /-- The cutoff contains the metallic shell. -/
   cutoff_shell : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2
 
+/--
+Adapt scalar boundary data and its common hypotheses into the fixed-cutoff metallic regime package.
+This is the named construction path for callers that intentionally retain scalar low-level APIs.
+-/
+def FixedCutoffMetallicBornRegime.ofScalarBoundaryData
+    (v m probeEnergy disorderStrength hbar pMax : ℝ)
+    (cutoff_nonneg : 0 ≤ pMax) (velocity_ne_zero : v ≠ 0) (hbar_ne_zero : hbar ≠ 0)
+    (disorder_pos : 0 < disorderStrength) (metallic : |m| < probeEnergy)
+    (cutoff_shell : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
+    FixedCutoffMetallicBornRegime :=
+  { v := v
+    m := m
+    probeEnergy := probeEnergy
+    disorderStrength := disorderStrength
+    hbar := hbar
+    pMax := pMax
+    cutoff_nonneg := cutoff_nonneg
+    velocity_ne_zero := velocity_ne_zero
+    hbar_ne_zero := hbar_ne_zero
+    disorder_pos := disorder_pos
+    metallic := metallic
+    cutoff_shell := cutoff_shell }
+
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
