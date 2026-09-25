@@ -112,6 +112,62 @@ theorem exactSecondMoment_star
   intro ω _
   simp [star_mul, (ensemble.impurityPotential ω).2.star_eq, mul_assoc]
 
+/-- Right equivariance of the exact second moment. If every impurity potential commutes with a
+bounded operator, that operator can be moved through the right side of the second-moment action. -/
+theorem exactSecondMoment_mul_of_commutes
+    (kernel right : H →L[ℂ] H)
+    (hcommute : ∀ ω, Commute (ensemble.impurityPotential ω).1 right) :
+    ensemble.exactSecondMoment kernel * right =
+      ensemble.exactSecondMoment (kernel * right) := by
+  rw [ensemble.exactSecondMoment_eq_operatorAverage,
+    ensemble.exactSecondMoment_eq_operatorAverage]
+  unfold operatorAverage
+  rw [Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro ω _
+  rw [smul_mul_assoc]
+  apply congrArg (fun operator : H →L[ℂ] H => (ensemble.probability ω : ℂ) • operator)
+  calc
+    ((ensemble.impurityPotential ω).1 * kernel *
+        (ensemble.impurityPotential ω).1) * right =
+      (ensemble.impurityPotential ω).1 * kernel *
+        ((ensemble.impurityPotential ω).1 * right) := by
+          rw [mul_assoc]
+    _ = (ensemble.impurityPotential ω).1 * kernel *
+        (right * (ensemble.impurityPotential ω).1) := by
+          rw [(hcommute ω).eq]
+    _ = (ensemble.impurityPotential ω).1 * (kernel * right) *
+        (ensemble.impurityPotential ω).1 := by
+          simp only [mul_assoc]
+
+/-- Left equivariance of the exact second moment. If every impurity potential commutes with a
+bounded operator, that operator can be moved through the left side of the second-moment action. -/
+theorem mul_exactSecondMoment_of_commutes
+    (left kernel : H →L[ℂ] H)
+    (hcommute : ∀ ω, Commute (ensemble.impurityPotential ω).1 left) :
+    left * ensemble.exactSecondMoment kernel =
+      ensemble.exactSecondMoment (left * kernel) := by
+  rw [ensemble.exactSecondMoment_eq_operatorAverage,
+    ensemble.exactSecondMoment_eq_operatorAverage]
+  unfold operatorAverage
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro ω _
+  rw [mul_smul_comm]
+  apply congrArg (fun operator : H →L[ℂ] H => (ensemble.probability ω : ℂ) • operator)
+  calc
+    left * ((ensemble.impurityPotential ω).1 * kernel *
+        (ensemble.impurityPotential ω).1) =
+      (left * (ensemble.impurityPotential ω).1) * kernel *
+        (ensemble.impurityPotential ω).1 := by
+          simp only [mul_assoc]
+    _ = ((ensemble.impurityPotential ω).1 * left) * kernel *
+        (ensemble.impurityPotential ω).1 := by
+          rw [← (hcommute ω).eq]
+    _ = (ensemble.impurityPotential ω).1 * (left * kernel) *
+        (ensemble.impurityPotential ω).1 := by
+          simp only [mul_assoc]
+
 /-- Exact centered-disorder property `E[Vω] = 0`. The second moment is computed canonically and is
 not stored as additional data. -/
 def IsCentered : Prop :=

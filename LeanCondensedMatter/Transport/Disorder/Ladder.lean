@@ -77,6 +77,17 @@ noncomputable def resummedLadderVertex
     (bareVertex : V) : V :=
   (↑(hinvertible.unit⁻¹) : V →L[ℂ] V) bareVertex
 
+/-- Resummed ladder vertices depend complex-linearly on the supplied bare vertex. -/
+@[simp]
+theorem resummedLadderVertex_smul
+    (ladder : V →L[ℂ] V)
+    (hinvertible : IsUnit (1 - ladder))
+    (scalar : ℂ)
+    (bareVertex : V) :
+    resummedLadderVertex ladder hinvertible (scalar • bareVertex) =
+      scalar • resummedLadderVertex ladder hinvertible bareVertex := by
+  simp [resummedLadderVertex]
+
 private theorem shiftedLadder_apply_resummedLadderVertex
     (ladder : V →L[ℂ] V)
     (hinvertible : IsUnit (1 - ladder))
