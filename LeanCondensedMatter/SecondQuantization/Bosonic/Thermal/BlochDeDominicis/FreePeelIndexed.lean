@@ -45,7 +45,7 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
   induction l with
   | nil =>
       simp [FreeThermalField.operatorPeelSum, operatorPeelTerms,
-        LinearMap.operatorPeelSum]
+        ScalarExchange.peelSum]
   | cons D t ih =>
       have hmap :
           ((C₁.operatorPeelTerms t).map (fun A => D.operator.comp A)).sum =
@@ -54,9 +54,9 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
           (map_list_sum (LinearMap.compRight ℂ D.operator) (C₁.operatorPeelTerms t)).symm
       rw [operatorPeelTerms, List.sum_cons, hmap, ← ih]
       unfold FreeThermalField.operatorPeelSum
-      rw [LinearMap.operatorPeelSum]
+      rw [ScalarExchange.peelSum]
       simp only [one_smul]
-      rw [orderedProduct]
+      rw [Module.End.mul_eq_comp, orderedProduct]
 
 /-- Closed position-indexed form of the bosonic CCR peel terms. -/
 theorem operatorPeelTerms_eq_ofFn

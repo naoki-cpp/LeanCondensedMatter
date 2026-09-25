@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import Mathlib.Tactic.Module
@@ -155,44 +156,39 @@ theorem operatorProduct_append (l₁ l₂ : List (CompletedThermalLadder Mode)) 
       rw [List.cons_append, operatorProduct_cons, operatorProduct_cons, ih,
         ContinuousLinearMap.comp_assoc]
 
-/-- The sum of contraction terms generated while pushing `C₁` through a ladder list. -/
-noncomputable def thermalPeelSum (C₁ : CompletedThermalLadder Mode) :
-    List (CompletedThermalLadder Mode) →
-      CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode
-  | [] => 0
-  | D :: t =>
-      C₁.anticommutatorValue D • operatorProduct t -
-        D.operator.comp (thermalPeelSum C₁ t)
+private theorem operatorProduct_eq_prod
+    (l : List (CompletedThermalLadder Mode)) :
+    operatorProduct l = (l.map operator).prod := by
+  induction l with
+  | nil => rfl
+  | cons C t ih =>
+      rw [operatorProduct_cons, List.map_cons, List.prod_cons, ih]
+      rfl
 
-@[simp]
-theorem thermalPeelSum_nil (C₁ : CompletedThermalLadder Mode) :
-    thermalPeelSum C₁ [] = 0 := rfl
+private theorem operator_mul_operator_eq_exchange
+    (C D : CompletedThermalLadder Mode) :
+    C.operator * D.operator =
+      C.anticommutatorValue D •
+          (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) +
+        (-1 : ℂ) • (D.operator * C.operator) := by
+  apply ContinuousLinearMap.ext
+  intro ψ
+  have hcar := DFunLike.congr_fun (completedAnticomm_operator_operator C D) ψ
+  simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
+  change C.operator (D.operator ψ) =
+    C.anticommutatorValue D • ψ + (-1 : ℂ) • D.operator (C.operator ψ)
+  simpa [sub_eq_add_neg] using (eq_sub_of_add_eq hcar)
 
-/-- Repeated completed CAR exchange: the first ladder is peeled through an arbitrary tail. -/
-theorem operator_comp_operatorProduct_eq_thermalPeelSum
+private theorem operator_comp_operatorProduct_eq_peelSum
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     C₁.operator.comp (operatorProduct l) =
-      thermalPeelSum C₁ l + ((-1 : ℂ) ^ l.length) • ((operatorProduct l).comp C₁.operator) := by
-  induction l with
-  | nil =>
-      simp [thermalPeelSum]
-  | cons D t ih =>
-      apply ContinuousLinearMap.ext
-      intro ψ
-      have hcar := DFunLike.congr_fun (completedAnticomm_operator_operator C₁ D) (operatorProduct t ψ)
-      simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
-      have hexchange :
-          C₁.operator (D.operator (operatorProduct t ψ)) =
-            C₁.anticommutatorValue D • operatorProduct t ψ -
-              D.operator (C₁.operator (operatorProduct t ψ)) :=
-        eq_sub_of_add_eq hcar
-      have hih := DFunLike.congr_fun ih ψ
-      simp only [ContinuousLinearMap.comp_apply, add_apply, smul_apply] at hih
-      simp only [operatorProduct_cons, thermalPeelSum, List.length_cons,
-        ContinuousLinearMap.comp_apply, add_apply, sub_apply, smul_apply]
-      rw [hexchange, hih]
-      simp only [map_add, map_smul, pow_succ]
-      module
+      ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C₁ l +
+        ((-1 : ℂ) ^ l.length) • ((operatorProduct l).comp C₁.operator) := by
+  have h := ScalarExchange.mul_prod_eq_peelSum
+    operator anticommutatorValue (-1 : ℂ)
+    operator_mul_operator_eq_exchange C₁ l
+  rw [← operatorProduct_eq_prod l] at h
+  simpa [ContinuousLinearMap.mul_def] using h
 
 /-- Canonical completed free-Gibbs expectation of an ordered thermal-ladder list. -/
 noncomputable def completedFreeGibbsExpectation
@@ -211,10 +207,10 @@ theorem completedFreeGibbsExpectation_cons_eq_peel_add_rotated
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     completedFreeGibbsExpectation ε β hsum (C₁ :: l) =
-      (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C₁ l) +
+      (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C₁ l) +
         ((-1 : ℂ) ^ l.length) * completedFreeGibbsExpectation ε β hsum (l ++ [C₁]) := by
   rw [completedFreeGibbsExpectation, operatorProduct_cons,
-    operator_comp_operatorProduct_eq_thermalPeelSum C₁ l]
+    operator_comp_operatorProduct_eq_peelSum C₁ l]
   rw [map_add, map_smul]
   simp only [smul_eq_mul]
   rw [completedFreeGibbsExpectation, operatorProduct_append]
@@ -238,7 +234,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 namespace CompletedThermalLadder
 
 /-- Individual completed CAR peel terms, one for each operator in the tail. -/
-noncomputable def thermalPeelTerms (C₁ : CompletedThermalLadder Mode) :
+private noncomputable def thermalPeelTerms (C₁ : CompletedThermalLadder Mode) :
     List (CompletedThermalLadder Mode) →
       List (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
   | [] => []
@@ -247,11 +243,11 @@ noncomputable def thermalPeelTerms (C₁ : CompletedThermalLadder Mode) :
         (thermalPeelTerms C₁ t).map (fun A => (-1 : ℂ) • (D.operator.comp A))
 
 /-- The recursive completed peel sum is the sum of its individual terms. -/
-theorem thermalPeelSum_eq_thermalPeelTerms_sum
+private theorem peelSum_eq_thermalPeelTerms_sum
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
-    thermalPeelSum C₁ l = (thermalPeelTerms C₁ l).sum := by
+    ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C₁ l = (thermalPeelTerms C₁ l).sum := by
   induction l with
-  | nil => simp [thermalPeelSum, thermalPeelTerms]
+  | nil => simp [ScalarExchange.peelSum, thermalPeelTerms]
   | cons D t ih =>
       have hmap : ∀ L : List (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode),
           (L.map (fun A => (-1 : ℂ) • (D.operator.comp A))).sum =
@@ -265,14 +261,11 @@ theorem thermalPeelSum_eq_thermalPeelTerms_sum
             intro ψ
             simp only [add_apply, smul_apply, ContinuousLinearMap.comp_apply, map_add]
             module
-      rw [thermalPeelSum, thermalPeelTerms, List.sum_cons, hmap, ← ih]
-      apply ContinuousLinearMap.ext
-      intro ψ
-      simp only [sub_apply, add_apply, smul_apply, ContinuousLinearMap.comp_apply]
-      module
+      rw [ScalarExchange.peelSum, thermalPeelTerms, List.sum_cons, hmap, ← ih,
+        ← operatorProduct_eq_prod t, ContinuousLinearMap.mul_def]
 
 /-- Closed position-indexed form of the completed CAR peel terms. -/
-theorem thermalPeelTerms_eq_ofFn
+private theorem thermalPeelTerms_eq_ofFn
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     thermalPeelTerms C₁ l =
       List.ofFn (fun j : Fin l.length =>
@@ -306,10 +299,10 @@ theorem thermalPeelTerms_eq_ofFn
       module
 
 /-- Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. -/
-theorem completedFreeGibbsExpectation_thermalPeelSum_eq_sum
+private theorem completedFreeGibbsExpectation_peelSum_eq_sum
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
-    (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C₁ l) =
+    (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C₁ l) =
       ∑ j : Fin l.length,
         ((-1 : ℂ) ^ (j : ℕ)) * C₁.anticommutatorValue (l[(j : ℕ)]'j.isLt) *
           completedFreeGibbsExpectation ε β hsum (l.eraseIdx j) := by
@@ -319,7 +312,7 @@ theorem completedFreeGibbsExpectation_thermalPeelSum_eq_sum
     intro L
     exact map_list_sum
       (completedFreeGibbsDensityOperator ε β hsum).expectation L
-  rw [thermalPeelSum_eq_thermalPeelTerms_sum, thermalPeelTerms_eq_ofFn, hmap,
+  rw [peelSum_eq_thermalPeelTerms_sum, thermalPeelTerms_eq_ofFn, hmap,
     List.map_ofFn, List.sum_ofFn]
   apply Finset.sum_congr rfl
   intro j _
@@ -531,10 +524,10 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     (hne : (1 : ℂ) + C.gibbsFactor ε β ≠ 0) :
     completedFreeGibbsExpectation ε β hsum (C :: l) =
       (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l) := by
+        (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C l) := by
   set E : ℂ := completedFreeGibbsExpectation ε β hsum (C :: l)
   set P : ℂ :=
-    (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l)
+    (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C l)
   set R : ℂ := completedFreeGibbsExpectation ε β hsum (l ++ [C])
   have hpeel : E = P + ((-1 : ℂ) ^ l.length) * R := by
     simpa [E, P, R] using
@@ -567,7 +560,7 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
       rw [hR]
       ring
     _ = (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l) := rfl
+        (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C l) := rfl
 
 /-- The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied
 by the same Gibbs ratio that solves the odd-tail KMS equation. -/
@@ -581,9 +574,13 @@ theorem completedFreeGibbsExpectation_pair_eq
   have h := completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     ε β hsum 0 C [D] (by simp) hne
   have hpeel :
-      (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C [D]) =
+      (completedFreeGibbsDensityOperator ε β hsum).expectation
+          (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C [D]) =
         C.anticommutatorValue D := by
-    simp [thermalPeelSum]
+    have hone :
+        (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) =
+          ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := rfl
+    simp [ScalarExchange.peelSum, hone]
   rw [hpeel] at h
   exact h
 
@@ -628,7 +625,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
       completedFreeGibbsExpectation ε β hsum (C 0 :: l) =
         ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
           (completedFreeGibbsDensityOperator ε β hsum).expectation
-            (thermalPeelSum (C 0) l) :=
+            (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) (C 0) l) :=
         completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
           ε β hsum n (C 0) l hlen (hC 0)
       _ = ∑ j : Fin (2 * n + 1),
@@ -636,7 +633,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
             completedFreeGibbsExpectation ε β hsum [C 0, C j.succ] *
               completedFreeGibbsExpectation ε β hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-        rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
+        rw [completedFreeGibbsExpectation_peelSum_eq_sum, Finset.mul_sum]
         have hreindex :
             (∑ i : Fin l.length,
               ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
