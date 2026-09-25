@@ -91,9 +91,23 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
         (((v : ℝ) : ℂ) • sigmaX) *
         ((1 / 2 : ℂ) • ((1 : Matrix2) + InternalSpace.pauliCombination u)) *
         (((v : ℝ) : ℂ) • sigmaY)) = _
+  have htrace (u : InternalSpace.PauliAxis → ℂ) (a b : ℂ) :
+      Matrix.trace
+          (((1 / 2 : ℂ) •
+              ((1 : InternalSpace.PauliMatrix) - InternalSpace.pauliCombination u)) *
+            (a • InternalSpace.pauliX) *
+            ((1 / 2 : ℂ) •
+              ((1 : InternalSpace.PauliMatrix) + InternalSpace.pauliCombination u)) *
+            (b • InternalSpace.pauliY)) =
+        a * b * (-(u .x * u .y) - Complex.I * u .z) := by
+    have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+      simpa [pow_two] using Complex.I_mul_I
+    simp [Matrix.trace, Matrix.mul_apply, InternalSpace.pauliCombination_eq_components,
+      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ, sub_eq_add_neg]
+    ring_nf
+    simp [hI]
   rw [show sigmaX = InternalSpace.pauliX by rfl,
-    show sigmaY = InternalSpace.pauliY by rfl,
-    InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY]
+    show sigmaY = InternalSpace.pauliY by rfl, htrace]
   cases band <;>
     simp [u, diracPauliCoefficients, bandSign] <;>
     field_simp [hEc]
