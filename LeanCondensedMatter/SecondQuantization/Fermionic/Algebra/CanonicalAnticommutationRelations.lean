@@ -106,7 +106,7 @@ theorem create_comp_self (i : Mode) : (create i).comp (create i) = 0 := by
   have h := anticomm_create_create (Mode := Mode) i i
   rw [ScalarExchange.zetaCommutator_self] at h
   norm_num at h
-  exact h
+  simpa [Module.End.mul_eq_comp] using h
 
 /-! ## `{aᵢ, aⱼ} = 0` -/
 
@@ -143,7 +143,7 @@ theorem annihilate_comp_self (i : Mode) : (annihilate i).comp (annihilate i) = 0
   have h := anticomm_annihilate_annihilate (Mode := Mode) i i
   rw [ScalarExchange.zetaCommutator_self] at h
   norm_num at h
-  exact h
+  simpa [Module.End.mul_eq_comp] using h
 
 /-! ## `{aᵢ, aⱼ†} = δᵢⱼ` -/
 
