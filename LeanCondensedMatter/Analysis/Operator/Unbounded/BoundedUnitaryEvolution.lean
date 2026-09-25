@@ -200,7 +200,6 @@ theorem resolventApproximationEvolution_hasDerivAt
         ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr)) t := by
   exact boundedUnitaryEvolution_hasDerivAt _ t
 
-
 /-- The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. -/
 theorem resolventApproximationEvolution_apply_hasDerivAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : H) :
