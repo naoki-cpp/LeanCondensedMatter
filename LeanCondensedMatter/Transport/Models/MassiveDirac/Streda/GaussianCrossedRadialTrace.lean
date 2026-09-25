@@ -138,17 +138,40 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
           finiteCutoffContinuumBornDysonRadialGreenPauliKernel
             axis side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
-  cases axis <;>
+  cases axis with
+  | x =>
     rw [pauliVectorCoefficient_prefactor_intervalIntegral
+      (axis := .x)
       (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
       (hkernel := hentry)]
-  all_goals
     apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
     apply intervalIntegral.integral_congr
     intro p _
     exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
-      _ side v m probeEnergy broadening disorderStrength hbar pMax radius p
+      .x side v m probeEnergy broadening disorderStrength hbar pMax radius p
+  | y =>
+    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+      (axis := .y)
+      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      (hkernel := hentry)]
+    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
+      .y side v m probeEnergy broadening disorderStrength hbar pMax radius p
+  | z =>
+    rw [pauliVectorCoefficient_prefactor_intervalIntegral
+      (axis := .z)
+      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      (hkernel := hentry)]
+    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
+      .z side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
 /-- The radial `X` topology is a finite scalar sum of positive-radius Green/current entries.
 The two negative-radius Green blocks are replaced by their exact `σ_z` conjugates. -/
