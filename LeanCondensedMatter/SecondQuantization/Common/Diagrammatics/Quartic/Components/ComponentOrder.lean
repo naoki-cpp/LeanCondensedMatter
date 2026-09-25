@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
-import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction
 
@@ -40,7 +39,7 @@ noncomputable def QuarticDiagram.componentVertexEquiv {S : Finset (Fin N)}
 noncomputable def QuarticDiagram.assembleVertexOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) : QuarticVertexOrder S :=
-  shuffle.slotEquiv.changeCoordinates (d.componentVertexEquiv orders)
+  shuffle.slotEquiv.symm.trans (d.componentVertexEquiv orders)
 
 /-- A family of component-local orders is compatible with a global order when each component appears
 in the global slots in precisely that local order. -/

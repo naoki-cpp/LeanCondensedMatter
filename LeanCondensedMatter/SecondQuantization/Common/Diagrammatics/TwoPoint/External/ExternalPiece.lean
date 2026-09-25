@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
@@ -79,7 +78,7 @@ private noncomputable def TwoPointDiagram.externalPieceLegEquiv
         d.legInComponent d.externalComponentPart leg} ≃
       Fin (2 * (2 *
         (Finset.univ : Finset (Fin d.externalInteractionPart.card)).card + 1)) :=
-  d.externalComponentLegEquiv.changeCoordinates
+  d.externalComponentLegEquiv.symm.trans
     (twoPointLegCongr (standardSlotEquiv d.externalInteractionPart))
 
 private theorem TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv
