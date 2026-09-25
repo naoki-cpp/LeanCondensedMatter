@@ -121,7 +121,7 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   · exact hasSum_diagonalTerm b a ha
   · exact Filter.Eventually.of_forall hfinite
 
-/-- A diagonal operator with summable real nonnegative/ coefficients is positive. -/
+/-- A diagonal operator with summable real nonnegative coefficients is positive. -/
 theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOp b (fun i => (a i : ℂ))).IsPositive := by
