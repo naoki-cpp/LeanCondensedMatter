@@ -312,8 +312,10 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
     pauliVectorCoefficient (-M) = -pauliVectorCoefficient M := by
   funext axis
   cases axis
-  · simp [pauliVectorCoefficient] <;> ring
-  · simp [pauliVectorCoefficient] <;> ring
+  · simp [pauliVectorCoefficient]
+    ring
+  · simp [pauliVectorCoefficient]
+    ring
   · simp [pauliVectorCoefficient]
     ring
 
