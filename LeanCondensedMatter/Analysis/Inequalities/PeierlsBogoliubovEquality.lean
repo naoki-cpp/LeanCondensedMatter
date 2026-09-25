@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 
 set_option linter.style.header false
