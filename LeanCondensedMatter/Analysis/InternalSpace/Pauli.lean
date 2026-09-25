@@ -257,11 +257,20 @@ theorem eq_pauliAffine_coefficients (M : PauliMatrix) :
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
   ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
+  fin_cases i <;> fin_cases j
+  · change M 0 0 = (M 0 0 + M 1 1) / 2 + (M 0 0 - M 1 1) / 2
+    ring
+  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
       pauliX, pauliY, pauliZ]
-  all_goals
-    rw [hI]
+    ring_nf
+    simp only [hI]
+    ring
+  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
+      pauliX, pauliY, pauliZ]
+    ring_nf
+    simp only [hI]
+    ring
+  · change M 1 1 = (M 0 0 + M 1 1) / 2 - (M 0 0 - M 1 1) / 2
     ring
 
 /-- Conjugation by `σ_z` leaves the scalar Pauli coefficient unchanged. -/
@@ -282,10 +291,13 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
     pauliVectorCoefficient (pauliZ * M * pauliZ) =
       pauliZConjugateVector (pauliVectorCoefficient M) := by
   funext axis
-  cases axis <;>
-    simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
+  cases axis
+  · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
       Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
-    <;> ring
+  · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
+      Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
+  · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
+      Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
 
 @[simp] theorem pauliScalarCoefficient_neg (M : PauliMatrix) :
     pauliScalarCoefficient (-M) = -pauliScalarCoefficient M := by
