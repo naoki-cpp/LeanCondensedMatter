@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ScalarExchange
+import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 
 set_option linter.style.header false
