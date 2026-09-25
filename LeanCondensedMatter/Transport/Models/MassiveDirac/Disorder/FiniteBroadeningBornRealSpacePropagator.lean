@@ -215,6 +215,54 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
       (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
         hbar pMax radius 0 (entryHarmonics 1 1))
 
+
+/-- Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by
+`σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic
+channel is odd. -/
+@[simp] theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        side v m probeEnergy broadening disorderStrength hbar pMax (-radius) =
+      sigmaZ *
+        finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax radius *
+        sigmaZ := by
+  let a : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let b : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let d : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  have hk0 (p : ℝ) :
+      polarFourierZerothAngularKernel (p * (-radius) / hbar) =
+        polarFourierZerothAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierZerothAngularKernel_neg]
+  have hk1 (p : ℝ) :
+      polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) =
+        -polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
+    rw [show p * (-radius) / hbar = -(p * radius / hbar) by ring,
+      polarFourierFirstCosineAngularKernel_neg]
+  ext i j
+  fin_cases i <;> fin_cases j
+  · simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      a, b, d, prefactor, hk0, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+  · simp only [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      Matrix.cons_val_zero, Matrix.cons_val_one]
+    simp_rw [hk1]
+    simp [InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+  · simp only [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      Matrix.cons_val_zero, Matrix.cons_val_one]
+    simp_rw [hk1]
+    simp [InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+  · simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      a, b, d, prefactor, hk0, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
