@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
-import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 
 /-!
 # Spectral trace of positive diagonal operators

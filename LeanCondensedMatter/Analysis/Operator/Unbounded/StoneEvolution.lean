@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator
 
 set_option linter.style.header false
 

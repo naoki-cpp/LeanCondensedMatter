@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
-import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality

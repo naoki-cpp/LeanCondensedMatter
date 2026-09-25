@@ -2,6 +2,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.Complex.RealDeriv
+import Mathlib.Analysis.Calculus.FDeriv.CompCLM
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -133,6 +134,14 @@ theorem boundedUnitaryEvolution_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) :
   have hd := hr.hasDerivAt
   simpa [Function.comp_def, boundedUnitaryEvolution, unitaryTimeCoefficient, smul_smul] using hd
 
+/-- The bounded-generator differential equation after evaluating the propagator on a vector. -/
+theorem boundedUnitaryEvolution_apply_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) (x : H) :
+    HasDerivAt (fun τ : ℝ => boundedUnitaryEvolution B τ x)
+      ((boundedUnitaryEvolution B t * ((-I : ℂ) • B)) x) t := by
+  have h := (((ContinuousLinearMap.apply ℂ H) x).restrictScalars ℝ).hasFDerivAt.comp t
+    (boundedUnitaryEvolution_hasDerivAt B t).hasFDerivAt
+  simpa [Function.comp_def] using h.hasDerivAt
+
 /-- The unitary group obtained by exponentiating the bounded resolvent approximation `Aᵣ`. -/
 noncomputable def resolventApproximationEvolution
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) : H →L[ℂ] H :=
@@ -190,6 +199,14 @@ theorem resolventApproximationEvolution_hasDerivAt
       (resolventApproximationEvolution A hA r hr t *
         ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr)) t := by
   exact boundedUnitaryEvolution_hasDerivAt _ t
+
+/-- The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. -/
+theorem resolventApproximationEvolution_apply_hasDerivAt
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : H) :
+    HasDerivAt (fun τ : ℝ => resolventApproximationEvolution A hA r hr τ x)
+      ((resolventApproximationEvolution A hA r hr t *
+        ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr)) x) t := by
+  exact boundedUnitaryEvolution_apply_hasDerivAt _ t x
 
 end
 

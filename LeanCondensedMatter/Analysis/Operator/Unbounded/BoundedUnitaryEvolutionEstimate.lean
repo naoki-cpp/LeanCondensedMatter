@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Tactic
 
