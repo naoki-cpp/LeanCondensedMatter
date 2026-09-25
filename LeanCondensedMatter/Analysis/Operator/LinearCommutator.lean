@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.ScalarExchange
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -23,13 +23,13 @@ namespace ConservationLaw
 /-- Ordinary commutator of two complex-linear endomorphisms. -/
 noncomputable def linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  S.comp T - T.comp S
+  ScalarExchange.zetaCommutator 1 S T
 
 @[simp]
 theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) (v : V) :
-    linearCommutator S T v = S (T v) - T (S v) :=
-  rfl
+    linearCommutator S T v = S (T v) - T (S v) := by
+  simp [linearCommutator, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp]
 
 /-- Leibniz rule for a commutator with a composition on the right:
 `[M, A B] = [M,A] B + A [M,B]`. -/
@@ -38,8 +38,8 @@ theorem linearCommutator_comp_right
     (M A B : V →ₗ[ℂ] V) :
     linearCommutator M (A.comp B) =
       (linearCommutator M A).comp B + A.comp (linearCommutator M B) := by
-  simpa [linearCommutator, LinearMap.zetaCommutator] using
-    (LinearMap.zetaCommutator_comp_right (1 : ℂ) 1 M A B)
+  simpa [linearCommutator, Module.End.mul_eq_comp] using
+    (ScalarExchange.zetaCommutator_mul_right (1 : ℂ) 1 M A B)
 
 /-- A commutator is additive over subtraction in its second argument. -/
 theorem linearCommutator_sub_right
