@@ -1202,47 +1202,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (j : Fin n),\n  ↑(σ.sdiffLeftSlotsOrderEquiv j) = σ.slotEquiv (Sum.inr j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "directWrapperOf": "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-    "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (j : Fin n),\n  ((Finset.univ \\ σ.leftSlots).orderEmbOfFin ⋯) j = σ.slotEquiv (Sum.inr j)",
     "standardAxioms": [
       "Classical.choice",
@@ -1262,7 +1221,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val"
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
@@ -1273,7 +1232,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val"
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -4510,8 +4469,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
     "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
@@ -22381,7 +22340,6 @@
       "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliCombination_mul_self",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
       "InternalSpace.trace_pauliAffine_mul_pauliAffine",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
@@ -22399,7 +22357,6 @@
       "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliCombination_mul_self",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
       "InternalSpace.trace_pauliAffine_mul_pauliAffine",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
@@ -22408,7 +22365,7 @@
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22654,7 +22611,7 @@
     "dependents": [
       "InternalSpace.eq_pauliAffine_coefficients",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
-      "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
@@ -22667,7 +22624,7 @@
     "compiledConsumers": [
       "InternalSpace.eq_pauliAffine_coefficients",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
-      "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
@@ -23194,90 +23151,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (u v : InternalSpace.PauliAxis → ℂ),\n  ((1 / 2) • (1 + InternalSpace.pauliCombination u) * (1 / 2) • (1 + InternalSpace.pauliCombination v)).trace =\n    (1 + u ⬝ᵥ v) / 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": "Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and\n`(I + v·σ)/2`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
-    ],
-    "dependencies": [
-      "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.trace_pauliCombination",
-      "InternalSpace.trace_pauliCombination_mul_pauliCombination"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (u : InternalSpace.PauliAxis → ℂ) (a b : ℂ),\n  ((1 / 2) • (1 - InternalSpace.pauliCombination u) * a • InternalSpace.pauliX *\n          (1 / 2) • (1 + InternalSpace.pauliCombination u) *\n        b • InternalSpace.pauliY).trace =\n    a * b * (-(u InternalSpace.PauliAxis.x * u InternalSpace.PauliAxis.y) - Complex.I * u InternalSpace.PauliAxis.z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": "The `x-y` Pauli trace through opposite two-level halves depends only on the indexed\ncoefficients: the symmetric part is `-uₓuᵧ` and the antisymmetric part is `-i u_z`.\nScalar vertex factors are included so downstream models do not need to reopen matrix entries. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
-    ],
-    "dependencies": [
-      "InternalSpace.pauliCombination_eq_components"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (a b : ℂ) (u v : InternalSpace.PauliAxis → ℂ),\n  ((a • 1 + InternalSpace.pauliCombination u) * (b • 1 + InternalSpace.pauliCombination v)).trace = 2 * (a * b + u ⬝ᵥ v)",
     "standardAxioms": [
       "Classical.choice",
@@ -23428,11 +23301,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
       "InternalSpace.trace_pauliAffine_mul_pauliAffine",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector"
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "InternalSpace.trace_pauliBasis"
@@ -23440,11 +23313,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
       "InternalSpace.trace_pauliAffine_mul_pauliAffine",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector"
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -23518,8 +23391,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
-      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
@@ -23529,8 +23402,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
-      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -25319,8 +25192,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.reciprocalPairing_isSymm",
     "module": "LeanCondensedMatter.Crystal.Lattice",
@@ -29417,8 +29290,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
     "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
@@ -50328,7 +50201,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
     "dependencies": [
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_cos_mul_sin_zero",
@@ -50338,7 +50211,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -59323,8 +59196,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
@@ -59601,7 +59474,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  (InternalSpace.pauliScalarCoefficient fun i j =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n        probeEnergy broadening disorderStrength hbar pMax radius p i j) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarKernel side v m\n      probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -59609,7 +59482,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -59620,12 +59493,16 @@
     "docString": "The pointwise radial Green entry kernel has exactly the scalar coefficient carried by the\nzeroth angular Fourier channel. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59636,7 +59513,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  InternalSpace.pauliVectorCoefficient\n      (fun i j =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n          probeEnergy broadening disorderStrength hbar pMax radius p i j)\n      axis =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliKernel axis side v m\n      probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -59644,7 +59521,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -59655,12 +59532,16 @@
     "docString": "The pointwise radial Green entry kernel carries the first angular Fourier channel in the\nin-plane x component, no y component on the radial axis, and the zeroth channel in z. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59671,7 +59552,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis side v m\n      probeEnergy broadening disorderStrength hbar pMax radius =\n    match axis with\n    | InternalSpace.PauliAxis.x =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.y =>\n      Complex.I *\n          ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v\n                  m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v\n                  m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.z =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n        2",
     "standardAxioms": [
       "Classical.choice",
@@ -59679,7 +59560,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -59690,9 +59571,52 @@
     "docString": "Each Pauli-vector component of the radial Green matrix is a scalar combination of entry-kernel\nintegrals. This is the matrix-free boundary consumed by crossed radial traces. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  (∀ (i j : Fin 2),\n      IntervalIntegrable\n        (fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n            probeEnergy broadening disorderStrength hbar pMax radius p i j)\n        MeasureTheory.volume 0 pMax) →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis side v m\n        probeEnergy broadening disorderStrength hbar pMax radius =\n      ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n        ∫ (p : ℝ) in 0..pMax,\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliKernel axis side v m\n            probeEnergy broadening disorderStrength hbar pMax radius p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": "Under entrywise interval-integrability, every radial Green Pauli component is the momentum\nmeasure prefactor times the integral of its explicit pointwise Pauli-vector kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -59708,8 +59632,49 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m\n      probeEnergy broadening disorderStrength hbar pMax radius =\n    ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n              probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +\n        ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n              probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n      2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "The scalar Pauli coefficient of the radial Green matrix is a combination of its two\nscalar entry-kernel integrals; no matrix operation remains on the right-hand side. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  (∀ (i j : Fin 2),\n      IntervalIntegrable\n        (fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n            probeEnergy broadening disorderStrength hbar pMax radius p i j)\n        MeasureTheory.volume 0 pMax) →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m\n        probeEnergy broadening disorderStrength hbar pMax radius =\n      ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n        ∫ (p : ℝ) in 0..pMax,\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarKernel side v m\n            probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59721,15 +59686,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The scalar Pauli coefficient of the radial Green matrix is a combination of its two\nscalar entry-kernel integrals; no matrix operation remains on the right-hand side. ",
+    "docString": "Under entrywise interval-integrability, the radial Green scalar coefficient is the momentum\nmeasure prefactor times the integral of its explicit pointwise Pauli scalar kernel. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -60434,7 +60401,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening",
     "externalAxioms": [],
     "docString": "Finite-`η` rotational closure makes the physically normalized ordered `yx` tensor component the\nnegative of ordered `xy`. ",
     "directWrapperTargetModule": null,
@@ -60477,7 +60444,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening",
     "externalAxioms": [],
     "docString": "Finite-`η` rotational closure makes the two physically normalized diagonal tensor components\nequal. ",
     "directWrapperTargetModule": null,
@@ -61543,7 +61510,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature"
     ],
     "dependencies": [
-      "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
+      "InternalSpace.pauliCombination_eq_components",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_add_oppositeBand",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination"
     ],
@@ -65395,8 +65362,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
@@ -68301,7 +68268,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening",
     "externalAxioms": [],
     "docString": "Every finite-`η` conductivity tensor component converges to the corresponding entry of the\nphysical zero-broadening conductivity tensor. The off-diagonal `yx` and diagonal `yy` cases are\nobtained from the finite-`η` rotational identities rather than assigned independently. ",
     "directWrapperTargetModule": null,
@@ -73819,47 +73786,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z p : ℝ) (a b c d e : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ *\n        (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c + (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) * d +\n          ↑(Real.cos θ) * ↑(Real.sin θ) * e) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * b +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z * d)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Full-angle reduction through second angular harmonics. The odd first-sine and mixed\n`cos θ sin θ` channels vanish on the radial axis, leaving exactly the zeroth, first-cosine, and\nsecond-cosine kernels. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -90069,8 +89995,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
@@ -90153,8 +90079,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
@@ -112635,8 +112561,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
@@ -127041,7 +126967,7 @@
     ],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val",
+      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
       "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_externalPieceOfCardEq",
@@ -158298,7 +158224,7 @@
       "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics",
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.angular_second_harmonics_add",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq"
     ],
@@ -162076,7 +162002,8 @@
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination"
     ],
     "crossModuleDirectWrapper": false,
@@ -163186,6 +163113,84 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (kernel : ℝ → QuantumTheory.Transport.Models.MassiveDirac.Matrix2) (prefactor : ℂ) (a b : ℝ),\n  (∀ (i j : Fin 2), IntervalIntegrable (fun p => kernel p i j) MeasureTheory.volume a b) →\n    ((prefactor * ∫ (p : ℝ) in a..b, kernel p 0 0) + prefactor * ∫ (p : ℝ) in a..b, kernel p 1 1) / 2 =\n      prefactor * ∫ (p : ℝ) in a..b, InternalSpace.pauliScalarCoefficient (kernel p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (axis : QuantumTheory.Transport.Models.MassiveDirac.PauliAxis)\n  (kernel : ℝ → QuantumTheory.Transport.Models.MassiveDirac.Matrix2) (prefactor : ℂ) (a b : ℝ),\n  (∀ (i j : Fin 2), IntervalIntegrable (fun p => kernel p i j) MeasureTheory.volume a b) →\n    (match axis with\n      | InternalSpace.PauliAxis.x =>\n        ((prefactor * ∫ (p : ℝ) in a..b, kernel p 0 1) + prefactor * ∫ (p : ℝ) in a..b, kernel p 1 0) / 2\n      | InternalSpace.PauliAxis.y =>\n        Complex.I * ((prefactor * ∫ (p : ℝ) in a..b, kernel p 0 1) - prefactor * ∫ (p : ℝ) in a..b, kernel p 1 0) / 2\n      | InternalSpace.PauliAxis.z =>\n        ((prefactor * ∫ (p : ℝ) in a..b, kernel p 0 0) - prefactor * ∫ (p : ℝ) in a..b, kernel p 1 1) / 2) =\n      prefactor * ∫ (p : ℝ) in a..b, InternalSpace.pauliVectorCoefficient (kernel p) axis",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
