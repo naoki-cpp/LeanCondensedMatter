@@ -95,30 +95,6 @@ noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
         (system.hbar : ℂ) (q : ℂ) K)) *
     finiteVolumeConductivityNormalization convention omega eta
 
-private theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteKuboBastinOccupationResolvedDirectionalConductivity
-        convention system data interpolation geometry direction K q omega eta =
-      finiteKuboBastinCommonEnergyDirectionalConductivity
-        convention system data interpolation geometry direction K q omega eta := by
-  unfold finiteKuboBastinOccupationResolvedDirectionalConductivity
-    finiteKuboBastinCommonEnergyDirectionalConductivity
-  rw [finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy
-    system data interpolation
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    (boundedDirectionalContact geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    omega eta]
-  rfl
-
 /-- The finite spectral conductivity equals its common-energy representation, without introducing
 an artificial ordinary-trace carrier. -/
 theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
@@ -137,8 +113,19 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
         convention system data interpolation geometry direction K q omega eta :=
       finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
         convention system data interpolation geometry direction K q omega eta
-    _ = _ := finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy
-      convention system data interpolation geometry direction K q omega eta
+    _ = _ := by
+      unfold finiteKuboBastinOccupationResolvedDirectionalConductivity
+        finiteKuboBastinCommonEnergyDirectionalConductivity
+      rw [finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy
+        system data interpolation
+        (boundedDirectionalCurrent geometry direction
+          (system.hbar : ℂ) (q : ℂ) K)
+        (boundedDirectionalCurrent geometry direction
+          (system.hbar : ℂ) (q : ℂ) K)
+        (boundedDirectionalContact geometry direction
+          (system.hbar : ℂ) (q : ℂ) K)
+        omega eta]
+      rfl
 
 end
 
