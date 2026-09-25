@@ -23,7 +23,9 @@ open scoped ComplexOrder
 namespace HilbertBasis
 
 /-- Positivity is closed under convergence in the continuous-linear-map topology. -/
-private theorem isPositive_of_tendsto {α : Type*} {l : Filter α} [NeBot l]
+private theorem isPositive_of_tendsto
+    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    {α : Type*} {l : Filter α} [NeBot l]
     {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}
     (hF : Tendsto F l (𝓝 T)) (hpos : ∀ᶠ i in l, (F i).IsPositive) : T.IsPositive := by
   rw [ContinuousLinearMap.isPositive_iff]
@@ -49,7 +51,6 @@ private theorem isPositive_of_tendsto {α : Type*} {l : Filter α} [NeBot l]
       happly.inner tendsto_const_nhds
     exact isClosed_Ici.mem_of_tendsto hinner
       (hpos.mono fun i hi => hi.inner_nonneg_left x)
-
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -120,8 +121,7 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   · exact hasSum_diagonalTerm b a ha
   · exact Filter.Eventually.of_forall hfinite
 
-
-/-- A diagonal operator with summable real nonnegative coefficients is positive. -/
+/-- A diagonal operator with summable real nonnegative/ coefficients is positive. -/
 theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOp b (fun i => (a i : ℂ))).IsPositive := by
