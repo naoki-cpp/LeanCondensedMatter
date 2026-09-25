@@ -259,16 +259,16 @@ theorem eq_pauliAffine_coefficients (M : PauliMatrix) :
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
-      pauliX, pauliY, pauliZ] <;>
-    ring_nf <;>
-    simp [hI]
+      pauliX, pauliY, pauliZ]
+  all_goals
+    rw [hI]
+    ring
 
 /-- Conjugation by `σ_z` leaves the scalar Pauli coefficient unchanged. -/
 @[simp] theorem pauliScalarCoefficient_pauliZ_conjugate (M : PauliMatrix) :
     pauliScalarCoefficient (pauliZ * M * pauliZ) = pauliScalarCoefficient M := by
   simp [pauliScalarCoefficient, pauliZ, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
     Fin.sum_univ_two]
-  ring
 
 /-- Axis action induced by conjugation with `σ_z`: the in-plane components change sign while the
 `z` component is unchanged. -/
@@ -289,8 +289,7 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
 
 @[simp] theorem pauliScalarCoefficient_neg (M : PauliMatrix) :
     pauliScalarCoefficient (-M) = -pauliScalarCoefficient M := by
-  simp [pauliScalarCoefficient]
-  ring
+  simp [pauliScalarCoefficient] <;> ring
 
 @[simp] theorem pauliVectorCoefficient_neg (M : PauliMatrix) :
     pauliVectorCoefficient (-M) = -pauliVectorCoefficient M := by
