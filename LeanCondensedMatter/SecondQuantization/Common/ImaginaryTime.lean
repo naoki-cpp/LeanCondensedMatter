@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPi
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
@@ -22,7 +23,7 @@ set_option linter.style.header false
 
 Statistics-aware pair time ordering, basis-diagonal free evolution, fixed energy-shift eigenoperators,
 algebraic Heisenberg evolution, interaction-picture operators, KMS rotation identities, generic
-quartic-interaction evolution, the arbitrary-external mixed event order, and the statistics-independent mixed two-point event/leg order with
+quartic-interaction evolution, the arbitrary-external mixed event/leg order, and the statistics-independent mixed two-point event/leg order with
 monotone slot transport, interaction-slot relabeling and mixed-position covariance, order chambers,
 null walls, and measurable finite signatures.
 -/
