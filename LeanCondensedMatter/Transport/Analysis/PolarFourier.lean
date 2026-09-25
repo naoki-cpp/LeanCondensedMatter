@@ -254,29 +254,6 @@ theorem integral_polarFourierRadialPhase_first_harmonics
   simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
     coefficients.integral_polarFourierRadialPhase z p
 
-/-- Full-angle reduction through second angular harmonics. The odd first-sine and mixed
-`cos θ sin θ` channels vanish on the radial axis, leaving exactly the zeroth, first-cosine, and
-second-cosine kernels. -/
-theorem integral_polarFourierRadialPhase_second_harmonics
-    (z p : ℝ) (a b c d e : ℂ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((p : ℂ) * polarFourierRadialPhase z θ) *
-        (a + ((Real.cos θ : ℝ) : ℂ) * b + ((Real.sin θ : ℝ) : ℂ) * c +
-          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * d +
-          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * e)) =
-      (p : ℂ) *
-        (polarFourierZerothAngularKernel z * a +
-          polarFourierFirstCosineAngularKernel z * b +
-          polarFourierSecondCosineAngularKernel z * d) := by
-  let coefficients : AngularHarmonicCoefficients ℂ :=
-    { constant := a
-      firstCosine := b
-      firstSine := c
-      secondCosine := d
-      secondMixed := e }
-  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-    coefficients.integral_polarFourierRadialPhase z p
-
 private theorem intervalIntegral_fullPeriod_comp_sub_eq
     (f : ℝ → ℂ) (hf : Function.Periodic f (2 * Real.pi)) (angle : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (θ - angle)) =
@@ -433,14 +410,20 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
                 (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
               (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)) := by
       simp_rw [f, angular_second_harmonics_add]
-      exact integral_polarFourierRadialPhase_second_harmonics
-        z p a
-        (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c)
-        (-((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c)
-        (((((Real.cos angle : ℝ) : ℂ) ^ 2) - (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
-          (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)
-        ((-4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ))) * d +
-          (((((Real.cos angle : ℝ) : ℂ) ^ 2) - (((Real.sin angle : ℝ) : ℂ) ^ 2)) * e))
+      let coefficients : AngularHarmonicCoefficients ℂ :=
+        { constant := a
+          firstCosine :=
+            ((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c
+          firstSine :=
+            -((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c
+          secondCosine :=
+            (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * d +
+              ((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ) * e
+          secondMixed :=
+            -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
+              (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
+      simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+        coefficients.integral_polarFourierRadialPhase z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
 real-space polar angle. -/
