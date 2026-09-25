@@ -72,7 +72,7 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
 /-- Bare bosonic CCR peel sum, before Gibbs/KMS rotation. -/
 noncomputable def FreeThermalField.operatorPeelSum (C : FreeThermalField Mode)
     (fields : List (FreeThermalField Mode)) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  LinearMap.operatorPeelSum FreeThermalField.operator
+  ScalarExchange.operatorPeelSum FreeThermalField.operator
     FreeThermalField.exchangeValue 1 C fields
 
 /-- Repeated CCR exchange of the first free thermal field through an arbitrary finite tail. -/
@@ -81,12 +81,14 @@ theorem FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum
     (C.operator).comp (FreeThermalField.orderedProduct fields) =
       C.operatorPeelSum fields +
         (FreeThermalField.orderedProduct fields).comp C.operator := by
-  have h := LinearMap.operator_comp_prod_eq_operatorPeelSum
+  have h := ScalarExchange.operator_mul_prod_eq_operatorPeelSum
     FreeThermalField.operator FreeThermalField.exchangeValue (1 : ℂ)
     (fun C D => by
-      simpa using FreeThermalField.operator_comp_operator_eq_exchangeValue C D)
+      simpa [Module.End.mul_eq_comp, Module.End.one_eq_id] using
+        FreeThermalField.operator_comp_operator_eq_exchangeValue C D)
     C fields
-  simpa [FreeThermalField.orderedProduct, FreeThermalField.operatorPeelSum] using h
+  simpa [FreeThermalField.orderedProduct, FreeThermalField.operatorPeelSum,
+    Module.End.mul_eq_comp] using h
 
 end
 end Bosonic
