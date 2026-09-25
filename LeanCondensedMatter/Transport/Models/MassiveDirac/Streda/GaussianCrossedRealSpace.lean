@@ -315,12 +315,10 @@ conjugation together with the sign of the in-plane current insertion. -/
             source v m probeEnergy broadening disorderStrength hbar pMax radius *
           sigmaZ) := by
   ext i j
-  rw [
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral]
-  simp_rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius]
   fin_cases i <;> fin_cases j <;>
-    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two]
+    simp [sigmaZ, InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius]
 
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
