@@ -1,9 +1,9 @@
 import LeanCondensedMatter.Analysis.ScalarExchange
-import LeanCondensedMatter.Analysis.InternalSpace
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.Dyson
 import LeanCondensedMatter.Analysis.OrderedSimplex
-import LeanCondensedMatter.Analysis.FunctionalCalculus
+import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Lorentzian
 import LeanCondensedMatter.Analysis.Operator
 import LeanCondensedMatter.Analysis.InfiniteSum
