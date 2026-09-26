@@ -8,7 +8,8 @@ set_option linter.style.header false
 # Spin-current representation on one-dimensional Schwartz spinors
 
 This module realizes the internal-spin specialization requested by #1159. The one-particle space is
-the two-component Schwartz spinor model from `Analysis.Operator.SchwartzTwoLevel1D`. Spatial
+the two-level Schwartz model from `Analysis.Operator.SchwartzTwoLevel1D`, specialized here to
+spin-1/2. Spatial
 localization and velocity act componentwise, while `S(n) = ℏ (n · σ) / 2` acts only on the internal
 `Fin 2` index.
 
