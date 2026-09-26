@@ -64,6 +64,7 @@ General cautions distilled from past sessions; detailed incident records live in
 - **Default against a global simp rule when the normal form is ambiguous.** A candidate should have a clearly preferred right-hand side, remove or normalize at least one layer of project-specific structure, and remain desirable if it fires silently in unrelated downstream proofs. If any of these is unclear, keep the theorem untagged.
 - **Use local simplification deliberately.** Use ordinary `simp` when a proof intentionally relies on the public simp API, `simp only [...]` when the proof should pin the exact rewrite set, and `rw` when applying a mathematically substantive transformation. Repeated `simp [largeDefinition]` at consumers is a signal to inspect whether a smaller canonical evaluation lemma or a better abstraction boundary is missing.
 - **A specialized theorem may be retained as a deliberate simp boundary.** Even when a generic upstream theorem proves it, a domain-level specialization may remain public and tagged `@[simp]` when it is the canonical normalization rule for that API. This is an API boundary, not a compatibility wrapper, and should not justify parallel noncanonical aliases.
+- **Keep the reviewed registry current.** `simp-boundaries.md` records reviewed Green global simp boundaries and declarations intentionally kept explicit-only; unlisted current simp declarations remain Yellow pending review.
 
 ## Lean workflow
 

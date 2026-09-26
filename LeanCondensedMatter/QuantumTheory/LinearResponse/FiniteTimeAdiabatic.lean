@@ -63,7 +63,6 @@ noncomputable def finiteTimeAdiabaticResponse
 
 /-- A fixed-observable channel has no contact contribution, so its finite-time adiabatic response is
 exactly the retarded measured/source transform. -/
-@[simp]
 theorem finiteTimeAdiabaticResponse_fixed
     (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
     (measured source : H →L[ℂ] H) (ω η T : ℝ) :

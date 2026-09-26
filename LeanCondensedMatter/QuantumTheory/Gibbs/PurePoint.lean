@@ -25,12 +25,10 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 noncomputable def purePointBoltzmannWeight (E : ι → ℝ) (β : ℝ) (i : ι) : ℝ :=
   Real.exp (-β * E i)
 
-@[simp]
 theorem purePointBoltzmannWeight_pos (E : ι → ℝ) (β : ℝ) (i : ι) :
     0 < purePointBoltzmannWeight E β i := by
   simpa [purePointBoltzmannWeight] using Real.exp_pos (-β * E i)
 
-@[simp]
 theorem purePointBoltzmannWeight_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
     0 ≤ purePointBoltzmannWeight E β i :=
   (purePointBoltzmannWeight_pos E β i).le
@@ -66,7 +64,6 @@ theorem purePointPartitionFunction_pos [Nonempty ι] (E : ι → ℝ) (β : ℝ)
 noncomputable def purePointGibbsProbability (E : ι → ℝ) (β : ℝ) (i : ι) : ℝ :=
   (purePointPartitionFunction E β)⁻¹ * purePointBoltzmannWeight E β i
 
-@[simp]
 theorem purePointGibbsProbability_nonneg [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β) (i : ι) :
     0 ≤ purePointGibbsProbability E β i := by

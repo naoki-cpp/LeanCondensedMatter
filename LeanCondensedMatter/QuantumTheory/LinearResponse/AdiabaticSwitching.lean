@@ -106,7 +106,6 @@ theorem AdiabaticIntegrable.integrable
   hInt.2
 
 /-- A zero switching rate is not an adiabatic rate. -/
-@[simp]
 theorem not_adiabaticIntegrable_zero_rate
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω : ℝ) :
