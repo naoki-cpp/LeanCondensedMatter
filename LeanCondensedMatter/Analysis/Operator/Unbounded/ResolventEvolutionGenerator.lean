@@ -102,7 +102,7 @@ theorem stoneEvolution_apply_hasDerivAt_zero
       ((-I : ℂ) • A x) 0 := by
   rw [hasDerivAt_iff_tendsto_slope_zero]
   simp only [zero_add]
-  simp only [stoneEvolution_zero, ContinuousLinearMap.one_apply]
+  simp only [stoneEvolution_zero, one_apply_eq_self]
   rw [Metric.tendsto_nhds]
   intro ε hε
   have hε3 : 0 < ε / 3 := by positivity
@@ -115,8 +115,10 @@ theorem stoneEvolution_apply_hasDerivAt_zero
       HasDerivAt
         (fun t : ℝ => resolventApproximationEvolution A hA r hr t (x : H))
         ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H)) 0 := by
-    simpa [resolventApproximationEvolution_zero] using
+    have h :=
       resolventApproximationEvolution_apply_hasDerivAt A hA r hr 0 (x : H)
+    rw [resolventApproximationEvolution_zero, one_mul] at h
+    exact h
   have hslope := hderiv.tendsto_slope_zero
   have happ := (Metric.tendsto_nhds.mp hslope) (ε / 3) hε3
   filter_upwards [happ, self_mem_nhdsWithin] with t htapp htmem
