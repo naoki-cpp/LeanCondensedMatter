@@ -138,7 +138,6 @@ noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
     (externalInsertionTimedEventBeforeOrEqual externalTime σ)
     (canonicalExternalInsertionTimedEvents E n)
 
-@[simp]
 private theorem orderedExternalInsertionTimedEvents_length {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).length = 2 * E + n := by
@@ -484,7 +483,6 @@ private theorem externalInsertionTimedEventMap_injective
   simpa [externalInsertionTimedEventMap] using
     (Sum.map_injective.mpr ⟨hExternal, hInteraction⟩)
 
-@[simp]
 private theorem externalInsertionTimedEventTime_map
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n)
@@ -614,7 +612,6 @@ private theorem orderedExternalInsertionLegMap_injective
             exact hInteraction (congrArg (fun z => z.1.1) (Sum.inr.inj h))
           · exact congrArg (fun z => z.2) (Sum.inr.inj h)
 
-@[simp]
 private theorem orderedExternalInsertionLegEvent_map
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n)
