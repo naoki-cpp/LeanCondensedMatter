@@ -220,9 +220,15 @@ theorem norm_resolventApproximationEvolution_sub_atScale_le
         resolventApproximationEvolutionAtScale A hA s t x‖ ≤
       ‖boundedSelfAdjointApproximation A hA r hr x -
           boundedSelfAdjointApproximationAtScale A hA s x‖ * |t| := by
-  simpa [boundedSelfAdjointApproximationAtScale] using
-    norm_resolventApproximationEvolution_sub_le
-      A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
+  change
+    ‖resolventApproximationEvolution A hA r hr t x -
+        resolventApproximationEvolution A hA (positiveApproximationScale s)
+          (positiveApproximationScale_pos s) t x‖ ≤
+      ‖boundedSelfAdjointApproximation A hA r hr x -
+          boundedSelfAdjointApproximation A hA (positiveApproximationScale s)
+            (positiveApproximationScale_pos s) x‖ * |t|
+  exact norm_resolventApproximationEvolution_sub_le
+    A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
 
 
 end
