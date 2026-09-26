@@ -11,12 +11,12 @@ set_option linter.style.header false
 # Bosonic perturbation theory
 
 The convergence-aware finite-order bosonic perturbation layer records the Gibbs-domain closure and
-sum/integral interchange needed to promote the
-arbitrary-configuration Dyson recursion to normalized thermal coefficients.  Interaction-picture
-invariance of the free Gibbs numerator supplies the first-order recursive domain-closure slice
-directly from summability of the bare interaction.  Quartic matrix coefficients admit a uniform
-quadratic particle-number bound, which together with the free Boltzmann moments proves concrete
-Gibbs-domain membership for finite quartic interactions.  Their first Dyson coefficients are again
-Gibbs-summable, and their normalized Gibbs expectations satisfy the first recursive interval formula
-directly because diagonal interaction-picture evolution is constant in imaginary time.
+sum/integral interchange needed to turn the algebraic Dyson recursion into normalized thermal
+coefficients.
+
+For first order, invariance of diagonal free-Gibbs matrix coefficients under interaction-picture
+conjugation reduces Gibbs summability to summability of the bare interaction. Finite quartic
+interactions satisfy a uniform quadratic particle-number bound, so free Boltzmann moments imply the
+required Gibbs-domain membership. Their first Dyson coefficients are therefore Gibbs-summable, and
+their normalized Gibbs expectations satisfy the corresponding interval recursion.
 -/
