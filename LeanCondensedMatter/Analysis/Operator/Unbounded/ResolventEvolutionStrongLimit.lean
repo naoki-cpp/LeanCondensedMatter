@@ -71,8 +71,13 @@ theorem cauchySeq_apply_of_isometry_of_dense
   calc
     dist (F i x) (F j x) ≤
         dist (F i x) (F i y) + (dist (F i y) (F j y) + dist (F j y) (F j x)) := by
-      exact (dist_triangle _ _ _).trans
-        (add_le_add_left (dist_triangle _ _ _) _)
+      calc
+        dist (F i x) (F j x) ≤
+            dist (F i x) (F i y) + dist (F i y) (F j x) := dist_triangle _ _ _
+        _ ≤ dist (F i x) (F i y) +
+            (dist (F i y) (F j y) + dist (F j y) (F j x)) := by
+          gcongr
+          exact dist_triangle _ _ _
     _ < ε := by linarith
 
 /-- For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence
@@ -84,6 +89,7 @@ theorem resolventApproximationEvolutionAtScale_apply_cauchySeq
     (fun r y => resolventApproximationEvolutionAtScale A hA r t y)
     hA.dense_domain
   · intro r
+    rw [Metric.isometry_iff_dist_eq]
     intro y z
     unfold resolventApproximationEvolutionAtScale
     exact resolventApproximationEvolution_dist_eq A hA _ _ t y z
