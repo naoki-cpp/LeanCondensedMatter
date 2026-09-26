@@ -419,7 +419,7 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_filter_mem` — canonical
   finite-mode marginal-probability identity: the total Gibbs probability of configurations
   containing mode `i` is exactly its Fermi–Dirac occupation.
-- `SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_mul_fermionEnergy` — canonical
+- `SecondQuantization.Fermionic.purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac` — canonical
   finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
   entropy endpoint, but the thermodynamic statement is independently meaningful.
 - `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
