@@ -8,8 +8,8 @@ set_option linter.style.header false
 
 `OccupationBasis` captures the statistics-independent structure shared by fermionic and bosonic
 occupation descriptions: a vacuum configuration, a per-mode occupation number, vanishing vacuum
-occupation, finite support, and extensionality from the occupation data. These assumptions define the
-common total `particleNumber` grading.
+occupation, finite support, and extensionality from the occupation data. These assumptions define
+the common total `particleNumber` grading.
 
 The concrete configuration types remain distinct. Fermions use finite subsets of modes with
 occupations in `{0, 1}`, while bosons use finitely supported `ℕ`-valued occupations. Each
