@@ -55,8 +55,9 @@ spin-diffusion fits should remain downstream validation tracks.
 ## Current code boundary
 
 The repository already provides a finite mixed response from an electric bond
-current to the measured spin-z current, with a symmetrized spin current built from
-`1/2 {v, S_z}`. It deliberately does not claim a conductivity normalization,
+current to a spin current selected by a physical polarization vector `n ∈ ℝ³`, with a
+symmetrized spin current built from `1/2 {v, S(n)}`. The spin-1/2 realization is
+`S(n) = ℏ (n · σ) / 2`; Pauli axes are representation coordinates rather than polarization data. It deliberately does not claim a conductivity normalization,
 a Rashba Hamiltonian, or equality between spin and charge currents. The
 single-particle corrected-current layer provides an exact algebraic correction,
 and the one-dimensional Schwartz example proves a commuting-localizer special
@@ -82,15 +83,15 @@ specializations.
 ### R1 -- finite Rashba response (next implementation slice)
 
 Define a bounded finite two-dimensional spinful lattice or momentum-grid model
-with an explicit Rashba term, charge-driving source, velocity, and spin-z
-observable. Prove the finite mixed Kubo response is well-typed and state the
+with an explicit Rashba term, charge-driving source, velocity, and physical spin-polarization
+vector. Prove the finite mixed Kubo response is well-typed and state the
 symmetry assumptions needed for a transverse component. Keep broadening,
 volume, and charge/sign conventions as named parameters.
 
 Acceptance criteria:
 
-1. the model instantiates the existing `SpinCurrentResponse` API;
-2. the conventional spin current is visibly `1/2 {v, S_z}`;
+1. the model instantiates the existing arbitrary-polarization `SpinCurrentResponse` API;
+2. the conventional spin current is visibly `1/2 {v, S(n)}` for the selected physical direction;
 3. no claim of a universal infinite-system value is made without an order of
    limits and a non-degeneracy/broadening hypothesis.
 
