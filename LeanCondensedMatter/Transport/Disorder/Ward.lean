@@ -55,6 +55,22 @@ structure ChargeSymmetry
       charge * ensemble.exactSecondMoment kernel =
         ensemble.exactSecondMoment (charge * kernel)
 
+/-- The identity operator is always a charge symmetry. This does not require scalar disorder:
+identity commutes with every clean Hamiltonian, and left/right multiplication by identity leaves
+the exact second-moment argument unchanged. -/
+theorem ChargeSymmetry.one
+    (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω)) :
+    ChargeSymmetry ensemble (1 : H →L[ℂ] H) := by
+  refine
+    { baseHamiltonian_commute := ?_
+      secondMoment_mul_charge := ?_
+      charge_mul_secondMoment := ?_ }
+  · simp [Commute]
+  · intro kernel
+    simp
+  · intro kernel
+    simp
+
 /-- Pointwise commutation of every impurity potential with the charge is sufficient for the
 second-moment equivariance required by `ChargeSymmetry`. -/
 theorem ChargeSymmetry.of_impurityPotential_commute
@@ -187,6 +203,31 @@ theorem resummedLadderVertex_charge_ward_consistency
   simpa only [mul_smul_comm, smul_mul_assoc] using hinsertion
 
 end FiniteSCBASolution
+
+/-- Regression for the universal identity-charge specialization of the generic finite Ward bridge.
+This is intentionally an anonymous example rather than a second public Ward theorem. -/
+example {energy broadening : ℝ}
+    {ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω)}
+    (solution : FiniteSCBASolution ensemble energy broadening)
+    (hinvertible :
+      IsUnit
+        (1 - ensemble.retardedAdvancedLadderCLM
+          (solution.green .retarded) (solution.green .advanced))) :
+    (spectralParameter .advanced energy broadening -
+        spectralParameter .retarded energy broadening) •
+      (solution.green .retarded *
+        resummedLadderVertex
+          (ensemble.retardedAdvancedLadderCLM
+            (solution.green .retarded) (solution.green .advanced))
+          hinvertible
+          (1 : H →L[ℂ] H) *
+        solution.green .advanced) =
+      solution.green .retarded - solution.green .advanced := by
+  simpa using
+    solution.resummedLadderVertex_charge_ward_consistency
+      (1 : H →L[ℂ] H)
+      (ChargeSymmetry.one ensemble)
+      hinvertible
 
 end FiniteDisorderEnsemble
 
