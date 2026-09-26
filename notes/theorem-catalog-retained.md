@@ -262,9 +262,9 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator` —
   canonical completed-space CAR statement for the unified thermal ladder operator, expressing its
   anticommutator as the scalar CAR coefficient times the identity.
-- `Combinatorics.FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype` —
-  Finite-family ordered-simplex shuffle product identity for continuous local integrands directly
-  over an ambient total propositionally equal to the sum of local block sizes.
+- `Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod` — canonical finite-family
+  ordered-simplex shuffle product identity for measurably locally bounded local integrands; retain
+  the general theorem even when its current compiled consumer is private.
 - `Combinatorics.Pairing.presentsPairs_of_partner_blockPair` — Criterion for presenting a pairing.
 - `Combinatorics.blockPair_apply` — The two positions of a block, written through the block-slot
   presentation.
