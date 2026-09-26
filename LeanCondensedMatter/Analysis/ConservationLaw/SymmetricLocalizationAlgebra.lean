@@ -28,54 +28,6 @@ variable {Test : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 
-/-- Symmetrization with a fixed right-hand quantity is linear in the left operator. -/
-noncomputable def symmetrizedProductRightLinear
-    (m : V →ₗ[ℂ] V) :
-    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) where
-  toFun := fun A => symmetrizedProduct A m
-  map_add' := by
-    intro A B
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
-  map_smul' := by
-    intro c A
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
-
-@[simp]
-theorem symmetrizedProductRightLinear_apply
-    (m A : V →ₗ[ℂ] V) :
-    symmetrizedProductRightLinear V m A = symmetrizedProduct A m :=
-  rfl
-
-/-- Symmetrization with a fixed left-hand operator is linear in the transported quantity. -/
-noncomputable def symmetrizedProductLeftLinear
-    (A : V →ₗ[ℂ] V) :
-    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) where
-  toFun := fun m => symmetrizedProduct A m
-  map_add' := by
-    intro m n
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
-  map_smul' := by
-    intro c m
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
-
-@[simp]
-theorem symmetrizedProductLeftLinear_apply
-    (A m : V →ₗ[ℂ] V) :
-    symmetrizedProductLeftLinear V A m = symmetrizedProduct A m :=
-  rfl
-
 /-- A one-body quantity localized by the supplied operator-valued test map `M`. -/
 noncomputable def localizedQuantity
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
