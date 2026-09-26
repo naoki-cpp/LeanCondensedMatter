@@ -62,7 +62,7 @@ def toDifferentialCurrentRepresentation
     (hJ : IsDifferentialCurrent d B.transport J) :
     DifferentialCurrentRepresentation d B.transport where
   current := J
-  factors := hJ
+  isCurrent := hJ
 
 end IntrinsicBalanceLaw
 
