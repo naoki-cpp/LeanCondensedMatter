@@ -200,11 +200,11 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
       stoneEvolution A hA (s + h) (x : H) =
         stoneEvolution A hA s
           (stoneEvolution A hA h (x : H)) by
-      simpa only [stoneEvolution_apply] using
-        resolventEvolutionStrongLimit_add_time_apply A hA s h (x : H)]
+      rw [stoneEvolution_add]
+      rfl]
     rw [show stoneEvolution A hA 0 (x : H) = (x : H) by
-      simpa only [stoneEvolution_apply] using
-        resolventEvolutionStrongLimit_zero_apply A hA (x : H)]
+      rw [stoneEvolution_zero]
+      rfl]
     simp only [zero_add]
     rw [← (stoneEvolution A hA s).map_sub]
     symm
