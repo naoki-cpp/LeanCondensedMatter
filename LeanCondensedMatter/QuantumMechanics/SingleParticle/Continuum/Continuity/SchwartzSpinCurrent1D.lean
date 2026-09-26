@@ -39,11 +39,44 @@ noncomputable section
 /-- Concrete two-component Schwartz one-particle space. -/
 abbrev SchwartzSpinorOneParticle1D := SchwartzTwoLevel1D.State
 
+/-- Spin-1/2 operator as a real-linear function of the spin-space component vector. -/
+noncomputable def schwartzSpinOperatorLinear
+    (ℏ : ℝ) :
+    QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
+      (SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D) :=
+  (SchwartzTwoLevel1D.internalOperatorLinear.restrictScalars ℝ).comp
+    (QuantumTheory.SpinHalf.spinMatrix ℏ)
+
 /-- Spin-1/2 operator associated with a three-dimensional spin-space component vector. -/
 noncomputable def schwartzSpinOperator
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D :=
-  SchwartzTwoLevel1D.internalOperator (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)
+  schwartzSpinOperatorLinear ℏ spinComponent
+
+@[simp]
+theorem schwartzSpinOperatorLinear_apply
+    (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
+    schwartzSpinOperatorLinear ℏ spinComponent = schwartzSpinOperator ℏ spinComponent :=
+  rfl
+
+/-- With velocity fixed, the one-particle symmetrized spin-current density is real-linear in the
+spin-space component vector. -/
+noncomputable def schwartzSpinCurrentDensityLinear1D
+    (ℏ κ : ℝ) :
+    QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
+      (SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D) :=
+  ((symmetrizedVelocityCurrentLinear SchwartzSpinorOneParticle1D
+      (SchwartzTwoLevel1D.velocityOperator ℏ κ)).restrictScalars ℝ).comp
+    (schwartzSpinOperatorLinear ℏ)
+
+@[simp]
+theorem schwartzSpinCurrentDensityLinear1D_apply
+    (ℏ κ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
+    schwartzSpinCurrentDensityLinear1D ℏ κ spinComponent =
+      symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
+        (SchwartzTwoLevel1D.velocityOperator ℏ κ)
+        (schwartzSpinOperator ℏ spinComponent) :=
+  rfl
 
 /-- The componentwise velocity-generated flux is a differential current for the spinor Schrödinger
 localization transport. -/
