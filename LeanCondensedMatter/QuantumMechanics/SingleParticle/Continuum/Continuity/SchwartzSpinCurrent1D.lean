@@ -40,7 +40,7 @@ abbrev SchwartzSpinorOneParticle1D := SchwartzSpinor1D.Spinor
 
 /-- Spin-1/2 operator associated with a physical three-dimensional direction. -/
 noncomputable def schwartzSpinOperator
-    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) :
+    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D :=
   SchwartzSpinor1D.internalOperator (QuantumTheory.SpinHalf.spinMatrix ℏ direction)
 
@@ -48,7 +48,7 @@ noncomputable def schwartzSpinOperator
 localization transport. -/
 theorem schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) :
+    (internalH : SchwartzSpinor1D.InternalMatrix) :
     _root_.ConservationLaw.IsDifferentialCurrent
       SchwartzSpinor1D.derivative
       (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
@@ -67,7 +67,7 @@ theorem schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
 
 /-- Multiplication localization commutes with a concrete spin component. -/
 theorem schwartzSpin_localization_commutator_eq_zero
-    (f : SchwartzSpinor1D.Spatial) (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) :
+    (f : SchwartzSpinor1D.Spatial) (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     _root_.ConservationLaw.linearCommutator
       (SchwartzSpinor1D.multiplicationOperator f)
       (schwartzSpinOperator ℏ direction) = 0 := by
@@ -79,7 +79,7 @@ theorem schwartzSpin_localization_commutator_eq_zero
 /-- The symmetrized velocity-current representation of spin transport on the Schwartz model. -/
 noncomputable def schwartzSpinCurrentRepresentation1D
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) (direction : QuantumTheory.SpinHalf.Direction) :
+    (internalH : SchwartzSpinor1D.InternalMatrix) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       SchwartzSpinor1D.derivative
       (heisenbergTransportFunctional SchwartzSpinorOneParticle1D ℏ
@@ -102,7 +102,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
 @[simp]
 theorem schwartzSpinCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) (direction : QuantumTheory.SpinHalf.Direction) :
+    (internalH : SchwartzSpinor1D.InternalMatrix) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH direction).currentDensity =
       symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
@@ -111,7 +111,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity
 
 /-- In the internal-spin model the velocity and spin operators commute. -/
 theorem schwartzSpin_velocity_commutator_eq_zero
-    (ℏ κ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) :
+    (ℏ κ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     _root_.ConservationLaw.linearCommutator
       (SchwartzSpinor1D.velocityOperator ℏ κ)
       (schwartzSpinOperator ℏ direction) = 0 := by
@@ -122,7 +122,7 @@ theorem schwartzSpin_velocity_commutator_eq_zero
 
 /-- The symmetrized spin current simplifies from `1/2 {v,S(n)}` to `v S(n)`. -/
 theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
-    (ℏ κ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) :
+    (ℏ κ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
         (schwartzSpinOperator ℏ direction) =
@@ -136,7 +136,7 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
 /-- The current density stored in the local representation is exactly `v S(n)`. -/
 theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) (direction : QuantumTheory.SpinHalf.Direction) :
+    (internalH : SchwartzSpinor1D.InternalMatrix) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH direction).currentDensity =
       (SchwartzSpinor1D.velocityOperator ℏ κ).comp
         (schwartzSpinOperator ℏ direction) := by
@@ -147,8 +147,8 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
 Hamiltonian matrix. -/
 theorem linearCommutator_schwartzSpinorHamiltonian_spinAlong
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix)
-    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) :
+    (internalH : SchwartzSpinor1D.InternalMatrix)
+    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) :
     _root_.ConservationLaw.linearCommutator
         (SchwartzSpinor1D.hamiltonian κ potential internalH)
         (schwartzSpinOperator ℏ direction) =
@@ -162,8 +162,8 @@ theorem linearCommutator_schwartzSpinorHamiltonian_spinAlong
 commutator `[H_internal,S(n)]`. -/
 theorem schwartzSpin_sourceCommutator_eq_internal
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix)
-    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) (f : SchwartzSpinor1D.Spatial) :
+    (internalH : SchwartzSpinor1D.InternalMatrix)
+    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) (f : SchwartzSpinor1D.Spatial) :
     _root_.ConservationLaw.sourceCommutator SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.hamiltonian κ potential internalH)
         SchwartzSpinor1D.multiplicationLinear
@@ -181,8 +181,8 @@ theorem schwartzSpin_sourceCommutator_eq_internal
 vanishes and the balance law reduces to pure transport. -/
 theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix)
-    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) (f : SchwartzSpinor1D.Spatial)
+    (internalH : SchwartzSpinor1D.InternalMatrix)
+    (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.PhysicalSpace) (f : SchwartzSpinor1D.Spatial)
     (hcomm : _root_.ConservationLaw.linearCommutator
       (SchwartzSpinor1D.internalOperator internalH)
       (schwartzSpinOperator ℏ direction) = 0) :
