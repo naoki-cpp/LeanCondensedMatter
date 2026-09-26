@@ -66,6 +66,12 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea`
   — named physical endpoint identifying the finite static Kubo–Bastin conductivity with the Středa
   surface-plus-sea split under the explicit analytic and Ward assumptions.
+- `QuantumTheory.Transport.regularizedBastinOperatorIntegrand_neg_neg` — canonical
+  bilinearity/sign symmetry of the generic finite-broadening Bastin operator kernel under
+  simultaneous reversal of both current vertices.
+- `SecondQuantization.Fermionic.Validation.twoLevel_zeroCurrent_streda_sum_zero` — concrete
+  two-level zero-current validation endpoint for the pointwise Bastin/Středa decomposition; it is
+  intentionally retained as a symbolic sanity check rather than proof infrastructure.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.retardedAdvancedLadderCLM_apply` — canonical
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
