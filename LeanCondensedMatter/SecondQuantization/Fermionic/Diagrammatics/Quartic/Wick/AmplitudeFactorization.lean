@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleFintype
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
