@@ -49,7 +49,6 @@ theorem mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
 
 /-- The order-one coefficient of `logOf Z` equals the order-one coefficient of a normalized
 complex power series `Z`. -/
-@[simp]
 theorem coeff_one_logOf {Z : PowerSeries ℂ} (hZ : constantCoeff Z = 1) :
     coeff 1 (logOf Z) = coeff 1 Z := by
   have hsub : HasSubst (Z - 1) :=
