@@ -52,6 +52,7 @@ homomorphic normalization rules:
 - `diagonalExpectationValue_add`
 - `SchwartzTwoLevel1D.spatialLift_apply`
 - `SchwartzTwoLevel1D.internalOperator_apply`
+- `SchwartzTwoLevel1D.internalOperatorLinear_apply`
 - `SchwartzTwoLevel1D.multiplicationOperator_apply`
 - `SchwartzTwoLevel1D.multiplicationLinear_apply`
 - `nonrealShiftLinearEquiv_apply`
@@ -65,6 +66,7 @@ homomorphic normalization rules:
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
 - `ConservationLaw.symmetrizedProductRightLinear_apply`
+- `ConservationLaw.symmetrizedProductLeftLinear_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
 - `ConservationLaw.localizedQuantity_smul_id`
 - `ConservationLaw.localizationCommutatorFunctional_apply`
