@@ -43,6 +43,15 @@ Lean/Mathlib style and project-wide conventions.
 
 General cautions distilled from past sessions; detailed incident records live in `caveats.md`.
 
+### Simplification policy
+
+- **Treat `@[simp]` as a normal-form declaration, not a convenience annotation.** Add a theorem to the global simp set only when it describes the canonical form of the API and is safe to apply implicitly at essentially every consumer.
+- **Use `@[simp]` for canonical computation rules and API boundaries.** Typical cases are constructor equations, projections and application rules, zero/one/identity and involution laws, canonical membership characterizations, vacuum or distinguished-state identities, project-owned wrappers reducing to their intended underlying form, and standard homomorphic rules whose right-hand side is the stable normal form.
+- **Do not use `@[simp]` merely because a theorem is useful.** Leave commutativity/associativity and other reorderings, decomposition or representation theorems, long coordinate expansions, analytic or convergence results, rewrites to an equally natural representation, and lemmas introduced only to shorten one proof out of the global simp set. Apply them explicitly with `rw`, `simp [lemma]`, or another targeted tactic.
+- **Default against a global simp rule when the normal form is ambiguous.** A candidate should have a clearly preferred right-hand side, remove or normalize at least one layer of project-specific structure, and remain desirable if it fires silently in unrelated downstream proofs. If any of these is unclear, keep the theorem untagged.
+- **Use local simplification deliberately.** Use ordinary `simp` when a proof intentionally relies on the public simp API, `simp only [...]` when the proof should pin the exact rewrite set, and `rw` when applying a mathematically substantive transformation. Repeated `simp [largeDefinition]` at consumers is a signal to inspect whether a smaller canonical evaluation lemma or a better abstraction boundary is missing.
+- **A specialized theorem may be retained as a deliberate simp boundary.** Even when a generic upstream theorem proves it, a domain-level specialization may remain public and tagged `@[simp]` when it is the canonical normalization rule for that API. This is an API boundary, not a compatibility wrapper, and should not justify parallel noncanonical aliases.
+
 - **Proof search follows Pólya, compactly.** Understand the goal and hypotheses; search analogous results and reduce or transform to a tractable subgoal; execute the smallest justified plan; then check, simplify, and generalize. Prefer this pass over brute-force tactics or premature abstractions.
 - **Do not use `.re` as a conversion to `ℝ`.** If a complex expression is mathematically real, prove that fact and expose a real-valued API instead. Use `.re` only when the real part itself is intended.
 - **Abbreviations made with `have`/`haveI` are opaque.** They are not definitionally equal to the term they abbreviate. When a later step needs to unfold back to the original term, use `let`/`set`, or repeat the term at each use site.
