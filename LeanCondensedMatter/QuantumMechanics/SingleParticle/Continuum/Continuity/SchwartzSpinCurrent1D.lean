@@ -38,7 +38,7 @@ noncomputable section
 /-- Concrete two-component Schwartz one-particle space. -/
 abbrev SchwartzSpinorOneParticle1D := SchwartzTwoLevel1D.Spinor
 
-/-- Spin-1/2 operator associated with a physical three-dimensional direction. -/
+/-- Spin-1/2 operator associated with a three-dimensional spin-space component vector. -/
 noncomputable def schwartzSpinOperator
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D :=
