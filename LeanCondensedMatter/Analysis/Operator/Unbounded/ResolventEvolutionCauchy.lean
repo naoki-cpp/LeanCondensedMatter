@@ -22,8 +22,8 @@ namespace LinearPMap
 
 noncomputable section
 
-open Complex
-open scoped InnerProductSpace
+open Complex Filter
+open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -68,6 +68,20 @@ theorem norm_resolventApproximationEvolution_sub_le
   rw [← (boundedUnitaryEvolution As t).map_sub]
   rw [boundedUnitaryEvolution_apply_norm As hAs t]
   exact norm_boundedUnitaryEvolution_apply_sub_le D hD t x
+
+private def positiveApproximationScale (r : ℝ) : ℝ :=
+  max 1 r
+
+private theorem positiveApproximationScale_pos (r : ℝ) :
+    0 < positiveApproximationScale r := by
+  exact lt_of_lt_of_le zero_lt_one (le_max_left 1 r)
+
+/-- A total real-indexed version of the resolvent evolution, obtained by clipping the scale below
+at one. -/
+noncomputable def resolventApproximationEvolutionAtScale
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) : H →L[ℂ] H :=
+  resolventApproximationEvolution A hA (positiveApproximationScale r)
+    (positiveApproximationScale_pos r) t
 
 /-- On the original domain, the bounded resolvent evolutions are strongly Cauchy at each fixed
 real time. -/
