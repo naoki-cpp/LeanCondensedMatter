@@ -40,6 +40,27 @@ abbrev SpinfulSite (Site : Type*) := Site ×ₗ Fin 2
 def spinfulSite {Site : Type*} (x : Site) (s : Fin 2) : SpinfulSite Site :=
   toLex (x, s)
 
+/-- Spatial multiplication operator on a spinful lattice.
+
+The scalar weight depends only on the spatial site and acts identically on both internal spin
+labels. This is the finite-lattice analogue of a position-space multiplication localizer. -/
+noncomputable def spatialMultiplicationOneBody
+    {Site : Type*} [Fintype Site] (weight : Site → ℂ) :
+    LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) := by
+  classical
+  exact ∑ x : Site, ∑ s : Fin 2,
+    weight x • matrixUnit (spinfulSite x s) (spinfulSite x s)
+
+@[simp]
+theorem spatialMultiplicationOneBody_latticeKet
+    {Site : Type*} [Fintype Site]
+    (weight : Site → ℂ) (x : Site) (s : Fin 2) :
+    spatialMultiplicationOneBody weight (latticeKet (spinfulSite x s)) =
+      weight x • latticeKet (spinfulSite x s) := by
+  classical
+  simp [spatialMultiplicationOneBody, latticeKet, LinearMap.sum_apply, matrixUnit_apply,
+    spinfulSite]
+
 /-- One-particle spin operator for an arbitrary real polarization in the Pauli basis.
 
 The same internal `2 × 2` matrix acts at every spatial site. Real polarization coefficients and
@@ -55,6 +76,40 @@ noncomputable def spinPolarizationOneBody
       InternalSpace.pauliCombination (fun axis => (polarization axis : ℂ))
   exact ∑ x : Site, ∑ a : Fin 2, ∑ b : Fin 2,
     spinMatrix a b • matrixUnit (spinfulSite x a) (spinfulSite x b)
+
+/-- Spatial multiplication commutes with every uniformly applied internal spin polarization. -/
+theorem spatialMultiplicationOneBody_comp_spinPolarizationOneBody_comm
+    {Site : Type*} [Fintype Site]
+    (weight : Site → ℂ) (spinScale : ℝ)
+    (polarization : InternalSpace.PauliAxis → ℝ) :
+    (spatialMultiplicationOneBody weight).comp
+        (spinPolarizationOneBody spinScale polarization) =
+      (spinPolarizationOneBody spinScale polarization).comp
+        (spatialMultiplicationOneBody weight) := by
+  classical
+  apply Common.linearMap_ext_basisState
+  intro z
+  let x : Site := (ofLex z).1
+  let s : Fin 2 := (ofLex z).2
+  have hz : z = spinfulSite x s := by
+    simpa [x, s, spinfulSite] using (toLex_ofLex z).symm
+  subst z
+  simp [LinearMap.comp_apply, spinPolarizationOneBody, LinearMap.sum_apply,
+    spatialMultiplicationOneBody_latticeKet, latticeKet, matrixUnit_apply, spinfulSite,
+    smul_smul]
+  module
+
+/-- A spatial multiplication localizer commutes with arbitrary spin polarization. -/
+theorem linearCommutator_spatialMultiplicationOneBody_spinPolarizationOneBody
+    {Site : Type*} [Fintype Site]
+    (weight : Site → ℂ) (spinScale : ℝ)
+    (polarization : InternalSpace.PauliAxis → ℝ) :
+    _root_.ConservationLaw.linearCommutator
+      (spatialMultiplicationOneBody weight)
+      (spinPolarizationOneBody spinScale polarization) = 0 := by
+  exact sub_eq_zero.mpr
+    (spatialMultiplicationOneBody_comp_spinPolarizationOneBody_comm
+      weight spinScale polarization)
 
 end
 end Lattice
