@@ -162,7 +162,7 @@ private theorem intervalIntegrable_orderedSimplexContribution_consRight {m n : �
 
 /-- The finite sum of explicit binary-shuffle contributions is the recursive shuffle integral under
 measurable local boundedness. -/
-theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded :
+private theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded :
     ∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
       MeasurableLocallyBounded f → MeasurableLocallyBounded g →
       (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =

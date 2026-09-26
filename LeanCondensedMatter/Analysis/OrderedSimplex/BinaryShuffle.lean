@@ -115,7 +115,7 @@ theorem orderedSimplexContribution_allLeft :
 
 /-- The finite sum of explicit binary-shuffle contributions is the recursive analytic shuffle
 integral. -/
-theorem sum_orderedSimplexContribution_eq_shuffleIntegral :
+private theorem sum_orderedSimplexContribution_eq_shuffleIntegral :
     ∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
       Continuous f → Continuous g →
       (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
