@@ -6,13 +6,12 @@ set_option linter.style.header false
 /-!
 # Vacuum connectivity across the two-point slot split
 
-`SlotSplitConnectivity.lean` transfers connectivity on the external side of a two-point slot split.
-For the linked-cluster amplitude factorization we also need the complementary statement: the
-quartic vacuum piece has exactly the same adjacency and reachability as the corresponding ambient
-interaction vertices after reassembly.
+For a reconstructed slot-split diagram, adjacency and reachability among vertices of the quartic
+vacuum sector agree exactly with adjacency and reachability in the quartic piece itself.
 
-This module contains only that statistics-independent graph transport.  Amplitude statements belong
-in the Fermionic layer.
+Thus connected components on the quartic side can be identified with the vacuum components of the
+ambient two-point diagram. The statement is purely graph-theoretic and independent of particle
+statistics or amplitudes.
 -/
 
 namespace SecondQuantization
