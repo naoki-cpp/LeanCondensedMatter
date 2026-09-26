@@ -130,19 +130,19 @@ noncomputable def unswitchedTerm
 end LehmannTransitionData
 
 /-- A finite family of fixed-rate canonical Lehmann transitions. -/
-noncomputable def finiteLehmannLimitSum
+private noncomputable def finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
     (hbar omega eta : ℝ) (transition : κ → LehmannTransitionData hbar) : ℂ :=
   s.sum fun j => (transition j).frequencyTerm omega eta
 
 /-- The corresponding finite zero-rate sum. -/
-noncomputable def finiteUnswitchedLehmannSum
+private noncomputable def finiteUnswitchedLehmannSum
     {κ : Type*} (s : Finset κ)
     (hbar omega : ℝ) (transition : κ → LehmannTransitionData hbar) : ℂ :=
   s.sum fun j => (transition j).unswitchedTerm omega
 
 /-- Fixed-nonzero-rate finite Lehmann sums always have a static limit. -/
-theorem hasStaticLimit_finiteLehmannLimitSum
+private theorem hasStaticLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
     (hbar eta : ℝ) (transition : κ → LehmannTransitionData hbar)
     (heta : eta ≠ 0) :
@@ -157,7 +157,7 @@ theorem hasStaticLimit_finiteLehmannLimitSum
     hbar eta (transition j).energyGap (transition j).weight heta
 
 /-- Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. -/
-theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
+private theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
     (hbar omega : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hregular : ∀ j ∈ s,
@@ -174,7 +174,7 @@ theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
     hbar omega (transition j).energyGap (transition j).weight (hregular j hj)
 
 /-- Static continuity of a finite zero-rate nonresonant sum. -/
-theorem hasStaticLimit_finiteUnswitchedLehmannSum
+private theorem hasStaticLimit_finiteUnswitchedLehmannSum
     {κ : Type*} (s : Finset κ)
     (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
@@ -191,7 +191,7 @@ theorem hasStaticLimit_finiteUnswitchedLehmannSum
     hbar (transition j).energyGap (transition j).weight hhbar (hregular j hj)
 
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
-theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
+private theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
     (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
@@ -245,7 +245,7 @@ theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
         Finset.sum_insert, ha] using htermOmega.add hsOmega
 
 /-- Both local iterated limits exist and agree for a finite static-nonresonant family. -/
-theorem finiteLehmannLimitSum_has_both_local_iterated_limits
+private theorem finiteLehmannLimitSum_has_both_local_iterated_limits
     {κ : Type*} (s : Finset κ)
     (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
