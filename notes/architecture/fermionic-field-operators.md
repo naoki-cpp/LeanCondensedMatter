@@ -56,8 +56,9 @@ Current semantics are layered rather than identified with one operator formula:
 `DifferentialCurrentRepresentation.current` is one chosen extension to one-form data; and
 `LocalCurrentDensityRepresentation.currentDensity` exists only after supplying a local pairing.
 The operator `1/2 {v,m}` is one such current-density representation under its stated localization
-hypotheses, while the generic nested flux includes the localization correction when those hypotheses
-do not reduce the transport to the symmetrized density alone.
+hypotheses. When localizer evolution admits the supplied velocity representation, the nested flux
+represents the intrinsic transport and decomposes into the symmetrized flux plus the localization
+correction.
 
 Fermionic second quantization consumes those definitions and owns only representation-specific lifts.
 Mathlib `LieHom`, with the associative-endomorphism Lie bracket, is the canonical bundle for `dGamma`:
