@@ -57,7 +57,9 @@ theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
           ‖Ar (x : H) - A x‖ * |t| ≤ 0 := by
     apply le_of_tendsto hdiff
     exact Filter.Eventually.of_forall fun s => by
-      have hpair := norm_resolventApproximationEvolution_sub_atScale_le\n        A hA r hr s t (x : H)\n      linarith
+      have hpair := norm_resolventApproximationEvolution_sub_atScale_le
+        A hA r hr s t (x : H)
+      linarith
   rw [norm_sub_rev]
   linarith
 
