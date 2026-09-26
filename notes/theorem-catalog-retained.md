@@ -272,15 +272,16 @@ or consumer structure changes.
   over the canonical orbit blocks.
 - `Combinatorics.cycleDefect_mod_two` — The parity of the cycle defect agrees with the parity of
   `cycleType.sum + cycleType.card`.
-- `Combinatorics.not_crosses_self` — independent public theorem with a domain-level statement that
-  remains useful beyond its current sole compiled consumer.
+- `Combinatorics.not_crosses_self` — canonical irreflexivity fact for the pairing-crossing
+  relation: a normalized pair never crosses itself.
 - `Combinatorics.singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum` — A connected
   permutation on `S` carries the common exchange factor `ζ ^ (|S| - 1)`.
 - `Combinatorics.singleCycleKernelSum_univ_eq_sum_isCycleOn` — On the full finite index type, the
   pure connected kernel is the direct sum over permutations that are a single cycle on the whole
   type.
-- `Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace` — Summing the
-  connected single-cycle contribution over all physical-index assignments gives `ζ^(m-1) (m-1)!
+- `Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace` — canonical trace
+  bridge identifying the assignment sum of connected single-cycle contributions with
+  `ζ^(m-1) (m-1)! tr(K^m)` for positive label count.
 - `Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card` — On a nontrivial finite type, a
   permutation is a single orbit on the whole type exactly when its cycle type is the singleton
   containing the ambient cardinality.
