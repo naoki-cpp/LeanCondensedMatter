@@ -100,17 +100,10 @@ theorem frequencySusceptibilityIntegrand_zero_frequency
       retardedTimeDifferenceKernel system expectation A B τ := by
   simp [frequencySusceptibilityIntegrand]
 
-/-- Explicit integrability condition for the oscillatory susceptibility integrand. -/
-def FrequencyIntegrable
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (ω : ℝ) : Prop :=
-  MeasureTheory.Integrable
-    (frequencySusceptibilityIntegrand system expectation A B ω)
-
 /-- Frequency-domain retarded susceptibility with convention `exp (i ω τ)`.
 
-The integral is totalized in the same sense as Mathlib's Bochner integral.  Results that use its
-analytic properties carry `FrequencyIntegrable` explicitly. -/
+The integral is totalized in the same sense as Mathlib's Bochner integral. Results that use its
+analytic properties carry the required integrability hypotheses explicitly. -/
 noncomputable def frequencyDomainSusceptibility
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω : ℝ) : ℂ :=
