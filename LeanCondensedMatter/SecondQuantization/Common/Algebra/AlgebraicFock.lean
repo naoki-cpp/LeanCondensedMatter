@@ -7,20 +7,16 @@ import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 set_option linter.style.header false
 
 /-!
-# The algebraic Fock space, generic over the occupation-state type
+# Algebraic Fock space over an occupation-state type
 
-Shared infrastructure for the fermionic and bosonic algebraic Fock-space implementations
-(`notes/roadmaps/second-quantization.md`): both `Fermionic.OccupationFock Mode` (basis
-`Fermionic.Occupation Mode := Finset Mode`) and `Bosonic.FockSpace Mode` (basis
-`Bosonic.Occupation Mode := Mode →₀ ℕ`) are the free `ℂ`-vector space on their respective occupation-state
-type — finite `ℂ`-linear combinations of basis states, no completion, no inner product. That shape
-doesn't depend on which occupation-state type is used, so it's extracted here as
-`AlgebraicFock Config` for an arbitrary `Config`, with `Fermionic`/`Bosonic` free to keep their own
-concrete `Config` (`Fermionic.Occupation Mode`/`Bosonic.Occupation Mode`) — this file does not unify those
-types themselves, only the vector-space construction built on top of whichever one is supplied.
+`AlgebraicFock Config` is the free `ℂ`-vector space on a configuration type `Config`, represented
+by finitely supported complex linear combinations of basis states. The construction is independent
+of the particular fermionic or bosonic occupation type used as `Config`.
 
-`matrixCoeff`/`diagonalCoeff` give the common coordinate-evaluation API: `A (basisState n) m`, a
-coefficient, not an inner product — `AlgebraicFock Config` has none.
+This module provides canonical basis states, basis extensionality for linear maps, and
+`matrixCoeff`/`diagonalCoeff` as coordinate evaluations. These coefficients are not inner
+products: the algebraic Fock space in this module has no Hilbert-space completion or inner-product
+structure.
 -/
 
 namespace SecondQuantization

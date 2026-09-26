@@ -6,13 +6,12 @@ set_option linter.style.header false
 /-!
 # Fermionic directional Kubo–Bastin spectral conductivity
 
-The statistics-independent transition algebra lives in `Transport.KuboBastin.PurePoint`, while
-finite spectral-index response sums live in `Transport.KuboBastin.Finite`. This module retains only
-the finite-lattice directional electric-current specialization derived from Kubo–Greenwood.
+This module specializes the statistics-independent Kubo–Bastin transition algebra and finite
+spectral-index response sums to the directional electric current of a finite fermionic lattice,
+starting from the finite Kubo–Greenwood response.
 
 The adiabatic switching rate `η` has units of inverse time, whereas the resolvent broadening has
-units of energy. With the repository's explicit reduced Planck constant, the matching retarded
-resolvent is
+units of energy. With the explicit reduced Planck constant, the matching retarded resolvent is
 
 ```text
 Gᴿ(Eₘ + ℏω, ℏη) = ((Eₘ + ℏω + iℏη) I - H)⁻¹.

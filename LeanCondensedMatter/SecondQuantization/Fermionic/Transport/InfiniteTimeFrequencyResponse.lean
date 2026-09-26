@@ -7,15 +7,14 @@ set_option linter.style.header false
 /-!
 # Fermionic infinite-observation-time adiabatic response
 
-The representation-independent positive-lag integrability condition, half-infinite scalar adiabatic
-transform, and finite-time `T → +∞` convergence theorem now live in
-`QuantumTheory.LinearResponse.InfiniteTimeAdiabatic`.
+This module specializes the positive-lag integrability condition and finite-to-infinite
+observation-time adiabatic convergence theorem to finite-lattice fermionic directional currents.
 
-This module retains the finite-lattice fermionic realization. For bounded directional currents, the
-general linear-response integrability theorem supplies the generic scalar hypothesis whenever
-`η > 0`; stationarity then identifies the finite-time directional response with the positive-lag
-kernel before applying the generic observation-time limit. Frequency, switching, volume, and DC
-limits remain separate and untaken.
+For bounded directional currents and `η > 0`, the generic linear-response integrability theorem
+supplies the scalar integrability hypothesis. Stationarity identifies the finite-time response with
+the positive-lag kernel before the observation-time limit is applied.
+
+Frequency, switching, volume, and DC limits remain separate and untaken.
 -/
 
 namespace SecondQuantization

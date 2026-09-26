@@ -7,15 +7,13 @@ set_option linter.style.header false
 /-!
 # Real harmonic sources for the finite-frequency current response
 
-The representation-independent cosine/sine source quadratures now live in
-`QuantumTheory.LinearResponse.HarmonicSource`, where they are defined directly from the canonical
-adiabatic phase.
+This module specializes the canonical cosine and sine adiabatic source quadratures to the
+finite-lattice fermionic directional-current response.
 
-This module retains the fermionic finite-lattice realization. The bounded source-coupling theorem
-accepts a real source profile, so the two physical quadratures give directional-current response
-theorems without introducing a complex-valued Hamiltonian perturbation. At the observation time,
-the cosine source equals one and therefore carries the explicit Peierls contact response, while the
-sine source vanishes and has no contact contribution.
+The bounded source-coupling theorem accepts a real source profile, so the two physical quadratures
+give directional-current response theorems without introducing a complex-valued Hamiltonian
+perturbation. At the observation time, the cosine source equals one and carries the explicit Peierls
+contact response, while the sine source vanishes and has no contact contribution.
 -/
 
 namespace SecondQuantization

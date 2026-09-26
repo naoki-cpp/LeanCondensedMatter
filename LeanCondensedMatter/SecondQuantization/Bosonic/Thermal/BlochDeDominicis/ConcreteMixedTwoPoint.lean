@@ -7,11 +7,10 @@ set_option linter.unusedFintypeInType false
 /-!
 # Concrete mixed free-boson Gibbs contractions
 
-The normalized two-point theorem previously kept summability of `aᵢ aⱼ†` and nonvanishing of the
-Bose denominator as explicit hypotheses.  Both are automatic under the standard positive
-one-mode Boltzmann exponent assumption.  This file proves that fact directly on the infinite
-occupation space and obtains the KMS-rotated reverse contraction from the CCR and linearity of the
-convergence-aware Gibbs functional.
+Under the standard positive one-mode Boltzmann exponent assumption, summability of the mixed product
+`aᵢ aⱼ†` and nonvanishing of the Bose denominator follow automatically. This module proves those
+facts directly on the infinite occupation space and derives the KMS-rotated reverse contraction from
+the canonical commutation relation and linearity of the convergence-aware Gibbs functional.
 -/
 
 namespace SecondQuantization

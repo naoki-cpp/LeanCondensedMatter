@@ -6,13 +6,12 @@ set_option linter.style.header false
 /-!
 # Fermionic directional common-energy Kubo–Bastin kernel
 
-The statistics-independent common-energy construction now lives in
-`QuantumTheory.Transport.KuboBastin.CommonEnergy`. This module retains only the finite-lattice
-directional charge-current specialization, including the Peierls contact and finite-volume
+This module specializes the generic common-energy Kubo–Bastin construction to finite-lattice
+directional charge currents, including the Peierls contact contribution and finite-volume
 conductivity normalization.
 
-The common kernel remains a finite full-energy representation at fixed broadening. No canonical
-smooth Středa representation, zero-broadening/DC limit, disorder, trace-per-volume, or
+The resulting kernel is a finite full-energy representation at fixed broadening. No smooth Středa
+representation, zero-broadening or DC limit, disorder average, trace per unit volume, or
 thermodynamic-limit claim is made here.
 -/
 
