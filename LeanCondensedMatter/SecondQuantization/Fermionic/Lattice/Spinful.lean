@@ -12,7 +12,7 @@ A spinful lattice is represented by the lexicographically ordered product site t
 `Fin 2` label is the two-component representation space, not a physical polarization direction.
 
 This module provides the one-particle action of an arbitrary `2 × 2` matrix on that internal
-representation. The map from a physical-space polarization vector to the corresponding spin-1/2
+representation. The map from a spin-space component vector to the corresponding spin-1/2
 matrix, current construction, and Kubo response belong downstream.
 -/
 
