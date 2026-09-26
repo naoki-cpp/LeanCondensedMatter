@@ -67,8 +67,8 @@ theorem symmetrizedCurrentFlux_apply
       symmetrizedProduct (N α) (symmetrizedProduct velocity m) :=
   rfl
 
-/-- Canonical localization correction, defined as the exact difference between nested and
-symmetrized and nested fluxes. -/
+/-- Canonical localization correction, defined as the exact difference between the nested and
+symmetrized fluxes. -/
 noncomputable def localizationCorrectionCurrentFlux
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :
