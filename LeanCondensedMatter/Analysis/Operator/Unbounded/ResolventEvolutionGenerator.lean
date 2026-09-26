@@ -190,11 +190,8 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
       exact (stoneEvolution A hA s).map_smul _ _
   have hshift :=
     htranslated.scomp_of_eq s ((hasDerivAt_id s).sub_const s) (by simp)
-  have hshift' :
-      HasDerivAt
-        ((fun h : ℝ => stoneEvolution A hA (s + h) (x : H)) ∘ fun t => t - s)
-        ((-I : ℂ) • stoneEvolution A hA s (A x)) s := by
-    simpa only [one_smul] using hshift
+  have hshift' := hshift
+  simp only [id_eq, one_smul] at hshift'
   convert hshift' using 1
   funext t
   simp [Function.comp_apply]
