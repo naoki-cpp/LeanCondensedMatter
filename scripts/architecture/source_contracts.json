@@ -26,10 +26,10 @@
       "paths": [
         "LeanCondensedMatter/Analysis/Operator/LinearCommutator.lean",
         "LeanCondensedMatter/Analysis/Operator/SymmetrizedProduct.lean",
-        "LeanCondensedMatter/Analysis/Calculus/CurrentRepresentation.lean",
-        "LeanCondensedMatter/Analysis/Calculus/IntrinsicBalanceLaw.lean",
-        "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
-        "LeanCondensedMatter/Analysis/Calculus/BalanceLawAdapter.lean",
+        "LeanCondensedMatter/Analysis/ConservationLaw/CurrentRepresentation.lean",
+        "LeanCondensedMatter/Analysis/ConservationLaw/IntrinsicBalanceLaw.lean",
+        "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLaw.lean",
+        "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLawAdapter.lean",
         "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
@@ -302,20 +302,20 @@
     },
     {
       "id": "generalizedCurrentIntrinsicBalanceLaw",
-      "path": "LeanCondensedMatter/Analysis/Calculus/IntrinsicBalanceLaw.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+      "path": "LeanCondensedMatter/Analysis/ConservationLaw/IntrinsicBalanceLaw.lean",
+      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation"]
     },
     {
       "id": "generalizedCurrentBalanceLaw",
-      "path": "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+      "path": "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLaw.lean",
+      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation"]
     },
     {
       "id": "generalizedCurrentBalanceAdapter",
-      "path": "LeanCondensedMatter/Analysis/Calculus/BalanceLawAdapter.lean",
+      "path": "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLawAdapter.lean",
       "modules": [
-        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
-        "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw"
+        "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
+        "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw"
       ]
     },
     {
@@ -327,7 +327,7 @@
       "id": "generalizedCurrentLocalizedTransport",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
       "modules": [
-        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+        "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
         "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
       ]
@@ -335,13 +335,13 @@
     {
       "id": "heisenbergBalanceAdapter",
       "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter"]
+      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"]
     },
     {
       "id": "intrinsicLocalizedTransportBalanceAdapter",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/IntrinsicLocalizedTransport.lean",
       "modules": [
-        "LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter",
+        "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
       ]
     },
