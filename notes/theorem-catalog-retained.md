@@ -29,6 +29,10 @@ or consumer structure changes.
 - `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative`
   — model-level dissipativity statement for the finite-cutoff Born self-energy. It is a physical
   property of the model, not merely an intermediate step in the downstream injectivity proof.
+- `ConservationLaw.DependsOnlyOnDifferential.iff_ker_le_ker` — canonical linear-algebra
+  characterization of intrinsic differential dependence as `ker d ≤ ker Φ` over modules with
+  subtraction; it records the representation-independent content of the current condition without
+  choosing a current extension.
 - `QuantumMechanics.SingleParticle.symmetrizedVelocityTransport_decomposition` — canonical algebraic
   decomposition of nested symmetrized transport into the symmetrized current term and the
   double-commutator correction.
