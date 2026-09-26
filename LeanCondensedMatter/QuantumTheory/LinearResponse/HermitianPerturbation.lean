@@ -31,17 +31,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable (system : BoundedFreeSystem H)
 
-/-- The adjoint operation on bounded operators, bundled as a real-linear isometry. -/
-private noncomputable def operatorStarLinearIsometry :
-    (H →L[ℂ] H) →ₗᵢ[ℝ] (H →L[ℂ] H) where
-  toLinearMap := (starL' ℝ).toLinearEquiv.toLinearMap
-  norm_map' := norm_star
-
-private theorem operatorStarLinearIsometry_apply (A : H →L[ℂ] H) :
-    operatorStarLinearIsometry A = star A := by
-  change (starL' ℝ) A = star A
-  exact starL'_apply ℝ A
-
 /-- A pointwise self-adjoint Schrödinger-picture perturbation remains self-adjoint in the
 interaction picture. -/
 theorem isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
@@ -55,22 +44,27 @@ theorem isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdj
     (V : ℝ → (H →L[ℂ] H)) (hV : ∀ s, IsSelfAdjoint (V s)) (t : ℝ) :
     IsSelfAdjoint
       (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) := by
+  let starIso : (H →L[ℂ] H) →ₗᵢ[ℝ] (H →L[ℂ] H) :=
+    { toLinearMap := (starL' ℝ).toLinearEquiv.toLinearMap
+      norm_map' := norm_star }
+  have starIso_apply (A : H →L[ℂ] H) : starIso A = star A := by
+    change (starL' ℝ) A = star A
+    exact starL'_apply ℝ A
   rw [isSelfAdjoint_iff]
   calc
     star (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) =
-        operatorStarLinearIsometry
-          (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) := by
-      simp [operatorStarLinearIsometry_apply]
+        starIso (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) := by
+      rw [starIso_apply]
     _ = ∫ s in (0 : ℝ)..t,
-          operatorStarLinearIsometry (timeDependentInteractionPerturbation system V s) := by
+          starIso (timeDependentInteractionPerturbation system V s) := by
       symm
       exact LinearIsometry.intervalIntegral_comp_comm
-        operatorStarLinearIsometry
-        (fun s => timeDependentInteractionPerturbation system V s)
+        starIso (fun s => timeDependentInteractionPerturbation system V s)
     _ = ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s := by
       apply intervalIntegral.integral_congr
       intro s _
-      simpa [operatorStarLinearIsometry_apply] using
+      rw [starIso_apply]
+      exact
         (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
           system V hV s).star_eq
 
