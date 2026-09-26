@@ -101,7 +101,7 @@ theorem stoneEvolution_apply_continuousAt_zero_domain
 
 /-- Time differences for the limiting unitary group reduce isometrically to a displacement from
 zero time. -/
-theorem stoneEvolution_dist_time_eq_sub
+private theorem stoneEvolution_dist_time_eq_sub
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H) :
     dist (stoneEvolution A hA t x)
         (stoneEvolution A hA s x) =
@@ -116,7 +116,7 @@ theorem stoneEvolution_dist_time_eq_sub
   exact stoneEvolution_dist_eq A hA s _ x
 
 /-- On the generator domain, the limiting Stone evolution is continuous at every time. -/
-theorem stoneEvolution_apply_continuous_domain
+private theorem stoneEvolution_apply_continuous_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
     Continuous (fun t : ℝ => stoneEvolution A hA t (x : H)) := by
   rw [continuous_iff_continuousAt]
@@ -158,18 +158,6 @@ theorem stoneEvolution_apply_continuous
         fun t : ℝ => stoneEvolution A hA t x := rfl
   rw [horbit] at hcomp
   exact hcomp
-
-/-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
-theorem stoneEvolution_apply_continuousAt_zero
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (y : H) :
-    ContinuousAt (fun t : ℝ => stoneEvolution A hA t y) 0 :=
-  (stoneEvolution_apply_continuous A hA y).continuousAt
-
-/-- The limiting evolution is strongly continuous at every time, for every vector. -/
-theorem stoneEvolution_apply_continuousAt
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ) :
-    ContinuousAt (fun t : ℝ => stoneEvolution A hA t x) s :=
-  (stoneEvolution_apply_continuous A hA x).continuousAt
 
 end
 
