@@ -11,7 +11,8 @@ ambient slots. The concrete fermionic amplitude layer instead uses consecutive `
 slots. This module supplies the canonical increasing reindexing needed to apply that amplitude to
 one connected component, together with the induced local external and interaction times. It also
 identifies each local canonical atomic leg with its ambient canonical leg and proves that the
-attached timed field is preserved by this embedding.
+attached timed field is preserved by this embedding. The same semantic embedding is then lifted to
+mixed-time positions, where the free-Gibbs pair kernel agrees with the standalone component kernel.
 -/
 
 namespace SecondQuantization
@@ -119,6 +120,69 @@ theorem ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentO
   | inr leg =>
       rcases leg with ⟨v, l⟩
       rfl
+
+
+/-- Embed a component-local mixed-time atomic position into the ambient mixed-time atomic order by
+preserving the represented canonical leg. -/
+noncomputable def ExternalInsertionWickDiagram.componentMixedPosition {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts) :
+    Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B)) →
+      Fin (2 * (2 * n + E)) :=
+  fun p =>
+    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm
+      (d.componentOrderedLeg B
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B) p))
+
+private theorem
+    ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B))) :
+    externalInsertionMixedTimeOrderedAtomicFieldFamily
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (d.componentMixedPosition externalTime σ B p) =
+      externalInsertionMixedTimeOrderedAtomicFieldFamily
+        (d.componentWickDiagram B).externalLabel
+        (d.componentExternalTime externalTime B)
+        (d.componentWickDiagram B).vertexLabelSequence
+        (d.componentInteractionTime σ B) p := by
+  unfold externalInsertionMixedTimeOrderedAtomicFieldFamily
+  simp only [ExternalInsertionWickDiagram.componentMixedPosition, Equiv.apply_symm_apply]
+  rw [← d.orderedExternalInsertionLegField_componentOrderedLeg externalTime σ B]
+
+/-- The ambient free-Gibbs pair contraction restricts to the standalone component pair contraction
+under the canonical mixed-position embedding. -/
+theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
+    [LinearOrder Mode] [Fintype Mode] {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (a b : Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B))) :
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (d.componentMixedPosition externalTime σ B a)
+        (d.componentMixedPosition externalTime σ B b) =
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        (d.componentWickDiagram B).externalLabel
+        (d.componentExternalTime externalTime B)
+        (d.componentWickDiagram B).vertexLabelSequence
+        (d.componentInteractionTime σ B) a b := by
+  unfold externalInsertionMixedTimeOrderedAtomicPairValue
+  rw [d.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition externalTime σ B a,
+    d.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition externalTime σ B b]
 
 end Fermionic
 end SecondQuantization
