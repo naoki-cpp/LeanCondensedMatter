@@ -29,10 +29,25 @@ variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 
-/-- The symmetrized velocity current-density candidate `1/2 {v,m}`. -/
+/-- With velocity fixed, the symmetrized current density is complex-linear in the transported
+one-body quantity. -/
+noncomputable def symmetrizedVelocityCurrentLinear
+    (velocity : V →ₗ[ℂ] V) :
+    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
+  _root_.ConservationLaw.symmetrizedProductLeftLinear V velocity
+
+/-- The symmetrized velocity current-density candidate `1/2 {v,m}`, obtained by evaluating the
+transported-quantity linear map. -/
 noncomputable def symmetrizedVelocityCurrent
     (velocity m : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  _root_.ConservationLaw.symmetrizedProduct velocity m
+  symmetrizedVelocityCurrentLinear V velocity m
+
+@[simp]
+theorem symmetrizedVelocityCurrentLinear_apply
+    (velocity m : V →ₗ[ℂ] V) :
+    symmetrizedVelocityCurrentLinear V velocity m =
+      symmetrizedVelocityCurrent V velocity m :=
+  rfl
 
 @[simp]
 theorem symmetrizedVelocityCurrent_id

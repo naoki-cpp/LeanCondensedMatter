@@ -29,6 +29,71 @@ theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
     symmetrizedProduct A B v = (1 / 2 : ℂ) • (A (B v) + B (A v)) := by
   rfl
 
+/-- The symmetrized product is bilinear in its two operator arguments. -/
+noncomputable def symmetrizedProductBilinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W] :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  LinearMap.mk₂ ℂ (fun A B => symmetrizedProduct A B)
+    (by
+      intro A C B
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+    (by
+      intro c A B
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+    (by
+      intro A B C
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+    (by
+      intro c A B
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+
+@[simp]
+theorem symmetrizedProductBilinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) :
+    symmetrizedProductBilinear W A B = symmetrizedProduct A B :=
+  rfl
+
+/-- Symmetrization with a fixed right-hand operator is linear in the left operator. -/
+noncomputable def symmetrizedProductRightLinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W]
+    (B : W →ₗ[ℂ] W) :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  LinearMap.flip (symmetrizedProductBilinear W) B
+
+@[simp]
+theorem symmetrizedProductRightLinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (B A : W →ₗ[ℂ] W) :
+    symmetrizedProductRightLinear W B A = symmetrizedProduct A B :=
+  rfl
+
+/-- Symmetrization with a fixed left-hand operator is linear in the right operator. -/
+noncomputable def symmetrizedProductLeftLinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W]
+    (A : W →ₗ[ℂ] W) :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  symmetrizedProductBilinear W A
+
+@[simp]
+theorem symmetrizedProductLeftLinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) :
+    symmetrizedProductLeftLinear W A B = symmetrizedProduct A B :=
+  rfl
+
 /-- The symmetrized product is symmetric in its two arguments. -/
 theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
