@@ -7,10 +7,13 @@ set_option linter.unusedFintypeInType false
 /-!
 # Free-boson convergence-aware Wick recursion
 
-This module fixes the concrete free thermal field labels, ordered algebraic-Fock product, and
-normalized pair kernel used by the bosonic Wick recursion.  The remaining analytic obligations are
-kept explicit: admissibility must imply Gibbs summability, survive pair deletion, and satisfy the
-first-pair KMS/exchange recurrence.
+This module fixes the free thermal field labels, ordered algebraic-Fock product, and normalized pair
+kernel used by the bosonic Wick recursion.
+
+Its admissibility interface records the analytic hypotheses needed by the recursion: Gibbs
+summability of the ordered product, stability under deleting a contracted pair, and the first-pair
+KMS/exchange recurrence. The combinatorial pairing recursion is then independent of the concrete
+proofs of those analytic properties.
 -/
 
 namespace SecondQuantization

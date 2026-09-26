@@ -6,9 +6,12 @@ set_option linter.style.header false
 /-!
 # Products of vertex-local weights over quartic-diagram components
 
-Finite-partition product identities live in `Combinatorics/FinpartitionProduct.lean`. This module
-keeps only the diagram-specific compatibility between ambient and restricted vertex labels and the
-statistics-independent scalar-prefactor factorization consumed by amplitude layers.
+The connected-component partition of a quartic diagram decomposes its ambient vertices into the
+dependent disjoint union of the component vertex sets. Applying finite-partition product identities
+to this decomposition factors arbitrary commutative vertex-local weights over the components.
+
+The module also records the compatibility between ambient vertex labels and the labels of restricted
+component diagrams.
 -/
 
 namespace SecondQuantization

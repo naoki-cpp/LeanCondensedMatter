@@ -12,20 +12,19 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 /-!
 # Continuous functional calculus on eigenvectors and compact operators
 
-Mathlib's continuous functional calculus `cfc f T` (for `T` self-adjoint on a Hilbert space)
-has no lemma connecting it to eigenvectors of `T` in the literature sense: if `T v = c • v`,
-then `cfc f T v = f c • v`. This file proves that fact for Hilbert spaces via polynomial
-approximation (Stone–Weierstrass).
+For a self-adjoint bounded operator `T` on a Hilbert space, this module proves the eigenvector
+functional-calculus law
 
-It also proves that if `T` is compact and self-adjoint and `f 0 = 0`, then `cfc f T` is compact.
-The condition at zero is essential in infinite dimensions: a nonzero constant term contributes a
-multiple of the identity, which is not compact in general.
+`T v = c • v  ⟹  cfc f T v = f c • v`
 
-This is foundational infrastructure for the operator-algebra development documented in
-`notes/roadmaps/operator-algebra.md`: the continuous functional calculus is the natural
-infinite-dimensional replacement for the explicit-eigenbasis constructions used in
-`LeanCondensedMatter/QuantumTheory/Entropy.lean`, since in infinite dimensions there is no finite
-list of eigenvalues to sum over.
+for continuous `f`, using polynomial approximation.
+
+It also proves that `cfc f T` is compact when `T` is compact and self-adjoint and `f 0 = 0`.
+The condition at zero is essential in infinite dimensions because a nonzero constant term
+contributes a multiple of the identity, which need not be compact.
+
+These results provide the operator-level functional-calculus facts used by the spectral trace and
+quantum thermodynamic layers.
 -/
 
 open Polynomial

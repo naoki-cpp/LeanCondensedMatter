@@ -6,15 +6,12 @@ set_option linter.style.header false
 /-!
 # Dense domain for the one-dimensional continuum Schrödinger Hamiltonian
 
-This file begins the analytic layer for the domain-carrying Schrödinger operator from
-`Hamiltonian/Basic1D.lean`.
+The `H²(ℝ)` domain of the one-dimensional Schrödinger operator is dense in physical
+`L²(ℝ, ℂ)`. Schwartz functions provide a dense core: their `L²` images are dense, and every
+Schwartz function belongs to the required Bessel-potential Sobolev space.
 
-The first step is density of the `H²(ℝ)` domain in physical `L²(ℝ, ℂ)`. Schwartz functions give a
-canonical dense core: Mathlib proves that their `L²` images are dense, while every Schwartz
-function belongs to every Bessel-potential Sobolev space. Combining these facts shows that the
-`LinearPMap` Schrödinger Hamiltonians defined on `H²` are genuinely densely defined.
-
-Closedness, formal symmetry, adjoints, and self-adjointness remain later layers.
+Consequently the domain-carrying `LinearPMap` Schrödinger Hamiltonians on `H²` are densely
+defined. Closedness, symmetry, adjoints, and self-adjointness are independent analytic properties.
 -/
 
 namespace QuantumMechanics

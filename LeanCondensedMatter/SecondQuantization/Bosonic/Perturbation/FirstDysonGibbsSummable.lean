@@ -9,9 +9,11 @@ set_option linter.unusedFintypeInType false
 
 On diagonal occupation matrix coefficients, free interaction-picture conjugation is invisible. The
 first Dyson integral therefore contributes only the scalar interval length to the diagonal
-coefficient. Consequently any interaction with a summable free-Gibbs numerator has a summable
-first Dyson coefficient. Combined with the quartic summability theorem, this supplies the concrete
-`coeff_mem` slice at Dyson order one without commuting an infinite Gibbs sum with an integral.
+coefficient. Consequently, any interaction with a summable free-Gibbs numerator has a summable
+first Dyson coefficient.
+
+Combined with the quartic summability theorem, this proves the first-order Gibbs-domain condition
+without exchanging an infinite Gibbs sum with an interval integral.
 -/
 
 namespace SecondQuantization

@@ -6,8 +6,8 @@ set_option linter.style.header false
 /-!
 # Spectral trace under scalar multiplication
 
-Proves that spectral summability is preserved under nonzero real scalar multiplication and that
-`spectralTrace` is homogeneous. See `notes/roadmaps/operator-algebra.md`.
+This module proves that spectral summability is preserved under nonzero real scalar multiplication
+and that `spectralTrace` is homogeneous under that scaling.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

@@ -6,16 +6,18 @@ set_option linter.style.header false
 /-!
 # Finite-order Dyson coefficients
 
-For a basis-diagonal free energy and an algebraic interaction, each finite Dyson order reaches only
-finitely many configurations from any basis state. This file uses that reachable support to define
-the statistics-independent interaction-picture recursion on an arbitrary configuration type,
+For a basis-diagonal free energy and an algebraic interaction, every finite Dyson order reaches only
+finitely many configurations from a fixed basis state. This finite reachable support defines the
+statistics-independent recursion
 
-`D₀(τ) = id`,  `Dₙ₊₁(τ) = -∫ σ in 0..τ, V_I(σ) ∘ Dₙ(σ)`.
+`D₀(τ) = id`,  `Dₙ₊₁(τ) = -∫ σ in 0..τ, V_I(σ) ∘ Dₙ(σ)`
 
-The recursion is reconstructed coefficientwise and is therefore algebraic and finite-order. No
-boundedness, completed-space Bochner integrability, convergence of the infinite Dyson series, or
-identification with an operator exponential is asserted here. On finite configuration types, the
-same canonical coefficients satisfy the previous finite operator-integral recursion.
+coefficientwise on arbitrary configuration types.
+
+The construction is algebraic and finite-order. It does not assume boundedness, completed-space
+Bochner integrability, convergence of the infinite Dyson series, or identification with an operator
+exponential. For finite configuration types, the same coefficients satisfy the coefficientwise
+operator-integral equation.
 -/
 
 namespace SecondQuantization

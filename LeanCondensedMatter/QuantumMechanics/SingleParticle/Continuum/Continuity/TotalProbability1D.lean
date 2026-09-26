@@ -8,10 +8,10 @@ set_option linter.style.header false
 /-!
 # Total probability conservation for Schwartz Schrödinger wavefunctions in one dimension
 
-This module performs the final analytic step from the whole-space density-rate identity to an actual
-time derivative of the total probability. Differentiation under the spatial integral is justified by
-explicit dominated-derivative hypotheses. For a Schwartz spatial slice satisfying the scalar-potential
-Schrödinger equation, the resulting derivative is zero.
+Under explicit dominated-derivative hypotheses, differentiation may be passed through the
+whole-space probability integral. Combining that fact with the Schwartz whole-space density-rate
+identity proves that the time derivative of total probability is zero for a scalar-potential
+Schrödinger solution.
 
 No closed-operator, self-adjointness, or unitary-evolution construction is used.
 -/

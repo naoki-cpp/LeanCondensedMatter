@@ -3,22 +3,15 @@ import LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
-# Hilbert–Schmidt operators: the predicate and its basis-independence
+# Hilbert–Schmidt operators: predicate and basis independence
 
-Defines the Hilbert–Schmidt class of (possibly non-self-adjoint) bounded operators on a Hilbert
-space, and proves the fundamental basis-independence fact that makes it well-defined:
-`Σᵢ ‖T dᵢ‖²` has the same value (finite or not) for every Hilbert basis `d`. Also proves
-Hilbert–Schmidt-ness is preserved under taking the adjoint and under composition with a bounded
-operator.
+This module defines Hilbert–Schmidt bounded operators on a Hilbert space and proves that
+`Σᵢ ‖T dᵢ‖²` has the same value, finite or infinite, for every Hilbert basis `d`. It also proves
+closure of the Hilbert–Schmidt property under adjoints and composition with bounded operators.
 
-**Motivation.** `ContinuousLinearMap.trace` (`Analysis/TraceClassBasic.lean`) is only defined
-for compact self-adjoint trace-class operators. The Born-rule probability `Tr[E_m ρ]` needs a
-trace for `E_m ∘ ρ`, which need not be self-adjoint even when `E_m` and `ρ` both are (a product
-of self-adjoint operators is self-adjoint only when they commute). The standard fix: if `S`, `T`
-are both Hilbert–Schmidt, `S† ∘ T` is trace-class regardless of self-adjointness, with
-`Tr[S† ∘ T] = Σᵢ ⟪S dᵢ, T dᵢ⟫` well-defined via the Hilbert–Schmidt inner product
-(`HilbertSchmidtInnerProduct.lean`). This file lays the groundwork: the Hilbert–Schmidt predicate
-and its basis-independence. See `notes/roadmaps/operator-algebra.md`.
+The basis-independent square-summability condition supports the Hilbert–Schmidt inner product and
+the trace pairing `Tr[S† ∘ T]` for Hilbert–Schmidt `S` and `T`, including cases where
+`S† ∘ T` is not self-adjoint.
 -/
 
 namespace ContinuousLinearMap

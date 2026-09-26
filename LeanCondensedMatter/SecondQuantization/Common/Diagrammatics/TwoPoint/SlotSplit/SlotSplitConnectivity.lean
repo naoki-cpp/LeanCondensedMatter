@@ -5,20 +5,14 @@ set_option linter.style.header false
 /-!
 # Connectivity across the slot split
 
-`TwoPointDiagram.slotSplitEquiv` identifies the diagrams whose pairing does not cross a slot divide
-with pairs of pieces, but says nothing about connectivity.  This module supplies the transfer that
-the linked-cluster fiber decomposition needs: reachability inside a reassembled diagram, restricted
-to the vertices of the external piece, is exactly reachability inside that piece.
+For a diagram reconstructed from a two-point piece and a quartic piece, no contraction joins the two
+leg sectors. Reachability between vertices of the two-point sector in the reconstructed diagram is
+therefore exactly reachability in the two-point piece itself.
 
-The mechanism is that no contraction of a reassembled pairing joins the two blocks, so a walk that
-starts at a vertex of the external piece can never leave it.  Consequently
-
-* the external piece of a reassembled diagram is externally connected exactly when the slot set is
-  the interaction part of the reassembled diagram's external component, and
-* the diagrams whose external component has interaction part `T` are exactly the pairs consisting of
-  an externally connected piece on `T` and an arbitrary vacuum piece on `S \ T`.
-
-That last statement is the fiber decomposition itself.
+Consequently, the two-point piece is externally connected exactly when its interaction-slot set is
+the interaction part of the reconstructed diagram's external component. This identifies the fiber
+of diagrams with external interaction set `T` with externally connected two-point pieces on `T`
+paired with arbitrary quartic pieces on `S \ T`.
 -/
 
 namespace SecondQuantization

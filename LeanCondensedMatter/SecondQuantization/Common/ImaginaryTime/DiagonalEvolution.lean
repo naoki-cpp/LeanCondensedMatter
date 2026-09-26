@@ -6,27 +6,20 @@ set_option linter.style.header false
 set_option linter.style.openClassical false
 
 /-!
-# Imaginary-time evolution under a diagonal free Hamiltonian, generic over the basis type
+# Imaginary-time evolution under a diagonal free Hamiltonian
 
-Shared infrastructure for the fermionic and bosonic imaginary-time evolutions documented in
-`notes/roadmaps/second-quantization.md`: both statistics use a free Hamiltonian diagonal in the
-occupation-number basis with a real eigenvalue `E(n)` — `Σᵢ∈n ε(i)` for fermions,
-`Σᵢ n(i)·ε(i)` for bosons. The basis-level action `|n⟩ ↦ exp(τ E(n))|n⟩`, the one-parameter
-semigroup law, mutual inversion of `e^{τH₀}` and `e^{-τH₀}`, and the algebraic Heisenberg-type
-evolution `A(τ) := e^{τH₀} A e^{-τH₀}` depend only on that eigenvalue function.
-Accordingly, this file exposes `diagonalEvolution energy τ` on `AlgebraicFock Config`, generic over
-`Config` and an arbitrary real-valued `energy : Config → ℝ`.
+For any configuration type `Config` and real energy function `energy : Config → ℝ`, this module
+defines the basis-diagonal evolution
 
-**This is an algebraic, basis-diagonal realization of `e^{τH₀}`, not an operator exponential**:
-`diagonalEvolution` is defined directly from `energy`'s value on each basis state, not derived from
-an operator-valued `Complex.exp` of some `H₀ : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config`
-(no topological completion of `AlgebraicFock Config` exists to make such an operator exponential
-meaningful yet). See `Bosonic.freeHamiltonian`/`Bosonic.freeHamiltonian_basisState` for how the
-bosonic line relates the two for its own `energy := freeEigenvalue ε`.
+`|n⟩ ↦ exp(τ E(n)) |n⟩`
 
-`Fermionic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` and
-`Bosonic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` specialize
-`diagonalEvolution`/`heisenbergEvolve` using `fermionEnergy`/`freeEigenvalue`.
+on `AlgebraicFock Config`. It proves the one-parameter composition law, mutual inversion of
+positive and negative imaginary times, and the algebraic Heisenberg evolution
+`A(τ) = e^{τH₀} A e^{-τH₀}`.
+
+This is a direct basis-diagonal construction, not an operator exponential on a completed normed
+space. Fermionic and bosonic imaginary-time evolutions specialize it using their respective free
+energy functions.
 -/
 
 namespace SecondQuantization

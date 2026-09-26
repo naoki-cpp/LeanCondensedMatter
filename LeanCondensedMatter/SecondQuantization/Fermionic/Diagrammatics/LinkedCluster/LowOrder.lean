@@ -7,9 +7,10 @@ set_option linter.style.header false
 /-!
 # Low-order fermionic formal logarithm identities
 
-The first three coefficients make the moment-cumulant subtraction pattern explicit. These are
-opt-in example/regression theorems for the fermionic Dyson partition series; connected-diagram
-specializations are obtained from the general linked-cluster theorem rather than duplicated here.
+The first three coefficients of the normalized fermionic Dyson-series logarithm display the
+moment-cumulant subtraction pattern explicitly. They are low-order corollaries of the general
+formal linked-cluster construction; connected-diagram statements are supplied by the general
+linked-cluster theorem rather than separate low-order definitions.
 -/
 
 namespace SecondQuantization

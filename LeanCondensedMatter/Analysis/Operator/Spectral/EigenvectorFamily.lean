@@ -9,24 +9,17 @@ set_option linter.style.header false
 /-!
 # A countable orthonormal family of eigenvectors for a compact self-adjoint operator
 
-Mathlib's spectral theorem for compact self-adjoint operators (`Mathlib.Analysis.
-InnerProductSpace.Spectrum`) proves qualitative facts about eigenspaces as submodules
-(`orthogonalComplement_iSup_eigenspaces_eq_bot`, `finite_dimensional_eigenspace`) but does not
-package the nonzero eigenspaces into a countable indexed orthonormal family. This file builds that
-family by gluing together an orthonormal basis of each nonzero eigenspace via
-`OrthogonalFamily.orthonormal_sigma_orthonormal`, supporting the spectral-trace infrastructure
-documented in `notes/roadmaps/operator-algebra.md`.
+For a compact self-adjoint operator, this module packages the nonzero eigenspaces into a countable
+indexed orthonormal family by choosing an orthonormal basis in each nonzero eigenspace and combining
+the families.
 
-**Scope note:** the eigenvalue-`0` eigenspace (the kernel of `T`) is deliberately excluded from
-the family — it contributes nothing to the trace regardless of its (possibly infinite, even
-non-separable) dimension. The file proves countability of the resulting index type, identifies the
-closed nonzero-eigenspace component relative to the kernel, and establishes the `tsum`
-reconstruction of `T` from the family.
+The eigenvalue-`0` eigenspace, namely the kernel, is excluded because it contributes nothing to
+spectral trace sums even when it is infinite-dimensional or non-separable. The module proves
+countability of the nonzero-eigenvector index, identifies the closed nonzero-eigenspace component
+relative to the kernel, and establishes the `tsum` reconstruction of the operator.
 
-**File layout:** this file owns `EigenvectorIndex`/`eigenvectorFamily` and their structural facts.
-`Analysis/Operator/TraceClass/Basic.lean` defines the spectral summability and trace notions on top
-of them; `TraceClass/Scalar.lean` adds scalar compatibility; `TraceClass/Ops.lean` adds additive
-linearity, cyclicity, and the trace bound against an incomplete orthonormal family.
+`TraceClass.Basic` builds spectral summability and trace on this family, while the scalar and
+operator trace modules establish the corresponding algebraic laws and bounds.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

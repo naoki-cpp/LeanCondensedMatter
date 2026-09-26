@@ -4,32 +4,23 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 set_option linter.style.header false
 
 /-!
-# The trace-level peel-first identity: `PeelFirst.lean` + KMS cyclicity
+# Trace-level peel-first identity from KMS cyclicity
 
-Wraps `Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirst.lean`'s pure operator-algebra peel identity
-(`comp_prod_eq_of_zetaCommutator`) in the trace-level KMS cyclicity step
-(`Common.traceFock_diagonalEvolution_comp_rotate`) for an arbitrary-length remaining product. Fixed
-finite cases are obtained directly by specializing this theorem rather than maintaining separate
-hand-unrolled reductions.
+Combining the operator-algebra peel identity with KMS cyclicity for an arbitrary-length remaining
+product gives a self-referential trace equation. Moving `C₁` from the end of the product back to
+the front contributes `w₁ = exp(q₁ β)`, while the exchange algebra contributes
+`ζ ^ l.length`, yielding
 
-Solving the resulting self-referential trace equation (rotating `C₁` from the end of the product
-back to the front, picking up `w₁ := e^{q₁β}`, and matching the `ζ^{l.length}` power the peel
-identity produces) gives
+`(1 - ζ^{l.length} w₁) Tr[e^{-βH₀}(C₁ B₁⋯Bₖ)]
+  = Tr[e^{-βH₀} peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)]]`.
 
-`(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁·B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)]]`
+The module proves both a finite-configuration trace form and a `tsum` form guarded by explicit
+summability hypotheses. The latter applies to bosonic occupation spaces, which remain infinite even
+for finitely many modes. Summability of the rotated diagonal tail follows from the corresponding
+double-series hypothesis.
 
-Both a `[Fintype Config]` (`traceFock_diagonalEvolution_comp_peel`) and a `tsum`,
-summability-hypothesis-gated (`tsumTrace_diagonalEvolution_comp_peel`) form are proved — the
-bosonic line's `Occupation Mode := Mode →₀ ℕ` is genuinely infinite even for a finite mode set, so
-only the `tsum` form applies there, mirroring `TwoPoint.lean`'s own finite/`tsum` pair. The
-rotated tail's diagonal-series summability isn't a separate hypothesis — it follows from the
-double-series hypothesis alone via `summable_matrixCoeff_diag_comp_of_summable_uncurry`, the same
-way `TwoPoint.lean`'s `tsum` theorem derives it.
-
-**Left un-reduced on the right** — `peelSum`'s value is not further decomposed here, since `peelSum`
-is defined recursively rather than as a closed sum. `PeelTermsIndexed.lean` provides the indexed
-form used when the general induction needs term-by-term matching against
-`Combinatorics.Pairing`.
+`PeelTermsIndexed` supplies the position-indexed form of `peelSum` used to match individual
+terms with perfect-pairing recursion.
 -/
 
 namespace SecondQuantization

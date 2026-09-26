@@ -119,8 +119,7 @@ theorem oneDimensional_schrodinger_continuity_of_schwartz
     hschrodinger
 
 /-- Interval weak Schrödinger continuity with all spatial differentiability supplied by a Schwartz
-wavefunction. The remaining current-divergence integrability hypothesis is kept explicit for this
-first Schwartz slice. -/
+wavefunction. The current-divergence integrability hypothesis remains explicit. -/
 theorem schrodinger_weak_continuity_interval_of_schwartz
     (a b ℏ κ : ℝ) (hℏ : ℏ ≠ 0)
     {test testDerivative : ℝ → ℝ}
