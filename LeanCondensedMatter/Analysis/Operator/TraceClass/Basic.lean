@@ -5,13 +5,12 @@ set_option linter.style.header false
 /-!
 # Spectral summability and spectral trace for compact self-adjoint operators
 
-Defines `HasSummableRealEigenvalues` and its associated `spectralTrace` on top of
-`EigenvectorFamily.lean`'s `EigenvectorIndex`.
+This module defines `HasSummableRealEigenvalues` and `spectralTrace` using the countable
+nonzero-eigenvector family of a compact self-adjoint operator.
 
-These declarations are not a general trace-class ideal: the predicate records only absolute
-summability of the indexed nonzero real eigenvalues. Compactness and symmetry remain explicit
-hypotheses of the operator theorems that use the spectral expansion. See
-`notes/roadmaps/operator-algebra.md`.
+The resulting notion is intentionally narrower than a general trace-class ideal: it records absolute
+summability of the indexed nonzero real eigenvalues. Compactness and self-adjointness remain explicit
+hypotheses of the operator theorems that use the spectral expansion.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
