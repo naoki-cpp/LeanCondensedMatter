@@ -63,7 +63,8 @@ noncomputable def spinOneBody
 @[simp]
 theorem spinOneBodyLinear_apply
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    spinOneBodyLinear spinScale spinComponent = spinOneBody spinScale spinComponent :=
+    spinOneBodyLinear (Site := Site) spinScale spinComponent =
+      spinOneBody (Site := Site) spinScale spinComponent :=
   rfl
 
 /-- With velocity fixed, the bounded spin-current observable is real-linear in the transported
