@@ -35,7 +35,6 @@ noncomputable def finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
         Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖),
     -(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)⟩
 
-@[simp]
 theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re
     (side : SpectralSide) (v m probeEnergy pMax : ℝ) :
     (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
@@ -45,7 +44,6 @@ theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re
           Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖) := by
   rfl
 
-@[simp]
 theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im
     (side : SpectralSide) (v m probeEnergy pMax : ℝ) :
     (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
