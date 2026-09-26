@@ -31,11 +31,28 @@ variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
 /-- Bounded many-body realization of the generic symmetrized velocity current
 `jᵐ = 1/2 {v,m}`. -/
+/-- With velocity fixed, bounded second-quantized symmetrized current is complex-linear in the
+transported one-body quantity. -/
+noncomputable def boundedSymmetrizedVelocityCurrentLinear
+    (velocity : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    (LatticeState Site →ₗ[ℂ] LatticeState Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
+  (boundedOneBodyOperatorLinearMap (Site := Site)).comp
+    (_root_.ConservationLaw.symmetrizedProductLeftLinear (LatticeState Site) velocity)
+
+/-- Bounded many-body realization of the generic symmetrized velocity current
+`jᵐ = 1/2 {v,m}`. -/
 noncomputable def boundedSymmetrizedVelocityCurrent
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedOneBodyOperator
-    (_root_.ConservationLaw.symmetrizedProduct velocity m)
+  boundedSymmetrizedVelocityCurrentLinear velocity m
+
+@[simp]
+theorem boundedSymmetrizedVelocityCurrentLinear_apply
+    (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    boundedSymmetrizedVelocityCurrentLinear velocity m =
+      boundedSymmetrizedVelocityCurrent velocity m :=
+  rfl
 
 end
 end Transport
