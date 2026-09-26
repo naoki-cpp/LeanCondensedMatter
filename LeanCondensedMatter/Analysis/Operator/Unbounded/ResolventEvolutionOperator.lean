@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit
-import Mathlib.Analysis.Normed.Operator.ContinuousLinearMap
+import Mathlib.Analysis.Normed.Operator.Completeness
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -29,39 +29,6 @@ theorem resolventApproximationEvolutionAtScale_apply_norm
   apply boundedUnitaryEvolution_apply_norm
   exact boundedSelfAdjointApproximation_isSelfAdjoint A hA _ _
 
-/-- Additivity passes from the bounded approximants to their vectorwise strong limit. -/
-theorem resolventEvolutionStrongLimit_add
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x y : H) :
-    resolventEvolutionStrongLimit A hA t (x + y) =
-      resolventEvolutionStrongLimit A hA t x + resolventEvolutionStrongLimit A hA t y := by
-  have hxy := tendsto_resolventApproximationEvolutionAtScale_apply A hA t (x + y)
-  have hsum :=
-    (tendsto_resolventApproximationEvolutionAtScale_apply A hA t x).add
-      (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
-  exact tendsto_nhds_unique hxy <|
-    hsum.congr' (Eventually.of_forall fun r =>
-      ((resolventApproximationEvolutionAtScale A hA r t).map_add x y).symm)
-
-/-- Complex scalar multiplication passes from the bounded approximants to their strong limit. -/
-theorem resolventEvolutionStrongLimit_smul
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (c : ℂ) (x : H) :
-    resolventEvolutionStrongLimit A hA t (c • x) =
-      c • resolventEvolutionStrongLimit A hA t x := by
-  have hcx := tendsto_resolventApproximationEvolutionAtScale_apply A hA t (c • x)
-  have hc : Tendsto (fun _ : ℝ => c) atTop (𝓝 c) := tendsto_const_nhds
-  have hsmul := hc.smul
-    (tendsto_resolventApproximationEvolutionAtScale_apply A hA t x)
-  exact tendsto_nhds_unique hcx <|
-    hsmul.congr' (Eventually.of_forall fun r =>
-      ((resolventApproximationEvolutionAtScale A hA r t).map_smul c x).symm)
-
-/-- The vectorwise strong limit is a complex linear map. -/
-noncomputable def resolventEvolutionStrongLimitLinearMap
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) : H →ₗ[ℂ] H where
-  toFun := resolventEvolutionStrongLimit A hA t
-  map_add' := resolventEvolutionStrongLimit_add A hA t
-  map_smul' := resolventEvolutionStrongLimit_smul A hA t
-
 /-- The strong-limit Stone evolution preserves vector norms. -/
 theorem resolventEvolutionStrongLimit_apply_norm
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
@@ -74,13 +41,26 @@ theorem resolventEvolutionStrongLimit_apply_norm
     simpa only [resolventApproximationEvolutionAtScale_apply_norm] using hconst
   exact tendsto_nhds_unique hlimit happ
 
-/-- The vectorwise Stone limit, bundled as a bounded complex-linear operator. -/
+/-- The vectorwise Stone limit, bundled as a bounded complex-linear operator.
+
+The approximating evolutions are uniformly bounded in operator norm by one, so Mathlib's general
+pointwise-limit construction for bounded families of continuous linear maps applies directly. -/
 noncomputable def stoneEvolution
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) : H →L[ℂ] H :=
-  (resolventEvolutionStrongLimitLinearMap A hA t).mkContinuous 1 (by
-    intro x
-    change ‖resolventEvolutionStrongLimit A hA t x‖ ≤ 1 * ‖x‖
-    rw [resolventEvolutionStrongLimit_apply_norm, one_mul])
+  ContinuousLinearMap.ofTendstoOfBoundedRange
+    (resolventEvolutionStrongLimit A hA t)
+    (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t)
+    (by
+      rw [tendsto_pi_nhds]
+      exact fun x => tendsto_resolventApproximationEvolutionAtScale_apply A hA t x)
+    (by
+      rw [isBounded_iff_forall_norm_le]
+      refine ⟨1, ?_⟩
+      intro T hT
+      obtain ⟨r, rfl⟩ := hT
+      apply ContinuousLinearMap.opNorm_le_bound _ zero_le_one
+      intro x
+      rw [resolventApproximationEvolutionAtScale_apply_norm, one_mul])
 
 @[simp]
 theorem stoneEvolution_apply
