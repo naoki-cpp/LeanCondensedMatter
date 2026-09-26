@@ -89,7 +89,7 @@ theorem resolventApproximationEvolutionAtScale_apply_cauchySeq
     (fun r y => resolventApproximationEvolutionAtScale A hA r t y)
     hA.dense_domain
   · intro r
-    rw [Metric.isometry_iff_dist_eq]
+    rw [isometry_iff_dist_eq]
     intro y z
     unfold resolventApproximationEvolutionAtScale
     exact resolventApproximationEvolution_dist_eq A hA _ _ t y z
