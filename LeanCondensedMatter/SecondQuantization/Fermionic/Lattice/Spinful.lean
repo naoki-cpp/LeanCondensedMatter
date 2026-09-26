@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import Mathlib.Data.Prod.Lex
 
@@ -12,15 +13,16 @@ underlying labels remain a spatial site and an explicit two-state internal spin.
 hopping models can therefore act on the same canonical `LatticeState` representation used by the
 finite-lattice transport stack.
 
-This module starts with the diagonal spin-z operator
+For a real polarization family `p` over the three Pauli axes, this module exposes the one-particle
+spin operator
 
 ```text
-S_z |x,↑⟩ = +(s/2) |x,↑⟩,
-S_z |x,↓⟩ = -(s/2) |x,↓⟩,
+S_p = (s/2) (p_x σ_x + p_y σ_y + p_z σ_z).
 ```
 
-where `s : ℂ` is the spin scale (physically `ℏ`). It is deliberately a one-particle model operator;
-current construction and Kubo response remain downstream in `Fermionic.Transport`.
+No normalization condition is imposed on `p`; a downstream physical model may require a unit
+polarization vector when appropriate. The spin scale `s : ℝ` is physically `ℏ`. Current
+construction and Kubo response remain downstream in `Fermionic.Transport`.
 -/
 
 namespace SecondQuantization
@@ -38,17 +40,21 @@ abbrev SpinfulSite (Site : Type*) := Site ×ₗ Fin 2
 def spinfulSite {Site : Type*} (x : Site) (s : Fin 2) : SpinfulSite Site :=
   toLex (x, s)
 
-/-- Eigenvalue of the finite spin-z operator on one internal spin label. -/
-def spinZWeight (spinScale : ℂ) (s : Fin 2) : ℂ :=
-  if s = 0 then spinScale / 2 else -(spinScale / 2)
+/-- One-particle spin operator for an arbitrary real polarization in the Pauli basis.
 
-/-- Diagonal one-particle spin-z operator on a finite spinful lattice. -/
-noncomputable def spinZOneBody
-    {Site : Type*} [Fintype Site] (spinScale : ℂ) :
+The same internal `2 × 2` matrix acts at every spatial site. Real polarization coefficients and
+real `spinScale` make the underlying spin matrix Hermitian; normalization of the polarization is
+left to downstream model assumptions. -/
+noncomputable def spinPolarizationOneBody
+    {Site : Type*} [Fintype Site]
+    (spinScale : ℝ) (polarization : InternalSpace.PauliAxis → ℝ) :
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) := by
   classical
-  exact ∑ x : Site, ∑ s : Fin 2,
-    spinZWeight spinScale s • matrixUnit (spinfulSite x s) (spinfulSite x s)
+  let spinMatrix : InternalSpace.PauliMatrix :=
+    (((spinScale / 2 : ℝ) : ℂ)) •
+      InternalSpace.pauliCombination (fun axis => (polarization axis : ℂ))
+  exact ∑ x : Site, ∑ a : Fin 2, ∑ b : Fin 2,
+    spinMatrix a b • matrixUnit (spinfulSite x a) (spinfulSite x b)
 
 end
 end Lattice
