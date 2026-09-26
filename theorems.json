@@ -10793,7 +10793,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.DependsOnlyOnDifferential.add",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
     "externalAxioms": [],
     "docString": "Intrinsic differential dependence is preserved by addition. ",
     "directWrapperTargetModule": null,
@@ -10819,27 +10819,29 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.DependsOnlyOnDifferential.eq_zero_of_map_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
     "externalAxioms": [],
     "docString": "A transport functional depending only on `d f` vanishes whenever `d f = 0`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ConservationLaw.DependsOnlyOnDifferential.iff_ker_le_ker",
       "ConservationLaw.IntrinsicBalanceLaw.transport_eq_zero_of_differential_eq_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ConservationLaw.DependsOnlyOnDifferential.iff_ker_le_ker",
       "ConservationLaw.IntrinsicBalanceLaw.transport_eq_zero_of_differential_eq_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "propext"
     ],
@@ -10849,27 +10851,37 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J → ConservationLaw.DependsOnlyOnDifferential d Φ",
-    "standardAxioms": [],
+    "statement": "∀ {R : Type u_6} {Test' : Type u_7} {OneForm' : Type u_8} {Obs' : Type u_9} [inst : CommRing R]\n  [inst_1 : AddCommGroup Test'] [inst_2 : _root_.Module R Test'] [inst_3 : AddCommGroup OneForm']\n  [inst_4 : _root_.Module R OneForm'] [inst_5 : AddCommGroup Obs'] [inst_6 : _root_.Module R Obs']\n  {d : Test' →ₗ[R] OneForm'} {Φ : Test' →ₗ[R] Obs'}, ConservationLaw.DependsOnlyOnDifferential d Φ ↔ d.ker ≤ Φ.ker",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
-    "name": "ConservationLaw.DependsOnlyOnDifferential.of_current",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
+    "name": "ConservationLaw.DependsOnlyOnDifferential.iff_ker_le_ker",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
     "externalAxioms": [],
-    "docString": "Any chosen differential-current representation implies intrinsic differential dependence. ",
+    "docString": "Over modules over a commutative ring, intrinsic differential dependence is exactly kernel\ninclusion: the transport vanishes on every test direction invisible to `d`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "ConservationLaw.DependsOnlyOnDifferential.eq_zero_of_map_eq_zero"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0
@@ -10887,7 +10899,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.DependsOnlyOnDifferential.smul",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
     "externalAxioms": [],
     "docString": "Intrinsic differential dependence is preserved by scalar multiplication. ",
     "directWrapperTargetModule": null,
@@ -11021,41 +11033,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} (R₁ R₂ : ConservationLaw.DifferentialCurrentRepresentation d Φ),\n  ConservationLaw.DifferentialCurrentEquivalent d R₁.current R₂.current",
-    "standardAxioms": [],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.DifferentialCurrentRepresentation.currentEquivalent",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-    "externalAxioms": [],
-    "docString": "Any two current functionals representing the same intrinsic transport are equivalent on exact\ndifferentials. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
-      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
-    ],
-    "dependencies": [
-      "ConservationLaw.DifferentialCurrentRepresentation.isCurrent"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
-      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {R : Type u_5} {Test' : Type u_6} {OneForm' : Type u_7} {Obs' : Type u_8} [inst : CommRing R]\n  [inst_1 : AddCommMonoid Test'] [inst_2 : _root_.Module R Test'] [inst_3 : AddCommMonoid OneForm']\n  [inst_4 : _root_.Module R OneForm'] [inst_5 : AddCommGroup Obs'] [inst_6 : _root_.Module R Obs']\n  {d : Test' →ₗ[R] OneForm'} {Φ : Test' →ₗ[R] Obs'} (R₁ R₂ : ConservationLaw.DifferentialCurrentRepresentation d Φ),\n  ∃ K, ConservationLaw.DifferentialCurrentInvisible d K ∧ R₁.current = R₂.current + K",
     "standardAxioms": [
       "Quot.sound",
@@ -11077,7 +11054,8 @@
       "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible"
     ],
     "dependencies": [
-      "ConservationLaw.DifferentialCurrentRepresentation.currentEquivalent"
+      "ConservationLaw.DifferentialCurrentRepresentation.isCurrent",
+      "ConservationLaw.IsDifferentialCurrent.currentEquivalent"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -11110,17 +11088,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.DifferentialCurrentRepresentation.currentEquivalent",
+      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
+      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux",
       "SecondQuantization.Fermionic.Transport.boundedCurrentFunctionalRetardedResponse_eq_intrinsic_of_eq_differential"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.DifferentialCurrentRepresentation.currentEquivalent",
+      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
+      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux",
       "SecondQuantization.Fermionic.Transport.boundedCurrentFunctionalRetardedResponse_eq_intrinsic_of_eq_differential"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -11374,6 +11354,66 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J₁ J₂ : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J₁ →\n    ConservationLaw.IsDifferentialCurrent d Φ J₂ → ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ConservationLaw.IsDifferentialCurrent.currentEquivalent",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
+    "externalAxioms": [],
+    "docString": "Any two current functionals representing the same intrinsic transport are equivalent on exact\ndifferentials.  This statement belongs to the current predicate itself and does not require\nbundling either current into a representation structure. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
+      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
+      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J → ConservationLaw.DependsOnlyOnDifferential d Φ",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ConservationLaw.IsDifferentialCurrent.dependsOnlyOnDifferential",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+    "externalAxioms": [],
+    "docString": "Choosing a differential current implies the representation-independent statement that transport\ndepends only on differential data. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J → ∀ {f : Test}, d f = 0 → Φ f = 0",
     "standardAxioms": [
@@ -11433,6 +11473,33 @@
       "Quot.sound",
       "propext"
     ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J₁ J₂ : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J₁ →\n    ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂ → ConservationLaw.IsDifferentialCurrent d Φ J₂",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ConservationLaw.IsDifferentialCurrent.of_currentEquivalent",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
+    "externalAxioms": [],
+    "docString": "Being a differential current is invariant under differential-current equivalence. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0
@@ -36488,13 +36555,14 @@
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
     "externalAxioms": [],
     "docString": "Any other full current functional representing the same intrinsic transport is equivalent on\nexact differentials to the generic nested current flux. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-    "directWrapperOf": "ConservationLaw.DifferentialCurrentRepresentation.currentEquivalent",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.DifferentialCurrentRepresentation.currentEquivalent"
+      "ConservationLaw.DifferentialCurrentRepresentation.isCurrent",
+      "ConservationLaw.IsDifferentialCurrent.currentEquivalent"
     ],
-    "crossModuleDirectWrapper": true,
+    "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
