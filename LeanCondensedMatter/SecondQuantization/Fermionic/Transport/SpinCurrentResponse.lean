@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
 set_option linter.style.header false
@@ -28,6 +29,18 @@ Likewise, the oriented source bond `u → v` remains explicit. A concrete Rashba
 therefore supply any directional velocity or linear combination of directional velocities without
 changing this response API.
 
+The current density above is the existing general symmetrized-velocity current with transported
+quantity `m = S_p`, not an independent definition. The general current theory therefore gives
+
+```text
+intrinsic current = conventional current + localization correction,
+J_corr(α) = 1/4 [v_d, [N α, S_p]].
+```
+
+Thus the conventional spin current represents the intrinsic transport whenever the chosen localizer
+evolution is represented by `v_d` and `[N α, S_p] = 0` for every localizer one-form `α`. No
+condition `[v_d, S_p] = 0` is required.
+
 No equality between spin current and charge current is assumed. Conductivity normalization and
 source-dependent contact terms remain separate from this causal cross-response kernel. The
 conventional-current/proper-current distinction is motivated by Shi, Zhang, Xiao, and Niu,
@@ -48,14 +61,29 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
-/-- Bounded conventional spin current for an arbitrary polarization and supplied flow-direction
-velocity on the finite spinful lattice. -/
+/-- One-body conventional spin-current density for an arbitrary polarization and supplied
+flow-direction velocity.
+
+This is not a separate spin-current axiom: it is the generic
+`QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent` specialized to the transported
+quantity `S_p`. Consequently the general intrinsic-current representation theorem applies directly
+when the supplied velocity represents localizer evolution and the localizers commute with `S_p`. -/
+noncomputable def spinCurrentOneBody
+    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (spinScale : ℝ) (polarization : InternalSpace.PauliAxis → ℝ) :
+    LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
+  QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent
+    (LatticeState (SpinfulSite Site))
+    velocity
+    (spinPolarizationOneBody spinScale polarization)
+
+/-- Bounded second-quantized realization of `spinCurrentOneBody`. -/
 noncomputable def boundedSpinCurrent
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
     (spinScale : ℝ) (polarization : InternalSpace.PauliAxis → ℝ) :
     FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
       FiniteLatticeHilbertFock (SpinfulSite Site) :=
-  boundedConventionalCurrent velocity (spinPolarizationOneBody spinScale polarization)
+  boundedOneBodyOperator (spinCurrentOneBody velocity spinScale polarization)
 
 /-- Neutral fixed-observable response channel for an arbitrarily polarized finite spin current
 driven by an oriented electric bond-current source.
