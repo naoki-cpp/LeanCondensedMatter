@@ -35,11 +35,11 @@ def externalInsertionTimedEventTime {E n : ℕ}
   | .inl e => externalTime e
   | .inr v => σ v
 
-def externalInsertionTimedEventRank {E n : ℕ}
+private def externalInsertionTimedEventRank {E n : ℕ}
     (event : ExternalInsertionTimedEvent E n) : ℕ :=
   ((finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event).val
 
-def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
+private private def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E n) : Prop :=
   externalInsertionTimedEventTime externalTime σ b <
@@ -139,7 +139,7 @@ noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
     (canonicalExternalInsertionTimedEvents E n)
 
 @[simp]
-theorem orderedExternalInsertionTimedEvents_length {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_length {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).length = 2 * E + n := by
   classical
@@ -147,20 +147,20 @@ theorem orderedExternalInsertionTimedEvents_length {E n : ℕ}
     canonicalExternalInsertionTimedEvents]
   simp
 
-theorem orderedExternalInsertionTimedEvents_perm {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_perm {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List.Perm (orderedExternalInsertionTimedEvents externalTime σ)
       (canonicalExternalInsertionTimedEvents E n) := by
   classical
   exact List.perm_insertionSort _ _
 
-theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Nodup :=
   (orderedExternalInsertionTimedEvents_perm externalTime σ).nodup_iff.mpr
     (canonicalExternalInsertionTimedEvents_nodup E n)
 
-theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ event : ExternalInsertionTimedEvent E n,
       event ∈ orderedExternalInsertionTimedEvents externalTime σ := by
@@ -169,7 +169,7 @@ theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
     (canonicalExternalInsertionTimedEvents_all_mem E n event)
 
 /-- The fully ordered event list is pairwise sorted by stable time precedence. -/
-theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
+private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Pairwise
       (externalInsertionTimedEventBeforeOrEqual externalTime σ) := by
@@ -182,7 +182,7 @@ theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
   exact List.pairwise_insertionSort _ _
 
 /-- Exact enumeration of all mixed events by their time-ordered positions. -/
-noncomputable def orderedExternalInsertionTimedEventEquiv {E n : ℕ}
+private noncomputable def orderedExternalInsertionTimedEventEquiv {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     Fin (2 * E + n) ≃ ExternalInsertionTimedEvent E n :=
   (finCongr (orderedExternalInsertionTimedEvents_length externalTime σ).symm).trans
@@ -192,7 +192,7 @@ noncomputable def orderedExternalInsertionTimedEventEquiv {E n : ℕ}
       (orderedExternalInsertionTimedEvents_all_mem externalTime σ))
 
 /-- Position occupied by one event in the fully ordered mixed-event list. -/
-noncomputable def orderedExternalInsertionTimedEventPosition {E n : ℕ}
+private noncomputable def orderedExternalInsertionTimedEventPosition {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (event : ExternalInsertionTimedEvent E n) : Fin (2 * E + n) :=
   (orderedExternalInsertionTimedEventEquiv externalTime σ).symm event
@@ -229,7 +229,7 @@ private theorem externalInsertionTimedEventBeforeOrEqual_of_position_lt {E n : �
   exact hrel
 
 /-- Event-position comparison is exactly strict stable time precedence. -/
-theorem orderedExternalInsertionTimedEventPosition_lt_iff {E n : ℕ}
+private theorem orderedExternalInsertionTimedEventPosition_lt_iff {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E n) :
     orderedExternalInsertionTimedEventPosition externalTime σ a <
@@ -360,13 +360,13 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicLegEquiv {E n : ℕ}
       (externalInsertionMixedTimeOrderedAtomicLegs_all_mem externalTime σ))
 
 /-- The mixed event supporting one canonical external-insertion leg. -/
-def orderedExternalInsertionLegEvent {E n : ℕ} :
+private def orderedExternalInsertionLegEvent {E n : ℕ} :
     OrderedExternalInsertionLeg E n → ExternalInsertionTimedEvent E n
   | .inl e => .inl e
   | .inr p => .inr p.1.1
 
 /-- Every canonical leg belongs to the local atomic-leg list of its supporting event. -/
-theorem orderedExternalInsertionLeg_mem_eventAtomicLegs {E n : ℕ}
+private theorem orderedExternalInsertionLeg_mem_eventAtomicLegs {E n : ℕ}
     (leg : OrderedExternalInsertionLeg E n) :
     leg ∈ externalInsertionTimedEventAtomicLegs (orderedExternalInsertionLegEvent leg) := by
   cases leg with
@@ -469,13 +469,13 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegPosition_lt_iff_eventP
 variable {E₁ E₂ m n : ℕ}
 
 /-- Transport a timed event along increasing reindexings of its external and interaction slots. -/
-def externalInsertionTimedEventMap
+private def externalInsertionTimedEventMap
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n) :
     ExternalInsertionTimedEvent E₁ m → ExternalInsertionTimedEvent E₂ n :=
   Sum.map fExternal fInteraction
 
-theorem externalInsertionTimedEventMap_injective
+private theorem externalInsertionTimedEventMap_injective
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : Function.Injective fExternal)
@@ -485,7 +485,7 @@ theorem externalInsertionTimedEventMap_injective
     (Sum.map_injective.mpr ⟨hExternal, hInteraction⟩)
 
 @[simp]
-theorem externalInsertionTimedEventTime_map
+private theorem externalInsertionTimedEventTime_map
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n)
     (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
@@ -495,7 +495,7 @@ theorem externalInsertionTimedEventTime_map
       externalInsertionTimedEventTime (externalTime ∘ fExternal) (σ ∘ fInteraction) event := by
   cases event <;> rfl
 
-theorem externalInsertionTimedEventRank_map_le_iff
+private theorem externalInsertionTimedEventRank_map_le_iff
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
@@ -528,7 +528,7 @@ theorem externalInsertionTimedEventRank_map_le_iff
           simp [externalInsertionTimedEventMap, externalInsertionTimedEventRank] at h ⊢
           omega
 
-theorem externalInsertionTimedEventBeforeOrEqual_map_iff
+private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
@@ -542,7 +542,7 @@ theorem externalInsertionTimedEventBeforeOrEqual_map_iff
   simp only [externalInsertionTimedEventBeforeOrEqual, externalInsertionTimedEventTime_map]
   rw [externalInsertionTimedEventRank_map_le_iff hExternal hInteraction]
 
-theorem externalInsertionTimedEventBefore_map_iff
+private theorem externalInsertionTimedEventBefore_map_iff
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
@@ -564,7 +564,7 @@ theorem externalInsertionTimedEventBefore_map_iff
       (externalInsertionTimedEventMap_injective
         hExternal.injective hInteraction.injective hab)⟩
 
-theorem orderedExternalInsertionTimedEventPosition_map_lt_iff
+private theorem orderedExternalInsertionTimedEventPosition_map_lt_iff
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
@@ -590,7 +590,7 @@ def orderedExternalInsertionLegMap
   | .inl e => .inl (fExternal e)
   | .inr p => .inr (⟨fInteraction p.1.1, Finset.mem_univ _⟩, p.2)
 
-theorem orderedExternalInsertionLegMap_injective
+private theorem orderedExternalInsertionLegMap_injective
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : Function.Injective fExternal)
@@ -614,7 +614,7 @@ theorem orderedExternalInsertionLegMap_injective
           · exact congrArg (fun z => z.2) (Sum.inr.inj h)
 
 @[simp]
-theorem orderedExternalInsertionLegEvent_map
+private theorem orderedExternalInsertionLegEvent_map
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n)
     (leg : OrderedExternalInsertionLeg E₁ m) :
@@ -624,7 +624,7 @@ theorem orderedExternalInsertionLegEvent_map
         (orderedExternalInsertionLegEvent leg) := by
   cases leg <;> rfl
 
-theorem externalInsertionTimedEventAtomicLegs_map
+private theorem externalInsertionTimedEventAtomicLegs_map
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n)
     (event : ExternalInsertionTimedEvent E₁ m) :
