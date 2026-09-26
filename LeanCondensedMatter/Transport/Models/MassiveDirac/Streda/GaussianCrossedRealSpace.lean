@@ -127,10 +127,7 @@ theorem continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEnt
       .z .retarded v m probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
   fin_cases source <;> fin_cases i <;> fin_cases j <;>
-    simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
-      gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
-      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] <;>
+    simp only [Fin.zero_eta, Fin.isValue, Fin.mk_one] <;>
     fun_prop
 
 /-- In the finite-broadening finite-cutoff regime, every Gaussian-crossed radial current entry
