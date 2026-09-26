@@ -69,7 +69,7 @@ or consumer structure changes.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.retardedAdvancedLadderCLM_apply` — canonical
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
-- `QuantumMechanics.SingleParticle.currentEquivalent_correctedSymmetrizedVelocity` — canonical
+- `QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
   corrected-current equivalence theorem: any full current representing the intrinsic transport is
   equivalent on exact differentials to the symmetrized current plus localization correction.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
