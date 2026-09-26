@@ -82,7 +82,8 @@
         {"id": "intrinsicBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw"]},
         {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"]},
         {"id": "balanceLawAdapter", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"]},
-        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]}
+        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]},
+        {"id": "correctedCurrentFlux", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"]}
       ],
       "edges": [
         {"upstream": "zetaCommutator", "downstream": "linearCommutator"},
@@ -91,7 +92,8 @@
         {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
         {"upstream": "intrinsicBalanceLaw", "downstream": "balanceLawAdapter"},
         {"upstream": "balanceLaw", "downstream": "balanceLawAdapter"},
-        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"}
+        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"},
+        {"upstream": "symmetricLocalizationAlgebra", "downstream": "correctedCurrentFlux"}
       ]
     },
     {
@@ -110,7 +112,8 @@
           "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter",
-          "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"
+          "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
+          "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"
         ]},
         {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
         {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}
