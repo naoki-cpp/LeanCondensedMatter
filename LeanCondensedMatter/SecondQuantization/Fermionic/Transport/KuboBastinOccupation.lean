@@ -6,8 +6,9 @@ set_option linter.style.header false
 /-!
 # Fermionic directional occupation-resolved Kubo–Bastin response
 
-This module specializes the generic occupation interpolation and measured/source Kubo–Bastin response
-to finite-lattice directional charge currents, including the Peierls contact term and finite-volume
+This module specializes the generic occupation interpolation and measured/source Kubo–Bastin
+response to finite-lattice directional charge currents, including the Peierls contact term and
+finite-volume
 normalization.
 
 For each directional transition, the discrete probability difference is replaced by the oriented
