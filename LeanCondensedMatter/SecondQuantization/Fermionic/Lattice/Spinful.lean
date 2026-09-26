@@ -52,19 +52,8 @@ noncomputable def internalOneBodyLinear
   map_smul' := by
     classical
     intro c S
-    simp only [internalOneBody, Matrix.smul_apply, RingHom.id_apply]
-    rw [Finset.smul_sum]
-    apply Finset.sum_congr rfl
-    intro x hx
-    rw [Finset.smul_sum]
-    apply Finset.sum_congr rfl
-    intro a ha
-    rw [Finset.smul_sum]
-    apply Finset.sum_congr rfl
-    intro b hb
-    change (c * S a b) • matrixUnit (spinfulSite x a) (spinfulSite x b) =
-      (c * S a b) • matrixUnit (spinfulSite x a) (spinfulSite x b)
-    rfl
+    simp_rw [internalOneBody, Matrix.smul_apply, RingHom.id_apply,
+      Finset.smul_sum, smul_smul, smul_eq_mul]
 
 @[simp]
 theorem internalOneBodyLinear_apply
