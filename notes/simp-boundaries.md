@@ -12,9 +12,9 @@ useful theorem. This file is intentionally asymmetric:
   rules. They remain ordinary theorems for `rw`, `simp only [...]`, or targeted `simp [...]`.
 
 The registry describes the current API rather than a migration history. Update it whenever a
-reviewed simp boundary is added, removed, or reclassified. After the Yellow audit completed on
-2026-09-26, every then-current global simp declaration was either covered by a Green entry below or
-moved to the explicit-only set; future unlisted declarations are Yellow by default.
+reviewed simp boundary is added, removed, or reclassified. Any global `@[simp]` declaration not
+listed below is Yellow by default and requires review before it is treated as part of the permanent
+global simplification API.
 
 ## Green: Analysis
 
