@@ -1,0 +1,198 @@
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# One-dimensional Schwartz two-level operators
+
+This module adds a minimal two-level internal degree of freedom to the analysis-only Schwartz
+Schrodinger model.  A two-level state is represented as two complex Schwartz components,
+`Fin 2 → SchwartzMap ℝ ℂ`.  Spatial operators act componentwise, while a `2 × 2` complex matrix
+acts only on the internal index.
+
+This separation is structural: every componentwise spatial operator commutes with every internal
+matrix operator. Physical interpretations of the two-level space, including spin-1/2, belong to
+downstream quantum-mechanical models.
+
+The module is purely analytic/algebraic and does not depend on `QuantumMechanics`,
+`QuantumTheory`, or `SecondQuantization`.
+-/
+
+namespace SchwartzTwoLevel1D
+
+noncomputable section
+
+/-- Scalar complex Schwartz space used for each internal component. -/
+abbrev Spatial := SchwartzKinetic1D.Space
+
+/-- Two-component complex Schwartz two-level states. -/
+abbrev State := Fin 2 → Spatial
+
+/-- Complex `2 × 2` matrices acting on the two-level internal index. -/
+abbrev InternalMatrix := InternalSpace.PauliMatrix
+
+/-- Lift a scalar Schwartz operator componentwise to a two-component two-level state. -/
+noncomputable def spatialLift (A : Spatial →ₗ[ℂ] Spatial) : State →ₗ[ℂ] State where
+  toFun := fun ψ a => A (ψ a)
+  map_add' := by
+    intro ψ χ
+    funext a
+    simp
+  map_smul' := by
+    intro c ψ
+    funext a
+    simp
+
+@[simp]
+theorem spatialLift_apply (A : Spatial →ₗ[ℂ] Spatial) (ψ : State) (a : Fin 2) :
+    spatialLift A ψ a = A (ψ a) :=
+  rfl
+
+/-- A finite internal matrix acting on the internal index and leaving the spatial wavefunction intact. -/
+noncomputable def internalOperator (S : InternalMatrix) : State →ₗ[ℂ] State where
+  toFun := fun ψ a => ∑ b : Fin 2, S a b • ψ b
+  map_add' := by
+    intro ψ χ
+    funext a
+    simp [smul_add, Finset.sum_add_distrib]
+  map_smul' := by
+    intro c ψ
+    funext a
+    simp [smul_smul, mul_comm]
+
+@[simp]
+theorem internalOperator_apply (S : InternalMatrix) (ψ : State) (a : Fin 2) :
+    internalOperator S ψ a = ∑ b : Fin 2, S a b • ψ b :=
+  rfl
+
+/-- Spatial and internal operators commute because they act on independent factors. -/
+theorem spatialLift_comp_internalOperator_comm
+    (A : Spatial →ₗ[ℂ] Spatial) (S : InternalMatrix) :
+    (spatialLift A).comp (internalOperator S) =
+      (internalOperator S).comp (spatialLift A) := by
+  apply LinearMap.ext
+  intro ψ
+  funext a
+  simp [internalOperator]
+
+/-- Two-level multiplication by a scalar Schwartz localizer. -/
+noncomputable def multiplicationOperator (f : Spatial) : State →ₗ[ℂ] State :=
+  spatialLift (SchwartzKinetic1D.multiplicationOperator f)
+
+@[simp]
+theorem multiplicationOperator_apply
+    (f : Spatial) (ψ : State) (a : Fin 2) (x : ℝ) :
+    multiplicationOperator f ψ a x = f x * ψ a x :=
+  rfl
+
+/-- Multiplication localizers depend complex-linearly on the scalar Schwartz test function. -/
+noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (State →ₗ[ℂ] State) where
+  toFun := multiplicationOperator
+  map_add' := by
+    intro f g
+    apply LinearMap.ext
+    intro ψ
+    funext a
+    ext x
+    simp [multiplicationOperator]
+    ring
+  map_smul' := by
+    intro c f
+    apply LinearMap.ext
+    intro ψ
+    funext a
+    ext x
+    simp [multiplicationOperator]
+    ring
+
+@[simp]
+theorem multiplicationLinear_apply (f : Spatial) :
+    multiplicationLinear f = multiplicationOperator f :=
+  rfl
+
+/-- The scalar Schwartz derivative used as the localization differential. -/
+noncomputable def derivative : Spatial →ₗ[ℂ] Spatial :=
+  SchwartzKinetic1D.derivative
+
+/-- Componentwise Schwartz velocity operator. -/
+noncomputable def velocityOperator (ℏ κ : ℝ) : State →ₗ[ℂ] State :=
+  spatialLift (SchwartzKinetic1D.velocityOperator ℏ κ)
+
+/-- Componentwise scalar Schrodinger Hamiltonian. -/
+noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State →ₗ[ℂ] State :=
+  spatialLift (SchwartzKinetic1D.schrodingerOperator κ potential)
+
+/-- State Hamiltonian consisting of scalar spatial dynamics plus an arbitrary internal matrix.
+
+The internal term is an arbitrary two-level on-site coupling at this abstract level.
+It commutes with spatial localization; its physical interpretation belongs downstream. -/
+noncomputable def hamiltonian
+    (κ : ℝ) (potential : Spatial) (internalH : InternalMatrix) : State →ₗ[ℂ] State :=
+  spatialHamiltonian κ potential + internalOperator internalH
+
+/-- The localization commutator of the two-level state Hamiltonian is unaffected by the internal matrix term. -/
+theorem hamiltonian_localization_commutator_eq_spatial
+    (κ : ℝ) (potential : Spatial) (internalH : InternalMatrix) (f : Spatial) :
+    (hamiltonian κ potential internalH).comp (multiplicationOperator f) -
+        (multiplicationOperator f).comp (hamiltonian κ potential internalH) =
+      (spatialHamiltonian κ potential).comp (multiplicationOperator f) -
+        (multiplicationOperator f).comp (spatialHamiltonian κ potential) := by
+  rw [hamiltonian]
+  apply LinearMap.ext
+  intro ψ
+  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
+  have hcomm := congrArg (fun T : State →ₗ[ℂ] State => T ψ)
+    (spatialLift_comp_internalOperator_comm
+      (SchwartzKinetic1D.multiplicationOperator f) internalH)
+  have hcomm' :
+      internalOperator internalH (multiplicationOperator f ψ) =
+        multiplicationOperator f (internalOperator internalH ψ) := by
+    simpa [multiplicationOperator] using hcomm.symm
+  rw [hcomm']
+  abel
+
+/-- The two-level state localization has the same first-order Heisenberg current identity as the scalar
+Schwartz model, independently of the internal Hamiltonian matrix. -/
+theorem heisenberg_localization_eq_symmetrized_velocity
+    (ℏ κ : ℝ) (potential : Spatial) (internalH : InternalMatrix) (f : Spatial) :
+    (Complex.I / (ℏ : ℂ)) •
+        ((hamiltonian κ potential internalH).comp (multiplicationOperator f) -
+          (multiplicationOperator f).comp (hamiltonian κ potential internalH)) =
+      (1 / 2 : ℂ) •
+        ((multiplicationOperator (derivative f)).comp (velocityOperator ℏ κ) +
+          (velocityOperator ℏ κ).comp (multiplicationOperator (derivative f))) := by
+  rw [hamiltonian_localization_commutator_eq_spatial]
+  apply LinearMap.ext
+  intro ψ
+  funext a
+  have hbase := congrArg
+    (fun T : Spatial →ₗ[ℂ] Spatial => T (ψ a))
+    (SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
+  simpa [spatialHamiltonian, multiplicationOperator, velocityOperator, derivative, spatialLift] using hbase
+
+/-- For the full two-level Hamiltonian, the commutator with any internal operator is entirely
+generated by the internal Hamiltonian matrix; scalar spatial dynamics contributes nothing. -/
+theorem hamiltonian_internalOperator_commutator_eq_internal
+    (κ : ℝ) (potential : Spatial) (internalH S : InternalMatrix) :
+    (hamiltonian κ potential internalH).comp (internalOperator S) -
+        (internalOperator S).comp (hamiltonian κ potential internalH) =
+      (internalOperator internalH).comp (internalOperator S) -
+        (internalOperator S).comp (internalOperator internalH) := by
+  rw [hamiltonian]
+  apply LinearMap.ext
+  intro ψ
+  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
+  have hcomm := congrArg (fun T : State →ₗ[ℂ] State => T ψ)
+    (spatialLift_comp_internalOperator_comm
+      (SchwartzKinetic1D.schrodingerOperator κ potential) S)
+  have hcomm' :
+      spatialHamiltonian κ potential (internalOperator S ψ) =
+        internalOperator S (spatialHamiltonian κ potential ψ) := by
+    simpa [spatialHamiltonian] using hcomm
+  rw [hcomm']
+  abel
+
+end
+end SchwartzTwoLevel1D

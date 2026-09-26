@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import Mathlib.Data.Prod.Lex
 
@@ -8,19 +9,11 @@ set_option linter.style.header false
 
 A spinful lattice is represented by the lexicographically ordered product site type
 `Site ×ₗ Fin 2`. The order is bookkeeping for the canonical finite-fermion occupation basis; the
-underlying labels remain a spatial site and an explicit two-state internal spin. Later spin-orbit
-hopping models can therefore act on the same canonical `LatticeState` representation used by the
-finite-lattice transport stack.
+`Fin 2` label is the two-component representation space, not a physical polarization direction.
 
-This module starts with the diagonal spin-z operator
-
-```text
-S_z |x,↑⟩ = +(s/2) |x,↑⟩,
-S_z |x,↓⟩ = -(s/2) |x,↓⟩,
-```
-
-where `s : ℂ` is the spin scale (physically `ℏ`). It is deliberately a one-particle model operator;
-current construction and Kubo response remain downstream in `Fermionic.Transport`.
+This module provides the one-particle action of an arbitrary `2 × 2` matrix on that internal
+representation. The map from a spin-space component vector to the corresponding spin-1/2
+matrix, current construction, and Kubo response belong downstream.
 -/
 
 namespace SecondQuantization
@@ -31,24 +24,20 @@ open scoped BigOperators
 
 noncomputable section
 
-/-- Lexicographically ordered product of one spatial lattice label and a two-state internal spin. -/
+/-- Lexicographically ordered product of one spatial lattice label and a two-component internal spin representation. -/
 abbrev SpinfulSite (Site : Type*) := Site ×ₗ Fin 2
 
 /-- Canonical spinful site with spatial label `x` and internal label `s`. -/
 def spinfulSite {Site : Type*} (x : Site) (s : Fin 2) : SpinfulSite Site :=
   toLex (x, s)
 
-/-- Eigenvalue of the finite spin-z operator on one internal spin label. -/
-def spinZWeight (spinScale : ℂ) (s : Fin 2) : ℂ :=
-  if s = 0 then spinScale / 2 else -(spinScale / 2)
-
-/-- Diagonal one-particle spin-z operator on a finite spinful lattice. -/
-noncomputable def spinZOneBody
-    {Site : Type*} [Fintype Site] (spinScale : ℂ) :
+/-- Apply one internal `2 × 2` matrix identically at every spatial lattice site. -/
+noncomputable def internalOneBody
+    {Site : Type*} [Fintype Site] (S : InternalSpace.PauliMatrix) :
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) := by
   classical
-  exact ∑ x : Site, ∑ s : Fin 2,
-    spinZWeight spinScale s • matrixUnit (spinfulSite x s) (spinfulSite x s)
+  exact ∑ x : Site, ∑ a : Fin 2, ∑ b : Fin 2,
+    S a b • matrixUnit (spinfulSite x a) (spinfulSite x b)
 
 end
 end Lattice
