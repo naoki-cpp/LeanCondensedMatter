@@ -139,59 +139,6 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPosition {E n : ℕ
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B) p))
 
-/-- A component's mixed-time positions occur in the same relative order as in the ambient
-mixed-time atomic list. -/
-theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts) :
-    StrictMono (d.componentMixedPosition externalTime σ B) := by
-  let T :=
-    interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let fExternal : Fin (2 * d.externalPairCount B) → Fin (2 * E) :=
-    fun e => (d.externalSectorOrderIso B e).1
-  let fInteraction : Fin T.card → Fin n :=
-    fun v => ((T.orderIsoOfFin rfl v).1)
-  have hExternal : StrictMono fExternal :=
-    (d.externalSectorOrderIso B).strictMono
-  have hInteraction : StrictMono fInteraction := by
-    intro a b hab
-    exact (T.orderIsoOfFin rfl).strictMono hab
-  intro p q hpq
-  let x :=
-    externalInsertionMixedTimeOrderedAtomicLegEquiv
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B) p
-  let y :=
-    externalInsertionMixedTimeOrderedAtomicLegEquiv
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B) q
-  have hmapX :
-      d.componentOrderedLeg B x =
-        orderedExternalInsertionLegMap fExternal fInteraction x := by
-    cases x <;> rfl
-  have hmapY :
-      d.componentOrderedLeg B y =
-        orderedExternalInsertionLegMap fExternal fInteraction y := by
-    cases y <;> rfl
-  change
-    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (d.componentOrderedLeg B x) <
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (d.componentOrderedLeg B y)
-  rw [hmapX, hmapY,
-    externalInsertionMixedTimeOrderedAtomicLegPosition_map_lt_iff
-      hExternal hInteraction externalTime σ]
-  change
-    externalInsertionMixedTimeOrderedAtomicLegPosition
-        (d.componentExternalTime externalTime B)
-        (d.componentInteractionTime σ B) x <
-      externalInsertionMixedTimeOrderedAtomicLegPosition
-        (d.componentExternalTime externalTime B)
-        (d.componentInteractionTime σ B) y
-  simpa [x, y] using hpq
-
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
     {E n : ℕ}
