@@ -5,37 +5,19 @@ import Mathlib.Tactic.Module
 set_option linter.style.header false
 
 /-!
-# Peeling one operator through an arbitrary-length product, via the `ζ`-commutator
+# Peeling one operator through a product with a `ζ`-commutator
 
-The general operator-algebra step behind the finite-temperature Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`, and the project's physics reference notes,
-`quantum-statistical-mechanics.tex`'s Bloch–De Dominicis theorem proof): peel the first operator
-through an arbitrary-length list by induction rather than maintaining separately hand-unrolled
-fixed-length identities.
+Suppose `C₁` and operators `Bⱼ` satisfy scalar exchange relations
+`[C₁, Bⱼ]_ζ = cⱼ • id`. Repeatedly moving `C₁` through an ordered product gives
 
-Given `C₁` and a list `l` of `(operator Bⱼ, scalar ζ-commutator coefficient cⱼ)` pairs satisfying
-`[C₁, Bⱼ]_ζ = cⱼ•id` (`ScalarExchange.zetaCommutator`), repeatedly rewriting `C₁Bⱼ` as
-`cⱼ • id + ζ•(BⱼC₁)` and pushing `C₁` rightward through the whole list picks up one factor of `ζ`
-per operator it passes, landing `C₁` at the very end:
+`C₁(B₁⋯Bₖ) = peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)] + ζᵏ • ((B₁⋯Bₖ)C₁)`.
 
-`C₁(B₁B₂⋯Bₖ) = peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)] + ζᵏ•((B₁⋯Bₖ)C₁)`
+The recursively defined `peelSum` records the contribution created each time the distinguished
+operator crosses one factor. `PeelTermsIndexed` identifies this recursive expression with the
+position-indexed erase-one-factor formula used in pairing arguments.
 
-`peelSum` depends only on `ζ` and the `(Bⱼ, cⱼ)` list — *not* on `C₁` (`C₁` appears only in `hcomm`
-and on the left/right of the original operator product) — defined *recursively*, mirroring the
-substitution steps directly (`peelSum ζ ((B,c) :: t) = c•(product of t's operators) + ζ•(B ∘
-peelSum ζ t)`), rather than as a closed `Finset.sum`-over-erasures formula matching the physics
-notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`
-connects the two.
-
-**Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness involved
-here. Ordered operator lists use Mathlib's `List.prod` on endomorphisms. The trace-level KMS-rotation
-wrapping that solves the resulting self-referential trace equation is done separately in
-`Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirstTrace.lean`.
-
-**`peelSum_eq_peelTerms_sum` below converts `peelSum` into a `List.sum`**, `peelTerms`'s
-recursively-defined terms. `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn` further converts this into
-the indexed erasure formula (`ζʲ • cⱼ • product of (l.eraseIdx j |>.map Prod.fst)`, via
-`List.eraseIdx`) that lets each term be matched individually against `Combinatorics.Pairing`.
+Everything in this module is pure `LinearMap` composition algebra. Trace cyclicity, KMS rotation,
+summability, and configuration finiteness enter only in the separate trace-level specialization.
 -/
 
 namespace SecondQuantization
