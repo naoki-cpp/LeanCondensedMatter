@@ -47,52 +47,6 @@ variable [AddCommMonoid Test] [Module 𝕜 Test]
 variable [AddCommMonoid OneForm] [Module 𝕜 OneForm]
 variable [AddCommMonoid Obs] [Module 𝕜 Obs]
 
-/-- A transport functional depends only on differential data when equal differentials give equal
-transport.  This is weaker than choosing an extension `J : OneForm → Obs`. -/
-def DependsOnlyOnDifferential
-    (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) : Prop :=
-  ∀ ⦃f g : Test⦄, d f = d g → Φ f = Φ g
-
-namespace DependsOnlyOnDifferential
-
-/-- Any chosen differential-current representation implies intrinsic differential dependence. -/
-theorem of_current
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : IsDifferentialCurrent d Φ J) :
-    DependsOnlyOnDifferential d Φ := by
-  intro f g hfg
-  rw [h f, h g, hfg]
-
-/-- Intrinsic differential dependence is preserved by addition. -/
-theorem add
-    {d : Test →ₗ[𝕜] OneForm} {Φ Ψ : Test →ₗ[𝕜] Obs}
-    (hΦ : DependsOnlyOnDifferential d Φ)
-    (hΨ : DependsOnlyOnDifferential d Ψ) :
-    DependsOnlyOnDifferential d (Φ + Ψ) := by
-  intro f g hfg
-  simp only [LinearMap.add_apply]
-  rw [hΦ hfg, hΨ hfg]
-
-/-- Intrinsic differential dependence is preserved by scalar multiplication. -/
-theorem smul
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
-    (hΦ : DependsOnlyOnDifferential d Φ) (c : 𝕜) :
-    DependsOnlyOnDifferential d (c • Φ) := by
-  intro f g hfg
-  simp only [LinearMap.smul_apply]
-  rw [hΦ hfg]
-
-/-- A transport functional depending only on `d f` vanishes whenever `d f = 0`. -/
-theorem eq_zero_of_map_eq_zero
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
-    (hΦ : DependsOnlyOnDifferential d Φ) {f : Test} (hf : d f = 0) :
-    Φ f = 0 := by
-  calc
-    Φ f = Φ 0 := hΦ (by simpa using hf)
-    _ = 0 := map_zero Φ
-
-end DependsOnlyOnDifferential
-
 /-- Representation-independent local balance data.
 
 `transport` is defined on test objects themselves and is required only to depend on their
