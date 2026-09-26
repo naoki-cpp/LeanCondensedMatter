@@ -7,21 +7,18 @@ import LeanCondensedMatter.Combinatorics.SubsetSplit
 set_option linter.style.header false
 
 /-!
-# The leg splitting determined by a choice of interaction vertices
+# Leg splitting determined by a subset of interaction vertices
 
-Choosing a subset `T` of the interaction vertices splits the ambient legs of a two-point diagram in
-two: the two external legs together with the four legs of every vertex of `T`, and the four legs of
-every vertex of `S \ T`.
+A subset `T` of interaction vertices divides the ambient two-point legs into two sectors: the two
+external legs together with the four legs of vertices in `T`, and the four legs of vertices in
+`S \ T`.
 
-This depends on `T` alone, not on any diagram. That is what distinguishes it from
-`TwoPointDiagram.legPositionSplitting`, which is read off a diagram's component structure and can
-therefore only take a diagram apart. Reconstructing a diagram from an external piece and a vacuum
-piece needs the splitting to exist first, and this is it.
+This splitting depends only on `T`, whereas `TwoPointDiagram.legPositionSplitting` is induced by
+a diagram's connected-component structure. Taking `T` to be the interaction vertices of the
+external component identifies the two constructions.
 
-The two are related by instantiating `T` at the external component's interaction vertices.
-
-Reconstruction and decomposition along such a splitting are mutually inverse, so the diagrams whose
-pairing does not cross the divide are exactly the pairs of pieces (`TwoPointDiagram.slotSplitEquiv`).
+A pairing that does not cross the chosen split is equivalent to a pair consisting of a two-point
+piece on `T` and a quartic piece on `S \ T`; reconstruction and decomposition are inverse.
 -/
 
 namespace SecondQuantization
