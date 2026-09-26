@@ -84,7 +84,7 @@ private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
 
 /-- Finite-family ordered-simplex shuffle product identity for an arbitrary finite block-index type,
 under measurable local boundedness. -/
-theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
+theorem FamilySlotShuffle.sum_integral_eq_prod_of_measurableLocallyBounded
     (size : ι → ℕ) (β : ℝ)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, MeasurableLocallyBounded (localIntegrand i)) :
@@ -128,14 +128,14 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_o
         (fun shuffle => orderedSimplexIntegral (∑ j, sizeFin j) β
           (shuffle.integrand localFin))
     _ = ∏ j, orderedSimplexIntegral (sizeFin j) β (localFin j) :=
-      FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_of_measurableLocallyBounded
+      FamilySlotShuffle.sum_integral_eq_prod_fin_of_measurableLocallyBounded
         (Fintype.card ι) sizeFin β localFin (fun j => hlocal (e j))
     _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
       Equiv.prod_comp e (fun i => orderedSimplexIntegral (size i) β (localIntegrand i))
 
 /-- Finite-family ordered-simplex shuffle product identity directly over an ambient total that is
 propositionally equal to the sum of local block sizes. -/
-theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype_of_measurableLocallyBounded
+theorem FamilySlotShuffleTo.sum_integral_eq_prod_of_measurableLocallyBounded
     (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total) (β : ℝ)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, MeasurableLocallyBounded (localIntegrand i)) :
@@ -170,31 +170,31 @@ theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_
           exact intervalIntegral.orderedSimplexIntegral_cast hTotal β
             (shuffle.integrand localIntegrand)
     _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-      FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
+      FamilySlotShuffle.sum_integral_eq_prod_of_measurableLocallyBounded
         size β localIntegrand hlocal
 
 /-- Finite-family ordered-simplex shuffle product identity for continuous local integrands over an
 arbitrary finite block-index type. -/
-theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
+theorem FamilySlotShuffle.sum_integral_eq_prod
     (size : ι → ℕ) (β : ℝ)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, Continuous (localIntegrand i)) :
     (∑ shuffle : FamilySlotShuffle size,
       orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand)) =
       ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-  FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
+  FamilySlotShuffle.sum_integral_eq_prod_of_measurableLocallyBounded
     size β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
 
 /-- Finite-family ordered-simplex shuffle product identity for continuous local integrands directly
 over an ambient total propositionally equal to the sum of local block sizes. -/
-theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+theorem FamilySlotShuffleTo.sum_integral_eq_prod
     (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total) (β : ℝ)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, Continuous (localIntegrand i)) :
     (∑ shuffle : FamilySlotShuffleTo size total,
       orderedSimplexIntegral total β (shuffle.ambientIntegrand localIntegrand)) =
       ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-  FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype_of_measurableLocallyBounded
+  FamilySlotShuffleTo.sum_integral_eq_prod_of_measurableLocallyBounded
     size total hTotal β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
 
 end
