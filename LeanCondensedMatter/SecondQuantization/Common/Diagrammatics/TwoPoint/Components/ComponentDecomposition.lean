@@ -5,13 +5,12 @@ set_option linter.style.header false
 /-!
 # External/vacuum decomposition of two-point components
 
-For the direct two-point diagram model, the two distinguished one-legged external vertices always
-lie in one common component. Consequently every component part is either that canonical external
-part or a vacuum part, and these alternatives are disjoint.
+The two distinguished one-legged external vertices of a two-point diagram lie in one common
+component. Every connected component is therefore either the canonical external component or a
+vacuum component, and the two cases are disjoint.
 
-This module packages that decomposition at the level of component indices and interaction vertices.
-It also supplies generic finite-sum and finite-product splittings that later amplitude-factorization
-proofs can instantiate with component-local weights.
+This module packages that decomposition for component indices and interaction vertices and derives
+the corresponding finite-sum and finite-product decompositions for arbitrary component-local data.
 -/
 
 namespace SecondQuantization
