@@ -113,56 +113,8 @@ noncomputable def unswitchedTerm
 
 end LehmannTransitionData
 
-/-- Fixed-nonzero-rate finite Lehmann sums always have a static limit. -/
-private theorem hasStaticLimit_finiteLehmannLimitSum
-    {κ : Type*} (s : Finset κ)
-    (hbar eta : ℝ) (transition : κ → LehmannTransitionData hbar)
-    (heta : eta ≠ 0) :
-    HasStaticLimit
-      (fun omega : ℝ =>
-        s.sum fun j => (transition j).frequencyTerm omega eta)
-      (s.sum fun j => (transition j).frequencyTerm 0 eta) := by
-  unfold LehmannTransitionData.frequencyTerm
-  apply HasStaticLimit.finsetSum
-  intro j _
-  exact hasStaticLimit_lehmannTerm
-    hbar eta (transition j).energyGap (transition j).weight heta
-
-/-- Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. -/
-private theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
-    {κ : Type*} (s : Finset κ)
-    (hbar omega : ℝ) (transition : κ → LehmannTransitionData hbar)
-    (hregular : ∀ j ∈ s,
-      (transition j).weight = 0 ∨ omega + (transition j).energyGap / hbar ≠ 0) :
-    HasAdiabaticRemovalLimit
-      (fun eta : ℝ =>
-        s.sum fun j => (transition j).frequencyTerm omega eta)
-      (s.sum fun j => (transition j).unswitchedTerm omega) := by
-  unfold LehmannTransitionData.frequencyTerm LehmannTransitionData.unswitchedTerm
-  apply HasAdiabaticRemovalLimit.finsetSum
-  intro j hj
-  exact hasAdiabaticRemovalLimit_lehmannTerm
-    hbar omega (transition j).energyGap (transition j).weight (hregular j hj)
-
-/-- Static continuity of a finite zero-rate nonresonant sum. -/
-private theorem hasStaticLimit_finiteUnswitchedLehmannSum
-    {κ : Type*} (s : Finset κ)
-    (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
-    (hhbar : hbar ≠ 0)
-    (hregular : ∀ j ∈ s,
-      (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) :
-    HasStaticLimit
-      (fun omega : ℝ =>
-        s.sum fun j => (transition j).unswitchedTerm omega)
-      (s.sum fun j => (transition j).unswitchedTerm 0) := by
-  unfold LehmannTransitionData.unswitchedTerm
-  apply HasStaticLimit.finsetSum
-  intro j hj
-  exact hasStaticLimit_unswitchedLehmannTerm
-    hbar (transition j).energyGap (transition j).weight hhbar (hregular j hj)
-
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
-private theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
+private theorem eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
     {κ : Type*} (s : Finset κ)
     (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
@@ -214,7 +166,7 @@ private theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
       simpa [Finset.sum_insert, ha] using htermOmega.add hsOmega
 
 /-- Both local iterated limits exist and agree for a finite static-nonresonant family. -/
-private theorem finiteLehmannLimitSum_has_both_local_iterated_limits
+private theorem finset_frequencyTerm_has_both_local_iterated_limits
     {κ : Type*} (s : Finset κ)
     (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
@@ -232,10 +184,15 @@ private theorem finiteLehmannLimitSum_has_both_local_iterated_limits
   · refine ⟨fun eta =>
       s.sum fun j => (transition j).frequencyTerm 0 eta, ?_, ?_⟩
     · filter_upwards [self_mem_nhdsWithin] with eta heta
-      exact hasStaticLimit_finiteLehmannLimitSum
-        s hbar eta transition (ne_of_gt heta)
-    · apply hasAdiabaticRemovalLimit_finiteLehmannLimitSum
+      unfold LehmannTransitionData.frequencyTerm
+      apply HasStaticLimit.finsetSum
+      intro j _
+      exact hasStaticLimit_lehmannTerm
+        hbar eta (transition j).energyGap (transition j).weight (ne_of_gt heta)
+    · unfold LehmannTransitionData.frequencyTerm LehmannTransitionData.unswitchedTerm
+      apply HasAdiabaticRemovalLimit.finsetSum
       intro j hj
+      apply hasAdiabaticRemovalLimit_lehmannTerm
       rcases hregular j hj with hweight | hgap
       · exact Or.inl hweight
       · have hgapDiv : (transition j).energyGap / hbar ≠ 0 :=
@@ -243,10 +200,13 @@ private theorem finiteLehmannLimitSum_has_both_local_iterated_limits
         exact Or.inr (by simpa only [zero_add] using hgapDiv)
   · refine ⟨fun omega =>
       s.sum fun j => (transition j).unswitchedTerm omega, ?_, ?_⟩
-    · exact eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
+    · exact eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
         s hbar transition hhbar hregular
-    · exact hasStaticLimit_finiteUnswitchedLehmannSum
-        s hbar transition hhbar hregular
+    · unfold LehmannTransitionData.unswitchedTerm
+      apply HasStaticLimit.finsetSum
+      intro j hj
+      exact hasStaticLimit_unswitchedLehmannTerm
+        hbar (transition j).energyGap (transition j).weight hhbar (hregular j hj)
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {ι : Type*} [Fintype ι]
@@ -289,7 +249,7 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
             (purePointTransitionWeight system data A B mn)) := by
   simpa [LehmannTransitionData.frequencyTerm, LehmannTransitionData.unswitchedTerm,
     purePointTransitionWeight] using
-    finiteLehmannLimitSum_has_both_local_iterated_limits
+    finset_frequencyTerm_has_both_local_iterated_limits
       (s := Finset.univ)
       system.hbar
       (purePointTransitionData system data A B)
