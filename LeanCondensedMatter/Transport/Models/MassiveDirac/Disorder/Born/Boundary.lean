@@ -153,7 +153,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
         (nhds
           (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
             side v m probeEnergy pMax).im) := by
-    simpa using
+    simpa only [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im] using
       (tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
         side v m probeEnergy pMax hvelocity hmetal hcutoff)
   have hcomplex :=
