@@ -85,7 +85,7 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       (heisenbergTransportFunctional V ℏ h M m)
       (operatorLocalCurrentPairing V N) where
   currentDensity := symmetrizedVelocityCurrent V velocity m
-  represents := by
+  isCurrentDensity := by
     intro f
     rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp]
     simp only [LinearMap.comp_apply]
