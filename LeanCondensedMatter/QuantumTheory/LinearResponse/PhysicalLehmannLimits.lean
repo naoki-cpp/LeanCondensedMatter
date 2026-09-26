@@ -52,7 +52,7 @@ For `eta > 0`, this is exactly
 `adiabaticFrequencyDomainSusceptibilityOfPositiveRate`.  At nonpositive rates it is defined by the
 same finite Lehmann expression.  This continuation is used only to package limits; all physical
 statements below approach zero through positive rates. -/
-noncomputable def finitePurePointPhysicalSusceptibilityExtension
+private noncomputable def finitePurePointPhysicalSusceptibilityExtension
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
   if hη : 0 < eta then
@@ -62,18 +62,8 @@ noncomputable def finitePurePointPhysicalSusceptibilityExtension
     Finset.univ.sum fun mn : ι × ι =>
       (purePointTransitionData system data A B mn).frequencyTerm omega eta
 
-/-- On the physical positive-rate domain, the total extension is the actual switched
-susceptibility. -/
-theorem finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    finitePurePointPhysicalSusceptibilityExtension system data A B omega eta =
-      adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (purePointNormalizedExpectation system data) A B omega eta hη := by
-  simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
-
 /-- The total extension is globally equal to the finite Lehmann resolvent sum. -/
-theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
+private theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) :
     finitePurePointPhysicalSusceptibilityExtension system data A B omega eta =
@@ -82,8 +72,7 @@ theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
           (data.energy mn.1 - data.energy mn.2)
           (purePointTransitionWeight system data A B mn) := by
   by_cases hη : 0 < eta
-  · rw [finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos
-      system data A B omega eta hη]
+  · simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data A B omega eta hη
   · simp [finitePurePointPhysicalSusceptibilityExtension, hη,
@@ -92,7 +81,7 @@ theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
 /-- The physical positive-rate susceptibility has both local nonresonant iterated limits after
 passing to its canonical total extension.  Both orders have the same zero-rate static Lehmann
 value. -/
-theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
+private theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H)
     (hregular : PurePointStaticNonresonant system data A B) :
@@ -154,8 +143,7 @@ theorem finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_li
         (𝓝 (finitePurePointPhysicalSusceptibilityExtension
           system data A B omega eta)) := by
     intro omega eta hη
-    rw [finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos
-      system data A B omega eta hη]
+    simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
     exact tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate
       system (purePointNormalizedExpectation system data) A B omega eta hη
   exact ⟨⟨_, hlong, hlimits.1⟩, ⟨_, hlong, hlimits.2⟩⟩
