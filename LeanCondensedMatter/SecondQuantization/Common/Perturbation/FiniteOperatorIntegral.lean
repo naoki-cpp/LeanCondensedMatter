@@ -6,17 +6,15 @@ set_option linter.style.header false
 /-!
 # Coefficientwise interval integration of a finite-mode operator-valued function
 
-For the continuous imaginary-time interaction-picture Dyson series documented in
-`notes/roadmaps/second-quantization.md`, `AlgebraicFock Config` is a purely algebraic vector space
-(finite `ℂ`-linear combinations of basis states, no topology, no inner product — see
-`AlgebraicFock.lean`'s module docstring), so there is no norm on operators to integrate an
-operator-valued function against directly. Rather than introducing one, this file exploits
-`[Fintype Config]`: an operator-valued function `F : ℝ → AlgebraicFock Config →ₗ[ℂ]
-AlgebraicFock Config` has, for each fixed `m n : Config`, an ordinary `ℂ`-valued matrix-coefficient
-function `τ ↦ matrixCoeff (F τ) m n`, integrable by Mathlib's `intervalIntegral` directly.
-`operatorIntervalIntegral F a b` is defined so that its own matrix coefficients are exactly those
-scalar integrals (`matrixCoeff_operatorIntervalIntegral`) — a genuine continuous integral, built
-without adding any norm/topology to `AlgebraicFock Config` itself.
+`AlgebraicFock Config` is an algebraic vector space with no operator norm or Hilbert completion.
+For finite `Config`, an operator-valued function can nevertheless be integrated coefficientwise:
+for fixed configurations `m,n`, the matrix coefficient
+`τ ↦ matrixCoeff (F τ) m n` is an ordinary complex-valued function.
+
+`operatorIntervalIntegral F a b` is defined by these scalar interval integrals, and its matrix
+coefficients are proved to agree exactly with them. This provides the finite-configuration
+operator-integral realization used by the Dyson recursion without adding a topology to the
+algebraic Fock space.
 -/
 
 namespace SecondQuantization
