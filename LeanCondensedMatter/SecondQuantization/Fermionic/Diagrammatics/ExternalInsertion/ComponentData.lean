@@ -99,7 +99,7 @@ theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexLabelSequence {E
 /-- The timed field attached to a component-local canonical leg is exactly the ambient timed field
 on the corresponding canonical leg. -/
 theorem ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg
-    [LinearOrder Mode] {E n : ℕ}
+    {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts)
