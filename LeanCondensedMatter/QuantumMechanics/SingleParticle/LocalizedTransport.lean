@@ -129,19 +129,9 @@ noncomputable def operatorLocalCurrentPairing
       (𝕜 := ℂ)
       (OneForm := OneForm)
       (Obs := V →ₗ[ℂ] V)
-      (CurrentDensity := V →ₗ[ℂ] V) where
-  toFun := fun current =>
-    (_root_.ConservationLaw.symmetrizedProductRightLinear V current).comp N
-  map_add' := by
-    intro j₁ j₂
-    ext α x
-    simp [_root_.ConservationLaw.symmetrizedProductRightLinear,
-      _root_.ConservationLaw.symmetrizedProduct]
-  map_smul' := by
-    intro c j
-    ext α x
-    simp [_root_.ConservationLaw.symmetrizedProductRightLinear,
-      _root_.ConservationLaw.symmetrizedProduct]
+      (CurrentDensity := V →ₗ[ℂ] V) :=
+  ((LinearMap.llcomp ℂ OneForm (V →ₗ[ℂ] V) (V →ₗ[ℂ] V)).flip N).comp
+    (LinearMap.flip (_root_.ConservationLaw.symmetrizedProductBilinear V))
 
 @[simp]
 theorem operatorLocalCurrentPairing_apply
