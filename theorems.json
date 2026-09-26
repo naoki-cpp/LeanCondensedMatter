@@ -41991,7 +41991,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.continuous_freePropagator",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "The free propagator depends continuously on real time in operator norm. ",
     "directWrapperTargetModule": null,
@@ -42030,7 +42030,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. ",
     "directWrapperTargetModule": null,
@@ -43571,31 +43571,33 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "Every free Schrödinger propagator is a unitary element of the bounded-operator C⋆-algebra. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.star_freePropagator"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.freePropagatorUnitary",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43627,9 +43629,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_after_neg",
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
-      "QuantumTheory.LinearResponse.freePropagator_mul_star",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_mul"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_add",
@@ -43639,11 +43639,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_after_neg",
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
-      "QuantumTheory.LinearResponse.freePropagator_mul_star",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_mul"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43654,7 +43652,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t * star (QuantumTheory.LinearResponse.freePropagator system t) = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -43662,7 +43660,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -43673,7 +43671,9 @@
     "docString": "The adjoint of the free propagator is its right inverse. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
+    ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_mul_neg",
       "QuantumTheory.LinearResponse.star_freePropagator"
@@ -43681,9 +43681,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv"
+      "QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv",
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43715,7 +43716,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_neg_after",
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
@@ -43728,12 +43728,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_neg_after",
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44888,6 +44887,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.heisenbergEvolution system A t =\n    ((Unitary.conjStarAlgAut ℂ (H →L[ℂ] H)) (QuantumTheory.LinearResponse.freePropagatorUnitary system (-t))) A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+    "externalAxioms": [],
+    "docString": "Free Heisenberg evolution is conjugation by the negative-time propagator, expressed through\nMathlib's canonical unitary star-algebra automorphism. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_mul",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_sub"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_mul",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_sub"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Commute (↑system.hamiltonian) A → ∀ (t : ℝ), QuantumTheory.LinearResponse.heisenbergEvolution system A t = A",
     "standardAxioms": [
       "Classical.choice",
@@ -44947,7 +44990,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "Applying free Heisenberg evolution successively adds the two time parameters. ",
     "directWrapperTargetModule": null,
@@ -44988,7 +45031,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.heisenbergEvolution_mul",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "Free Heisenberg evolution preserves operator multiplication. ",
     "directWrapperTargetModule": null,
@@ -44997,7 +45040,7 @@
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -45029,7 +45072,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.heisenbergEvolution_sub",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "Free Heisenberg evolution preserves operator subtraction. ",
     "directWrapperTargetModule": null,
@@ -45037,7 +45080,9 @@
     "dependents": [
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -46160,7 +46205,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
     "docString": "Unitary free conjugation preserves the operator norm exactly. ",
     "directWrapperTargetModule": null,
@@ -48186,8 +48231,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
       "QuantumTheory.LinearResponse.inner_purePointBasis_heisenbergEvolution",
       "QuantumTheory.LinearResponse.isSelfAdjoint_heisenbergEvolution",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
@@ -48202,8 +48247,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
       "QuantumTheory.LinearResponse.inner_purePointBasis_heisenbergEvolution",
       "QuantumTheory.LinearResponse.isSelfAdjoint_heisenbergEvolution",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
@@ -48244,6 +48289,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.norm_freePropagator_apply"
     ],
     "dependencies": [
@@ -48255,9 +48301,10 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv",
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.norm_freePropagator_apply"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51612,7 +51659,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  params.bornRtaLongitudinalConductivity =\n    params.e ^ 2 * params.hbar * params.v ^ 2 * (params.fermiEnergy ^ 2 - params.m ^ 2) /\n      (Real.pi * params.disorderStrength * (params.fermiEnergy ^ 2 + 3 * params.m ^ 2))",
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters),\n  params.bornRtaLongitudinalConductivity =\n    params.e ^ 2 * params.hbar * params.v ^ 2 * (params.fermiEnergy ^ 2 - params.m ^ 2) /\n      (Real.pi * params.disorderStrength * (params.fermiEnergy ^ 2 + 3 * params.m ^ 2))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51624,7 +51671,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Longitudinal",
     "externalAxioms": [],
     "docString": "The microscopic Born-RTA conductivity has the explicit `1/W` closed form. ",
@@ -51632,10 +51679,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorder_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.hbar_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.metallic",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.velocity_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorder_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.hbar_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.metallic",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.velocity_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
     ],
     "crossModuleDirectWrapper": false,
@@ -51653,7 +51700,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  params.bornRtaLongitudinalConductivity = params.bornRtaLongitudinalCoefficient / params.disorderStrength",
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters),\n  params.bornRtaLongitudinalConductivity = params.bornRtaLongitudinalCoefficient / params.disorderStrength",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51665,7 +51712,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Longitudinal",
     "externalAxioms": [],
     "docString": "The longitudinal benchmark is exactly the finite scaling coefficient divided by positive\ndisorder strength. ",
@@ -51673,13 +51720,422 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorder_pos"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorder_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters),\n  params.disorderStrength * params.bornRtaLongitudinalConductivity = params.bornRtaLongitudinalCoefficient",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Longitudinal",
+    "externalAxioms": [],
+    "docString": "Multiplication by disorder strength removes the Drude divergence and gives the finite\ncoefficient used in the weak-disorder scaling limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorder_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.hbar_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.metallic",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.velocity_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters), 0 < self.disorderStrength",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorder_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters), 0 < self.hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.hbar_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters), |self.m| < self.fermiEnergy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.metallic",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters), self.v ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.velocity_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (coordinate : QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate),\n  0 < coordinate.dimensionlessScattering",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.dimensionlessScattering_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (coordinate : QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate), coordinate.referenceEnergy ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate), 0 < self.referenceEnergy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.dimensionlessScattering_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.dimensionlessScattering_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (coordinate : QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate), coordinate.scatteringScale ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate), 0 < self.scatteringScale",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.dimensionlessScattering_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.dimensionlessScattering_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51850,89 +52306,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), 0 < params.dimensionlessScattering",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.dimensionlessScattering_pos",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.referenceEnergy_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.scatteringScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  params.disorderStrength * params.bornRtaLongitudinalConductivity = params.bornRtaLongitudinalCoefficient",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Longitudinal",
-    "externalAxioms": [],
-    "docString": "Multiplication by disorder strength removes the Drude divergence and gives the finite\ncoefficient used in the weak-disorder scaling limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorder_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.hbar_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.metallic",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.velocity_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), 0 < self.disorderStrength",
     "standardAxioms": [
@@ -51953,9 +52326,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
     ],
@@ -51963,14 +52333,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52114,8 +52480,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
@@ -52124,14 +52488,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52162,8 +52523,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
@@ -52173,171 +52532,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
-    "compiledConsumerCount": 7,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), params.referenceEnergy ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.referenceEnergy_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.referenceEnergy_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), 0 < self.referenceEnergy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.referenceEnergy_pos",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.dimensionlessScattering_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.referenceEnergy_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.dimensionlessScattering_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.referenceEnergy_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), params.scatteringScale ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.scatteringScale_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.scatteringScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), 0 < self.scatteringScale",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.scatteringScale_pos",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.dimensionlessScattering_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.scatteringScale_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.dimensionlessScattering_pos",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.scatteringScale_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52499,8 +52699,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
@@ -52509,14 +52707,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55182,7 +55377,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55559,7 +55754,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -55572,7 +55767,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
     ],
     "dependencies": [
       "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval",
@@ -55581,7 +55776,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -55924,47 +56119,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator v m probeEnergy regulator p =\n    (2 * Real.pi) •\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "The explicit angularly integrated polar kernel is exactly `2π` times the radial kernel used by\nthe continuum Born self-energy. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ (v m p probeEnergy disorderStrength hbar : ℝ),\n  0 ≤\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy disorderStrength\n      hbar",
     "standardAxioms": [
@@ -56033,88 +56187,6 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator\n          QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator p •\n        1 +\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator\n          QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator p •\n        QuantumTheory.Transport.Models.MassiveDirac.matrixOperator QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Pointwise arbitrary-regulator radial kernel decomposition into the two surviving Pauli channels. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (channel : QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator\n      p =\n    QuantumTheory.Transport.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy\n        regulator p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Either surviving Born self-energy radial integrand is its channel numerator times the common\ndenominator integrand. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -56997,7 +57069,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
     ],
     "dependencies": [
@@ -57006,7 +57078,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
     ],
     "compiledConsumerCount": 2,
@@ -60856,61 +60928,20 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (channel : QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator channel v m probeEnergy\n      regulator pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n        probeEnergy regulator pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Arbitrary-regulator factorization of either surviving Born self-energy channel. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60944,53 +60975,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornIntegral_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornIntegral_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator v m probeEnergy\n      regulator pMax =\n    (2 * Real.pi) •\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy\n        regulator pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Explicit angular reduction commutes with the finite radial integration and produces exactly the\nfactor `2π`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -61217,84 +61207,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  regulator ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy regulator\n        disorderStrength hbar pMax =\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator\n            QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator\n            disorderStrength hbar pMax •\n          1 +\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator\n            QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator\n            disorderStrength hbar pMax •\n          QuantumTheory.Transport.Models.MassiveDirac.matrixOperator QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "The arbitrary-regulator continuum Born self-energy contains only scalar and `σ_z` channels. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy regulator\n      disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator v m\n      probeEnergy regulator disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "The arbitrary-regulator finite-cutoff continuum Born self-energy is exactly the explicit\npolar-integral construction, so its `2π` prefactor is derived from angular integration. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy side v m probeEnergy broadening\n        disorderStrength hbar pMax =\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n            QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.scalar side v m probeEnergy broadening\n            disorderStrength hbar pMax •\n          1 +\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n            QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.z side v m probeEnergy broadening\n            disorderStrength hbar pMax •\n          QuantumTheory.Transport.Models.MassiveDirac.matrixOperator QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
       "Classical.choice",
@@ -61318,8 +61230,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
-      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero"
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -63344,8 +63256,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_add_neg_momentum"
@@ -63353,8 +63265,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -66069,55 +65981,14 @@
       "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonShiftOperator"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator",
       "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
-      "QuantumTheory.Transport.SpectralSide.regulator_opposite"
+      "QuantumTheory.Transport.SpectralSide.regulator_opposite",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonShiftOperator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  regulator ≠ 0 →\n    star\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy\n          regulator disorderStrength hbar pMax) =\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy\n        (-regulator) disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Adjointing the arbitrary-regulator continuum Born self-energy reverses the regulator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -70192,7 +70063,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
     ],
     "dependencies": [
@@ -70202,7 +70073,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
     ],
     "compiledConsumerCount": 2,
@@ -160140,6 +160011,289 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator✝ v m probeEnergy regulator p =\n    (2 * Real.pi) •\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "The explicit angularly integrated polar kernel is exactly `2π` times the radial kernel used by\nthe continuum Born self-energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator\n          QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator p •\n        1 +\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator\n          QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator p •\n        QuantumTheory.Transport.Models.MassiveDirac.matrixOperator QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "Pointwise arbitrary-regulator radial kernel decomposition into the two surviving Pauli channels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (channel : QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator\n      p =\n    QuantumTheory.Transport.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy\n        regulator p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "Either surviving Born self-energy radial integrand is its channel numerator times the common\ndenominator integrand. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (channel : QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator channel v m probeEnergy\n      regulator pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n        probeEnergy regulator pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "Arbitrary-regulator factorization of either surviving Born self-energy channel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator✝ v m probeEnergy\n      regulator pMax =\n    (2 * Real.pi) •\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy\n        regulator pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "Explicit angular reduction commutes with the finite radial integration and produces exactly the\nfactor `2π`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  regulator ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy regulator\n        disorderStrength hbar pMax =\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator\n            QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator\n            disorderStrength hbar pMax •\n          1 +\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator\n            QuantumTheory.Transport.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator\n            disorderStrength hbar pMax •\n          QuantumTheory.Transport.Models.MassiveDirac.matrixOperator QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "The arbitrary-regulator continuum Born self-energy contains only scalar and `σ_z` channels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy regulator\n      disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator✝ v m\n      probeEnergy regulator disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "The arbitrary-regulator finite-cutoff continuum Born self-energy is exactly the explicit\npolar-integral construction, so its `2π` prefactor is derived from angular integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  regulator ≠ 0 →\n    star\n        (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator\n          p) =\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy (-regulator)\n        p",
     "standardAxioms": [
       "Classical.choice",
@@ -160187,7 +160341,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -160200,7 +160354,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
@@ -160209,7 +160363,48 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  regulator ≠ 0 →\n    star\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy\n          regulator disorderStrength hbar pMax) =\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy\n        (-regulator) disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "externalAxioms": [],
+    "docString": "Adjointing the arbitrary-regulator continuum Born self-energy reverses the regulator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
