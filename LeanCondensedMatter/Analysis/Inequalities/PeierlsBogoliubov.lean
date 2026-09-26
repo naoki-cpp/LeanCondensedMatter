@@ -12,33 +12,20 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 # The Peierls–Bogoliubov spectral inequality
 
 For a self-adjoint bounded operator `T` on a Hilbert space, a unit vector `e`, and a convex
-continuous function `g : ℝ → ℝ`, the diagonal matrix element of `g` applied via the continuous
-functional calculus is at least `g` applied to the diagonal matrix element of `T` itself:
-`g ⟪e, T e⟫ ≤ ⟪e, cfc g T e⟫`. This is the Peierls–Bogoliubov inequality, the key spectral fact
-underlying the Gibbs–Klein / Helmholtz free-energy inequality
-(`QuantumTheory.helmholtzFreeEnergy_ge`, see `notes/roadmaps/quantum-theory-foundations.md`).
+continuous function `g : ℝ → ℝ`, the diagonal matrix element of `g` applied by continuous
+functional calculus is bounded below by `g` of the diagonal matrix element of `T`:
 
-The public inequalities are stated in the complex positive order.  Consequently, they assert both
-that the relevant diagonal matrix elements are real and that the inequality holds; no imaginary
-part is discarded with `.re`.
+`g ⟪e, T e⟫ ≤ ⟪e, cfc g T e⟫`.
 
-**Route taken, and why.** The textbook proof integrates the convex function `g` against `T`'s
-spectral measure at `e` and invokes Jensen's inequality. Mathlib has no spectral-measure
-construction for `cfc`/self-adjoint operators (surveyed: no `spectralMeasure` declaration
-anywhere in the pinned Mathlib revision, and no Riesz-representation route from `cfcHom` to a
-measure either), so that route is not available here. Instead this file uses the **tangent-line
-trick**: convexity of `g` at a point `x₀` is witnessed by an affine minorant `m * x + (g x₀ - m *
-x₀) ≤ g x` for all `x` (a supporting line at `x₀`), which lifts to an operator inequality via
-`cfc_mono` (Mathlib's order-monotonicity of `cfc` in the pointwise order on the spectrum), and
-then to the diagonal matrix element via `ContinuousLinearMap.IsPositive.inner_nonneg_left`. This
-sidesteps spectral measures and Jensen's inequality entirely, at the cost of taking the tangent
-line's existence as an explicit hypothesis (`htangent` below) rather than deriving it from
-`ConvexOn` — matching this project's established style of taking analytic side conditions as
-explicit hypotheses (`notes/conventions.md`). For a general convex `g`, existence of `m` follows
-from `g` having a subgradient at every point of `ℝ` (true for any convex function on all of `ℝ`,
-by e.g. the sup of secant slopes on either side), but Mathlib does not currently package that
-existence result, so it is left as a hypothesis; `exp_tangent` below discharges it concretely
-for `g = fun x => Real.exp (-β * x)`, the case needed for the Gibbs state.
+The public inequalities are stated in the complex positive order, so they also establish that the
+relevant diagonal matrix elements are real rather than discarding an imaginary part with `.re`.
+
+The proof uses an explicit supporting affine minorant for `g` at the relevant scalar point. The
+pointwise affine inequality is lifted to an operator inequality by monotonicity of the continuous
+functional calculus and then evaluated on the unit vector by positivity. The supporting-line
+condition is therefore an explicit theorem hypothesis. For
+`g x = exp (-β x)`, `exp_tangent` supplies that hypothesis, yielding the form used in the
+Gibbs–Klein and Helmholtz free-energy arguments.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
