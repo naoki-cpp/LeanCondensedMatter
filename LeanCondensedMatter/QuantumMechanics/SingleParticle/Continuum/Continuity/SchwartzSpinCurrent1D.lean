@@ -138,9 +138,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).currentDensity =
-      symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevel1D.velocityOperator ℏ κ)
-        (schwartzSpinOperator ℏ spinComponent) :=
+      schwartzSpinCurrentDensityLinear1D ℏ κ spinComponent :=
   rfl
 
 /-- In the internal-spin model the velocity and spin operators commute. -/
@@ -174,7 +172,8 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).currentDensity =
       (SchwartzTwoLevel1D.velocityOperator ℏ κ).comp
         (schwartzSpinOperator ℏ spinComponent) := by
-  rw [schwartzSpinCurrentRepresentation1D_currentDensity]
+  rw [schwartzSpinCurrentRepresentation1D_currentDensity,
+    schwartzSpinCurrentDensityLinear1D_apply]
   exact symmetrizedSpinCurrent_eq_velocity_comp_spin ℏ κ spinComponent
 
 /-- The spin commutator of the full Hamiltonian is entirely the commutator with the internal
