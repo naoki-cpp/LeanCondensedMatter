@@ -21,16 +21,10 @@ open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-private def generatorApproximationScale (r : ℝ) : ℝ := max 1 r
-
-private theorem generatorApproximationScale_pos (r : ℝ) :
-    0 < generatorApproximationScale r := by
-  exact lt_of_lt_of_le zero_lt_one (le_max_left 1 r)
-
 private noncomputable def boundedSelfAdjointApproximationAtScale
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) : H →L[ℂ] H :=
-  boundedSelfAdjointApproximation A hA (generatorApproximationScale r)
-    (generatorApproximationScale_pos r)
+  boundedSelfAdjointApproximation A hA (positiveApproximationScale r)
+    (positiveApproximationScale_pos r)
 
 private theorem boundedSelfAdjointApproximationAtScale_apply_tendsto
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
@@ -45,14 +39,14 @@ private theorem boundedSelfAdjointApproximationAtScale_apply_tendsto
   have h1r : 1 ≤ r := (le_max_right R 1).trans hr
   have hrpos : 0 < r := zero_lt_one.trans_le h1r
   have h := hconv r hRr hrpos
-  simpa [boundedSelfAdjointApproximationAtScale, generatorApproximationScale,
+  simpa [boundedSelfAdjointApproximationAtScale, positiveApproximationScale,
     max_eq_right h1r, dist_eq_norm] using h
 
 private theorem resolventApproximationEvolutionAtScale_eq_generatorScale
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) :
     resolventApproximationEvolutionAtScale A hA r t =
-      resolventApproximationEvolution A hA (generatorApproximationScale r)
-        (generatorApproximationScale_pos r) t := by
+      resolventApproximationEvolution A hA (positiveApproximationScale r)
+        (positiveApproximationScale_pos r) t := by
   rfl
 
 /-- A fixed bounded approximating evolution differs from the limiting evolution by at most its
@@ -91,9 +85,9 @@ theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
           ‖Ar (x : H) - A x‖ * |t| ≤ 0 := by
     apply le_of_tendsto hdiff
     exact Filter.Eventually.of_forall fun s => by
-      have hs := generatorApproximationScale_pos s
+      have hs := positiveApproximationScale_pos s
       have hpair := norm_resolventApproximationEvolution_sub_le
-        A hA r (generatorApproximationScale s) hr hs t (x : H)
+        A hA r (positiveApproximationScale s) hr hs t (x : H)
       have hpair' :
           ‖Ur (x : H) - resolventApproximationEvolutionAtScale A hA s t (x : H)‖ ≤
             ‖Ar (x : H) - boundedSelfAdjointApproximationAtScale A hA s (x : H)‖ * |t| := by
