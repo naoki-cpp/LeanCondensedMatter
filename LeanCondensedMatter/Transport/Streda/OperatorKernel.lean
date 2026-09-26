@@ -277,6 +277,18 @@ noncomputable def regularizedBastinOperatorIntegrand
       current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
     retardedAdvancedResolventDifference hamiltonian energy broadening)
 
+/-- Simultaneously reversing both current vertices leaves the canonical Bastin operator
+integrand unchanged. -/
+theorem regularizedBastinOperatorIntegrand_neg_neg
+    (hamiltonian current₁ current₂ : H →L[ℂ] H)
+    (energy broadening : ℝ) :
+    regularizedBastinOperatorIntegrand
+        hamiltonian (-current₁) (-current₂) energy broadening =
+      regularizedBastinOperatorIntegrand
+        hamiltonian current₁ current₂ energy broadening := by
+  unfold regularizedBastinOperatorIntegrand
+  noncomm_ring
+
 /-- Finite-broadening residual after removing the derivative of the chosen surface primitive from
 the canonical Bastin operator integrand. Keeping this remainder distinct from the conventional
 Smrčka–Středa `II` term is motivated by Bonbien and Manchon, *Phys. Rev. B* **102**, 085113 (2020),
