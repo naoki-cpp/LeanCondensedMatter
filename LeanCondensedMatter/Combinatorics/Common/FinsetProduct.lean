@@ -1,5 +1,6 @@
 import Mathlib.Data.Finset.Prod
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 
 set_option linter.style.header false
 
