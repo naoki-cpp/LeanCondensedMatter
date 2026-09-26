@@ -74,7 +74,7 @@ theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums_of_measurableLocallyBo
       intro orders
       simp_rw [hfactor orders]
       exact
-        FamilySlotShuffleTo.sum_integral_eq_prod_of_measurableLocallyBounded
+        FamilySlotShuffleTo.sum_integral_eq_prod
           (fun i => Fintype.card (F i)) total hTotal β
           (fun i => localIntegrand i (orders i))
           (fun i => hlocal i (orders i))
