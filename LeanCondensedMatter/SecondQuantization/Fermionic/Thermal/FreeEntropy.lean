@@ -1,16 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
-import LeanCondensedMatter.QuantumTheory.Entropy.Finite
-import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
 
 set_option linter.style.header false
 
 /-!
 # Entropy of the finite free-fermion Gibbs state
 
-The canonical free Gibbs density operator is diagonal in the occupation basis. Its von Neumann
-entropy therefore reduces to the Shannon entropy of the normalized occupation weights, which
-factorizes into the sum of independent one-mode binary entropies.
+The canonical free Gibbs density operator is the finite pure-point Gibbs state specialized to the
+fermionic occupation basis. The generic pure-point Gibbs entropy identity gives
+`S = β ⟨E⟩ + log Z`; mode factorization then reduces this to the sum of independent one-mode
+binary entropies.
 -/
 
 namespace SecondQuantization
@@ -33,34 +32,6 @@ noncomputable def fermiDiracOccupation (ε : Mode → ℝ) (β : ℝ) (i : Mode)
 noncomputable def freeGibbsConfigurationProbability
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
   purePointGibbsProbability (fermionEnergy ε) β n
-
-omit [LinearOrder Mode] in
-@[simp]
-theorem freeGibbsDensityOperator_apply_basis_probability
-    (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    (freeGibbsDensityOperator ε β).op (Common.finiteHilbertBasisState n) =
-      (freeGibbsConfigurationProbability ε β n : ℂ) •
-        Common.finiteHilbertBasisState n := by
-  simpa [freeGibbsConfigurationProbability] using
-    freeGibbsDensityOperator_apply_basis ε β n
-
-omit [LinearOrder Mode] [Fintype Mode] in
-theorem freeGibbsConfigurationProbability_pos [Finite Mode]
-    (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    0 < freeGibbsConfigurationProbability ε β n := by
-  letI := Fintype.ofFinite Mode
-  rw [freeGibbsConfigurationProbability, purePointGibbsProbability]
-  exact mul_pos
-    (inv_pos.mpr (purePointPartitionFunction_pos (fermionEnergy ε) β
-      (purePointGibbsSummable_of_finite (fermionEnergy ε) β)))
-    (purePointBoltzmannWeight_pos (fermionEnergy ε) β n)
-
-omit [LinearOrder Mode] in
-theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : ℝ) :
-    ∑ n : Occupation Mode, freeGibbsConfigurationProbability ε β n = 1 := by
-  have h := hasSum_purePointGibbsProbability (fermionEnergy ε) β
-    (purePointGibbsSummable_of_finite (fermionEnergy ε) β)
-  simpa [freeGibbsConfigurationProbability, tsum_fintype] using h.tsum_eq
 
 omit [LinearOrder Mode] in
 private theorem purePointPartitionFunction_fermionEnergy_eq_prod
@@ -188,59 +159,6 @@ theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
       intro i hi
       rw [sum_freeGibbsConfigurationProbability_filter_mem]
 
-omit [LinearOrder Mode] in
-theorem sum_negMulLog_freeGibbsConfigurationProbability
-    (ε : Mode → ℝ) (β : ℝ) :
-    ∑ n : Occupation Mode,
-        Real.negMulLog (freeGibbsConfigurationProbability ε β n) =
-      β * (∑ n : Occupation Mode,
-        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) +
-        Real.log (purePointPartitionFunction (fermionEnergy ε) β) := by
-  let Z := purePointPartitionFunction (fermionEnergy ε) β
-  have hZpos : 0 < Z := purePointPartitionFunction_pos (fermionEnergy ε) β
-    (purePointGibbsSummable_of_finite (fermionEnergy ε) β)
-  have hlog (n : Occupation Mode) :
-      Real.log (freeGibbsConfigurationProbability ε β n) =
-        -β * fermionEnergy ε n - Real.log Z := by
-    rw [freeGibbsConfigurationProbability, purePointGibbsProbability,
-      purePointBoltzmannWeight,
-      Real.log_mul (inv_ne_zero hZpos.ne') (ne_of_gt (Real.exp_pos _)),
-      Real.log_inv, Real.log_exp]
-    ring
-  have hterm (n : Occupation Mode) :
-      Real.negMulLog (freeGibbsConfigurationProbability ε β n) =
-        β * (freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) +
-          Real.log Z * freeGibbsConfigurationProbability ε β n := by
-    rw [Real.negMulLog, hlog n]
-    ring
-  simp_rw [hterm, Finset.sum_add_distrib, ← Finset.mul_sum]
-  rw [sum_freeGibbsConfigurationProbability_eq_one, mul_one]
-
-omit [LinearOrder Mode] in
-theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration
-    (ε : Mode → ℝ) (β : ℝ) :
-    (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
-      ∑ n : Occupation Mode,
-        Real.negMulLog (freeGibbsConfigurationProbability ε β n) := by
-  let ρ := freeGibbsDensityOperator ε β
-  let b := Common.finiteHilbertBasis (Config := Occupation Mode)
-  let w := freeGibbsConfigurationProbability ε β
-  let hs := ρ.entropyOp_hasSummableRealEigenvalues
-  have happly (n : Occupation Mode) :
-      ρ.op (b n) = (w n : ℂ) • b n := by
-    simpa [ρ, b, w] using freeGibbsDensityOperator_apply_basis_probability ε β n
-  have hw_nonneg (n : Occupation Mode) : 0 ≤ w n :=
-    (freeGibbsConfigurationProbability_pos ε β n).le
-  have hw_le_one (n : Occupation Mode) : w n ≤ 1 :=
-    ρ.diagonal_weight_le_one b w happly hw_nonneg n
-  have htrace := entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
-    ρ b w happly hs
-  have htrace_nonneg : 0 ≤ (entropyOpSpectralTraceClass ρ hs).trace := by
-    rw [htrace]
-    exact tsum_nonneg fun n => Real.negMulLog_nonneg (hw_nonneg n) (hw_le_one n)
-  rw [vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ hs,
-    ENNReal.toReal_ofReal htrace_nonneg, htrace, tsum_fintype]
-
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem fermiDiracOccupation_eq_exp_neg_div
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
@@ -287,8 +205,26 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
     (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
       ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
         Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
-  rw [vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration,
-    sum_negMulLog_freeGibbsConfigurationProbability,
+  have hIntegrable :
+      PurePointGibbsEnergyIntegrable (fermionEnergy ε) β := by
+    exact Summable.of_finite
+  have hEntropy :
+      (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
+        β * purePointGibbsEnergyExpectation (fermionEnergy ε) β +
+          Real.log (purePointPartitionFunction (fermionEnergy ε) β) := by
+    simpa [freeGibbsDensityOperator, finitePurePointGibbsDensityOperator] using
+      (vonNeumannEntropy_purePointGibbsDensityOperator
+        (Common.finiteHilbertBasis (Config := Occupation Mode))
+        (fermionEnergy ε) β
+        (purePointGibbsSummable_of_finite (fermionEnergy ε) β)
+        hIntegrable).2
+  have hEnergy :
+      purePointGibbsEnergyExpectation (fermionEnergy ε) β =
+        ∑ n : Occupation Mode,
+          freeGibbsConfigurationProbability ε β n * fermionEnergy ε n := by
+    rw [purePointGibbsEnergyExpectation, tsum_fintype]
+    rfl
+  rw [hEntropy, hEnergy,
     sum_freeGibbsConfigurationProbability_mul_fermionEnergy,
     log_purePointPartitionFunction_fermionEnergy_eq_sum]
   calc
