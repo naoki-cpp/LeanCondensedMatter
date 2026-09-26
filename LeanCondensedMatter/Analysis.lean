@@ -8,6 +8,7 @@ import LeanCondensedMatter.Analysis.Lorentzian
 import LeanCondensedMatter.Analysis.Operator
 import LeanCondensedMatter.Analysis.InfiniteSum
 import LeanCondensedMatter.Analysis.Calculus
+import LeanCondensedMatter.Analysis.ConservationLaw
 import LeanCondensedMatter.Analysis.Inequalities
 
 set_option linter.style.header false

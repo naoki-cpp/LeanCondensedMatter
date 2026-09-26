@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
+import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false

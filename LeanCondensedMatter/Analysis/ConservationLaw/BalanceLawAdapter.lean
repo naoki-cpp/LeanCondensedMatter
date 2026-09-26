@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
-import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
+import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
+import LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw
 
 set_option linter.style.header false
 
