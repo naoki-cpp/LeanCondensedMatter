@@ -60,7 +60,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLawOfCurrent
       (_root_.ConservationLaw.localizedQuantityFunctional V M m)
       d :=
   heisenbergIntrinsicSymmetricLocalizationBalanceLaw V ℏ h M m d
-    (_root_.ConservationLaw.DependsOnlyOnDifferential.of_current hJ)
+    (_root_.ConservationLaw.IsDifferentialCurrent.dependsOnlyOnDifferential hJ)
 
 /-- Recover the represented balance law only after choosing a current extension of the intrinsic
 transport. -/
