@@ -52,6 +52,33 @@ theorem symmetrizedProductRightLinear_apply
     symmetrizedProductRightLinear V m A = symmetrizedProduct A m :=
   rfl
 
+/-- Symmetrization with a fixed left-hand operator is linear in the transported quantity. -/
+noncomputable def symmetrizedProductLeftLinear
+    (A : V →ₗ[ℂ] V) :
+    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) where
+  toFun := fun m => symmetrizedProduct A m
+  map_add' := by
+    intro m n
+    rw [symmetrizedProduct_comm A (m + n),
+      symmetrizedProductRightLinear_apply,
+      map_add,
+      ← symmetrizedProductRightLinear_apply,
+      ← symmetrizedProductRightLinear_apply]
+    rw [symmetrizedProduct_comm m A, symmetrizedProduct_comm n A]
+  map_smul' := by
+    intro c m
+    rw [symmetrizedProduct_comm A (c • m),
+      symmetrizedProductRightLinear_apply,
+      map_smul,
+      ← symmetrizedProductRightLinear_apply]
+    rw [symmetrizedProduct_comm m A]
+
+@[simp]
+theorem symmetrizedProductLeftLinear_apply
+    (A m : V →ₗ[ℂ] V) :
+    symmetrizedProductLeftLinear V A m = symmetrizedProduct A m :=
+  rfl
+
 /-- A one-body quantity localized by the supplied operator-valued test map `M`. -/
 noncomputable def localizedQuantity
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
