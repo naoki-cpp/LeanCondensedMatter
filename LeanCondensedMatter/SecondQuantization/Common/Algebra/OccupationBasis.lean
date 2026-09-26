@@ -4,25 +4,16 @@ import Mathlib.Data.Set.Finite.Basic
 set_option linter.style.header false
 
 /-!
-# The occupation-basis interface, generic over the concrete occupation-state type
+# The occupation-basis interface
 
-Shared architectural vocabulary for the fermionic and bosonic occupation-basis implementations
-(`notes/roadmaps/second-quantization.md`): both lines represent a Fock-space basis vector by a
-concrete occupation state (`Fermionic.Occupation Mode := Finset Mode` for fermions, `Bosonic.Occupation
-Mode := Mode →₀ ℕ` for bosons) together with a per-mode occupation number extracted from it
-(`i ∈ n ↦ 1`/`0` for fermions, `n i` directly for bosons). `OccupationBasis` packages just that
-common shape — a `vacuum`, an `occupation : Config → Mode → ℕ` reading off each mode's particle
-count, and the basic facts (`vacuum` has none, each state has finite support, the reading is
-faithful) — without unifying `Config` itself. The same finite-support contract canonically defines
-the statistics-independent total `particleNumber` grade. Fermionic and bosonic occupation-state
-types stay genuinely different (`Finset Mode` vs. `Mode →₀ ℕ`, since Pauli exclusion caps the former at
-`0`/`1`), each supplying its own instance of this structure.
+`OccupationBasis` captures the statistics-independent structure shared by fermionic and bosonic
+occupation descriptions: a vacuum configuration, a per-mode occupation number, vanishing vacuum
+occupation, finite support, and extensionality from the occupation data. These assumptions define the
+common total `particleNumber` grading.
 
-The concrete instances (`SecondQuantization.Fermionic.occupationBasis` and
-`SecondQuantization.Bosonic.occupationBasis`) live in each statistics-specific directory, not here,
-since a `Common/` file importing `Fermionic/` or `Bosonic/` would invert the intended dependency
-direction documented in `notes/conventions.md`: statistics-specific code depends on `Common/`, not
-the reverse.
+The concrete configuration types remain distinct. Fermions use finite subsets of modes with
+occupations in `{0, 1}`, while bosons use finitely supported `ℕ`-valued occupations. Each
+statistics-specific algebra supplies its own `OccupationBasis` instance.
 -/
 
 namespace SecondQuantization
