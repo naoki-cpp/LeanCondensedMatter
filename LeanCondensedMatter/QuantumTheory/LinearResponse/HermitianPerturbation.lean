@@ -63,6 +63,8 @@ theorem isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdj
     _ = ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s := by
       apply intervalIntegral.integral_congr
       intro s _
+      change starIso (timeDependentInteractionPerturbation system V s) =
+        timeDependentInteractionPerturbation system V s
       rw [starIso_apply]
       exact
         (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
