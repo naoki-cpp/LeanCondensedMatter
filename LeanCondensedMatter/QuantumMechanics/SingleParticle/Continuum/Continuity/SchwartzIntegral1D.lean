@@ -7,14 +7,14 @@ set_option linter.style.header false
 /-!
 # Whole-space probability balance for Schwartz wavefunctions in one dimension
 
-This module uses rapid decay of Schwartz wavefunctions to remove the spatial boundary term from the
-one-dimensional Schrödinger continuity equation. The first result is the whole-space rate identity
+Rapid decay of Schwartz wavefunctions removes the spatial boundary term from the one-dimensional
+Schrödinger continuity equation. The resulting whole-space balance is
 
 `∫ ∂ₜρ = 0`.
 
-It deliberately stops one step before differentiating the total probability integral with respect to
-time. That final step only needs a separate differentiation-under-the-integral hypothesis and does
-not require any unbounded-operator or self-adjointness theory.
+This statement concerns the integral of the density time derivative. Identifying it with the time
+derivative of total probability requires a separate differentiation-under-the-integral hypothesis;
+no unbounded-operator or self-adjointness theory is needed for the balance identity itself.
 -/
 
 namespace QuantumMechanics
