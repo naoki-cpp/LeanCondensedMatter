@@ -6,22 +6,18 @@ set_option linter.style.header false
 /-!
 # Fermionic occupation Fock representation (algebraic)
 
-The occupation-basis representation of algebraic (finite-particle, uncompleted) fermionic Fock
-space is the free `ℂ`-vector space on the fermionic occupation-number basis `Occupation Mode`
-(`Occupation.lean`).
+The occupation-basis representation of algebraic, uncompleted fermionic Fock space is the free
+`ℂ`-vector space on fermionic occupation states `Occupation Mode`.
 
-Built directly on `Common.AlgebraicFock`:
-`OccupationFock Mode := Common.AlgebraicFock (Occupation Mode)`, with `basisState` specializing the
-generic `Common.basisState`. Generic basis extensionality is consumed directly from
-`Common.linearMap_ext_basisState` rather than re-exported under a fermionic wrapper. The name
-deliberately records that this representation depends on the chosen mode basis. The
-basis-independent algebraic fermionic Fock construction is the exterior-algebra
-`Fermionic.AlgebraicFock` and is related to this representation by a chosen-basis equivalence.
-`Fermionic.CompletedFockSpace` is the separate completed `ℓ²` occupation representation.
+`OccupationFock Mode` is `Common.AlgebraicFock (Occupation Mode)`, and its basis states specialize
+the generic `Common.basisState`. Basis extensionality and the other representation-independent
+linear-algebra facts are supplied by the common algebraic Fock API. This representation depends on a
+chosen mode basis; the basis-independent algebraic fermionic Fock construction is the exterior
+algebra `Fermionic.AlgebraicFock`, related to it by a chosen-basis equivalence.
+`Fermionic.CompletedFockSpace` is the corresponding completed `ℓ²` occupation representation.
 
-This layer is algebraic only: no inner product, no Hilbert-space completion, and no bounded or
-unbounded operator theory. Creation and annihilation operators, with their sign factors, are defined
-in `CreationAnnihilation.lean`.
+This layer is algebraic only: it introduces no inner product, Hilbert-space completion, or bounded or
+unbounded operator theory.
 -/
 
 namespace SecondQuantization
