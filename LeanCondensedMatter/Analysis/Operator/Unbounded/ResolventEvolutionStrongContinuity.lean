@@ -145,26 +145,25 @@ theorem stoneEvolution_joint_continuous
   · intro t
     exact (isometry_iff_dist_eq.mpr fun x y => stoneEvolution_dist_eq A hA t x y).lipschitz
 
+/-- The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. -/
+theorem stoneEvolution_apply_continuous
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
+    Continuous (fun t : ℝ => stoneEvolution A hA t x) := by
+  have hpair : Continuous (fun t : ℝ => (x, t)) :=
+    continuous_const.prodMk continuous_id
+  exact (stoneEvolution_joint_continuous A hA).comp hpair
+
 /-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
 theorem stoneEvolution_apply_continuousAt_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (y : H) :
     ContinuousAt (fun t : ℝ => stoneEvolution A hA t y) 0 :=
-  (stoneEvolution_joint_continuous A hA).continuousAt.comp
-    (continuousAt_const.prodMk continuousAt_id)
+  (stoneEvolution_apply_continuous A hA y).continuousAt
 
 /-- The limiting evolution is strongly continuous at every time, for every vector. -/
 theorem stoneEvolution_apply_continuousAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ) :
     ContinuousAt (fun t : ℝ => stoneEvolution A hA t x) s :=
-  (stoneEvolution_joint_continuous A hA).continuousAt.comp
-    (continuousAt_const.prodMk continuousAt_id)
-
-/-- The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. -/
-theorem stoneEvolution_apply_continuous
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
-    Continuous (fun t : ℝ => stoneEvolution A hA t x) := by
-  rw [continuous_iff_continuousAt]
-  exact stoneEvolution_apply_continuousAt A hA x
+  (stoneEvolution_apply_continuous A hA x).continuousAt
 
 end
 
