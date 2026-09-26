@@ -123,7 +123,7 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   field_simp [hPpos.ne', Real.exp_ne_zero]
 
 omit [LinearOrder Mode] in
-/-- The mean free energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
+/-- The mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
 theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
     (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode,
