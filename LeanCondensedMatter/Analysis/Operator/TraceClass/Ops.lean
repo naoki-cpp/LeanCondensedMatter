@@ -7,10 +7,10 @@ set_option linter.style.header false
 /-!
 # Spectral-trace linearity, cyclicity, and bounds
 
-The theorems are proved by comparing operators against a common Hilbert basis rather than relating
-individually unrelated eigenbases. Diagonal matrix elements are transported through
-`selfAdjoint ℂ` before they are treated as real numbers. See
-`notes/roadmaps/operator-algebra.md`.
+This module proves algebraic and norm bounds for the spectral trace of compact self-adjoint operators.
+The arguments compare operators against a common Hilbert basis rather than choosing unrelated
+eigenbases for each operator. Diagonal matrix elements are transported through `selfAdjoint ℂ`
+before being treated as real scalars.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
