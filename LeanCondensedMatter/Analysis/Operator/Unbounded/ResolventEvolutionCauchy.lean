@@ -218,10 +218,11 @@ theorem norm_resolventApproximationEvolution_sub_atScale_le
     (r : ℝ) (hr : 0 < r) (s t : ℝ) (x : H) :
     ‖resolventApproximationEvolution A hA r hr t x -
         resolventApproximationEvolutionAtScale A hA s t x‖ ≤
-      ‖(boundedSelfAdjointApproximation A hA r hr -
-          boundedSelfAdjointApproximationAtScale A hA s) x‖ * |t| := by
-  exact norm_resolventApproximationEvolution_sub_le
-    A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
+      ‖boundedSelfAdjointApproximation A hA r hr x -
+          boundedSelfAdjointApproximationAtScale A hA s x‖ * |t| := by
+  simpa [boundedSelfAdjointApproximationAtScale] using
+    norm_resolventApproximationEvolution_sub_le
+      A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
 
 
 end
