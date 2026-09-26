@@ -57,7 +57,7 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ)
-    (hvelocity : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N)) :
     (correctedSymmetrizedVelocityCurrentRepresentation

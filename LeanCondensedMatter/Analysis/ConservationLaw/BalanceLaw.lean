@@ -70,7 +70,7 @@ def toDifferentialCurrentRepresentation
     (B : BalanceLaw δ Q d) (hsource : B.source = 0) :
     DifferentialCurrentRepresentation d (δ.comp Q) where
   current := B.current
-  factors := by
+  isCurrent := by
     intro f
     have h := B.balance f
     rw [hsource] at h
@@ -148,13 +148,13 @@ theorem shiftCurrentSource_total
 /-- If the source itself factors through the differential, it can be absorbed completely into the
 current. The resulting current is `B.current + sourceCurrent` and represents the full localized
 evolution `δ ∘ Q` with no remaining source term. -/
-noncomputable def toDifferentialCurrentRepresentationOfSourceFactors
+noncomputable def toDifferentialCurrentRepresentationOfSourceCurrent
     {δ : Obs' →ₗ[R] Obs'}
     {Q : Test' →ₗ[R] Obs'}
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
-    (hsource : FactorsThroughDifferential d B.source sourceCurrent) :
+    (hsource : IsDifferentialCurrent d B.source sourceCurrent) :
     DifferentialCurrentRepresentation d (δ.comp Q) :=
   (B.shiftCurrentSource sourceCurrent).toDifferentialCurrentRepresentation (by
     apply LinearMap.ext
@@ -164,14 +164,14 @@ noncomputable def toDifferentialCurrentRepresentationOfSourceFactors
     module)
 
 @[simp]
-theorem toDifferentialCurrentRepresentationOfSourceFactors_current
+theorem toDifferentialCurrentRepresentationOfSourceCurrent_current
     {δ : Obs' →ₗ[R] Obs'}
     {Q : Test' →ₗ[R] Obs'}
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
-    (hsource : FactorsThroughDifferential d B.source sourceCurrent) :
-    (B.toDifferentialCurrentRepresentationOfSourceFactors sourceCurrent hsource).current =
+    (hsource : IsDifferentialCurrent d B.source sourceCurrent) :
+    (B.toDifferentialCurrentRepresentationOfSourceCurrent sourceCurrent hsource).current =
       B.current + sourceCurrent :=
   rfl
 

@@ -20,7 +20,8 @@ and a transport functional
 Φ : Test →ₗ[𝕜] Obs,
 ```
 
-`FactorsThroughDifferential d Φ J` states that `Φ(f) = J(d f)`.  A strictly stronger
+`IsDifferentialCurrent d Φ J` states that `J` is a differential current representing `Φ`, i.e.
+`Φ(f) = J(d f)`.  A strictly stronger
 `LocalCurrentDensityRepresentation` chooses a current density `j` and a supplied bilinear pairing
 such that
 
@@ -42,18 +43,18 @@ variable [AddCommMonoid OneForm] [Module 𝕜 OneForm]
 variable [AddCommMonoid Obs] [Module 𝕜 Obs]
 variable [AddCommMonoid CurrentDensity] [Module 𝕜 CurrentDensity]
 
-/-- A transport functional `Φ` factors through a differential-like map `d` via `J` when
+/-- `J` is a differential current representing the transport functional `Φ` through `d` when
 `Φ(f) = J(d f)` for every test object. -/
-def FactorsThroughDifferential
+def IsDifferentialCurrent
     (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) (J : OneForm →ₗ[𝕜] Obs) : Prop :=
   ∀ f, Φ f = J (d f)
 
-namespace FactorsThroughDifferential
+namespace IsDifferentialCurrent
 
 /-- Factorization through `d` is equivalent to equality with the composite `J ∘ d`. -/
 theorem iff_eq_comp
     {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs} :
-    FactorsThroughDifferential d Φ J ↔ Φ = J.comp d := by
+    IsDifferentialCurrent d Φ J ↔ Φ = J.comp d := by
   constructor
   · intro h
     exact LinearMap.ext h
@@ -64,15 +65,15 @@ theorem iff_eq_comp
 /-- A factorized transport functional vanishes on test objects annihilated by `d`. -/
 theorem eq_zero_of_map_eq_zero
     {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : FactorsThroughDifferential d Φ J) {f : Test} (hf : d f = 0) :
+    (h : IsDifferentialCurrent d Φ J) {f : Test} (hf : d f = 0) :
     Φ f = 0 := by
   rw [h f, hf, map_zero]
 
 /-- Scalar multiplication preserves a differential factorization. -/
 theorem smul
     {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : FactorsThroughDifferential d Φ J) (c : 𝕜) :
-    FactorsThroughDifferential d (c • Φ) (c • J) := by
+    (h : IsDifferentialCurrent d Φ J) (c : 𝕜) :
+    IsDifferentialCurrent d (c • Φ) (c • J) := by
   intro f
   simp [h f]
 
@@ -80,13 +81,13 @@ theorem smul
 theorem postcomp
     {Obs' : Type*} [AddCommMonoid Obs'] [Module 𝕜 Obs']
     {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : FactorsThroughDifferential d Φ J) (L : Obs →ₗ[𝕜] Obs') :
-    FactorsThroughDifferential d (L.comp Φ) (L.comp J) := by
+    (h : IsDifferentialCurrent d Φ J) (L : Obs →ₗ[𝕜] Obs') :
+    IsDifferentialCurrent d (L.comp Φ) (L.comp J) := by
   intro f
   simp only [LinearMap.comp_apply]
   rw [h f]
 
-end FactorsThroughDifferential
+end IsDifferentialCurrent
 
 /-- Data of one chosen flux functional representing `Φ` through `d`.
 
@@ -95,8 +96,8 @@ structure DifferentialCurrentRepresentation
     (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) where
   /-- The chosen flux functional on differential-like test data. -/
   current : OneForm →ₗ[𝕜] Obs
-  /-- Proof that the transport functional is represented by `current ∘ d`. -/
-  factors : FactorsThroughDifferential d Φ current
+  /-- Proof that `current` represents the transport through the differential. -/
+  isCurrent : IsDifferentialCurrent d Φ current
 
 /-- A bilinear pairing of a current density with 1-form-like test data.
 
@@ -160,8 +161,8 @@ structure LocalCurrentDensityRepresentation
       (CurrentDensity := CurrentDensity)) where
   /-- The chosen local current density. -/
   currentDensity : CurrentDensity
-  /-- The transport functional is the pairing of `currentDensity` with `d f`. -/
-  represents : FactorsThroughDifferential d Φ (pairing currentDensity)
+  /-- Proof that `currentDensity` represents the transport through the supplied pairing. -/
+  isCurrentDensity : IsDifferentialCurrent d Φ (pairing currentDensity)
 
 namespace LocalCurrentDensityRepresentation
 
@@ -174,7 +175,7 @@ def toDifferentialCurrentRepresentation
     (R : LocalCurrentDensityRepresentation d Φ pairing) :
     DifferentialCurrentRepresentation d Φ where
   current := pairing R.currentDensity
-  factors := R.represents
+  isCurrent := R.isCurrentDensity
 
 /-- Any two densities representing the same transport functional are weakly equivalent on exact
 test 1-forms. -/
@@ -187,8 +188,8 @@ theorem currentDensityEquivalent
     CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity := by
   intro f
   calc
-    pairing R₁.currentDensity (d f) = Φ f := (R₁.represents f).symm
-    _ = pairing R₂.currentDensity (d f) := R₂.represents f
+    pairing R₁.currentDensity (d f) = Φ f := (R₁.isCurrentDensity f).symm
+    _ = pairing R₂.currentDensity (d f) := R₂.isCurrentDensity f
 
 end LocalCurrentDensityRepresentation
 

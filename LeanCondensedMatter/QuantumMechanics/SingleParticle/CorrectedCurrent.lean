@@ -31,21 +31,21 @@ variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 
 /-- A velocity representation of localizer evolution lifts to the generic nested current flux for
 an arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. -/
-theorem factorsThroughDifferential_nestedSymmetrizedCurrentFlux
+theorem nestedSymmetrizedCurrentFlux_isDifferentialCurrent
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N)) :
-    _root_.ConservationLaw.FactorsThroughDifferential d
+    _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergTransportFunctional V ℏ h M m)
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N) := by
   rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp V ℏ h M m]
   simpa [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux, velocityLocalizationFlux] using
-    (_root_.ConservationLaw.FactorsThroughDifferential.postcomp hvelocity
+    (_root_.ConservationLaw.IsDifferentialCurrent.postcomp hvelocity
       (_root_.ConservationLaw.symmetrizedProductRightLinear V m))
 
 /-- The generic nested current flux is a chosen full differential-current representation of the
@@ -56,13 +56,13 @@ noncomputable def correctedSymmetrizedVelocityCurrentRepresentation
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N)) :
     _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m) where
   current := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N
-  factors := factorsThroughDifferential_nestedSymmetrizedCurrentFlux
+  isCurrent := nestedSymmetrizedCurrentFlux_isDifferentialCurrent
     V ℏ h M m velocity d N hvelocity
 
 /-- Any other full current functional representing the same intrinsic transport is equivalent on
@@ -73,7 +73,7 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N))
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d

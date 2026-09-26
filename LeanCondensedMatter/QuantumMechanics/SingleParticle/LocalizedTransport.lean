@@ -102,7 +102,7 @@ noncomputable def heisenbergSymmetricLocalizationBalanceLaw
     (m : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (J : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hJ : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hJ : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergTransportFunctional V ℏ h M m) J) :
     _root_.ConservationLaw.BalanceLaw
       (heisenbergEvolution V ℏ h)

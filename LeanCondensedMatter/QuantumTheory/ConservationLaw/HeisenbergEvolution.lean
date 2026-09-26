@@ -58,7 +58,7 @@ noncomputable def heisenbergBalanceLaw
     ((_root_.ConservationLaw.IntrinsicBalanceLaw.ofRepresented B).scaleEvolution
       (heisenbergScale ℏ)).toRepresented
       (heisenbergScale ℏ • B.current) ?_
-  exact _root_.ConservationLaw.FactorsThroughDifferential.smul
+  exact _root_.ConservationLaw.IsDifferentialCurrent.smul
     (d := d) (Φ := B.current.comp d) (J := B.current) (fun _ => rfl) (heisenbergScale ℏ)
 
 end ConservationLaw

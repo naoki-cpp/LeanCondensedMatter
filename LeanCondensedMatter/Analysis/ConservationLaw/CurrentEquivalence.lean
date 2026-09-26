@@ -83,8 +83,8 @@ theorem currentEquivalent
     DifferentialCurrentEquivalent d R₁.current R₂.current := by
   intro f
   calc
-    R₁.current (d f) = Φ f := (R₁.factors f).symm
-    _ = R₂.current (d f) := R₂.factors f
+    R₁.current (d f) = Φ f := (R₁.isCurrent f).symm
+    _ = R₂.current (d f) := R₂.isCurrent f
 
 section Ring
 

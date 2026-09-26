@@ -76,7 +76,7 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N))
     (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0) :
@@ -85,7 +85,7 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       (heisenbergTransportFunctional V ℏ h M m)
       (operatorLocalCurrentPairing V N) where
   currentDensity := symmetrizedVelocityCurrent V velocity m
-  represents := by
+  isCurrentDensity := by
     intro f
     rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp]
     simp only [LinearMap.comp_apply]
@@ -101,7 +101,7 @@ theorem symmetrizedVelocityCurrentRepresentation_currentDensity
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N))
     (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0) :

@@ -95,7 +95,7 @@ theorem boundedCurrentFunctionalRetardedResponse_eq_intrinsic_of_eq_differential
   change
     boundedOneBodyRetardedResponseLinearMap system expectation source t s (R.current (d f)) =
       boundedOneBodyRetardedResponseLinearMap system expectation source t s (Φ f)
-  rw [R.factors f]
+  rw [R.isCurrent f]
 
 end
 end Transport

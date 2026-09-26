@@ -43,7 +43,7 @@ homomorphic normalization rules:
 - `PowerSeries.coeff_normalizeByConstantCoeff`
 - `ConservationLaw.shiftCurrentSource_current`
 - `ConservationLaw.shiftCurrentSource_source`
-- `ConservationLaw.toDifferentialCurrentRepresentationOfSourceFactors_current`
+- `ConservationLaw.toDifferentialCurrentRepresentationOfSourceCurrent_current`
 - `symmetrizedProduct_apply`
 - `symmetrizedProduct_zero_left`
 - `symmetrizedProduct_zero_right`

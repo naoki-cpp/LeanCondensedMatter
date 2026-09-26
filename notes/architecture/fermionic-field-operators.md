@@ -53,8 +53,10 @@ transport and the symmetrized velocity current `1/2 {v,m}`.
 
 Current semantics are layered rather than identified with one operator formula:
 `IntrinsicBalanceLaw.transport` is the representation-independent exact-differential transport;
-`DifferentialCurrentRepresentation.current` is one chosen extension to one-form data; and
-`LocalCurrentDensityRepresentation.currentDensity` exists only after supplying a local pairing.
+`IsDifferentialCurrent d Φ J` is the proposition that a one-form functional `J` represents
+transport `Φ` through `d`; `DifferentialCurrentRepresentation.current` bundles one such `J` with
+its `isCurrent` proof; and `LocalCurrentDensityRepresentation.currentDensity` exists only after
+supplying a local pairing, with its representation proof exposed as `isCurrentDensity`.
 The operator `1/2 {v,m}` is one such current-density representation under its stated localization
 hypotheses. When localizer evolution admits the supplied velocity representation, the nested flux
 represents the intrinsic transport and decomposes into the symmetrized flux plus the localization
