@@ -5,15 +5,15 @@ import Mathlib.Data.Prod.Lex
 set_option linter.style.header false
 
 /-!
-# Finite two-level lattice one-particle operators
+# Finite spinful lattice one-particle operators
 
-A two-level lattice is represented by the lexicographically ordered product site type
+A spinful lattice is represented by the lexicographically ordered product site type
 `Site ×ₗ Fin 2`. The order is bookkeeping for the canonical finite-fermion occupation basis; the
-underlying labels remain a spatial site and a two-state internal index.
+`Fin 2` label is the two-component representation space, not a physical polarization direction.
 
-This module is intentionally neutral about the physical interpretation of that internal space. It
-provides the one-particle action of an arbitrary `2 × 2` internal matrix. Spin-1/2 interpretation,
-physical polarization directions, current construction, and Kubo response belong downstream.
+This module provides the one-particle action of an arbitrary `2 × 2` matrix on that internal
+representation. The map from a physical-space polarization vector to the corresponding spin-1/2
+matrix, current construction, and Kubo response belong downstream.
 -/
 
 namespace SecondQuantization
@@ -24,7 +24,7 @@ open scoped BigOperators
 
 noncomputable section
 
-/-- Lexicographically ordered product of one spatial lattice label and a two-state internal spin. -/
+/-- Lexicographically ordered product of one spatial lattice label and a two-component internal spin representation. -/
 abbrev SpinfulSite (Site : Type*) := Site ×ₗ Fin 2
 
 /-- Canonical spinful site with spatial label `x` and internal label `s`. -/
