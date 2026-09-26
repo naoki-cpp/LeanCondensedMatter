@@ -47,7 +47,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
     simp [FamilySlotShuffleTo.timeAssignment]
 
 /-- Finite-family ordered-simplex shuffle product identity under measurable local boundedness. -/
-theorem FamilySlotShuffle.sum_integral_eq_prod_fin_of_measurableLocallyBounded :
+theorem FamilySlotShuffle.sum_integral_eq_prod_fin :
     ∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ)
       (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ),
       (∀ i, MeasurableLocallyBounded (localIntegrand i)) →
@@ -130,14 +130,14 @@ theorem FamilySlotShuffle.sum_integral_eq_prod_fin_of_measurableLocallyBounded :
               ∏ i : Fin k,
                 orderedSimplexIntegral (FamilySlotShuffle.tailSize size i) β
                   (tailIntegrand i) := by
-                rw [FamilySlotShuffle.sum_integral_eq_prod_fin_of_measurableLocallyBounded
+                rw [FamilySlotShuffle.sum_integral_eq_prod_fin
                   k (FamilySlotShuffle.tailSize size) β tailIntegrand htail]
         _ = ∏ i : Fin (k + 1),
               orderedSimplexIntegral (size i) β (localIntegrand i) := by
                 rw [Fin.prod_univ_succ]
 
 /-- Finite-family ordered-simplex shuffle product identity for continuous local integrands. -/
-theorem FamilySlotShuffle.sum_integral_eq_prod_fin
+theorem FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous
     (k : ℕ) (size : Fin k → ℕ) (β : ℝ)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, Continuous (localIntegrand i)) :
@@ -145,7 +145,7 @@ theorem FamilySlotShuffle.sum_integral_eq_prod_fin
       orderedSimplexIntegral (∑ i, size i) β
         (shuffle.integrand localIntegrand)) =
       ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-  FamilySlotShuffle.sum_integral_eq_prod_fin_of_measurableLocallyBounded
+  FamilySlotShuffle.sum_integral_eq_prod_fin
     k size β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
 
 end Combinatorics
