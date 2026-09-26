@@ -80,9 +80,9 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
       (heisenbergTransportFunctional V ℏ h M m)) :
     _root_.ConservationLaw.DifferentialCurrentEquivalent d R.current
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N) :=
-  R.currentEquivalent
+  R.isCurrent.currentEquivalent
     (correctedSymmetrizedVelocityCurrentRepresentation
-      V ℏ h M m velocity d N hvelocity)
+      V ℏ h M m velocity d N hvelocity).isCurrent
 
 end SingleParticle
 end QuantumMechanics
