@@ -5,12 +5,12 @@ set_option linter.style.header false
 /-!
 # Domain for the massive-Dirac anomalous-Hall scaling problem
 
-This module records the parameter domain used by the universal-scaling roadmap.  It keeps the
-model-specific hypotheses in one value, while leaving the generic `Transport` API independent of
-the Massive-Dirac realization. Scaling-only coordinates are kept in a separate value so that
-physical transport results do not require them.
+This module packages the model-specific parameter domain used for anomalous-Hall scaling statements
+without adding those assumptions to the generic `Transport` API. Scaling coordinates are stored
+separately from the physical transport point so conductivity results need only the hypotheses they
+actually use.
 
-No scaling law is asserted here. In particular, the ultraviolet cutoff condition only records the
+No scaling law is asserted here. In particular, the ultraviolet cutoff condition records the
 metallic shell used by the finite-cutoff formulas.
 -/
 
@@ -66,10 +66,10 @@ structure AheScalingParameters where
   disorder_pos : 0 < disorderStrength
   charge_ne_zero : e ≠ 0
 
-/-- Scaling-only coordinates for the massive-Dirac AHE roadmap.
+/-- Auxiliary coordinates used to state dimensionless massive-Dirac AHE scaling relations.
 
-These coordinates are independent of the physical transport point. The longitudinal benchmark and
-normalized conductivity pair therefore do not require them. -/
+These coordinates are independent of the physical transport point, so longitudinal benchmarks and
+normalized conductivity pairs do not require them. -/
 structure AheScalingCoordinate where
   /-- Positive energy scale used to nondimensionalize the scattering coordinate. -/
   referenceEnergy : ℝ
