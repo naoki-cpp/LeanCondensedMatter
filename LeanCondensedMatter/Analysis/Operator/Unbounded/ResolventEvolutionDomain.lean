@@ -26,17 +26,6 @@ open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-private theorem imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
-    (((r : ℂ) * I).im) ≠ 0 := by
-  simpa using ne_of_gt hr
-
-private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
-    ((star ((r : ℂ) * I)).im) ≠ 0 := by
-  simpa using neg_ne_zero.mpr (ne_of_gt hr)
-
-private theorem I_im_ne_zero : (I : ℂ).im ≠ 0 := by
-  norm_num
-
 /-- The bounded self-adjoint approximant commutes with every nonreal resolvent. -/
 private theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
@@ -47,9 +36,9 @@ private theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
   apply Commute.smul_left
   apply Commute.add_left
   · exact nonrealResolvent_commute A hA ((r : ℂ) * I) z
-      (imaginaryParameter_im_ne_zero hr) hz
+      (by simpa using ne_of_gt hr) hz
   · exact nonrealResolvent_commute A hA (star ((r : ℂ) * I)) z
-      (star_imaginaryParameter_im_ne_zero hr) hz
+      (by simpa using neg_ne_zero.mpr (ne_of_gt hr)) hz
 
 /-- Nonreal resolvent commutation passes through the vectorwise strong limit. -/
 private theorem stoneEvolution_nonrealResolvent_apply
@@ -89,7 +78,7 @@ theorem stoneEvolution_mem_domain
     stoneEvolution A hA t (x : H) ∈ A.domain := by
   let z : ℂ := I
   have hz : z.im ≠ 0 := by
-    simpa [z] using I_im_ne_zero
+    norm_num [z]
   let y : H := A x - z • (x : H)
   have hxrepr : nonrealResolvent A hA z hz y = (x : H) := by
     dsimp [y]
