@@ -9,6 +9,6 @@ set_option linter.style.header false
 /-!
 # Continuum single-particle quantum mechanics
 
-Continuum one-particle quantum mechanics, combining probability, continuity equations, L2
+Continuum one-particle quantum mechanics, combining probability, continuity equations, `L²`
 realizations, self-adjoint Hamiltonians, and time evolution.
 -/

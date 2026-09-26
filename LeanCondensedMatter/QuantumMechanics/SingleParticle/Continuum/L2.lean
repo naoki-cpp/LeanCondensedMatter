@@ -3,7 +3,7 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probabil
 set_option linter.style.header false
 
 /-!
-# Continuum L2 realization
+# Continuum L² realization
 
-The one-dimensional L2 realization of continuum states and its probability interpretation.
+The one-dimensional `L²` realization of continuum states and its probability interpretation.
 -/

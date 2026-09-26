@@ -12,9 +12,9 @@ import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 set_option linter.style.header false
 
 /-!
-# Streda transport
+# Středa transport
 
-Finite regularized Streda transport theory: operator and trace kernels, retarded–advanced algebra,
+Finite regularized Středa transport theory: operator and trace kernels, retarded–advanced algebra,
 energy integration, generalized static response, response matrices, spectral representations, and
 spectral energy integrals.
 -/

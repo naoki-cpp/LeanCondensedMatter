@@ -11,5 +11,5 @@ set_option linter.style.header false
 
 Pure-point Kubo–Bastin transition algebra, finite spectral-index response, occupation interpolation,
 and occupation/common-energy identities. Ordinary operator-trace formulations of static transport
-are developed in Transport.Streda.
+are developed in `Transport.Streda`.
 -/

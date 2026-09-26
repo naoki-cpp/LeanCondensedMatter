@@ -5,5 +5,5 @@ set_option linter.style.header false
 /-!
 # Continuum Hamiltonians
 
-Self-adjoint one-dimensional continuum Hamiltonians used to generate Schrodinger evolution.
+Self-adjoint one-dimensional continuum Hamiltonians used to generate Schrödinger evolution.
 -/
