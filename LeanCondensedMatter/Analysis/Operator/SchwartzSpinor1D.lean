@@ -5,7 +5,7 @@ import Mathlib.Tactic
 set_option linter.style.header false
 
 /-!
-# One-dimensional Schwartz spinor operators
+# One-dimensional Schwartz two-level operators
 
 This module adds a minimal two-level internal degree of freedom to the analysis-only Schwartz
 Schrodinger model.  A spinor-like state is represented as two complex Schwartz components,
@@ -77,7 +77,7 @@ theorem spatialLift_comp_internalOperator_comm
   funext a
   simp [internalOperator]
 
-/-- Spinor multiplication by a scalar Schwartz localizer. -/
+/-- Two-level multiplication by a scalar Schwartz localizer. -/
 noncomputable def multiplicationOperator (f : Spatial) : Spinor →ₗ[ℂ] Spinor :=
   spatialLift (SchwartzKinetic1D.multiplicationOperator f)
 
@@ -126,8 +126,8 @@ noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : Spinor �
 
 /-- Spinor Hamiltonian consisting of scalar spatial dynamics plus an arbitrary internal matrix.
 
-The internal term may model a Zeeman/exchange/SOC-like on-site spin coupling at this abstract level.
-It commutes with spatial localization but need not commute with the selected spin component. -/
+The internal term is an arbitrary two-level on-site coupling at this abstract level.
+It commutes with spatial localization; its physical interpretation belongs downstream. -/
 noncomputable def hamiltonian
     (κ : ℝ) (potential : Spatial) (internalH : SpinMatrix) : Spinor →ₗ[ℂ] Spinor :=
   spatialHamiltonian κ potential + internalOperator internalH
