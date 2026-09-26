@@ -183,9 +183,13 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
     · funext h
       rw [stoneEvolution_add]
       rfl
-    · exact (stoneEvolution A hA s).map_smul _ _
-  simpa only [Function.comp_apply, sub_self, add_sub_cancel_right, one_smul] using
-    htranslated.scomp s ((hasDerivAt_id s).sub_const s)
+    · change
+        (-I : ℂ) • stoneEvolution A hA s (A x) =
+          stoneEvolution A hA s ((-I : ℂ) • A x)
+      symm
+      exact (stoneEvolution A hA s).map_smul _ _
+  simpa [Function.comp_apply] using
+    htranslated.scomp_of_eq s ((hasDerivAt_id s).sub_const s) (by simp)
 
 /-- Strong Stone derivative on the preserved generator domain. -/
 theorem stoneEvolution_apply_hasDerivAt
