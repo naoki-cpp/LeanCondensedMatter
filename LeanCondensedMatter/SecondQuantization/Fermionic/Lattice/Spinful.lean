@@ -88,15 +88,11 @@ theorem spatialMultiplicationOneBody_comp_spinPolarizationOneBody_comm
         (spatialMultiplicationOneBody weight) := by
   classical
   apply Common.linearMap_ext_basisState
-  intro z
-  let x : Site := (ofLex z).1
-  let s : Fin 2 := (ofLex z).2
-  have hz : z = spinfulSite x s := by
-    simpa [x, s, spinfulSite] using (toLex_ofLex z).symm
-  subst z
+  rw [Lex.forall, Prod.forall]
+  intro x s
   simp [LinearMap.comp_apply, spinPolarizationOneBody, LinearMap.sum_apply,
-    spatialMultiplicationOneBody_latticeKet, latticeKet, matrixUnit_apply, spinfulSite,
-    smul_smul]
+    spatialMultiplicationOneBody_latticeKet, Common.basisState, latticeKet, matrixUnit_apply,
+    spinfulSite, smul_smul]
   module
 
 /-- A spatial multiplication localizer commutes with arbitrary spin polarization. -/
