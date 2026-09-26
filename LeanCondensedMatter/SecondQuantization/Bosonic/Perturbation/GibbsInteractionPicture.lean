@@ -6,14 +6,13 @@ set_option linter.style.header false
 /-!
 # Free Gibbs summability and interaction-picture evolution
 
-At first Dyson order the recursive product is the interaction-picture interaction composed with the
-zeroth Dyson coefficient, hence just the interaction-picture interaction itself.  Its free Gibbs
-numerator has exactly the same diagonal coefficients as the original interaction: conjugation by
-the free diagonal evolution contributes opposite phases on the same occupation state.
+At first Dyson order, the recursive product is the interaction-picture interaction itself. Its free
+Gibbs numerator has the same diagonal coefficients as the original interaction because free
+diagonal conjugation contributes inverse factors on the same occupation state.
 
-This file proves that fact directly on the genuinely infinite occupation space.  It supplies the
-first nontrivial piece of `FreeGibbsDysonIntegralBoundary.integrand_mem` from ordinary Gibbs
-summability of the interaction, without any finite occupation-basis assumption.
+This module proves that ordinary free-Gibbs summability of the interaction implies the
+interaction-picture Gibbs-domain condition on the infinite bosonic occupation space, without a
+finite occupation-basis assumption.
 -/
 
 namespace SecondQuantization
