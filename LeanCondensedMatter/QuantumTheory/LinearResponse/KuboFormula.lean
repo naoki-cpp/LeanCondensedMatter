@@ -213,7 +213,7 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
   simpa [hK, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
 
 /-- The continuous linear functional `X ↦ ω(A X - X A)`. -/
-noncomputable def commutatorExpectation
+private noncomputable def commutatorExpectation
     (expectation : NormalizedExpectation H) (A : H →L[ℂ] H) :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   expectation.toContinuousLinearMap.comp
@@ -221,7 +221,7 @@ noncomputable def commutatorExpectation
       ((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)).flip A))
 
 @[simp]
-theorem commutatorExpectation_apply
+private theorem commutatorExpectation_apply
     (expectation : NormalizedExpectation H)
     (A X : H →L[ℂ] H) :
     commutatorExpectation expectation A X =
