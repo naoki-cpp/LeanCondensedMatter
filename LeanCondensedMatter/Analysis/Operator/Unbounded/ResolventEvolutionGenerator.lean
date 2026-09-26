@@ -74,13 +74,7 @@ private theorem norm_slope_sub_resolventApproximationEvolution_le
   have hbound :=
     norm_stoneEvolution_sub_resolventApproximationEvolution_le
       A hA r hr t x
-  have hvec :
-      (stoneEvolution A hA t (x : H) - (x : H)) -
-          (resolventApproximationEvolution A hA r hr t (x : H) - (x : H)) =
-        stoneEvolution A hA t (x : H) -
-          resolventApproximationEvolution A hA r hr t (x : H) := by
-    abel
-  rw [← smul_sub, hvec, norm_smul]
+  rw [← smul_sub, sub_sub_sub_cancel_right, norm_smul]
   change |t⁻¹| *
       ‖stoneEvolution A hA t (x : H) -
         resolventApproximationEvolution A hA r hr t (x : H)‖ ≤ _
@@ -90,10 +84,10 @@ private theorem norm_slope_sub_resolventApproximationEvolution_le
         ‖stoneEvolution A hA t (x : H) -
           resolventApproximationEvolution A hA r hr t (x : H)‖
         ≤ |t|⁻¹ *
-            (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) := by
-          exact mul_le_mul_of_nonneg_left hbound (inv_nonneg.mpr (abs_nonneg t))
+            (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) :=
+      mul_le_mul_of_nonneg_left hbound (inv_nonneg.mpr (abs_nonneg t))
     _ = ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ := by
-      field_simp [abs_ne_zero.mpr ht]
+      rw [mul_left_comm, inv_mul_cancel₀ (abs_ne_zero.mpr ht), mul_one]
 
 /-- At zero time, the strong Stone evolution has infinitesimal generator `-i A` on `A.domain`. -/
 theorem stoneEvolution_apply_hasDerivAt_zero
