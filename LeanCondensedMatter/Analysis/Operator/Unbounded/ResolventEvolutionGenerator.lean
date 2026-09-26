@@ -174,7 +174,7 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
       ((-I : ℂ) • stoneEvolution A hA s (A x)) s := by
   have hzero := stoneEvolution_apply_hasDerivAt_zero A hA x
   have hmapped :=
-    (stoneEvolution A hA s).hasFDerivAt.comp_hasDerivAt 0 hzero
+    ((stoneEvolution A hA s).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hzero
   have htranslated :
       HasDerivAt
         (fun h : ℝ => stoneEvolution A hA (s + h) (x : H))
