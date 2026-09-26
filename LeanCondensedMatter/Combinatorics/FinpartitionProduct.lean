@@ -1,5 +1,6 @@
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Fintype.BigOperators
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false
 
@@ -44,17 +45,8 @@ noncomputable def equivSigmaSubfinsets {β : Type*}
 /-- A product over `s` is the iterated product over the parts of a finite partition of `s`. -/
 theorem prod_eq_prod_parts (π : Finpartition s) (f : ↥s → M) :
     (∏ x : ↥s, f x) =
-      ∏ B : π.parts, ∏ x : ↥(B : Finset α), f (π.equivSigmaParts.symm ⟨B, x⟩) := by
-  classical
-  calc
-    (∏ x : ↥s, f x) =
-        ∏ y : Σ B : π.parts, ↥(B : Finset α), f (π.equivSigmaParts.symm y) := by
-      refine Fintype.prod_equiv π.equivSigmaParts f
-        (fun y => f (π.equivSigmaParts.symm y)) ?_
-      intro x
-      simp
-    _ = ∏ B : π.parts, ∏ x : ↥(B : Finset α), f (π.equivSigmaParts.symm ⟨B, x⟩) :=
-      Fintype.prod_sigma _
+      ∏ B : π.parts, ∏ x : ↥(B : Finset α), f (π.equivSigmaParts.symm ⟨B, x⟩) :=
+  Fintype.prod_equiv_sigma π.equivSigmaParts f
 
 /-- A power indexed by `s.card` factors into powers indexed by the cardinalities of the partition
 parts. -/
