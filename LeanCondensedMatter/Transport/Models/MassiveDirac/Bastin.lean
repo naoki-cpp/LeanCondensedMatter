@@ -23,7 +23,7 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac Bastin analysis
 
-Public umbrella for the concrete massive-Dirac finite/zero-broadening Bastin proof chain. Canonical
-implementations live under `MassiveDirac/Bastin/`; reusable analysis is extracted upstream instead
-of being re-owned here.
+Finite- and zero-broadening Bastin analysis for the massive-Dirac benchmark, including band and
+Berry decompositions, pole extraction, clean limits, radial domination, dominated convergence, and
+zero-temperature pair response.
 -/

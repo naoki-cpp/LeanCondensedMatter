@@ -5,6 +5,5 @@ set_option linter.style.header false
 /-!
 # Incidence algebras
 
-Public routing module for the incidence-algebra infrastructure exported by
-`LeanCondensedMatter.Combinatorics`.
+Incidence-algebra Möbius inversion infrastructure for finite combinatorial posets.
 -/

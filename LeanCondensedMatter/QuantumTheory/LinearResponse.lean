@@ -35,7 +35,7 @@ set_option linter.style.header false
 /-!
 # Linear response
 
-Public routing module for the generic linear-response stack exported by
-`LeanCondensedMatter.QuantumTheory`. Implementation modules should continue to import the narrow
-response-theory leaves they actually use.
+Generic linear-response theory from time-dependent perturbations to physical response formulas:
+expectation dynamics, first variations, Kubo response, source coupling, retarded susceptibility,
+frequency-domain and adiabatic limits, Lehmann representations, and pure-point specializations.
 -/

@@ -6,8 +6,6 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac intrinsic anomalous Hall response
 
-Public umbrella for Berry-curvature bridges, symmetry, occupation-derived Berry weight, and clean
-conductivity. Berry geometry and occupation-weighted Berry analysis are owned by
-`MassiveDirac/Model/Berry/`; physical conductivity lives under
-`MassiveDirac/Conductivity/Hall/Intrinsic/`.
+Intrinsic anomalous Hall response of the massive-Dirac model, connecting Berry curvature and its
+symmetries to occupation-weighted Berry response and clean Hall conductivity.
 -/

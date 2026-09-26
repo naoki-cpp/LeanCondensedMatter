@@ -11,6 +11,6 @@ set_option linter.style.header false
 /-!
 # Cumulants
 
-Public routing module for the cumulant and connected-decomposition infrastructure exported by
-`LeanCondensedMatter.Combinatorics`.
+Moment–cumulant theory, including replica formulas, inversion, normalized cumulants, independence,
+and connected-decomposition identities.
 -/

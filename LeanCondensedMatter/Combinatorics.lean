@@ -19,13 +19,9 @@ set_option linter.style.header false
 /-!
 # Combinatorics
 
-Public entry point for the project's pure finite combinatorics. The implementation is organized
-around finite-index operations, shuffles, finite partitions, graph component partitions, set
-partitions and cumulants, and perfect pairings.
+Finite combinatorics used throughout the project: finite-index operations, shuffles, finite and graph
+component partitions, incidence algebra, cumulants, perfect pairings, subset decompositions, and
+involution-cardinality results.
 
-The public import surface uses package-level routing modules where the corresponding directory is a
-public boundary. Internal helper directories remain narrow imports.
-
-The exchange-weighted permutation theory is owned by the separate top-level
-`LeanCondensedMatter.Permutation` module.
+Exchange-weighted permutation theory is developed separately in LeanCondensedMatter.Permutation.
 -/

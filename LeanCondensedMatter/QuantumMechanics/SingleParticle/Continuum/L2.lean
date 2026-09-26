@@ -3,8 +3,7 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probabil
 set_option linter.style.header false
 
 /-!
-# Continuum L² realization
+# Continuum L2 realization
 
-Public routing module for the stable one-dimensional L² probability endpoint selected by the
-single-particle public API.
+The one-dimensional L2 realization of continuum states and its probability interpretation.
 -/

@@ -17,7 +17,6 @@ set_option linter.style.header false
 /-!
 # Bosonic Bloch–de Dominicis theory
 
-Public routing module for the concrete free-boson Bloch–de Dominicis stack. The low-level bosonic
-ladder `tsumTrace` cyclicity is exposed separately from the Gibbs/KMS adapter, while the higher
-recursion endpoints remain collected here without widening lower-level dependencies.
+Free-boson Bloch–de Dominicis theory: ladder `tsumTrace` cyclicity, the Gibbs/KMS adapter,
+first-pair recurrence, and the resulting thermal pairing expansion.
 -/

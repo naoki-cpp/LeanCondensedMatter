@@ -11,5 +11,6 @@ set_option linter.style.header false
 /-!
 # Dyson analysis
 
-Public routing module for the Dyson-series analysis exported by `LeanCondensedMatter.Analysis`.
+Reusable Dyson-series analysis, including the basic expansion, analytic hypotheses and bounds, first
+variation, Volterra equations, uniqueness, and the constant-generator specialization.
 -/

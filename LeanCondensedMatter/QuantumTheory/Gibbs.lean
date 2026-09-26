@@ -21,9 +21,7 @@ set_option linter.style.header false
 /-!
 # Gibbs-state theory
 
-Public routing module for Gibbs states, heat-operator compatibility, pure-point thermodynamics,
-free energy, one-particle
-Boltzmann kernels, thermal exchange-cycle series, variational principles, and uniqueness
-infrastructure exported by
-`LeanCondensedMatter.QuantumTheory`.
+Gibbs states and equilibrium thermodynamics: heat operators, pure-point expectations and entropy,
+energy expectation, free energy, diagonal-energy formulas, one-particle Boltzmann kernels,
+exchange-cycle series, variational principles, and uniqueness results.
 -/

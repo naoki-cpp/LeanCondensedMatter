@@ -5,6 +5,5 @@ set_option linter.style.header false
 /-!
 # Continuum Hamiltonians
 
-Public routing module for the stable one-dimensional self-adjoint Hamiltonian endpoint selected by
-the single-particle public API.
+Self-adjoint one-dimensional continuum Hamiltonians used to generate Schrodinger evolution.
 -/

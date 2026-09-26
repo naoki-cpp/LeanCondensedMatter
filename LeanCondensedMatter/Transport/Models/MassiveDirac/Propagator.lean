@@ -7,7 +7,6 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac clean propagator
 
-Public umbrella for the clean massive-Dirac Green operator, its momentum-inversion symmetry, and
-its exact polar-angle reduction. Canonical implementations live under
-`Transport/Models/MassiveDirac/Propagator/`.
+The clean massive-Dirac Green operator, its momentum-inversion symmetry, and exact polar-angle
+reduction.
 -/

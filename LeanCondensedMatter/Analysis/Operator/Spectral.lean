@@ -6,7 +6,6 @@ set_option linter.style.header false
 /-!
 # Spectral operator theory
 
-Public routing module for generic compact spectral, eigenvector, and resolvent infrastructure.
-Finite-dimensional parameter-direction Berry geometry is available separately through
-`LeanCondensedMatter.Analysis.Operator.BerryGeometry`.
+Generic eigenvector-family and resolvent results for spectral operator theory. Finite-dimensional
+parameter-dependent Berry geometry is developed separately in Analysis.Operator.BerryGeometry.
 -/

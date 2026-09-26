@@ -10,17 +10,11 @@ set_option linter.style.header false
 /-!
 # Transport
 
-Public entry point for the main transport infrastructure. `Transport.Core` contains only the
-shared dimension-independent transport primitives, while `Transport.FiniteConductivityTable` owns
-the finite electrical-conductivity adapter built from generic Lehmann response data. The remaining
-stable root groupings are `Transport.Resolvent`, `Transport.KuboBastin`, `Transport.Streda`, and
-`Transport.Disorder`.
+Model-independent transport theory: dimension-independent conductivity data, finite Lehmann
+conductivity evaluation, retarded/advanced resolvents, Kubo–Bastin response, Streda response, and
+finite-disorder transport.
 
-Model-independent analytical utilities are exposed through the separate opt-in package
-`LeanCondensedMatter.Transport.Analysis`, covering occupation, angular harmonics, polar Fourier
-reduction, and relaxation-time data. This root module intentionally does not import that package, so
-consumers of the main transport interfaces do not acquire unrelated analysis utilities transitively.
-
-Concrete model benchmarks are exposed separately through `LeanCondensedMatter.Transport.Models`; the
-generic transport umbrella intentionally does not import them.
+Analytical utilities such as occupation functions, angular harmonics, polar reduction, and
+relaxation-time data live in Transport.Analysis. Concrete Hamiltonian benchmarks live in
+Transport.Models.
 -/

@@ -12,18 +12,10 @@ set_option linter.style.header false
 /-!
 # Generic transport analysis
 
-Public opt-in package boundary for model-independent analytical utilities used by transport
-consumers. It exports angular-harmonic integrals, generic band-state occupation, zero-temperature band filling,
-Lorentzian Fermi-edge analysis, the explicit
-two-dimensional physical-momentum continuum normalization, polar Fourier reduction, and the
-positive transport-lifetime datum.
+Model-independent analytical tools used in transport calculations: angular harmonics, band
+occupation, zero-temperature filling and Fermi-edge formulas, continuum momentum measures, polar
+Fourier reduction, and positive relaxation-time data.
 
-This package contains no concrete Hamiltonian, disorder model, response approximation, or
-conductivity benchmark. It is intentionally separate from the root `LeanCondensedMatter.Transport`
-umbrella so consumers that only need the core, resolvent, Kubo–Bastin, Středa, or generic disorder
-interfaces do not acquire these analytical utilities transitively.
-
-The individual leaves remain canonical narrow imports for implementation modules that need only one
-utility. Callers that want the complete generic analysis surface can import this package without
-pulling in any model-specific code.
+These results make no choice of Hamiltonian, disorder model, response approximation, or
+conductivity benchmark.
 -/
