@@ -54,13 +54,15 @@ spin-diffusion fits should remain downstream validation tracks.
 
 ## Current code boundary
 
-The repository already provides a finite mixed response from an electric bond
-current to the measured spin-z current, with a conventional current built from
-`1/2 {v, S_z}`. It deliberately does not claim a conductivity normalization,
-a Rashba Hamiltonian, or equality between spin and charge currents. The
-single-particle corrected-current layer provides an exact algebraic correction,
-and the one-dimensional Schwartz example proves a commuting-localizer special
-case. These are foundations, not an existing SHE theorem.
+The repository already provides a finite mixed response from an oriented electric bond current
+to an arbitrarily polarized measured spin current. For a supplied flow-direction velocity
+`v_d` and real Pauli polarization `p`, the conventional current is built from
+`1/2 {v_d, S_p}` with `S_p = (s/2) p · σ`. The finite-lattice layer intentionally encodes the
+flow direction through the supplied velocity operator rather than imposing a global Euclidean
+direction type. It deliberately does not claim a conductivity normalization, a Rashba Hamiltonian,
+or equality between spin and charge currents. The single-particle corrected-current layer provides
+an exact algebraic correction, and the one-dimensional Schwartz example proves a
+commuting-localizer special case. These are foundations, not an existing SHE theorem.
 
 The transport roadmap already lists vertex-corrected Kubo--Bastin/Streda
 response, thermodynamic limits, DC limits, and crossed/side-jump/skew work.
@@ -81,18 +83,20 @@ specializations.
 
 ### R1 -- finite Rashba response (next implementation slice)
 
-Define a bounded finite two-dimensional spinful lattice or momentum-grid model
-with an explicit Rashba term, charge-driving source, velocity, and spin-z
-observable. Prove the finite mixed Kubo response is well-typed and state the
-symmetry assumptions needed for a transverse component. Keep broadening,
-volume, and charge/sign conventions as named parameters.
+Define a bounded finite two-dimensional spinful lattice or momentum-grid model with an explicit
+Rashba term, charge-driving source, directional velocity, and arbitrary real spin polarization.
+Instantiate the finite mixed Kubo response as a tensor component
+`J_d^(S_p) = 1/2 {v_d, S_p}` and state the symmetry assumptions needed for a transverse component.
+Keep broadening, volume, polarization normalization when required, and charge/sign conventions as
+named parameters.
 
 Acceptance criteria:
 
 1. the model instantiates the existing `SpinCurrentResponse` API;
-2. the conventional spin current is visibly `1/2 {v, S_z}`;
-3. no claim of a universal infinite-system value is made without an order of
-   limits and a non-degeneracy/broadening hypothesis.
+2. the conventional spin current is visibly `1/2 {v_d, S_p}` for supplied flow direction and
+   polarization;
+3. no claim of a universal infinite-system value is made without an order of limits and a
+   non-degeneracy/broadening hypothesis.
 
 ### R2 -- clean intrinsic benchmark
 
