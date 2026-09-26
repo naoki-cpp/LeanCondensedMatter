@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
 set_option linter.style.header false
 
@@ -37,6 +38,7 @@ namespace Fermionic
 namespace Transport
 
 open _root_.SecondQuantization.Fermionic.Lattice
+open QuantumTheory.LinearResponse
 
 noncomputable section
 
@@ -49,6 +51,19 @@ noncomputable def boundedSpinZCurrent
     FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
       FiniteLatticeHilbertFock (SpinfulSite Site) :=
   boundedConventionalCurrent velocity (spinZOneBody spinScale)
+
+/-- Neutral fixed-observable response channel for a finite spin-z current driven by an electric
+bond-current source. The measured spin current and electric source remain distinct data while the
+absence of an explicit observable variation is made visible through `ResponseChannel.fixed`. -/
+noncomputable def boundedSpinZCurrentBondSourceResponseChannel
+    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (spinScale ℏ q : ℂ)
+    (K : LocallyFiniteHopping (SpinfulSite Site))
+    (u v : SpinfulSite Site) :
+    ResponseChannel (FiniteLatticeHilbertFock (SpinfulSite Site)) :=
+  ResponseChannel.fixed
+    (boundedSpinZCurrent velocity spinScale)
+    (boundedBondCurrent ℏ q K u v)
 
 /-- Retarded response of a concrete finite spin-z current to an electric bond-current source.
 
@@ -63,9 +78,8 @@ noncomputable def boundedSpinZCurrentBondSourceRetardedSusceptibility
     (spinScale ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
     (u v : SpinfulSite Site) (t s : ℝ) : ℂ :=
-  QuantumTheory.LinearResponse.retardedSusceptibility system expectation
-    (boundedSpinZCurrent velocity spinScale)
-    (boundedBondCurrent ℏ q K u v) t s
+  (boundedSpinZCurrentBondSourceResponseChannel velocity spinScale ℏ q K u v).retardedKernel
+    system expectation t s
 
 end
 end Transport

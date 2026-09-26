@@ -262,9 +262,9 @@ private def mentionedInCompleted (completed declName : String) : Bool :=
 private def mentionedInRetained
     (retained : String) (allDeclarationNames : Array String) (declName : String) : Bool :=
   let baseName := declarationBaseName declName
-  containsSubstring retained s!"`{declName}`" ||
+  containsSubstring retained s!"- `{declName}`" ||
     ((allDeclarationNames.filter fun name => declarationBaseName name == baseName).size == 1 &&
-      containsSubstring retained s!"`{baseName}`")
+      containsSubstring retained s!"- `{baseName}`")
 
 private def retainedDeclarationNames (retained : String) : Array String :=
   retained.splitOn "\n" |>.foldl (init := #[]) fun names line =>
@@ -481,7 +481,8 @@ private def markdown
   let retainedDirectWrappers :=
     directWrappers.filter fun entry => entry.retainedMention
   let directWrapperReviewQueue :=
-    directWrappers.filter fun entry => !entry.retainedMention
+    directWrappers.filter fun entry =>
+      !extensionTheoremString? entry.name && !entry.retainedMention
   let crossModuleDirectWrappers :=
     directWrappers.filter fun entry => entry.crossModuleDirectWrapper
   let crossModuleDirectWrapperReviewQueue :=
@@ -641,7 +642,8 @@ run_cmd do
   let retainedDirectWrappers :=
     directWrappers.filter fun entry => entry.retainedMention
   let directWrapperReviewQueue :=
-    directWrappers.filter fun entry => !entry.retainedMention
+    directWrappers.filter fun entry =>
+      !extensionTheoremString? entry.name && !entry.retainedMention
   let crossModuleDirectWrappers :=
     directWrappers.filter fun entry => entry.crossModuleDirectWrapper
   let crossModuleDirectWrapperReviewQueue :=
