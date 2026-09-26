@@ -70,7 +70,7 @@ def toDifferentialCurrentRepresentation
     (B : BalanceLaw δ Q d) (hsource : B.source = 0) :
     DifferentialCurrentRepresentation d (δ.comp Q) where
   current := B.current
-  factors := by
+  isCurrent := by
     intro f
     have h := B.balance f
     rw [hsource] at h
