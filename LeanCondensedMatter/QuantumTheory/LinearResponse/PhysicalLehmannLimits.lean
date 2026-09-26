@@ -27,7 +27,7 @@ open Set Filter Topology
 noncomputable section
 
 /-- Long time first, followed by the local static-then-adiabatic order. -/
-private def HasLongTimeThenLocalStaticThenAdiabaticLimit
+def HasLongTimeThenLocalStaticThenAdiabaticLimit
     (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
   ∃ fixedRate : ℝ → ℝ → ℂ,
     (∀ omega eta, 0 < eta →
@@ -35,7 +35,7 @@ private def HasLongTimeThenLocalStaticThenAdiabaticLimit
     HasLocalStaticThenAdiabaticLimit fixedRate L
 
 /-- Long time first, followed by the local adiabatic-then-static order. -/
-private def HasLongTimeThenLocalAdiabaticThenStaticLimit
+def HasLongTimeThenLocalAdiabaticThenStaticLimit
     (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
   ∃ fixedRate : ℝ → ℝ → ℂ,
     (∀ omega eta, 0 < eta →
@@ -62,16 +62,6 @@ private noncomputable def finitePurePointPhysicalSusceptibilityExtension
     Finset.univ.sum fun mn : ι × ι =>
       (purePointTransitionData system data A B mn).frequencyTerm omega eta
 
-/-- On the physical positive-rate domain, the total extension is the actual switched
-susceptibility. -/
-private theorem finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    finitePurePointPhysicalSusceptibilityExtension system data A B omega eta =
-      adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (purePointNormalizedExpectation system data) A B omega eta hη := by
-  simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
-
 /-- The total extension is globally equal to the finite Lehmann resolvent sum. -/
 private theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
     (data : PurePointLehmannData system ι)
@@ -82,8 +72,7 @@ private theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
           (data.energy mn.1 - data.energy mn.2)
           (purePointTransitionWeight system data A B mn) := by
   by_cases hη : 0 < eta
-  · rw [finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos
-      system data A B omega eta hη]
+  · simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data A B omega eta hη
   · simp [finitePurePointPhysicalSusceptibilityExtension, hη,
@@ -154,8 +143,7 @@ theorem finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_li
         (𝓝 (finitePurePointPhysicalSusceptibilityExtension
           system data A B omega eta)) := by
     intro omega eta hη
-    rw [finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos
-      system data A B omega eta hη]
+    simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
     exact tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate
       system (purePointNormalizedExpectation system data) A B omega eta hη
   exact ⟨⟨_, hlong, hlimits.1⟩, ⟨_, hlong, hlimits.2⟩⟩
