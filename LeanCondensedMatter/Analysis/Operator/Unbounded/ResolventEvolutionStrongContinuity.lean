@@ -159,6 +159,4 @@ theorem stoneEvolution_apply_continuous
   rw [horbit] at hcomp
   exact hcomp
 
-end
 
-end LinearPMap
