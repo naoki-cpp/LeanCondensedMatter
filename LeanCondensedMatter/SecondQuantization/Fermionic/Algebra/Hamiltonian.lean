@@ -85,10 +85,9 @@ building a specific physical model must choose `V` (and, if matching a `½ Σ` c
 accordingly — this file makes no claim about which convention `V` follows.
 
 This interaction is diagonal in the occupation-number basis (as `interactionHamiltonian_basisState`
-below shows) and hence commutes with `freeHamiltonian`/`numberOperator` — a genuinely restrictive
-special case, not a general quartic interaction. A general fermionic interaction
-`Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ` (not basis-diagonal, needed for a non-trivial Wick/Dyson
-expansion) is a separate future target; see `notes/roadmaps/second-quantization.md`. -/
+shows) and hence commutes with `freeHamiltonian` and `numberOperator`. It therefore represents a
+restricted density-density interaction rather than a general quartic operator
+`Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ`. -/
 noncomputable def interactionHamiltonian (V : Mode → Mode → ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
