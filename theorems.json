@@ -18550,7 +18550,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound",
-      "QuantumTheory.LinearResponse.timeDependentDysonTerm_one"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonTerm_one"
     ],
     "dependencies": [
       "Dyson.coeff_one"
@@ -18559,7 +18559,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound",
-      "QuantumTheory.LinearResponse.timeDependentDysonTerm_one"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonTerm_one"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -41767,45 +41767,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A X : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.commutatorExpectation expectation A) X =\n    expectation.toContinuousLinearMap (A * X - X * A)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.commutatorExpectation_apply",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B t s =\n        QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B (t - s) 0",
     "standardAxioms": [
       "Classical.choice",
@@ -42855,7 +42816,7 @@
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.commutatorExpectation_apply"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula.0.QuantumTheory.LinearResponse.commutatorExpectation_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -45666,8 +45627,7 @@
       "QuantumTheory.LinearResponse.star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation.0.QuantumTheory.LinearResponse.operatorStarLinearIsometry_apply"
+      "QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -46460,8 +46420,8 @@
     "dependencies": [
       "Dyson.norm_evolution_sub_one_add_term_one_le_of_bound",
       "QuantumTheory.LinearResponse.norm_timeDependentPhysicalDysonCoupling",
-      "QuantumTheory.LinearResponse.timeDependentDysonTerm_one",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonBoundedInteraction"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonBoundedInteraction",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonTerm_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -46500,8 +46460,8 @@
     "dependencies": [
       "Dyson.norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound",
       "QuantumTheory.LinearResponse.norm_timeDependentPhysicalDysonCoupling",
-      "QuantumTheory.LinearResponse.timeDependentDysonTerm_one",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonBoundedInteraction"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonBoundedInteraction",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonTerm_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48759,49 +48719,6 @@
       "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (lam t : ℝ),\n  Dyson.term (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n      (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) t 1 =\n    (↑lam * -(Complex.I / ↑system.hbar)) •\n      ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.timeDependentDysonTerm_one",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation",
-    "externalAxioms": [],
-    "docString": "The exact first weighted Dyson term for `H₀ + λ V(t)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_of_bound",
-      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_bound"
-    ],
-    "dependencies": [
-      "Dyson.term_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_of_bound",
-      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_bound"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145737,7 +145654,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →L[ℂ] H), QuantumTheory.LinearResponse.operatorStarLinearIsometry✝ A = star A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A X : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.commutatorExpectation✝ expectation A) X =\n    expectation.toContinuousLinearMap (A * X - X * A)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145749,20 +145666,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation.0.QuantumTheory.LinearResponse.operatorStarLinearIsometry_apply",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula.0.QuantumTheory.LinearResponse.commutatorExpectation_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -145938,6 +145855,49 @@
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (lam t : ℝ),\n  Dyson.term (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n      (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) t 1 =\n    (↑lam * -(Complex.I / ↑system.hbar)) •\n      ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation.0.QuantumTheory.LinearResponse.timeDependentDysonTerm_one",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation",
+    "externalAxioms": [],
+    "docString": "The exact first weighted Dyson term for `H₀ + λ V(t)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_of_bound",
+      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_bound"
+    ],
+    "dependencies": [
+      "Dyson.term_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_of_bound",
+      "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_bound"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
