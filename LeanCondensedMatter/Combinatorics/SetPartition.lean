@@ -10,6 +10,6 @@ set_option linter.style.header false
 /-!
 # Set partitions
 
-Public routing module for the set-partition infrastructure exported by
-`LeanCondensedMatter.Combinatorics`.
+Set-partition theory: refinement and coarsening, Möbius inversion, distinguished blocks, Stirling
+numbers, and explicit Möbius formulas.
 -/

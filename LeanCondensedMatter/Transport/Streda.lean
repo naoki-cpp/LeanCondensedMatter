@@ -12,8 +12,9 @@ import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 set_option linter.style.header false
 
 /-!
-# Středa transport API
+# Středa transport
 
-Public umbrella for the generic finite regularized Středa layer. Canonical implementations live
-under `Transport/Streda/`.
+Finite regularized Středa transport theory: operator and trace kernels, retarded–advanced algebra,
+energy integration, generalized static response, response matrices, spectral representations, and
+spectral energy integrals.
 -/

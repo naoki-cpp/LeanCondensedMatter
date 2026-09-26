@@ -6,5 +6,5 @@ set_option linter.style.header false
 /-!
 # Fredholm operators
 
-Public routing module for the Fredholm operator endpoints exported by `LeanCondensedMatter.Analysis`.
+Fredholm-operator results for diagonal operators and finite-dimensional spaces.
 -/

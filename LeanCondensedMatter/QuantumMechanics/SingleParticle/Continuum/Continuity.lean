@@ -8,6 +8,7 @@ set_option linter.style.header false
 /-!
 # Continuum continuity equations
 
-Public routing module for the stable continuum continuity-equation endpoints selected by the
-single-particle public API.
+Continuity and probability-conservation results for continuum one-particle systems, including
+finite-dimensional identities, total-probability conservation, operator-current bridges, and weak
+electromagnetic continuity equations in one dimension.
 -/

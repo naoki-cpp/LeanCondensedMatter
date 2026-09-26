@@ -10,7 +10,6 @@ set_option linter.style.header false
 /-!
 # Trace-class operators
 
-Public routing module for the trace-class endpoints exported by `LeanCondensedMatter.Analysis`.
-The additional `TraceClass.Unitary` development remains directly importable but is not added to the
-root public surface by this refactor.
+Trace-class operator theory: basic and bundled interfaces, diagonal spectral traces, algebraic
+operations, equality criteria, and scalar actions.
 -/

@@ -172,51 +172,29 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) (s : ℝ) :
     HasDerivAt (fun t : ℝ => stoneEvolution A hA t (x : H))
       ((-I : ℂ) • stoneEvolution A hA s (A x)) s := by
-  rw [hasDerivAt_iff_tendsto_slope_zero]
-  have hzero :=
-    (stoneEvolution_apply_hasDerivAt_zero A hA x).tendsto_slope_zero
-  have hmapped :
-      Tendsto
-        (fun h : ℝ =>
-          stoneEvolution A hA s
-            (h⁻¹ •
-              (stoneEvolution A hA (0 + h) (x : H) -
-                stoneEvolution A hA 0 (x : H))))
-        (𝓝[≠] 0)
-        (𝓝 (stoneEvolution A hA s ((-I : ℂ) • A x))) := by
-    exact ((stoneEvolution A hA s).continuous.tendsto _).comp hzero
-  have hfun :
-      (fun h : ℝ =>
-        h⁻¹ •
-          (stoneEvolution A hA (s + h) (x : H) -
-            stoneEvolution A hA s (x : H))) =
-      (fun h : ℝ =>
-        stoneEvolution A hA s
-          (h⁻¹ •
-            (stoneEvolution A hA (0 + h) (x : H) -
-              stoneEvolution A hA 0 (x : H)))) := by
-    funext h
-    rw [show
-      stoneEvolution A hA (s + h) (x : H) =
-        stoneEvolution A hA s
-          (stoneEvolution A hA h (x : H)) by
+  have hzero := stoneEvolution_apply_hasDerivAt_zero A hA x
+  have hmapped :=
+    ((stoneEvolution A hA s).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hzero
+  have htranslated :
+      HasDerivAt
+        (fun h : ℝ => stoneEvolution A hA (s + h) (x : H))
+        ((-I : ℂ) • stoneEvolution A hA s (A x)) 0 := by
+    convert hmapped using 1
+    · funext h
       rw [stoneEvolution_add]
-      rfl]
-    rw [show stoneEvolution A hA 0 (x : H) = (x : H) by
-      rw [stoneEvolution_zero]
-      rfl]
-    simp only [zero_add]
-    rw [← (stoneEvolution A hA s).map_sub]
-    symm
-    exact (stoneEvolution A hA s).toLinearMap.map_smul_of_tower
-      h⁻¹ (stoneEvolution A hA h (x : H) - (x : H))
-  rw [hfun]
-  have hmapgen :
-      stoneEvolution A hA s ((-I : ℂ) • A x) =
-        (-I : ℂ) • stoneEvolution A hA s (A x) := by
-    exact (stoneEvolution A hA s).map_smul _ _
-  rw [hmapgen] at hmapped
-  exact hmapped
+      rfl
+    · change
+        (-I : ℂ) • stoneEvolution A hA s (A x) =
+          stoneEvolution A hA s ((-I : ℂ) • A x)
+      symm
+      exact (stoneEvolution A hA s).map_smul _ _
+  have hshift :=
+    htranslated.scomp_of_eq s ((hasDerivAt_id s).sub_const s) (by simp)
+  have hshift' := hshift
+  simp only [id_eq, one_smul] at hshift'
+  convert hshift' using 1
+  funext t
+  simp [Function.comp_apply]
 
 /-- Strong Stone derivative on the preserved generator domain. -/
 theorem stoneEvolution_apply_hasDerivAt

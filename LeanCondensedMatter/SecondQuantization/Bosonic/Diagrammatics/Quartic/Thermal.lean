@@ -8,6 +8,6 @@ set_option linter.style.header false
 /-!
 # Bosonic quartic thermal diagrammatics
 
-Public routing module for the thermal layer of bosonic quartic diagrammatics. It preserves the
-curated endpoints previously imported directly by `Bosonic.Diagrammatics.Quartic`.
+Thermal bosonic quartic diagrammatics: free Gibbs Wick expansion, thermal pairing amplitudes,
+connected-component factorization, and the coefficientwise connected-diagram cumulant theorem.
 -/

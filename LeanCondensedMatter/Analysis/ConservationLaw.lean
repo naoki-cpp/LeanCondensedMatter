@@ -12,6 +12,7 @@ set_option linter.style.header false
 /-!
 # Conservation laws
 
-Public routing module for representation-independent and represented balance laws, current
-representations, and generic weak conservation identities exported by `LeanCondensedMatter.Analysis`.
+Abstract conservation and balance-law theory: current representations and their equivalence,
+intrinsic and represented balance laws, adapters between them, weak one-dimensional conservation,
+symmetric localization, and corrected current-flux algebra.
 -/

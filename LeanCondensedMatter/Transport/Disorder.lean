@@ -10,10 +10,9 @@ import LeanCondensedMatter.Transport.Disorder.Ward
 set_option linter.style.header false
 
 /-!
-# Finite disorder transport API
+# Finite disorder transport
 
-Public umbrella for exact finite disorder ensembles, arbitrary-regulator disorder resolvents and
-moments, the exact averaged-Green/self-energy bridge, first-Born self-energy, reusable
-retarded-advanced covariance ladder algebra, the SCBA approximation layer, and its finite bounded
-charge-vertex Ward bridge. Canonical implementations live under `Transport/Disorder/`.
+Finite disorder ensembles and their transport algebra: disorder resolvents and moments, averaged
+Green functions and self-energy, first-Born self-energy, retarded–advanced covariance ladders,
+self-consistent Born approximation, and the finite bounded charge-vertex Ward identity.
 -/

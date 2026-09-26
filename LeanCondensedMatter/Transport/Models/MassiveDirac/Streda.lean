@@ -17,7 +17,7 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac Středa specialization
 
-Public umbrella for the finite-`η` Born-Dyson RA-dressed/bare-same-side Středa surface response with
+Finite-`η` Born-Dyson RA-dressed/bare-same-side Středa surface response with
 bare measured current fixed along `x` and the source direction indexed by `Fin 2`. The generic
 path is exposed from the pointwise trace bridge through finite-cutoff polar momentum integration;
 the ordered `xy` specialization additionally exposes the explicit Hall radial reduction and common

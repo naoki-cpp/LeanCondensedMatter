@@ -14,7 +14,7 @@ set_option linter.style.header false
 /-!
 # Completed fermionic Fock-space analysis
 
-Public entry point for the completed fermionic representation: the `ℓ²` occupation space, dense
+The completed fermionic representation includes the `ℓ²` occupation space, dense
 algebraic core, bounded number/creation/annihilation operators and CAR, maximal diagonal operators
 and their analytic properties, free-Hamiltonian domains and ladder relations, finite-dimensional
 compatibility, and finite-mode representation truncations.

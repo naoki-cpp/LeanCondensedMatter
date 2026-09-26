@@ -8,8 +8,8 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac longitudinal transport
 
-Public umbrella for longitudinal electrical conductivity of the two-dimensional massive Dirac
-model. It exposes the zero-temperature relaxation-time benchmark, its microscopic Born transport-
+Longitudinal electrical conductivity of the two-dimensional massive Dirac
+model, including the zero-temperature relaxation-time benchmark, its microscopic Born transport-
 lifetime specialization, the ordered `xx` component of the finite-cutoff finite-`η` Born-Dyson
 Středa conductivity tensor, its fixed-disorder zero-broadening boundary, and the separate
 weak-disorder limit of the disorder-scaled zero-broadening conductivity.

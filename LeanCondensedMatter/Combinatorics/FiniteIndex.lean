@@ -7,6 +7,6 @@ set_option linter.style.header false
 /-!
 # Finite-index combinatorics
 
-Public routing module for the finite-index operations exported by
-`LeanCondensedMatter.Combinatorics`.
+Reusable operations on finite index types, including block decompositions, deleted-position maps,
+and function-index erasure.
 -/

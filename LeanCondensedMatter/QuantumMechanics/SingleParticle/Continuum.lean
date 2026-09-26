@@ -9,7 +9,6 @@ set_option linter.style.header false
 /-!
 # Continuum single-particle quantum mechanics
 
-Public routing module for the stable probability, continuity, `L²`, Hamiltonian, and evolution
-endpoints selected by `QuantumMechanics.SingleParticle`. The separate `Electromagnetic/` development
-is not promoted wholesale by this umbrella.
+Continuum one-particle quantum mechanics, combining probability, continuity equations, `L²`
+realizations, self-adjoint Hamiltonians, and time evolution.
 -/

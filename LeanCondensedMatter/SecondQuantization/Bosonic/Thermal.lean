@@ -13,7 +13,7 @@ set_option linter.style.header false
 /-!
 # Bosonic thermal theory
 
-Public umbrella for the convergence-aware free bosonic thermal layer:
+The convergence-aware free bosonic thermal layer includes:
 
 - one- and multi-mode Boltzmann weights and the convergent partition sum;
 - the finite-mode inverse-determinant interpretation of that partition sum;

@@ -12,7 +12,7 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac disorder transport
 
-Public umbrella for the disorder-dependent massive-Dirac transport benchmark. The continuum Born
+Disorder-dependent transport for the massive-Dirac benchmark. The continuum Born
 chain is organized by physical and analytic responsibility: `ContinuumMeasurePrefactor` owns one
 scalar-disorder line together with exactly one physical-momentum-measure factor, independently of
 where a consumer performs angular reduction; `Born.SelfEnergy` owns the finite-cutoff self-energy and

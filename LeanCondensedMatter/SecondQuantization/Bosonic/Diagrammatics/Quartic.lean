@@ -8,7 +8,7 @@ set_option linter.style.header false
 /-!
 # Bosonic quartic diagrammatics
 
-This umbrella module exposes the bosonic quartic-diagram layer:
+The bosonic quartic-diagram layer contains:
 
 - quartic interaction labels and ordered vertex operators;
 - local-leg operators, mode labels, and free-energy shifts;
