@@ -4093,7 +4093,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add",
     "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
@@ -40667,7 +40667,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -40680,13 +40680,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40719,15 +40719,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -42176,47 +42176,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      ∀ᶠ (omega : ℝ) in nhds 0,\n        QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n          (fun eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega transition)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-    "externalAxioms": [],
-    "docString": "Near zero frequency, every finite static-nonresonant sum admits regulator removal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H),\n  Commute (↑system.hamiltonian) ρ.op → ∀ (t : ℝ), QuantumTheory.LinearResponse.evolveDensityOperator system ρ t = ρ",
     "standardAxioms": [
       "Classical.choice",
@@ -43002,50 +42961,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n          (fun omega eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 transition) ∧\n        QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n          (fun omega eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 transition)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-    "externalAxioms": [],
-    "docString": "Both local iterated limits exist and agree for a finite static-nonresonant family. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finiteLehmannTableResponse system.hbar omega eta\n      (QuantumTheory.LinearResponse.finiteLehmannTableOfPurePoint system data A B) =\n    QuantumTheory.LinearResponse.purePointLehmannSeries system data A B omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -43415,7 +43330,7 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.BoundedFreeSystem.hbar_pos",
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -43978,48 +43893,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar omega : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  (∀ j ∈ s, (transition j).weight = 0 ∨ omega + (transition j).energyGap / hbar ≠ 0) →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n      (fun eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n      (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega transition)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-    "externalAxioms": [],
-    "docString": "Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (hbar omega energyGap : ℝ) (weight : ℂ),\n  weight = 0 ∨ omega + energyGap / hbar ≠ 0 →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n      (fun eta => QuantumTheory.LinearResponse.lehmannTerm hbar omega eta energyGap weight)\n      (QuantumTheory.LinearResponse.unswitchedLehmannTerm hbar omega energyGap weight)",
     "standardAxioms": [
       "Classical.choice",
@@ -44039,8 +43912,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_zero_rate_ne_zero"
@@ -44048,8 +43921,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -44678,97 +44551,13 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar eta : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit\n      (fun omega => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n      (QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar 0 eta transition)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-    "externalAxioms": [],
-    "docString": "Fixed-nonzero-rate finite Lehmann sums always have a static limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasStaticLimit\n        (fun omega => QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega transition)\n        (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 transition)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-    "externalAxioms": [],
-    "docString": "Static continuity of a finite zero-rate nonresonant sum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_unswitchedLehmannTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (hbar eta energyGap : ℝ) (weight : ℂ),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit\n      (fun omega => QuantumTheory.LinearResponse.lehmannTerm hbar omega eta energyGap weight)\n      (QuantumTheory.LinearResponse.lehmannTerm hbar 0 eta energyGap weight)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -44781,7 +44570,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero"
@@ -44789,7 +44578,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -44809,7 +44598,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -44822,7 +44611,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_zero_rate_ne_zero"
@@ -44830,7 +44619,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -83754,7 +83543,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.create_annihilate_basisState_same",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
@@ -91818,8 +91607,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_blockVertex",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
@@ -145551,6 +145340,217 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      ∀ᶠ (omega : ℝ) in nhds 0,\n        QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n          (fun eta => ∑ j ∈ s, (transition j).frequencyTerm omega eta) (∑ j ∈ s, (transition j).unswitchedTerm omega)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "externalAxioms": [],
+    "docString": "Near zero frequency, every finite static-nonresonant sum admits regulator removal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n          (fun omega eta => ∑ j ∈ s, (transition j).frequencyTerm omega eta)\n          (∑ j ∈ s, (transition j).unswitchedTerm 0) ∧\n        QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n          (fun omega eta => ∑ j ∈ s, (transition j).frequencyTerm omega eta) (∑ j ∈ s, (transition j).unswitchedTerm 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "externalAxioms": [],
+    "docString": "Both local iterated limits exist and agree for a finite static-nonresonant family. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar omega : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  (∀ j ∈ s, (transition j).weight = 0 ∨ omega + (transition j).energyGap / hbar ≠ 0) →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit (fun eta => ∑ j ∈ s, (transition j).frequencyTerm omega eta)\n      (∑ j ∈ s, (transition j).unswitchedTerm omega)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "externalAxioms": [],
+    "docString": "Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
+      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar eta : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit (fun omega => ∑ j ∈ s, (transition j).frequencyTerm omega eta)\n      (∑ j ∈ s, (transition j).frequencyTerm 0 eta)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "externalAxioms": [],
+    "docString": "Fixed-nonzero-rate finite Lehmann sums always have a static limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
+      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasStaticLimit (fun omega => ∑ j ∈ s, (transition j).unswitchedTerm omega)\n        (∑ j ∈ s, (transition j).unswitchedTerm 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "externalAxioms": [],
+    "docString": "Static continuity of a finite zero-rate nonresonant sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
+      "QuantumTheory.LinearResponse.hasStaticLimit_unswitchedLehmannTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
