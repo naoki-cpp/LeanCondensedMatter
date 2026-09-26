@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Finite specialization of the generic Dyson–Volterra equation
 
-The series–integral exchange, tail summation, and Volterra equation are owned by
-`Analysis.Dyson.Volterra`. This module retains only the finite continuous-operator specialization
-needed by downstream SecondQuantization results.
+This module specializes the generic series–integral exchange, tail summation, and Dyson–Volterra
+equation from `Analysis.Dyson.Volterra` to finite-dimensional continuous operators used in
+SecondQuantization.
 -/
 
 namespace SecondQuantization
