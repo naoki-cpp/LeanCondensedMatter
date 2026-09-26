@@ -28818,6 +28818,7 @@
       "LinearPMap.stoneEvolution_dist_eq",
       "LinearPMap.stoneEvolution_star",
       "LinearPMap.stoneEvolution_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
@@ -28830,10 +28831,11 @@
       "LinearPMap.stoneEvolution_dist_eq",
       "LinearPMap.stoneEvolution_star",
       "LinearPMap.stoneEvolution_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29338,7 +29340,6 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "LinearPMap.stoneEvolution_mul_star",
       "LinearPMap.stoneEvolution_star_mul",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
     ],
     "dependencies": [
@@ -29352,10 +29353,9 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "LinearPMap.stoneEvolution_mul_star",
       "LinearPMap.stoneEvolution_star_mul",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134114,8 +134114,8 @@
     ],
     "dependencies": [
       "LinearPMap.stoneEvolution_add",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
-      "LinearPMap.stoneEvolution_zero"
+      "LinearPMap.stoneEvolution_apply",
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
