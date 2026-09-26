@@ -56,9 +56,9 @@ def DependsOnlyOnDifferential
 namespace DependsOnlyOnDifferential
 
 /-- Any chosen differential-current representation implies intrinsic differential dependence. -/
-theorem of_factors
+theorem of_isDifferentialCurrent
     {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : FactorsThroughDifferential d Φ J) :
+    (h : IsDifferentialCurrent d Φ J) :
     DependsOnlyOnDifferential d Φ := by
   intro f g hfg
   rw [h f, h g, hfg]
