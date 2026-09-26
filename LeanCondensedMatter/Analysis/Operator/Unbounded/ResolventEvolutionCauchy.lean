@@ -69,12 +69,18 @@ theorem norm_resolventApproximationEvolution_sub_le
   rw [boundedUnitaryEvolution_apply_norm As hAs t]
   exact norm_boundedUnitaryEvolution_apply_sub_le D hD t x
 
-def positiveApproximationScale (r : ℝ) : ℝ :=
+private def positiveApproximationScale (r : ℝ) : ℝ :=
   max 1 r
 
-theorem positiveApproximationScale_pos (r : ℝ) :
+private theorem positiveApproximationScale_pos (r : ℝ) :
     0 < positiveApproximationScale r := by
   exact lt_of_lt_of_le zero_lt_one (le_max_left 1 r)
+
+/-- A total real-indexed version of the bounded resolvent approximation. -/
+noncomputable def boundedSelfAdjointApproximationAtScale
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) : H →L[ℂ] H :=
+  boundedSelfAdjointApproximation A hA (positiveApproximationScale r)
+    (positiveApproximationScale_pos r)
 
 /-- A total real-indexed version of the resolvent evolution, obtained by clipping the scale below
 at one. -/
@@ -187,6 +193,36 @@ theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
   have hnorm := hcauchy r s hRr hRs hrpos hspos
   simpa [dist_eq_norm, resolventApproximationEvolutionAtScale, positiveApproximationScale,
     max_eq_right h1r, max_eq_right h1s] using hnorm
+
+/-- On the original domain, the totalized bounded approximations converge strongly to the
+self-adjoint operator. -/
+theorem boundedSelfAdjointApproximationAtScale_apply_tendsto
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
+    Tendsto (fun r : ℝ => boundedSelfAdjointApproximationAtScale A hA r (x : H))
+      atTop (𝓝 (A x)) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  obtain ⟨R, hR, hconv⟩ :=
+    boundedSelfAdjointApproximation_strong_convergence A hA x ε hε
+  filter_upwards [eventually_ge_atTop (max R 1)] with r hr
+  have hRr : R ≤ r := (le_max_left R 1).trans hr
+  have h1r : 1 ≤ r := (le_max_right R 1).trans hr
+  have hrpos : 0 < r := zero_lt_one.trans_le h1r
+  have h := hconv r hRr hrpos
+  simpa [boundedSelfAdjointApproximationAtScale, positiveApproximationScale,
+    max_eq_right h1r, dist_eq_norm] using h
+
+/-- The totalized evolution and generator approximations use the same regularization scale. -/
+theorem norm_resolventApproximationEvolution_sub_atScale_le
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
+    (r : ℝ) (hr : 0 < r) (s t : ℝ) (x : H) :
+    ‖resolventApproximationEvolution A hA r hr t x -
+        resolventApproximationEvolutionAtScale A hA s t x‖ ≤
+      ‖(boundedSelfAdjointApproximation A hA r hr -
+          boundedSelfAdjointApproximationAtScale A hA s) x‖ * |t| := by
+  exact norm_resolventApproximationEvolution_sub_le
+    A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
+
 
 end
 
