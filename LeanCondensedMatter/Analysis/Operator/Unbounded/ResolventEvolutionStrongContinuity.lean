@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup
+import Mathlib.Topology.EMetricSpace.Lipschitz
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -98,41 +99,6 @@ theorem stoneEvolution_apply_continuousAt_zero_domain
   exact lt_of_le_of_lt
     (norm_stoneEvolution_apply_sub_le_domain A hA t x) hprod
 
-/-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
-theorem stoneEvolution_apply_continuousAt_zero
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (y : H) :
-    ContinuousAt (fun t : ℝ => stoneEvolution A hA t y) 0 := by
-  rw [Metric.continuousAt_iff]
-  intro ε hε
-  have hε4 : 0 < ε / 4 := by positivity
-  obtain ⟨x, hxA, hyx⟩ := hA.dense_domain.exists_dist_lt y hε4
-  let xA : A.domain := ⟨x, hxA⟩
-  have hε2 : 0 < ε / 2 := by positivity
-  obtain ⟨δ, hδ, hxcont⟩ :=
-    (Metric.continuousAt_iff.mp
-      (stoneEvolution_apply_continuousAt_zero_domain A hA xA))
-      (ε / 2) hε2
-  refine ⟨δ, hδ, ?_⟩
-  intro t ht
-  have hmid := hxcont ht
-  have hleft :
-      dist (stoneEvolution A hA t y)
-          (stoneEvolution A hA t x) = dist y x :=
-    stoneEvolution_dist_eq A hA t y x
-  have hright :
-      dist (stoneEvolution A hA 0 x)
-          (stoneEvolution A hA 0 y) = dist x y :=
-    stoneEvolution_dist_eq A hA 0 x y
-  have hxy : dist x y < ε / 4 := by
-    simpa [dist_comm] using hyx
-  have htri := dist_triangle4
-    (stoneEvolution A hA t y)
-    (stoneEvolution A hA t x)
-    (stoneEvolution A hA 0 x)
-    (stoneEvolution A hA 0 y)
-  rw [hleft, hright] at htri
-  exact lt_of_le_of_lt htri (by linarith)
-
 /-- Time differences for the limiting unitary group reduce isometrically to a displacement from
 zero time. -/
 theorem stoneEvolution_dist_time_eq_sub
@@ -149,29 +115,61 @@ theorem stoneEvolution_dist_time_eq_sub
       resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) x]
   exact stoneEvolution_dist_eq A hA s _ x
 
-/-- The limiting evolution is strongly continuous at every time, for every vector. -/
-theorem stoneEvolution_apply_continuousAt
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ) :
-    ContinuousAt (fun t : ℝ => stoneEvolution A hA t x) s := by
+/-- On the generator domain, the limiting Stone evolution is continuous at every time. -/
+theorem stoneEvolution_apply_continuous_domain
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
+    Continuous (fun t : ℝ => stoneEvolution A hA t (x : H)) := by
+  rw [continuous_iff_continuousAt]
+  intro s
   rw [Metric.continuousAt_iff]
   intro ε hε
   obtain ⟨δ, hδ, hzero⟩ :=
     (Metric.continuousAt_iff.mp
-      (stoneEvolution_apply_continuousAt_zero A hA x)) ε hε
+      (stoneEvolution_apply_continuousAt_zero_domain A hA x)) ε hε
   refine ⟨δ, hδ, ?_⟩
   intro t ht
+  rw [stoneEvolution_dist_time_eq_sub A hA t s (x : H)]
   have hshift : dist (t - s) 0 < δ := by
     simpa [Real.dist_eq] using ht
-  have hz := hzero hshift
-  rw [stoneEvolution_dist_time_eq_sub A hA t s x]
-  simpa using hz
+  simpa [stoneEvolution_zero] using hzero hshift
+
+/-- The limiting Stone evolution is jointly continuous in the vector and time variables.
+Continuity on the dense generator domain extends to the whole Hilbert space because every time
+slice is an isometry. -/
+theorem stoneEvolution_joint_continuous
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) :
+    Continuous (fun p : H × ℝ => stoneEvolution A hA p.2 p.1) := by
+  apply continuous_prod_of_dense_continuous_lipschitzWith _ 1 hA.dense_domain
+  · intro x hx
+    exact stoneEvolution_apply_continuous_domain A hA ⟨x, hx⟩
+  · intro t
+    exact (isometry_iff_dist_eq.mpr fun x y => stoneEvolution_dist_eq A hA t x y).lipschitz
 
 /-- The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. -/
 theorem stoneEvolution_apply_continuous
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
     Continuous (fun t : ℝ => stoneEvolution A hA t x) := by
-  rw [continuous_iff_continuousAt]
-  exact stoneEvolution_apply_continuousAt A hA x
+  have hpair : Continuous (fun t : ℝ => (x, t)) :=
+    continuous_const.prodMk continuous_id
+  have hcomp :=
+    (stoneEvolution_joint_continuous A hA).comp hpair
+  have horbit :
+      ((fun p : H × ℝ => stoneEvolution A hA p.2 p.1) ∘ fun t : ℝ => (x, t)) =
+        fun t : ℝ => stoneEvolution A hA t x := rfl
+  rw [horbit] at hcomp
+  exact hcomp
+
+/-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
+theorem stoneEvolution_apply_continuousAt_zero
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (y : H) :
+    ContinuousAt (fun t : ℝ => stoneEvolution A hA t y) 0 :=
+  (stoneEvolution_apply_continuous A hA y).continuousAt
+
+/-- The limiting evolution is strongly continuous at every time, for every vector. -/
+theorem stoneEvolution_apply_continuousAt
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ) :
+    ContinuousAt (fun t : ℝ => stoneEvolution A hA t x) s :=
+  (stoneEvolution_apply_continuous A hA x).continuousAt
 
 end
 
