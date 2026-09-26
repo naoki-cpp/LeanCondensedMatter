@@ -89,7 +89,7 @@ volume, and charge/sign conventions as named parameters.
 
 Acceptance criteria:
 
-1. the model instantiates the existing arbitrary-polarization `SpinCurrentResponse` API;
+1. the model instantiates the existing arbitrary-spin-component `SpinCurrentResponse` API;
 2. the conventional spin current is visibly `1/2 {v, S(n)}` for the selected spin component;
 3. no claim of a universal infinite-system value is made without an order of
    limits and a non-degeneracy/broadening hypothesis.
