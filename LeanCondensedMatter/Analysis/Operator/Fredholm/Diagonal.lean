@@ -4,15 +4,15 @@ import Mathlib.Analysis.SpecialFunctions.Log.Summable
 /-!
 # Fredholm determinant for absolutely summable diagonal data
 
-This module defines the first genuinely infinite-dimensional Fredholm determinant slice in the
-project. For a scalar family `coeff : ι → ℂ` with `Summable (fun i => ‖coeff i‖)`, the determinant is
+For a scalar family `coeff : ι → ℂ` with `Summable (fun i => ‖coeff i‖)`, this module defines the
+diagonal Fredholm determinant
 
 `∏' i, (1 + coeff i)`.
 
-When `coeff` is used as the coefficient family of `HilbertBasis.diagonalOp`, this is the Fredholm
+When `coeff` is the coefficient family of `HilbertBasis.diagonalOp`, this is the Fredholm
 determinant of `1 + diagonalOp b coeff` in that explicit diagonal presentation. The definition is
-not a determinant for arbitrary compact or trace-class operators, and it does not use the
-finite-dimensional `ContinuousLinearMap.det` fallback.
+not a determinant for arbitrary compact or trace-class operators and does not use
+finite-dimensional `ContinuousLinearMap.det` as a fallback.
 -/
 
 noncomputable section
