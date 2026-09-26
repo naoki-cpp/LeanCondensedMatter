@@ -9,7 +9,7 @@ set_option linter.style.header false
 # Finite spin-current / electric-source cross response
 
 This module gives a concrete generalized-current response on the finite spinful lattice
-`Site × Fin 2`. A physical-space vector `n : SpinHalf.PhysicalSpace` selects the measured spin
+`Site × Fin 2`. A spin-space vector `n : SpinHalf.SpinSpace` selects the measured spin
 observable `S(n) = ℏ_spin (n · σ) / 2`; the Pauli coordinates remain internal representation data.
 The measured spin current is
 
@@ -46,26 +46,26 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
-/-- One-particle spin-1/2 observable associated with a physical polarization vector. -/
+/-- One-particle spin-1/2 observable associated with a spin-space component vector. -/
 noncomputable def spinOneBody
-    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.PhysicalSpace) :
+    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
-  internalOneBody (QuantumTheory.SpinHalf.spinMatrix spinScale polarization)
+  internalOneBody (QuantumTheory.SpinHalf.spinMatrix spinScale spinComponent)
 
 /-- Neutral fixed-observable response channel for a finite spin current selected by a physical
 polarization vector and driven by an electric bond-current source. -/
 noncomputable def boundedSpinCurrentBondSourceResponseChannel
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
-    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.PhysicalSpace)
+    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace)
     (ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
     (u v : SpinfulSite Site) :
     ResponseChannel (FiniteLatticeHilbertFock (SpinfulSite Site)) :=
   ResponseChannel.fixed
-    (boundedSymmetrizedVelocityCurrent velocity (spinOneBody spinScale polarization))
+    (boundedSymmetrizedVelocityCurrent velocity (spinOneBody spinScale spinComponent))
     (boundedBondCurrent ℏ q K u v)
 
-/-- Retarded response of a finite spin current selected by a physical polarization vector to an
+/-- Retarded response of a finite spin current selected by a spin-space component vector to an
 electric bond-current source.
 
 The measured observable and source are intentionally distinct. The source carries electric charge
@@ -76,12 +76,12 @@ noncomputable def boundedSpinCurrentBondSourceRetardedSusceptibility
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
       (FiniteLatticeHilbertFock (SpinfulSite Site)))
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
-    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.PhysicalSpace)
+    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace)
     (ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
     (u v : SpinfulSite Site) (t s : ℝ) : ℂ :=
   (boundedSpinCurrentBondSourceResponseChannel
-    velocity spinScale polarization ℏ q K u v).retardedKernel
+    velocity spinScale spinComponent ℏ q K u v).retardedKernel
     system expectation t s
 
 end
