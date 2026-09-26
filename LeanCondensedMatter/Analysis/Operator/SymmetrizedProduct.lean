@@ -29,24 +29,49 @@ theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
     symmetrizedProduct A B v = (1 / 2 : ℂ) • (A (B v) + B (A v)) := by
   rfl
 
+/-- The symmetrized product is bilinear in its two operator arguments. -/
+noncomputable def symmetrizedProductBilinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W] :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  LinearMap.mk₂ ℂ (fun A B => symmetrizedProduct A B)
+    (by
+      intro A C B
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+    (by
+      intro c A B
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+    (by
+      intro A B C
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+    (by
+      intro c A B
+      apply LinearMap.ext
+      intro v
+      simp [symmetrizedProduct]
+      module)
+
+@[simp]
+theorem symmetrizedProductBilinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) :
+    symmetrizedProductBilinear W A B = symmetrizedProduct A B :=
+  rfl
+
 /-- Symmetrization with a fixed right-hand operator is linear in the left operator. -/
 noncomputable def symmetrizedProductRightLinear
     (W : Type*) [AddCommGroup W] [Module ℂ W]
     (B : W →ₗ[ℂ] W) :
-    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) where
-  toFun := fun A => symmetrizedProduct A B
-  map_add' := by
-    intro A C
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
-  map_smul' := by
-    intro c A
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  LinearMap.flip (symmetrizedProductBilinear W) B
 
 @[simp]
 theorem symmetrizedProductRightLinear_apply
@@ -59,20 +84,8 @@ theorem symmetrizedProductRightLinear_apply
 noncomputable def symmetrizedProductLeftLinear
     (W : Type*) [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) :
-    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) where
-  toFun := fun B => symmetrizedProduct A B
-  map_add' := by
-    intro B C
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
-  map_smul' := by
-    intro c B
-    apply LinearMap.ext
-    intro v
-    simp [symmetrizedProduct]
-    module
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  symmetrizedProductBilinear W A
 
 @[simp]
 theorem symmetrizedProductLeftLinear_apply
