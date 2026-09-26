@@ -46,11 +46,44 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
+/-- One-particle spin-1/2 observable as a real-linear function of spin space. -/
+noncomputable def spinOneBodyLinear
+    (spinScale : ℝ) :
+    QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
+      (LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site)) :=
+  ((internalOneBodyLinear (Site := Site)).restrictScalars ℝ).comp
+    (QuantumTheory.SpinHalf.spinMatrix spinScale)
+
 /-- One-particle spin-1/2 observable associated with a spin-space component vector. -/
 noncomputable def spinOneBody
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
-  internalOneBody (QuantumTheory.SpinHalf.spinMatrix spinScale spinComponent)
+  spinOneBodyLinear spinScale spinComponent
+
+@[simp]
+theorem spinOneBodyLinear_apply
+    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
+    spinOneBodyLinear spinScale spinComponent = spinOneBody spinScale spinComponent :=
+  rfl
+
+/-- With velocity fixed, the bounded spin-current observable is real-linear in the transported
+spin-space component. -/
+noncomputable def boundedSpinCurrentLinear
+    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (spinScale : ℝ) :
+    QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
+      (FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
+        FiniteLatticeHilbertFock (SpinfulSite Site)) :=
+  ((boundedSymmetrizedVelocityCurrentLinear velocity).restrictScalars ℝ).comp
+    (spinOneBodyLinear spinScale)
+
+@[simp]
+theorem boundedSpinCurrentLinear_apply
+    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
+    boundedSpinCurrentLinear velocity spinScale spinComponent =
+      boundedSymmetrizedVelocityCurrent velocity (spinOneBody spinScale spinComponent) :=
+  rfl
 
 /-- Neutral fixed-observable response channel for a finite spin current selected by a spin-space component vector and driven by an electric bond-current source. -/
 noncomputable def boundedSpinCurrentBondSourceResponseChannel
@@ -61,7 +94,7 @@ noncomputable def boundedSpinCurrentBondSourceResponseChannel
     (u v : SpinfulSite Site) :
     ResponseChannel (FiniteLatticeHilbertFock (SpinfulSite Site)) :=
   ResponseChannel.fixed
-    (boundedSymmetrizedVelocityCurrent velocity (spinOneBody spinScale spinComponent))
+    (boundedSpinCurrentLinear velocity spinScale spinComponent)
     (boundedBondCurrent ℏ q K u v)
 
 /-- Retarded response of a finite spin current selected by a spin-space component vector to an
