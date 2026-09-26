@@ -8,14 +8,12 @@ set_option linter.style.header false
 
 This module gives the physical spin interpretation of the model-independent Pauli algebra.
 
-A spin-polarization direction is represented first as a vector in real three-dimensional Euclidean
-space.  The Pauli matrices enter only when that physical vector is represented on a two-level
-spin-1/2 Hilbert space.  Thus the internal Pauli basis is representation data, not the definition of
+Spin components form a real three-dimensional Euclidean vector space. The Pauli matrices enter
+only when such a spin-space vector is represented on a two-level spin-1/2 Hilbert space.  Thus the internal Pauli basis is representation data, not the definition of
 the polarization component vector itself.
 
-The vector need not be normalized.  Unit vectors represent pure directions, while allowing arbitrary
-vectors keeps linear combinations and response-tensor components available without introducing a
-separate coordinate-vector API.
+The vector need not be normalized. Unit vectors represent pure polarization directions; arbitrary
+vectors retain the linear structure needed for spin components and response tensors.
 -/
 
 namespace QuantumTheory
@@ -85,7 +83,7 @@ theorem spinMatrix_cartesianBasisVector (ℏ : ℝ) (axis : InternalSpace.PauliA
 
 /-- Spin measured along any real spin-space vector is represented by a Hermitian matrix. -/
 theorem spinMatrix_isHermitian (ℏ : ℝ) (component : SpinSpace) :
-    (spinMatrix ℏ direction).IsHermitian := by
+    (spinMatrix ℏ component).IsHermitian := by
   have hscale : IsSelfAdjoint ((((ℏ / 2 : ℝ) : ℂ))) := by
     simp [isSelfAdjoint_iff]
   exact
