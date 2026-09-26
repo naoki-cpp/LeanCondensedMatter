@@ -154,7 +154,7 @@ noncomputable def toDifferentialCurrentRepresentationOfSourceFactors
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
-    (hsource : FactorsThroughDifferential d B.source sourceCurrent) :
+    (hsource : IsDifferentialCurrent d B.source sourceCurrent) :
     DifferentialCurrentRepresentation d (δ.comp Q) :=
   (B.shiftCurrentSource sourceCurrent).toDifferentialCurrentRepresentation (by
     apply LinearMap.ext
@@ -170,7 +170,7 @@ theorem toDifferentialCurrentRepresentationOfSourceFactors_current
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
-    (hsource : FactorsThroughDifferential d B.source sourceCurrent) :
+    (hsource : IsDifferentialCurrent d B.source sourceCurrent) :
     (B.toDifferentialCurrentRepresentationOfSourceFactors sourceCurrent hsource).current =
       B.current + sourceCurrent :=
   rfl
