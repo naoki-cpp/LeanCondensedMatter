@@ -52,8 +52,7 @@ noncomputable def spinOneBody
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
   internalOneBody (QuantumTheory.SpinHalf.spinMatrix spinScale spinComponent)
 
-/-- Neutral fixed-observable response channel for a finite spin current selected by a physical
-polarization vector and driven by an electric bond-current source. -/
+/-- Neutral fixed-observable response channel for a finite spin current selected by a spin-space component vector and driven by an electric bond-current source. -/
 noncomputable def boundedSpinCurrentBondSourceResponseChannel
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace)
