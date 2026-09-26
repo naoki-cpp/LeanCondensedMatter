@@ -45,10 +45,9 @@ theorem twoLevel_scalarCurrent_spectralTraceSum
           ((advancedSpectralParameter energy broadening)⁻¹) ^ 2) := by
   classical
   have henergy (i : Fin 2) : twoLevelData.energy i = 0 := rfl
-  have hprobability (i : Fin 2) : twoLevelData.probability i = (1 : ℝ) / 2 := rfl
   simp [regularizedBastinSpectralTraceSum, stredaSpectralFactor,
     retardedSpectralParameter, advancedSpectralParameter, twoLevelScalarCurrent,
-    henergy, hprobability]
+    henergy]
   ring
 
 /-- At `E = 1` and `γ = 1`, the two-level scalar-current spectral trace is exactly `-2`. -/
