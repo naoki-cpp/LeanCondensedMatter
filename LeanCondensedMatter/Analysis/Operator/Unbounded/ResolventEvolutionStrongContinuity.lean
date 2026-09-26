@@ -99,22 +99,6 @@ theorem stoneEvolution_apply_continuousAt_zero_domain
   exact lt_of_le_of_lt
     (norm_stoneEvolution_apply_sub_le_domain A hA t x) hprod
 
-/-- Time differences for the limiting unitary group reduce isometrically to a displacement from
-zero time. -/
-private theorem stoneEvolution_dist_time_eq_sub
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H) :
-    dist (stoneEvolution A hA t x)
-        (stoneEvolution A hA s x) =
-      dist (stoneEvolution A hA (t - s) x) x := by
-  rw [show
-    stoneEvolution A hA t x =
-      stoneEvolution A hA s
-        (stoneEvolution A hA (t - s) x) by
-    simpa only [stoneEvolution_apply,
-      show s + (t - s) = t by ring] using
-      resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) x]
-  exact stoneEvolution_dist_eq A hA s _ x
-
 /-- On the generator domain, the limiting Stone evolution is continuous at every time. -/
 private theorem stoneEvolution_apply_continuous_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
@@ -128,7 +112,14 @@ private theorem stoneEvolution_apply_continuous_domain
       (stoneEvolution_apply_continuousAt_zero_domain A hA x)) ε hε
   refine ⟨δ, hδ, ?_⟩
   intro t ht
-  rw [stoneEvolution_dist_time_eq_sub A hA t s (x : H)]
+  rw [show
+    stoneEvolution A hA t (x : H) =
+      stoneEvolution A hA s
+        (stoneEvolution A hA (t - s) (x : H)) by
+    simpa only [stoneEvolution_apply,
+      show s + (t - s) = t by ring] using
+      resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)]
+  rw [stoneEvolution_dist_eq A hA s]
   have hshift : dist (t - s) 0 < δ := by
     simpa [Real.dist_eq] using ht
   simpa [stoneEvolution_zero] using hzero hshift
