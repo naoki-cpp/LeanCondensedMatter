@@ -122,16 +122,6 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
     (SchwartzSpinor1D.spinOperator ℏ axis)
     (schwartzSpin_velocity_commutator_eq_zero ℏ κ axis)
 
-/-- Compatibility theorem retaining the conventional-spin-current wording. -/
-theorem conventionalSpinCurrent_eq_velocity_comp_spin
-    (ℏ κ : ℝ) (axis : InternalSpace.PauliAxis) :
-    symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
-        (SchwartzSpinor1D.velocityOperator ℏ κ)
-        (SchwartzSpinor1D.spinOperator ℏ axis) =
-      (SchwartzSpinor1D.velocityOperator ℏ κ).comp
-        (SchwartzSpinor1D.spinOperator ℏ axis) :=
-  symmetrizedSpinCurrent_eq_velocity_comp_spin ℏ κ axis
-
 /-- The current density stored in the local representation is exactly `v S_a`. -/
 theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
