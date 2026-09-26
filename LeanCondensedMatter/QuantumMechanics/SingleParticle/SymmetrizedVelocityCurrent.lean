@@ -34,6 +34,20 @@ noncomputable def symmetrizedVelocityCurrent
     (velocity m : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
   _root_.ConservationLaw.symmetrizedProduct velocity m
 
+/-- With velocity fixed, the symmetrized current density is complex-linear in the transported
+one-body quantity. -/
+noncomputable def symmetrizedVelocityCurrentLinear
+    (velocity : V →ₗ[ℂ] V) :
+    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
+  _root_.ConservationLaw.symmetrizedProductLeftLinear V velocity
+
+@[simp]
+theorem symmetrizedVelocityCurrentLinear_apply
+    (velocity m : V →ₗ[ℂ] V) :
+    symmetrizedVelocityCurrentLinear V velocity m =
+      symmetrizedVelocityCurrent V velocity m :=
+  rfl
+
 @[simp]
 theorem symmetrizedVelocityCurrent_id
     (velocity : V →ₗ[ℂ] V) :
