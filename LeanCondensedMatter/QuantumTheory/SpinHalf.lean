@@ -22,9 +22,9 @@ namespace QuantumTheory
 namespace SpinHalf
 
 /-- Real three-dimensional physical space used to specify a spin-polarization direction. -/
-abbrev Direction := EuclideanSpace ℝ (Fin 3)
+abbrev PhysicalSpace := EuclideanSpace ℝ (Fin 3)
 
-private def pauliComponent (direction : Direction) : InternalSpace.PauliAxis → ℝ
+private def pauliComponent (direction : PhysicalSpace) : InternalSpace.PauliAxis → ℝ
   | .x => direction.ofLp 0
   | .y => direction.ofLp 1
   | .z => direction.ofLp 2
@@ -33,12 +33,12 @@ private def pauliComponent (direction : Direction) : InternalSpace.PauliAxis →
 `n`, namely `S(n) = ℏ (n · σ) / 2`.
 
 The Cartesian coordinates are consumed only inside this representation map. -/
-noncomputable def spinMatrix (ℏ : ℝ) (direction : Direction) : InternalSpace.PauliMatrix :=
+noncomputable def spinMatrix (ℏ : ℝ) (direction : PhysicalSpace) : InternalSpace.PauliMatrix :=
   (((ℏ / 2 : ℝ) : ℂ)) •
     InternalSpace.pauliCombination (fun axis => (pauliComponent direction axis : ℂ))
 
 /-- Spin measured along any real physical-space vector is represented by a Hermitian matrix. -/
-theorem spinMatrix_isHermitian (ℏ : ℝ) (direction : Direction) :
+theorem spinMatrix_isHermitian (ℏ : ℝ) (direction : PhysicalSpace) :
     (spinMatrix ℏ direction).IsHermitian := by
   have hscale : IsSelfAdjoint ((((ℏ / 2 : ℝ) : ℂ))) := by
     simp [isSelfAdjoint_iff]
