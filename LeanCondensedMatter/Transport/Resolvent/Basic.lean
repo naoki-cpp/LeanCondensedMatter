@@ -5,28 +5,23 @@ set_option linter.style.header false
 /-!
 # Dimension-independent retarded and advanced resolvents
 
-For a bounded self-adjoint Hamiltonian `H`, the common spectral parameter is first written with a
-signed imaginary regulator
+For a bounded self-adjoint Hamiltonian `H`, write the complex spectral parameter as
 
 ```text
-z(E, γ) = E + iγ,
+z(E, γ) = E + iγ.
 ```
 
-where `γ > 0` is retarded and `γ < 0` is advanced. The physical `SpectralSide` API owns the
-specialization through `γ = side.regulator η`; conventional branches take `η > 0`. Algebraic
-resolvent-set results below only require the regulator to be nonzero. Resolvent identities at an
-arbitrary signed regulator are stated directly for the representation-independent `resolvent`, so no
-second Green-operator routing wrapper is introduced. The canonical physical Green operator is
-`spectralResolvent side H E η`; conventional retarded/advanced names are public specializations.
+A positive signed regulator is retarded and a negative one is advanced. The `SpectralSide` API
+packages these two physical branches through `side.regulator η`, while the underlying algebraic
+results are stated for any nonzero signed regulator.
 
-The spectrum of a self-adjoint element of the endomorphism C⋆-algebra is real. Therefore a spectral
-parameter lies in the resolvent set whenever its imaginary regulator is nonzero, without a
-finite-dimensional assumption. Representation-independent spectrum exclusion and shifted-resolvent
-inverse algebra are owned by `Analysis.Operator.Spectral.Resolvent`; this module keeps the spectral
-parameter conventions and their transport specializations.
+Because the spectrum of a self-adjoint bounded operator is real, every spectral parameter with
+nonzero imaginary part lies in the resolvent set. This module defines the signed and side-indexed
+spectral parameters and resolvents, and proves their basic opposite-side, adjoint, inverse, and
+resolvent identities without a finite-dimensional assumption.
 
-No transport-system wrapper, trace, trace-class, finite-volume, thermodynamic-limit, or conductivity
-statement occurs in this module.
+Trace, trace-class, finite-volume, thermodynamic-limit, disorder, and conductivity statements are
+outside this module.
 -/
 
 namespace QuantumTheory
