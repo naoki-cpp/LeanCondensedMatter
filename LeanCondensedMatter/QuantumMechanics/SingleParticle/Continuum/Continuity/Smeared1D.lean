@@ -9,8 +9,8 @@ set_option linter.style.header false
 
 Under explicit local dominated-derivative hypotheses, the time derivative can be passed through the
 spatial interval integral defining a smeared probability density. Combining this differentiation
-result with the weak one-dimensional Schrödinger continuity equation yields a genuine time-derivative
-identity for the smeared density.
+result with the weak one-dimensional Schrödinger continuity equation yields a genuine
+time-derivative identity for the smeared density.
 
 The domination, measurability, and interval-integrability assumptions remain explicit. No `L²`
 Hamiltonian, Sobolev-domain, or unbounded-operator assertion is introduced here.
