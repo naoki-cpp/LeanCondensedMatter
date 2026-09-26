@@ -92,7 +92,6 @@ theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
     _root_.ConservationLaw.symmetrizedProductRightLinear,
     _root_.ConservationLaw.symmetrizedProduct,
     _root_.ConservationLaw.linearCommutator]
-  module
 
 /-- A differential representation of Heisenberg transport together with the canonical source gives
 an abstract balance law for the symmetrically localized quantity. -/
@@ -138,7 +137,6 @@ noncomputable def operatorLocalCurrentPairing
     ext α x
     simp [_root_.ConservationLaw.symmetrizedProductRightLinear,
       _root_.ConservationLaw.symmetrizedProduct]
-    module
   map_smul' := by
     intro c j
     ext α x
