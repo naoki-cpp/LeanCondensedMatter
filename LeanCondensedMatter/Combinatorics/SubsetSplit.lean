@@ -20,17 +20,20 @@ variable {α : Type*} [DecidableEq α]
 
 /-- A finite set is its subset together with the relative complement. -/
 def subsetSumSdiffEquiv {S T : Finset α} (h : T ⊆ S) : ↥T ⊕ ↥(S \ T) ≃ ↥S :=
-  Equiv.Set.sumDiffSubset (s := (T : Set α)) (t := (S : Set α)) (by
-    simpa using h)
+  (Equiv.sumCongr (Equiv.refl ↥T) (Equiv.setCongr (by
+    ext x
+    simp))).trans
+    (Equiv.Set.sumDiffSubset (s := (T : Set α)) (t := (S : Set α)) (by
+      simpa using h))
 
 @[simp]
 theorem subsetSumSdiffEquiv_inl {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
-    (subsetSumSdiffEquiv h (Sum.inl x) : α) = (x : α) :=
+    (subsetSumSdiffEquiv h (Sum.inl x) : α) = (x : α) := by
   rfl
 
 @[simp]
 theorem subsetSumSdiffEquiv_inr {S T : Finset α} (h : T ⊆ S) (x : ↥(S \ T)) :
-    (subsetSumSdiffEquiv h (Sum.inr x) : α) = (x : α) :=
+    (subsetSumSdiffEquiv h (Sum.inr x) : α) = (x : α) := by
   rfl
 
 end Combinatorics
