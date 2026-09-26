@@ -44,7 +44,7 @@ open QuantumTheory.LinearResponse
 
 noncomputable section
 
-variable {Site : Type*} [LinearOrder Site] [Fintype Site]
+variable {Site : Type*} [Fintype Site]
 
 /-- One-particle spin-1/2 observable as a real-linear function of spin space. -/
 noncomputable def spinOneBodyLinear
@@ -66,6 +66,8 @@ theorem spinOneBodyLinear_apply
     spinOneBodyLinear (Site := Site) spinScale spinComponent =
       spinOneBody (Site := Site) spinScale spinComponent :=
   rfl
+
+variable [LinearOrder Site]
 
 /-- With velocity fixed, the bounded spin-current observable is real-linear in the transported
 spin-space component. -/
