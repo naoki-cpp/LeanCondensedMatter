@@ -138,32 +138,6 @@ theorem stoneEvolution_add
   ext x
   simpa using resolventEvolutionStrongLimit_add_time_apply A hA t s x
 
-/-- Negative time is a left inverse. -/
-theorem stoneEvolution_neg_mul
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    stoneEvolution A hA (-t) *
-        stoneEvolution A hA t = 1 := by
-  rw [← stoneEvolution_add]
-  simp
-
-/-- Negative time is a right inverse. -/
-theorem stoneEvolution_mul_neg
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    stoneEvolution A hA t *
-        stoneEvolution A hA (-t) = 1 := by
-  rw [← stoneEvolution_add]
-  simp
-
-/-- The limiting evolution preserves the Hilbert-space inner product. -/
-theorem stoneEvolution_inner_map_map
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x y : H) :
-    inner ℂ (stoneEvolution A hA t x)
-        (stoneEvolution A hA t y) = inner ℂ x y := by
-  exact (LinearMap.norm_map_iff_inner_map_map
-    (stoneEvolution A hA t)).mp
-      (fun z => by
-        simpa using resolventEvolutionStrongLimit_apply_norm A hA t z) x y
-
 /-- Star/adjoint reverses time for the limiting evolution. -/
 theorem stoneEvolution_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
@@ -173,8 +147,11 @@ theorem stoneEvolution_star
   symm
   rw [ContinuousLinearMap.eq_adjoint_iff]
   intro x y
-  have hinner := stoneEvolution_inner_map_map A hA t
-    (stoneEvolution A hA (-t) x) y
+  have hinner :=
+    (LinearMap.norm_map_iff_inner_map_map (stoneEvolution A hA t)).mp
+      (fun z => by
+        simpa using resolventEvolutionStrongLimit_apply_norm A hA t z)
+      (stoneEvolution A hA (-t) x) y
   have hcancel :
       stoneEvolution A hA t
         (stoneEvolution A hA (-t) x) = x := by
@@ -189,16 +166,16 @@ theorem stoneEvolution_star_mul
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
     star (stoneEvolution A hA t) *
         stoneEvolution A hA t = 1 := by
-  rw [stoneEvolution_star]
-  exact stoneEvolution_neg_mul A hA t
+  rw [stoneEvolution_star, ← stoneEvolution_add]
+  simp
 
 /-- The limiting evolution is unitary, right-inverse form. -/
 theorem stoneEvolution_mul_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
     stoneEvolution A hA t *
         star (stoneEvolution A hA t) = 1 := by
-  rw [stoneEvolution_star]
-  exact stoneEvolution_mul_neg A hA t
+  rw [stoneEvolution_star, ← stoneEvolution_add]
+  simp
 
 end
 
