@@ -103,7 +103,7 @@ def pauliCross (u v : PauliAxis → ℂ) : PauliAxis → ℂ :=
 
 /-- The ordinary bilinear dot product on Pauli coefficients is the sum of the three semantic
 components. No complex conjugation is introduced. -/
-@[simp] theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
+theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
     dotProduct u v = u .x * v .x + u .y * v .y + u .z * v .z := by
   simp [dotProduct, sum_pauliAxis]
 
