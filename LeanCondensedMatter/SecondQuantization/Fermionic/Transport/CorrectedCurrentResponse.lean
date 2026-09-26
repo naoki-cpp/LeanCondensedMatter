@@ -9,7 +9,7 @@ set_option linter.style.header false
 This module lifts the analysis-level decomposition
 
 ```text
-J_nested = J_conv + J_corr
+J_nested = J_sym + J_corr
 J_corr(α) = 1/4 [v,[N α,m]]
 ```
 
@@ -138,7 +138,7 @@ private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
           (LatticeState Site) velocity m N (d f))
   rw [hΦ f]
 
-/-- an intrinsic exact-flux response represented by the
+/-- An intrinsic exact-flux response represented by the
 nested current decomposes into symmetrized plus localization-correction responses. -/
 theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
