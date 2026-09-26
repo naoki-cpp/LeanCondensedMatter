@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
+import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 import Mathlib.Tactic.Module
 
