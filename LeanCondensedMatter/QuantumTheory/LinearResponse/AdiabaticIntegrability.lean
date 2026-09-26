@@ -25,47 +25,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable (system : BoundedFreeSystem H)
 
-/-- Every free Schrödinger propagator is a unitary element of the bounded-operator C⋆-algebra. -/
-theorem freePropagator_mem_unitary (t : ℝ) :
-    freePropagator system t ∈ unitary (H →L[ℂ] H) := by
-  rw [Unitary.mem_iff]
-  constructor
-  · rw [star_freePropagator, freePropagator_neg_mul]
-  · rw [star_freePropagator, freePropagator_mul_neg]
-
-/-- Unitary free conjugation preserves the operator norm exactly. -/
-@[simp]
-theorem norm_heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) :
-    ‖heisenbergEvolution system A t‖ = ‖A‖ := by
-  have hU := freePropagator_mem_unitary system t
-  rw [heisenbergEvolution, ← star_freePropagator system t]
-  calc
-    ‖star (freePropagator system t) * A * freePropagator system t‖ =
-        ‖star (freePropagator system t) * A‖ :=
-      CStarRing.norm_mul_mem_unitary _ hU
-    _ = ‖A‖ :=
-      CStarRing.norm_mem_unitary_mul A (Unitary.star_mem hU)
-
-/-- The free propagator depends continuously on real time in operator norm. -/
-theorem continuous_freePropagator : Continuous (freePropagator system) := by
-  have hcomplex : Continuous (fun z : ℂ =>
-      NormedSpace.exp (z • schrodingerGenerator system)) :=
-    (differentiable_exp_smul_const ℂ (schrodingerGenerator system)).continuous
-  change Continuous
-    ((fun z : ℂ => NormedSpace.exp (z • schrodingerGenerator system)) ∘
-      Complex.ofReal)
-  exact hcomplex.comp Complex.continuous_ofReal
-
-/-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
-theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
-    Continuous (fun t : ℝ => heisenbergEvolution system A t) := by
-  have hneg : Continuous (fun t : ℝ => freePropagator system (-t)) :=
-    (continuous_freePropagator system).comp continuous_neg
-  change Continuous
-    (((fun t : ℝ => freePropagator system (-t)) * (fun _ : ℝ => A)) *
-      freePropagator system)
-  exact (hneg.mul continuous_const).mul (continuous_freePropagator system)
-
 /-- The unswitched commutator kernel with source time fixed to zero is continuous. -/
 theorem continuous_commutatorSusceptibility_timeDifference
     (expectation : NormalizedExpectation H)
