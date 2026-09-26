@@ -180,7 +180,7 @@ theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
 
 /-- Product-rule derivative of the exponential candidate, before cancellation of the free
 Hamiltonian terms. -/
-theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → ℝ)
+private theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (τ : ℝ) (lam : ℂ) :
     HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
