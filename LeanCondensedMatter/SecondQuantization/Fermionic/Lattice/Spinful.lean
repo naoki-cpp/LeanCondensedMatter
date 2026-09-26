@@ -52,7 +52,11 @@ noncomputable def internalOneBodyLinear
   map_smul' := by
     classical
     intro c S
-    simp [internalOneBody, smul_smul]
+    simp [internalOneBody]
+    rw [Finset.smul_sum]
+    apply Finset.sum_congr rfl
+    intro x hx
+    simp [smul_add, smul_smul]
 
 @[simp]
 theorem internalOneBodyLinear_apply
