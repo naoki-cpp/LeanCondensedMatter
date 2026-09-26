@@ -51,10 +51,10 @@ homomorphic normalization rules:
 - `coe_diagonalExpectationValue_right`
 - `coe_diagonalExpectationNNReal`
 - `diagonalExpectationValue_add`
-- `SchwartzSpinor1D.spatialLift_apply`
-- `SchwartzSpinor1D.internalOperator_apply`
-- `SchwartzSpinor1D.multiplicationOperator_apply`
-- `SchwartzSpinor1D.multiplicationLinear_apply`
+- `SchwartzTwoLevel1D.spatialLift_apply`
+- `SchwartzTwoLevel1D.internalOperator_apply`
+- `SchwartzTwoLevel1D.multiplicationOperator_apply`
+- `SchwartzTwoLevel1D.multiplicationLinear_apply`
 - `nonrealShiftLinearEquiv_apply`
 - `nonrealShiftInverseDomain_apply`
 - `nonrealResolvent_apply`
