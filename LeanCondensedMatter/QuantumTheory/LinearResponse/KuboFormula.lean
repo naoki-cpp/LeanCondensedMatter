@@ -220,7 +220,6 @@ private noncomputable def commutatorExpectation
     (((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)) A) -
       ((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)).flip A))
 
-@[simp]
 private theorem commutatorExpectation_apply
     (expectation : NormalizedExpectation H)
     (A X : H →L[ℂ] H) :
@@ -256,7 +255,7 @@ theorem expectation_commutator_firstVariation_eq_integral
           timeDependentPropagatorFirstVariation system V t *
             heisenbergEvolution system A t) =
         L (timeDependentPropagatorFirstVariation system V t) := by
-      simp [L]
+      simp [L, commutatorExpectation_apply]
     _ = L ((-(Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           timeDependentInteractionPerturbation system V s) := by
@@ -276,7 +275,7 @@ theorem expectation_commutator_firstVariation_eq_integral
                 timeDependentInteractionPerturbation system V s -
               timeDependentInteractionPerturbation system V s *
                 heisenbergEvolution system A t) := by
-      simp [L]
+      simp [L, commutatorExpectation_apply]
 
 /-- The general bounded Kubo formula for the pullback of an ordinary expectation by a pointwise
 Hermitian, interval-integrable perturbation. -/
