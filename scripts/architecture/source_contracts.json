@@ -289,7 +289,7 @@
       "id": "freeEntropyDependency",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy"
       ]
     },
     {
