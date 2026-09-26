@@ -280,6 +280,7 @@ noncomputable def regularizedBastinOperatorIntegrand
 omit [CompleteSpace H] in
 /-- Simultaneously reversing both current vertices leaves the canonical Bastin operator
 integrand unchanged. -/
+omit [CompleteSpace H] in
 theorem regularizedBastinOperatorIntegrand_neg_neg
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) :
