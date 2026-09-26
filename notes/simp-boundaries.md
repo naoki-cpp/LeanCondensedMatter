@@ -12,7 +12,9 @@ useful theorem. This file is intentionally asymmetric:
   rules. They remain ordinary theorems for `rw`, `simp only [...]`, or targeted `simp [...]`.
 
 The registry describes the current API rather than a migration history. Update it whenever a
-reviewed simp boundary is added, removed, or reclassified.
+reviewed simp boundary is added, removed, or reclassified. After the Yellow audit completed on
+2026-09-26, every then-current global simp declaration was either covered by a Green entry below or
+moved to the explicit-only set; future unlisted declarations are Yellow by default.
 
 ## Green: Analysis
 
@@ -86,6 +88,10 @@ homomorphic normalization rules:
 - `resolventApproximationEvolutionAtScale_zero`
 - `stoneEvolution_zero`
 - `shiftDomainMap_apply`
+- `Fredholm.diagonalDet_fintype`
+- `LinearPMap.resolventRegularizer_apply`
+- `LinearPMap.boundedSelfAdjointApproximation_apply`
+- `LinearPMap.cayleyTransform_apply`
 
 ## Green: Combinatorics
 
@@ -129,6 +135,7 @@ basis, and involution rules.
 
 - `constantCoeff_formalTraceLogOneSubSeries`
 - `constantCoeff_permutationConnectedCycleSeries`
+- `coeff_formalTraceLogOneSubSeries`
 
 ## Green: QuantumMechanics
 
@@ -150,6 +157,13 @@ All current `@[simp]` declarations in the following modules are Green:
 - `SingleParticle/Continuum/Continuity/Schwartz1D`
 - `SingleParticle/Continuum/Continuity/FiniteDimensional`
 - `SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D`
+
+The remaining reviewed declarations are also Green:
+
+- `ContinuumSchrodingerEvolution1D.norm_propagator_apply`
+- `electromagneticChargeCurrentValue1D_eq_charge_mul_probabilityCurrent`
+- `gaugeCovariantDerivativeValue1D_re`
+- `gaugeCovariantDerivativeValue1D_im`
 
 ## Green: QuantumTheory
 
@@ -189,6 +203,27 @@ The following declaration families are deliberate API normalization boundaries:
 - `finitePurePointGibbsDensityOperator_apply_basis`
 - all current simp rules in `LinearResponse/AdiabaticSwitching` except
   `not_adiabaticIntegrable_zero_rate`
+- `orderedLehmannEnergyGap`
+- `orderedLehmannTransitionWeight`
+- `orderedLehmannTransitionData_energyGap`
+- `orderedLehmannTransitionData_weight`
+- `lehmannModeExponent_re`
+- `lehmannDenominator_re`
+- `norm_timeTerm`
+- `purePointTransitionData_energyGap`
+- `purePointTransitionWeight_diag`
+- `norm_freePropagator_apply`
+- `phaseState_val`
+- `evolveState_val`
+- `evolveState_zero`
+- `evolveState_neg_after`
+- `evolveState_after_neg`
+- `evolveState_phaseState`
+- `DensityOperator.toNormalizedExpectation_apply`
+- `norm_purePointSchrodingerPhase`
+- `norm_purePointTransitionPhase`
+- `timeDependentPerturbedNormalizedExpectation_apply`
+- `norm_heisenbergEvolution`
 
 ## Green: SecondQuantization
 
@@ -258,6 +293,16 @@ The following current simp boundaries are Green:
 - `finiteCutoffContinuumBornDysonDenominator_zero_disorder`
 - `finiteCutoffContinuumBornDysonGreenOperator_zero_disorder`
 - `finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius`
+- `hamiltonian_eq_pauliCombination`
+- `AheScalingParameters.finiteBroadeningPair_sxx`
+- `AheScalingParameters.zeroBroadeningPairAtDisorder_sxx`
+- `AheScalingParameters.zeroBroadeningPair_sxx`
+- `zeroTemperatureLorentzianPoleWeight_of_occupied`
+- `zeroTemperatureLorentzianPoleWeight_of_unoccupied`
+- `zeroTemperatureLorentzianPoleWeight_at_fermi_surface`
+- `currentOperator_eq_charge_smul_velocityOperator`
+- `pauliGreenDenominator_radial_re`
+- `pauliGreenDenominator_radial_im`
 
 ## Explicit-only reviewed boundaries
 
@@ -272,3 +317,7 @@ a substantive proof step, a coordinate/representation expansion, or a nontrivial
 - `ResponseChannel.finiteTimeAdiabaticResponse_fixed` — expands a named response to an interval integral.
 - `finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re` — explicit logarithmic boundary formula.
 - `finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im` — explicit boundary-value formula.
+- `PowerSeries.coeff_one_logOf` — derived order-one logarithm identity on the generic Mathlib power-series API.
+- `AheScalingParameters.finiteBroadeningPair_sxy` — uses rotational closure to identify the Hall projection with ordered `xy`.
+- `AheScalingParameters.zeroBroadeningPairAtDisorder_sxy` — uses the proved Hall-projection identity at the zero-broadening boundary.
+- `AheScalingParameters.zeroBroadeningPair_sxy` — stored-disorder specialization of that Hall-coordinate identification.

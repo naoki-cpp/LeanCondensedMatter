@@ -85,7 +85,6 @@ theorem AheScalingParameters.finiteBroadeningPair_sxx
 
 /-- Rotational closure identifies the finite-broadening Hall projection with ordered `xy`, so the
 scaling coordinate has an explicit component orientation. -/
-@[simp]
 theorem AheScalingParameters.finiteBroadeningPair_sxy
     (params : AheScalingParameters) (broadening : ℝ) :
     (params.finiteBroadeningPair broadening).sxy =
@@ -115,7 +114,6 @@ theorem AheScalingParameters.zeroBroadeningPairAtDisorder_sxx
 
 /-- The zero-broadening Hall scaling coordinate at arbitrary disorder strength is the normalized
 ordered `xy` boundary, using the proved Hall projection identity. -/
-@[simp]
 theorem AheScalingParameters.zeroBroadeningPairAtDisorder_sxy
     (params : AheScalingParameters) (disorderStrength : ℝ) :
     (params.zeroBroadeningPairAtDisorder disorderStrength).sxy =
@@ -140,7 +138,6 @@ theorem AheScalingParameters.zeroBroadeningPair_sxx
 
 /-- At the stored disorder strength, the zero-broadening Hall scaling coordinate is the normalized
 ordered `xy` boundary. -/
-@[simp]
 theorem AheScalingParameters.zeroBroadeningPair_sxy
     (params : AheScalingParameters) :
     params.zeroBroadeningPair.sxy =
@@ -148,7 +145,8 @@ theorem AheScalingParameters.zeroBroadeningPair_sxy
         (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
           params.e params.v params.m params.fermiEnergy params.disorderStrength params.hbar
           params.pMax) := by
-  simp [AheScalingParameters.zeroBroadeningPair]
+  simpa only [AheScalingParameters.zeroBroadeningPair] using
+    AheScalingParameters.zeroBroadeningPairAtDisorder_sxy params params.disorderStrength
 
 /-- At fixed positive disorder, the normalized longitudinal coordinate converges componentwise to
 the zero-broadening boundary. -/
@@ -199,7 +197,9 @@ theorem AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero
   have hnormalized :=
     h.const_mul
       (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
-  simpa [AheScalingParameters.normalizedComplexConductivity,
+  simpa [AheScalingParameters.finiteBroadeningPair_sxy,
+    AheScalingParameters.zeroBroadeningPair_sxy,
+    AheScalingParameters.normalizedComplexConductivity,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary,
     FixedCutoffMetallicBornRegime.ofScalarBoundaryData]
     using hnormalized
