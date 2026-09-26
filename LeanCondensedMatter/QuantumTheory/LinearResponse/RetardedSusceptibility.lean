@@ -32,48 +32,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable (system : BoundedFreeSystem H)
 
-/-- Applying free Heisenberg evolution successively adds the two time parameters. -/
-@[simp]
-theorem heisenbergEvolution_heisenbergEvolution
-    (A : H →L[ℂ] H) (t s : ℝ) :
-    heisenbergEvolution system (heisenbergEvolution system A t) s =
-      heisenbergEvolution system A (t + s) := by
-  change
-    freePropagator system (-s) *
-        (freePropagator system (-t) * A * freePropagator system t) *
-        freePropagator system s =
-      freePropagator system (-(t + s)) * A * freePropagator system (t + s)
-  rw [show -(t + s) = -s + -t by ring, freePropagator_add, freePropagator_add]
-  noncomm_ring
-
-/-- Free Heisenberg evolution preserves operator multiplication. -/
-@[simp]
-theorem heisenbergEvolution_mul
-    (A B : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system (A * B) t =
-      heisenbergEvolution system A t * heisenbergEvolution system B t := by
-  change
-    freePropagator system (-t) * (A * B) * freePropagator system t =
-      (freePropagator system (-t) * A * freePropagator system t) *
-        (freePropagator system (-t) * B * freePropagator system t)
-  calc
-    _ = freePropagator system (-t) * A * 1 * B * freePropagator system t := by
-      noncomm_ring
-    _ = freePropagator system (-t) * A *
-        (freePropagator system t * freePropagator system (-t)) * B *
-          freePropagator system t := by
-      rw [freePropagator_mul_neg]
-    _ = _ := by
-      noncomm_ring
-
-/-- Free Heisenberg evolution preserves operator subtraction. -/
-@[simp]
-theorem heisenbergEvolution_sub
-    (A B : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system (A - B) t =
-      heisenbergEvolution system A t - heisenbergEvolution system B t := by
-  simp [heisenbergEvolution, mul_sub, sub_mul]
-
 /-- The two-time commutator susceptibility before imposing causal support. -/
 noncomputable def commutatorSusceptibility
     (expectation : NormalizedExpectation H)
