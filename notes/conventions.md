@@ -56,6 +56,15 @@ General cautions distilled from past sessions; detailed incident records live in
 - **Generalize canonically.** Preserve an older specialized declaration only when it expresses a distinct theorem or usable abstraction; otherwise replace it with the general declaration and migrate callers.
 - **Name recurring proof idioms.** When the same proof block appears in more than one declaration, extract it as a named lemma in the most upstream file that can state it.
 
+### Simplification policy
+
+- **Treat `@[simp]` as a normal-form declaration, not a convenience annotation.** Add a theorem to the global simp set only when it describes the canonical form of the API and is safe to apply implicitly at essentially every consumer.
+- **Use `@[simp]` for canonical computation rules and API boundaries.** Typical cases are constructor equations, projections and application rules, zero/one/identity and involution laws, canonical membership characterizations, vacuum or distinguished-state identities, project-owned wrappers reducing to their intended underlying form, and standard homomorphic rules whose right-hand side is the stable normal form.
+- **Do not use `@[simp]` merely because a theorem is useful.** Leave commutativity/associativity and other reorderings, decomposition or representation theorems, long coordinate expansions, analytic or convergence results, rewrites to an equally natural representation, and lemmas introduced only to shorten one proof out of the global simp set. Apply them explicitly with `rw`, `simp [lemma]`, or another targeted tactic.
+- **Default against a global simp rule when the normal form is ambiguous.** A candidate should have a clearly preferred right-hand side, remove or normalize at least one layer of project-specific structure, and remain desirable if it fires silently in unrelated downstream proofs. If any of these is unclear, keep the theorem untagged.
+- **Use local simplification deliberately.** Use ordinary `simp` when a proof intentionally relies on the public simp API, `simp only [...]` when the proof should pin the exact rewrite set, and `rw` when applying a mathematically substantive transformation. Repeated `simp [largeDefinition]` at consumers is a signal to inspect whether a smaller canonical evaluation lemma or a better abstraction boundary is missing.
+- **A specialized theorem may be retained as a deliberate simp boundary.** Even when a generic upstream theorem proves it, a domain-level specialization may remain public and tagged `@[simp]` when it is the canonical normalization rule for that API. This is an API boundary, not a compatibility wrapper, and should not justify parallel noncanonical aliases.
+
 ## Lean workflow
 
 - Never run Lean against the entire project unless explicitly necessary.
