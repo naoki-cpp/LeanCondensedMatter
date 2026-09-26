@@ -7,19 +7,18 @@ operator is diagonal in the occupation basis. The mode occupation is
 fᵢ = 1 / (exp(β εᵢ) + 1).
 ```
 
-The implementation first identifies the density-state eigenvalue of an occupation configuration
-`n : Finset Mode` with its normalized Boltzmann probability. The diagonal entropy API then gives
+The state is the generic finite pure-point Gibbs density operator specialized to the occupation
+basis. The generic pure-point entropy theorem supplies
 
 ```text
-S(ρfree) = ∑ₙ -pₙ log pₙ.
+S = β E + log Z.
 ```
 
-The proof separately establishes
+The fermionic specialization then establishes the mode factorization
 
 ```text
 Z = ∏ᵢ (1 + exp(-β εᵢ)),
-E = ∑ᵢ εᵢ fᵢ,
-S = β E + log Z.
+E = ∑ᵢ εᵢ fᵢ.
 ```
 
 Combining these identities yields the binary-entropy decomposition
