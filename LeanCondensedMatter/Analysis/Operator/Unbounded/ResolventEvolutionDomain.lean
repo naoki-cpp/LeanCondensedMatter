@@ -37,9 +37,8 @@ private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
 private theorem I_im_ne_zero : (I : ℂ).im ≠ 0 := by
   norm_num
 
-/-- Every bounded self-adjoint resolvent approximant commutes with every nonreal resolvent of the
-original self-adjoint operator. -/
-theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
+/-- The bounded self-adjoint approximant commutes with every nonreal resolvent. -/
+private theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
     (r : ℝ) (hr : 0 < r) (z : ℂ) (hz : z.im ≠ 0) :
     Commute (boundedSelfAdjointApproximation A hA r hr)
@@ -52,28 +51,8 @@ theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
   · exact nonrealResolvent_commute A hA (star ((r : ℂ) * I)) z
       (star_imaginaryParameter_im_ne_zero hr) hz
 
-/-- Exponentiating a bounded resolvent approximant preserves its commutation with every nonreal
-resolvent. -/
-theorem resolventApproximationEvolution_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r : ℝ) (hr : 0 < r) (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (resolventApproximationEvolution A hA r hr t)
-      (nonrealResolvent A hA z hz) := by
-  unfold resolventApproximationEvolution boundedUnitaryEvolution
-  exact
-    ((boundedSelfAdjointApproximation_nonrealResolvent_commute A hA r hr z hz).smul_left _).exp_left
-
-/-- The totalized positive-scale bounded evolution commutes with every nonreal resolvent. -/
-theorem resolventApproximationEvolutionAtScale_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (resolventApproximationEvolutionAtScale A hA r t)
-      (nonrealResolvent A hA z hz) := by
-  unfold resolventApproximationEvolutionAtScale
-  exact resolventApproximationEvolution_nonrealResolvent_commute A hA _ _ t z hz
-
 /-- Nonreal resolvent commutation passes through the vectorwise strong limit. -/
-theorem stoneEvolution_nonrealResolvent_apply
+private theorem stoneEvolution_nonrealResolvent_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
     (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) (y : H) :
     stoneEvolution A hA t (nonrealResolvent A hA z hz y) =
@@ -93,19 +72,16 @@ theorem stoneEvolution_nonrealResolvent_apply
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
   exact tendsto_nhds_unique
     (hleft.congr' (Eventually.of_forall fun r => by
-      have happ := congrArg (fun T : H →L[ℂ] H => T y)
-        (resolventApproximationEvolutionAtScale_nonrealResolvent_commute A hA r t z hz).eq
+      have hcomm :
+          Commute (resolventApproximationEvolutionAtScale A hA r t)
+            (nonrealResolvent A hA z hz) := by
+        unfold resolventApproximationEvolutionAtScale
+          resolventApproximationEvolution boundedUnitaryEvolution
+        exact
+          ((boundedSelfAdjointApproximation_nonrealResolvent_commute A hA _ _ z hz).smul_left _).exp_left
+      have happ := congrArg (fun T : H →L[ℂ] H => T y) hcomm.eq
       simpa using happ))
     hright
-
-/-- Operator form of nonreal resolvent commutation for the limiting Stone evolution. -/
-theorem stoneEvolution_nonrealResolvent_mul_comm
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    stoneEvolution A hA t * nonrealResolvent A hA z hz =
-      nonrealResolvent A hA z hz * stoneEvolution A hA t := by
-  ext y
-  simpa using stoneEvolution_nonrealResolvent_apply A hA t z hz y
 
 /-- The limiting Stone evolution preserves the original self-adjoint operator domain. -/
 theorem stoneEvolution_mem_domain
