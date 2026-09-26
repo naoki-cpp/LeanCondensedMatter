@@ -102,12 +102,7 @@ theorem stoneEvolution_apply_hasDerivAt_zero
       ((-I : ℂ) • A x) 0 := by
   rw [hasDerivAt_iff_tendsto_slope_zero]
   simp only [zero_add]
-  have hzero :
-      stoneEvolution A hA 0 (x : H) = (x : H) := by
-    have h := congrArg (fun T : H →L[ℂ] H => T (x : H))
-      (stoneEvolution_zero A hA)
-    simpa using h
-  rw [hzero]
+  simp only [stoneEvolution_zero, ContinuousLinearMap.one_apply]
   rw [Metric.tendsto_nhds]
   intro ε hε
   have hε3 : 0 < ε / 3 := by positivity
@@ -120,15 +115,8 @@ theorem stoneEvolution_apply_hasDerivAt_zero
       HasDerivAt
         (fun t : ℝ => resolventApproximationEvolution A hA r hr t (x : H))
         ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H)) 0 := by
-    have h := resolventApproximationEvolution_apply_hasDerivAt A hA r hr 0 (x : H)
-    have hvalue :
-        ((resolventApproximationEvolution A hA r hr 0 *
-            ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr)) (x : H)) =
-          ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H)) := by
-      rw [resolventApproximationEvolution_zero, one_mul]
-      rfl
-    rw [hvalue] at h
-    exact h
+    simpa [resolventApproximationEvolution_zero] using
+      resolventApproximationEvolution_apply_hasDerivAt A hA r hr 0 (x : H)
   have hslope := hderiv.tendsto_slope_zero
   have happ := (Metric.tendsto_nhds.mp hslope) (ε / 3) hε3
   filter_upwards [happ, self_mem_nhdsWithin] with t htapp htmem
@@ -148,12 +136,7 @@ theorem stoneEvolution_apply_hasDerivAt_zero
           (t⁻¹ • (resolventApproximationEvolution A hA r hr t (x : H) - (x : H)))
           ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H)) <
         ε / 3 := by
-    have hzero_r :
-        resolventApproximationEvolution A hA r hr 0 (x : H) = (x : H) := by
-      have h := congrArg (fun T : H →L[ℂ] H => T (x : H))
-        (resolventApproximationEvolution_zero A hA r hr)
-      simpa using h
-    simpa [hzero_r] using htapp
+    simpa [resolventApproximationEvolution_zero] using htapp
   have hthird :
       dist ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H))
           ((-I : ℂ) • A x) < ε / 3 := by
