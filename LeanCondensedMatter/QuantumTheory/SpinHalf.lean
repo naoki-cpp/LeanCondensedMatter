@@ -29,13 +29,35 @@ private def pauliComponent (direction : PhysicalSpace) : InternalSpace.PauliAxis
   | .y => direction.ofLp 1
   | .z => direction.ofLp 2
 
-/-- Spin-1/2 matrix measured along a physical-space vector
-`n`, namely `S(n) = ℏ (n · σ) / 2`.
+/-- Real-linear spin-1/2 vector observable on physical space,
+`S(n) = ℏ (n · σ) / 2`.
 
-The Cartesian coordinates are consumed only inside this representation map. -/
-noncomputable def spinMatrix (ℏ : ℝ) (direction : PhysicalSpace) : InternalSpace.PauliMatrix :=
-  (((ℏ / 2 : ℝ) : ℂ)) •
-    InternalSpace.pauliCombination (fun axis => (pauliComponent direction axis : ℂ))
+The Cartesian coordinates are consumed only inside this representation map; callers supply the
+physical vector itself. -/
+noncomputable def spinMatrix (ℏ : ℝ) :
+    PhysicalSpace →ₗ[ℝ] InternalSpace.PauliMatrix where
+  toFun := fun direction =>
+    (((ℏ / 2 : ℝ) : ℂ)) •
+      InternalSpace.pauliCombination (fun axis => (pauliComponent direction axis : ℂ))
+  map_add' := by
+    intro u v
+    have hcoeff :
+        (fun axis => (pauliComponent (u + v) axis : ℂ)) =
+          (fun axis => (pauliComponent u axis : ℂ)) +
+            (fun axis => (pauliComponent v axis : ℂ)) := by
+      funext axis
+      cases axis <;> simp [pauliComponent]
+    rw [hcoeff, InternalSpace.pauliCombination_add, smul_add]
+  map_smul' := by
+    intro c u
+    have hcoeff :
+        (fun axis => (pauliComponent (c • u) axis : ℂ)) =
+          (c : ℂ) • (fun axis => (pauliComponent u axis : ℂ)) := by
+      funext axis
+      cases axis <;> simp [pauliComponent]
+    rw [hcoeff, InternalSpace.pauliCombination_smul]
+    ext i j
+    simp [smul_smul, mul_comm]
 
 /-- Spin measured along any real physical-space vector is represented by a Hermitian matrix. -/
 theorem spinMatrix_isHermitian (ℏ : ℝ) (direction : PhysicalSpace) :
