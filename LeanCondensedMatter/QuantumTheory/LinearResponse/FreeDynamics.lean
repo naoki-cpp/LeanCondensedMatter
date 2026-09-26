@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.SpecialFunctions.Exponential
+import Mathlib.Algebra.Star.UnitaryStarAlgAut
 
 set_option linter.style.header false
 
@@ -135,6 +136,16 @@ theorem freePropagator_mul_star (t : ℝ) :
   rw [star_freePropagator]
   exact freePropagator_mul_neg system t
 
+/-- Every free Schrödinger propagator is a unitary element of the bounded-operator C⋆-algebra. -/
+theorem freePropagator_mem_unitary (t : ℝ) :
+    freePropagator system t ∈ unitary (H →L[ℂ] H) := by
+  rw [Unitary.mem_iff]
+  exact ⟨star_mul_freePropagator system t, freePropagator_mul_star system t⟩
+
+/-- The free propagator bundled as a unitary element. -/
+noncomputable def freePropagatorUnitary (t : ℝ) : unitary (H →L[ℂ] H) :=
+  ⟨freePropagator system t, freePropagator_mem_unitary system t⟩
+
 /-- Free Heisenberg evolution of a bounded operator. -/
 noncomputable def heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
   freePropagator system (-t) * A * freePropagator system t
@@ -143,6 +154,80 @@ noncomputable def heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) : H →L[ℂ
 theorem heisenbergEvolution_zero (A : H →L[ℂ] H) :
     heisenbergEvolution system A 0 = A := by
   simp [heisenbergEvolution]
+
+/-- Free Heisenberg evolution is conjugation by the negative-time propagator, expressed through
+Mathlib's canonical unitary star-algebra automorphism. -/
+theorem heisenbergEvolution_eq_conjStarAlgAut (A : H →L[ℂ] H) (t : ℝ) :
+    heisenbergEvolution system A t =
+      Unitary.conjStarAlgAut ℂ (H →L[ℂ] H) (freePropagatorUnitary system (-t)) A := by
+  simp [heisenbergEvolution, freePropagatorUnitary, star_freePropagator]
+
+/-- Applying free Heisenberg evolution successively adds the two time parameters. -/
+@[simp]
+theorem heisenbergEvolution_heisenbergEvolution
+    (A : H →L[ℂ] H) (t s : ℝ) :
+    heisenbergEvolution system (heisenbergEvolution system A t) s =
+      heisenbergEvolution system A (t + s) := by
+  change
+    freePropagator system (-s) *
+        (freePropagator system (-t) * A * freePropagator system t) *
+        freePropagator system s =
+      freePropagator system (-(t + s)) * A * freePropagator system (t + s)
+  rw [show -(t + s) = -s + -t by ring, freePropagator_add, freePropagator_add]
+  noncomm_ring
+
+/-- Free Heisenberg evolution preserves operator multiplication. -/
+@[simp]
+theorem heisenbergEvolution_mul
+    (A B : H →L[ℂ] H) (t : ℝ) :
+    heisenbergEvolution system (A * B) t =
+      heisenbergEvolution system A t * heisenbergEvolution system B t := by
+  rw [heisenbergEvolution_eq_conjStarAlgAut, heisenbergEvolution_eq_conjStarAlgAut,
+    heisenbergEvolution_eq_conjStarAlgAut]
+  exact map_mul _ A B
+
+/-- Free Heisenberg evolution preserves operator subtraction. -/
+@[simp]
+theorem heisenbergEvolution_sub
+    (A B : H →L[ℂ] H) (t : ℝ) :
+    heisenbergEvolution system (A - B) t =
+      heisenbergEvolution system A t - heisenbergEvolution system B t := by
+  rw [heisenbergEvolution_eq_conjStarAlgAut, heisenbergEvolution_eq_conjStarAlgAut,
+    heisenbergEvolution_eq_conjStarAlgAut]
+  exact map_sub _ A B
+
+/-- Unitary free conjugation preserves the operator norm exactly. -/
+@[simp]
+theorem norm_heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) :
+    ‖heisenbergEvolution system A t‖ = ‖A‖ := by
+  have hU := freePropagator_mem_unitary system t
+  rw [heisenbergEvolution, ← star_freePropagator system t]
+  calc
+    ‖star (freePropagator system t) * A * freePropagator system t‖ =
+        ‖star (freePropagator system t) * A‖ :=
+      CStarRing.norm_mul_mem_unitary _ hU
+    _ = ‖A‖ :=
+      CStarRing.norm_mem_unitary_mul A (Unitary.star_mem hU)
+
+/-- The free propagator depends continuously on real time in operator norm. -/
+theorem continuous_freePropagator : Continuous (freePropagator system) := by
+  have hcomplex : Continuous (fun z : ℂ =>
+      NormedSpace.exp (z • schrodingerGenerator system)) :=
+    (differentiable_exp_smul_const ℂ (schrodingerGenerator system)).continuous
+  change Continuous
+    ((fun z : ℂ => NormedSpace.exp (z • schrodingerGenerator system)) ∘
+      Complex.ofReal)
+  exact hcomplex.comp Complex.continuous_ofReal
+
+/-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
+theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
+    Continuous (fun t : ℝ => heisenbergEvolution system A t) := by
+  have hneg : Continuous (fun t : ℝ => freePropagator system (-t)) :=
+    (continuous_freePropagator system).comp continuous_neg
+  change Continuous
+    (((fun t : ℝ => freePropagator system (-t)) * (fun _ : ℝ => A)) *
+      freePropagator system)
+  exact (hneg.mul continuous_const).mul (continuous_freePropagator system)
 
 /-- Free Heisenberg evolution preserves self-adjointness. -/
 theorem isSelfAdjoint_heisenbergEvolution
