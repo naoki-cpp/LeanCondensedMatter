@@ -4093,7 +4093,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add",
     "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
@@ -25998,6 +25998,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_2} {X : Type u_3} {Y : Type u_4} [Nonempty ι] [inst : SemilatticeSup ι] [inst_1 : PseudoMetricSpace X]\n  [inst_2 : PseudoMetricSpace Y] (F : ι → X → Y) {s : Set X},\n  Dense s → (∀ (i : ι), Isometry (F i)) → (∀ x ∈ s, CauchySeq fun i => F i x) → ∀ (x : X), CauchySeq fun i => F i x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.cauchySeq_apply_of_isometry_of_dense",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
+    "externalAxioms": [],
+    "docString": "A family of isometries that is pointwise Cauchy on a dense set is pointwise Cauchy\neverywhere. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0),\n  ContinuousLinearMap.adjoint (A.cayleyTransform hA z hz) = A.cayleyTransform hA (star z) ⋯",
     "standardAxioms": [
       "Classical.choice",
@@ -27348,7 +27387,7 @@
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
       "LinearPMap.norm_resolventRegularizer_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -27613,20 +27652,64 @@
     "name": "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
     "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
     "externalAxioms": [],
-    "docString": "For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence\nas the real scale tends to `+∞`. ",
+    "docString": "For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence\nas the real scale tends to positive infinity. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
     ],
     "dependencies": [
-      "LinearPMap.resolventApproximationEvolution_cauchy",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos"
+      "LinearPMap.cauchySeq_apply_of_isometry_of_dense",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+      "LinearPMap.resolventApproximationEvolution_dist_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : ↥A.domain),\n  CauchySeq fun r => (A.resolventApproximationEvolutionAtScale hA r t) ↑x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
+    "externalAxioms": [],
+    "docString": "On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at\npositive infinity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "dependencies": [
+      "LinearPMap.resolventApproximationEvolution_domain_cauchy",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -27665,7 +27748,7 @@
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
       "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -27749,7 +27832,7 @@
     ],
     "dependencies": [
       "LinearPMap.resolventApproximationEvolution_nonrealResolvent_commute",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -27791,7 +27874,7 @@
     ],
     "dependencies": [
       "LinearPMap.resolventApproximationEvolution_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -27891,48 +27974,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (t ε : ℝ),\n  0 < ε →\n    ∃ R,\n      0 < R ∧\n        ∀ (r s : ℝ),\n          R ≤ r →\n            R ≤ s →\n              ∀ (hr : 0 < r) (hs : 0 < s),\n                ‖(A.resolventApproximationEvolution hA r hr t) x - (A.resolventApproximationEvolution hA s hs t) x‖ < ε",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_cauchy",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
-    "externalAxioms": [],
-    "docString": "The resolvent-approximating evolutions are strongly Cauchy on every vector, not only on the\noriginal generator domain. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolution_dist_eq",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r), Continuous (A.resolventApproximationEvolution hA r hr)",
     "standardAxioms": [
@@ -27990,7 +28031,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventApproximationEvolution_cauchy"
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
     ],
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
@@ -27999,7 +28040,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolution_cauchy"
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -28032,7 +28073,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventApproximationEvolution_cauchy"
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
     ],
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
@@ -28042,7 +28083,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolution_cauchy"
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -28320,7 +28361,7 @@
     "dependencies": [
       "LinearPMap.resolventApproximationEvolution_add",
       "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -28759,7 +28800,7 @@
     "dependents": [
       "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
       "LinearPMap.stoneEvolution_add",
-      "LinearPMap.stoneEvolution_apply_continuousAt",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
       "LinearPMap.stoneEvolution_dist_eq",
       "LinearPMap.stoneEvolution_dist_time_eq_sub",
       "LinearPMap.stoneEvolution_inner_map_map",
@@ -28775,7 +28816,7 @@
     "compiledConsumers": [
       "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
       "LinearPMap.stoneEvolution_add",
-      "LinearPMap.stoneEvolution_apply_continuousAt",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
       "LinearPMap.stoneEvolution_dist_eq",
       "LinearPMap.stoneEvolution_dist_time_eq_sub",
       "LinearPMap.stoneEvolution_inner_map_map",
@@ -28796,7 +28837,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H), Continuous fun t => (A.stoneEvolution hA t) x",
     "standardAxioms": [
       "Classical.choice",
@@ -28815,9 +28856,52 @@
     "docString": "The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_apply_continuousAt",
+      "LinearPMap.stoneEvolution_apply_continuousAt_zero"
+    ],
+    "dependencies": [
+      "LinearPMap.stoneEvolution_joint_continuous"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_apply_continuousAt",
+      "LinearPMap.stoneEvolution_apply_continuousAt_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ), ContinuousAt (fun t => (A.stoneEvolution hA t) x) s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.stoneEvolution_apply_continuousAt",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "externalAxioms": [],
+    "docString": "The limiting evolution is strongly continuous at every time, for every vector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "LinearPMap.stoneEvolution_apply_continuousAt"
+      "LinearPMap.stoneEvolution_apply_continuous"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28833,51 +28917,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) (s : ℝ), ContinuousAt (fun t => (A.stoneEvolution hA t) x) s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.stoneEvolution_apply_continuousAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
-    "externalAxioms": [],
-    "docString": "The limiting evolution is strongly continuous at every time, for every vector. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.stoneEvolution_apply_continuous"
-    ],
-    "dependencies": [
-      "LinearPMap.stoneEvolution_apply",
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero",
-      "LinearPMap.stoneEvolution_dist_time_eq_sub",
-      "LinearPMap.stoneEvolution_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_continuous"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (y : H), ContinuousAt (fun t => (A.stoneEvolution hA t) y) 0",
     "standardAxioms": [
       "Classical.choice",
@@ -28885,7 +28925,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -28896,19 +28936,14 @@
     "docString": "The limiting evolution is continuous at time zero on every Hilbert-space vector. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.stoneEvolution_apply_continuousAt"
-    ],
+    "dependents": [],
     "dependencies": [
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
-      "LinearPMap.stoneEvolution_dist_eq"
+      "LinearPMap.stoneEvolution_apply_continuous"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_continuousAt"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28939,7 +28974,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero"
+      "LinearPMap.stoneEvolution_apply_continuous_domain"
     ],
     "dependencies": [
       "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
@@ -28948,7 +28983,51 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero"
+      "LinearPMap.stoneEvolution_apply_continuous_domain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain), Continuous fun t => (A.stoneEvolution hA t) ↑x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.stoneEvolution_apply_continuous_domain",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "externalAxioms": [],
+    "docString": "On the generator domain, the limiting Stone evolution is continuous at every time. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_joint_continuous"
+    ],
+    "dependencies": [
+      "LinearPMap.stoneEvolution_apply",
+      "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
+      "LinearPMap.stoneEvolution_dist_time_eq_sub",
+      "LinearPMap.stoneEvolution_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_joint_continuous"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29117,8 +29196,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero",
-      "LinearPMap.stoneEvolution_dist_time_eq_sub"
+      "LinearPMap.stoneEvolution_dist_time_eq_sub",
+      "LinearPMap.stoneEvolution_joint_continuous"
     ],
     "dependencies": [
       "LinearPMap.resolventEvolutionStrongLimit_apply_norm",
@@ -29127,8 +29206,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero",
-      "LinearPMap.stoneEvolution_dist_time_eq_sub"
+      "LinearPMap.stoneEvolution_dist_time_eq_sub",
+      "LinearPMap.stoneEvolution_joint_continuous"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -29161,7 +29240,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.stoneEvolution_apply_continuousAt"
+      "LinearPMap.stoneEvolution_apply_continuous_domain"
     ],
     "dependencies": [
       "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
@@ -29171,7 +29250,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_continuousAt"
+      "LinearPMap.stoneEvolution_apply_continuous_domain"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29214,6 +29293,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.stoneEvolution_star"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A), Continuous fun p => (A.stoneEvolution hA p.2) p.1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.stoneEvolution_joint_continuous",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "externalAxioms": [],
+    "docString": "The limiting Stone evolution is jointly continuous in the vector and time variables.\nContinuity on the dense generator domain extends to the whole Hilbert space because every time\nslice is an isometry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_apply_continuous"
+    ],
+    "dependencies": [
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
+      "LinearPMap.stoneEvolution_dist_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_apply_continuous"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29585,8 +29706,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.stoneEvolution_apply_continuousAt",
       "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "LinearPMap.stoneEvolution_mul_neg",
       "LinearPMap.stoneEvolution_neg_mul"
@@ -29598,8 +29719,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_continuousAt",
       "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "LinearPMap.stoneEvolution_mul_neg",
       "LinearPMap.stoneEvolution_neg_mul"
@@ -40680,13 +40801,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40706,8 +40827,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -40719,17 +40840,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41268,9 +41387,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_sum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries",
@@ -41280,9 +41399,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_sum",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -43149,89 +43268,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension system data A B omega eta =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
-    "externalAxioms": [],
-    "docString": "The total extension is globally equal to the finite Lehmann resolvent sum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta),\n  QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension system data A B omega eta =\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta hη",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
-    "externalAxioms": [],
-    "docString": "On the physical positive-rate domain, the total extension is the actual switched\nsusceptibility. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ (kernel : ℝ → ℂ) (ω η : ℝ), QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform kernel ω η 0 = 0",
     "standardAxioms": [
@@ -43288,9 +43324,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_physical_of_pos",
-      "QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits",
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate"
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -43313,7 +43348,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -43326,58 +43361,16 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.BoundedFreeSystem.hbar_pos",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
-    "externalAxioms": [],
-    "docString": "The physical positive-rate susceptibility has both local nonresonant iterated limits after\npassing to its canonical total extension.  Both orders have the same zero-rate static Lehmann\nvalue. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -43912,8 +43905,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_zero_rate_ne_zero"
@@ -43921,8 +43914,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -44480,76 +44473,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {F : ℝ → ℝ → ℝ → ℂ} {fixedRate : ℝ → ℝ → ℂ} {L : ℂ},\n  (∀ (omega eta : ℝ), 0 < eta → Filter.Tendsto (fun T => F T omega eta) Filter.atTop (nhds (fixedRate omega eta))) →\n    QuantumTheory.LinearResponse.HasAdiabaticThenStaticLimit fixedRate L →\n      QuantumTheory.LinearResponse.HasLongTimeThenAdiabaticThenStaticLimit F L",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.hasLongTimeThenAdiabaticThenStaticLimit_of_components",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
-    "externalAxioms": [],
-    "docString": "Analogous constructor for the adiabatic-then-static order. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {F : ℝ → ℝ → ℝ → ℂ} {fixedRate : ℝ → ℝ → ℂ} {L : ℂ},\n  (∀ (omega eta : ℝ), 0 < eta → Filter.Tendsto (fun T => F T omega eta) Filter.atTop (nhds (fixedRate omega eta))) →\n    QuantumTheory.LinearResponse.HasStaticThenAdiabaticLimit fixedRate L →\n      QuantumTheory.LinearResponse.HasLongTimeThenStaticThenAdiabaticLimit F L",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.hasLongTimeThenStaticThenAdiabaticLimit_of_components",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
-    "externalAxioms": [],
-    "docString": "The two orders are intentionally separate propositions; providing one does not silently provide\nthe other.  This constructor records the long-time theorem together with an independently proved\nstatic-then-adiabatic limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (hbar eta energyGap : ℝ) (weight : ℂ),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit\n      (fun omega => QuantumTheory.LinearResponse.lehmannTerm hbar omega eta energyGap weight)\n      (QuantumTheory.LinearResponse.lehmannTerm hbar 0 eta energyGap weight)",
     "standardAxioms": [
@@ -44570,7 +44493,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero"
@@ -44578,7 +44501,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -44611,7 +44534,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_zero_rate_ne_zero"
@@ -44619,7 +44542,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -83543,7 +83466,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.create_annihilate_basisState_same",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
@@ -91607,8 +91530,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_blockVertex",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
@@ -135469,6 +135392,58 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (r : ℝ), 0 < LinearPMap.positiveApproximationScale✝ r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
+      "LinearPMap.resolventApproximationEvolutionAtScale_nonrealResolvent_commute",
+      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "LinearPMap.resolventApproximationEvolutionAtScale",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
+      "LinearPMap.resolventApproximationEvolutionAtScale_nonrealResolvent_commute",
+      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+    ],
+    "compiledConsumerCount": 8,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "Complex.I.im ≠ 0",
     "standardAxioms": [
@@ -135785,56 +135760,6 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), 0 < LinearPMap.positiveApproximationScale✝ r",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.resolventApproximationEvolutionAtScale_nonrealResolvent_commute",
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.resolventApproximationEvolutionAtScale",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.resolventApproximationEvolutionAtScale_nonrealResolvent_commute",
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
-    ],
-    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145365,14 +145290,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
     "externalAxioms": [],
     "docString": "Near zero frequency, every finite static-nonresonant sum admits regulator removal. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
@@ -145380,7 +145305,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -145406,7 +145331,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
     "externalAxioms": [],
     "docString": "Both local iterated limits exist and agree for a finite static-nonresonant family. ",
@@ -145416,10 +145341,12 @@
       "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum"
+      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
+      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
+      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm",
+      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
+      "QuantumTheory.LinearResponse.hasStaticLimit_unswitchedLehmannTerm",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -145438,7 +145365,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar omega : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  (∀ j ∈ s, (transition j).weight = 0 ∨ omega + (transition j).energyGap / hbar ≠ 0) →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit (fun eta => ∑ j ∈ s, (transition j).frequencyTerm omega eta)\n      (∑ j ∈ s, (transition j).unswitchedTerm omega)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B omega eta =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145450,23 +145377,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_finiteLehmannLimitSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
     "externalAxioms": [],
-    "docString": "Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. ",
+    "docString": "The total extension is globally equal to the finite Lehmann resolvent sum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
-      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -145480,77 +145406,35 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar eta : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit (fun omega => ∑ j ∈ s, (transition j).frequencyTerm omega eta)\n      (∑ j ∈ s, (transition j).frequencyTerm 0 eta)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteLehmannLimitSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
     "externalAxioms": [],
-    "docString": "Fixed-nonzero-rate finite Lehmann sums always have a static limit. ",
+    "docString": "The physical positive-rate susceptibility has both local nonresonant iterated limits after\npassing to its canonical total extension.  Both orders have the same zero-rate static Lehmann\nvalue. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm"
+      "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits.0.QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasStaticLimit (fun omega => ∑ j ∈ s, (transition j).unswitchedTerm omega)\n        (∑ j ∈ s, (transition j).unswitchedTerm 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.hasStaticLimit_finiteUnswitchedLehmannSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-    "externalAxioms": [],
-    "docString": "Static continuity of a finite zero-rate nonresonant sum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
-      "QuantumTheory.LinearResponse.hasStaticLimit_unswitchedLehmannTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finiteLehmannLimitSum_has_both_local_iterated_limits"
+      "QuantumTheory.LinearResponse.finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
