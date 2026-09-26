@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Spectral-trace linearity, cyclicity, and bounds
 
 This module proves algebraic and norm bounds for the spectral trace of compact self-adjoint
-operators. The arguments compare operators against a common Hilbert basis rather than choosing unrelated
-eigenbases for each operator. Diagonal matrix elements are transported through `selfAdjoint ℂ`
+operators. The arguments compare operators against a common Hilbert basis rather than choosing
+unrelated eigenbases for each operator. Diagonal matrix elements are transported through `selfAdjoint ℂ`
 before being treated as real scalars.
 -/
 
