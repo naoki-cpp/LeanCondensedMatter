@@ -39,7 +39,7 @@ abbrev SchwartzOneParticle1D := SchwartzKinetic1D.Space
 
 /-- The velocity-generated localization flux is a differential current for the concrete Schwartz
 Schrödinger localization transport. -/
-theorem schwartzHeisenbergLocalizationIsDifferentialCurrent1D
+theorem schwartzVelocityLocalizationFlux_isDifferentialCurrent1D
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     _root_.ConservationLaw.IsDifferentialCurrent
       SchwartzKinetic1D.derivative
@@ -74,7 +74,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
     (SchwartzKinetic1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
-    (schwartzHeisenbergLocalizationIsDifferentialCurrent1D ℏ κ potential)
+    (schwartzVelocityLocalizationFlux_isDifferentialCurrent1D ℏ κ potential)
     (fun α => by
       simpa using _root_.ConservationLaw.linearCommutator_smul_id_right
         (SchwartzKinetic1D.multiplicationLinear α) (1 : ℂ))
@@ -107,7 +107,7 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
     (SchwartzKinetic1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
-    (schwartzHeisenbergLocalizationIsDifferentialCurrent1D ℏ κ potential)
+    (schwartzVelocityLocalizationFlux_isDifferentialCurrent1D ℏ κ potential)
     (fun α => _root_.ConservationLaw.linearCommutator_smul_id_right
       (SchwartzKinetic1D.multiplicationLinear α) q)
 
