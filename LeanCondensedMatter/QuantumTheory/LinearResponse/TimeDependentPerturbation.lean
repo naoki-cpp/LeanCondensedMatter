@@ -117,7 +117,7 @@ theorem timeDependentInteractionPropagator_eq_one_sub_integral_of_bound
       hDyson ht (timeDependentPhysicalDysonCoupling system lam))
 
 /-- The exact first weighted Dyson term for `H₀ + λ V(t)`. -/
-theorem timeDependentDysonTerm_one
+private theorem timeDependentDysonTerm_one
     (V : ℝ → (H →L[ℂ] H)) (lam t : ℝ) :
     Dyson.term (timeDependentInteractionPerturbation system V)
         (timeDependentPhysicalDysonCoupling system lam) t 1 =
