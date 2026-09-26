@@ -7,13 +7,12 @@ set_option linter.style.header false
 /-!
 # Time-dependent smeared one-dimensional Schrödinger continuity
 
-This module completes the next analytic step after the interval weak balance: under explicit local
-dominated-derivative hypotheses, the time derivative can be moved through the spatial interval
-integral defining a smeared probability density. Combining that differentiation theorem with the
-existing weak Schrödinger continuity equation gives a genuine time-derivative statement for the
-smeared density.
+Under explicit local dominated-derivative hypotheses, the time derivative can be passed through the
+spatial interval integral defining a smeared probability density. Combining this differentiation
+result with the weak one-dimensional Schrödinger continuity equation yields a genuine time-derivative
+identity for the smeared density.
 
-The domination, measurability, and interval-integrability assumptions are kept visible. No `L²`
+The domination, measurability, and interval-integrability assumptions remain explicit. No `L²`
 Hamiltonian, Sobolev-domain, or unbounded-operator assertion is introduced here.
 -/
 
