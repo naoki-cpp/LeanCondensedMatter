@@ -37,6 +37,20 @@ private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
 private theorem I_im_ne_zero : (I : ℂ).im ≠ 0 := by
   norm_num
 
+/-- The bounded self-adjoint approximant commutes with every nonreal resolvent. -/
+private theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
+    (r : ℝ) (hr : 0 < r) (z : ℂ) (hz : z.im ≠ 0) :
+    Commute (boundedSelfAdjointApproximation A hA r hr)
+      (nonrealResolvent A hA z hz) := by
+  unfold boundedSelfAdjointApproximation
+  apply Commute.smul_left
+  apply Commute.add_left
+  · exact nonrealResolvent_commute A hA ((r : ℂ) * I) z
+      (imaginaryParameter_im_ne_zero hr) hz
+  · exact nonrealResolvent_commute A hA (star ((r : ℂ) * I)) z
+      (star_imaginaryParameter_im_ne_zero hr) hz
+
 /-- Nonreal resolvent commutation passes through the vectorwise strong limit. -/
 private theorem stoneEvolution_nonrealResolvent_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
@@ -64,20 +78,7 @@ private theorem stoneEvolution_nonrealResolvent_apply
         unfold resolventApproximationEvolutionAtScale
           resolventApproximationEvolution boundedUnitaryEvolution
         exact
-          (((by
-              unfold boundedSelfAdjointApproximation
-              apply Commute.smul_left
-              apply Commute.add_left
-              · exact nonrealResolvent_commute A hA
-                  (((positiveApproximationScale r : ℝ) : ℂ) * I) z
-                  (imaginaryParameter_im_ne_zero (positiveApproximationScale_pos r)) hz
-              · exact nonrealResolvent_commute A hA
-                  (star (((positiveApproximationScale r : ℝ) : ℂ) * I)) z
-                  (star_imaginaryParameter_im_ne_zero (positiveApproximationScale_pos r)) hz :
-              Commute
-                (boundedSelfAdjointApproximation A hA
-                  (positiveApproximationScale r) (positiveApproximationScale_pos r))
-                (nonrealResolvent A hA z hz)).smul_left _).exp_left
+          ((boundedSelfAdjointApproximation_nonrealResolvent_commute A hA _ _ z hz).smul_left _).exp_left
       have happ := congrArg (fun T : H →L[ℂ] H => T y) hcomm.eq
       simpa using happ))
     hright
