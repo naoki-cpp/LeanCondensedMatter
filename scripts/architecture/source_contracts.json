@@ -31,6 +31,7 @@
         "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLaw.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLawAdapter.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/SymmetricLocalizationAlgebra.lean",
+        "LeanCondensedMatter/Analysis/ConservationLaw/CorrectedCurrentFlux.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
