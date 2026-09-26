@@ -152,7 +152,7 @@ noncomputable def schwartzLocalCurrentDensityRepresentation1D
       (schwartzWeakTransportFunctional1D current)
       schwartzLocalCurrentPairing1D where
   currentDensity := current
-  represents := by
+  isCurrentDensity := by
     intro test
     rfl
 
