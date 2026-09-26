@@ -22532,6 +22532,7 @@
     "dependents": [
       "InternalSpace.eq_pauliAffine_coefficients",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "QuantumTheory.SpinHalf.spinMatrix_cartesianBasisVector",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
@@ -22545,12 +22546,13 @@
     "compiledConsumers": [
       "InternalSpace.eq_pauliAffine_coefficients",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "QuantumTheory.SpinHalf.spinMatrix_cartesianBasisVector",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22659,7 +22661,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -22671,6 +22673,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.SpinHalf.spinMatrix_isHermitian",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
     ],
     "dependencies": [
@@ -22680,9 +22683,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.SpinHalf.spinMatrix_isHermitian",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35527,7 +35531,7 @@
     "name": "QuantumMechanics.SingleParticle.Continuum.schrodinger_weak_continuity_interval_of_schwartz",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D",
     "externalAxioms": [],
-    "docString": "Interval weak Schrödinger continuity with all spatial differentiability supplied by a Schwartz\nwavefunction. The remaining current-divergence integrability hypothesis is kept explicit for this\nfirst Schwartz slice. ",
+    "docString": "Interval weak Schrödinger continuity with all spatial differentiability supplied by a Schwartz\nwavefunction. The current-divergence integrability hypothesis remains explicit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -48907,6 +48911,80 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (ℏ : ℝ) (axis : InternalSpace.PauliAxis),\n  (QuantumTheory.SpinHalf.spinMatrix ℏ) (QuantumTheory.SpinHalf.cartesianBasisVector axis) =\n    ↑(ℏ / 2) • InternalSpace.pauliBasis axis",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.spinMatrix_cartesianBasisVector",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf",
+    "externalAxioms": [],
+    "docString": "The standard Cartesian spin-space basis is represented by the corresponding Pauli matrix. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.pauliCombination_eq_components"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (ℏ : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace),\n  Matrix.IsHermitian ((QuantumTheory.SpinHalf.spinMatrix ℏ) component)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.spinMatrix_isHermitian",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf",
+    "externalAxioms": [],
+    "docString": "Spin measured along any real spin-space vector is represented by a Hermitian matrix. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.pauliCombination_ofReal_isHermitian"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -112321,7 +112399,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg\n      (SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  SecondQuantization.Fermionic.orderedExternalInsertionLegField (d.componentWickDiagram B).externalLabel\n      (d.componentExternalTime externalTime B) (d.componentWickDiagram B).vertexLabelSequence\n      (d.componentInteractionTime σ B) leg =\n    SecondQuantization.Fermionic.orderedExternalInsertionLegField d.externalLabel externalTime d.vertexLabelSequence σ\n      (d.componentOrderedLeg B leg)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (a b :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      d.vertexLabelSequence σ (d.componentMixedPosition externalTime σ B a)\n      (d.componentMixedPosition externalTime σ B b) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β\n      (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n      (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) a b",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112333,18 +112411,59 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": "The ambient free-Gibbs pair contraction restricts to the standalone component pair contraction\nunder the canonical mixed-position embedding. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg\n      (SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  SecondQuantization.Fermionic.orderedExternalInsertionLegField (d.componentWickDiagram B).externalLabel\n      (d.componentExternalTime externalTime B) (d.componentWickDiagram B).vertexLabelSequence\n      (d.componentInteractionTime σ B) leg =\n    SecondQuantization.Fermionic.orderedExternalInsertionLegField d.externalLabel externalTime d.vertexLabelSequence σ\n      (d.componentOrderedLeg B leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
     "externalAxioms": [],
     "docString": "The timed field attached to a component-local canonical leg is exactly the ambient timed field\non the corresponding canonical leg. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153127,6 +153246,47 @@
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily d.externalLabel externalTime\n      d.vertexLabelSequence σ (d.componentMixedPosition externalTime σ B p) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily\n      (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n      (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
