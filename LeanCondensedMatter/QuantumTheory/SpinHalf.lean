@@ -57,7 +57,8 @@ noncomputable def spinMatrix (ℏ : ℝ) :
       cases axis <;> simp [pauliComponent]
     rw [hcoeff, InternalSpace.pauliCombination_smul]
     ext i j
-    simp [smul_smul, mul_comm]
+    simp
+    ring
 
 /-- Spin measured along any real physical-space vector is represented by a Hermitian matrix. -/
 theorem spinMatrix_isHermitian (ℏ : ℝ) (direction : PhysicalSpace) :
