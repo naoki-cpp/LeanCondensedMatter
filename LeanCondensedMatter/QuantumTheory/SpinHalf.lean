@@ -26,7 +26,7 @@ abbrev SpinSpace := EuclideanSpace ℝ (Fin 3)
 
 /-- Cartesian coordinate index corresponding to one Pauli-basis axis. This is representation
 convention data, not the definition of a spin direction. -/
-def cartesianIndex : InternalSpace.PauliAxis → Fin 3
+private def cartesianIndex : InternalSpace.PauliAxis → Fin 3
   | .x => 0
   | .y => 1
   | .z => 2
