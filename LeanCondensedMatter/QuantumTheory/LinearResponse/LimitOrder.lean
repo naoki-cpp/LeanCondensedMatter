@@ -137,6 +137,22 @@ theorem HasStaticLimit.finsetSum {κ : Type*} (s : Finset κ)
   unfold HasStaticLimit
   exact tendsto_finsetSum s fun j hj => h j hj
 
+/-- Local static-then-adiabatic order. -/
+def HasLocalStaticThenAdiabaticLimit
+    (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
+  ∃ staticAtRate : ℝ → ℂ,
+    (∀ᶠ eta in nhdsWithin 0 (Ioi 0),
+      HasStaticLimit (fun omega => F omega eta) (staticAtRate eta)) ∧
+    HasAdiabaticRemovalLimit staticAtRate L
+
+/-- Local adiabatic-then-static order. -/
+def HasLocalAdiabaticThenStaticLimit
+    (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
+  ∃ regulatorRemoved : ℝ → ℂ,
+    (∀ᶠ omega in 𝓝 0,
+      HasAdiabaticRemovalLimit (fun eta => F omega eta) (regulatorRemoved omega)) ∧
+    HasStaticLimit regulatorRemoved L
+
 /-- First take the static limit at every fixed positive rate, then remove the regulator. -/
 def HasStaticThenAdiabaticLimit
     (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
@@ -166,6 +182,22 @@ def HasLongTimeThenAdiabaticThenStaticLimit
     (∀ omega eta, 0 < eta →
       Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
     HasAdiabaticThenStaticLimit fixedRate L
+
+/-- Long time first, followed by the local static-then-adiabatic order. -/
+def HasLongTimeThenLocalStaticThenAdiabaticLimit
+    (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
+  ∃ fixedRate : ℝ → ℝ → ℂ,
+    (∀ omega eta, 0 < eta →
+      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
+    HasLocalStaticThenAdiabaticLimit fixedRate L
+
+/-- Long time first, followed by the local adiabatic-then-static order. -/
+def HasLongTimeThenLocalAdiabaticThenStaticLimit
+    (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
+  ∃ fixedRate : ℝ → ℝ → ℂ,
+    (∀ omega eta, 0 < eta →
+      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
+    HasLocalAdiabaticThenStaticLimit fixedRate L
 
 /-- The two orders are intentionally separate propositions; providing one does not silently provide
 the other.  This constructor records the long-time theorem together with an independently proved
