@@ -122,7 +122,7 @@ private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
     (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (hΦ : _root_.ConservationLaw.FactorsThroughDifferential d Φ
+    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         (LatticeState Site) velocity m N))
     (t s : ℝ) :
@@ -150,7 +150,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (hΦ : _root_.ConservationLaw.FactorsThroughDifferential d Φ
+    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         (LatticeState Site) velocity m N))
     (t s : ℝ) :
@@ -179,7 +179,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (hΦ : _root_.ConservationLaw.FactorsThroughDifferential d Φ
+    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         (LatticeState Site) velocity m N))
     (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0)
@@ -217,7 +217,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id
     (velocity : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (q : ℂ)
-    (hΦ : _root_.ConservationLaw.FactorsThroughDifferential d Φ
+    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         (LatticeState Site) velocity (q • LinearMap.id) N))
     (t s : ℝ) :
