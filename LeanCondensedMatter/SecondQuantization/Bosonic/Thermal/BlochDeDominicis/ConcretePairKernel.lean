@@ -8,10 +8,12 @@ set_option linter.unusedFintypeInType false
 /-!
 # Concrete realization of the free thermal pair kernel
 
-The mixed two-point values are now analytic theorems.  The remaining same-type pairs have identically
-zero diagonal coefficients, hence summable zero Gibbs numerators and zero normalized expectations.
-Together these four cases identify `freeThermalPairValue` with the actual convergence-aware free
-Gibbs expectation of every two-field ordered product.
+The mixed creation-annihilation two-point functions are given by the corresponding convergent free
+Gibbs expectations. Same-type pairs have identically zero diagonal coefficients, hence zero
+Gibbs numerators and zero normalized expectations.
+
+Together these cases identify `freeThermalPairValue` with the convergence-aware free Gibbs
+expectation of every ordered two-field product.
 -/
 
 namespace SecondQuantization
