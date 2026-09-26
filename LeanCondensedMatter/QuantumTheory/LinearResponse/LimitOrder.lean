@@ -153,36 +153,6 @@ def HasLocalAdiabaticThenStaticLimit
       HasAdiabaticRemovalLimit (fun eta => F omega eta) (regulatorRemoved omega)) ∧
     HasStaticLimit regulatorRemoved L
 
-/-- First take the static limit at every fixed positive rate, then remove the regulator. -/
-def HasStaticThenAdiabaticLimit
-    (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ staticAtRate : ℝ → ℂ,
-    (∀ eta, 0 < eta → HasStaticLimit (fun omega => F omega eta) (staticAtRate eta)) ∧
-    HasAdiabaticRemovalLimit staticAtRate L
-
-/-- First remove the regulator at every fixed frequency, then take the static limit. -/
-def HasAdiabaticThenStaticLimit
-    (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ regulatorRemoved : ℝ → ℂ,
-    (∀ omega, HasAdiabaticRemovalLimit (fun eta => F omega eta) (regulatorRemoved omega)) ∧
-    HasStaticLimit regulatorRemoved L
-
-/-- Explicit order `T → ∞`, then `omega → 0`, then `eta → 0⁺`. -/
-def HasLongTimeThenStaticThenAdiabaticLimit
-    (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ fixedRate : ℝ → ℝ → ℂ,
-    (∀ omega eta, 0 < eta →
-      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
-    HasStaticThenAdiabaticLimit fixedRate L
-
-/-- Explicit order `T → ∞`, then `eta → 0⁺`, then `omega → 0`. -/
-def HasLongTimeThenAdiabaticThenStaticLimit
-    (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ fixedRate : ℝ → ℝ → ℂ,
-    (∀ omega eta, 0 < eta →
-      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
-    HasAdiabaticThenStaticLimit fixedRate L
-
 /-- Long time first, followed by the local static-then-adiabatic order. -/
 def HasLongTimeThenLocalStaticThenAdiabaticLimit
     (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
@@ -198,26 +168,6 @@ def HasLongTimeThenLocalAdiabaticThenStaticLimit
     (∀ omega eta, 0 < eta →
       Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
     HasLocalAdiabaticThenStaticLimit fixedRate L
-
-/-- The two orders are intentionally separate propositions; providing one does not silently provide
-the other.  This constructor records the long-time theorem together with an independently proved
-static-then-adiabatic limit. -/
-theorem hasLongTimeThenStaticThenAdiabaticLimit_of_components
-    {F : ℝ → ℝ → ℝ → ℂ} {fixedRate : ℝ → ℝ → ℂ} {L : ℂ}
-    (hT : ∀ omega eta, 0 < eta →
-      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta)))
-    (hlimits : HasStaticThenAdiabaticLimit fixedRate L) :
-    HasLongTimeThenStaticThenAdiabaticLimit F L :=
-  ⟨fixedRate, hT, hlimits⟩
-
-/-- Analogous constructor for the adiabatic-then-static order. -/
-theorem hasLongTimeThenAdiabaticThenStaticLimit_of_components
-    {F : ℝ → ℝ → ℝ → ℂ} {fixedRate : ℝ → ℝ → ℂ} {L : ℂ}
-    (hT : ∀ omega eta, 0 < eta →
-      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta)))
-    (hlimits : HasAdiabaticThenStaticLimit fixedRate L) :
-    HasLongTimeThenAdiabaticThenStaticLimit F L :=
-  ⟨fixedRate, hT, hlimits⟩
 
 end
 end LinearResponse
