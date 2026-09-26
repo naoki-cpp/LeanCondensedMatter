@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter
+import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 
 set_option linter.style.header false
