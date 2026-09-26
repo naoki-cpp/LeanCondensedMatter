@@ -16,8 +16,8 @@ chosen mode basis; the basis-independent algebraic fermionic Fock construction i
 algebra `Fermionic.AlgebraicFock`, related to it by a chosen-basis equivalence.
 `Fermionic.CompletedFockSpace` is the corresponding completed `ℓ²` occupation representation.
 
-This layer is algebraic only: it introduces no inner product, Hilbert-space completion, or bounded or
-unbounded operator theory.
+This layer is algebraic only: it introduces no inner product, Hilbert-space completion, or bounded
+or unbounded operator theory.
 -/
 
 namespace SecondQuantization
