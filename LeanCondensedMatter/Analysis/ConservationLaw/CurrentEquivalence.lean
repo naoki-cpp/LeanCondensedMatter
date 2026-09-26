@@ -73,18 +73,37 @@ theorem iff_comp_eq
 
 end DifferentialCurrentEquivalent
 
-namespace DifferentialCurrentRepresentation
+namespace IsDifferentialCurrent
 
 /-- Any two current functionals representing the same intrinsic transport are equivalent on exact
-differentials. -/
+differentials.  This statement belongs to the current predicate itself and does not require
+bundling either current into a representation structure. -/
 theorem currentEquivalent
     {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
-    (R₁ R₂ : DifferentialCurrentRepresentation d Φ) :
-    DifferentialCurrentEquivalent d R₁.current R₂.current := by
+    {J₁ J₂ : OneForm →ₗ[𝕜] Obs}
+    (h₁ : IsDifferentialCurrent d Φ J₁)
+    (h₂ : IsDifferentialCurrent d Φ J₂) :
+    DifferentialCurrentEquivalent d J₁ J₂ := by
   intro f
   calc
-    R₁.current (d f) = Φ f := (R₁.isCurrent f).symm
-    _ = R₂.current (d f) := R₂.isCurrent f
+    J₁ (d f) = Φ f := (h₁ f).symm
+    _ = J₂ (d f) := h₂ f
+
+/-- Being a differential current is invariant under differential-current equivalence. -/
+theorem of_currentEquivalent
+    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
+    {J₁ J₂ : OneForm →ₗ[𝕜] Obs}
+    (h₁ : IsDifferentialCurrent d Φ J₁)
+    (h₁₂ : DifferentialCurrentEquivalent d J₁ J₂) :
+    IsDifferentialCurrent d Φ J₂ := by
+  intro f
+  calc
+    Φ f = J₁ (d f) := h₁ f
+    _ = J₂ (d f) := h₁₂ f
+
+end IsDifferentialCurrent
+
+namespace DifferentialCurrentRepresentation
 
 section Ring
 
@@ -105,7 +124,7 @@ theorem exists_current_eq_add_invisible
   refine ⟨R₁.current - R₂.current, ?_, ?_⟩
   · intro f
     change R₁.current (d f) - R₂.current (d f) = 0
-    rw [R₁.currentEquivalent R₂ f]
+    rw [R₁.isCurrent.currentEquivalent R₂.isCurrent f]
     simp
   · ext α
     change R₁.current α = R₂.current α + (R₁.current α - R₂.current α)
