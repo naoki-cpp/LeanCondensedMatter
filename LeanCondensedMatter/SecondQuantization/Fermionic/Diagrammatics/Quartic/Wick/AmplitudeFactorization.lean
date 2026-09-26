@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
@@ -76,8 +75,9 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
           (ι := d.componentPartition.parts)
           (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
           S.card hcard β componentIntegrand
-          (fun B => (continuous_contractionIntegrand ε β
-            (d.restrictComponentConnected B.2).1 (orders B)).measurableLocallyBounded)
+          (fun B => intervalIntegral.Continuous.measurableLocallyBounded
+            (continuous_contractionIntegrand ε β
+              (d.restrictComponentConnected B.2).1 (orders B)))
     _ = ∏ B : d.componentPartition.parts,
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             localContribution B order := by
