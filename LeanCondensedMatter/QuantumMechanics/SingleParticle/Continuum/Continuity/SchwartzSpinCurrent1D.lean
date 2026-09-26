@@ -39,7 +39,7 @@ abbrev SchwartzSpinorOneParticle1D := SchwartzSpinor1D.Spinor
 
 /-- The componentwise velocity-generated flux is a differential current for the spinor Schrödinger
 localization transport. -/
-theorem schwartzSpinorHeisenbergLocalizationIsDifferentialCurrent1D
+theorem schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix) :
     _root_.ConservationLaw.IsDifferentialCurrent
@@ -86,7 +86,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
     (SchwartzSpinor1D.velocityOperator ℏ κ)
     SchwartzSpinor1D.derivative
     SchwartzSpinor1D.multiplicationLinear
-    (schwartzSpinorHeisenbergLocalizationIsDifferentialCurrent1D
+    (schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
       ℏ κ potential internalH)
     (fun α => schwartzSpin_localization_commutator_eq_zero α ℏ axis)
 
