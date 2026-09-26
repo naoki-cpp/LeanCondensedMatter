@@ -58,6 +58,9 @@ theorem spatialMultiplicationOneBody_latticeKet
     spatialMultiplicationOneBody weight (latticeKet (spinfulSite x s)) =
       weight x • latticeKet (spinfulSite x s) := by
   classical
+  apply Finsupp.ext
+  rw [Lex.forall, Prod.forall]
+  intro y t
   simp [spatialMultiplicationOneBody, latticeKet, LinearMap.sum_apply, matrixUnit_apply,
     spinfulSite]
 
@@ -90,10 +93,12 @@ theorem spatialMultiplicationOneBody_comp_spinPolarizationOneBody_comm
   apply Common.linearMap_ext_basisState
   rw [Lex.forall, Prod.forall]
   intro x s
-  simp [LinearMap.comp_apply, spinPolarizationOneBody, LinearMap.sum_apply,
-    spatialMultiplicationOneBody_latticeKet, Common.basisState, latticeKet, matrixUnit_apply,
-    spinfulSite, smul_smul]
-  module
+  apply Finsupp.ext
+  rw [Lex.forall, Prod.forall]
+  intro y t
+  simp [LinearMap.comp_apply, spatialMultiplicationOneBody, spinPolarizationOneBody,
+    LinearMap.sum_apply, Common.basisState, matrixUnit_apply, spinfulSite]
+  ring
 
 /-- A spatial multiplication localizer commutes with arbitrary spin polarization. -/
 theorem linearCommutator_spatialMultiplicationOneBody_spinPolarizationOneBody
