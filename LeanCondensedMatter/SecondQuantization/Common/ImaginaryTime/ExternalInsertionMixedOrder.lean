@@ -39,7 +39,7 @@ private def externalInsertionTimedEventRank {E n : ℕ}
     (event : ExternalInsertionTimedEvent E n) : ℕ :=
   ((finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event).val
 
-private private def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
+private def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E n) : Prop :=
   externalInsertionTimedEventTime externalTime σ b <
@@ -524,7 +524,8 @@ private theorem externalInsertionTimedEventRank_map_le_iff
           simp [externalInsertionTimedEventMap, externalInsertionTimedEventRank]
           omega
       | inr b =>
-          have h := hInteraction.le_iff_le
+          have h : fInteraction a ≤ fInteraction b ↔ a ≤ b :=
+            hInteraction.le_iff_le
           simp [externalInsertionTimedEventMap, externalInsertionTimedEventRank] at h ⊢
           omega
 
