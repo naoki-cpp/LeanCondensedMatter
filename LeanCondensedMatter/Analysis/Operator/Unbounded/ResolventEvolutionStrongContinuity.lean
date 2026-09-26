@@ -151,7 +151,9 @@ theorem stoneEvolution_apply_continuous
     Continuous (fun t : ℝ => stoneEvolution A hA t x) := by
   have hpair : Continuous (fun t : ℝ => (x, t)) :=
     continuous_const.prodMk continuous_id
-  exact (stoneEvolution_joint_continuous A hA).comp hpair
+  have hcomp :=
+    (stoneEvolution_joint_continuous A hA).comp hpair
+  simpa only [Function.comp_apply] using hcomp
 
 /-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
 theorem stoneEvolution_apply_continuousAt_zero
