@@ -131,7 +131,7 @@ theorem eq_zero_of_map_eq_zero
 section Ring
 
 variable {R Test' OneForm' Obs' : Type*}
-variable [CommRing R]
+variable [Ring R]
 variable [AddCommGroup Test'] [Module R Test']
 variable [AddCommGroup OneForm'] [Module R OneForm']
 variable [AddCommGroup Obs'] [Module R Obs']
