@@ -123,12 +123,16 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   field_simp [hPpos.ne', Real.exp_ne_zero]
 
 omit [LinearOrder Mode] in
-/-- The mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
-theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
+/-- The free-fermion Gibbs mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
+theorem purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
     (ε : Mode → ℝ) (β : ℝ) :
-    ∑ n : Occupation Mode,
-        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n =
+    purePointGibbsEnergyExpectation (fermionEnergy ε) β =
       ∑ i, ε i * fermiDiracOccupation ε β i := by
+  rw [purePointGibbsEnergyExpectation, tsum_fintype]
+  change
+    (∑ n : Occupation Mode,
+        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
+      ∑ i, ε i * fermiDiracOccupation ε β i
   calc
     (∑ n : Occupation Mode,
         freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
@@ -218,14 +222,8 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
         (fermionEnergy ε) β
         (purePointGibbsSummable_of_finite (fermionEnergy ε) β)
         hIntegrable).2
-  have hEnergy :
-      purePointGibbsEnergyExpectation (fermionEnergy ε) β =
-        ∑ n : Occupation Mode,
-          freeGibbsConfigurationProbability ε β n * fermionEnergy ε n := by
-    rw [purePointGibbsEnergyExpectation, tsum_fintype]
-    rfl
-  rw [hEntropy, hEnergy,
-    sum_freeGibbsConfigurationProbability_mul_fermionEnergy,
+  rw [hEntropy,
+    purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac,
     log_purePointPartitionFunction_fermionEnergy_eq_sum]
   calc
     β * (∑ i, ε i * fermiDiracOccupation ε β i) +
