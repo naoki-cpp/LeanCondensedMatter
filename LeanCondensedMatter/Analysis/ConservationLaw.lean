@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.ConservationLaw.DifferentialDependence
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
 import LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw
