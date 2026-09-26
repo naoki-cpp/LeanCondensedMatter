@@ -18,6 +18,16 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
   for physical pure states is `PureState.ofStateVector_eq_iff_exists_phase`. A separate
   projective/ray quotient presentation is not part of the current API.
 
+### Spin-1/2 polarization
+
+- `QuantumTheory.SpinHalf.PhysicalSpace` is real three-dimensional Euclidean space. A unit vector
+  represents a pure polarization direction; arbitrary vectors remain admissible so spin components
+  and response tensors retain their linear structure.
+- `QuantumTheory.SpinHalf.spinMatrix ℏ n` is the spin-1/2 representation
+  `S(n) = ℏ (n · σ) / 2`.
+- `InternalSpace.PauliAxis` labels the Pauli representation basis only. It is not the type of a
+  physical spin-polarization direction.
+
 ### Density states
 
 `QuantumTheory.DensityOperator H` is the canonical density-state representation. Its underlying bounded
