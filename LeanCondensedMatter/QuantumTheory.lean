@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
+import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.ConservationLaw
 import LeanCondensedMatter.QuantumTheory.LinearResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
@@ -17,9 +18,9 @@ set_option linter.style.header false
 /-!
 # Quantum theory
 
-Public entry point for particle-number-independent quantum theory: postulates, density operators,
-entropy and Gibbs-state theory, one-body conservation/current semantics, together with the generic
-linear-response stack.
+Public entry point for particle-number-independent quantum theory: postulates, spin-1/2 physical
+observables, density operators, entropy and Gibbs-state theory, one-body conservation/current
+semantics, together with the generic linear-response stack.
 
 The linear-response and Gibbs hierarchies are exposed through package-level routing modules. The root
 keeps the direct one-body dynamics and conservation imports required by the public ownership contract.
