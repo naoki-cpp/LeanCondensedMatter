@@ -71,7 +71,7 @@ or consumer structure changes.
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
 - `QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
   corrected-current equivalence theorem: any full current representing the intrinsic transport is
-  equivalent on exact differentials to the symmetrized current plus localization correction.
+  equivalent on exact differentials to the canonical nested current flux.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
@@ -413,9 +413,42 @@ or consumer structure changes.
   For an externally connected left piece and strictly decreasing inherited vacuum times, the
   complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
   fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.self_mem` — defining locality
+  invariant of `LocallyFiniteHopping`: every site lies in its finite incident neighborhood. The
+  generated projection is part of the model contract even when it has no compiled theorem consumer.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_latticeKet` — canonical
+  `[simp]` evaluation of the hopping operator on a localized site ket.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_eq` — canonical `[simp]`
+  normalization of the named hopping matrix element to the corresponding column coefficient.
+  Source-level validation proofs use this rule even when simplification erases the compiled
+  dependency edge.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_eq_zero_of_not_mem` —
+  canonical incoming-locality consequence: hopping amplitudes vanish outside the finite incident
+  neighborhood.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_swap_eq_zero_of_not_mem` —
+  canonical outgoing-locality companion to `amplitude_eq_zero_of_not_mem`.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.bondOperator_swap` — canonical
+  orientation-reversal law for the one-particle bond-current operator.
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector` —
+  one-particle local continuity identity expressing the hopping/projector commutator as the finite
+  outgoing bond-operator sum.
+- `SecondQuantization.Fermionic.Lattice.bondCurrent_swap` — physical orientation-reversal law for
+  the many-particle bond current; the bounded finite-lattice current transports this algebraic fact.
+- `SecondQuantization.Fermionic.Lattice.discrete_continuity` — canonical algebraic local continuity
+  equation on an arbitrary locally finite lattice and the source theorem for the bounded
+  finite-lattice continuity equation.
 - `SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction` — The
   finite complex free-fermion partition function is exactly the canonical pure-point Gibbs partition
   function for `fermionEnergy`, coerced from `ℝ` to `ℂ`.
+- `SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_filter_mem` — canonical
+  finite-mode marginal-probability identity: the total Gibbs probability of configurations
+  containing mode `i` is exactly its Fermi–Dirac occupation.
+- `SecondQuantization.Fermionic.purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac` — canonical
+  finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
+  entropy endpoint, but the thermodynamic statement is independently meaningful.
+- `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
+  — canonical finite free-fermion entropy endpoint expressing the Gibbs-state von Neumann entropy
+  as the sum of binary Fermi–Dirac mode entropies.
 - `SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod` — A single evolved
   quartic vertex is the composed product of its four individually evolved local legs in the
   canonical local-leg order.
