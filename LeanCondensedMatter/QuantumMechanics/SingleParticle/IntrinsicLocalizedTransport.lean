@@ -47,7 +47,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
 
 /-- A chosen differential-current factorization is sufficient to construct the intrinsic
 Heisenberg balance law, but the chosen extension is forgotten. -/
-noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLawOfFactors
+noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLawOfCurrent
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V)
@@ -76,7 +76,7 @@ noncomputable def heisenbergRepresentedBalanceLawOfIntrinsic
       (heisenbergEvolution V ℏ h)
       (_root_.ConservationLaw.localizedQuantityFunctional V M m)
       d :=
-  (heisenbergIntrinsicSymmetricLocalizationBalanceLawOfFactors V ℏ h M m d J hJ).toRepresented
+  (heisenbergIntrinsicSymmetricLocalizationBalanceLawOfCurrent V ℏ h M m d J hJ).toRepresented
     J hJ
 
 end SingleParticle
