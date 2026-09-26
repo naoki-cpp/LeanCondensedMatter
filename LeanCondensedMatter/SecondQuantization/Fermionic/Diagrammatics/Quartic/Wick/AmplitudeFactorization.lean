@@ -71,12 +71,12 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
         exact d.componentPartition.sum_card_parts
       simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
         componentIntegrand] using
-        Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod_of_continuous
+        Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
           (ι := d.componentPartition.parts)
           (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
           S.card hcard β componentIntegrand
-          (fun B => continuous_contractionIntegrand ε β
-            (d.restrictComponentConnected B.2).1 (orders B))
+          (fun B => (continuous_contractionIntegrand ε β
+            (d.restrictComponentConnected B.2).1 (orders B)).measurableLocallyBounded)
     _ = ∏ B : d.componentPartition.parts,
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             localContribution B order := by
