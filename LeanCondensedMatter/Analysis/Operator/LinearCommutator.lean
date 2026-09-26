@@ -31,14 +31,6 @@ theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     linearCommutator S T v = S (T v) - T (S v) :=
   rfl
 
-/-- The semantic endomorphism commutator is the `ζ = 1` specialization of the generic
-scalar-exchange bracket. -/
-theorem linearCommutator_eq_zetaCommutator_one
-    {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (S T : V →ₗ[ℂ] V) :
-    linearCommutator S T = ScalarExchange.zetaCommutator 1 S T := by
-  simp [linearCommutator, ScalarExchange.zetaCommutator, Module.End.mul_eq_comp]
-
 /-- Leibniz rule for a commutator with a composition on the right:
 `[M, A B] = [M,A] B + A [M,B]`. -/
 theorem linearCommutator_comp_right
