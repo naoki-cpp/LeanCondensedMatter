@@ -7,7 +7,8 @@ of an independently useful mathematical or physical fact, a deliberate simplific
 a stable domain-level API.
 
 Declarations listed here have been semantically reviewed and are intentionally retained despite one
-or more audit signals. `scripts/TheoremCatalog.lean` records exact mentions from this document as the
+or more audit signals. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
+short-name mentions from this document as the
 `retainedMention` attribute. Retained declarations keep their structural attributes in the full
 catalog but are omitted from terminal, single-consumer, and direct-wrapper review queues so those
 queues represent unresolved audit work.

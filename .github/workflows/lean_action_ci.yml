@@ -63,6 +63,8 @@ jobs:
               - 'scripts/TheoremCatalog.lean'
               - 'scripts/TheoremReplacementAudit.lean'
               - 'scripts/merge_theorem_replacements.py'
+              - 'notes/completed.md'
+              - 'notes/theorem-catalog-retained.md'
               - '.github/workflows/insights.yml'
 
   source-checks:
