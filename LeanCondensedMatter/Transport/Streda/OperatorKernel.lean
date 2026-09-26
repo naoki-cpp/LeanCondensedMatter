@@ -14,7 +14,7 @@ finite-dimensional trace. At fixed positive broadening it defines:
 * a scaled surface primitive compatible with the sign convention used by the integration-by-parts
   layer;
 * its exact real-energy derivative;
-* the canonical static Kubo–Bastin operator integrand; and
+* the canonical static Kubo–Bastin operator integrand and its simultaneous-current-sign symmetry; and
 * the residual sea kernel required to make the finite-broadening pointwise identity exact.
 
 The residual sea kernel is defined before any identification with the conventional Smrčka–Středa
