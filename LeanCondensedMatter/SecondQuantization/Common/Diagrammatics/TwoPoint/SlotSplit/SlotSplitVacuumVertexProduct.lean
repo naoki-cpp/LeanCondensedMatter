@@ -9,8 +9,8 @@ set_option linter.style.header false
 For an externally connected two-point piece, `slotSplitVacuumComponentEquiv` identifies the vacuum
 components of the reconstructed diagram with the connected components of the quartic piece.
 
-Reindexing along this equivalence factors arbitrary commutative products of vertex-local weights over
-the vacuum components, including the corresponding interaction-vertex prefactors.
+Reindexing along this equivalence factors arbitrary commutative products of vertex-local weights
+over the vacuum components, including the corresponding interaction-vertex prefactors.
 -/
 
 namespace SecondQuantization
