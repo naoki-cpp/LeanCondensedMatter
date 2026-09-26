@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
 set_option linter.style.header false
@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Finite spin-current / electric-source cross response
 
 This module gives a concrete generalized-current response on the finite spinful lattice
-`Site × Fin 2`. Its measured spin current is the conventional current associated with the diagonal
+`Site × Fin 2`. Its measured spin current is the symmetrized current associated with the diagonal
 internal spin operator,
 
 ```text
@@ -25,7 +25,7 @@ bond current, so the response kernel is genuinely mixed:
 No equality between spin current and charge current is assumed. The velocity is supplied as a
 one-particle operator so later finite Rashba/Dirac models can instantiate it with the velocity derived
 from their Hamiltonian. Conductivity normalization and source-dependent contact terms remain separate
-from this causal cross-response kernel. The conventional-current/proper-current distinction is
+from this causal cross-response kernel. The symmetrized-current/proper-current distinction is
 motivated by Shi, Zhang, Xiao, and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
 [doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604); this module
 does not identify the conventional operator with their torque-dipole-completed current. The finite
@@ -44,14 +44,6 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
-/-- Bounded conventional spin-z current on the finite spinful lattice. -/
-noncomputable def boundedSpinZCurrent
-    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
-    (spinScale : ℂ) :
-    FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
-      FiniteLatticeHilbertFock (SpinfulSite Site) :=
-  boundedConventionalCurrent velocity (spinZOneBody spinScale)
-
 /-- Neutral fixed-observable response channel for a finite spin-z current driven by an electric
 bond-current source. The measured spin current and electric source remain distinct data while the
 absence of an explicit observable variation is made visible through `ResponseChannel.fixed`. -/
@@ -62,7 +54,7 @@ noncomputable def boundedSpinZCurrentBondSourceResponseChannel
     (u v : SpinfulSite Site) :
     ResponseChannel (FiniteLatticeHilbertFock (SpinfulSite Site)) :=
   ResponseChannel.fixed
-    (boundedSpinZCurrent velocity spinScale)
+    (boundedSymmetrizedVelocityCurrent velocity (spinZOneBody spinScale))
     (boundedBondCurrent ℏ q K u v)
 
 /-- Retarded response of a concrete finite spin-z current to an electric bond-current source.

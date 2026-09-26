@@ -30,16 +30,16 @@ or consumer structure changes.
   — model-level dissipativity statement for the finite-cutoff Born self-energy. It is a physical
   property of the model, not merely an intermediate step in the downstream injectivity proof.
 - `QuantumMechanics.SingleParticle.symmetrizedVelocityTransport_decomposition` — canonical algebraic
-  decomposition of nested symmetrized transport into the conventional current term and the
+  decomposition of nested symmetrized transport into the symmetrized current term and the
   double-commutator correction.
-- `QuantumMechanics.SingleParticle.localizationCorrectionFlux_apply` — canonical identification of
+- `ConservationLaw.localizationCorrectionCurrentFlux_apply` — canonical identification of
   the localization correction with the double commutator; it is also the simplification boundary
   for the corrected-current API.
-- `QuantumMechanics.SingleParticle.localizationCorrectionFlux_smul_id_eq_zero` — independently useful
+- `ConservationLaw.localizationCorrectionCurrentFlux_smul_id` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
 - `QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq` — physical charge-current
-  specialization identifying the corrected current with the conventional local pairing `q v`.
+  specialization identifying the corrected current with the local pairing `q v`.
 - `QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero` — model-independent analytic
   approximate-identity result for vanishing Lorentzian mass between fixed nested positive windows.
 - `SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation` — canonical
@@ -416,15 +416,6 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction` — The
   finite complex free-fermion partition function is exactly the canonical pure-point Gibbs partition
   function for `fermionEnergy`, coerced from `ℝ` to `ℂ`.
-- `SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_filter_mem` — canonical
-  finite-mode marginal-probability identity: the total Gibbs probability of configurations
-  containing mode `i` is exactly its Fermi–Dirac occupation.
-- `SecondQuantization.Fermionic.purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac` — canonical
-  finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
-  entropy endpoint, but the thermodynamic statement is independently meaningful.
-- `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
-  — canonical finite free-fermion entropy endpoint expressing the Gibbs-state von Neumann entropy
-  as the sum of binary Fermi–Dirac mode entropies.
 - `SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod` — A single evolved
   quartic vertex is the composed product of its four individually evolved local legs in the
   canonical local-leg order.

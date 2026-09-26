@@ -125,13 +125,11 @@
       "layers": [
         {"id": "localizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]},
         {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]},
-        {"id": "conventionalCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent"]},
         {"id": "schwartzCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzCurrent1D"]},
         {"id": "schwartzSpinCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"]}
       ],
       "edges": [
         {"upstream": "localizedTransport", "downstream": "symmetrizedVelocity"},
-        {"upstream": "symmetrizedVelocity", "downstream": "conventionalCurrent"},
         {"upstream": "symmetrizedVelocity", "downstream": "schwartzCurrent"},
         {"upstream": "symmetrizedVelocity", "downstream": "schwartzSpinCurrent"}
       ]
@@ -141,10 +139,10 @@
       "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
       "layers": [
         {"id": "boundedOneBody", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"]},
-        {"id": "conventionalCurrent", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse"]}
+        {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"]}
       ],
       "edges": [
-        {"upstream": "boundedOneBody", "downstream": "conventionalCurrent"}
+        {"upstream": "boundedOneBody", "downstream": "symmetrizedVelocity"}
       ]
     },
     {
