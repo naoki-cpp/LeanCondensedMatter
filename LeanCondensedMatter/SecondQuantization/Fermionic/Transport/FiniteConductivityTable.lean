@@ -6,15 +6,14 @@ set_option linter.style.header false
 /-!
 # Fermionic directional finite-conductivity table realization
 
-The representation-independent scalar conductivity table and evaluator now live in
-`QuantumTheory.Transport.FiniteConductivityTable`. This module retains only the finite-lattice
-fermionic realization: it constructs that canonical scalar table from a pure-point Peierls
-conductivity problem and proves that evaluating it reproduces the existing finite
-Kubo–Greenwood directional conductivity.
+This module constructs the representation-independent
+`QuantumTheory.Transport.FiniteConductivityTable` from a finite pure-point Peierls conductivity
+problem and proves that evaluating the table reproduces the finite Kubo–Greenwood directional
+conductivity.
 
-The directional realization supplies the continuity-derived Peierls current and explicit contact
-expectation. The table storage, scalar Lehmann evaluation, positive-volume normalization, and
-electric-field conversion are owned upstream and are not redefined here.
+The fermionic realization supplies the continuity-derived Peierls current and explicit contact
+expectation. Scalar Lehmann evaluation, positive-volume normalization, and electric-field conversion
+are provided by the generic transport table API.
 -/
 
 namespace SecondQuantization
