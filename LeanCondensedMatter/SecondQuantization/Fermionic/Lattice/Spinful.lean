@@ -52,11 +52,17 @@ noncomputable def internalOneBodyLinear
   map_smul' := by
     classical
     intro c S
-    simp [internalOneBody]
+    simp only [internalOneBody, Matrix.smul_apply, RingHom.id_apply]
     rw [Finset.smul_sum]
     apply Finset.sum_congr rfl
     intro x hx
-    simp [smul_add, smul_smul]
+    rw [Finset.smul_sum]
+    apply Finset.sum_congr rfl
+    intro a ha
+    rw [Finset.smul_sum]
+    apply Finset.sum_congr rfl
+    intro b hb
+    rw [smul_smul]
 
 @[simp]
 theorem internalOneBodyLinear_apply
