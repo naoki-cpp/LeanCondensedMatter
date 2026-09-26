@@ -37,41 +37,6 @@ private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
 private theorem I_im_ne_zero : (I : ℂ).im ≠ 0 := by
   norm_num
 
-/-- Every bounded self-adjoint resolvent approximant commutes with every nonreal resolvent of the
-original self-adjoint operator. -/
-private theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r : ℝ) (hr : 0 < r) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (boundedSelfAdjointApproximation A hA r hr)
-      (nonrealResolvent A hA z hz) := by
-  unfold boundedSelfAdjointApproximation
-  apply Commute.smul_left
-  apply Commute.add_left
-  · exact nonrealResolvent_commute A hA ((r : ℂ) * I) z
-      (imaginaryParameter_im_ne_zero hr) hz
-  · exact nonrealResolvent_commute A hA (star ((r : ℂ) * I)) z
-      (star_imaginaryParameter_im_ne_zero hr) hz
-
-/-- Exponentiating a bounded resolvent approximant preserves its commutation with every nonreal
-resolvent. -/
-private theorem resolventApproximationEvolution_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r : ℝ) (hr : 0 < r) (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (resolventApproximationEvolution A hA r hr t)
-      (nonrealResolvent A hA z hz) := by
-  unfold resolventApproximationEvolution boundedUnitaryEvolution
-  exact
-    ((boundedSelfAdjointApproximation_nonrealResolvent_commute A hA r hr z hz).smul_left _).exp_left
-
-/-- The totalized positive-scale bounded evolution commutes with every nonreal resolvent. -/
-private theorem resolventApproximationEvolutionAtScale_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (resolventApproximationEvolutionAtScale A hA r t)
-      (nonrealResolvent A hA z hz) := by
-  unfold resolventApproximationEvolutionAtScale
-  exact resolventApproximationEvolution_nonrealResolvent_commute A hA _ _ t z hz
-
 /-- Nonreal resolvent commutation passes through the vectorwise strong limit. -/
 private theorem stoneEvolution_nonrealResolvent_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
@@ -93,8 +58,27 @@ private theorem stoneEvolution_nonrealResolvent_apply
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
   exact tendsto_nhds_unique
     (hleft.congr' (Eventually.of_forall fun r => by
-      have happ := congrArg (fun T : H →L[ℂ] H => T y)
-        (resolventApproximationEvolutionAtScale_nonrealResolvent_commute A hA r t z hz).eq
+      have hcomm :
+          Commute (resolventApproximationEvolutionAtScale A hA r t)
+            (nonrealResolvent A hA z hz) := by
+        unfold resolventApproximationEvolutionAtScale
+          resolventApproximationEvolution boundedUnitaryEvolution
+        exact
+          (((by
+              unfold boundedSelfAdjointApproximation
+              apply Commute.smul_left
+              apply Commute.add_left
+              · exact nonrealResolvent_commute A hA
+                  (((positiveApproximationScale r : ℝ) : ℂ) * I) z
+                  (imaginaryParameter_im_ne_zero (positiveApproximationScale_pos r)) hz
+              · exact nonrealResolvent_commute A hA
+                  (star (((positiveApproximationScale r : ℝ) : ℂ) * I)) z
+                  (star_imaginaryParameter_im_ne_zero (positiveApproximationScale_pos r)) hz :
+              Commute
+                (boundedSelfAdjointApproximation A hA
+                  (positiveApproximationScale r) (positiveApproximationScale_pos r))
+                (nonrealResolvent A hA z hz)).smul_left _).exp_left
+      have happ := congrArg (fun T : H →L[ℂ] H => T y) hcomm.eq
       simpa using happ))
     hright
 
