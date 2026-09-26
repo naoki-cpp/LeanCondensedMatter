@@ -69,10 +69,10 @@ theorem norm_resolventApproximationEvolution_sub_le
   rw [boundedUnitaryEvolution_apply_norm As hAs t]
   exact norm_boundedUnitaryEvolution_apply_sub_le D hD t x
 
-private def positiveApproximationScale (r : ℝ) : ℝ :=
+def positiveApproximationScale (r : ℝ) : ℝ :=
   max 1 r
 
-private theorem positiveApproximationScale_pos (r : ℝ) :
+theorem positiveApproximationScale_pos (r : ℝ) :
     0 < positiveApproximationScale r := by
   exact lt_of_lt_of_le zero_lt_one (le_max_left 1 r)
 
