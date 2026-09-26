@@ -59,7 +59,7 @@ homomorphic normalization rules:
 - `nonrealShiftInverseDomain_apply`
 - `nonrealResolvent_apply`
 - `ConservationLaw.nestedSymmetrizedCurrentFlux_apply`
-- `ConservationLaw.conventionalSymmetrizedCurrentFlux_apply`
+- `ConservationLaw.symmetrizedCurrentFlux_apply`
 - `ConservationLaw.localizationCorrectionCurrentFlux_apply`
 - `ConservationLaw.localizationCorrectionCurrentFlux_smul_id`
 - `diagonalDet_zero`
@@ -142,7 +142,6 @@ basis, and involution rules.
 All current `@[simp]` declarations in the following modules are Green:
 
 - `SingleParticle/LocalizedTransport`
-- `SingleParticle/ConventionalCurrent`
 - `SingleParticle/CorrectedCurrent`
 - `SingleParticle/SymmetrizedVelocityCurrent`
 - `SingleParticle/ChargeLikeCurrent`

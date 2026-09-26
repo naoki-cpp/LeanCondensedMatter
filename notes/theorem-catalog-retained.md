@@ -30,16 +30,16 @@ or consumer structure changes.
   — model-level dissipativity statement for the finite-cutoff Born self-energy. It is a physical
   property of the model, not merely an intermediate step in the downstream injectivity proof.
 - `QuantumMechanics.SingleParticle.symmetrizedVelocityTransport_decomposition` — canonical algebraic
-  decomposition of nested symmetrized transport into the conventional current term and the
+  decomposition of nested symmetrized transport into the symmetrized current term and the
   double-commutator correction.
-- `QuantumMechanics.SingleParticle.localizationCorrectionFlux_apply` — canonical identification of
+- `ConservationLaw.localizationCorrectionCurrentFlux_apply` — canonical identification of
   the localization correction with the double commutator; it is also the simplification boundary
   for the corrected-current API.
-- `QuantumMechanics.SingleParticle.localizationCorrectionFlux_smul_id_eq_zero` — independently useful
+- `ConservationLaw.localizationCorrectionCurrentFlux_smul_id` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
 - `QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq` — physical charge-current
-  specialization identifying the corrected current with the conventional local pairing `q v`.
+  specialization identifying the corrected current with the local pairing `q v`.
 - `QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero` — model-independent analytic
   approximate-identity result for vanishing Lorentzian mass between fixed nested positive windows.
 - `SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation` — canonical
@@ -69,9 +69,9 @@ or consumer structure changes.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.retardedAdvancedLadderCLM_apply` — canonical
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
-- `QuantumMechanics.SingleParticle.currentEquivalent_correctedSymmetrizedVelocity` — canonical
+- `QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
   corrected-current equivalence theorem: any full current representing the intrinsic transport is
-  equivalent on exact differentials to the symmetrized current plus localization correction.
+  equivalent on exact differentials to the canonical nested current flux.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.

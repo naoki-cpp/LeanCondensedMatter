@@ -292,9 +292,10 @@ conductivity, and Středa mathematics belongs upstream under `QuantumTheory` or 
 `Fermionic.Transport` contains statistics/model-specific bounded adapters and physical current
 response specializations.
 
-The generic bounded-current response module must not depend on the conventional current
-`1/2 {v,m}`. Conventional-current response is a downstream specialization, so non-conventional
-orbital/nonlocal currents can enter through the same arbitrary-current boundary.
+The generic bounded one-body response module does not assume a current-density convention.
+The symmetrized velocity current `1/2 {v,m}` is a downstream realization, while corrected,
+orbital, nonlocal, or otherwise model-specific currents can enter through the same arbitrary
+one-body observable boundary.
 
 ## Algebraic Fock operator coordinates
 

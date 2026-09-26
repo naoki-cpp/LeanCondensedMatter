@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse
 
 set_option linter.style.header false
 
@@ -10,7 +9,7 @@ set_option linter.style.header false
 This module lifts the analysis-level decomposition
 
 ```text
-J_nested = J_conv + J_corr
+J_nested = J_sym + J_corr
 J_corr(α) = 1/4 [v,[N α,m]]
 ```
 
@@ -19,7 +18,7 @@ mechanics: `velocity`, `m`, and the operator-valued one-form localizer `N` are s
 operators/data.
 
 When an intrinsic transport `Φ` factors through `J_nested ∘ d`, its exact-flux response decomposes
-canonically into conventional/symmetrized and localization-correction responses.  This remains a
+canonically into symmetrized and localization-correction responses.  This remains a
 statement on exact differential data; no uniqueness of arbitrary/global current extensions is
 claimed.
 -/
@@ -37,9 +36,9 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 
-/-- Retarded response of the conventional/symmetrized current flux
+/-- Retarded response of the symmetrized current flux
 `α ↦ 1/2 {N α, 1/2 {v,m}}`. -/
-noncomputable def boundedConventionalCurrentFluxRetardedResponse
+noncomputable def boundedSymmetrizedCurrentFluxRetardedResponse
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -49,7 +48,7 @@ noncomputable def boundedConventionalCurrentFluxRetardedResponse
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (t s : ℝ) : OneForm →ₗ[ℂ] ℂ :=
   boundedCurrentFunctionalRetardedResponse system expectation source
-    (_root_.ConservationLaw.conventionalSymmetrizedCurrentFlux
+    (_root_.ConservationLaw.symmetrizedCurrentFlux
       (LatticeState Site) velocity m N) t s
 
 /-- Retarded response of the canonical localization correction
@@ -82,7 +81,7 @@ noncomputable def boundedCorrectedCurrentFluxRetardedResponse
       (LatticeState Site) velocity m N) t s
 
 /-- Kubo linearity lifts the corrected-current decomposition pointwise on one-form data. -/
-theorem boundedCorrectedCurrentFluxRetardedResponse_eq_conventional_add_correction
+theorem boundedCorrectedCurrentFluxRetardedResponse_eq_symmetrized_add_correction
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -92,7 +91,7 @@ theorem boundedCorrectedCurrentFluxRetardedResponse_eq_conventional_add_correcti
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (t s : ℝ) :
     boundedCorrectedCurrentFluxRetardedResponse system expectation source velocity m N t s =
-      boundedConventionalCurrentFluxRetardedResponse system expectation source velocity m N t s +
+      boundedSymmetrizedCurrentFluxRetardedResponse system expectation source velocity m N t s +
         boundedLocalizationCorrectionRetardedResponse system expectation source velocity m N t s := by
   apply LinearMap.ext
   intro α
@@ -101,14 +100,14 @@ theorem boundedCorrectedCurrentFluxRetardedResponse_eq_conventional_add_correcti
         (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
           (LatticeState Site) velocity m N α) =
       (boundedOneBodyRetardedResponseLinearMap system expectation source t s)
-          (_root_.ConservationLaw.conventionalSymmetrizedCurrentFlux
+          (_root_.ConservationLaw.symmetrizedCurrentFlux
             (LatticeState Site) velocity m N α) +
         (boundedOneBodyRetardedResponseLinearMap system expectation source t s)
           (_root_.ConservationLaw.localizationCorrectionCurrentFlux
             (LatticeState Site) velocity m N α)
   have hdecomp := congrArg
     (fun J : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site) => J α)
-    (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_conventional_add_correction
+    (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
       (LatticeState Site) velocity m N)
   rw [hdecomp]
   exact map_add (boundedOneBodyRetardedResponseLinearMap system expectation source t s) _ _
@@ -139,9 +138,9 @@ private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
           (LatticeState Site) velocity m N (d f))
   rw [hΦ f]
 
-/-- Fundamental Phase-2 response theorem: an intrinsic exact-flux response represented by the
-nested current decomposes into conventional/symmetrized plus localization-correction responses. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_add_correction
+/-- An intrinsic exact-flux response represented by the nested current decomposes into
+symmetrized plus localization-correction responses. -/
+theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -156,21 +155,21 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_add_correction
         (LatticeState Site) velocity m N))
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
-      (boundedConventionalCurrentFluxRetardedResponse
+      (boundedSymmetrizedCurrentFluxRetardedResponse
         system expectation source velocity m N t s).comp d +
       (boundedLocalizationCorrectionRetardedResponse
         system expectation source velocity m N t s).comp d := by
   rw [boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
     system expectation source d Φ velocity m N hΦ t s]
-  rw [boundedCorrectedCurrentFluxRetardedResponse_eq_conventional_add_correction
+  rw [boundedCorrectedCurrentFluxRetardedResponse_eq_symmetrized_add_correction
     system expectation source velocity m N t s]
   apply LinearMap.ext
   intro f
   rfl
 
 /-- When all supplied localizers commute with `m`, the correction disappears and the intrinsic
-exact-flux response is represented by the conventional/symmetrized current flux alone. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_of_commutes
+exact-flux response is represented by the symmetrized current flux alone. -/
+theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -186,9 +185,9 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_of_commutes
     (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
-      (boundedConventionalCurrentFluxRetardedResponse
+      (boundedSymmetrizedCurrentFluxRetardedResponse
         system expectation source velocity m N t s).comp d := by
-  rw [boundedIntrinsicFluxRetardedResponse_eq_conventional_add_correction
+  rw [boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     system expectation source d Φ velocity m N hΦ t s]
   have hcorr :
       boundedLocalizationCorrectionRetardedResponse
@@ -207,7 +206,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_of_commutes
 
 /-- Charge-like quantities `m = q I` are a specialization of the commuting case: their correction
 response vanishes identically on exact fluxes. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_smul_id
+theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -223,9 +222,9 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_smul_id
         (LatticeState Site) velocity (q • LinearMap.id) N))
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
-      (boundedConventionalCurrentFluxRetardedResponse
+      (boundedSymmetrizedCurrentFluxRetardedResponse
         system expectation source velocity (q • LinearMap.id) N t s).comp d := by
-  apply boundedIntrinsicFluxRetardedResponse_eq_conventional_of_commutes
+  apply boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     system expectation source d Φ velocity (q • LinearMap.id) N hΦ
   intro α
   exact _root_.ConservationLaw.linearCommutator_smul_id_right (N α) q
