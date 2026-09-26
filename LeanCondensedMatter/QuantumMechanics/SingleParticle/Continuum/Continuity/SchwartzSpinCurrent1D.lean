@@ -145,7 +145,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
 
 /-- The spin commutator of the full Hamiltonian is entirely the commutator with the internal
 Hamiltonian matrix. -/
-theorem linearCommutator_schwartzSpinorHamiltonian_spinOperator
+theorem linearCommutator_schwartzSpinorHamiltonian_spinAlong
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix)
     (ℏ : ℝ) (direction : QuantumTheory.SpinHalf.Direction) :
@@ -174,7 +174,7 @@ theorem schwartzSpin_sourceCommutator_eq_internal
           (SchwartzSpinor1D.internalOperator internalH)
           (schwartzSpinOperator ℏ direction)) := by
   rw [_root_.ConservationLaw.sourceCommutator]
-  rw [linearCommutator_schwartzSpinorHamiltonian_spinOperator]
+  rw [linearCommutator_schwartzSpinorHamiltonian_spinAlong]
   rfl
 
 /-- If the internal Hamiltonian conserves the selected spin component, the local spin source
