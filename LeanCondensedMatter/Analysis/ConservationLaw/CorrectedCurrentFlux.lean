@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Corrected symmetrized-current flux algebra
 
 This module packages the pure operator algebra behind the decomposition of a nested localized
-transport into a conventional/symmetrized current contribution and a localization correction.
+transport into a symmetrized-current contribution and a localization correction.
 No Heisenberg dynamics, first-quantized velocity semantics, second quantization, or response theory
 is assumed here.
 
@@ -16,8 +16,8 @@ quantity `m`, define
 
 ```text
 J_nested(α) = 1/2 { 1/2 {N α, v}, m }
-J_conv(α)   = 1/2 { N α, 1/2 {v,m} }
-J_corr      = J_nested - J_conv.
+J_sym(α)   = 1/2 { N α, 1/2 {v,m} }
+J_corr      = J_nested - J_sym.
 ```
 
 Then
@@ -52,29 +52,29 @@ theorem nestedSymmetrizedCurrentFlux_apply
       symmetrizedProduct (symmetrizedProduct (N α) velocity) m :=
   rfl
 
-/-- Flux obtained from the conventional/symmetrized current `1/2 {v,m}`. -/
-noncomputable def conventionalSymmetrizedCurrentFlux
+/-- Flux obtained from the symmetrized current `1/2 {v,m}`. -/
+noncomputable def symmetrizedCurrentFlux
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     OneForm →ₗ[ℂ] (V →ₗ[ℂ] V) :=
   (symmetrizedProductRightLinear V (symmetrizedProduct velocity m)).comp N
 
 @[simp]
-theorem conventionalSymmetrizedCurrentFlux_apply
+theorem symmetrizedCurrentFlux_apply
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) (α : OneForm) :
-    conventionalSymmetrizedCurrentFlux V velocity m N α =
+    symmetrizedCurrentFlux V velocity m N α =
       symmetrizedProduct (N α) (symmetrizedProduct velocity m) :=
   rfl
 
-/-- Canonical localization correction, defined as the exact difference between nested and
-conventional/symmetrized fluxes. -/
+/-- Canonical localization correction, defined as the exact difference between the nested and
+symmetrized fluxes. -/
 noncomputable def localizationCorrectionCurrentFlux
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     OneForm →ₗ[ℂ] (V →ₗ[ℂ] V) :=
   nestedSymmetrizedCurrentFlux V velocity m N -
-    conventionalSymmetrizedCurrentFlux V velocity m N
+    symmetrizedCurrentFlux V velocity m N
 
 @[simp]
 theorem localizationCorrectionCurrentFlux_apply
@@ -88,12 +88,12 @@ theorem localizationCorrectionCurrentFlux_apply
   rw [symmetrizedProduct_nested]
   module
 
-/-- The nested flux is exactly conventional/symmetrized flux plus localization correction. -/
-theorem nestedSymmetrizedCurrentFlux_eq_conventional_add_correction
+/-- The nested flux is exactly the symmetrized flux plus localization correction. -/
+theorem nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     nestedSymmetrizedCurrentFlux V velocity m N =
-      conventionalSymmetrizedCurrentFlux V velocity m N +
+      symmetrizedCurrentFlux V velocity m N +
         localizationCorrectionCurrentFlux V velocity m N := by
   unfold localizationCorrectionCurrentFlux
   module

@@ -22,7 +22,7 @@ distinct:
 The conventional spin current is `1/2 {v, S}`. In a spin-orbit-coupled model
 this is not automatically the measurable transport current. Shi, Zhang, Xiao,
 and Niu motivate a torque-dipole completion; the existing abstract
-`localizationCorrectionFlux` is therefore only a semantic hook until a model
+`ConservationLaw.localizationCorrectionCurrentFlux` is therefore only a semantic hook until a model
 identification theorem is proved. No roadmap item should silently identify the
 conventional, proper, and effective total-angular-momentum currents.
 
@@ -55,7 +55,7 @@ spin-diffusion fits should remain downstream validation tracks.
 ## Current code boundary
 
 The repository already provides a finite mixed response from an electric bond
-current to the measured spin-z current, with a conventional current built from
+current to the measured spin-z current, with a symmetrized spin current built from
 `1/2 {v, S_z}`. It deliberately does not claim a conductivity normalization,
 a Rashba Hamiltonian, or equality between spin and charge currents. The
 single-particle corrected-current layer provides an exact algebraic correction,
@@ -116,7 +116,7 @@ approximation.
 
 Specialize the abstract corrected-current layer to a spin-orbit model and prove
 when the correction is the torque-dipole term of Shi et al. Record separately
-the conventional current, the proper current, and any effective observable
+the symmetrized (conventional) current, the proper current, and any effective observable
 used by a contact calculation. The theorem must expose the localization and
 boundary assumptions rather than treating an exact commutator identity as a
 universal physical equivalence.
