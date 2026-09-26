@@ -15,7 +15,7 @@ first Peierls-source derivative of that current family.
 
 The resulting operators provide a finite tight-binding model to which the canonical pointwise
 Kubo–Bastin/Středa identity applies directly. Current-orientation reversal is recorded here, while
-simultaneous current-sign reversal is inherited from the general validation theorem. No disorder
+simultaneous current-sign reversal is provided by the general Středa operator-kernel API. No disorder
 average, numerical approximation, or limiting procedure is used.
 -/
 
@@ -37,7 +37,7 @@ theorem twoSiteDimerHopping_hasHermitianAmplitudes (t : ℂ) :
     (twoSiteDimerHopping t).HasHermitianAmplitudes := by
   intro x y
   fin_cases x <;> fin_cases y <;>
-    simp [LocallyFiniteHopping.amplitude_eq]
+    simp [LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping]
 
 /-- Bounded second-quantized two-site hopping Hamiltonian
 ` t |1⟩⟨0| + star t |0⟩⟨1| ` on the finite Fock space. -/
@@ -51,7 +51,7 @@ theorem twoSiteDimerHamiltonian_eq_hoppingAmplitudes (t : ℂ) :
     twoSiteDimerHamiltonian t =
       (twoSiteDimerHopping t).amplitude 1 0 • boundedDgammaMatrixUnit 1 0 +
         (twoSiteDimerHopping t).amplitude 0 1 • boundedDgammaMatrixUnit 0 1 := by
-  simp [twoSiteDimerHamiltonian, LocallyFiniteHopping.amplitude_eq]
+  simp [twoSiteDimerHamiltonian, LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping]
 
 /-- Conjugate hopping amplitudes make the bounded dimer Hamiltonian self-adjoint. -/
 theorem twoSiteDimerHamiltonian_selfAdjoint (t : ℂ) :

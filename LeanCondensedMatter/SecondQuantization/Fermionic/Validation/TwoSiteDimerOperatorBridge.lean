@@ -97,7 +97,7 @@ theorem twoSiteDimerCurrent_one_eq_matrixUnits :
   unfold twoSiteDimerCurrent
   rw [boundedBondCurrent_eq_peierlsCoupling_smul]
   rw [LocallyFiniteHopping.boundedBondOperator_eq]
-  norm_num [peierlsCoupling, LocallyFiniteHopping.amplitude_eq]
+  norm_num [peierlsCoupling, LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping]
 
 /-- The oriented unit current sends `|0⟩` to `-i |1⟩`. -/
 @[simp]
@@ -141,7 +141,7 @@ theorem twoSiteDimerContact_one_eq_hamiltonian :
     twoSiteDimerContact 1 = twoSiteDimerHamiltonian 1 := by
   unfold twoSiteDimerContact Lattice.boundedBondContact
   simp [LocallyFiniteHopping.oneParticleBondContact, peierlsCoupling,
-    LocallyFiniteHopping.amplitude_eq, AlgebraicFock.dGamma_add,
+    LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping, AlgebraicFock.dGamma_add,
     boundedDgammaMatrixUnit, twoSiteDimerHamiltonian, add_comm]
 
 /-- The unit Peierls contact therefore has eigenvalue `-1` on the lower dimer state. -/

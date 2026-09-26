@@ -11,7 +11,7 @@ models separate from the general theorems and introduces:
 * a concrete two-level Hilbert space with a degenerate zero Hamiltonian;
 * its canonical finite pure-point basis and uniform diagonal state;
 * independently supplied zero and scalar current operators;
-* zero-current and simultaneous-current-sign symmetry checks for the canonical Bastin trace; and
+* a zero-current check of the canonical Bastin/Středa identity; and
 * a nontrivial two-site Hermitian dimer hopping model.
 
 The zero-current Středa statement below is a concrete consequence of the general pointwise
@@ -55,21 +55,6 @@ noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) whe
     rw [tsum_fintype]
     norm_num [Fin.sum_univ_two]
 
-@[simp]
-theorem twoLevelData_energy (i : Fin 2) :
-    twoLevelData.energy i = 0 :=
-  rfl
-
-@[simp]
-theorem twoLevelData_probability (i : Fin 2) :
-    twoLevelData.probability i = (1 : ℝ) / 2 :=
-  rfl
-
-/-- The two levels are degenerate and carry equal probabilities. -/
-theorem twoLevel_probability_symmetry :
-    twoLevelData.probability 0 = twoLevelData.probability 1 :=
-  rfl
-
 /-- Independently supplied zero current on the two-level space. -/
 def twoLevelZeroCurrent :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
@@ -79,47 +64,6 @@ def twoLevelZeroCurrent :
 def twoLevelScalarCurrent :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   1
-
-@[simp]
-theorem twoLevelScalarCurrent_apply (ψ : EuclideanSpace ℂ (Fin 2)) :
-    twoLevelScalarCurrent ψ = ψ := by
-  simp [twoLevelScalarCurrent]
-
-/-- Simultaneously reversing both supplied currents leaves the canonical Bastin operator integrand
-unchanged. This is a symbolic bilinearity/sign sanity check independent of the toy Hamiltonian. -/
-theorem regularizedBastinOperatorIntegrand_neg_neg
-    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (hamiltonian current₁ current₂ : H →L[ℂ] H)
-    (energy broadening : ℝ) :
-    regularizedBastinOperatorIntegrand
-        hamiltonian (-current₁) (-current₂) energy broadening =
-      regularizedBastinOperatorIntegrand
-        hamiltonian current₁ current₂ energy broadening := by
-  unfold regularizedBastinOperatorIntegrand
-  noncomm_ring
-
-/-- The same simultaneous-current-sign symmetry after taking the ordinary finite-dimensional
-trace. -/
-theorem regularizedBastinTraceIntegrand_neg_neg
-    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [FiniteDimensional ℂ H]
-    (hamiltonian current₁ current₂ : H →L[ℂ] H)
-    (energy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        hamiltonian (-current₁) (-current₂) energy broadening =
-      regularizedBastinTraceIntegrand
-        hamiltonian current₁ current₂ energy broadening := by
-  unfold regularizedBastinTraceIntegrand
-  rw [regularizedBastinOperatorIntegrand_neg_neg]
-
-/-- A vanishing first current makes the canonical two-level Bastin trace vanish. -/
-theorem twoLevel_zeroCurrent_bastinTrace_zero
-    (energy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        twoLevelSystem.hamiltonian.1
-        twoLevelZeroCurrent twoLevelScalarCurrent energy broadening = 0 := by
-  simp [regularizedBastinTraceIntegrand, regularizedBastinOperatorIntegrand,
-    twoLevelZeroCurrent]
 
 /-- Consequently, the corresponding pointwise Středa surface-derivative plus residual-sea trace
 also vanishes. -/
@@ -132,7 +76,8 @@ theorem twoLevel_zeroCurrent_streda_sum_zero
         twoLevelSystem.hamiltonian.1
         twoLevelZeroCurrent twoLevelScalarCurrent energy broadening = 0 := by
   rw [← regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]
-  exact twoLevel_zeroCurrent_bastinTrace_zero energy broadening
+  simp [regularizedBastinTraceIntegrand, regularizedBastinOperatorIntegrand,
+    twoLevelZeroCurrent]
 
 /-- Two-site type used by the finite tight-binding dimer validation. -/
 abbrev TwoSite := Fin 2
@@ -146,32 +91,6 @@ noncomputable def twoSiteDimerHopping (t : ℂ) : LocallyFiniteHopping TwoSite w
   outside_incident := by
     intro x y hy
     simp at hy
-
-@[simp]
-theorem twoSiteDimerHopping_column_zero_one (t : ℂ) :
-    ((twoSiteDimerHopping t).column 0) 1 = t := by
-  simp [twoSiteDimerHopping]
-
-@[simp]
-theorem twoSiteDimerHopping_column_one_zero (t : ℂ) :
-    ((twoSiteDimerHopping t).column 1) 0 = star t := by
-  simp [twoSiteDimerHopping]
-
-@[simp]
-theorem twoSiteDimerHopping_column_zero_zero (t : ℂ) :
-    ((twoSiteDimerHopping t).column 0) 0 = 0 := by
-  simp [twoSiteDimerHopping]
-
-@[simp]
-theorem twoSiteDimerHopping_column_one_one (t : ℂ) :
-    ((twoSiteDimerHopping t).column 1) 1 = 0 := by
-  simp [twoSiteDimerHopping]
-
-/-- The two oriented hopping amplitudes are Hermitian conjugates. -/
-theorem twoSiteDimerHopping_hermitian_pair (t : ℂ) :
-    star ((twoSiteDimerHopping t).amplitude 1 0) =
-      (twoSiteDimerHopping t).amplitude 0 1 := by
-  simp [LocallyFiniteHopping.amplitude_eq]
 
 end
 end Validation

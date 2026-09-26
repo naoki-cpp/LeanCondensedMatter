@@ -14,7 +14,7 @@ finite-dimensional trace. At fixed positive broadening it defines:
 * a scaled surface primitive compatible with the sign convention used by the integration-by-parts
   layer;
 * its exact real-energy derivative;
-* the canonical static Kubo–Bastin operator integrand; and
+* the canonical static Kubo–Bastin operator integrand and its simultaneous-current-sign symmetry; and
 * the residual sea kernel required to make the finite-broadening pointwise identity exact.
 
 The residual sea kernel is defined before any identification with the conventional Smrčka–Středa
@@ -276,6 +276,20 @@ noncomputable def regularizedBastinOperatorIntegrand
   -((current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
       current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
     retardedAdvancedResolventDifference hamiltonian energy broadening)
+
+omit [CompleteSpace H] in
+omit [CompleteSpace H] in
+/-- Simultaneously reversing both current vertices leaves the canonical Bastin operator
+integrand unchanged. -/
+theorem regularizedBastinOperatorIntegrand_neg_neg
+    (hamiltonian current₁ current₂ : H →L[ℂ] H)
+    (energy broadening : ℝ) :
+    regularizedBastinOperatorIntegrand
+        hamiltonian (-current₁) (-current₂) energy broadening =
+      regularizedBastinOperatorIntegrand
+        hamiltonian current₁ current₂ energy broadening := by
+  unfold regularizedBastinOperatorIntegrand
+  noncomm_ring
 
 /-- Finite-broadening residual after removing the derivative of the chosen surface primitive from
 the canonical Bastin operator integrand. Keeping this remainder distinct from the conventional
