@@ -144,12 +144,12 @@ All current `@[simp]` declarations in the following modules are Green:
 - `SingleParticle/Continuum/Hamiltonian/Closed1D`
 - `SingleParticle/Continuum/L2/Multiplication1D`
 - `SingleParticle/Continuum/L2/Probability1D`
-- `SingleParticle/Continuity/CurrentRepresentation1D`
-- `SingleParticle/Continuity/OperatorCurrentBridge1D`
-- `SingleParticle/Continuity/SchwartzCurrent1D`
-- `SingleParticle/Continuity/Schwartz1D`
-- `SingleParticle/Continuity/FiniteDimensional`
-- `SingleParticle/Continuity/SchwartzSpinCurrent1D`
+- `SingleParticle/Continuum/Continuity/CurrentRepresentation1D`
+- `SingleParticle/Continuum/Continuity/OperatorCurrentBridge1D`
+- `SingleParticle/Continuum/Continuity/SchwartzCurrent1D`
+- `SingleParticle/Continuum/Continuity/Schwartz1D`
+- `SingleParticle/Continuum/Continuity/FiniteDimensional`
+- `SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D`
 
 ## Green: QuantumTheory
 
