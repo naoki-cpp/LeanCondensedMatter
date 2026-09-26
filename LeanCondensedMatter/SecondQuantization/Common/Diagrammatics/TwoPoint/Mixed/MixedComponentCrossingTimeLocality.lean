@@ -8,9 +8,11 @@ set_option linter.style.header false
 /-!
 # Component-locality of mixed pair crossings and order chambers
 
-Canonical component pair transport preserves normalized endpoints when component position order is
-preserved. Endpoint bookkeeping and crossing-count reindexing are proof-local to this module; the
-public API exposes endpoint-leg and exchange-weight locality inside fixed mixed-order chambers.
+Canonical transport of component-local normalized pairs preserves their endpoint legs whenever the
+component-position order is preserved. Consequently both endpoint data and exchange weights are
+invariant under transport within a fixed mixed-order chamber.
+
+These statements depend only on the mixed ordering, component decomposition, and pairing geometry.
 -/
 
 namespace SecondQuantization
