@@ -55,16 +55,6 @@ noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) whe
     rw [tsum_fintype]
     norm_num [Fin.sum_univ_two]
 
-@[simp]
-theorem twoLevelData_energy (i : Fin 2) :
-    twoLevelData.energy i = 0 :=
-  rfl
-
-@[simp]
-theorem twoLevelData_probability (i : Fin 2) :
-    twoLevelData.probability i = (1 : ℝ) / 2 :=
-  rfl
-
 /-- Independently supplied zero current on the two-level space. -/
 def twoLevelZeroCurrent :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
