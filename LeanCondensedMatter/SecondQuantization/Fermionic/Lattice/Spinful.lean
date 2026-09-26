@@ -62,7 +62,9 @@ noncomputable def internalOneBodyLinear
     rw [Finset.smul_sum]
     apply Finset.sum_congr rfl
     intro b hb
-    rw [smul_smul]
+    change (c * S a b) • matrixUnit (spinfulSite x a) (spinfulSite x b) =
+      (c * S a b) • matrixUnit (spinfulSite x a) (spinfulSite x b)
+    rfl
 
 @[simp]
 theorem internalOneBodyLinear_apply
