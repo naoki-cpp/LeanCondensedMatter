@@ -82,7 +82,7 @@
         {"id": "intrinsicBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw"]},
         {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"]},
         {"id": "balanceLawAdapter", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"]},
-        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]}
+        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]}
       ],
       "edges": [
         {"upstream": "zetaCommutator", "downstream": "linearCommutator"},
@@ -110,7 +110,7 @@
           "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter",
-          "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
+          "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"
         ]},
         {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
         {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}

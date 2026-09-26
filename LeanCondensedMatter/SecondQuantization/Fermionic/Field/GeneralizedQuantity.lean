@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
+import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 
 set_option linter.style.header false

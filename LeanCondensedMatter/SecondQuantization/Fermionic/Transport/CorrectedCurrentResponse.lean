@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.CorrectedCurrentFlux
+import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse
 

@@ -4,6 +4,8 @@ import LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter
 import LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D
+import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
+import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 
 set_option linter.style.header false
 

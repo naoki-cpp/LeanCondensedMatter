@@ -30,7 +30,7 @@
         "LeanCondensedMatter/Analysis/ConservationLaw/IntrinsicBalanceLaw.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLaw.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLawAdapter.lean",
-        "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
+        "LeanCondensedMatter/Analysis/ConservationLaw/SymmetricLocalizationAlgebra.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/ConventionalCurrent.lean",
@@ -320,7 +320,7 @@
     },
     {
       "id": "generalizedCurrentSymmetricLocalizationAlgebra",
-      "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
+      "path": "LeanCondensedMatter/Analysis/ConservationLaw/SymmetricLocalizationAlgebra.lean",
       "modules": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]
     },
     {
@@ -328,7 +328,7 @@
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
       "modules": [
         "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
-        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
+        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
       ]
     },
@@ -347,8 +347,8 @@
     },
     {
       "id": "correctedCurrentFluxLocalizationAlgebra",
-      "path": "LeanCondensedMatter/Analysis/Calculus/CorrectedCurrentFlux.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]
+      "path": "LeanCondensedMatter/Analysis/ConservationLaw/CorrectedCurrentFlux.lean",
+      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]
     },
     {
       "id": "generalizedCurrentSymmetrizedVelocity",
@@ -373,7 +373,7 @@
     {
       "id": "generalizedCurrentFieldBridge",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]
+      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]
     },
     {
       "id": "generalizedCurrentConventionalResponse",
