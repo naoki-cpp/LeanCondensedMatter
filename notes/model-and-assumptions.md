@@ -20,13 +20,13 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
 
 ### Spin-1/2 polarization
 
-- `QuantumTheory.SpinHalf.PhysicalSpace` is real three-dimensional Euclidean space. A unit vector
-  represents a pure polarization direction; arbitrary vectors remain admissible so spin components
-  and response tensors retain their linear structure.
+- `QuantumTheory.SpinHalf.SpinSpace` is the real three-dimensional spin-component space. Unit vectors may be interpreted as pure
+  polarization directions; arbitrary vectors retain the linear structure needed by spin components
+  and response tensors.
 - `QuantumTheory.SpinHalf.spinMatrix ℏ n` is the spin-1/2 representation
   `S(n) = ℏ (n · σ) / 2`.
 - `InternalSpace.PauliAxis` labels the Pauli representation basis only. It is not the type of a
-  physical spin-polarization direction.
+  spin-component vector.
 
 ### Density states
 
