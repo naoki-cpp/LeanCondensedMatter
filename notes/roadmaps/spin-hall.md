@@ -59,10 +59,13 @@ to an arbitrarily polarized measured spin current. For a supplied flow-direction
 `v_d` and real Pauli polarization `p`, the conventional current is built from
 `1/2 {v_d, S_p}` with `S_p = (s/2) p · σ`. The finite-lattice layer intentionally encodes the
 flow direction through the supplied velocity operator rather than imposing a global Euclidean
-direction type. It deliberately does not claim a conductivity normalization, a Rashba Hamiltonian,
-or equality between spin and charge currents. The single-particle corrected-current layer provides
-an exact algebraic correction, and the one-dimensional Schwartz example proves a
-commuting-localizer special case. These are foundations, not an existing SHE theorem.
+direction type. The one-body spin current is the generic conservation-law symmetrized current
+specialized to `m = S_p`, and the finite response layer specializes the generic corrected-current
+theorem: if the intrinsic flux factors through the nested current and every localizer commutes with
+`S_p`, the localization-correction response vanishes and the conventional spin-current flux
+represents the intrinsic response. No assumption `[v_d,S_p]=0` is made. The code still does not
+claim a conductivity normalization, a Rashba Hamiltonian, or equality between spin and charge
+currents. These are foundations, not an existing SHE theorem.
 
 The transport roadmap already lists vertex-corrected Kubo--Bastin/Streda
 response, thermodynamic limits, DC limits, and crossed/side-jump/skew work.
@@ -94,8 +97,10 @@ Acceptance criteria:
 
 1. the model instantiates the existing `SpinCurrentResponse` API;
 2. the conventional spin current is visibly `1/2 {v_d, S_p}` for supplied flow direction and
-   polarization;
-3. no claim of a universal infinite-system value is made without an order of limits and a
+   polarization, as a specialization of the generic current algebra;
+3. the model proves the required localizer-evolution factorization and `[N α,S_p]=0` before
+   identifying that conventional current with intrinsic transport;
+4. no claim of a universal infinite-system value is made without an order of limits and a
    non-degeneracy/broadening hypothesis.
 
 ### R2 -- clean intrinsic benchmark
