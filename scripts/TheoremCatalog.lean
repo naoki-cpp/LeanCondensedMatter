@@ -133,9 +133,11 @@ private def containsSubstring (text pattern : String) : Bool :=
 
 /-- Extensionality lemmas are proof mechanisms, not evidence that the result is merely a
 specialization of the extensionality theorem. -/
-private def extensionTheoremName? (declName : Name) : Bool :=
-  let name := declName.toString
+private def extensionTheoremString? (name : String) : Bool :=
   name.endsWith ".ext" || containsSubstring name ".ext_" || containsSubstring name "_ext_"
+
+private def extensionTheoremName? (declName : Name) : Bool :=
+  extensionTheoremString? declName.toString
 
 private def directWrapperTarget?
     (projectTheorems : NameSet) (declName : Name) (value : Expr) : Option Name := do
@@ -257,8 +259,12 @@ private def mentionedInCompleted (completed declName : String) : Bool :=
   containsSubstring completed declName ||
     containsSubstring completed s!"`{declarationBaseName declName}`"
 
-private def mentionedInRetained (retained declName : String) : Bool :=
-  containsSubstring retained s!"- `{declName}`"
+private def mentionedInRetained
+    (retained : String) (allDeclarationNames : Array String) (declName : String) : Bool :=
+  let baseName := declarationBaseName declName
+  containsSubstring retained s!"`{declName}`" ||
+    ((allDeclarationNames.filter fun name => declarationBaseName name == baseName).size == 1 &&
+      containsSubstring retained s!"`{baseName}`")
 
 private def retainedDeclarationNames (retained : String) : Array String :=
   retained.splitOn "\n" |>.foldl (init := #[]) fun names line =>
@@ -278,6 +284,7 @@ private def annotateEntries
     (entries : Array Entry)
     (theoremDependents compiledConsumers : NameMap (Array String))
     (completed retained : String) : Array CatalogEntry :=
+  let allDeclarationNames := entries.map fun entry => entry.name
   entries.map fun entry =>
     let dependents := sortedConsumers theoremDependents entry.declName
     let compiledConsumers := sortedConsumers compiledConsumers entry.declName
@@ -288,7 +295,7 @@ private def annotateEntries
       | [consumer] => privateDeclarationString? consumer
       | _ => false
     let terminal := dependents.isEmpty
-    let retainedMention := mentionedInRetained retained entry.name
+    let retainedMention := mentionedInRetained retained allDeclarationNames entry.name
     let retainedNeedsReview :=
       retainedMention && (terminal || compiledConsumers.isEmpty || singleCompiledConsumer ||
         entry.directWrapperOf.isSome)
@@ -331,7 +338,8 @@ private def singleCompiledConsumerEntries (entries : Array CatalogEntry) : Array
 
 private def privateSingleConsumerReviewEntries (entries : Array CatalogEntry) : Array CatalogEntry :=
   entries.filter fun entry =>
-    !entry.retainedMention && !entry.simpLemma && !privateDeclarationString? entry.name &&
+    !extensionTheoremString? entry.name && !entry.retainedMention && !entry.simpLemma &&
+      !privateDeclarationString? entry.name &&
       entry.soleCompiledConsumerPrivate
 
 private def directWrapperEntries (entries : Array CatalogEntry) : Array CatalogEntry :=
@@ -459,13 +467,15 @@ private def markdown
   let completedTerminals := terminals.filter fun entry => entry.completedMention
   let retainedTerminals := terminals.filter fun entry => entry.retainedMention
   let reviewQueue :=
-    terminals.filter fun entry => !entry.completedMention && !entry.retainedMention
+    terminals.filter fun entry =>
+      !extensionTheoremString? entry.name && !entry.completedMention && !entry.retainedMention
   let priorityReviewQueue := compiledConsumerFreeEntries reviewQueue
   let singleConsumerEntries := singleCompiledConsumerEntries entries
   let retainedSingleConsumers :=
     singleConsumerEntries.filter fun entry => entry.retainedMention
   let singleConsumerReviewQueue :=
-    singleConsumerEntries.filter fun entry => !entry.retainedMention
+    singleConsumerEntries.filter fun entry =>
+      !extensionTheoremString? entry.name && !entry.retainedMention
   let privateSingleConsumerReviewQueue := privateSingleConsumerReviewEntries entries
   let directWrappers := directWrapperEntries entries
   let retainedDirectWrappers :=
@@ -511,9 +521,9 @@ private def markdown
   output := output ++ "`axioms` records transitive kernel axiom dependencies from `Lean.collectAxioms`. `standardAxioms` classifies `propext`, `Classical.choice`, and `Quot.sound`; `projectAxioms` records source-declared LeanCondensedMatter axioms; `externalAxioms` records other non-`sorryAx` axioms. This is kernel provenance, not a replacement for explicit model assumptions represented as theorem hypotheses.\n\n"
   output := output ++ "`simpLemma` records membership in Lean's active default simp extension, including simp attributes applied separately from the theorem declaration. The priority private-consumer queue excludes simp lemmas because public canonical evaluation/normalization rules can remain useful API even when their only currently retained compiled consumer is private. This exclusion is a ranking heuristic, not a claim that every simp theorem should be retained.\n\n"
   output := output ++ "`directWrapperOf` is a conservative proof-term attribute: after removing only lambda/metadata packaging, the theorem body must be a direct application of another non-private source-declared project theorem and all application arguments must have a simple specialization shape without references to other project theorems. Extensionality lemmas are excluded because they are commonly proof mechanisms for genuinely new results. `directWrapperTargetModule` and `crossModuleDirectWrapper` record where that target lives. These attributes are advisory and do not imply that a domain-specific specialization lacks independent API value.\n\n"
-  output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, private-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API. The retained consistency audit separately reports listed names that no longer resolve to catalog theorems and retained entries that no longer carry any of the structural signals that justify this disposition (terminal, zero/single compiled consumer, or direct wrapper). `retainedNeedsReview` separately marks retained declarations that still carry at least one such structural signal; they remain suppressed from ordinary unresolved queues but are surfaced in the retained re-audit queue for renewed semantic review. These findings are advisory cleanup and review prompts.\n\n"
+  output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, private-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API. Generated extension theorems are also omitted from unresolved review queues because they are structural API. The retained consistency audit separately reports listed names that no longer resolve to catalog theorems and retained entries that no longer carry any of the structural signals that justify this disposition (terminal, zero/single compiled consumer, or direct wrapper). `retainedNeedsReview` separately marks retained declarations that still carry at least one such structural signal; they remain suppressed from ordinary unresolved queues but are surfaced in the retained re-audit queue for renewed semantic review. These findings are advisory cleanup and review prompts.\n\n"
   output := output ++ "A single-consumer theorem has exactly one distinct compiled project-declaration consumer. Multi-step chains follow that unique edge through theorem consumers until the chain reaches a theorem without exactly one compiled consumer, or a non-theorem definition/opaque endpoint. Only chains with at least two single-consumer edges are listed separately. These highlight public wrappers and proof-routing stages that may be candidates for inlining, privatization, or deletion; source search and semantic review remain required before changing the API. Retained declarations can still appear in these chains because the chains describe graph structure rather than review status.\n\n"
-  output := output ++ "A mention in `notes/completed.md` is evidence that a terminal endpoint is an intentional completed result. A mention in `notes/theorem-catalog-retained.md` is evidence that a declaration surfaced by one or more audit signals was semantically reviewed and intentionally retained. Terminal declarations with neither disposition remain review candidates: compare their statement and module with `notes/roadmap.md` and the detailed roadmaps to decide whether they are roadmap intermediates that still need a consumer, intentional local endpoints, or unnecessary public theorems.\n\n"
+  output := output ++ "A mention in `notes/completed.md` is evidence that a terminal endpoint is an intentional completed result. A mention in `notes/theorem-catalog-retained.md` is evidence that a declaration surfaced by one or more audit signals was semantically reviewed and intentionally retained. Terminal declarations with neither disposition remain review candidates, except for generated extension declarations that are structural API: compare the remaining statements and modules with `notes/roadmap.md` and the detailed roadmaps to decide whether they are roadmap intermediates that still need a consumer, intentional local endpoints, or unnecessary public theorems.\n\n"
   output := output ++ "## Retained catalog consistency\n\n"
   output := output ++ "This advisory queue checks whether semantic dispositions in `notes/theorem-catalog-retained.md` still correspond to current theorem-catalog structure. It does not reopen retained declarations merely because their original signal remains present; that belongs to the separate retained re-audit queue.\n\n"
   output := output ++ "### Missing retained declarations\n\n"
@@ -563,7 +573,7 @@ private def markdown
     for consumer in entry.compiledConsumers do
       output := output ++ s!"- `{entry.name}` → `{consumer}` — module `{entry.moduleName}`; theorem dependents: {entry.dependents.size}; direct prerequisites: {entry.dependencies.size}; direct wrapper: {entry.directWrapperOf.isSome}\n"
   output := output ++ "\n## Priority terminal theorem review queue\n\n"
-  output := output ++ "These terminal theorems are neither documented as completed nor retained and have no compiled project-declaration consumer. Source search is still required before removal.\n\n"
+  output := output ++ "These terminal theorems are neither documented as completed nor retained and have no compiled project-declaration consumer. Generated extension theorems are omitted because they are structural API, not unresolved audit work. Source search is still required before removal.\n\n"
   for entry in priorityReviewQueue do
     output := output ++ s!"- `{entry.name}` — module `{entry.moduleName}`; direct prerequisites: {entry.dependencies.size}; direct wrapper: {entry.directWrapperOf.isSome}\n"
   output := output ++ "\n## Full terminal theorem review queue\n\n"
@@ -617,13 +627,15 @@ run_cmd do
   let completedTerminals := terminals.filter fun entry => entry.completedMention
   let retainedTerminals := terminals.filter fun entry => entry.retainedMention
   let reviewQueue :=
-    terminals.filter fun entry => !entry.completedMention && !entry.retainedMention
+    terminals.filter fun entry =>
+      !extensionTheoremString? entry.name && !entry.completedMention && !entry.retainedMention
   let priorityReviewQueue := compiledConsumerFreeEntries reviewQueue
   let singleConsumerEntries := singleCompiledConsumerEntries catalog
   let retainedSingleConsumers :=
     singleConsumerEntries.filter fun entry => entry.retainedMention
   let singleConsumerReviewQueue :=
-    singleConsumerEntries.filter fun entry => !entry.retainedMention
+    singleConsumerEntries.filter fun entry =>
+      !extensionTheoremString? entry.name && !entry.retainedMention
   let privateSingleConsumerReviewQueue := privateSingleConsumerReviewEntries catalog
   let directWrappers := directWrapperEntries catalog
   let retainedDirectWrappers :=
