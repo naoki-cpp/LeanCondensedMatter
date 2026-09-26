@@ -138,8 +138,8 @@ private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
           (LatticeState Site) velocity m N (d f))
   rw [hΦ f]
 
-/-- An intrinsic exact-flux response represented by the
-nested current decomposes into symmetrized plus localization-correction responses. -/
+/-- An intrinsic exact-flux response represented by the nested current decomposes into
+symmetrized plus localization-correction responses. -/
 theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
