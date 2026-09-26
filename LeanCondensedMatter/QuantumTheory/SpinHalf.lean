@@ -35,15 +35,14 @@ def cartesianIndex : InternalSpace.PauliAxis → Fin 3
 noncomputable def cartesianBasisVector (axis : InternalSpace.PauliAxis) : SpinSpace :=
   EuclideanSpace.single (cartesianIndex axis) 1
 
-private def pauliComponent (component : SpinSpace) : InternalSpace.PauliAxis → ℝ
-  | .x => component.ofLp 0
-  | .y => component.ofLp 1
-  | .z => component.ofLp 2
+private def pauliComponent (component : SpinSpace) (axis : InternalSpace.PauliAxis) : ℝ :=
+  component.ofLp (cartesianIndex axis)
 
 /-- Real-linear spin-1/2 vector observable on spin space,
 `S(n) = ℏ (n · σ) / 2`.
 
-The Cartesian coordinates are consumed only inside this representation map; callers supply the spin-space component vector itself. -/
+The Cartesian coordinates are consumed only inside this representation map; callers supply the
+spin-space component vector itself. -/
 noncomputable def spinMatrix (ℏ : ℝ) :
     SpinSpace →ₗ[ℝ] InternalSpace.PauliMatrix where
   toFun := fun component =>
