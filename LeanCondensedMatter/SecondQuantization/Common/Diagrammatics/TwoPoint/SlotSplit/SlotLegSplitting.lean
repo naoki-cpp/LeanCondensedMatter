@@ -55,7 +55,7 @@ theorem slotLegSplitting_left_interaction {S T : Finset (Fin N)} (h : T ⊆ S)
     (v : ↥T) (l : Fin 4) :
     slotLegSplitting h (Sum.inl ((twoPointLegEquiv T).symm (Sum.inr (v, l)))) =
       (twoPointLegEquiv S).symm (Sum.inr (⟨v.1, h v.2⟩, l)) := by
-  simp [slotLegSplitting, Combinatorics.subsetSumSdiffEquiv]
+  simp [slotLegSplitting]
 
 /-- A right interaction leg lands on the corresponding ambient leg. -/
 @[simp]
@@ -64,7 +64,7 @@ theorem slotLegSplitting_right_interaction {S T : Finset (Fin N)} (h : T ⊆ S)
     slotLegSplitting h (Sum.inr ((quarticLegEquiv (S \ T)).symm (v, l))) =
       (twoPointLegEquiv S).symm
         (Sum.inr (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, l)) := by
-  simp [slotLegSplitting, Combinatorics.subsetSumSdiffEquiv]
+  simp [slotLegSplitting]
 
 variable {ExternalLabel InternalLabel : Type*}
 
