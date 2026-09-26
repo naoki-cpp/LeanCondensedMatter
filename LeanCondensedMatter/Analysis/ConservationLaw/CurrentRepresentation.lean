@@ -136,8 +136,8 @@ variable [AddCommGroup Test'] [Module R Test']
 variable [AddCommGroup OneForm'] [Module R OneForm']
 variable [AddCommGroup Obs'] [Module R Obs']
 
-/-- Over modules with subtraction, intrinsic differential dependence is exactly kernel inclusion:
-the transport vanishes on every test direction invisible to `d`. -/
+/-- Over modules over a commutative ring, intrinsic differential dependence is exactly kernel
+inclusion: the transport vanishes on every test direction invisible to `d`. -/
 theorem iff_ker_le_ker
     {d : Test' →ₗ[R] OneForm'} {Φ : Test' →ₗ[R] Obs'} :
     DependsOnlyOnDifferential d Φ ↔ LinearMap.ker d ≤ LinearMap.ker Φ := by
