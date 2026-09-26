@@ -8,22 +8,22 @@ set_option linter.style.header false
 /-!
 # Domain-carrying one-dimensional Schrödinger Hamiltonian
 
-This module introduces the first genuinely unbounded-operator boundary of the continuum
-Schrödinger development. Square-integrable wavefunctions are embedded as tempered distributions,
-and the kinetic domain is the Bessel-potential Sobolev space `H²`: an `L²` wavefunction belongs to
-the domain exactly when its associated tempered distribution has Sobolev regularity two.
+Square-integrable wavefunctions are embedded as tempered distributions, and the kinetic domain is
+the Bessel-potential Sobolev space `H²`: an `L²` wavefunction belongs to the domain exactly when
+its associated tempered distribution has Sobolev regularity two.
 
-On that explicit domain, Mathlib's distributional Laplacian has Sobolev order zero and therefore
-has a unique `L²` representative. Combining this kinetic term with the bounded multiplication
-operators from the preceding continuum layer gives a partial linear map representing
+On this domain, the distributional Laplacian has Sobolev order zero and therefore a unique `L²`
+representative. Combining the kinetic term with bounded multiplication operators gives the partial
+linear Schrödinger operator
 
 `H ψ = -κ Δ ψ + V ψ`
 
-for an essentially bounded potential `V`. The real-potential specialization reuses the generic
-real `L∞` embedding owned by the bounded multiplication layer.
+for an essentially bounded potential `V`. The real-potential specialization uses the real
+`L∞` multiplication embedding.
 
-No closedness, symmetry, self-adjointness, generated unitary evolution, or identification with a
-pointwise twice-differentiable representative is claimed here. Those are later analytic layers.
+This module defines the operator and its domain; closedness, symmetry, self-adjointness, generated
+unitary evolution, and pointwise twice-differentiable representatives require additional hypotheses
+and are treated separately.
 -/
 
 namespace QuantumMechanics
