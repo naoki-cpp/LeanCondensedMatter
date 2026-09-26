@@ -129,8 +129,9 @@ theorem stoneEvolution_apply_continuous_domain
   refine ⟨δ, hδ, ?_⟩
   intro t ht
   rw [stoneEvolution_dist_time_eq_sub A hA t s (x : H)]
-  apply hzero
-  simpa [Real.dist_eq] using ht
+  have hshift : dist (t - s) 0 < δ := by
+    simpa [Real.dist_eq] using ht
+  simpa [stoneEvolution_zero] using hzero hshift
 
 /-- The limiting Stone evolution is jointly continuous in the vector and time variables.
 Continuity on the dense generator domain extends to the whole Hilbert space because every time
