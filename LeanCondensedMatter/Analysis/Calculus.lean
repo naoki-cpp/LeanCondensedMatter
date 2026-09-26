@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative
 import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
-import LeanCondensedMatter.Analysis.Calculus.CorrectedCurrentFlux
+import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
+import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 
 set_option linter.style.header false
 
