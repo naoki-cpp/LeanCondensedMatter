@@ -112,7 +112,7 @@ theorem boundedCorrectedCurrentFluxRetardedResponse_eq_symmetrized_add_correctio
   rw [hdecomp]
   exact map_add (boundedOneBodyRetardedResponseLinearMap system expectation source t s) _ _
 
-private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_isDifferentialCurrent
+private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_current
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -159,7 +159,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
         system expectation source velocity m N t s).comp d +
       (boundedLocalizationCorrectionRetardedResponse
         system expectation source velocity m N t s).comp d := by
-  rw [boundedIntrinsicFluxRetardedResponse_eq_corrected_of_isDifferentialCurrent
+  rw [boundedIntrinsicFluxRetardedResponse_eq_corrected_of_current
     system expectation source d Φ velocity m N hΦ t s]
   rw [boundedCorrectedCurrentFluxRetardedResponse_eq_symmetrized_add_correction
     system expectation source velocity m N t s]
