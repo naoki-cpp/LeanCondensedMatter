@@ -6,10 +6,11 @@ set_option linter.style.header false
 /-!
 # Vertex products on the vacuum side of a two-point slot split
 
-For an externally connected left piece, `slotSplitVacuumComponentEquiv` identifies the vacuum
-components of the reassembled two-point diagram with the connected components of the quartic right
-piece.  This module records the corresponding product identity for arbitrary vertex-local weights.
-It is the statistics-independent prefactor bridge used by the linked-cluster amplitude proof.
+For an externally connected two-point piece, `slotSplitVacuumComponentEquiv` identifies the vacuum
+components of the reconstructed diagram with the connected components of the quartic piece.
+
+Reindexing along this equivalence factors arbitrary commutative products of vertex-local weights over
+the vacuum components, including the corresponding interaction-vertex prefactors.
 -/
 
 namespace SecondQuantization
