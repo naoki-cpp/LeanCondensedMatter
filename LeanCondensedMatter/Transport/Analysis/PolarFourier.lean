@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
 
@@ -76,6 +77,30 @@ noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ *
       ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
+
+@[fun_prop]
+theorem continuous_polarFourierZerothAngularKernel :
+    Continuous polarFourierZerothAngularKernel := by
+  unfold polarFourierZerothAngularKernel
+  apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
+  unfold Function.uncurry polarFourierRadialPhase
+  fun_prop
+
+@[fun_prop]
+theorem continuous_polarFourierFirstCosineAngularKernel :
+    Continuous polarFourierFirstCosineAngularKernel := by
+  unfold polarFourierFirstCosineAngularKernel
+  apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
+  unfold Function.uncurry polarFourierRadialPhase
+  fun_prop
+
+@[fun_prop]
+theorem continuous_polarFourierSecondCosineAngularKernel :
+    Continuous polarFourierSecondCosineAngularKernel := by
+  unfold polarFourierSecondCosineAngularKernel
+  apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
+  unfold Function.uncurry polarFourierRadialPhase
+  fun_prop
 
 /-- The sine first harmonic vanishes against the radial Fourier phase over one full angle. -/
 theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :

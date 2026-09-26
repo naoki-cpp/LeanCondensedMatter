@@ -92,6 +92,60 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntr
       polarFourierSecondCosineAngularKernel (p * radius / hbar) *
         harmonics.secondCosine i j)
 
+/-- In the finite-broadening finite-cutoff regime, every Gaussian-crossed radial current
+entry kernel is continuous in radial momentum. -/
+theorem continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) (i j : Fin 2) :
+    Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+  have haA :=
+    continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hbA :=
+    continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+      .x .advanced v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hdA :=
+    continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+      .z .advanced v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have haR :=
+    continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hbR :=
+    continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+      .x .retarded v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hdR :=
+    continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+      .z .retarded v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  fin_cases source <;> fin_cases i <;> fin_cases j <;>
+    unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel <;>
+    dsimp [polarPauliInPlaneHarmonics, gaussianCrossedCurrentCoefficientVector] <;>
+    fun_prop
+
+/-- In the finite-broadening finite-cutoff regime, every Gaussian-crossed radial current entry
+kernel is interval integrable on the regulated radial momentum interval. -/
+theorem intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) (i j : Fin 2) :
+    IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      MeasureTheory.volume 0 pMax :=
+  (continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+    source v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax i j).intervalIntegrable 0 pMax
+
 /-- Source-indexed finite-cutoff finite-`η` Gaussian-crossed real-space current block.
 
 This is the regularized massive-Dirac realization of the `J_r` object entering the crossed trace

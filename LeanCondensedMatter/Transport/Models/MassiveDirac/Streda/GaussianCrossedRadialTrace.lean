@@ -96,21 +96,27 @@ private theorem pauliVectorCoefficient_prefactor_intervalIntegral
       intervalIntegral.integral_sub (hkernel 0 0) (hkernel 1 1)]
     ring
 
-/-- Under entrywise interval-integrability, the radial Green scalar coefficient is the momentum
+/-- In the finite-broadening finite-cutoff regime, the radial Green scalar coefficient is the momentum
 measure prefactor times the integral of its explicit pointwise Pauli scalar kernel. -/
 theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (hentry : ∀ i j, IntervalIntegrable
-      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      volume 0 pMax) :
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
         side v m probeEnergy broadening disorderStrength hbar pMax radius =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax,
           finiteCutoffContinuumBornDysonRadialGreenScalarKernel
             side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hentry : ∀ i j, IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      volume 0 pMax := by
+    intro i j
+    exact intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+      side v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals]
   rw [pauliScalarCoefficient_prefactor_intervalIntegral
     (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -122,21 +128,27 @@ theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKern
   exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient
     side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
-/-- Under entrywise interval-integrability, every radial Green Pauli component is the momentum
+/-- In the finite-broadening finite-cutoff regime, every radial Green Pauli component is the momentum
 measure prefactor times the integral of its explicit pointwise Pauli-vector kernel. -/
 theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
     (axis : PauliAxis) (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (hentry : ∀ i j, IntervalIntegrable
-      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      volume 0 pMax) :
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
         axis side v m probeEnergy broadening disorderStrength hbar pMax radius =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax,
           finiteCutoffContinuumBornDysonRadialGreenPauliKernel
             axis side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hentry : ∀ i j, IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      volume 0 pMax := by
+    intro i j
+    exact intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+      side v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
   cases axis with
   | x =>
@@ -185,22 +197,28 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
     exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
       .z side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
-/-- Under entrywise interval-integrability, the radial Gaussian-crossed current scalar
+/-- In the finite-broadening finite-cutoff regime, the radial Gaussian-crossed current scalar
 coefficient is the momentum-measure prefactor times the integral of its explicit pointwise
 Pauli scalar kernel. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral
     (source : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (hentry : ∀ i j, IntervalIntegrable
-      (fun p : ℝ => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      volume 0 pMax) :
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
         source v m probeEnergy broadening disorderStrength hbar pMax radius =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax,
           finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel
             source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hentry : ∀ i j, IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      volume 0 pMax := by
+    intro i j
+    exact intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+      source v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals]
   rw [pauliScalarCoefficient_prefactor_intervalIntegral
     (kernel := fun p i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
@@ -212,22 +230,28 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoeffici
   exact finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient
     source v m probeEnergy broadening disorderStrength hbar pMax radius p
 
-/-- Under entrywise interval-integrability, every radial Gaussian-crossed current Pauli component
+/-- In the finite-broadening finite-cutoff regime, every radial Gaussian-crossed current Pauli component
 is the momentum-measure prefactor times the integral of its explicit pointwise Pauli-vector
 kernel. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
     (axis : PauliAxis) (source : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (hentry : ∀ i j, IntervalIntegrable
-      (fun p : ℝ => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      volume 0 pMax) :
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
         axis source v m probeEnergy broadening disorderStrength hbar pMax radius =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax,
           finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
             axis source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hentry : ∀ i j, IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      volume 0 pMax := by
+    intro i j
+    exact intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+      source v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals]
   cases axis with
   | x =>

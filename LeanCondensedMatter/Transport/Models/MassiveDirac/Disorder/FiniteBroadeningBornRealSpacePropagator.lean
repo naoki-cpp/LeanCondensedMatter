@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 
 set_option linter.style.header false
@@ -42,6 +43,62 @@ noncomputable def finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           probeEnergy broadening disorderStrength hbar pMax i j)
       r
 
+/-- At finite broadening, the radial Born-Dyson scalar coefficient is continuous in radial
+momentum. -/
+theorem continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+  have hden : ∀ p : ℝ,
+      finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
+    intro p
+    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hdenContinuous : Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    unfold finiteCutoffContinuumBornDysonDenominator
+    fun_prop
+  unfold finiteCutoffContinuumBornDysonScalarCoefficient
+  exact (hdenContinuous.inv₀ hden).mul continuous_const
+
+/-- At finite broadening, every radial Born-Dyson Pauli coefficient is continuous in radial
+momentum. -/
+theorem continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+    (axis : PauliAxis) (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient
+        axis side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+  have hden : ∀ p : ℝ,
+      finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
+    intro p
+    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hdenContinuous : Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    unfold finiteCutoffContinuumBornDysonDenominator
+    fun_prop
+  have hinv : Continuous fun p : ℝ =>
+      (finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ :=
+    hdenContinuous.inv₀ hden
+  unfold finiteCutoffContinuumBornDysonPauliCoefficient
+  cases axis <;>
+    simp only [InternalSpace.pauliAxisComponent] <;>
+    fun_prop
+
 /-- Scalar radial momentum kernel for one finite-cutoff Born-Dyson Green-matrix entry. The
 physical momentum-measure prefactor remains outside the one-dimensional integral. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -59,6 +116,48 @@ noncomputable def finiteCutoffContinuumBornDysonRadialGreenEntryKernel
   (p : ℂ) *
     (!![k0 * (a + d), k1 * b;
         k1 * b, k0 * (a - d)] : Matrix2) i j
+
+/-- In the finite-broadening finite-cutoff regime, every radial Green entry kernel is
+continuous in radial momentum. -/
+theorem continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) (i j : Fin 2) :
+    Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+  have ha :=
+    continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
+      side v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hb :=
+    continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+      .x side v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hd :=
+    continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
+      .z side v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  fin_cases i <;> fin_cases j <;>
+    unfold finiteCutoffContinuumBornDysonRadialGreenEntryKernel <;>
+    dsimp <;>
+    fun_prop
+
+/-- In the finite-broadening finite-cutoff regime, every radial Green entry kernel is interval
+integrable on the regulated radial momentum interval. -/
+theorem intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) (i j : Fin 2) :
+    IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      MeasureTheory.volume 0 pMax :=
+  (continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+    side v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax i j).intervalIntegrable 0 pMax
 
 /-- One-dimensional radial-kernel representation of the finite-cutoff Born-Dyson Green matrix on
 the positive real-space radial axis. The diagonal channels carry the zeroth angular kernel, while
