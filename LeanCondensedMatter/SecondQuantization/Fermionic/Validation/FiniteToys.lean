@@ -10,7 +10,7 @@ models separate from the general theorems and introduces:
 
 * a concrete two-level Hilbert space with a degenerate zero Hamiltonian;
 * its canonical finite pure-point basis and uniform diagonal state;
-* independently supplied zero and scalar current operators;
+* zero-current and independently supplied scalar-current validation data;
 * a zero-current check of the canonical Bastin/Středa identity; and
 * a nontrivial two-site Hermitian dimer hopping model.
 
@@ -29,10 +29,6 @@ open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
-/-- Canonical Hilbert basis of the concrete two-level space. -/
-noncomputable def twoLevelBasis : HilbertBasis (Fin 2) ℂ (EuclideanSpace ℂ (Fin 2)) :=
-  (EuclideanSpace.basisFun (Fin 2) ℂ).toHilbertBasis
-
 /-- Degenerate two-level free system with `H = 0` and `ℏ = 1`. -/
 noncomputable def twoLevelSystem : BoundedFreeSystem (EuclideanSpace ℂ (Fin 2)) where
   hamiltonian := ⟨0, by simp⟩
@@ -41,7 +37,7 @@ noncomputable def twoLevelSystem : BoundedFreeSystem (EuclideanSpace ℂ (Fin 2)
 
 /-- Uniform pure-point state on the degenerate two-level basis. -/
 noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) where
-  basis := twoLevelBasis
+  basis := (EuclideanSpace.basisFun (Fin 2) ℂ).toHilbertBasis
   energy := fun _ => 0
   hamiltonian_apply_basis := by
     intro i
@@ -55,11 +51,6 @@ noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) whe
     rw [tsum_fintype]
     norm_num [Fin.sum_univ_two]
 
-/-- Independently supplied zero current on the two-level space. -/
-def twoLevelZeroCurrent :
-    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
-  0
-
 /-- Independently supplied scalar current on the two-level space. -/
 def twoLevelScalarCurrent :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
@@ -71,13 +62,14 @@ theorem twoLevel_zeroCurrent_streda_sum_zero
     (energy broadening : ℝ) :
     regularizedStredaSurfacePrimitiveTraceDerivative
         twoLevelSystem.hamiltonian.1
-        twoLevelZeroCurrent twoLevelScalarCurrent energy broadening +
+        (0 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))
+        twoLevelScalarCurrent energy broadening +
       regularizedStredaResidualSeaTraceKernel
         twoLevelSystem.hamiltonian.1
-        twoLevelZeroCurrent twoLevelScalarCurrent energy broadening = 0 := by
+        (0 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))
+        twoLevelScalarCurrent energy broadening = 0 := by
   rw [← regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]
-  simp [regularizedBastinTraceIntegrand, regularizedBastinOperatorIntegrand,
-    twoLevelZeroCurrent]
+  simp [regularizedBastinTraceIntegrand, regularizedBastinOperatorIntegrand]
 
 /-- Two-site type used by the finite tight-binding dimer validation. -/
 abbrev TwoSite := Fin 2
