@@ -6,9 +6,11 @@ set_option linter.style.header false
 /-!
 # Mixed-time pairing restricted by full components
 
-`MixedComponentPosition` owns the statistics-independent component-position coordinates introduced by
-#1206. This module adds only pairing-specific structure: preservation of component assignment by the
-mixed-order partner and transport of restricted partners to the standard component-leg coordinates.
+Using the component-position coordinates of `MixedComponentPosition`, this module proves that the
+mixed-order pairing partner preserves the full graph component and transports the restricted partner
+to the standard component-leg coordinates.
+
+The construction is statistics-independent and concerns only pairing and component transport.
 -/
 
 namespace SecondQuantization
