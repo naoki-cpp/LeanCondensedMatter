@@ -6,13 +6,12 @@ set_option linter.style.header false
 /-!
 # Completed fermionic Fock space
 
-This file specializes the statistics-independent completed Fock infrastructure in
-`Common.CompletedSpace.Basic` to fermionic occupation configurations. The completed fermionic Fock
-space is `ℓ²(Fermionic.Occupation Mode, ℂ)`.
+The completed fermionic occupation representation is
+`ℓ²(Fermionic.Occupation Mode, ℂ)`, obtained by specializing the generic completed Fock
+construction to fermionic occupation configurations.
 
-The generic Hilbert-space construction, canonical basis, dense algebraic inclusion, and coordinate
-projection backend are owned by `Common`. This file keeps readable fermionic specialization names
-together with the genuinely fermionic single-mode occupation predicate.
+This module exposes the canonical Hilbert basis, dense algebraic inclusion, coordinate projections,
+and the fermionic single-mode occupation predicate in that completed representation.
 -/
 
 namespace SecondQuantization
