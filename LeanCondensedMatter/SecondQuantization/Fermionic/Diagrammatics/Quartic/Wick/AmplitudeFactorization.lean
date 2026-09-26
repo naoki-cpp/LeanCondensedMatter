@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleFintype
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
@@ -71,7 +71,7 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
         exact d.componentPartition.sum_card_parts
       simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
         componentIntegrand] using
-        Combinatorics.FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+        Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod_of_continuous
           (ι := d.componentPartition.parts)
           (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
           S.card hcard β componentIntegrand
