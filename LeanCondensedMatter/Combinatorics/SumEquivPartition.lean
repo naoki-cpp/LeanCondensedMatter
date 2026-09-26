@@ -90,7 +90,7 @@ theorem rightImage_eq_sdiff_leftImage
 /-- The left summand is equivalent to the subtype of target points in its image. -/
 noncomputable def leftSubtypeEquiv [Fintype α] [DecidableEq γ]
     (e : α ⊕ β ≃ γ) : α ≃ ↥(leftImage e) :=
-  (Fintype.equivFin α).symm.trans <|
+  (Equiv.Set.univ α).symm.trans <|
     (Finset.equivMap
       ⟨fun a : α => e (Sum.inl a), fun _ _ h => Sum.inl.inj (e.injective h)⟩
       Finset.univ).trans <|
@@ -101,7 +101,7 @@ noncomputable def leftSubtypeEquiv [Fintype α] [DecidableEq γ]
 /-- The right summand is equivalent to the subtype of target points in its image. -/
 noncomputable def rightSubtypeEquiv [Fintype β] [DecidableEq γ]
     (e : α ⊕ β ≃ γ) : β ≃ ↥(rightImage e) :=
-  (Fintype.equivFin β).symm.trans <|
+  (Equiv.Set.univ β).symm.trans <|
     (Finset.equivMap
       ⟨fun b : β => e (Sum.inr b), fun _ _ h => Sum.inr.inj (e.injective h)⟩
       Finset.univ).trans <|
