@@ -184,7 +184,8 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
       rw [stoneEvolution_add]
       rfl
     · exact (stoneEvolution A hA s).map_smul _ _
-  simpa only [add_zero] using htranslated.comp s (hasDerivAt_id s).const_add s
+  simpa only [Function.comp_apply, sub_self, add_sub_cancel_right, one_smul] using
+    htranslated.scomp s ((hasDerivAt_id s).sub_const s)
 
 /-- Strong Stone derivative on the preserved generator domain. -/
 theorem stoneEvolution_apply_hasDerivAt
