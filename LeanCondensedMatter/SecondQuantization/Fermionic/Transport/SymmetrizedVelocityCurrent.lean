@@ -29,8 +29,6 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
-/-- Bounded many-body realization of the generic symmetrized velocity current
-`jᵐ = 1/2 {v,m}`. -/
 /-- With velocity fixed, bounded second-quantized symmetrized current is complex-linear in the
 transported one-body quantity. -/
 noncomputable def boundedSymmetrizedVelocityCurrentLinear
