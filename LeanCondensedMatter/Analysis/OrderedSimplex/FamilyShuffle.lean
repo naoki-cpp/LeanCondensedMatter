@@ -321,30 +321,6 @@ theorem FamilySlotShuffleTo.sum_integral_eq_prod
       FamilySlotShuffle.sum_integral_eq_prod
         size β localIntegrand hlocal
 
-/-- Finite-family ordered-simplex shuffle product identity for continuous local integrands over an
-arbitrary finite block-index type. -/
-theorem FamilySlotShuffle.sum_integral_eq_prod_of_continuous
-    (size : ι → ℕ) (β : ℝ)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (hlocal : ∀ i, Continuous (localIntegrand i)) :
-    (∑ shuffle : FamilySlotShuffle size,
-      orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand)) =
-      ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-  FamilySlotShuffle.sum_integral_eq_prod
-    size β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
-
-/-- Finite-family ordered-simplex shuffle product identity for continuous local integrands directly
-over an ambient total propositionally equal to the sum of local block sizes. -/
-theorem FamilySlotShuffleTo.sum_integral_eq_prod_of_continuous
-    (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total) (β : ℝ)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (hlocal : ∀ i, Continuous (localIntegrand i)) :
-    (∑ shuffle : FamilySlotShuffleTo size total,
-      orderedSimplexIntegral total β (shuffle.ambientIntegrand localIntegrand)) =
-      ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-  FamilySlotShuffleTo.sum_integral_eq_prod
-    size total hTotal β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
-
 end
 
 end Combinatorics
