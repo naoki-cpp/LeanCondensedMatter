@@ -142,7 +142,6 @@ noncomputable def operatorLocalCurrentPairing
     ext α x
     simp [_root_.ConservationLaw.symmetrizedProductRightLinear,
       _root_.ConservationLaw.symmetrizedProduct]
-    module
 
 @[simp]
 theorem operatorLocalCurrentPairing_apply
