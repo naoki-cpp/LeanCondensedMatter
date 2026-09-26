@@ -36,7 +36,7 @@ open QuantumTheory.ConservationLaw
 noncomputable section
 
 /-- Concrete two-component Schwartz one-particle space. -/
-abbrev SchwartzSpinorOneParticle1D := SchwartzTwoLevel1D.Spinor
+abbrev SchwartzSpinorOneParticle1D := SchwartzTwoLevel1D.State
 
 /-- Spin-1/2 operator associated with a three-dimensional spin-space component vector. -/
 noncomputable def schwartzSpinOperator
