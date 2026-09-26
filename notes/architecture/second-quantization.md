@@ -272,11 +272,11 @@ The basis-independent algebraic field architecture is documented separately in
 ```text
 Analysis.Operator.LinearCommutator
         ↓
-Analysis.Calculus.OneBodyBalance
+Analysis.ConservationLaw.CurrentRepresentation
         ↓
-Analysis.Calculus.CurrentRepresentation
+Analysis.ConservationLaw.IntrinsicBalanceLaw
         ↓
-QuantumTheory.ConservationLaw
+QuantumMechanics.SingleParticle
         ↓
 ┌───────────────────────────────┐
 │ Fermionic.Field               │  dGamma generalized-quantity bridge
