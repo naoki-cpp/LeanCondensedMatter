@@ -120,19 +120,6 @@ theorem mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) := by
       rfl
 
-omit [Fintype Mode] in
-/-- Operator form of `mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField`. -/
-theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField
-    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n + 1))) :
-    mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p =
-      timedFieldOperator ε
-        (orderedTwoPointLegField i j τ τ' q σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p)) := by
-  change timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p) = _
-  rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField]
-
 /-- Density-state contraction associated with two fixed standard two-point legs. -/
 noncomputable def orderedTwoPointLegPairContraction
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
