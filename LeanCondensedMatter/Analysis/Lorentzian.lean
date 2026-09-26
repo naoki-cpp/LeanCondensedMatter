@@ -8,6 +8,6 @@ set_option linter.style.header false
 /-!
 # Lorentzian analysis
 
-Public routing module for Lorentzian kernels, pole formulas, and weighted/radial identities exported
-by `LeanCondensedMatter.Analysis`.
+Lorentzian kernels and pole formulas, together with radial-quadratic and weighted identities used in
+spectral and transport calculations.
 -/

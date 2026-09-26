@@ -16,11 +16,10 @@ set_option linter.style.header false
 /-!
 # Operator analysis
 
-Public routing module for the generic operator-analysis endpoints exported by
-`LeanCondensedMatter.Analysis`, including the independent spectral and Berry-geometry routes.
-Concrete realizations such as real-line `L²` multiplication and one-dimensional Schwartz kinetic
-operators are intentionally opt-in and remain available from their dedicated `Analysis.Operator`
-leaves. Physics-specific one-particle constructions live downstream in `QuantumMechanics`.
+General operator-theoretic infrastructure used across the project: unbounded self-adjoint evolution,
+spectral and resolvent theory, Berry geometry, finite traces, commutators and symmetrized products,
+Hilbert–Schmidt, compact, diagonal, Fredholm, expectation, and trace-class operators.
 
-Implementation modules should import the narrow operator leaves they actually use.
+Concrete physical realizations of these abstractions live in the corresponding quantum-mechanical
+or transport layers.
 -/

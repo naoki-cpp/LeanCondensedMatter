@@ -16,9 +16,7 @@ set_option linter.style.header false
 /-!
 # Analysis
 
-Public entry point for the analysis infrastructure exported by `LeanCondensedMatter`.
-
-The public import surface is organized through package-level routing modules. This keeps the root
-entry point aligned with the source hierarchy without widening the curated endpoint set. Implementation
-modules should continue to import the narrow analysis leaves they actually use.
+General mathematical infrastructure used throughout LeanCondensedMatter: scalar-exchange algebra,
+formal power series, Dyson and ordered-simplex analysis, Lorentzian identities, operator theory,
+infinite sums, calculus, abstract conservation laws, and analytic inequalities.
 -/

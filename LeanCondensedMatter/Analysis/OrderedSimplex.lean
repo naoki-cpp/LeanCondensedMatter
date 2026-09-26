@@ -11,6 +11,6 @@ set_option linter.style.header false
 /-!
 # Ordered simplices
 
-Public routing module for the ordered-simplex and shuffle-integration endpoints exported by
-`LeanCondensedMatter.Analysis`. Auxiliary measurable and integrand layers remain narrow leaf imports.
+Ordered-simplex and shuffle-integration theory, including binary and family shuffles, simplex
+integrals, calculus, and shuffle identities.
 -/

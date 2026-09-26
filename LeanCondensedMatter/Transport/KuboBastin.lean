@@ -7,9 +7,9 @@ import LeanCondensedMatter.Transport.KuboBastin.CommonEnergy
 set_option linter.style.header false
 
 /-!
-# Kubo–Bastin transport API
+# Kubo–Bastin transport
 
-Public umbrella for pure-point Kubo–Bastin transition algebra, finite spectral-index responses,
-occupation interpolation, and the occupation/common-energy bridges. Genuine ordinary operator
-traces belong to the canonical static Bastin/Středa layer under `Transport.Streda`.
+Pure-point Kubo–Bastin transition algebra, finite spectral-index response, occupation interpolation,
+and occupation/common-energy identities. Ordinary operator-trace formulations of static transport
+are developed in `Transport.Streda`.
 -/

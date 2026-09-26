@@ -12,7 +12,7 @@ set_option linter.style.header false
 /-!
 # Statistics-independent thermal states, occupation-basis formulas, and pairing expansions
 
-This umbrella exposes five distinct layers:
+The statistics-independent thermal theory separates five layers:
 
 - algebraic diagonal-trace and weighted-functional infrastructure;
 - finite Hilbert realization and transport of algebraic Fock operators;

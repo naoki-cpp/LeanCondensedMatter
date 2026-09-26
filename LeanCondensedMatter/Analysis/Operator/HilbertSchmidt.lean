@@ -7,6 +7,6 @@ set_option linter.style.header false
 /-!
 # Hilbert–Schmidt operators
 
-Public routing module for the Hilbert–Schmidt operator endpoints exported by
-`LeanCondensedMatter.Analysis`.
+Hilbert–Schmidt operator theory, including the basic class, its inner-product structure, and trace
+identities.
 -/

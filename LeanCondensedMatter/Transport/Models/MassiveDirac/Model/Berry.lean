@@ -7,6 +7,6 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac Berry geometry and occupation
 
-Model-owned public umbrella for the massive-Dirac Berry-curvature bridge, its symmetry properties,
-and the occupation-weighted finite-cutoff Berry response.
+Berry curvature of the massive-Dirac model, its symmetry properties, and finite-cutoff
+occupation-weighted Berry response.
 -/

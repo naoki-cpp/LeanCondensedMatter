@@ -12,8 +12,8 @@ set_option linter.style.header false
 /-!
 # Fermionic free thermal theory
 
-Canonical public entry point for finite-basis and completed-Hilbert free-fermion thermal theory.
-It exposes canonical Gibbs expectations, partition functions, Fermi--Dirac observables, entropy,
+Finite-basis and completed-Hilbert free-fermion thermal theory, including canonical Gibbs
+expectations, partition functions, Fermi--Dirac observables, entropy,
 Green functions and contractions, pure-point Gibbs summability, and completed free-Gibbs
 total-number expectation, ladder/KMS/pairing, and finite-mode Gibbs convergence.
 

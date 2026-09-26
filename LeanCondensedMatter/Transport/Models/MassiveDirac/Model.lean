@@ -12,8 +12,7 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac model
 
-Model-owned public umbrella for the matrix model, bounded-operator realization and in-plane current
-API, radial kinematics, spectral occupation and Fermi-surface kinematics, spectral-projector and
-interband algebra, matrix/operator spectral realization, and Berry geometry with occupation-weighted
-Berry response. Canonical implementations live under `Transport/Models/MassiveDirac/Model/`.
+The two-dimensional massive-Dirac model: matrix and bounded-operator realizations, in-plane current,
+radial kinematics, spectral occupation and projectors, interband algebra, operator spectral data,
+and Berry geometry with occupation-weighted response.
 -/

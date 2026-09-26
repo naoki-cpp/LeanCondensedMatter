@@ -6,10 +6,9 @@ set_option linter.style.header false
 /-!
 # Berry geometry
 
-Public routing module for finite-dimensional, pointwise Berry geometry. It exposes the shared
-`BerryGeometry.PointwiseEigenbasisData` API, its simple-spectrum constructor, Berry connection,
-Berry curvature, and the Hamiltonian-derivative / force-matrix identities built from them.
+Finite-dimensional pointwise Berry geometry built from eigenbasis data: simple-spectrum
+construction, Berry connection and curvature, and Hamiltonian-derivative / force-matrix identities.
 
-This route is intentionally separate from `Analysis.Operator.Spectral`: generic compact spectral,
-eigenvector, and resolvent consumers do not need parameter-direction Berry geometry.
+Generic spectral and resolvent theory remains independent of parameter-direction Berry geometry and
+is available through `Analysis.Operator.Spectral`.
 -/

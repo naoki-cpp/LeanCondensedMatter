@@ -8,7 +8,6 @@ set_option linter.style.header false
 /-!
 # Analysis calculus
 
-Public routing module for algebraic-derivative and interval-localization infrastructure exported by
-`LeanCondensedMatter.Analysis`. Conservation-law semantics and localization operator algebra are
-routed separately through `LeanCondensedMatter.Analysis.ConservationLaw`.
+Calculus infrastructure for algebraic derivatives, interval localization, symmetric localization of
+operators, and the algebra underlying corrected current-flux decompositions.
 -/

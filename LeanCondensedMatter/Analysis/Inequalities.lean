@@ -6,6 +6,5 @@ set_option linter.style.header false
 /-!
 # Analysis inequalities
 
-Public routing module for the analysis-level inequalities exported by
-`LeanCondensedMatter.Analysis`.
+The Peierls–Bogoliubov inequality together with its equality characterization.
 -/
