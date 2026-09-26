@@ -18,15 +18,9 @@ set_option linter.style.header false
 /-!
 # Quantum theory
 
-Public entry point for particle-number-independent quantum theory: postulates, spin-1/2 physical
-observables, density operators, entropy and Gibbs-state theory, one-body conservation/current
-semantics, together with the generic linear-response stack.
+Particle-number-independent quantum theory: postulates, density operators and entropy, Gibbs states,
+abstract conservation-law evolution, and generic linear response.
 
-The linear-response and Gibbs hierarchies are exposed through package-level routing modules. The root
-keeps the direct one-body dynamics and conservation imports required by the public ownership contract.
-Existing semantic bases such as `ConservationLaw`, `DensityOperator`, and `Entropy` remain unchanged.
-
-Concrete first-quantized realizations belong to `QuantumMechanics`, while second-quantized model
-specializations belong to `SecondQuantization`. Implementation modules should import narrow leaves
-rather than this umbrella.
+Concrete first-quantized realizations are developed in QuantumMechanics, while statistics-specific
+many-body constructions are developed in SecondQuantization.
 -/
