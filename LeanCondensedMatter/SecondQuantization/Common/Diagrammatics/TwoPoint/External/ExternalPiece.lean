@@ -65,13 +65,6 @@ theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
       (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) h
       ⟨v, Finset.mem_univ v⟩))
 
-theorem TwoPointDiagram.externalPiece_vertexLabel
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (v : Fin d.externalInteractionPart.card) :
-    d.externalPiece.vertexLabel ⟨v, Finset.mem_univ _⟩ =
-      d.vertexLabel ⟨d.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
-  exact d.externalPieceOfCardEq_vertexLabel rfl v
-
 private noncomputable def TwoPointDiagram.externalPieceLegEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
     {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
@@ -192,7 +185,8 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
       rw [hk, d.externalSlotLegSplitting_interaction_externalPart, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
       apply Prod.ext
-      · exact Subtype.ext (standardSlotEquiv_symm_coe d.externalInteractionPart v)
+      · exact Subtype.ext
+          (standardSlotEquivOfCardEq_symm_coe d.externalInteractionPart rfl v)
       · rfl
 
 /-- The atomic partner map is natural under the canonical external-piece slot embedding. -/
