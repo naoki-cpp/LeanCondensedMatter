@@ -44,18 +44,6 @@ theorem matrixUnit_apply (x y : Site) (ψ : LatticeState Site) :
     matrixUnit x y ψ = Finsupp.single x (ψ y) := by
   rfl
 
-/-- A matrix unit sends its source-site ket to its target-site ket. -/
-theorem matrixUnit_single_same (x y : Site) (c : ℂ) :
-    matrixUnit x y (Finsupp.single y c) = Finsupp.single x c := by
-  classical
-  simp [matrixUnit]
-
-/-- A matrix unit kills a ket localized away from its source site. -/
-theorem matrixUnit_single_of_ne (x y z : Site) (c : ℂ) (h : y ≠ z) :
-    matrixUnit x y (Finsupp.single z c) = 0 := by
-  classical
-  simp [matrixUnit, h]
-
 /-- The one-particle projector `|x⟩⟨x|` onto a lattice site. -/
 noncomputable def siteProjector (x : Site) :
     LatticeState Site →ₗ[ℂ] LatticeState Site :=
@@ -120,30 +108,6 @@ theorem amplitude_swap_eq_zero_of_not_mem (K : LocallyFiniteHopping Site)
     K.amplitude y x = 0 :=
   (K.outside_incident hy).2
 
-/-- Reconstruct one hopping column from the finite incident set at its source site. -/
-theorem column_eq_sum_single (K : LocallyFiniteHopping Site) (x : Site) :
-    K.column x =
-      ∑ y ∈ K.incident x, Finsupp.single y (K.amplitude y x) := by
-  classical
-  ext z
-  rw [Finsupp.finsetSum_apply]
-  by_cases hz : z ∈ K.incident x
-  · rw [Finset.sum_eq_single z]
-    · simp [amplitude]
-    · intro y _ hyz
-      simp [hyz]
-    · intro hnot
-      exact (hnot hz).elim
-  · have hzero : K.column x z = 0 := (K.outside_incident hz).2
-    rw [Finset.sum_eq_zero]
-    · exact hzero
-    · intro y hy
-      have hyz : y ≠ z := by
-        intro h
-        subst y
-        exact hz hy
-      simp [hyz]
-
 /-- The one-particle operator entering the oriented bond current from `x` to `y`:
 
 `h_xy |x⟩⟨y| - h_yx |y⟩⟨x|`.
@@ -157,67 +121,84 @@ theorem bondOperator_swap (K : LocallyFiniteHopping Site) (x y : Site) :
     K.bondOperator y x = -K.bondOperator x y := by
   simp [bondOperator]
 
-/-- `h Pₓ` is a finite sum over the incident sites of `x`. -/
-theorem operator_comp_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
-    K.operator.comp (siteProjector x) =
-      ∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x := by
-  classical
-  apply Common.linearMap_ext_basisState
-  intro z
-  change K.operator.comp (siteProjector x) (Finsupp.single z 1) =
-    (∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x) (Finsupp.single z 1)
-  by_cases hzx : z = x
-  · subst z
-    simp only [LinearMap.comp_apply, siteProjector_apply, Finsupp.single_eq_same]
-    rw [LinearMap.sum_apply]
-    change K.operator (Finsupp.single x 1) =
-      ∑ y ∈ K.incident x,
-        (K.amplitude y x • matrixUnit y x) (Finsupp.single x 1)
-    rw [K.operator_single, K.column_eq_sum_single]
-    simp only [Finset.smul_sum]
-    apply Finset.sum_congr rfl
-    intro y _
-    simp [mul_comm]
-  · have hxz : x ≠ z := Ne.symm hzx
-    simp [LinearMap.comp_apply, hxz, LinearMap.sum_apply]
-
-/-- `Pₓ h` is a finite sum over the incident sites of `x`. -/
-theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
-    (siteProjector x).comp K.operator =
-      ∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y := by
-  classical
-  apply Common.linearMap_ext_basisState
-  intro z
-  change (siteProjector x).comp K.operator (Finsupp.single z 1) =
-    (∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y) (Finsupp.single z 1)
-  simp only [LinearMap.comp_apply, operator_single, siteProjector_apply, Finsupp.smul_apply]
-  rw [LinearMap.sum_apply]
-  change Finsupp.single x ((1 : ℂ) • K.column z x) =
-    ∑ y ∈ K.incident x,
-      (K.amplitude x y • matrixUnit x y) (Finsupp.single z 1)
-  by_cases hz : z ∈ K.incident x
-  · rw [Finset.sum_eq_single z]
-    · simp [amplitude, smul_eq_mul, mul_comm]
-    · intro y _ hyz
-      simp [hyz]
-    · intro hnot
-      exact (hnot hz).elim
-  · have hzero : K.column z x = 0 := (K.outside_incident hz).1
-    rw [Finset.sum_eq_zero]
-    · simp [hzero]
-    · intro y hy
-      have hyz : y ≠ z := by
-        intro h
-        subst y
-        exact hz hy
-      simp [hyz]
-
 /-- The local one-particle commutator is the negative finite sum of oriented bond operators. -/
 theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
     ConservationLaw.linearCommutator K.operator (siteProjector x) =
       -∑ y ∈ K.incident x, K.bondOperator x y := by
-  simp only [ConservationLaw.linearCommutator, K.operator_comp_siteProjector,
-    K.siteProjector_comp_operator, bondOperator, Finset.sum_sub_distrib]
+  classical
+  have hcolumn (source : Site) :
+      K.column source =
+        ∑ target ∈ K.incident source,
+          Finsupp.single target (K.amplitude target source) := by
+    ext z
+    rw [Finsupp.finsetSum_apply]
+    by_cases hz : z ∈ K.incident source
+    · rw [Finset.sum_eq_single z]
+      · simp [amplitude]
+      · intro y _ hyz
+        simp [hyz]
+      · intro hnot
+        exact (hnot hz).elim
+    · have hzero : K.column source z = 0 := (K.outside_incident hz).2
+      rw [Finset.sum_eq_zero]
+      · exact hzero
+      · intro y hy
+        have hyz : y ≠ z := by
+          intro h
+          subst y
+          exact hz hy
+        simp [hyz]
+  have hopP :
+      K.operator.comp (siteProjector x) =
+        ∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x := by
+    apply Common.linearMap_ext_basisState
+    intro z
+    change K.operator.comp (siteProjector x) (Finsupp.single z 1) =
+      (∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x) (Finsupp.single z 1)
+    by_cases hzx : z = x
+    · subst z
+      simp only [LinearMap.comp_apply, siteProjector_apply, Finsupp.single_eq_same]
+      rw [LinearMap.sum_apply]
+      change K.operator (Finsupp.single x 1) =
+        ∑ y ∈ K.incident x,
+          (K.amplitude y x • matrixUnit y x) (Finsupp.single x 1)
+      rw [K.operator_single, hcolumn x]
+      simp only [Finset.smul_sum]
+      apply Finset.sum_congr rfl
+      intro y _
+      simp [mul_comm]
+    · have hxz : x ≠ z := Ne.symm hzx
+      simp [LinearMap.comp_apply, hxz, LinearMap.sum_apply]
+  have hPop :
+      (siteProjector x).comp K.operator =
+        ∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y := by
+    apply Common.linearMap_ext_basisState
+    intro z
+    change (siteProjector x).comp K.operator (Finsupp.single z 1) =
+      (∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y) (Finsupp.single z 1)
+    simp only [LinearMap.comp_apply, operator_single, siteProjector_apply, Finsupp.smul_apply]
+    rw [LinearMap.sum_apply]
+    change Finsupp.single x ((1 : ℂ) • K.column z x) =
+      ∑ y ∈ K.incident x,
+        (K.amplitude x y • matrixUnit x y) (Finsupp.single z 1)
+    by_cases hz : z ∈ K.incident x
+    · rw [Finset.sum_eq_single z]
+      · simp [amplitude, smul_eq_mul, mul_comm]
+      · intro y _ hyz
+        simp [hyz]
+      · intro hnot
+        exact (hnot hz).elim
+    · have hzero : K.column z x = 0 := (K.outside_incident hz).1
+      rw [Finset.sum_eq_zero]
+      · simp [hzero]
+      · intro y hy
+        have hyz : y ≠ z := by
+          intro h
+          subst y
+          exact hz hy
+        simp [hyz]
+  simp only [ConservationLaw.linearCommutator, hopP, hPop, bondOperator,
+    Finset.sum_sub_distrib]
   abel
 
 end LocallyFiniteHopping
@@ -259,41 +240,38 @@ theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Si
   rw [hneg]
   exact smul_neg _ _
 
-/-- Heisenberg time derivative of local charge equals minus the finite outgoing-current sum. -/
-theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
-    (K : LocallyFiniteHopping Site) (x : Site) :
-    (Complex.I / ℏ) •
-        ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
-      -∑ y ∈ K.incident x, bondCurrent ℏ q K x y := by
-  unfold hoppingHamiltonian siteChargeDensity
-  rw [ConservationLaw.linearCommutator_smul_right]
-  rw [AlgebraicFock.dGamma_linearCommutator]
-  rw [K.linearCommutator_siteProjector]
-  have hdGamma :
-      AlgebraicFock.dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
-        -∑ y ∈ K.incident x,
-          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y) := by
-    change
-      AlgebraicFock.dGammaLinear (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
-        -∑ y ∈ K.incident x,
-          AlgebraicFock.dGammaLinear (LatticeState Site) (K.bondOperator x y)
-    rw [map_neg, map_sum]
-  rw [hdGamma]
-  unfold bondCurrent
-  simp only [smul_smul, smul_neg, Finset.smul_sum]
-  apply congrArg Neg.neg
-  apply Finset.sum_congr rfl
-  intro y _
-  congr 1
-  ring
-
 /-- The algebraic discrete continuity equation on an arbitrary locally finite lattice. -/
 theorem discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
           ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) +
         ∑ y ∈ K.incident x, bondCurrent ℏ q K x y = 0 := by
-  rw [heisenberg_siteChargeDensity]
+  have hheisenberg :
+      (Complex.I / ℏ) •
+          ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
+        -∑ y ∈ K.incident x, bondCurrent ℏ q K x y := by
+    unfold hoppingHamiltonian siteChargeDensity
+    rw [ConservationLaw.linearCommutator_smul_right]
+    rw [AlgebraicFock.dGamma_linearCommutator]
+    rw [K.linearCommutator_siteProjector]
+    have hdGamma :
+        AlgebraicFock.dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
+          -∑ y ∈ K.incident x,
+            AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y) := by
+      change
+        AlgebraicFock.dGammaLinear (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
+          -∑ y ∈ K.incident x,
+            AlgebraicFock.dGammaLinear (LatticeState Site) (K.bondOperator x y)
+      rw [map_neg, map_sum]
+    rw [hdGamma]
+    unfold bondCurrent
+    simp only [smul_smul, smul_neg, Finset.smul_sum]
+    apply congrArg Neg.neg
+    apply Finset.sum_congr rfl
+    intro y _
+    congr 1
+    ring
+  rw [hheisenberg]
   abel
 
 end Lattice
