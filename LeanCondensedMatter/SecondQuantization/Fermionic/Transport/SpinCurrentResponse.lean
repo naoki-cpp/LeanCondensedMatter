@@ -28,7 +28,7 @@ from their Hamiltonian. Conductivity normalization and source-dependent contact 
 from this causal cross-response kernel. The symmetrized-current/proper-current distinction is
 motivated by Shi, Zhang, Xiao, and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
 [doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604); this module
-does not identify the conventional operator with their torque-dipole-completed current. The finite
+does not identify this symmetrized (conventional) operator with their torque-dipole-completed current. The finite
 Rashba, disorder-vertex, and inverse-response follow-ups are tracked in
 `notes/roadmaps/spin-hall.md`.
 -/
