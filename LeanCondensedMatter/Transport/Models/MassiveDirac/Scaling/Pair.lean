@@ -15,8 +15,7 @@ physical conductivity by `h / e²`.
 The longitudinal coordinate is the ordered `xx` component. The transverse coordinate is the
 antisymmetric Hall projection `hallComponent 0 1`; rotational closure proves that it equals the
 ordered `xy` component for the finite-broadening tensor. Broadening and weak-disorder limits remain
-sequential and the finite-broadening regulator is kept distinct from the scaling coordinate
-`AheScalingParameters.gamma`.
+sequential. Scaling-only coordinates are owned by `AheScalingCoordinate` and are not required here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -50,7 +49,7 @@ def AheScalingParameters.normalizedPairOfTensor
 
 /-- Finite-cutoff, finite-broadening normalized conductivity pair at the disorder strength stored in
 `params`. The explicit `broadening` argument is the spectral regulator and is not identified with
-`params.gamma`. -/
+the scaling coordinate. -/
 def AheScalingParameters.finiteBroadeningPair
     (params : AheScalingParameters) (broadening : ℝ) : AheScalingPair :=
   params.normalizedPairOfTensor

@@ -19,8 +19,8 @@ noncomputable section
 open Filter
 
 /-- The zero-temperature Born-RTA longitudinal conductivity at a scaling-domain point. -/
-def AheScalingParameters.bornRtaLongitudinalConductivity
-    (params : AheScalingParameters) : ℝ :=
+def AheBornRtaParameters.bornRtaLongitudinalConductivity
+    (params : AheBornRtaParameters) : ℝ :=
   zeroTemperatureRelaxationTimeLongitudinalConductivity
     params.e params.hbar params.v params.m params.fermiEnergy
     (continuumBornUpperBandPositiveTransportLifetime
@@ -28,15 +28,15 @@ def AheScalingParameters.bornRtaLongitudinalConductivity
       params.velocity_ne_zero params.hbar_pos params.disorder_pos params.metallic)
 
 /-- The finite coefficient left after multiplying the Born-RTA conductivity by `W`. -/
-def AheScalingParameters.bornRtaLongitudinalCoefficient
-    (params : AheScalingParameters) : ℝ :=
+def AheBornRtaParameters.bornRtaLongitudinalCoefficient
+    (params : AheBornRtaParameters) : ℝ :=
   params.e ^ 2 * params.hbar * params.v ^ 2 *
       (params.fermiEnergy ^ 2 - params.m ^ 2) /
     (Real.pi * (params.fermiEnergy ^ 2 + 3 * params.m ^ 2))
 
 /-- The microscopic Born-RTA conductivity has the explicit `1/W` closed form. -/
-theorem AheScalingParameters.bornRtaLongitudinalConductivity_eq
-    (params : AheScalingParameters) :
+theorem AheBornRtaParameters.bornRtaLongitudinalConductivity_eq
+    (params : AheBornRtaParameters) :
     params.bornRtaLongitudinalConductivity =
       params.e ^ 2 * params.hbar * params.v ^ 2 *
           (params.fermiEnergy ^ 2 - params.m ^ 2) /
@@ -48,25 +48,25 @@ theorem AheScalingParameters.bornRtaLongitudinalConductivity_eq
 
 /-- Multiplication by disorder strength removes the Drude divergence and gives the finite
 coefficient used in the weak-disorder scaling limit. -/
-theorem AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq
-    (params : AheScalingParameters) :
+theorem AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq
+    (params : AheBornRtaParameters) :
     params.disorderStrength * params.bornRtaLongitudinalConductivity =
       params.bornRtaLongitudinalCoefficient := by
-  simpa [AheScalingParameters.bornRtaLongitudinalConductivity,
-    AheScalingParameters.bornRtaLongitudinalCoefficient] using
+  simpa [AheBornRtaParameters.bornRtaLongitudinalConductivity,
+    AheBornRtaParameters.bornRtaLongitudinalCoefficient] using
     disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq
       params.e params.hbar params.v params.m params.fermiEnergy params.disorderStrength
       params.velocity_ne_zero params.hbar_pos params.disorder_pos params.metallic
 
 /-- The longitudinal benchmark is exactly the finite scaling coefficient divided by positive
 disorder strength. -/
-theorem AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength
-    (params : AheScalingParameters) :
+theorem AheBornRtaParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength
+    (params : AheBornRtaParameters) :
     params.bornRtaLongitudinalConductivity =
       params.bornRtaLongitudinalCoefficient / params.disorderStrength := by
   apply (eq_div_iff (ne_of_gt params.disorder_pos)).2
   simpa [mul_comm] using
-    (AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq params)
+    (AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq params)
 
 /-- The totalized closed form has a well-defined positive-disorder scaling limit. -/
 def bornRtaLongitudinalConductivityClosedForm

@@ -11,8 +11,8 @@ set_option linter.style.header false
 /-!
 # Continuum Born self-energy for the massive-Dirac model
 
-This module owns the finite-cutoff continuum Born self-energy, the explicit polar-angle provenance
-bridge, and the common radial denominator factorization. The analytic core is written at an
+This module owns the finite-cutoff continuum Born self-energy and its channelized radial decomposition.
+The analytic core is written at an
 arbitrary signed regulator `γ`; physical spectral sides specialize through the canonical
 `side.regulator η` boundary.
 
@@ -73,7 +73,7 @@ noncomputable def continuumBornRadialGreenKernelOfRegulator
     v m p 0 probeEnergy regulator
 
 /-- Pointwise arbitrary-regulator radial kernel decomposition into the two surviving Pauli channels. -/
-theorem continuumBornRadialGreenKernelOfRegulator_eq
+private theorem continuumBornRadialGreenKernelOfRegulator_eq
     (v m probeEnergy regulator p : ℝ) :
     continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p =
       continuumBornRadialIntegrandOfRegulator .scalar
@@ -272,7 +272,7 @@ noncomputable def finiteCutoffContinuumBornSelfEnergy
     v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
 
 /-- The arbitrary-regulator continuum Born self-energy contains only scalar and `σ_z` channels. -/
-theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq
+private theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ)
     (hregulator : regulator ≠ 0) :
     finiteCutoffContinuumBornSelfEnergyOfRegulator
@@ -305,7 +305,7 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq
       (side.regulator_ne_zero hbroadening)
 
 /-- Adjointing the arbitrary-regulator continuum Born self-energy reverses the regulator. -/
-theorem star_finiteCutoffContinuumBornSelfEnergyOfRegulator
+private theorem star_finiteCutoffContinuumBornSelfEnergyOfRegulator
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ)
     (hregulator : regulator ≠ 0) :
     star (finiteCutoffContinuumBornSelfEnergyOfRegulator
@@ -347,13 +347,13 @@ open scoped Interval
 
 /-- Radial polar kernel after performing the explicit full angular integral, including the `p`
 Jacobian but not the continuum measure prefactor. -/
-noncomputable def continuumBornPolarRadialKernelOfRegulator
+private noncomputable def continuumBornPolarRadialKernelOfRegulator
     (v m probeEnergy regulator p : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   p • continuumAngularGreenIntegralOfRegulator v m p probeEnergy regulator
 
 /-- The explicit angularly integrated polar kernel is exactly `2π` times the radial kernel used by
 the continuum Born self-energy. -/
-theorem continuumBornPolarRadialKernelOfRegulator_eq
+private theorem continuumBornPolarRadialKernelOfRegulator_eq
     (v m probeEnergy regulator p : ℝ) :
     continuumBornPolarRadialKernelOfRegulator v m probeEnergy regulator p =
       (2 * Real.pi) •
@@ -364,14 +364,14 @@ theorem continuumBornPolarRadialKernelOfRegulator_eq
   module
 
 /-- Finite-cutoff radial integral after the angular integral has been carried out explicitly. -/
-noncomputable def finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
+private noncomputable def finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
     (v m probeEnergy regulator pMax : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   ∫ p in (0 : ℝ)..pMax,
     continuumBornPolarRadialKernelOfRegulator v m probeEnergy regulator p
 
 /-- Explicit angular reduction commutes with the finite radial integration and produces exactly the
 factor `2π`. -/
-theorem finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq
+private theorem finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq
     (v m probeEnergy regulator pMax : ℝ) :
     finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
         v m probeEnergy regulator pMax =
@@ -385,7 +385,7 @@ theorem finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq
 
 /-- Continuum Born self-energy written directly from the explicit polar-angle Green integral and the
 canonical external disorder-line × physical-momentum-measure prefactor. -/
-noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
+private noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) •
@@ -394,7 +394,7 @@ noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulato
 
 /-- The arbitrary-regulator finite-cutoff continuum Born self-energy is exactly the explicit
 polar-integral construction, so its `2π` prefactor is derived from angular integration. -/
-theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
+private theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornSelfEnergyOfRegulator
         v m probeEnergy regulator disorderStrength hbar pMax =
@@ -435,7 +435,7 @@ noncomputable def continuumBornRadialDenominatorIntegrandOfRegulator
 
 /-- Either surviving Born self-energy radial integrand is its channel numerator times the common
 denominator integrand. -/
-theorem continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand
+private theorem continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand
     (channel : BornSelfEnergyChannel) (v m probeEnergy regulator p : ℝ) :
     continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator p =
       bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *
@@ -466,7 +466,7 @@ noncomputable def finiteCutoffContinuumBornDenominatorIntegral
     v m probeEnergy (side.regulator broadening) pMax
 
 /-- Arbitrary-regulator factorization of either surviving Born self-energy channel. -/
-theorem finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral
+private theorem finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral
     (channel : BornSelfEnergyChannel) (v m probeEnergy regulator pMax : ℝ) :
     finiteCutoffContinuumBornIntegralOfRegulator
         channel v m probeEnergy regulator pMax =
