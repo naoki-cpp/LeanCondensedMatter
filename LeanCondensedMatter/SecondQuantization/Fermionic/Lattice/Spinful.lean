@@ -61,8 +61,9 @@ theorem spatialMultiplicationOneBody_latticeKet
   apply Finsupp.ext
   rw [Lex.forall, Prod.forall]
   intro y t
-  simp [spatialMultiplicationOneBody, latticeKet, LinearMap.sum_apply, matrixUnit_apply,
-    spinfulSite]
+  fin_cases s <;> fin_cases t <;>
+    simp [spatialMultiplicationOneBody, latticeKet, LinearMap.sum_apply, matrixUnit_apply,
+      spinfulSite, toLex_inj]
 
 /-- One-particle spin operator for an arbitrary real polarization in the Pauli basis.
 
@@ -96,9 +97,10 @@ theorem spatialMultiplicationOneBody_comp_spinPolarizationOneBody_comm
   apply Finsupp.ext
   rw [Lex.forall, Prod.forall]
   intro y t
-  simp [LinearMap.comp_apply, spatialMultiplicationOneBody, spinPolarizationOneBody,
-    LinearMap.sum_apply, Common.basisState, matrixUnit_apply, spinfulSite]
-  ring
+  fin_cases s <;> fin_cases t <;>
+    simp [LinearMap.comp_apply, spatialMultiplicationOneBody, spinPolarizationOneBody,
+      LinearMap.sum_apply, Common.basisState, matrixUnit_apply, spinfulSite, toLex_inj] <;>
+    ring
 
 /-- A spatial multiplication localizer commutes with arbitrary spin polarization. -/
 theorem linearCommutator_spatialMultiplicationOneBody_spinPolarizationOneBody
