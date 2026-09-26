@@ -44,6 +44,8 @@ Analysis.ConservationLaw.CurrentRepresentation
         ↓
 Analysis.ConservationLaw.IntrinsicBalanceLaw
         ↓
+QuantumTheory.ConservationLaw.HeisenbergEvolution
+        ↓
 QuantumMechanics.SingleParticle
 ```
 
