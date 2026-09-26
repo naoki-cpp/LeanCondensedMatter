@@ -30,7 +30,7 @@ noncomputable def ofRepresented
     (B : BalanceLaw δ Q d) :
     IntrinsicBalanceLaw δ Q d where
   transport := B.current.comp d
-  transport_depends := DependsOnlyOnDifferential.of_factors (fun _ => rfl)
+  transport_depends := DependsOnlyOnDifferential.of_isDifferentialCurrent (fun _ => rfl)
   source := B.source
   balance := by
     intro f
@@ -44,7 +44,7 @@ noncomputable def toRepresented
     {d : Test →ₗ[𝕜] OneForm}
     (B : IntrinsicBalanceLaw δ Q d)
     (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : FactorsThroughDifferential d B.transport J) :
+    (hJ : IsDifferentialCurrent d B.transport J) :
     BalanceLaw δ Q d where
   current := J
   source := B.source
@@ -59,7 +59,7 @@ def toDifferentialCurrentRepresentation
     {d : Test →ₗ[𝕜] OneForm}
     (B : IntrinsicBalanceLaw δ Q d)
     (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : FactorsThroughDifferential d B.transport J) :
+    (hJ : IsDifferentialCurrent d B.transport J) :
     DifferentialCurrentRepresentation d B.transport where
   current := J
   factors := hJ
