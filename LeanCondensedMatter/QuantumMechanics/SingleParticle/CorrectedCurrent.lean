@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.CurrentEquivalence
+import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.IntrinsicLocalizedTransport
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 
