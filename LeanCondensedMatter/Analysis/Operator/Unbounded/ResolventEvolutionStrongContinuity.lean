@@ -153,7 +153,11 @@ theorem stoneEvolution_apply_continuous
     continuous_const.prodMk continuous_id
   have hcomp :=
     (stoneEvolution_joint_continuous A hA).comp hpair
-  simpa only [Function.comp_apply] using hcomp
+  have horbit :
+      ((fun p : H × ℝ => stoneEvolution A hA p.2 p.1) ∘ fun t : ℝ => (x, t)) =
+        fun t : ℝ => stoneEvolution A hA t x := rfl
+  rw [horbit] at hcomp
+  exact hcomp
 
 /-- The limiting evolution is continuous at time zero on every Hilbert-space vector. -/
 theorem stoneEvolution_apply_continuousAt_zero
