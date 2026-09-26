@@ -9,7 +9,7 @@ set_option linter.style.header false
 # Finite spin-current / electric-source cross response
 
 This module gives a concrete generalized-current response on the finite spinful lattice
-`Site × Fin 2`. A physical-space vector `n : SpinHalf.Direction` selects the measured spin
+`Site × Fin 2`. A physical-space vector `n : SpinHalf.PhysicalSpace` selects the measured spin
 observable `S(n) = ℏ_spin (n · σ) / 2`; the Pauli coordinates remain internal representation data.
 The measured spin current is
 
@@ -48,7 +48,7 @@ variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
 /-- One-particle spin-1/2 observable associated with a physical polarization vector. -/
 noncomputable def spinOneBody
-    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.Direction) :
+    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.PhysicalSpace) :
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
   internalOneBody (QuantumTheory.SpinHalf.spinMatrix spinScale polarization)
 
@@ -56,7 +56,7 @@ noncomputable def spinOneBody
 polarization vector and driven by an electric bond-current source. -/
 noncomputable def boundedSpinCurrentBondSourceResponseChannel
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
-    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.Direction)
+    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.PhysicalSpace)
     (ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
     (u v : SpinfulSite Site) :
@@ -76,7 +76,7 @@ noncomputable def boundedSpinCurrentBondSourceRetardedSusceptibility
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
       (FiniteLatticeHilbertFock (SpinfulSite Site)))
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
-    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.Direction)
+    (spinScale : ℝ) (polarization : QuantumTheory.SpinHalf.PhysicalSpace)
     (ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
     (u v : SpinfulSite Site) (t s : ℝ) : ℂ :=
