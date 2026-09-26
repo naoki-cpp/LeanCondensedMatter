@@ -416,6 +416,15 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction` — The
   finite complex free-fermion partition function is exactly the canonical pure-point Gibbs partition
   function for `fermionEnergy`, coerced from `ℝ` to `ℂ`.
+- `SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_filter_mem` — canonical
+  finite-mode marginal-probability identity: the total Gibbs probability of configurations
+  containing mode `i` is exactly its Fermi–Dirac occupation.
+- `SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_mul_fermionEnergy` — canonical
+  finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
+  entropy endpoint, but the thermodynamic statement is independently meaningful.
+- `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
+  — canonical finite free-fermion entropy endpoint expressing the Gibbs-state von Neumann entropy
+  as the sum of binary Fermi–Dirac mode entropies.
 - `SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod` — A single evolved
   quartic vertex is the composed product of its four individually evolved local legs in the
   canonical local-leg order.
