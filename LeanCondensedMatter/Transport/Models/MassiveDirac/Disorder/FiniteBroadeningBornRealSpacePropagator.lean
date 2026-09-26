@@ -140,7 +140,7 @@ theorem continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
       .z side v m probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
   fin_cases i <;> fin_cases j <;>
-    simp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel] <;>
+    simp only [Fin.zero_eta, Fin.isValue, Fin.mk_one] <;>
     fun_prop
 
 /-- In the finite-broadening finite-cutoff regime, every radial Green entry kernel is interval
