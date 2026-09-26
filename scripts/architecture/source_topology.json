@@ -70,10 +70,7 @@
     },
     {
       "id": "analysisCurrentLayers",
-      "sourceRoots": [
-        "LeanCondensedMatter/Analysis/Operator",
-        "LeanCondensedMatter/Analysis/Calculus"
-      ],
+      "sourceRoots": ["LeanCondensedMatter/Analysis"],
       "layers": [
         {"id": "zetaCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.ScalarExchange"]},
         {"id": "linearCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.LinearCommutator"]},
@@ -99,8 +96,7 @@
     {
       "id": "generalizedCurrentCrossBoundary",
       "sourceRoots": [
-        "LeanCondensedMatter/Analysis/Operator",
-        "LeanCondensedMatter/Analysis/Calculus",
+        "LeanCondensedMatter/Analysis",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Field"
       ],
       "layers": [
