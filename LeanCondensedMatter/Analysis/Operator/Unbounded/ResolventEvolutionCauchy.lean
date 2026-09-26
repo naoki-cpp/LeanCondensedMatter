@@ -22,8 +22,8 @@ namespace LinearPMap
 
 noncomputable section
 
-open Complex
-open scoped InnerProductSpace
+open Complex Filter
+open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -68,6 +68,20 @@ theorem norm_resolventApproximationEvolution_sub_le
   rw [← (boundedUnitaryEvolution As t).map_sub]
   rw [boundedUnitaryEvolution_apply_norm As hAs t]
   exact norm_boundedUnitaryEvolution_apply_sub_le D hD t x
+
+private def positiveApproximationScale (r : ℝ) : ℝ :=
+  max 1 r
+
+private theorem positiveApproximationScale_pos (r : ℝ) :
+    0 < positiveApproximationScale r := by
+  exact lt_of_lt_of_le zero_lt_one (le_max_left 1 r)
+
+/-- A total real-indexed version of the resolvent evolution, obtained by clipping the scale below
+at one. -/
+noncomputable def resolventApproximationEvolutionAtScale
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) : H →L[ℂ] H :=
+  resolventApproximationEvolution A hA (positiveApproximationScale r)
+    (positiveApproximationScale_pos r) t
 
 /-- On the original domain, the bounded resolvent evolutions are strongly Cauchy at each fixed
 real time. -/
@@ -152,6 +166,27 @@ theorem resolventApproximationEvolution_domain_cauchy
       exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)) hsum
     exact lt_of_le_of_lt
       (norm_resolventApproximationEvolution_sub_le A hA r s hr hs t (x : H)) hmul
+
+/-- On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at
+positive infinity. -/
+theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
+    CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x : H)) := by
+  refine Metric.cauchySeq_iff.2 ?_
+  intro ε hε
+  obtain ⟨R, hR, hcauchy⟩ :=
+    resolventApproximationEvolution_domain_cauchy A hA x t ε hε
+  refine ⟨max R 1, ?_⟩
+  intro r hr s hs
+  have hRr : R ≤ r := (le_max_left R 1).trans hr
+  have hRs : R ≤ s := (le_max_left R 1).trans hs
+  have h1r : 1 ≤ r := (le_max_right R 1).trans hr
+  have h1s : 1 ≤ s := (le_max_right R 1).trans hs
+  have hrpos : 0 < r := zero_lt_one.trans_le h1r
+  have hspos : 0 < s := zero_lt_one.trans_le h1s
+  have hnorm := hcauchy r s hRr hRs hrpos hspos
+  simpa [dist_eq_norm, resolventApproximationEvolutionAtScale, positiveApproximationScale,
+    max_eq_right h1r, max_eq_right h1s] using hnorm
 
 end
 
