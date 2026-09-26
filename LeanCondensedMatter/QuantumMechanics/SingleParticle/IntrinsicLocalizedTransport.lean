@@ -53,14 +53,14 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLawOfFactors
     (m : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (J : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hJ : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hJ : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergTransportFunctional V ℏ h M m) J) :
     _root_.ConservationLaw.IntrinsicBalanceLaw
       (heisenbergEvolution V ℏ h)
       (_root_.ConservationLaw.localizedQuantityFunctional V M m)
       d :=
   heisenbergIntrinsicSymmetricLocalizationBalanceLaw V ℏ h M m d
-    (_root_.ConservationLaw.DependsOnlyOnDifferential.of_factors hJ)
+    (_root_.ConservationLaw.DependsOnlyOnDifferential.of_isDifferentialCurrent hJ)
 
 /-- Recover the represented balance law only after choosing a current extension of the intrinsic
 transport. -/
@@ -70,7 +70,7 @@ noncomputable def heisenbergRepresentedBalanceLawOfIntrinsic
     (m : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (J : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hJ : _root_.ConservationLaw.FactorsThroughDifferential d
+    (hJ : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergTransportFunctional V ℏ h M m) J) :
     _root_.ConservationLaw.BalanceLaw
       (heisenbergEvolution V ℏ h)
