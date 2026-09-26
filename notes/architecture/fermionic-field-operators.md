@@ -40,11 +40,11 @@ Particle-statistics-independent one-body balance and current semantics stay upst
 ```text
 Analysis.Operator.LinearCommutator
         ↓
-Analysis.Calculus.OneBodyBalance
+Analysis.ConservationLaw.CurrentRepresentation
         ↓
-Analysis.Calculus.CurrentRepresentation
+Analysis.ConservationLaw.IntrinsicBalanceLaw
         ↓
-QuantumTheory.ConservationLaw
+QuantumMechanics.SingleParticle
 ```
 
 `Analysis` owns representation-independent commutator/balance/current interfaces.
