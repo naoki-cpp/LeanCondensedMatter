@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
 set_option linter.style.header false
@@ -64,16 +64,14 @@ variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 /-- One-body conventional spin-current density for an arbitrary polarization and supplied
 flow-direction velocity.
 
-This is not a separate spin-current axiom: it is the generic
-`QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent` specialized to the transported
-quantity `S_p`. Consequently the general intrinsic-current representation theorem applies directly
-when the supplied velocity represents localizer evolution and the localizers commute with `S_p`. -/
+This is not a separate spin-current axiom: it is the generic conservation-law symmetrized current
+specialized to the transported quantity `S_p`. The corrected-current response layer can therefore
+consume it without introducing a second spin-specific current theory. -/
 noncomputable def spinCurrentOneBody
     (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
     (spinScale : ℝ) (polarization : InternalSpace.PauliAxis → ℝ) :
     LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
-  QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent
-    (LatticeState (SpinfulSite Site))
+  _root_.ConservationLaw.symmetrizedProduct
     velocity
     (spinPolarizationOneBody spinScale polarization)
 
@@ -84,6 +82,46 @@ noncomputable def boundedSpinCurrent
     FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
       FiniteLatticeHilbertFock (SpinfulSite Site) :=
   boundedOneBodyOperator (spinCurrentOneBody velocity spinScale polarization)
+
+
+/-- Intrinsic exact-flux spin response reduces to the conventional spin-current flux whenever the
+chosen localizers commute with the transported spin polarization.
+
+This is the spin specialization of the generic corrected-current theorem. It deliberately keeps the
+two hypotheses that carry physical content: `hΦ` identifies the intrinsic transport with the nested
+current functional, while `hcomm` states that localization acts independently of the internal spin
+observable. No commutation of `velocity` with spin is assumed. -/
+theorem boundedIntrinsicSpinFluxRetardedResponse_eq_conventional_of_commutes
+    {Test OneForm : Type*}
+    [AddCommGroup Test] [Module ℂ Test]
+    [AddCommGroup OneForm] [Module ℂ OneForm]
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (source : FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
+      FiniteLatticeHilbertFock (SpinfulSite Site))
+    (d : Test →ₗ[ℂ] OneForm)
+    (Φ : Test →ₗ[ℂ]
+      (LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site)))
+    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (spinScale : ℝ) (polarization : InternalSpace.PauliAxis → ℝ)
+    (N : OneForm →ₗ[ℂ]
+      (LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site)))
+    (hΦ : _root_.ConservationLaw.FactorsThroughDifferential d Φ
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
+        (LatticeState (SpinfulSite Site))
+        velocity (spinPolarizationOneBody spinScale polarization) N))
+    (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator
+      (N α) (spinPolarizationOneBody spinScale polarization) = 0)
+    (t s : ℝ) :
+    boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
+      (boundedConventionalCurrentFluxRetardedResponse
+        system expectation source velocity
+        (spinPolarizationOneBody spinScale polarization) N t s).comp d :=
+  boundedIntrinsicFluxRetardedResponse_eq_conventional_of_commutes
+    system expectation source d Φ velocity
+    (spinPolarizationOneBody spinScale polarization) N hΦ hcomm t s
 
 /-- Neutral fixed-observable response channel for an arbitrarily polarized finite spin current
 driven by an oriented electric bond-current source.
