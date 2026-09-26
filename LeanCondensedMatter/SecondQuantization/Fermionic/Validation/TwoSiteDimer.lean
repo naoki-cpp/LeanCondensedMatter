@@ -15,7 +15,7 @@ first Peierls-source derivative of that current family.
 
 The resulting operators provide a finite tight-binding model to which the canonical pointwise
 Kubo–Bastin/Středa identity applies directly. Current-orientation reversal is recorded here, while
-simultaneous current-sign reversal is inherited from the general validation theorem. No disorder
+simultaneous current-sign reversal is provided by the general Středa operator-kernel API. No disorder
 average, numerical approximation, or limiting procedure is used.
 -/
 
