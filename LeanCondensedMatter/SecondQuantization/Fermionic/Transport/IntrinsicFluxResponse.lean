@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.CurrentEquivalence
+import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse
 
 set_option linter.style.header false
