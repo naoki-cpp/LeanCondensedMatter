@@ -26,22 +26,6 @@ open Set Filter Topology
 
 noncomputable section
 
-/-- Long time first, followed by the local static-then-adiabatic order. -/
-def HasLongTimeThenLocalStaticThenAdiabaticLimit
-    (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ fixedRate : ℝ → ℝ → ℂ,
-    (∀ omega eta, 0 < eta →
-      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
-    HasLocalStaticThenAdiabaticLimit fixedRate L
-
-/-- Long time first, followed by the local adiabatic-then-static order. -/
-def HasLongTimeThenLocalAdiabaticThenStaticLimit
-    (F : ℝ → ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ fixedRate : ℝ → ℝ → ℂ,
-    (∀ omega eta, 0 < eta →
-      Tendsto (fun T => F T omega eta) atTop (𝓝 (fixedRate omega eta))) ∧
-    HasLocalAdiabaticThenStaticLimit fixedRate L
-
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {ι : Type*} [Fintype ι]
 variable (system : BoundedFreeSystem H)

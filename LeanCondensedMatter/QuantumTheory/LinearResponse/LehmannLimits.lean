@@ -23,22 +23,6 @@ open Set Filter Topology
 
 noncomputable section
 
-/-- Local static-then-adiabatic order. -/
-def HasLocalStaticThenAdiabaticLimit
-    (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ staticAtRate : ℝ → ℂ,
-    (∀ᶠ eta in nhdsWithin 0 (Ioi 0),
-      HasStaticLimit (fun omega => F omega eta) (staticAtRate eta)) ∧
-    HasAdiabaticRemovalLimit staticAtRate L
-
-/-- Local adiabatic-then-static order. -/
-def HasLocalAdiabaticThenStaticLimit
-    (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
-  ∃ regulatorRemoved : ℝ → ℂ,
-    (∀ᶠ omega in 𝓝 0,
-      HasAdiabaticRemovalLimit (fun eta => F omega eta) (regulatorRemoved omega)) ∧
-    HasStaticLimit regulatorRemoved L
-
 /-- At zero switching rate, nonzero detuning makes the scalar denominator nonzero. -/
 theorem lehmannDenominator_zero_rate_ne_zero
     (hbar omega energyGap : ℝ)
