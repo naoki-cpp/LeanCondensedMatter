@@ -83,6 +83,7 @@ theorem continuous_polarFourierZerothAngularKernel :
     Continuous polarFourierZerothAngularKernel := by
   unfold polarFourierZerothAngularKernel
   apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
+  unfold Function.uncurry polarFourierRadialPhase
   fun_prop
 
 @[fun_prop]
@@ -90,6 +91,7 @@ theorem continuous_polarFourierFirstCosineAngularKernel :
     Continuous polarFourierFirstCosineAngularKernel := by
   unfold polarFourierFirstCosineAngularKernel
   apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
+  unfold Function.uncurry polarFourierRadialPhase
   fun_prop
 
 @[fun_prop]
@@ -97,6 +99,7 @@ theorem continuous_polarFourierSecondCosineAngularKernel :
     Continuous polarFourierSecondCosineAngularKernel := by
   unfold polarFourierSecondCosineAngularKernel
   apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
+  unfold Function.uncurry polarFourierRadialPhase
   fun_prop
 
 /-- The sine first harmonic vanishes against the radial Fourier phase over one full angle. -/
