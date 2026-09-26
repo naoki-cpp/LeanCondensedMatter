@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
+import LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D
 import Mathlib.Tactic
