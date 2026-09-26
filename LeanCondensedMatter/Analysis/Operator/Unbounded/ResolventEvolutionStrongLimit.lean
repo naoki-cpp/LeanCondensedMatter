@@ -44,37 +44,6 @@ theorem resolventApproximationEvolution_dist_eq
       (boundedSelfAdjointApproximation A hA r hr)
       (boundedSelfAdjointApproximation_isSelfAdjoint A hA r hr) t x y
 
-/-- A family of isometries that is pointwise Cauchy on a dense set is pointwise Cauchy
-everywhere.  This is the metric-space density argument underlying the extension from the generator
-domain to the whole Hilbert space. -/
-theorem cauchy_family_of_isometries_of_dense
-    {ι X Y : Type*} [PseudoMetricSpace X] [PseudoMetricSpace Y]
-    (F : ι → X → Y) {s : Set X} (hs : Dense s)
-    (hF : ∀ i, Isometry (F i))
-    (hcauchy : ∀ x ∈ s, ∀ ε > 0, ∃ i₀ : ι, ∀ i j,
-      i₀ = i₀ → dist (F i x) (F j x) < ε) :
-    ∀ x : X, ∀ ε > 0, ∃ i₀ : ι, ∀ i j,
-      i₀ = i₀ → dist (F i x) (F j x) < ε := by
-  intro x ε hε
-  have hε3 : 0 < ε / 3 := by positivity
-  obtain ⟨y, hys, hxy⟩ := hs.exists_dist_lt x hε3
-  obtain ⟨i₀, hi₀⟩ := hcauchy y hys (ε / 3) hε3
-  refine ⟨i₀, ?_⟩
-  intro i j hij
-  have hleft : dist (F i x) (F i y) < ε / 3 := by
-    rw [(hF i).dist_eq]
-    exact hxy
-  have hmid := hi₀ i j hij
-  have hright : dist (F j y) (F j x) < ε / 3 := by
-    rw [(hF j).dist_eq, dist_comm]
-    exact hxy
-  calc
-    dist (F i x) (F j x) ≤
-        dist (F i x) (F i y) + (dist (F i y) (F j y) + dist (F j y) (F j x)) := by
-      exact (dist_triangle _ _ _).trans
-        (add_le_add_left (dist_triangle _ _ _) _)
-    _ < ε := by linarith
-
 /-- The resolvent-approximating evolutions are strongly Cauchy on every vector, not only on the
 original generator domain. -/
 theorem resolventApproximationEvolution_cauchy
