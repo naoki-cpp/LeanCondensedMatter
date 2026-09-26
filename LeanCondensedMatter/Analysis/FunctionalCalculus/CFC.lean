@@ -20,8 +20,8 @@ functional-calculus law
 for continuous `f`, using polynomial approximation.
 
 It also proves that `cfc f T` is compact when `T` is compact and self-adjoint and `f 0 = 0`.
-The condition at zero is essential in infinite dimensions because a nonzero constant term contributes
-a multiple of the identity, which need not be compact.
+The condition at zero is essential in infinite dimensions because a nonzero constant term
+contributes a multiple of the identity, which need not be compact.
 
 These results provide the operator-level functional-calculus facts used by the spectral trace and
 quantum thermodynamic layers.
