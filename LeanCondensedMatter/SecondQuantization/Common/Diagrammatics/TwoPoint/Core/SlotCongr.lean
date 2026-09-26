@@ -44,12 +44,6 @@ noncomputable def standardSlotEquiv (T : Finset (Fin N)) :
     ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
   standardSlotEquivOfCardEq T rfl
 
-theorem standardSlotEquiv_symm_coe (T : Finset (Fin N))
-    (v : ↥(Finset.univ : Finset (Fin T.card))) :
-    (((standardSlotEquiv T).symm v : ↥T) : Fin N) =
-      T.orderEmbOfFin rfl (v : Fin T.card) := by
-  exact standardSlotEquivOfCardEq_symm_coe T rfl v
-
 /-- Relabeling the interaction vertices relabels the two-point vertices. -/
 def twoPointVertexCongr (e : ↥T ≃ ↥U) : TwoPointVertex T ≃ TwoPointVertex U :=
   Equiv.sumCongr (Equiv.refl (Fin 2)) e
