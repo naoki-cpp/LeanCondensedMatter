@@ -1,5 +1,5 @@
 import Mathlib.Data.Finset.SDiff
-import Mathlib.Logic.Equiv.Basic
+import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false
 
@@ -19,27 +19,32 @@ namespace Combinatorics
 variable {α : Type*} [DecidableEq α]
 
 /-- A finite set is its subset together with the relative complement. -/
-def subsetSumSdiffEquiv {S T : Finset α} (h : T ⊆ S) : ↥T ⊕ ↥(S \ T) ≃ ↥S where
-  toFun := Sum.elim (fun x => ⟨x.1, h x.2⟩) (fun x => ⟨x.1, (Finset.mem_sdiff.mp x.2).1⟩)
-  invFun x :=
-    if hx : (x : α) ∈ T then Sum.inl ⟨x, hx⟩
-    else Sum.inr ⟨x, Finset.mem_sdiff.mpr ⟨x.2, hx⟩⟩
-  left_inv x := by
-    rcases x with ⟨x, hx⟩ | ⟨x, hx⟩
-    · simp [hx]
-    · rw [Finset.mem_sdiff] at hx
-      simp [hx.2]
-  right_inv x := by
-    by_cases hx : (x : α) ∈ T <;> simp [hx]
+def subsetSumSdiffEquiv {S T : Finset α} (h : T ⊆ S) : ↥T ⊕ ↥(S \ T) ≃ ↥S :=
+  (Equiv.sumCongr (Equiv.refl ↥T) (Equiv.setCongr (by
+    ext x
+    simp))).trans
+    (Equiv.Set.sumDiffSubset (s := (T : Set α)) (t := (S : Set α)) (by
+      simpa using h))
 
 @[simp]
+theorem subsetSumSdiffEquiv_inl_apply {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
+    subsetSumSdiffEquiv h (Sum.inl x) = ⟨x.1, h x.2⟩ := by
+  apply Subtype.ext
+  rfl
+
 theorem subsetSumSdiffEquiv_inl {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
-    (subsetSumSdiffEquiv h (Sum.inl x) : α) = (x : α) :=
+    (subsetSumSdiffEquiv h (Sum.inl x) : α) = (x : α) := by
   rfl
 
 @[simp]
+theorem subsetSumSdiffEquiv_inr_apply {S T : Finset α} (h : T ⊆ S) (x : ↥(S \ T)) :
+    subsetSumSdiffEquiv h (Sum.inr x) =
+      ⟨x.1, (Finset.mem_sdiff.mp x.2).1⟩ := by
+  apply Subtype.ext
+  rfl
+
 theorem subsetSumSdiffEquiv_inr {S T : Finset α} (h : T ⊆ S) (x : ↥(S \ T)) :
-    (subsetSumSdiffEquiv h (Sum.inr x) : α) = (x : α) :=
+    (subsetSumSdiffEquiv h (Sum.inr x) : α) = (x : α) := by
   rfl
 
 end Combinatorics
