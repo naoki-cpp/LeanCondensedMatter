@@ -6,13 +6,11 @@ set_option linter.style.header false
 /-!
 # Finite-time fermionic directional frequency response
 
-The generic scalar finite-time adiabatic transform and observation-time convergence predicate now
-live in `QuantumTheory.LinearResponse.FiniteTimeAdiabatic`; regulator/static limit orderings are
-owned by `QuantumTheory.LinearResponse.LimitOrder`.
+This module specializes the generic finite-time adiabatic transform to the directional current
+response of a finite fermionic lattice. The response combines the continuity-derived directional
+current with the explicit Peierls contact contribution.
 
-This module retains the finite-lattice fermionic realization needed by conductivity: a complexified
-finite-time coefficient built from the continuity-derived directional current and the explicit
-Peierls contact response. For a source proportional to
+For a source proportional to
 
 ```text
 exp (η t) exp (-i ω t),
@@ -24,7 +22,7 @@ factoring out its value at the observation time leaves the canonical linear-resp
 exp ((-η + i ω) τ).
 ```
 
-No infinite-time, zero-switching, DC, or thermodynamic limit is asserted here.
+No infinite-observation-time, zero-switching, DC, or thermodynamic limit is asserted here.
 -/
 
 namespace SecondQuantization

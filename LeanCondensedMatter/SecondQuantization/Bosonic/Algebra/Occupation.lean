@@ -9,10 +9,10 @@ set_option linter.style.header false
 # Bosonic occupation-number states
 
 A bosonic occupation state is a finitely supported function `Mode →₀ ℕ`. The support is finite even
-when the mode type is not, so the bookkeeping layer does not require `[Fintype Mode]`.
+when the mode type is not, so the occupation bookkeeping does not require `[Fintype Mode]`.
 
-The public API lives in `SecondQuantization.Bosonic`; the former plain-namespace compatibility
-aliases have been removed.
+This file equips bosonic occupation states with the common occupation-basis interface and the total
+particle-number grading used by the algebraic bosonic Fock construction.
 -/
 
 namespace SecondQuantization

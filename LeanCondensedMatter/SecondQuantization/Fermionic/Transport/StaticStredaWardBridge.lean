@@ -6,22 +6,22 @@ set_option linter.style.header false
 /-!
 # Static Kubo–Bastin to Středa bridge under a visible Peierls Ward identity
 
-The named static finite spectral conductivity retains three pieces which the canonical traced
-Bastin energy integral does not contain by definition:
+The static finite spectral conductivity contains three ingredients that are not part of the
+canonical traced Bastin energy integral itself:
 
 * the current-current spectral response;
 * the explicit Peierls contact expectation; and
 * the finite-volume electric-field normalization `1 / (V (-η))`.
 
 At finite nonzero switching rate, identifying these objects requires a model-specific Ward/f-sum
-identity. This module exposes the minimal identity at the current-current level: the finite spectral
-current-current response is the volume/electric-field factor times the canonical traced Bastin
-integral, minus the contact expectation. The contact term is therefore not silently dropped, and
-every scalar factor remains visible.
+identity. This module states the needed identity at the current-current level: the finite spectral
+current-current response equals the volume/electric-field factor times the canonical traced Bastin
+integral minus the contact expectation. The contact term and all scalar factors therefore remain
+explicit.
 
-Under that identity, the normalization cancels exactly and the named static conductivity equals
-the canonical traced Bastin integral. The theorem also constructs the concrete
-`RegularizedStredaRepresentation` without an additional ad hoc response-equality argument.
+Under that identity, the normalization cancels exactly and the static conductivity equals the
+canonical traced Bastin integral. The theorem also constructs the corresponding
+`RegularizedStredaRepresentation`.
 
 No proof of the model-specific Ward identity is claimed here, and no zero-switching,
 zero-broadening, disorder, trace-per-volume, or thermodynamic limit is taken.

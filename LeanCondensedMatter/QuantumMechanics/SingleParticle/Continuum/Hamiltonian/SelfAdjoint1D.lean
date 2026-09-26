@@ -7,18 +7,17 @@ set_option linter.style.header false
 /-!
 # Self-adjointness of the one-dimensional bounded-potential Schrödinger Hamiltonian
 
-This file transfers self-adjointness from the free `H²` Laplacian to
+This module proves self-adjointness of
 
 `H = -κ Δ + V`
 
 for nonzero real `κ` and an essentially bounded real multiplication potential `V`.
 
-The proof does not repeat the distributional regularity argument for the free Laplacian. Given a
-vector `u` in the adjoint domain of `H`, the adjoint relation supplies an `L²` representative
-`H†u`. Subtracting the bounded symmetric potential contribution and dividing by `-κ` produces a
-witness that `u` lies in the adjoint domain of the free Laplacian. The free self-adjointness result
-then forces `u ∈ H²`, which is exactly the reverse domain inclusion required by the previously
-proved self-adjointness criterion.
+For a vector `u` in the adjoint domain of `H`, the adjoint relation supplies an `L²`
+representative of `H†u`. Subtracting the bounded symmetric potential contribution and dividing by
+`-κ` yields the corresponding adjoint-domain witness for the free Laplacian. Free-Laplacian
+self-adjointness then forces `u ∈ H²`, providing the reverse domain inclusion required by the
+self-adjointness criterion.
 -/
 
 namespace QuantumMechanics

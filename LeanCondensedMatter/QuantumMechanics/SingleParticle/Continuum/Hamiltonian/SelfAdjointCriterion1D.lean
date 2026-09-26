@@ -10,16 +10,12 @@ set_option linter.style.header false
 # Self-adjointness criteria for the one-dimensional Schrödinger Hamiltonian
 
 For a densely defined symmetric partial operator, self-adjointness reduces to the reverse domain
-inclusion `A†.domain ≤ A.domain`. The generic Hilbert-space criterion is owned by
-`Analysis.Operator.Unbounded.SelfAdjointCriterion`; this file only specializes it to the continuum
+inclusion `A†.domain ≤ A.domain`. The generic Hilbert-space criterion is supplied by
+`Analysis.Operator.Unbounded.SelfAdjointCriterion`; this module specializes it to the continuum
 `H²` Laplacian and the bounded real-potential Schrödinger Hamiltonian.
 
-The remaining analytic task is adjoint-domain regularity: prove that every vector in the adjoint
-domain actually belongs to `H²(ℝ)`.
-
-The imports intentionally name the three independent concrete prerequisites directly: dense-domain
-facts, the explicit `H²` partial operator, and symmetry. The specialization should not rely on a
-historical transitive import chain.
+For these concrete operators, the remaining analytic condition is adjoint-domain regularity: every
+vector in the adjoint domain must be shown to belong to `H²(ℝ)`.
 -/
 
 namespace QuantumMechanics

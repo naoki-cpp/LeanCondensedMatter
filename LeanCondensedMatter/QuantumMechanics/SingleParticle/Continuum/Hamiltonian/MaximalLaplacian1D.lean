@@ -7,19 +7,14 @@ set_option linter.style.header false
 /-!
 # Closed maximal distributional Laplacian on `L²(ℝ, ℂ)`
 
-The `H²` Schrödinger domain introduced earlier is a natural analytic domain, but Mathlib 4.31.0
-currently exposes only the predicate-level Bessel-potential Sobolev API. In particular, the released
-API does not yet provide the converse regularity statement identifying `H²` with the set of
-`L²` functions whose distributional Laplacian has an `L²` representative.
+This module defines the maximal distributional Laplacian on `L²(ℝ, ℂ)`. Its domain consists exactly
+of square-integrable wavefunctions whose distributional Laplacian is represented by another
+square-integrable function. The resulting partial linear map is closed because its graph is the
+equality locus of two continuous maps into tempered distributions.
 
-This file therefore isolates the closed-operator statement at the maximal distributional level.
-The domain consists exactly of `L²` wavefunctions whose distributional Laplacian is represented by
-another `L²` function. The resulting partial linear map is closed because its graph is the equality
-locus of two continuous maps into tempered distributions.
-
-The existing `H²` Laplacian is proved to lie inside this maximal domain and to agree with the
-maximal operator there. Thus the remaining regularity problem is cleanly separated as the reverse
-domain inclusion `continuumMaximalLaplacianDomain1D ≤ continuumH2Domain1D`.
+The `H²` Laplacian is proved to lie inside this maximal domain and to agree with the maximal
+operator there. Identifying the two domains therefore reduces to the reverse inclusion
+`continuumMaximalLaplacianDomain1D ≤ continuumH2Domain1D`.
 -/
 
 namespace QuantumMechanics

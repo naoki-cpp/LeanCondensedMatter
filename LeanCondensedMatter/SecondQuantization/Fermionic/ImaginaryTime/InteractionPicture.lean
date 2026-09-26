@@ -6,11 +6,12 @@ set_option linter.style.header false
 /-!
 # The fermionic interaction picture
 
-The physical interaction-picture operator is the fermionic specialization of the
-statistics-independent `Common.interactionPicture`. Generic algebraic and analytic facts are
-consumed from `SecondQuantization.Common` directly rather than re-exported under duplicate
-fermionic theorem names. The density-density interaction's time independence is kept here beside
-the evolution that proves it.
+The fermionic interaction-picture operator specializes the statistics-independent
+`Common.interactionPicture` to the fermionic occupation representation. The common algebraic and
+analytic interaction-picture laws therefore apply directly.
+
+For the density-density interaction, this module also proves time independence under the free
+imaginary-time evolution.
 -/
 
 namespace SecondQuantization

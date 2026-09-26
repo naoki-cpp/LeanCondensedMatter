@@ -6,18 +6,18 @@ set_option linter.style.header false
 /-!
 # Fermionic directional occupation-resolved Kubo–Bastin response
 
-The statistics-independent occupation interpolation and arbitrary measured/source Kubo–Bastin
-response now live under `QuantumTheory.Transport`, in `KuboBastin.OccupationInterpolation` and
-`KuboBastin.Occupation`. This module retains only the finite-lattice directional charge-current
-specialization with its Peierls contact and finite-volume normalization.
+This module specializes the generic occupation interpolation and measured/source Kubo–Bastin
+response to finite-lattice directional charge currents, including the Peierls contact term and
+finite-volume
+normalization.
 
-For each directional transition the discrete probability difference is replaced by the oriented
-energy integral of the supplied occupation derivative. The resulting response remains connected
-to the causal Kubo / spectral Kubo–Bastin chain at fixed positive switching rate.
+For each directional transition, the discrete probability difference is replaced by the oriented
+energy integral of the supplied occupation derivative. The resulting response remains connected to
+the causal Kubo and spectral Kubo–Bastin representations at fixed positive switching rate.
 
-This is not yet a common full-energy Bastin integral or a Středa surface/sea representation. No
-zero-temperature distributional derivative, zero-broadening, DC, disorder, trace-per-volume, or
-thermodynamic-limit statement is made here.
+No common full-energy Bastin integral, Středa surface/sea decomposition, zero-temperature
+distributional derivative, zero-broadening limit, DC limit, disorder average, trace per unit volume,
+or thermodynamic limit is asserted here.
 -/
 
 namespace SecondQuantization

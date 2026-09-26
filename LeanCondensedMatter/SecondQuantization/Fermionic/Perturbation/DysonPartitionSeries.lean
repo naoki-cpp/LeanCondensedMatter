@@ -7,10 +7,13 @@ set_option linter.style.header false
 /-!
 # The fermionic Dyson partition-function series
 
-The statistics-independent implementation is supplied by
-`SecondQuantization.Common.Perturbation.DysonTraceSeries`. The fermionic coefficient name is
-retained because it denotes a physical partition-function coefficient, not a compatibility alias.
-Power-series normalization and logarithms use their canonical `PowerSeries` names directly.
+The fermionic Dyson partition coefficients and series are the occupation-Fock specialization of the
+statistics-independent Dyson trace expansion in
+`SecondQuantization.Common.Perturbation.DysonTraceSeries`.
+
+The constant coefficient is identified with the free fermionic partition function. Dividing by that
+nonzero constant term gives the normalized coefficients, and the normalized series supplies the
+formal logarithm used for connected perturbative expansions.
 -/
 
 namespace SecondQuantization
