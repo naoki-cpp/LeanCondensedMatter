@@ -59,19 +59,16 @@ noncomputable def symmetrizedProductLeftLinear
   toFun := fun m => symmetrizedProduct A m
   map_add' := by
     intro m n
-    rw [symmetrizedProduct_comm A (m + n),
-      symmetrizedProductRightLinear_apply,
-      map_add,
-      ← symmetrizedProductRightLinear_apply,
-      ← symmetrizedProductRightLinear_apply]
-    rw [symmetrizedProduct_comm m A, symmetrizedProduct_comm n A]
+    apply LinearMap.ext
+    intro v
+    simp [symmetrizedProduct]
+    module
   map_smul' := by
     intro c m
-    rw [symmetrizedProduct_comm A (c • m),
-      symmetrizedProductRightLinear_apply,
-      map_smul,
-      ← symmetrizedProductRightLinear_apply]
-    rw [symmetrizedProduct_comm m A]
+    apply LinearMap.ext
+    intro v
+    simp [symmetrizedProduct]
+    module
 
 @[simp]
 theorem symmetrizedProductLeftLinear_apply
