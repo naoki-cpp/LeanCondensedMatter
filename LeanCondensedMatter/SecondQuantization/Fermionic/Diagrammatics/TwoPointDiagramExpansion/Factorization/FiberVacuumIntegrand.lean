@@ -71,7 +71,12 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
           (slotSplitVacuumSlot T) τ τ' σ p) =
       orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
         (σ ∘ slotSplitVacuumSlot T) p := by
-  rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField]
+  change timedFieldOperator ε
+      (mixedTimeOrderedAtomicFieldFamily i j τ τ'
+        (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
+        (mixedTimeOrderedQuarticLegMapPosition
+          (slotSplitVacuumSlot T) τ τ' σ p)) = _
+  rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField]
   change timedFieldOperator ε
       (orderedTwoPointLegField i j τ τ'
         (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ

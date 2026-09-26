@@ -262,3 +262,158 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator` —
   canonical completed-space CAR statement for the unified thermal ladder operator, expressing its
   anticommutator as the scalar CAR coefficient times the identity.
+- `Combinatorics.FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype` —
+  Finite-family ordered-simplex shuffle product identity for continuous local integrands directly
+  over an ambient total propositionally equal to the sum of local block sizes.
+- `Combinatorics.Pairing.presentsPairs_of_partner_blockPair` — Criterion for presenting a pairing.
+- `Combinatorics.blockPair_apply` — The two positions of a block, written through the block-slot
+  presentation.
+- `Combinatorics.cycleDefect_eq_sum_orbitFinpartition` — The cycle defect is the sum of `|B| - 1`
+  over the canonical orbit blocks.
+- `Combinatorics.cycleDefect_mod_two` — The parity of the cycle defect agrees with the parity of
+  `cycleType.sum + cycleType.card`.
+- `Combinatorics.not_crosses_self` — independent public theorem with a domain-level statement that
+  remains useful beyond its current sole compiled consumer.
+- `Combinatorics.singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum` — A connected
+  permutation on `S` carries the common exchange factor `ζ ^ (|S| - 1)`.
+- `Combinatorics.singleCycleKernelSum_univ_eq_sum_isCycleOn` — On the full finite index type, the
+  pure connected kernel is the direct sum over permutations that are a single cycle on the whole
+  type.
+- `Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace` — Summing the
+  connected single-cycle contribution over all physical-index assignments gives `ζ^(m-1) (m-1)!
+- `Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card` — On a nontrivial finite type, a
+  permutation is a single orbit on the whole type exactly when its cycle type is the singleton
+  containing the ambient cardinality.
+- `List.idxOf_flatMap_lt_of_idxOf_lt` — If one event occurs before another in a duplicate-free event
+  list, every element in the first block occurs before every element in the second block of the
+  duplicate-free flattened list.
+- `QuantumMechanics.SingleParticle.Continuum.minimallyCoupledSchrodingerRhsValue1D_eq_expanded` —
+  Explicit physical expansion of the minimally coupled Schrödinger right-hand side.
+- `QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue_eq_coordinates` —
+  Coordinate expansion of the probability-density time derivative.
+- `QuantumTheory.LinearResponse.PurePointLehmannData.probability_summable` — structure-level
+  invariant recording absolute summability of the normalized pure-point probability weights.
+- `QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum` — structure-level normalization
+  invariant stating that the finite disorder probabilities sum to one.
+- `QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator` — Adjointing the
+  exact finite disorder-averaged Green operator reverses the signed regulator.
+- `QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_ne_zero` — Every band projector
+  is a nonzero bounded operator.
+- `QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale_eq_selfEnergyPrefactor` —
+  The damping scale is exactly the physical-momentum prefactor already extracted from the Born
+  self-energy.
+- `QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq` —
+  The radial Cartesian Born denominators multiply to the canonical real weak-Born RA product.
+- `QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint` —
+  The finite-broadening bare-source same-side radial integrand is integrable and evaluates to the
+  canonical endpoint.
+- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm` —
+  The ordered `xy` radial Hall-surface integrand is the measured-`x`, source-`y` Středa radial
+  response in explicit common RA Born-Dyson denominator form.
+- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm` —
+  The ordered `xx` finite-`η` dressed Středa angular coefficient in explicit denominator form.
+- `QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le` —
+  Uniform norm bound for the complete target-centered interband Bastin pair on the radial axis.
+- `QuantumTheory.Transport.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass` —
+  A pole window narrower than the mass gap is valid simultaneously at every momentum.
+- `QuantumTheory.Transport.Models.MassiveDirac.star_pauliGreenOperatorOfRegulator` — Adjointing the
+  explicit Pauli Green operator reverses the signed regulator.
+- `QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero` —
+  At fixed cutoff beyond the metallic shell, the canonical zero-broadening solved ladder vector
+  converges to the longitudinal dressed-current factor `2 (ε² + m²) / (ε² + 3 m²)` with vanishing
+  raw transverse component.
+- `QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero` —
+  The transverse component of the zero-broadening dressed-current vector carries the same first
+  nonvanishing weak-disorder coefficient as the transverse ladder action.
+- `QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity` —
+  The pointwise fixed-window theorem expressed through the named clean Bastin-pair limit density.
+- `QuantumTheory.Transport.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq` — The
+  canonical occupation-derived finite-cutoff response keeps the single-cone regulator term explicit,
+  including the massless endpoint where both sides vanish.
+- `QuantumTheory.Transport.tendsto_integral_radialQuadraticLorentzian_atTop` — For nonzero radial
+  scale and positive width, the radial quadratic Lorentzian integral converges as the upper cutoff
+  tends to `+∞`.
+- `SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components` — The
+  coefficientwise bosonic ordered thermal amplitude factors over connected components.
+- `SecondQuantization.Bosonic.createOccupation_comm` — Creating particles in two modes commutes.
+- `SecondQuantization.Bosonic.removeOccupation_comm` — Removing particles in distinct modes
+  commutes.
+- `SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff` — The
+  fixed-order component-pair embedding preserves and reflects crossings.
+- `SecondQuantization.Common.TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum` — The Dyson sign
+  factors into the external component sign and all vacuum-component signs.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —
+  The crossing count internal to the ambient external component equals the crossing count of the
+  standalone external-piece pairing.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber` —
+  Inside one order chamber, canonical transport of a normalized component pair preserves the two
+  underlying standard atomic legs in their normalized order.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber` —
+  Component exchange-statistics weight is constant on one chamber.
+- `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq` — The product of
+  the Dyson signs carried by the ambient vacuum components is the Dyson sign of the whole quartic
+  vacuum piece.
+- `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct` —
+  The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
+  product over all vertices of the standalone quartic vacuum piece.
+- `SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff` —
+  The vacuum normalized-pair embedding preserves and reflects crossings.
+- `SecondQuantization.Common.comp_operatorIntervalIntegral` — Left-composition with a fixed operator
+  commutes with `operatorIntervalIntegral`: `L ∘ (∫ F) = ∫ (L ∘ F)`, given interval-integrability of
+  every matrix coefficient `F` contributes.
+- `SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral` — The canonical finite
+  Gibbs expectation commutes with coefficientwise finite operator integration.
+- `SecondQuantization.Common.finiteSupportIntervalIntegral_apply` — If every vector in the family is
+  supported in `S`, the finite reconstruction agrees with the coordinatewise interval integral at
+  every configuration.
+- `SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber` — canonical measurability
+  theorem for a mixed two-point order-signature chamber, used as an analytic boundary for
+  chamberwise integration.
+- `SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform` — Legs in one mixed-time
+  event block have identical comparison with every leg outside that block.
+- `SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber` —
+  canonical order-chamber invariance theorem for ordered two-point timed-event positions.
+- `SecondQuantization.Common.support_finiteSupportIntervalIntegral_subset` — Coordinatewise
+  reconstruction cannot create support outside the supplied finite set.
+- `SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ` —
+  Applying an interaction-picture insertion to a vector supported at one reachable order produces
+  only configurations reachable at the next order.
+- `SecondQuantization.Common.twoPointLegCongr_symm` — The inverse relabeling of legs is the
+  relabeling along the inverse.
+- `SecondQuantization.Fermionic.AlgebraicFock.create_comp_add_swap` — Two smeared creation operators
+  satisfy the creation-creation CAR.
+- `SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum` —
+  External/vacuum factorization of the signed pointwise fixed-time amplitude.
+- `SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue_eq_externalPiece` —
+  The Dyson-signed external factor is the standalone external piece's Dyson-signed fixed-time
+  amplitude at its inherited interaction times.
+- `SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction` —
+  The contraction used by a normalized mixed pair is the density-state contraction of the two fixed
+  standard legs represented by its endpoints.
+- `SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_components` —
+  The Wick contraction integrand of an assembled vertex order is the product of the contraction
+  integrands of its connected components, evaluated on the corresponding restricted time
+  assignments.
+- `SecondQuantization.Fermionic.annihilate_comp_self` — `cᵢ cᵢ = 0`: the same-mode consequence of
+  `{cᵢ, cᵢ} = 0`.
+- `SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted` — Completed
+  annihilation agrees with algebraic annihilation on every finite-support vector.
+- `SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted` — Completed creation
+  agrees with algebraic creation on every finite-support vector.
+- `SecondQuantization.Fermionic.continuous_contractionIntegrand` — The fixed-order contraction
+  integrand is continuous.
+- `SecondQuantization.Fermionic.fermionSign_toggleOccupation` — Toggling mode `k` flips the
+  fermionic sign at `i` exactly when `k` lies before `i`.
+- `SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq` — After
+  reindexing a fiber, the standalone external piece at any identified slot count is exactly the
+  correspondingly standardized connected external diagram, independently of the vacuum piece.
+- `SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand` —
+  For an externally connected left piece and strictly decreasing inherited vacuum times, the
+  complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
+  fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor.
+- `SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction` — The
+  finite complex free-fermion partition function is exactly the canonical pure-point Gibbs partition
+  function for `fermionEnergy`, coerced from `ℝ` to `ℂ`.
+- `SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod` — A single evolved
+  quartic vertex is the composed product of its four individually evolved local legs in the
+  canonical local-leg order.
