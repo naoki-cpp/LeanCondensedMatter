@@ -167,6 +167,27 @@ theorem resolventApproximationEvolution_domain_cauchy
     exact lt_of_le_of_lt
       (norm_resolventApproximationEvolution_sub_le A hA r s hr hs t (x : H)) hmul
 
+/-- On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at
+positive infinity. -/
+theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
+    CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x : H)) := by
+  refine Metric.cauchySeq_iff.2 ?_
+  intro ε hε
+  obtain ⟨R, hR, hcauchy⟩ :=
+    resolventApproximationEvolution_domain_cauchy A hA x t ε hε
+  refine ⟨max R 1, ?_⟩
+  intro r hr s hs
+  have hRr : R ≤ r := (le_max_left R 1).trans hr
+  have hRs : R ≤ s := (le_max_left R 1).trans hs
+  have h1r : 1 ≤ r := (le_max_right R 1).trans hr
+  have h1s : 1 ≤ s := (le_max_right R 1).trans hs
+  have hrpos : 0 < r := zero_lt_one.trans_le h1r
+  have hspos : 0 < s := zero_lt_one.trans_le h1s
+  have hnorm := hcauchy r s hRr hRs hrpos hspos
+  simpa [dist_eq_norm, resolventApproximationEvolutionAtScale, positiveApproximationScale,
+    max_eq_right h1r, max_eq_right h1s] using hnorm
+
 end
 
 end LinearPMap
