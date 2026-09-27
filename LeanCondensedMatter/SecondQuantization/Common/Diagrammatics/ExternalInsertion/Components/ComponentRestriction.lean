@@ -633,18 +633,10 @@ private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finse
     {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))) × Fin 4 := by
-  change
-    {leg : Fin (2 * E) ⊕ (↥S × Fin 4) //
-      match leg with
-      | .inl e => (Sum.inl e : ExternalInsertionVertex E S) ∈
-          (B : Finset (ExternalInsertionVertex E S))
-      | .inr p => (Sum.inr p.1 : ExternalInsertionVertex E S) ∈
-          (B : Finset (ExternalInsertionVertex E S))} ≃
-      ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S))) × Fin 4
-  exact vacuumComponentLegDataEquiv
-    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-    (B := (B : Finset (ExternalInsertionVertex E S))) hVac
+  simpa only [ExternalInsertionDiagram.unflattenedLegInComponent] using
+    (SecondQuantization.Common.vacuumComponentLegDataEquiv
+      (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+      (B := (B : Finset (ExternalInsertionVertex E S))) hVac)
 
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
