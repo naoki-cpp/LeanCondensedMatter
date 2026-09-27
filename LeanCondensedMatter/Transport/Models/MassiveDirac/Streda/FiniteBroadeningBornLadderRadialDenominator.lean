@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -29,8 +29,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         0 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
-      let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-        v m probeEnergy broadening disorderStrength hbar pMax;
+      let solved :=
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+          0 v m probeEnergy broadening disorderStrength hbar pMax;
       let eR := finiteCutoffContinuumBornEffectiveEnergy
         .retarded v m probeEnergy broadening disorderStrength hbar pMax;
       let massR := finiteCutoffContinuumBornEffectiveMass
@@ -71,8 +72,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 surface trace. -/
 def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-    v m probeEnergy broadening disorderStrength hbar pMax
+  let solved :=
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+      0 v m probeEnergy broadening disorderStrength hbar pMax
   finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
       0 0 v m probeEnergy broadening disorderStrength hbar pMax * solved 1 +
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
@@ -94,8 +96,9 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngu
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         0 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
       (let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
-       let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-         v m probeEnergy broadening disorderStrength hbar pMax;
+       let solved :=
+         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+           0 v m probeEnergy broadening disorderStrength hbar pMax;
        let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
          0 0 v m p probeEnergy broadening disorderStrength hbar pMax;
        let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
@@ -105,6 +108,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngu
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       simp only [finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector,
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
         inPlaneLadderAction_apply_x, Matrix.transpose_apply,
         inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_x_y,
         inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y,

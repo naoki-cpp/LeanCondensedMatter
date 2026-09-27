@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
@@ -177,9 +178,9 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
     (measured source : Fin 2)
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-  let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
+  let dressed :=
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+      source v m probeEnergy broadening disorderStrength hbar pMax
   let bare := Matrix.transpose (inPlaneRotationMatrix inPlaneLadderBareXSource) source
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -208,9 +209,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         measured source e v m p probeEnergy broadening disorderStrength hbar pMax := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-  let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
+  let dressed :=
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+      source v m probeEnergy broadening disorderStrength hbar pMax
   let bare := Matrix.transpose (inPlaneRotationMatrix inPlaneLadderBareXSource) source
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -239,7 +240,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
           (q • dressed) 1 • matrixOperator sigmaY := by
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-    simp [q, solved, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
+    simp [q, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v bare := by
     fin_cases source <;>
@@ -325,7 +326,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   fin_cases measured <;>
-    simp [q, solved, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource,
+    simp [q, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource,
       inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y] <;>
     ring
 
@@ -351,7 +352,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [Matrix.transpose_apply, inPlaneLadderAction_apply_x,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+    Matrix.transpose_apply, inPlaneLadderAction_apply_x,
     inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
     inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
     inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector]
@@ -366,7 +368,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [Matrix.transpose_apply, inPlaneLadderAction_apply_x,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+    Matrix.transpose_apply, inPlaneLadderAction_apply_x,
     inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
     inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
     inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector]

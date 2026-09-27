@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace
 
 set_option linter.style.header false
@@ -39,8 +39,8 @@ source-`x` current-rung coefficient. It is the regularized repository counterpar
 retained in Ado et al. Eq. (14), rather than the complete two-component dressed-current fixed point. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (1 - finiteCutoffContinuumBornDysonCurrentRungVector
-    v m probeEnergy broadening disorderStrength hbar pMax 0)⁻¹
+  finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder
@@ -48,6 +48,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder
     finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
       v m probeEnergy broadening 0 hbar pMax = 1 := by
   simp [finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor,
+    finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor,
     finiteCutoffContinuumBornDysonCurrentRungVector]
 
 private def gaussianCrossedCurrentCoefficientVector
