@@ -348,7 +348,6 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
   simp [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    ExternalInsertionDiagram.componentLegDataEquiv,
     externalInsertionExternalLeg]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
@@ -369,7 +368,6 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
   simp [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    ExternalInsertionDiagram.componentLegDataEquiv,
     externalInsertionInteractionLeg]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
