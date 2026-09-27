@@ -476,9 +476,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_paul
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient]
 
-/-- The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex
-conjugate. The final current vector and scalar carry the overall sign from
-`J_y(-r) = -σ_z J_y(r) σ_z`; all blocks on the right are evaluated at positive radius. -/
 /-- The radial `X` amplitude is the explicit scalar expansion of the generic Pauli reduction.
 The expansion uses the vanishing y component of the positive-radius Green blocks while retaining
 all three current Pauli components. -/
