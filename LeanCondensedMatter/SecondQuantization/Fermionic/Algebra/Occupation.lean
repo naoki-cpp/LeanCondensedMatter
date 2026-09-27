@@ -123,7 +123,7 @@ theorem toggleOccupation_involutive (i : Mode) :
     Function.Involutive (toggleOccupation i) := by
   intro n
   change (n ∆ {i}) ∆ {i} = n
-  exact symmDiff_symmDiff_cancel_right
+  exact symmDiff_symmDiff_cancel_right ({i} : Occupation Mode) n
 
 /-- Toggling two modes commutes. -/
 theorem toggleOccupation_comm (i j : Mode) (n : Occupation Mode) :
