@@ -65,7 +65,7 @@ theorem adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
 
 /-- Finite pure-point Kubo–Bastin response coefficient for supplied measured/source vertices and an
 explicit first-order observable variation. -/
-noncomputable def finiteKuboBastinSpectralVertexResponse
+private noncomputable def finiteKuboBastinSpectralVertexResponse
     (measured source observableVariation : H →L[ℂ] H)
     (omega eta : ℝ) : ℂ :=
   finiteKuboBastinSpectralVertexSum system data measured source omega eta +
@@ -73,7 +73,7 @@ noncomputable def finiteKuboBastinSpectralVertexResponse
 
 /-- The generic fixed-positive-rate frequency-domain susceptibility plus the explicit
 observable-variation term is exactly the finite Kubo–Bastin spectral response. -/
-theorem adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral
+private theorem adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral
     (measured source observableVariation : H →L[ℂ] H)
     (omega eta : ℝ) (heta : 0 < eta) :
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system

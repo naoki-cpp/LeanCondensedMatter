@@ -86,7 +86,7 @@ variable [Fintype ι]
 /-- Complete generalized response after replacing every discrete probability difference by its
 oriented occupation-derivative integral. The explicit observable-variation expectation is kept
 unchanged. -/
-noncomputable def finiteKuboBastinOccupationResolvedVertexResponse
+private noncomputable def finiteKuboBastinOccupationResolvedVertexResponse
     (interpolation : PurePointOccupationInterpolation system data)
     (measured source observableVariation : H →L[ℂ] H)
     (omega eta : ℝ) : ℂ :=
@@ -96,7 +96,7 @@ noncomputable def finiteKuboBastinOccupationResolvedVertexResponse
     purePointNormalizedExpectation system data observableVariation
 
 /-- The generalized finite spectral Bastin response equals its occupation-resolved form. -/
-theorem finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
+private theorem finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
     (interpolation : PurePointOccupationInterpolation system data)
     (measured source observableVariation : H →L[ℂ] H)
     (omega eta : ℝ) :

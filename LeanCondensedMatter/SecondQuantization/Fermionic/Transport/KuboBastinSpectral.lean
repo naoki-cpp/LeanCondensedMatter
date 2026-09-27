@@ -10,15 +10,8 @@ This module specializes the statistics-independent Kubo–Bastin transition alge
 spectral-index response sums to the directional electric current of a finite fermionic lattice,
 starting from the finite Kubo–Greenwood response.
 
-The adiabatic switching rate `η` has units of inverse time, whereas the resolvent broadening has
-units of energy. With the explicit reduced Planck constant, the matching retarded resolvent is
-
-```text
-Gᴿ(Eₘ + ℏω, ℏη) = ((Eₘ + ℏω + iℏη) I - H)⁻¹.
-```
-
-The Peierls contact contribution and finite-volume electric-field normalization remain explicit.
-No zero-broadening, zero-frequency, thermodynamic, disorder, or trace-class statement is made.
+The directional current, source, and Peierls contact are packaged as one `ResponseChannel` before
+the generic response API is called. Transition terms remain at the raw vertex level.
 -/
 
 namespace SecondQuantization
@@ -70,17 +63,25 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
         (system.hbar : ℂ) (q : ℂ) K)
       omega eta heta mn
 
+/-- The directional current, source, and Peierls contact form one response channel. -/
+noncomputable def finiteDirectionalCurrentResponseChannel
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q : ℝ) :
+    ResponseChannel (FiniteLatticeHilbertFock Site) where
+  measured := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  source := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  observableVariation := boundedDirectionalContact geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+
 /-- Finite regularized directional Kubo–Bastin conductivity in spectral resolvent form, with the
 Peierls contact term retained explicitly. -/
 noncomputable def finiteKuboBastinSpectralDirectionalConductivity
     [Fintype ι] (convention : QuantumTheory.Transport.PositiveVolume) : ℂ :=
-  finiteKuboBastinSpectralVertexResponse system data
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalContact geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
+  finiteKuboBastinSpectralChannelResponse system data
+      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
       omega eta *
     finiteVolumeConductivityNormalization convention omega eta
 
@@ -95,7 +96,8 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
         system data geometry direction K q omega eta convention := by
   unfold finiteKuboGreenwoodDirectionalConductivity
     finiteKuboBastinSpectralDirectionalConductivity
-    finiteKuboBastinSpectralVertexResponse
+    finiteKuboBastinSpectralChannelResponse
+    finiteDirectionalCurrentResponseChannel
     finiteKuboBastinSpectralVertexSum
   congr 1
   congr 1

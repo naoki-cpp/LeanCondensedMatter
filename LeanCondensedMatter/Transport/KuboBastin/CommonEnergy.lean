@@ -131,7 +131,7 @@ theorem integral_finiteKuboBastinCommonVertexEnergyKernel
 
 /-- Generalized common-energy response, with the explicit observable-variation expectation kept
 outside the energy kernel. -/
-noncomputable def finiteKuboBastinCommonEnergyVertexResponse
+private noncomputable def finiteKuboBastinCommonEnergyVertexResponse
     (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -140,21 +140,6 @@ noncomputable def finiteKuboBastinCommonEnergyVertexResponse
   (∫ energy : ℝ, finiteKuboBastinCommonVertexEnergyKernel
       system data interpolation measured source omega eta energy) +
     purePointNormalizedExpectation system data observableVariation
-
-/-- The generalized occupation-resolved response equals its common-energy-kernel form. -/
-theorem finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy
-    (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source observableVariation : H →L[ℂ] H)
-    (omega eta : ℝ) :
-    finiteKuboBastinOccupationResolvedVertexResponse system data interpolation
-        measured source observableVariation omega eta =
-      finiteKuboBastinCommonEnergyVertexResponse system data interpolation
-        measured source observableVariation omega eta := by
-  unfold finiteKuboBastinOccupationResolvedVertexResponse
-    finiteKuboBastinCommonEnergyVertexResponse
-  rw [integral_finiteKuboBastinCommonVertexEnergyKernel]
 
 /-- Generalized common-energy response attached directly to a neutral response channel. -/
 noncomputable def finiteKuboBastinCommonEnergyChannelResponse
@@ -166,7 +151,22 @@ noncomputable def finiteKuboBastinCommonEnergyChannelResponse
   finiteKuboBastinCommonEnergyVertexResponse system data interpolation
     channel.measured channel.source channel.observableVariation omega eta
 
-/-- The generalized spectral channel response equals its common-energy-kernel representation. -/
+/-- The generalized occupation-resolved channel response equals its common-energy-kernel
+representation. -/
+theorem finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy
+    (system : BoundedFreeSystem H)
+    (data : PurePointLehmannData system ι)
+    (interpolation : PurePointOccupationInterpolation system data)
+    (channel : ResponseChannel H)
+    (omega eta : ℝ) :
+    finiteKuboBastinOccupationResolvedChannelResponse
+        system data interpolation channel omega eta =
+      finiteKuboBastinCommonEnergyChannelResponse
+        system data interpolation channel omega eta := by
+  unfold finiteKuboBastinOccupationResolvedChannelResponse
+    finiteKuboBastinCommonEnergyChannelResponse
+  rw [integral_finiteKuboBastinCommonVertexEnergyKernel]
+
 theorem finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
     (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
@@ -182,12 +182,9 @@ theorem finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
       finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
         system data interpolation channel omega eta
     _ = finiteKuboBastinCommonEnergyChannelResponse
-        system data interpolation channel omega eta := by
-      simpa [finiteKuboBastinOccupationResolvedChannelResponse,
-        finiteKuboBastinCommonEnergyChannelResponse] using
-        finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy
-          system data interpolation channel.measured channel.source
-            channel.observableVariation omega eta
+        system data interpolation channel omega eta :=
+      finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy
+        system data interpolation channel omega eta
 
 end
 end Transport
