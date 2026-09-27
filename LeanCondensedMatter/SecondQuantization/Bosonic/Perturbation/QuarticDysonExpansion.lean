@@ -110,7 +110,11 @@ theorem quarticVertexSequenceInteractionPicture_eq_smul (ε : Mode → ℝ) :
           (fun i => q i.succ) (fun i => τ i.succ)]
       simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
       congr 1
-      · simpa [mul_comm] using
+      · have hq : Fin.cons (q 0) (fun i => q i.succ) = q := by
+          simpa [Fin.tail] using (Fin.cons_self_tail q)
+        have hτ : Fin.cons (τ 0) (fun i => τ i.succ) = τ := by
+          simpa [Fin.tail] using (Fin.cons_self_tail τ)
+        simpa [mul_comm, hq, hτ] using
           (quarticVertexSequenceTimeFactor_cons ε (q 0) (fun i => q i.succ)
             (τ 0) (fun i => τ i.succ)).symm
       · rw [Module.End.mul_eq_comp]
