@@ -651,6 +651,14 @@
       ]
     },
     {
+      "id": "massiveDiracGeneralizedCurrentBridge",
+      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/CurrentBridge.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator"
+      ]
+    },
+    {
       "id": "massiveDiracModelUmbrella",
       "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/Model.lean",
       "modules": [
