@@ -37,8 +37,6 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
   have hEq :
       d.vertexGraph.componentBlockOn (vertexOfLeg leg) =
         d.vertexGraph.componentBlockOn (vertexOfLeg (d.pairing.partner leg)) := by
-    change d.vertexGraph.componentBlockOn (vertexOfLeg leg) =
-      d.vertexGraph.componentBlockOn (vertexOfLeg (d.pairing.partner leg))
     exact d.vertexGraph.componentBlockOn_eq_of_reachable
       (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
   rw [hEq]
