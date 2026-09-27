@@ -90,11 +90,11 @@ theorem ExternalInsertionWickDiagram.componentOrderedLeg_injective {E n : ℕ}
     (B : d.vertexGraph.componentPartition.parts) :
     Function.Injective (d.componentOrderedLeg B) :=
   orderedExternalInsertionLegMap_injective
-    (fun e e' h => (d.externalSectorOrderIso B).injective (Subtype.ext h))
-    (fun v v' h =>
+    (Subtype.val_injective.comp (d.externalSectorOrderIso B).injective)
+    (Subtype.val_injective.comp
       ((interactionSector
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
-          rfl).injective (Subtype.ext h))
+          rfl).injective)
 
 @[simp]
 theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexLabelSequence {E n : ℕ}
