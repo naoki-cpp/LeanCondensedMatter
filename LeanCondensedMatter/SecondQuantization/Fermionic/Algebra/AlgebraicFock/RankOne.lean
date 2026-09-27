@@ -19,18 +19,9 @@ noncomputable section
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Algebraic rank-one endomorphism `g ↦ d(g) f`. -/
-def dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) : 𝓗₁ →ₗ[ℂ] 𝓗₁ :=
-  d.smulRight f
-
-@[simp]
-theorem dualRankOne_apply (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) (g : 𝓗₁) :
-    dualRankOne 𝓗₁ f d g = d g • f :=
-  rfl
-
 /-- The second quantization of an algebraic rank-one map is creation followed by contraction. -/
 theorem dGamma_dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) :
-    dGamma 𝓗₁ (dualRankOne 𝓗₁ f d) =
+    dGamma 𝓗₁ (d.smulRight f) =
       (create 𝓗₁ f).comp (annihilateDual 𝓗₁ d) := by
   apply LinearMap.ext
   intro Ψ
@@ -43,7 +34,7 @@ theorem dGamma_dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) :
       rw [dGamma_oneParticle_mul]
       change
         oneParticle 𝓗₁ (d g • f) * x +
-            oneParticle 𝓗₁ g * dGamma 𝓗₁ (dualRankOne 𝓗₁ f d) x =
+            oneParticle 𝓗₁ g * dGamma 𝓗₁ (d.smulRight f) x =
           create 𝓗₁ f
             (annihilateDual 𝓗₁ d (create 𝓗₁ g x))
       rw [annihilateDual_create_apply, hx]
