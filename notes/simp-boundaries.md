@@ -309,6 +309,7 @@ The following current simp boundaries are Green:
 These declarations are intentionally ordinary theorems rather than global simp rules. Their use is
 a substantive proof step, a coordinate/representation expansion, or a nontrivial analytic fact.
 
+- `ConservationLaw.symmetrizedProductBilinear_apply` — explicit bridge from the bilinear owner to the pointwise wrapper; keeping it out of the global simp set avoids a rewrite cycle.
 - `InternalSpace.dotProduct_pauliAxis` — explicit x/y/z coordinate expansion.
 - `purePointBoltzmannWeight_pos` — positivity fact, not normalization.
 - `purePointBoltzmannWeight_nonneg` — positivity fact, not normalization.
