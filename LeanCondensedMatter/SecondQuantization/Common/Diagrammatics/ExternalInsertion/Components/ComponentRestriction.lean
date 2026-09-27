@@ -355,7 +355,8 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
     ExternalInsertionDiagram.componentBlockLegEquiv,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     ExternalInsertionDiagram.componentLegDataEquiv,
-    externalInsertionExternalLeg]
+    SecondQuantization.Common.componentLegDataEquiv,
+    componentLegVertex, externalInsertionExternalLeg]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
 vertex and local quartic leg. -/
@@ -376,7 +377,8 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
     ExternalInsertionDiagram.componentBlockLegEquiv,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     ExternalInsertionDiagram.componentLegDataEquiv,
-    externalInsertionInteractionLeg]
+    SecondQuantization.Common.componentLegDataEquiv,
+    componentLegVertex, externalInsertionInteractionLeg]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
