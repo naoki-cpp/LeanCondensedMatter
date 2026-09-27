@@ -547,10 +547,42 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
     unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
     simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
       InternalSpace.pauliVectorCoefficient]
+  have hret_fun :
+      (fun axis =>
+        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+          axis .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) =
+        (fun axis =>
+          match axis with
+          | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+              .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+          | .y => 0
+          | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+              .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) := by
+    funext axis
+    cases axis
+    · rfl
+    · exact hret_y
+    · rfl
+  have hadv_fun :
+      (fun axis =>
+        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+          axis .advanced v m probeEnergy broadening disorderStrength hbar pMax radius) =
+        (fun axis =>
+          match axis with
+          | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+              .x .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+          | .y => 0
+          | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+              .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius) := by
+    funext axis
+    cases axis
+    · rfl
+    · exact hadv_y
+    · rfl
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar]
-  simp [hret_y, hadv_y, InternalSpace.pauliZConjugateVector,
-    InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]
+  rw [hret_fun, hadv_fun]
+  simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent] <;> ring
 
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
