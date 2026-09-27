@@ -113,7 +113,14 @@ theorem finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact
           system expectation geometry direction K q ω η T +
         boundedDirectionalContactExpectation
           system expectation geometry direction K q T := by
-  rfl
+  unfold finiteTimeAdiabaticDirectionalCoefficient
+    QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse
+    boundedDirectionalResponseChannel
+    finiteTimeAdiabaticDirectionalRetardedCoefficient
+    boundedDirectionalContactExpectation
+    QuantumTheory.LinearResponse.ResponseChannel.retardedKernel
+    QuantumTheory.LinearResponse.ResponseChannel.contactExpectation
+  rw [boundedDirectionalCurrentLinearMap_apply]
 
 end
 end Transport
