@@ -38,8 +38,11 @@ theorem isPositive_of_tendsto
   · intro x
     have happly : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
       ((apply 𝕜 H x).continuous.tendsto T).comp hF
-    have hinner : Tendsto (fun i => re (inner 𝕜 (F i x) x)) l (𝓝 (re (inner 𝕜 (T x) x))) :=
-      (happly.inner tendsto_const_nhds).rclike_re
+    have hinner :
+        Tendsto (fun i => RCLike.re (inner 𝕜 (F i x) x)) l
+          (𝓝 (RCLike.re (inner 𝕜 (T x) x))) :=
+      RCLike.continuous_re.continuousAt.tendsto.comp
+        (happly.inner tendsto_const_nhds)
     exact isClosed_Ici.mem_of_tendsto hinner
       (hpos.mono fun i hi => hi.re_inner_nonneg_left x)
 
