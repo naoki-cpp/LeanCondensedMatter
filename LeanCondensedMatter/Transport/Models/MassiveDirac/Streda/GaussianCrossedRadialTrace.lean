@@ -548,8 +548,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
     simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
       InternalSpace.pauliVectorCoefficient]
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar]
-  simp only [hret_y, hadv_y]
-  simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
+  simp [hret_y, hadv_y, InternalSpace.pauliZConjugateVector,
+    InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]
 
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar
