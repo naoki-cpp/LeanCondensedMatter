@@ -58886,7 +58886,8 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular_zero_disorder",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor_zero_disorder"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -58894,9 +58895,10 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular_zero_disorder",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor_zero_disorder"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59055,9 +59057,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
     "externalAxioms": [],
-    "docString": "For the physical source-x channel, ladder regularity rewrites the Středa consumer directly in\nterms of the generic algebraically resummed coefficient vertex. ",
+    "docString": "Under ladder regularity, the source-`x` insertion is the canonical resummed ladder vertex. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -59093,7 +59095,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -59170,7 +59172,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    have solved :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n        broadening disorderStrength hbar pMax;\n    have eR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have massR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have dR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    have eA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have massA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have dA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    ↑(4 * Real.pi) * q ^ 2 *\n      (dR⁻¹ * dA⁻¹ * ((eR * eA - massR * massA) * solved 0 - Complex.I * (eA * massR - eR * massA) * solved 1) -\n        1 / 2 * (dR⁻¹ ^ 2 * (eR ^ 2 - massR ^ 2) + dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2)))",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    have solved :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector\n        0 v m probeEnergy broadening disorderStrength hbar pMax;\n    have eR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have massR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have dR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    have eA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have massA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have dA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    ↑(4 * Real.pi) * q ^ 2 *\n      (dR⁻¹ * dA⁻¹ * ((eR * eA - massR * massA) * solved 0 - Complex.I * (eA * massR - eR * massA) * solved 1) -\n        1 / 2 * (dR⁻¹ ^ 2 * (eR ^ 2 - massR ^ 2) + dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59674,6 +59676,43 @@
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
       "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor v\n      m probeEnergy broadening 0 hbar pMax =\n    1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor_zero_disorder",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_zero_disorder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -61379,6 +61418,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_inPlaneRotationMatrix"
@@ -61391,11 +61431,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_inPlaneRotationMatrix"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61475,6 +61516,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_inPlaneRotationMatrix"
@@ -61487,11 +61529,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_inPlaneRotationMatrix"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110435,51 +110478,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (S + T) =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S + SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity",
-    "externalAxioms": [],
-    "docString": "Second quantization is additive in the one-particle operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_one_eq_hamiltonian"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_one_eq_hamiltonian"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (c : ℂ),\n  (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T)\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock 𝓗₁)) c) =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -110499,11 +110497,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
@@ -110511,11 +110509,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -110592,7 +110590,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_commutes_dGamma",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
       "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
       "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
       "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
@@ -110602,7 +110600,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_commutes_dGamma",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
       "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
       "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
       "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
@@ -110639,7 +110637,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
       "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle",
       "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real",
       "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
@@ -110650,7 +110648,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
       "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle",
       "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real",
       "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
@@ -110686,12 +110684,12 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
@@ -110699,61 +110697,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
     "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (c : ℂ) (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (c • T) =\n    c • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity",
-    "externalAxioms": [],
-    "docString": "Second quantization commutes with complex scalar multiplication. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id",
-      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear",
-      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id",
-      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
-    ],
-    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110784,7 +110735,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_vacuum",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum",
       "SecondQuantization.Fermionic.Field.chargeDensity_vacuum"
     ],
     "dependencies": [
@@ -110793,7 +110744,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_vacuum",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum",
       "SecondQuantization.Fermionic.Field.chargeDensity_vacuum"
     ],
     "compiledConsumerCount": 2,
@@ -110827,7 +110778,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_commutes_dGamma",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
       "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerBondContact_zero_charge",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_zero_hopping"
@@ -110839,7 +110790,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_commutes_dGamma",
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
       "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerBondContact_zero_charge",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_zero_hopping"
@@ -110911,155 +110862,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.numberOperator 𝓗₁)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_commutes_dGamma",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
-    "externalAxioms": [],
-    "docString": "Every second-quantized one-particle operator commutes with total particle number. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.numberOperator 𝓗₁)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁)\n  (Ψ : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.numberOperator 𝓗₁)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f * Ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f * Ψ +\n      (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f *\n        (SecondQuantization.Fermionic.AlgebraicFock.numberOperator 𝓗₁) Ψ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
-    "externalAxioms": [],
-    "docString": "Adding one exterior generator raises the algebraic number operator by one. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁],\n  (SecondQuantization.Fermionic.AlgebraicFock.numberOperator 𝓗₁)\n      (SecondQuantization.Fermionic.AlgebraicFock.vacuum 𝓗₁) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_vacuum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_vacuum"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -111558,6 +111360,155 @@
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T) =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
+    "externalAxioms": [],
+    "docString": "Every second-quantized one-particle operator commutes with total particle number. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁)\n  (Ψ : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f * Ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f * Ψ +\n      (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f *\n        (SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁) Ψ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
+    "externalAxioms": [],
+    "docString": "Adding one exterior generator raises the algebraic number operator by one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁],\n  (SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁)\n      (SecondQuantization.Fermionic.AlgebraicFock.vacuum 𝓗₁) =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_vacuum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112960,7 +112911,6 @@
     "dependents": [],
     "dependencies": [
       "ConservationLaw.linearCommutator_localizedQuantity",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator"
     ],
     "crossModuleDirectWrapper": false,
@@ -113036,7 +112986,6 @@
     "dependents": [],
     "dependencies": [
       "ConservationLaw.localizedQuantity_smul_id",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.Field.chargeDensity_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -113092,7 +113041,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_2) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (q : ℂ),\n  SecondQuantization.Fermionic.Field.oneBodyObservable 𝓗₁ (q • LinearMap.id) =\n    q • SecondQuantization.Fermionic.AlgebraicFock.numberOperator 𝓗₁",
+    "statement": "∀ (𝓗₁ : Type u_2) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (q : ℂ),\n  SecondQuantization.Fermionic.Field.oneBodyObservable 𝓗₁ (q • LinearMap.id) =\n    q • SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113111,9 +113060,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -114778,7 +114725,6 @@
       "SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsCurrent_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.peierlsBondCurrentOperator_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -118260,7 +118206,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_contact_decomposition"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_add"
     ],
     "crossModuleDirectWrapper": false,
@@ -152858,6 +152803,86 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (S + T) =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S + SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity",
+    "externalAxioms": [],
+    "docString": "Second quantization is additive in the one-particle operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (c : ℂ) (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (c • T) =\n    c • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity",
+    "externalAxioms": [],
+    "docString": "Second quantization commutes with complex scalar multiplication. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.basisState n) =\n    ↑(SecondQuantization.Fermionic.annihilateCoeff✝ i n) •\n      SecondQuantization.Fermionic.basisState (SecondQuantization.Fermionic.toggleOccupation i n)",
     "standardAxioms": [
@@ -161982,7 +162007,9 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
