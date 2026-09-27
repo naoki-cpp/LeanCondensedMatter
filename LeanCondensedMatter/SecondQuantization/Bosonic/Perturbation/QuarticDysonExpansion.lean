@@ -2,6 +2,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 
 set_option linter.style.header false
 
@@ -156,12 +157,10 @@ theorem continuous_quarticDysonSequenceCoeff {n : ℕ}
     intervalIntegral.continuous_orderedSimplexIntegral_of_continuous n id
       (fun (_ : ℝ) τ => quarticVertexSequenceTimeFactor ε q τ)
       continuous_id hintegrand
-  simpa [quarticDysonSequenceCoeff] using
-    (continuous_const.mul hsimplex :
-      Continuous (fun t : ℝ =>
-        ((-1 : ℂ) ^ n * ∏ i, g (q i)) *
-          intervalIntegral.orderedSimplexIntegral n t
-            (quarticVertexSequenceTimeFactor ε q)))
+  change Continuous (fun t : ℝ =>
+    ((-1 : ℂ) ^ n * ∏ i, g (q i)) *
+      intervalIntegral.orderedSimplexIntegral n t (quarticVertexSequenceTimeFactor ε q))
+  exact continuous_const.mul hsimplex
 
 /-- The fixed-sequence coefficient obeys the same outer-time recursion as the Dyson expansion:
 prepending a vertex contributes its coupling and free-evolution scalar, while the extra Dyson
