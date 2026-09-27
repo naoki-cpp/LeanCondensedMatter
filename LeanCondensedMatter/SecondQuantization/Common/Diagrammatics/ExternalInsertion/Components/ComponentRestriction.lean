@@ -347,7 +347,7 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
   apply (externalInsertionLegEquiv E S).injective
   simp only [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-    Equiv.trans_symm, Equiv.trans_apply, externalInsertionExternalLeg,
+externalInsertionExternalLeg,
     Equiv.apply_symm_apply, ExternalInsertionDiagram.componentBlockLegDataEquiv,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val]
 
@@ -368,7 +368,7 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
   apply (externalInsertionLegEquiv E S).injective
   simp only [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-    Equiv.trans_symm, Equiv.trans_apply, externalInsertionInteractionLeg,
+externalInsertionInteractionLeg,
     Equiv.apply_symm_apply, ExternalInsertionDiagram.componentBlockLegDataEquiv,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val]
 
