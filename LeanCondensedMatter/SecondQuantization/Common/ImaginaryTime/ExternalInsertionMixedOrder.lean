@@ -250,7 +250,7 @@ theorem orderedExternalInsertionTimedEvents_map_sublist
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
           (externalInsertionTimedEventMap fExternal fInteraction)).Pairwise ambientRel := by
     rw [List.pairwise_map]
-    exact hLocalPairwise.imp fun a b hab =>
+    exact hLocalPairwise.imp fun {a b} hab =>
       (externalInsertionTimedEventBeforeOrEqual_map_iff
         hExternal hInteraction externalTime σ a b).2 hab
   have hMapInjective :
