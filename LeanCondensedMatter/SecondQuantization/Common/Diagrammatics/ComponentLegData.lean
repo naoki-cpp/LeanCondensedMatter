@@ -72,7 +72,6 @@ noncomputable def componentLegDataEquiv
 /-- If a component contains no external vertex, its legs are exactly its interaction vertices paired
 with their local-leg data. -/
 noncomputable def vacuumComponentLegDataEquiv
-    [DecidableEq External] [DecidableEq Vertex]
     {S : Finset Vertex} (B : Finset (External ⊕ ↥S))
     (hVac : ComponentIsVacuum B) :
     {leg : External ⊕ (↥S × Local) // componentLegVertex leg ∈ B} ≃
