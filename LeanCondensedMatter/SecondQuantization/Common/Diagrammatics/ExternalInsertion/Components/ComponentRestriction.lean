@@ -345,11 +345,15 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
             (B : Finset (ExternalInsertionVertex E S))) e) =
       externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
   apply (externalInsertionLegEquiv E S).injective
-  simp only [ExternalInsertionDiagram.componentDiagramLeg,
+  rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-externalInsertionExternalLeg,
-    Equiv.apply_symm_apply, ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val]
+    Equiv.symm_trans_apply, Equiv.symm_trans_apply,
+    Equiv.symm_symm, externalInsertionExternalLeg,
+    Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inl,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv,
+    Equiv.symm_trans_apply,
+    ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val,
+    Equiv.apply_symm_apply]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
 vertex and local quartic leg. -/
@@ -366,11 +370,15 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
         ⟨v.1, interactionSector_subset
           (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
   apply (externalInsertionLegEquiv E S).injective
-  simp only [ExternalInsertionDiagram.componentDiagramLeg,
+  rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-externalInsertionInteractionLeg,
-    Equiv.apply_symm_apply, ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val]
+    Equiv.symm_trans_apply, Equiv.symm_trans_apply,
+    Equiv.symm_symm, externalInsertionInteractionLeg,
+    Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inr,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv,
+    Equiv.symm_trans_apply,
+    ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val,
+    Equiv.apply_symm_apply]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
