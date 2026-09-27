@@ -192,7 +192,6 @@ theorem interactionSector_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) 
         exact Sum.inr.inj hy
       exact congrArg (fun z : ↥S => (z : Fin N)) hs
     have hymem : (y : Fin N) ∈ vac.vertexGraph.componentBlockOn v := by
-      change (y : Fin N) ∈ vac.vertexGraph.componentBlockOn v
       exact (vac.vertexGraph.mem_componentBlockOn v).2
         ⟨y.2, (vac.vertexGraph.reachable_comm).1 hvy⟩
     simpa [hxy] using hymem
