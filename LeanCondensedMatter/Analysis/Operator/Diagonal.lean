@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Compact
+import LeanCondensedMatter.Analysis.Operator.Positive
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.InnerProductSpace.Positive
@@ -21,36 +22,6 @@ open Filter Topology
 open scoped ComplexOrder
 
 namespace HilbertBasis
-
-/-- Positivity is closed under convergence in the continuous-linear-map topology. -/
-private theorem isPositive_of_tendsto
-    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    {α : Type*} {l : Filter α} [NeBot l]
-    {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}
-    (hF : Tendsto F l (𝓝 T)) (hpos : ∀ᶠ i in l, (F i).IsPositive) : T.IsPositive := by
-  rw [ContinuousLinearMap.isPositive_iff]
-  constructor
-  · intro x y
-    have happly_x : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
-      ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
-    have happly_y : Tendsto (fun i => F i y) l (𝓝 (T y)) :=
-      ((ContinuousLinearMap.apply ℂ H y).continuous.tendsto T).comp hF
-    have hleft : Tendsto (fun i => inner ℂ (F i x) y) l (𝓝 (inner ℂ (T x) y)) :=
-      happly_x.inner tendsto_const_nhds
-    have hright : Tendsto (fun i => inner ℂ x (F i y)) l (𝓝 (inner ℂ x (T y))) :=
-      tendsto_const_nhds.inner happly_y
-    have heq : ∀ᶠ i in l, inner ℂ (F i x) y = inner ℂ x (F i y) :=
-      hpos.mono fun i hi => hi.isSymmetric x y
-    have hright' : Tendsto (fun i => inner ℂ (F i x) y) l (𝓝 (inner ℂ x (T y))) :=
-      (tendsto_congr' heq).mpr hright
-    exact tendsto_nhds_unique hleft hright'
-  · intro x
-    have happly : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
-      ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
-    have hinner : Tendsto (fun i => inner ℂ (F i x) x) l (𝓝 (inner ℂ (T x) x)) :=
-      happly.inner tendsto_const_nhds
-    exact isClosed_Ici.mem_of_tendsto hinner
-      (hpos.mono fun i hi => hi.inner_nonneg_left x)
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -134,7 +105,7 @@ theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
       (RCLike.ofReal_nonneg (K := ℂ)).mpr (ha_nonneg i)
     simpa [diagonalTerm] using
       (InnerProductSpace.isPositive_rankOne_self (𝕜 := ℂ) (b i)).smul_of_nonneg hcoeff
-  apply isPositive_of_tendsto
+  apply ContinuousLinearMap.isPositive_of_tendsto
     (l := Filter.atTop)
     (F := F) (T := diagonalOp b (fun i => (a i : ℂ)))
   · exact hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac
