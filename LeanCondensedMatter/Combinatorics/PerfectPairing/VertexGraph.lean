@@ -42,7 +42,8 @@ theorem Pairing.vertexGraph_reachable_partner {n : ℕ} {Vertex : Type*}
 
 
 /-- Paired legs determine the same connected-component block in the induced vertex graph. -/
-theorem Pairing.vertexGraph_componentBlock_partner {n : ℕ} {Vertex : Type*} [Fintype Vertex]
+theorem Pairing.vertexGraph_componentBlock_partner {n : ℕ} {Vertex : Type*}
+    [DecidableEq Vertex] [Fintype Vertex]
     (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)) :
     (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg leg) =
       (pairing.vertexGraph vertexOfLeg).componentBlock
