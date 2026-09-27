@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import Mathlib.LinearAlgebra.BilinearMap
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -18,52 +19,31 @@ or particle-statistics interpretation. Those meanings belong to downstream layer
 
 namespace ConservationLaw
 
-/-- Symmetrized composition `1/2 {A, B}` of two complex-linear endomorphisms. -/
-noncomputable def symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
-    (A B : W →ₗ[ℂ] W) : W →ₗ[ℂ] W :=
-  (1 / 2 : ℂ) • (A.comp B + B.comp A)
-
-@[simp]
-theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
-    (A B : W →ₗ[ℂ] W) (v : W) :
-    symmetrizedProduct A B v = (1 / 2 : ℂ) • (A (B v) + B (A v)) := by
-  rfl
-
-/-- The symmetrized product is bilinear in its two operator arguments. -/
+/-- The symmetrized product as a bilinear operator-valued map. This is the algebraic owner of
+the construction; pointwise symmetrized products are obtained by evaluation. -/
 noncomputable def symmetrizedProductBilinear
     (W : Type*) [AddCommGroup W] [Module ℂ W] :
     (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
-  LinearMap.mk₂ ℂ (fun A B => symmetrizedProduct A B)
-    (by
-      intro A C B
-      apply LinearMap.ext
-      intro v
-      simp [symmetrizedProduct]
-      module)
-    (by
-      intro c A B
-      apply LinearMap.ext
-      intro v
-      simp [symmetrizedProduct]
-      module)
-    (by
-      intro A B C
-      apply LinearMap.ext
-      intro v
-      simp [symmetrizedProduct]
-      module)
-    (by
-      intro c A B
-      apply LinearMap.ext
-      intro v
-      simp [symmetrizedProduct]
-      module)
+  (1 / 2 : ℂ) •
+    (LinearMap.llcomp ℂ W W W + (LinearMap.llcomp ℂ W W W).flip)
+
+/-- Symmetrized composition `1/2 {A, B}` of two complex-linear endomorphisms, obtained by
+evaluating the bilinear symmetrized-product map. -/
+noncomputable def symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) : W →ₗ[ℂ] W :=
+  symmetrizedProductBilinear W A B
 
 @[simp]
 theorem symmetrizedProductBilinear_apply
     {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
     symmetrizedProductBilinear W A B = symmetrizedProduct A B :=
+  rfl
+
+@[simp]
+theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) (v : W) :
+    symmetrizedProduct A B v = (1 / 2 : ℂ) • (A (B v) + B (A v)) := by
   rfl
 
 /-- Symmetrization with a fixed right-hand operator is linear in the left operator. -/
