@@ -321,12 +321,38 @@ def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
   | .inr v => List.ofFn fun l : Fin 4 =>
       Sum.inr (⟨v, Finset.mem_univ v⟩, l)
 
+private theorem externalInsertionTimedEventAtomicLegs_map
+    (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
+    (fInteraction : Fin m → Fin n)
+    (event : ExternalInsertionTimedEvent E₁ m) :
+    externalInsertionTimedEventAtomicLegs (Sum.map fExternal fInteraction event) =
+      (externalInsertionTimedEventAtomicLegs event).map
+        (orderedExternalInsertionLegMap fExternal fInteraction) := by
+  cases event <;> simp [externalInsertionTimedEventAtomicLegs]
+
 /-- Atomic leg identities in mixed-time event order. -/
 noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List (OrderedExternalInsertionLeg E n) :=
   (orderedExternalInsertionTimedEvents externalTime σ).flatMap
     externalInsertionTimedEventAtomicLegs
+
+/-- Increasing external/interaction slot reindexings embed the local mixed atomic-leg
+order as a sublist of the ambient mixed atomic-leg order. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_map_sublist
+    {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
+    {fInteraction : Fin m → Fin n}
+    (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
+    (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ) :
+    List.Sublist
+      ((externalInsertionMixedTimeOrderedAtomicLegs
+        (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
+          (orderedExternalInsertionLegMap fExternal fInteraction))
+      (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ) := by
+  have h := (orderedExternalInsertionTimedEvents_map_sublist
+    hExternal hInteraction externalTime σ).flatMap externalInsertionTimedEventAtomicLegs
+  simpa [externalInsertionMixedTimeOrderedAtomicLegs, List.flatMap_map, List.map_flatMap,
+    externalInsertionTimedEventAtomicLegs_map] using h
 
 private theorem externalInsertionTimedEventAtomicLegs_nodup {E n : ℕ}
     (event : ExternalInsertionTimedEvent E n) :
