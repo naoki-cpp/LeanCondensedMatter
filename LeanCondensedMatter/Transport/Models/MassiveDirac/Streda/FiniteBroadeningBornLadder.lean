@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
@@ -9,12 +9,13 @@ set_option linter.style.header false
 /-!
 # Finite-broadening Born-Dyson RA-dressed Středa surface bridge
 
-This module inserts the solved finite-cutoff finite-external-broadening Born-Dyson current-vertex
-vector into the retarded-advanced block of the massive-Dirac Středa surface algebra. Both the bare
-measured-current direction and the source direction are indexed by `Fin 2`.
+This module inserts the source-indexed finite-cutoff finite-external-broadening Born-Dyson dressed
+current insertion supplied by the disorder response seam into the retarded-advanced block of the
+massive-Dirac Středa surface algebra. Both the bare measured-current direction and the source
+direction are indexed by `Fin 2`.
 
-The canonical ladder solution for a bare `σₓ` source is stored as one in-plane coefficient vector.
-Rotational closure supplies the source-indexed algebraic vertex
+The disorder response seam supplies one source-indexed in-plane coefficient vector. Rotational
+closure supplies the source-indexed algebraic vertex
 
 ```text
 Γₓᴿᴬ =  α σₓ + β σᵧ,
@@ -36,54 +37,6 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-
-/-- Retarded-advanced source current obtained by rotating the solved bare-`σₓ` ladder coefficient
-vector into the requested in-plane source direction. This is the total algebraic value; the separate
-ladder-regularity predicate governs when the vector is the physical fixed-point solution. -/
-noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-    (source : Fin 2)
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
-  inPlaneCurrentOperator e v dressed
-
-/-- For the physical source-x channel, ladder regularity rewrites the Středa consumer directly in
-terms of the generic algebraically resummed coefficient vertex. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hregular : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-        0 e v m probeEnergy broadening disorderStrength hbar pMax =
-      inPlaneCurrentOperator e v
-        (resummedLadderVertex
-          (inPlaneLadderCLM
-            (finiteCutoffContinuumBornDysonCurrentRungVector
-              v m probeEnergy broadening disorderStrength hbar pMax))
-          (inPlaneLadderShift_isUnit
-            (finiteCutoffContinuumBornDysonCurrentRungVector
-              v m probeEnergy broadening disorderStrength hbar pMax)
-            hregular)
-          inPlaneLadderBareXSource) := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-  unfold finiteCutoffContinuumBornDysonLadderSolvedVector
-  rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex
-    (finiteCutoffContinuumBornDysonCurrentRungVector
-      v m probeEnergy broadening disorderStrength hbar pMax)
-    hregular]
-  congr 1
-
-@[simp]
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
-    (source : Fin 2) (e v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-      source e v m probeEnergy broadening 0 hbar pMax = currentOperator source e v := by
-  fin_cases source <;>
-    simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
-      inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix,
-      inPlaneLadderBareXSource, inPlaneCoefficientVector]
 
 /-- Pointwise finite-cutoff finite-`η` Středa surface bridge with the requested bare measured current,
 the solved source-indexed algebraic vertex only in the RA block, and the corresponding bare source

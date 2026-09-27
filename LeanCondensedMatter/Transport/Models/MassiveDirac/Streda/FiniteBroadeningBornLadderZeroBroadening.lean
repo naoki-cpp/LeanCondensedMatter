@@ -63,11 +63,13 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
   have hBeta := tendsto_pi_nhds.mp hSolved 1
   fin_cases source
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
       (hAlpha.smul_const (currentOperator 0 e v)).add
         (hBeta.smul_const (currentOperator 1 e v))
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
       (hBeta.neg.smul_const (currentOperator 0 e v)).add

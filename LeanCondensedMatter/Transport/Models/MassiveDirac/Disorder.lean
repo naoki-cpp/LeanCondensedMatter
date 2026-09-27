@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder
@@ -32,7 +33,10 @@ external-broadening current rung. `FiniteBroadeningBornRealSpacePropagator` owns
 finite-cutoff real-space Born-Dyson Green matrix, using the generic physical-momentum polar Fourier
 transform from `Transport.Analysis`. `FiniteBroadeningCurrentVertex` owns the direction-indexed
 in-plane rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
-determinant condition that licenses interpreting that pair as the actual ladder fixed point. Its
+determinant condition that licenses interpreting that pair as the actual ladder fixed point.
+`FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current insertion and the
+reduced longitudinal factor consumed by response modules, while keeping ladder regularity as a
+separate interpretation condition. Its
 fixed-radial-momentum positive-broadening boundary is exposed separately, under the explicit nonzero
 boundary denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses
 dominated convergence and consumes propagator regularity from the common Born-Dyson boundary. At

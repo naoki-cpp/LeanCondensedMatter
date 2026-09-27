@@ -93,7 +93,8 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     intro p
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm]
-    dsimp [q, solved, rx, ry, same]
+    dsimp [q, solved, rx, ry, same,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector]
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm,
