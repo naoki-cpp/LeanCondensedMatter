@@ -10,8 +10,8 @@ set_option linter.style.header false
 # Ambient-slot binary-shuffle ordered-simplex integrals
 
 This module defines the shuffled product integrand associated with an order-preserving ambient
-`BinaryShuffle.SlotShuffle`, proves its basic continuity and measurable-local-boundedness
-properties, and relates its ordered-simplex integral to recursive binary-shuffle contributions.
+`BinaryShuffle.SlotShuffle`, proves the measurable-local-boundedness needed for integration, and
+relates its ordered-simplex integral to recursive binary-shuffle contributions.
 It then transports the binary shuffle product identity to the ambient `SlotShuffle` presentation.
 -/
 
