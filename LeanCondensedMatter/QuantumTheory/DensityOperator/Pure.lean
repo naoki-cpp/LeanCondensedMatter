@@ -111,7 +111,7 @@ noncomputable def pure (ψ : StateVector H) : DensityOperator H := by
   let htraceClass : SpectralTraceClass
       (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) :=
     SpectralTraceClass.ofPositive
-      (ContinuousLinearMap.isCompactOperator_rankOne ψ.1 ψ.1)
+      (InnerProductSpace.isCompactOperator_rankOne ψ.1 ψ.1)
       (InnerProductSpace.isPositive_rankOne_self ψ.1)
       (rankOne_hasSummableRealEigenvalues ψ.2)
   exact {
