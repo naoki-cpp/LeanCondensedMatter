@@ -111,9 +111,11 @@ theorem quarticVertexSequenceInteractionPicture_eq_smul (ε : Mode → ℝ) :
       simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
       congr 1
       · have hq : Fin.cons (q 0) (fun i => q i.succ) = q := by
-          simpa [Fin.tail] using (Fin.cons_self_tail q)
+          change Fin.cons (q 0) (Fin.tail q) = q
+          exact Fin.cons_self_tail q
         have hτ : Fin.cons (τ 0) (fun i => τ i.succ) = τ := by
-          simpa [Fin.tail] using (Fin.cons_self_tail τ)
+          change Fin.cons (τ 0) (Fin.tail τ) = τ
+          exact Fin.cons_self_tail τ
         simpa [mul_comm, hq, hτ] using
           (quarticVertexSequenceTimeFactor_cons ε (q 0) (fun i => q i.succ)
             (τ 0) (fun i => τ i.succ)).symm
