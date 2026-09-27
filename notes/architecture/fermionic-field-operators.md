@@ -38,15 +38,19 @@ themselves imply boundedness or domain properties on that completion.
 Particle-statistics-independent one-body balance and current semantics stay upstream:
 
 ```text
-Analysis.Operator.LinearCommutator
+Analysis.Operator.SymmetrizedProduct
         ↓
-Analysis.ConservationLaw.CurrentRepresentation
-        ↓
-Analysis.ConservationLaw.IntrinsicBalanceLaw
-        ↓
-QuantumTheory.ConservationLaw.HeisenbergEvolution
-        ↓
-QuantumMechanics.SingleParticle
+SingleParticle.GeneralizedCurrent ─────────────────────┐
+                                                       ↓
+Analysis.ConservationLaw.CurrentRepresentation         │
+        ↓                                              │
+Analysis.ConservationLaw.IntrinsicBalanceLaw           │
+        ↓                                              │
+QuantumTheory.ConservationLaw.HeisenbergEvolution      │
+        ↓                                              │
+SingleParticle.LocalizedTransport ─────────────────────┤
+                                                       ↓
+                            SingleParticle.SymmetrizedVelocityCurrent
 ```
 
 `Analysis` owns representation-independent commutator/balance/current interfaces.
