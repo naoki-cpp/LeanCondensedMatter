@@ -65,7 +65,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le
       inner ℂ (M u) (ψ : ContinuumL2Wavefunction1D) =
         inner ℂ u (M (ψ : ContinuumL2Wavefunction1D)) := by
     simpa [M] using
-      L2MultiplicationRealLine.realMultiplicationOperator_symmetric potential hpotential u
+      realL2MultiplicationOperator1D_symmetric potential hpotential u
         (ψ : ContinuumL2Wavefunction1D)
   change
     inner ℂ (-((κ : ℂ)⁻¹) • (wH - M u)) (ψ : ContinuumL2Wavefunction1D) =
