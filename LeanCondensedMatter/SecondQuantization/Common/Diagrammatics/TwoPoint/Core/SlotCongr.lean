@@ -143,14 +143,14 @@ theorem TwoPointDiagram.slotCongr_adj_iff (e : ↥T ≃ ↥U)
     · rw [d.slotCongr_partner e leg, twoPointVertexOfLeg_twoPointLegCongr, hpartner]
 
 /-- The transport as a graph homomorphism. -/
-noncomputable def TwoPointDiagram.slotCongrHom (e : ↥T ≃ ↥U)
+private noncomputable def TwoPointDiagram.slotCongrHom (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
     d.vertexGraph →g (d.slotCongr (M := M) e).vertexGraph where
   toFun := twoPointVertexCongr e
   map_rel' := fun {_ _} hab => (d.slotCongr_adj_iff e _ _).2 hab
 
 /-- The inverse transport as a graph homomorphism. -/
-noncomputable def TwoPointDiagram.slotCongrHomSymm (e : ↥T ≃ ↥U)
+private noncomputable def TwoPointDiagram.slotCongrHomSymm (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
     (d.slotCongr (M := M) e).vertexGraph →g d.vertexGraph where
   toFun := (twoPointVertexCongr e).symm
