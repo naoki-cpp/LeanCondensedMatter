@@ -9,7 +9,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticom
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
 
 set_option linter.style.header false
 
