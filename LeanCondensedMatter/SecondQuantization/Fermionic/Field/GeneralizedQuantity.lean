@@ -35,8 +35,8 @@ noncomputable def oneBodyObservable (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
 /-- Charge-like total observables are scalar multiples of the algebraic number operator. -/
 theorem oneBodyObservable_smul_id (q : ℂ) :
     oneBodyObservable 𝓗₁ (q • LinearMap.id) =
-      q • AlgebraicFock.numberOperator 𝓗₁ := by
-  simpa only [oneBodyObservable, AlgebraicFock.numberOperator,
+      q • AlgebraicFock.totalNumberOperator 𝓗₁ := by
+  simpa only [oneBodyObservable, AlgebraicFock.totalNumberOperator,
     AlgebraicFock.dGammaLinear_apply] using
     (AlgebraicFock.dGammaLinear 𝓗₁).map_smul q LinearMap.id
 
