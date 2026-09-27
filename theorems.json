@@ -22186,7 +22186,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : RCLike 𝕜] [LocallyCompactSpace 𝕜]\n  [inst_2 : SeminormedAddCommGroup E] [inst_3 : NormedSpace 𝕜 E] [inst_4 : SeminormedAddCommGroup F]\n  [inst_5 : InnerProductSpace 𝕜 F] (x : E) (y : F), IsCompactOperator ⇑(((InnerProductSpace.rankOne 𝕜) x) y)",
+    "statement": "∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : RCLike 𝕜] [inst_1 : SeminormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] [inst_3 : SeminormedAddCommGroup F] [inst_4 : InnerProductSpace 𝕜 F] (x : E) (y : F),\n  IsCompactOperator ⇑(((InnerProductSpace.rankOne 𝕜) x) y)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
