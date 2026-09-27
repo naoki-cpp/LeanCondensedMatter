@@ -76,13 +76,24 @@ noncomputable def ExternalInsertionWickDiagram.componentOrderedLeg {E n : ℕ}
     OrderedExternalInsertionLeg (d.externalPairCount B)
         (interactionSector
           (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card →
-      OrderedExternalInsertionLeg E n
-  | .inl e => .inl (d.externalSectorOrderIso B e).1
-  | .inr leg =>
-      .inr
-        (⟨((interactionSector
-          (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
-            rfl leg.1.1).1, Finset.mem_univ _⟩, leg.2)
+      OrderedExternalInsertionLeg E n :=
+  orderedExternalInsertionLegMap
+    (fun e => (d.externalSectorOrderIso B e).1)
+    (fun v =>
+      ((interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
+          rfl v).1)
+
+/-- The canonical component-leg embedding is injective. -/
+theorem ExternalInsertionWickDiagram.componentOrderedLeg_injective {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts) :
+    Function.Injective (d.componentOrderedLeg B) :=
+  orderedExternalInsertionLegMap_injective
+    (d.externalSectorOrderIso B).injective
+    ((interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
+        rfl).injective
 
 @[simp]
 theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexLabelSequence {E n : ℕ}
