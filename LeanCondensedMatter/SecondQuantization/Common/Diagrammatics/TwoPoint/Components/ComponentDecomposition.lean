@@ -70,27 +70,6 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
   change (Finset.univ : Finset d.vertexGraph.componentPartition.parts).prod f = _
   rw [hparts, Finset.prod_insert hExternal]
 
-/-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
-theorem TwoPointDiagram.interactionSector_component_unique
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥S) (B C : d.vertexGraph.componentPartition.parts)
-    (hvB : (v : Fin N) ∈ interactionSector
-      (B : Finset (TwoPointVertex S)))
-    (hvC : (v : Fin N) ∈ interactionSector
-      (C : Finset (TwoPointVertex S))) :
-    B = C := by
-  apply Subtype.ext
-  have hBgraph : (B : Finset (TwoPointVertex S)) ∈ d.vertexGraph.componentPartition.parts := B.2
-  have hCgraph : (C : Finset (TwoPointVertex S)) ∈ d.vertexGraph.componentPartition.parts := C.2
-  have hB : d.vertexGraph.componentBlock (Sum.inr v) = (B : Finset (TwoPointVertex S)) :=
-    (d.vertexGraph.componentBlock_eq_iff_mem hBgraph (Sum.inr v)).2
-      ((mem_interactionSector_subtype
-        (B : Finset (TwoPointVertex S)) v).1 hvB)
-  have hC : d.vertexGraph.componentBlock (Sum.inr v) = (C : Finset (TwoPointVertex S)) :=
-    (d.vertexGraph.componentBlock_eq_iff_mem hCgraph (Sum.inr v)).2
-      ((mem_interactionSector_subtype
-        (C : Finset (TwoPointVertex S)) v).1 hvC)
-  exact hB.symm.trans hC
 
 end Common
 end SecondQuantization

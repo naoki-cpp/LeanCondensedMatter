@@ -143,8 +143,8 @@ private theorem slotSplitVacuumComponentPart_surjective
           exact vac.vertexGraph.componentPartitionOn.part_mem.2 v.2⟩
       refine ⟨C, ?_⟩
       apply Subtype.ext
-      apply TwoPointDiagram.interactionSector_component_unique
-        (d := TwoPointDiagram.ofSlotSplit h ext vac) w
+      apply interactionSector_component_unique
+        (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph w
       · rw [interactionSector_slotSplitVacuumComponentPart]
         change (w : Fin N) ∈ vac.vertexGraph.componentPartitionOn.part (v : Fin N)
         have hwv : (w : Fin N) = (v : Fin N) := rfl
