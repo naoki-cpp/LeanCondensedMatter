@@ -117,7 +117,8 @@ noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
       | .inr p => (Sum.inr p.1 : TwoPointVertex S) ∈
           (B : Finset (TwoPointVertex S))} ≃
       ↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4
-  exact vacuumComponentLegDataEquiv (B := (B : Finset (TwoPointVertex S))) hVac
+  exact vacuumComponentLegDataEquiv (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
+    (B := (B : Finset (TwoPointVertex S))) hVac
 
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
