@@ -58,10 +58,8 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     · simp [Finset.mem_toLeft, d.vertexGraph.self_mem_componentBlock]
     · simp only [Finset.mem_toLeft, Finset.mem_singleton]
       constructor
-      · intro h
-        exact False.elim (d.externalOne_not_mem_externalComponentPart hExt h)
-      · intro h
-        omega
+      · exact fun h => False.elim (d.externalOne_not_mem_externalComponentPart hExt h)
+      · simp
   let dataEquiv :
       {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
         Fin 1 ⊕
