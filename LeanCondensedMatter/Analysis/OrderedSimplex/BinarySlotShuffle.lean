@@ -1,23 +1,61 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffleIntegrand
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
+import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
 
 /-!
 # Ambient-slot binary-shuffle ordered-simplex integrals
 
-A recursive `BinaryShuffle` already carries an order-preserving equivalence from its two local slot
-families to the ambient slots. Using the generic ambient-slot integrand from the ordered-simplex
-analysis layer, this module proves that its ordinary ordered-simplex integral is the recursive
-contribution attached to the shuffle, and then transports the binary shuffle product identity to
-the ambient `SlotShuffle` presentation.
+This module defines the shuffled product integrand associated with an order-preserving ambient
+`BinaryShuffle.SlotShuffle`, proves its basic continuity and measurable-local-boundedness
+properties, and relates its ordered-simplex integral to recursive binary-shuffle contributions.
+It then transports the binary shuffle product identity to the ambient `SlotShuffle` presentation.
 -/
 
 namespace Combinatorics
 namespace BinaryShuffle
 
 open intervalIntegral MeasureTheory
+
+/-- Product of two local integrands after their coordinates are embedded by an ambient slot
+shuffle. -/
+noncomputable def SlotShuffle.integrand {m n : ℕ} (shuffle : SlotShuffle m n)
+    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
+    (τ : Fin (m + n) → ℝ) : ℂ :=
+  f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
+    g (fun j => τ (shuffle.slotEquiv (Sum.inr j)))
+
+/-- The ambient shuffled product is continuous when both local integrands are continuous. -/
+theorem SlotShuffle.continuous_integrand {m n : ℕ} (shuffle : SlotShuffle m n)
+    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
+    (hf : Continuous f) (hg : Continuous g) :
+    Continuous (shuffle.integrand f g) := by
+  have hleft : Continuous (fun τ : Fin (m + n) → ℝ =>
+      fun i : Fin m => τ (shuffle.slotEquiv (Sum.inl i))) :=
+    continuous_pi fun i => continuous_apply (shuffle.slotEquiv (Sum.inl i))
+  have hright : Continuous (fun τ : Fin (m + n) → ℝ =>
+      fun j : Fin n => τ (shuffle.slotEquiv (Sum.inr j))) :=
+    continuous_pi fun j => continuous_apply (shuffle.slotEquiv (Sum.inr j))
+  exact (hf.comp hleft).mul (hg.comp hright)
+
+/-- Measurable local boundedness is preserved by an ambient binary slot shuffle. -/
+theorem SlotShuffle.measurableLocallyBounded_integrand {m n : ℕ}
+    (shuffle : SlotShuffle m n)
+    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
+    (hf : intervalIntegral.MeasurableLocallyBounded f)
+    (hg : intervalIntegral.MeasurableLocallyBounded g) :
+    intervalIntegral.MeasurableLocallyBounded (shuffle.integrand f g) := by
+  change intervalIntegral.MeasurableLocallyBounded (fun τ : Fin (m + n) → ℝ =>
+    f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
+      g (fun j => τ (shuffle.slotEquiv (Sum.inr j))))
+  exact
+    (hf.comp_finCoordinateSelection
+      (fun i => shuffle.slotEquiv (Sum.inl i))).mul
+      (hg.comp_finCoordinateSelection
+        (fun j => shuffle.slotEquiv (Sum.inr j)))
 
 /-- One recursive shuffle contribution is the ordinary ordered-simplex integral of its ambient-slot
 shuffled product. -/
