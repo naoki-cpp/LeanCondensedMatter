@@ -42,7 +42,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     (source : Fin 2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  inPlaneCurrentCLM e v
+  inPlaneCurrentOperator e v
     (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
       source v m probeEnergy broadening disorderStrength hbar pMax)
 
@@ -68,7 +68,6 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
   unfold finiteCutoffContinuumBornDysonLadderSolvedVector
-  rw [inPlaneCurrentCLM_apply]
   rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
