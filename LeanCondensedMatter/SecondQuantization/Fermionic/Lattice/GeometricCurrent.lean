@@ -117,7 +117,9 @@ theorem boundedDirectionalCurrentLinearMap_apply
     boundedDirectionalCurrentLinearMap geometry ℏ q K direction =
       boundedDirectionalCurrent geometry direction ℏ q K := by
   simp [boundedDirectionalCurrentLinearMap, boundedDirectionalCurrent,
-    LatticeGeometry.bondCoordinate, RCLike.real_smul_eq_coe_smul]
+    LatticeGeometry.bondCoordinate]
+  rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
+  norm_num
 
 /-- Geometric contact operator for a uniform source in the selected direction. The squared bond
 coordinate is the chain-rule factor from differentiating the measured current after the Peierls
