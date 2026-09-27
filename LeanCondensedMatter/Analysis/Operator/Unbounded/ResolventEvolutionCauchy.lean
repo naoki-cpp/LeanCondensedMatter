@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionEstimate
 import Mathlib.Tactic
 
 set_option linter.style.header false

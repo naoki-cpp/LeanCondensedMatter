@@ -3,6 +3,7 @@ import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Analysis.Calculus.FDeriv.CompCLM
+import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -14,10 +15,12 @@ For a bounded self-adjoint operator `B` on a complex Hilbert space, the Banach-a
 
 `U_B(t) = exp (-i t B)`
 
-defines a norm-continuous one-parameter unitary group. For commuting bounded generators, evolution
-under their sum factors into the product of the individual evolutions. Applying this construction to
-the bounded resolvent approximants from `ResolventApproximation` gives the approximating unitary
-groups used in the Stone-theorem construction.
+defines a norm-continuous one-parameter unitary group. For self-adjoint generators it preserves
+vector norms, and the mean-value inequality gives the displacement estimate
+`‖U_B(t)x - x‖ ≤ ‖B x‖ |t|`. For commuting bounded generators, evolution under their sum factors
+into the product of the individual evolutions. Applying this construction to the bounded resolvent
+approximants from `ResolventApproximation` gives the approximating unitary groups used in the
+Stone-theorem construction.
 -/
 
 namespace LinearPMap
@@ -141,6 +144,53 @@ theorem boundedUnitaryEvolution_apply_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) (
   have h := (((ContinuousLinearMap.apply ℂ H) x).restrictScalars ℝ).hasFDerivAt.comp t
     (boundedUnitaryEvolution_hasDerivAt B t).hasFDerivAt
   simpa [Function.comp_def] using h.hasDerivAt
+
+/-- A bounded self-adjoint exponential preserves the norm of every vector. -/
+theorem boundedUnitaryEvolution_apply_norm
+    (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) (x : H) :
+    ‖boundedUnitaryEvolution B t x‖ = ‖x‖ := by
+  let U : H →L[ℂ] H := boundedUnitaryEvolution B t
+  have hunit : star U * U = 1 := by
+    simpa [U] using boundedUnitaryEvolution_star_mul B hB t
+  have huux : ContinuousLinearMap.adjoint U (U x) = x := by
+    have happly := congrArg (fun T : H →L[ℂ] H => T x) hunit
+    simpa [ContinuousLinearMap.star_eq_adjoint] using happly
+  have hsq_complex : (‖U x‖ : ℂ) ^ 2 = (‖x‖ : ℂ) ^ 2 := by
+    calc
+      (‖U x‖ : ℂ) ^ 2 = inner ℂ (U x) (U x) :=
+        (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (U x)).symm
+      _ = inner ℂ (ContinuousLinearMap.adjoint U (U x)) x :=
+        (ContinuousLinearMap.adjoint_inner_left U x (U x)).symm
+      _ = inner ℂ x x := by rw [huux]
+      _ = (‖x‖ : ℂ) ^ 2 := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) x
+  have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
+    exact_mod_cast hsq_complex
+  nlinarith [norm_nonneg (U x), norm_nonneg x]
+
+/-- The displacement under bounded self-adjoint evolution is controlled by the generator on the
+initial vector. -/
+theorem norm_boundedUnitaryEvolution_apply_sub_le
+    (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) (x : H) :
+    ‖boundedUnitaryEvolution B t x - x‖ ≤ ‖B x‖ * |t| := by
+  have hderiv : ∀ τ ∈ (Set.univ : Set ℝ),
+      HasDerivWithinAt (fun s : ℝ => boundedUnitaryEvolution B s x)
+        ((boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x) Set.univ τ := by
+    intro τ _
+    exact (boundedUnitaryEvolution_apply_hasDerivAt B τ x).hasDerivWithinAt
+  have hbound : ∀ τ ∈ (Set.univ : Set ℝ),
+      ‖((boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x)‖ ≤ ‖B x‖ := by
+    intro τ _
+    change ‖boundedUnitaryEvolution B τ (((-I : ℂ) • B) x)‖ ≤ ‖B x‖
+    rw [boundedUnitaryEvolution_apply_norm B hB τ]
+    change ‖(-I : ℂ) • B x‖ ≤ ‖B x‖
+    rw [norm_smul]
+    simp
+  have hmv := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+    (f := fun s : ℝ => boundedUnitaryEvolution B s x)
+    (f' := fun τ : ℝ => (boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x)
+    (s := Set.univ) (x := (0 : ℝ)) (y := t)
+    hderiv hbound convex_univ (Set.mem_univ 0) (Set.mem_univ t)
+  simpa using hmv
 
 /-- The unitary group obtained by exponentiating the bounded resolvent approximation `Aᵣ`. -/
 noncomputable def resolventApproximationEvolution
