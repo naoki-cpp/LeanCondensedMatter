@@ -153,19 +153,13 @@ private theorem externalInsertionTimedEventBeforeOrEqual_antisymm {E n : ℕ}
 
 variable {E₁ E₂ m n : ℕ}
 
-private def externalInsertionTimedEventMap
-    (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
-    (fInteraction : Fin m → Fin n) :
-    ExternalInsertionTimedEvent E₁ m → ExternalInsertionTimedEvent E₂ n :=
-  Sum.map fExternal fInteraction
-
 private theorem externalInsertionTimedEventTime_map
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
     (fInteraction : Fin m → Fin n)
     (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
     (event : ExternalInsertionTimedEvent E₁ m) :
     externalInsertionTimedEventTime externalTime σ
-        (externalInsertionTimedEventMap fExternal fInteraction event) =
+        (Sum.map fExternal fInteraction event) =
       externalInsertionTimedEventTime (externalTime ∘ fExternal) (σ ∘ fInteraction) event := by
   cases event <;> rfl
 
@@ -175,32 +169,32 @@ private theorem externalInsertionTimedEventRank_map_le_iff
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
     (a b : ExternalInsertionTimedEvent E₁ m) :
     externalInsertionTimedEventRank
-        (externalInsertionTimedEventMap fExternal fInteraction a) ≤
+        (Sum.map fExternal fInteraction a) ≤
       externalInsertionTimedEventRank
-        (externalInsertionTimedEventMap fExternal fInteraction b) ↔
+        (Sum.map fExternal fInteraction b) ↔
     externalInsertionTimedEventRank a ≤ externalInsertionTimedEventRank b := by
   cases a with
   | inl a =>
       cases b with
       | inl b =>
-          simpa [externalInsertionTimedEventMap, externalInsertionTimedEventRank] using
+          simpa [externalInsertionTimedEventRank] using
             hExternal.le_iff_le
       | inr b =>
           have ha := a.isLt
           have hfa := (fExternal a).isLt
-          simp [externalInsertionTimedEventMap, externalInsertionTimedEventRank]
+          simp [externalInsertionTimedEventRank]
           omega
   | inr a =>
       cases b with
       | inl b =>
           have hb := b.isLt
           have hfb := (fExternal b).isLt
-          simp [externalInsertionTimedEventMap, externalInsertionTimedEventRank]
+          simp [externalInsertionTimedEventRank]
           omega
       | inr b =>
           have h : fInteraction a ≤ fInteraction b ↔ a ≤ b :=
             hInteraction.le_iff_le
-          simp [externalInsertionTimedEventMap, externalInsertionTimedEventRank] at h ⊢
+          simp [externalInsertionTimedEventRank] at h ⊢
           omega
 
 private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
@@ -210,8 +204,8 @@ private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
     (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E₁ m) :
     externalInsertionTimedEventBeforeOrEqual externalTime σ
-        (externalInsertionTimedEventMap fExternal fInteraction a)
-        (externalInsertionTimedEventMap fExternal fInteraction b) ↔
+        (Sum.map fExternal fInteraction a)
+        (Sum.map fExternal fInteraction b) ↔
       externalInsertionTimedEventBeforeOrEqual
         (externalTime ∘ fExternal) (σ ∘ fInteraction) a b := by
   simp only [externalInsertionTimedEventBeforeOrEqual, externalInsertionTimedEventTime_map]
@@ -227,7 +221,7 @@ theorem orderedExternalInsertionTimedEvents_map_sublist
     List.Sublist
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
-          (externalInsertionTimedEventMap fExternal fInteraction))
+          (Sum.map fExternal fInteraction))
       (orderedExternalInsertionTimedEvents externalTime σ) := by
   classical
   let localRel :=
@@ -248,26 +242,26 @@ theorem orderedExternalInsertionTimedEvents_map_sublist
   have hMappedPairwise :
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
-          (externalInsertionTimedEventMap fExternal fInteraction)).Pairwise ambientRel := by
+          (Sum.map fExternal fInteraction)).Pairwise ambientRel := by
     rw [List.pairwise_map]
     exact hLocalPairwise.imp fun {a b} hab =>
       (externalInsertionTimedEventBeforeOrEqual_map_iff
         hExternal hInteraction externalTime σ a b).2 hab
   have hMapInjective :
-      Function.Injective (externalInsertionTimedEventMap fExternal fInteraction) := by
-    simpa [externalInsertionTimedEventMap] using
+      Function.Injective (Sum.map fExternal fInteraction) := by
+    simpa using
       (Sum.map_injective.mpr ⟨hExternal.injective, hInteraction.injective⟩)
   have hMappedNodup :
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
-          (externalInsertionTimedEventMap fExternal fInteraction)).Nodup :=
+          (Sum.map fExternal fInteraction)).Nodup :=
     List.Nodup.map hMapInjective
       (orderedExternalInsertionTimedEvents_nodup
         (externalTime ∘ fExternal) (σ ∘ fInteraction))
   have hSubperm : List.Subperm
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
-          (externalInsertionTimedEventMap fExternal fInteraction))
+          (Sum.map fExternal fInteraction))
       (canonicalExternalInsertionTimedEvents E₂ n) :=
     hMappedNodup.subperm fun event _ =>
       canonicalExternalInsertionTimedEvents_all_mem E₂ n event
