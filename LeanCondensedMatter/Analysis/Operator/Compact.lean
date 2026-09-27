@@ -10,7 +10,7 @@ Generic compactness facts for rank-one continuous linear maps. These facts are s
 the neutral diagonal-operator construction and the spectral-trace density-state layer.
 -/
 
-variable {𝕜 E F : Type*} [RCLike 𝕜]
+variable {𝕜 E F : Type*} [RCLike 𝕜] [LocallyCompactSpace 𝕜]
   [SeminormedAddCommGroup E] [NormedSpace 𝕜 E]
   [SeminormedAddCommGroup F] [InnerProductSpace 𝕜 F]
 
