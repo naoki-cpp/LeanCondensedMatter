@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
 set_option linter.style.header false
 
@@ -39,5 +39,27 @@ theorem Pairing.vertexGraph_reachable_partner {n : ℕ} {Vertex : Type*}
   · rw [h]
   · exact SimpleGraph.Adj.reachable
       ⟨h, pairing.partner leg, rfl, by rw [pairing.partner_involutive]⟩
+
+
+/-- Paired legs determine the same connected-component block in the induced vertex graph. -/
+theorem Pairing.vertexGraph_componentBlock_partner {n : ℕ} {Vertex : Type*}
+    [DecidableEq Vertex] [Fintype Vertex]
+    (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)) :
+    (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg leg) =
+      (pairing.vertexGraph vertexOfLeg).componentBlock
+        (vertexOfLeg (pairing.partner leg)) :=
+  (pairing.vertexGraph vertexOfLeg).componentBlock_eq_of_reachable
+    (pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
+
+/-- Paired legs determine the same ambient component block when the induced graph is on a finite
+subtype. -/
+theorem Pairing.vertexGraph_componentBlockOn_partner
+    {n : ℕ} {α : Type*} [DecidableEq α] {s : Finset α}
+    (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → ↥s) (leg : Fin (2 * n)) :
+    (pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg leg) =
+      (pairing.vertexGraph vertexOfLeg).componentBlockOn
+        (vertexOfLeg (pairing.partner leg)) :=
+  (pairing.vertexGraph vertexOfLeg).componentBlockOn_eq_of_reachable
+    (pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
 
 end Combinatorics

@@ -34,12 +34,11 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
   unfold QuarticDiagram.legInBlock
-  have hEq :
-      d.vertexGraph.componentBlockOn (vertexOfLeg leg) =
-        d.vertexGraph.componentBlockOn (vertexOfLeg (d.pairing.partner leg)) := by
-    exact d.vertexGraph.componentBlockOn_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
-  rw [hEq]
+  change
+    (d.pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg leg) = B ↔
+      (d.pairing.vertexGraph vertexOfLeg).componentBlockOn
+        (vertexOfLeg (d.pairing.partner leg)) = B
+  rw [d.pairing.vertexGraph_componentBlockOn_partner vertexOfLeg leg]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
