@@ -46,6 +46,19 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
       fermionSign_sq_complex, one_smul]
   · rw [if_neg hi, annihilate_basisState_of_not_mem hi, map_zero]
 
+/-- The single-mode number operator is the basis-diagonal projector onto occupations containing
+mode `i`. This is the canonical bridge from the CAR definition `aᵢ† aᵢ` to the common
+basis-diagonal operator API. -/
+theorem numberOperator_eq_diagonalOperator (i : Mode) :
+    numberOperator i =
+      Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  rw [numberOperator_basisState, Common.diagonalOperator_basisState]
+  by_cases hi : i ∈ n
+  · simp [hi]
+  · simp [hi]
+
 /-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Common.Statistics.zetaInt Common.Statistics.fermion`)**: an
 instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermionic
 `Common.ExchangeAlgebra` instance (`Fermionic/Algebra/ExchangeAlgebra.lean`), whose `annihilate`/`create`
