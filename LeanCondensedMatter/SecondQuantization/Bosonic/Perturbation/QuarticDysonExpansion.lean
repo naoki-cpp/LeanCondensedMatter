@@ -107,10 +107,9 @@ theorem quarticVertexSequenceInteractionPicture_eq_smul (ε : Mode → ℝ) :
         interactionPicture_quarticVertexOperator_eq_smul,
         quarticVertexSequenceInteractionPicture_eq_smul ε
           (fun i => q i.succ) (fun i => τ i.succ)]
-      rw [← Module.End.mul_eq_comp, Algebra.smul_mul_assoc, Module.End.mul_eq_comp,
-        LinearMap.comp_smul, smul_smul]
+      simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
       rw [quarticVertexSequenceOperator]
-      simp only [List.ofFn_succ, List.prod_cons, Module.End.mul_eq_comp]
+      simp only [List.ofFn_succ, List.prod_cons]
       congr 1
       rw [quarticVertexSequenceTimeFactor, Fin.prod_univ_succ]
       rfl
