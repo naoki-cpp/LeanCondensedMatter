@@ -53,11 +53,7 @@ theorem ExternalInsertionDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin 
 private def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
-  match leg with
-  | .inl e => (Sum.inl e : ExternalInsertionVertex E S) ∈
-      (B : Finset (ExternalInsertionVertex E S))
-  | .inr p => (Sum.inr p.1 : ExternalInsertionVertex E S) ∈
-      (B : Finset (ExternalInsertionVertex E S))
+  componentLegVertex leg ∈ (B : Finset (ExternalInsertionVertex E S))
 
 /-- Flattening preserves the component-membership predicate. -/
 private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
@@ -79,11 +75,10 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
       ↥(Finset.toLeft
         (B : Finset (ExternalInsertionVertex E S))) ⊕
         (↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) := by
-  simpa only [ExternalInsertionDiagram.unflattenedLegInComponent] using
-    (SecondQuantization.Common.componentLegDataEquiv
-      (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-      (B := (B : Finset (ExternalInsertionVertex E S))))
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) :=
+  SecondQuantization.Common.componentLegDataEquiv
+    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+    (B := (B : Finset (ExternalInsertionVertex E S)))
 
 /-- Reindex the flattened legs of one component by its external and interaction data. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
@@ -632,11 +627,10 @@ private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finse
     (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
       ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S))) × Fin 4 := by
-  simpa only [ExternalInsertionDiagram.unflattenedLegInComponent] using
-    (SecondQuantization.Common.vacuumComponentLegDataEquiv
-      (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-      (B := (B : Finset (ExternalInsertionVertex E S))) hVac)
+        (B : Finset (ExternalInsertionVertex E S))) × Fin 4 :=
+  SecondQuantization.Common.vacuumComponentLegDataEquiv
+    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+    (B := (B : Finset (ExternalInsertionVertex E S))) hVac
 
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
