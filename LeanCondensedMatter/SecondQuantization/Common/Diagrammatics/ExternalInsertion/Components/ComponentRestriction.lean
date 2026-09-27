@@ -80,7 +80,7 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
     (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
     (B := (B : Finset (ExternalInsertionVertex E S)))
 
-@[simp] private theorem ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val
+private theorem ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts)
@@ -88,7 +88,7 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
     ((d.componentLegDataEquiv B).symm (Sum.inl e)).1 = Sum.inl e.1 := by
   rfl
 
-@[simp] private theorem ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val
+private theorem ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts)
@@ -345,10 +345,11 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
             (B : Finset (ExternalInsertionVertex E S))) e) =
       externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
   apply (externalInsertionLegEquiv E S).injective
-  simp [ExternalInsertionDiagram.componentDiagramLeg,
+  simp only [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    externalInsertionExternalLeg]
+    Equiv.trans_symm, Equiv.trans_apply, externalInsertionExternalLeg,
+    Equiv.apply_symm_apply, ExternalInsertionDiagram.componentBlockLegDataEquiv,
+    ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
 vertex and local quartic leg. -/
@@ -365,10 +366,11 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
         ⟨v.1, interactionSector_subset
           (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
   apply (externalInsertionLegEquiv E S).injective
-  simp [ExternalInsertionDiagram.componentDiagramLeg,
+  simp only [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    externalInsertionInteractionLeg]
+    Equiv.trans_symm, Equiv.trans_apply, externalInsertionInteractionLeg,
+    Equiv.apply_symm_apply, ExternalInsertionDiagram.componentBlockLegDataEquiv,
+    ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
