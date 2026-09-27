@@ -57,7 +57,9 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
   change numberOperator i (basisState n) =
     Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0)
       (basisState n)
-  rw [numberOperator_basisState, Common.diagonalOperator_basisState]
+  rw [numberOperator_basisState]
+  change (if i ∈ n then basisState n else 0) =
+    (if i ∈ n then (1 : ℂ) else 0) • basisState n
   by_cases hi : i ∈ n
   · simp [hi]
   · simp [hi]
