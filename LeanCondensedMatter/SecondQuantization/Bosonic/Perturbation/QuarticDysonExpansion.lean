@@ -292,13 +292,12 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
                   quarticVertexSequenceOperator (Fin.cons q0 q') := by
         rw [interactionPicture_quarticInteraction_eq_sum, ih σ]
         ext x
-        simp only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, map_smul,
-          Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul,
-          quarticVertexSequenceOperator_cons]
+        simp only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum,
+          Finsupp.finsetSum_apply, quarticVertexSequenceOperator_cons]
         rw [Finset.sum_comm]
         refine Finset.sum_congr rfl fun q0 _ => ?_
         refine Finset.sum_congr rfl fun q' _ => ?_
-        ring
+        simp [LinearMap.smul_apply, LinearMap.comp_apply, map_smul, smul_smul, mul_assoc]
       have hpoint (σ : ℝ) :
           Common.matrixCoeff
               ((interactionPicture ε (quarticInteraction g) σ).comp
