@@ -28,7 +28,7 @@ Fredholm.diagonalDet coeff = 0 ↔ ∃ i, coeff i = -1.
 For a diagonal operator, determinant zero therefore produces a nonzero basis vector in the kernel of
 `1 + diagonalOp b coeff`.
 
-`Analysis/Operator/Fredholm/FiniteDimensional.lean` proves agreement with Mathlib's ordinary
+`Analysis/Operator/Fredholm/Diagonal.lean` also proves agreement with Mathlib's ordinary
 determinant on finite diagonal specializations. `ContinuousLinearMap.det` is not used as an
 infinite-dimensional definition.
 
