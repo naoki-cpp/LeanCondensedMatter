@@ -29,7 +29,6 @@ def componentLegVertex {S : Finset Vertex} :
 /-- Legs incident to a finite component split into its external vertices and its interaction
 vertices paired with their local-leg data. -/
 noncomputable def componentLegDataEquiv
-    [DecidableEq External] [DecidableEq Vertex]
     {S : Finset Vertex} (B : Finset (External ⊕ ↥S)) :
     {leg : External ⊕ (↥S × Local) // componentLegVertex leg ∈ B} ≃
       ↥(Finset.toLeft B) ⊕ (↥(interactionSector B) × Local) where
