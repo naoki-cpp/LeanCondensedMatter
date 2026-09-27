@@ -33,7 +33,6 @@ noncomputable def symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) : W →ₗ[ℂ] W :=
   symmetrizedProductBilinear W A B
 
-@[simp]
 theorem symmetrizedProductBilinear_apply
     {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
