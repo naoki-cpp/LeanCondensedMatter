@@ -50,19 +50,22 @@ QuantumMechanics.SingleParticle
 ```
 
 `Analysis` owns representation-independent commutator/balance/current interfaces.
-`QuantumMechanics.SingleParticle` owns the one-particle quantum specialization, including Heisenberg
-transport and the symmetrized velocity current `1/2 {v,m}`.
+`QuantumMechanics.SingleParticle.GeneralizedCurrent` owns the operator-level one-particle
+generalized current `1/2 {v,m}` independently of localization. `LocalizedTransport` and
+`SymmetrizedVelocityCurrent` add Heisenberg transport and current-density representation semantics
+downstream.
 
-Current semantics are layered rather than identified with one operator formula:
+Current semantics are layered rather than identified with one operator formula. The operator
+`1/2 {v,m}` exists before any weak-current representation is chosen.
 `IntrinsicBalanceLaw.transport` is the representation-independent exact-differential transport;
 `IsDifferentialCurrent d Φ J` is the proposition that a one-form functional `J` represents
 transport `Φ` through `d`; `DifferentialCurrentRepresentation.current` bundles one such `J` with
 its `isCurrent` proof; and `LocalCurrentDensityRepresentation.currentDensity` exists only after
 supplying a local pairing, with its representation proof exposed as `isCurrentDensity`.
-The operator `1/2 {v,m}` is one such current-density representation under its stated localization
-hypotheses. When localizer evolution admits the supplied velocity representation, the nested flux
-represents the intrinsic transport and decomposes into the symmetrized flux plus the localization
-correction.
+Under the stated localization hypotheses, the generalized operator becomes one such current-density
+representation. When localizer evolution admits the supplied velocity representation, the nested
+flux represents the intrinsic transport and decomposes into the symmetrized flux plus the
+localization correction.
 
 Fermionic second quantization consumes those definitions and owns only representation-specific lifts.
 Mathlib `LieHom`, with the associative-endomorphism Lie bracket, is the canonical bundle for `dGamma`:
