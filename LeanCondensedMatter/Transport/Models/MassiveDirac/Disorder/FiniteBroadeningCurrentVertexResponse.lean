@@ -68,6 +68,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
   unfold finiteCutoffContinuumBornDysonLadderSolvedVector
+  rw [inPlaneCurrentCLM_apply]
   rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
