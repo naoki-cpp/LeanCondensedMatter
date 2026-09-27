@@ -19,7 +19,7 @@ theorem isPositive_of_tendsto
     {α : Type*} {l : Filter α} [NeBot l]
     {F : α → H →L[𝕜] H} {T : H →L[𝕜] H}
     (hF : Tendsto F l (𝓝 T)) (hpos : ∀ᶠ i in l, (F i).IsPositive) : T.IsPositive := by
-  rw [isPositive_iff]
+  rw [isPositive_def]
   constructor
   · intro x y
     have happly_x : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
