@@ -90,7 +90,8 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
       ↥(Finset.toLeft (B : Finset (ExternalInsertionVertex E S))) ⊕
         (↥(interactionSector
           (B : Finset (ExternalInsertionVertex E S))) × Fin 4)
-  exact componentLegDataEquiv (B := (B : Finset (ExternalInsertionVertex E S)))
+  exact componentLegDataEquiv (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+    (B := (B : Finset (ExternalInsertionVertex E S)))
 
 /-- Reindex the flattened legs of one component by its external and interaction data. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
