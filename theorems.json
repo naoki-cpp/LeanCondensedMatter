@@ -98184,6 +98184,7 @@
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Fermionic.freeHamiltonian_basisState",
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState"
     ],
     "dependencies": [
@@ -98199,9 +98200,10 @@
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Fermionic.freeHamiltonian_basisState",
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102475,6 +102477,7 @@
       "SecondQuantization.Fermionic.anticomm_create_create",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
@@ -102500,12 +102503,13 @@
       "SecondQuantization.Fermionic.anticomm_create_create",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 20,
+    "compiledConsumerCount": 21,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103167,8 +103171,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.traceFock_id",
-      "SecondQuantization.Common.weightedTrace_id",
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
+      "SecondQuantization.Common.weightedTrace_id"
     ],
     "dependencies": [
       "SecondQuantization.Common.smul_basisState_apply_self"
@@ -103177,10 +103180,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.traceFock_id",
-      "SecondQuantization.Common.weightedTrace_id",
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
+      "SecondQuantization.Common.weightedTrace_id"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109794,8 +109796,7 @@
       "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Common.weightedTrace_diagonalOperator",
-      "SecondQuantization.Common.weightedTrace_id",
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
+      "SecondQuantization.Common.weightedTrace_id"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -109805,10 +109806,9 @@
       "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Common.weightedTrace_diagonalOperator",
-      "SecondQuantization.Common.weightedTrace_id",
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
+      "SecondQuantization.Common.weightedTrace_id"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128027,7 +128027,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
@@ -128040,7 +128040,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -128085,6 +128085,45 @@
       "SecondQuantization.Fermionic.annihilate_comp_create_comp_self"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Fermionic.numberOperator i =\n    SecondQuantization.Common.diagonalOperator fun n => if i ∈ n then 1 else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
+    "externalAxioms": [],
+    "docString": "The single-mode number operator is the basis-diagonal projector onto occupations containing\nmode `i`. This is the canonical bridge from the CAR definition `aᵢ† aᵢ` to the common\nbasis-diagonal operator API. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.diagonalOperator_basisState",
+      "SecondQuantization.Common.linearMap_ext_basisState",
+      "SecondQuantization.Fermionic.numberOperator_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130846,45 +130885,6 @@
       "SecondQuantization.Fermionic.purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.binaryEntropy_fermiDiracOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.log_purePointPartitionFunction_fermionEnergy_eq_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode]\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i : Mode),\n  (SecondQuantization.Common.weightedTrace w) (SecondQuantization.Fermionic.numberOperator i) = ∑ n with i ∈ n, w n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.weightedTrace_numberOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
-      "SecondQuantization.Common.weightedTrace_eq_sum_matrixCoeff",
-      "SecondQuantization.Fermionic.numberOperator_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
