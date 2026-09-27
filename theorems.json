@@ -130163,9 +130163,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.anticomm_create_create_basisState"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation.0.SecondQuantization.Fermionic.mem_toggleOccupation_of_ne"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -153326,45 +153324,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.numberOperator_comp_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] {i j : Mode},\n  j ≠ i →\n    ∀ (n : SecondQuantization.Fermionic.Occupation Mode), j ∈ SecondQuantization.Fermionic.toggleOccupation i n ↔ j ∈ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation.0.SecondQuantization.Fermionic.mem_toggleOccupation_of_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.toggleOccupation_comm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.toggleOccupation_comm"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
