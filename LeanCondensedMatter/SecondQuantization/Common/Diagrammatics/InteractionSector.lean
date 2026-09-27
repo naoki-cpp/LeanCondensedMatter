@@ -90,8 +90,7 @@ theorem interactionSectorComponentEquiv_symm_val
     ((interactionSectorComponentEquiv G).symm x : ↥S).1 = x.2.1 :=
   rfl
 
-
-/-- The interaction sectors of all graph components exhaust the ambient interaction vertices. -/
+/-- The component interaction sectors exhaust the ambient interaction vertices. -/
 theorem sum_interactionSector_card_eq
     [DecidableEq External] [Fintype External] [DecidableEq Vertex]
     {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S)) :
@@ -101,17 +100,16 @@ theorem sum_interactionSector_card_eq
   simpa [Fintype.card_sigma] using hcard.symm
 
 /-- A commutative product over ambient interaction vertices factors over the interaction sectors of
-the graph components. -/
+the connected components. -/
 theorem prod_eq_prod_interactionSectors
-    {M : Type*} [CommMonoid M]
     [DecidableEq External] [Fintype External] [DecidableEq Vertex]
-    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S)) (f : ↥S → M) :
+    {M : Type*} [CommMonoid M] {S : Finset Vertex}
+    (G : SimpleGraph (External ⊕ ↥S)) (f : ↥S → M) :
     (∏ v : ↥S, f v) =
       ∏ B : G.componentPartition.parts,
         ∏ v : ↥(interactionSector (B : Finset (External ⊕ ↥S))),
           f ⟨v.1, interactionSector_subset
             (B : Finset (External ⊕ ↥S)) v.2⟩ := by
-  classical
   let e := interactionSectorComponentEquiv G
   calc
     (∏ v : ↥S, f v) =
@@ -131,7 +129,7 @@ theorem prod_eq_prod_interactionSectors
       apply Subtype.ext
       exact interactionSectorComponentEquiv_symm_val G ⟨B, v⟩
 
-/-- A fixed ambient interaction vertex belongs to the interaction sector of at most one graph
+/-- A fixed interaction vertex belongs to the interaction sector of at most one connected
 component. -/
 theorem interactionSector_component_unique
     [DecidableEq External] [Fintype External] [DecidableEq Vertex]
@@ -142,12 +140,18 @@ theorem interactionSector_component_unique
     (hvC : (v : Vertex) ∈ interactionSector
       (C : Finset (External ⊕ ↥S))) :
     B = C := by
-  have h :
-      (interactionSectorComponentEquiv G).symm ⟨B, ⟨v.1, hvB⟩⟩ =
-        (interactionSectorComponentEquiv G).symm ⟨C, ⟨v.1, hvC⟩⟩ := by
-    apply Subtype.ext
-    simp
-  exact congrArg Sigma.fst ((interactionSectorComponentEquiv G).symm.injective h)
+  apply Subtype.ext
+  have hB : G.componentBlock (Sum.inr v) =
+      (B : Finset (External ⊕ ↥S)) :=
+    (G.componentBlock_eq_iff_mem B.2 (Sum.inr v)).2
+      ((mem_interactionSector_subtype
+        (B : Finset (External ⊕ ↥S)) v).1 hvB)
+  have hC : G.componentBlock (Sum.inr v) =
+      (C : Finset (External ⊕ ↥S)) :=
+    (G.componentBlock_eq_iff_mem C.2 (Sum.inr v)).2
+      ((mem_interactionSector_subtype
+        (C : Finset (External ⊕ ↥S)) v).1 hvC)
+  exact hB.symm.trans hC
 
 end Common
 end SecondQuantization

@@ -322,7 +322,6 @@ theorem ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply
               (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl v).2⟩ := by
   rfl
 
-
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv

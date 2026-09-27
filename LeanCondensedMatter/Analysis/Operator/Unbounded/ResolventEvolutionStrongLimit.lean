@@ -26,27 +26,9 @@ open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- A bounded self-adjoint evolution preserves distances. -/
-theorem boundedUnitaryEvolution_dist_eq
-    (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) (x y : H) :
-    dist (boundedUnitaryEvolution B t x) (boundedUnitaryEvolution B t y) = dist x y := by
-  rw [dist_eq_norm, dist_eq_norm, ← (boundedUnitaryEvolution B t).map_sub]
-  exact boundedUnitaryEvolution_apply_norm B hB t (x - y)
-
-/-- Each resolvent-approximating unitary evolution is an isometry. -/
-theorem resolventApproximationEvolution_dist_eq
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r)
-    (t : ℝ) (x y : H) :
-    dist (resolventApproximationEvolution A hA r hr t x)
-        (resolventApproximationEvolution A hA r hr t y) = dist x y := by
-  simpa [resolventApproximationEvolution] using
-    boundedUnitaryEvolution_dist_eq
-      (boundedSelfAdjointApproximation A hA r hr)
-      (boundedSelfAdjointApproximation_isSelfAdjoint A hA r hr) t x y
-
 /-- A family of isometries that is pointwise Cauchy on a dense set is pointwise Cauchy
 everywhere. -/
-theorem cauchySeq_apply_of_isometry_of_dense
+private theorem cauchySeq_apply_of_isometry_of_dense
     {ι X Y : Type*} [Nonempty ι] [SemilatticeSup ι]
     [PseudoMetricSpace X] [PseudoMetricSpace Y]
     (F : ι → X → Y) {s : Set X} (hs : Dense s)
@@ -82,7 +64,7 @@ theorem cauchySeq_apply_of_isometry_of_dense
 
 /-- For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence
 as the real scale tends to positive infinity. -/
-theorem resolventApproximationEvolutionAtScale_apply_cauchySeq
+private theorem resolventApproximationEvolutionAtScale_apply_cauchySeq
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
     CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t x) := by
   apply cauchySeq_apply_of_isometry_of_dense
@@ -91,8 +73,11 @@ theorem resolventApproximationEvolutionAtScale_apply_cauchySeq
   · intro r
     rw [isometry_iff_dist_eq]
     intro y z
-    unfold resolventApproximationEvolutionAtScale
-    exact resolventApproximationEvolution_dist_eq A hA _ _ t y z
+    unfold resolventApproximationEvolutionAtScale resolventApproximationEvolution
+    rw [dist_eq_norm, dist_eq_norm, ←
+      (boundedUnitaryEvolution (boundedSelfAdjointApproximation A hA _ _) t).map_sub]
+    apply boundedUnitaryEvolution_apply_norm
+    exact boundedSelfAdjointApproximation_isSelfAdjoint A hA _ _
   · intro y hy
     exact resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
       A hA t ⟨y, hy⟩

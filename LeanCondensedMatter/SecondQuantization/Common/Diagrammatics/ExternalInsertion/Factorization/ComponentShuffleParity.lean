@@ -67,23 +67,6 @@ private theorem ExternalInsertionDiagram.componentLegPosition_interaction
       (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) = _
   exact d.componentDiagramLeg_interaction B v l
 
-private theorem ExternalInsertionDiagram.ambientInteractionVertex_ne
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
-    (v : ↥(interactionSector
-      (B : Finset (ExternalInsertionVertex E S))))
-    (w : ↥(interactionSector
-      (C : Finset (ExternalInsertionVertex E S)))) :
-    d.ambientInteractionVertex B v ≠ d.ambientInteractionVertex C w := by
-  intro hvw
-  apply hBC
-  apply interactionSector_component_unique d.vertexGraph
-    (d.ambientInteractionVertex B v) B C
-  · exact v.2
-  · rw [hvw]
-    exact w.2
-
 private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -102,8 +85,18 @@ private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
       d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
   simp only [externalInsertionInteractionLeg_val]
   have hvw :
-      d.ambientInteractionVertex B v ≠ d.ambientInteractionVertex C w :=
-    d.ambientInteractionVertex_ne B C hBC v w
+      d.ambientInteractionVertex B v ≠ d.ambientInteractionVertex C w := by
+    intro hvw
+    apply hBC
+    apply interactionSector_component_unique d.vertexGraph
+      (d.ambientInteractionVertex B v) B C
+    · exact v.2
+    · have hvwVal : (v.1 : Fin N) = w.1 :=
+        congrArg Subtype.val hvw
+      change (v.1 : Fin N) ∈
+        interactionSector (C : Finset (ExternalInsertionVertex E S))
+      rw [hvwVal]
+      exact w.2
   have hrank_ne :
       ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex C w)).val ≠
         ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex B v)).val := by

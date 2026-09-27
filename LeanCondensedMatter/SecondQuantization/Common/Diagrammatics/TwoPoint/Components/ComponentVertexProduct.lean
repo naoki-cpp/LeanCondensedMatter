@@ -26,10 +26,8 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
         ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, interactionSector_subset
-            (B : Finset (TwoPointVertex S)) v.2⟩) := by
-  simpa using
-    (prod_eq_prod_interactionSectors d.vertexGraph
-      (fun v => w (d.vertexLabel v)))
+            (B : Finset (TwoPointVertex S)) v.2⟩) :=
+  prod_eq_prod_interactionSectors d.vertexGraph (fun v => w (d.vertexLabel v))
 
 /-- The Dyson sign factors into the external component sign and all vacuum-component signs. -/
 theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
