@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Module.Submodule.Ker
+import Mathlib.Logic.Function.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -20,11 +21,11 @@ variable [AddCommMonoid OneForm] [Module 𝕜 OneForm]
 variable [AddCommMonoid Obs] [Module 𝕜 Obs]
 
 /-- A transport functional depends only on differential data when equal differentials give equal
-transport. This statement is representation-independent: it does not choose a current extension
-`J : OneForm →ₗ[𝕜] Obs`. -/
-def DependsOnlyOnDifferential
+transport. This is the domain-specific name for Mathlib's `Function.FactorsThrough`; it remains
+representation-independent and does not choose a current extension `J : OneForm →ₗ[𝕜] Obs`. -/
+abbrev DependsOnlyOnDifferential
     (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) : Prop :=
-  ∀ ⦃f g : Test⦄, d f = d g → Φ f = Φ g
+  Function.FactorsThrough Φ d
 
 namespace DependsOnlyOnDifferential
 
