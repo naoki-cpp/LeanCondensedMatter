@@ -51,63 +51,25 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     d.ExternalVerticesConnected := by
   classical
   by_contra hExt
+  have hExternalSector :
+      Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0)) = {0} := by
+    ext e
+    fin_cases e
+    · simp [Finset.mem_toLeft, d.vertexGraph.self_mem_componentBlock]
+    · simp only [Finset.mem_toLeft, Finset.mem_singleton]
+      constructor
+      · exact fun h => False.elim (d.externalOne_not_mem_externalComponentPart hExt h)
+      · simp
   let dataEquiv :
       {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
         Fin 1 ⊕
           (↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) × Fin 4) :=
-    {
-      toFun := fun leg => by
-        rcases leg with ⟨leg, hleg⟩
-        cases leg with
-        | inl e =>
-            by_cases he : e = 0
-            · exact Sum.inl 0
-            · have he1 : e = 1 := by omega
-              subst e
-              exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
-        | inr p =>
-            exact Sum.inr
-              (⟨p.1.1, (mem_interactionSector_subtype
-                (d.vertexGraph.componentBlock (Sum.inl 0)) p.1).2 hleg⟩, p.2)
-      invFun := fun leg => by
-        cases leg with
-        | inl e =>
-            exact ⟨Sum.inl 0, by
-              change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈
-                d.vertexGraph.componentBlock (Sum.inl 0)
-              exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)⟩
-        | inr p =>
-            let v : ↥S :=
-              ⟨p.1.1, interactionSector_subset
-                (d.vertexGraph.componentBlock (Sum.inl 0)) p.1.2⟩
-            exact ⟨Sum.inr (v, p.2), by
-              change (Sum.inr v : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl 0)
-              exact (mem_interactionSector_subtype
-                (d.vertexGraph.componentBlock (Sum.inl 0)) v).1 p.1.2⟩
-      left_inv := fun leg => by
-        rcases leg with ⟨leg, hleg⟩
-        cases leg with
-        | inl e =>
-            fin_cases e
-            · apply Subtype.ext
-              rfl
-            · exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
-        | inr p =>
-            rcases p with ⟨v, l⟩
-            apply Subtype.ext
-            rfl
-      right_inv := fun leg => by
-        cases leg with
-        | inl e =>
-            fin_cases e
-            rfl
-        | inr p =>
-            rcases p with ⟨v, l⟩
-            apply congrArg Sum.inr
-            apply Prod.ext
-            · exact Subtype.ext (by rfl)
-            · rfl
-    }
+    (componentLegDataEquiv
+      (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
+      (d.vertexGraph.componentBlock (Sum.inl 0))).trans
+      (Equiv.sumCongr
+        (Fintype.equivFinOfCardEq (by simp [hExternalSector]))
+        (Equiv.refl _))
   let blockEquiv :
       {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg} ≃
