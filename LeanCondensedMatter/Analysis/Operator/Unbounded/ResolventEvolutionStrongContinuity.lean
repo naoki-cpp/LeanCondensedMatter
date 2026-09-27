@@ -76,24 +76,22 @@ private theorem stoneEvolution_apply_continuous_domain
     Continuous (fun t : ℝ => stoneEvolution A hA t (x : H)) := by
   rw [continuous_iff_continuousAt]
   intro s
-  rw [Metric.continuousAt_iff]
-  intro ε hε
-  obtain ⟨δ, hδ, hzero⟩ :=
-    (Metric.continuousAt_iff.mp
-      (stoneEvolution_apply_continuousAt_zero_domain A hA x)) ε hε
-  refine ⟨δ, hδ, ?_⟩
-  intro t ht
-  rw [show
-    stoneEvolution A hA t (x : H) =
-      stoneEvolution A hA s
-        (stoneEvolution A hA (t - s) (x : H)) by
-    simpa only [stoneEvolution_apply,
-      show s + (t - s) = t by ring] using
-      resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)]
-  rw [stoneEvolution_dist_eq A hA s]
-  have hshift : dist (t - s) 0 < δ := by
-    simpa [Real.dist_eq] using ht
-  simpa [stoneEvolution_zero] using hzero hshift
+  have hshift :
+      ContinuousAt (fun t : ℝ => stoneEvolution A hA (t - s) (x : H)) s := by
+    simpa [Function.comp_def] using
+      (stoneEvolution_apply_continuousAt_zero_domain A hA x).comp_of_eq
+        (by fun_prop) (by simp)
+  have hmapped :
+      ContinuousAt
+        (fun t : ℝ =>
+          stoneEvolution A hA s
+            (stoneEvolution A hA (t - s) (x : H))) s := by
+    simpa [Function.comp_def] using
+      (stoneEvolution A hA s).continuous.continuousAt.comp hshift
+  convert hmapped using 1
+  funext t
+  simpa only [stoneEvolution_apply, show s + (t - s) = t by ring] using
+    resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)
 
 /-- The limiting Stone evolution is jointly continuous in the vector and time variables.
 Continuity on the dense generator domain extends to the whole Hilbert space because every time
