@@ -30,12 +30,11 @@ The pairing is deliberately abstract. Concrete continuum models may realize it b
 pairing such as `∫ α · j`, while lattice models may use a finite bond pairing. No locality claim is
 made merely from factorization through `d`.
 
-This module deliberately does not introduce a universal `Current` type. A family of measured-current
-observables indexed linearly by a physical direction or component space is represented directly by
-the corresponding `LinearMap` in the model or observable layer. `IsDifferentialCurrent` is the
-additional local-balance provenance asserting that such a current functional represents a transport
-through `d`; it is not a prerequisite for using an observable as a Kubo/Bastin/Středa current
-vertex.
+This module does not define current observables in general. Operator-level generalized currents,
+model-specific charge-current vertices, and response observables may exist without a weak
+differential representation. `IsDifferentialCurrent` records the additional local-balance fact
+that a supplied one-form functional represents `Φ` through `d`; it is not the root definition of
+every current operator.
 -/
 
 namespace ConservationLaw
