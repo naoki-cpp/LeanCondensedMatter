@@ -46,7 +46,7 @@ theorem dGamma_zero :
         (dGamma_oneParticle_mul 𝓗₁ (0 : 𝓗₁ →ₗ[ℂ] 𝓗₁) f x)
 
 /-- Second quantization is additive in the one-particle operator. -/
-theorem dGamma_add (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+private theorem dGamma_add (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     dGamma 𝓗₁ (S + T) = dGamma 𝓗₁ S + dGamma 𝓗₁ T := by
   apply LinearMap.ext
   intro Ψ
@@ -66,7 +66,7 @@ theorem dGamma_add (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
       abel
 
 /-- Second quantization commutes with complex scalar multiplication. -/
-theorem dGamma_smul (c : ℂ) (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+private theorem dGamma_smul (c : ℂ) (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     dGamma 𝓗₁ (c • T) = c • dGamma 𝓗₁ T := by
   apply LinearMap.ext
   intro Ψ

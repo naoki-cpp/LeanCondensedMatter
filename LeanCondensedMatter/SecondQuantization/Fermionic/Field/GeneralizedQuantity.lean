@@ -36,7 +36,9 @@ noncomputable def oneBodyObservable (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
 theorem oneBodyObservable_smul_id (q : ℂ) :
     oneBodyObservable 𝓗₁ (q • LinearMap.id) =
       q • AlgebraicFock.numberOperator 𝓗₁ := by
-  rw [oneBodyObservable, AlgebraicFock.dGamma_smul, AlgebraicFock.numberOperator]
+  simpa only [oneBodyObservable, AlgebraicFock.numberOperator,
+    AlgebraicFock.dGammaLinear_apply] using
+    (AlgebraicFock.dGammaLinear 𝓗₁).map_smul q LinearMap.id
 
 /-- Many-body lift of a generalized localized quantity. -/
 noncomputable def manyBodyLocalizedQuantity (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
@@ -54,8 +56,9 @@ theorem manyBodyLocalizedQuantity_smul_id
     manyBodyLocalizedQuantity 𝓗₁ M (q • LinearMap.id) f =
         AlgebraicFock.dGamma 𝓗₁ (q • M f) := by
       rw [manyBodyLocalizedQuantity, _root_.ConservationLaw.localizedQuantity_smul_id]
-    _ = q • AlgebraicFock.dGamma 𝓗₁ (M f) :=
-      AlgebraicFock.dGamma_smul 𝓗₁ q (M f)
+    _ = q • AlgebraicFock.dGamma 𝓗₁ (M f) := by
+      simpa only [AlgebraicFock.dGammaLinear_apply] using
+        (AlgebraicFock.dGammaLinear 𝓗₁).map_smul q (M f)
     _ = chargeDensity 𝓗₁ q M f := by
       symm
       exact chargeDensity_apply 𝓗₁ q M f
@@ -68,8 +71,11 @@ theorem dGamma_commutator_manyBodyLocalizedQuantity (h : 𝓗₁ →ₗ[ℂ] �
       AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f) +
         AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f) := by
   rw [manyBodyLocalizedQuantity, AlgebraicFock.dGamma_linearCommutator,
-    _root_.ConservationLaw.linearCommutator_localizedQuantity,
-    AlgebraicFock.dGamma_add]
+    _root_.ConservationLaw.linearCommutator_localizedQuantity]
+  simpa only [AlgebraicFock.dGammaLinear_apply] using
+    (AlgebraicFock.dGammaLinear 𝓗₁).map_add
+      (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f)
+      (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f)
 
 /-- A vanishing one-particle commutator gives conservation of the corresponding total many-body
 quantity. This is a global statement only; no local-current representation is inferred. -/
