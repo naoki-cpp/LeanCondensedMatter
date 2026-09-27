@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 
 set_option linter.style.header false
@@ -5,58 +6,9 @@ set_option linter.style.header false
 /-!
 # Equality cases for spectral-trace bounds
 
-This file isolates the strictness mechanism behind restricting a nonnegative summable family along
-an injection. It then applies that mechanism to the diagonal trace bound for positive operators.
+This file applies generic infinite-sum strictness results to equality cases for the diagonal trace
+bound of positive operators.
 -/
-
-/-- Restricting a nonnegative summable family along an injection is strictly trace-decreasing when
-one omitted term is strictly positive. -/
-theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
-    {ι κ : Type*} {f : κ → ℝ} (hf : Summable f)
-    (hf_nonneg : ∀ k, 0 ≤ f k) (e : ι → κ) (he : Function.Injective e)
-    {j : κ} (hj : j ∉ Set.range e) (hjpos : 0 < f j) :
-    ∑' i, f (e i) < ∑' k, f k := by
-  let e' : ι ⊕ Unit → κ := Sum.elim e (fun _ => j)
-  have he' : Function.Injective e' := by
-    intro a b hab
-    cases a with
-    | inl i =>
-        cases b with
-        | inl i' =>
-            apply congrArg Sum.inl
-            apply he
-            change e i = e i' at hab
-            exact hab
-        | inr u =>
-            exfalso
-            apply hj
-            refine ⟨i, ?_⟩
-            change e i = j at hab
-            exact hab
-    | inr u =>
-        cases b with
-        | inl i =>
-            exfalso
-            apply hj
-            refine ⟨i, ?_⟩
-            change j = e i at hab
-            exact hab.symm
-        | inr u' =>
-            exact congrArg Sum.inr (Subsingleton.elim u u')
-  have haug : Summable (fun q : ι ⊕ Unit => f (e' q)) :=
-    hf.comp_injective he'
-  have hleft : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inl) :=
-    haug.comp_injective Sum.inl_injective
-  have hright : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inr) :=
-    haug.comp_injective Sum.inr_injective
-  have hsplit :
-      (∑' q : ι ⊕ Unit, f (e' q)) = (∑' i, f (e i)) + f j := by
-    simpa [Function.comp_def, e'] using hleft.tsum_sum hright
-  have hle : ∑' q : ι ⊕ Unit, f (e' q) ≤ ∑' k, f k :=
-    hasSum_le_inj e' he' (fun k _ => hf_nonneg k) (fun _ => le_rfl)
-      haug.hasSum hf.hasSum
-  rw [hsplit] at hle
-  linarith
 
 namespace ContinuousLinearMap
 
