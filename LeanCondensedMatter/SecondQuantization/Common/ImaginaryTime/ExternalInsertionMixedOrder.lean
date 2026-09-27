@@ -137,6 +137,41 @@ private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
 abbrev OrderedExternalInsertionLeg (E n : ℕ) : Type :=
   ExternalInsertionLeg E (Finset.univ : Finset (Fin n))
 
+/-- Transport a canonical external-insertion leg along reindexings of the external and interaction slots. -/
+def orderedExternalInsertionLegMap {E₁ E₂ m n : ℕ}
+    (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
+    (fInteraction : Fin m → Fin n) :
+    OrderedExternalInsertionLeg E₁ m → OrderedExternalInsertionLeg E₂ n :=
+  Sum.map fExternal <|
+    Prod.map (fun v => ⟨fInteraction v.1, Finset.mem_univ _⟩) id
+
+@[simp]
+theorem orderedExternalInsertionLegMap_inl {E₁ E₂ m n : ℕ}
+    (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n)
+    (e : Fin (2 * E₁)) :
+    orderedExternalInsertionLegMap fExternal fInteraction (Sum.inl e) =
+      Sum.inl (fExternal e) := rfl
+
+@[simp]
+theorem orderedExternalInsertionLegMap_inr {E₁ E₂ m n : ℕ}
+    (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n)
+    (v : ↥(Finset.univ : Finset (Fin m))) (l : Fin 4) :
+    orderedExternalInsertionLegMap fExternal fInteraction (Sum.inr (v, l)) =
+      Sum.inr (⟨fInteraction v.1, Finset.mem_univ _⟩, l) := rfl
+
+/-- Injective slot reindexings induce an injective canonical-leg reindexing. -/
+theorem orderedExternalInsertionLegMap_injective {E₁ E₂ m n : ℕ}
+    {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n}
+    (hExternal : Function.Injective fExternal)
+    (hInteraction : Function.Injective fInteraction) :
+    Function.Injective (orderedExternalInsertionLegMap fExternal fInteraction) := by
+  unfold orderedExternalInsertionLegMap
+  apply Function.Injective.sumMap hExternal
+  apply Function.Injective.prodMap
+  · intro v w h
+    exact Subtype.ext (hInteraction (congrArg Subtype.val h))
+  · exact Function.injective_id
+
 /-- Atomic legs contributed by one mixed event. -/
 def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
     ExternalInsertionTimedEvent E n → List (OrderedExternalInsertionLeg E n)
