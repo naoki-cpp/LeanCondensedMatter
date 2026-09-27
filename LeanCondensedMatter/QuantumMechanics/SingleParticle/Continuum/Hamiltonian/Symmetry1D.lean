@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D
 import Mathlib.Tactic
+import Mathlib.Analysis.InnerProductSpace.LinearPMap
 
 set_option linter.style.header false
 
