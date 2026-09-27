@@ -582,7 +582,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar]
   rw [hret_fun, hadv_fun]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent] <;> ring
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]; ring
 
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
