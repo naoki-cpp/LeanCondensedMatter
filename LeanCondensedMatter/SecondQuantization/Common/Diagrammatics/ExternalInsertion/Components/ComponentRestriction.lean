@@ -651,6 +651,7 @@ private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finse
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))) × Fin 4
   exact vacuumComponentLegDataEquiv
+    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
     (B := (B : Finset (ExternalInsertionVertex E S))) hVac
 
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
