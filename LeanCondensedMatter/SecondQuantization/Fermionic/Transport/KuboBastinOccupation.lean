@@ -61,13 +61,8 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
     (interpolation : PurePointOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℂ :=
-  finiteKuboBastinOccupationResolvedVertexResponse system data interpolation
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalContact geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
+  finiteKuboBastinOccupationResolvedChannelResponse system data interpolation
+      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
       omega eta *
     finiteVolumeConductivityNormalization convention omega eta
 
@@ -84,17 +79,15 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
         convention system data interpolation geometry direction K q omega eta := by
   unfold finiteKuboBastinSpectralDirectionalConductivity
     finiteKuboBastinOccupationResolvedDirectionalConductivity
+    finiteKuboBastinSpectralChannelResponse
+    finiteKuboBastinOccupationResolvedChannelResponse
+    finiteDirectionalCurrentResponseChannel
   exact congrArg
     (fun response : ℂ =>
       response * finiteVolumeConductivityNormalization convention omega eta)
-    (finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
+    (finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
       system data interpolation
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalContact geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
+      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
       omega eta)
 
 /-- The occupation-resolved response remains connected directly to the upstream causal Kubo and

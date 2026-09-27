@@ -115,14 +115,9 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
     _ = _ := by
       unfold finiteKuboBastinOccupationResolvedDirectionalConductivity
         finiteKuboBastinCommonEnergyDirectionalConductivity
-      rw [finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy
+      rw [finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy
         system data interpolation
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalContact geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
+        (finiteDirectionalCurrentResponseChannel system geometry direction K q)
         omega eta]
       rfl
 
