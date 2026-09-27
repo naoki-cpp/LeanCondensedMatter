@@ -126,7 +126,6 @@
       "sourceRoots": ["LeanCondensedMatter/QuantumMechanics/SingleParticle"],
       "layers": [
         {"id": "localizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]},
-        {"id": "intrinsicLocalizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.IntrinsicLocalizedTransport"]},
         {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]},
         {"id": "correctedCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent"]},
         {"id": "correctedCurrentAmbiguity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity"]},
@@ -135,9 +134,8 @@
         {"id": "schwartzSpinCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"]}
       ],
       "edges": [
-        {"upstream": "localizedTransport", "downstream": "intrinsicLocalizedTransport"},
         {"upstream": "localizedTransport", "downstream": "symmetrizedVelocity"},
-        {"upstream": "intrinsicLocalizedTransport", "downstream": "correctedCurrent"},
+        {"upstream": "localizedTransport", "downstream": "correctedCurrent"},
         {"upstream": "correctedCurrent", "downstream": "correctedCurrentAmbiguity"},
         {"upstream": "correctedCurrent", "downstream": "chargeLikeCurrent"},
         {"upstream": "symmetrizedVelocity", "downstream": "schwartzCurrent"},
