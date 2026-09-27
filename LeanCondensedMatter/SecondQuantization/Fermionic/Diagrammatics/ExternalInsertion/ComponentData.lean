@@ -133,7 +133,7 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPosition {E n : ℕ
         d.externalPairCount B)) →
       Fin (2 * (2 * n + E)) :=
   fun p =>
-    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm
+    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
       (d.componentOrderedLeg B
         (externalInsertionMixedTimeOrderedAtomicLegEquiv
           (d.componentExternalTime externalTime B)
@@ -157,7 +157,8 @@ private theorem
         (d.componentWickDiagram B).vertexLabelSequence
         (d.componentInteractionTime σ B) p := by
   unfold externalInsertionMixedTimeOrderedAtomicFieldFamily
-  simp only [ExternalInsertionWickDiagram.componentMixedPosition, Equiv.apply_symm_apply]
+  simp only [ExternalInsertionWickDiagram.componentMixedPosition,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
   rw [← d.orderedExternalInsertionLegField_componentOrderedLeg externalTime σ B]
 
 /-- The ambient free-Gibbs pair contraction restricts to the standalone component pair contraction

@@ -65,39 +65,10 @@ theorem norm_stoneEvolution_apply_sub_le_domain
 theorem stoneEvolution_apply_continuousAt_zero_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
     ContinuousAt (fun t : ℝ => stoneEvolution A hA t (x : H)) 0 := by
-  rw [Metric.continuousAt_iff]
-  intro ε hε
-  let M : ℝ := ‖A x‖
-  let δ : ℝ := ε / (M + 1)
-  have hM : 0 ≤ M := by
-    dsimp [M]
-    exact norm_nonneg _
-  have hden : 0 < M + 1 := by linarith
-  have hδ : 0 < δ := by
-    dsimp [δ]
-    positivity
-  refine ⟨δ, hδ, ?_⟩
-  intro t ht
-  have ht' : |t| < δ := by
-    simpa [Real.dist_eq] using ht
-  have hprod : M * |t| < ε := by
-    have hle : M * |t| ≤ M * δ :=
-      mul_le_mul_of_nonneg_left (le_of_lt ht') hM
-    have hfrac : M / (M + 1) < 1 :=
-      (div_lt_one hden).2 (by linarith)
-    have hMδ : M * δ < ε := by
-      calc
-        M * δ = ε * (M / (M + 1)) := by
-          dsimp [δ]
-          ring
-        _ < ε * 1 := mul_lt_mul_of_pos_left hfrac hε
-        _ = ε := by ring
-    exact lt_of_le_of_lt hle hMδ
-  rw [stoneEvolution_zero]
-  change dist (stoneEvolution A hA t (x : H)) (x : H) < ε
-  rw [dist_eq_norm]
-  exact lt_of_le_of_lt
-    (norm_stoneEvolution_apply_sub_le_domain A hA t x) hprod
+  apply continuousAt_of_locally_lipschitz zero_lt_one ‖A x‖
+  intro t _
+  simpa [stoneEvolution_zero, dist_eq_norm, Real.dist_eq] using
+    norm_stoneEvolution_apply_sub_le_domain A hA t x
 
 /-- On the generator domain, the limiting Stone evolution is continuous at every time. -/
 private theorem stoneEvolution_apply_continuous_domain
@@ -105,24 +76,22 @@ private theorem stoneEvolution_apply_continuous_domain
     Continuous (fun t : ℝ => stoneEvolution A hA t (x : H)) := by
   rw [continuous_iff_continuousAt]
   intro s
-  rw [Metric.continuousAt_iff]
-  intro ε hε
-  obtain ⟨δ, hδ, hzero⟩ :=
-    (Metric.continuousAt_iff.mp
-      (stoneEvolution_apply_continuousAt_zero_domain A hA x)) ε hε
-  refine ⟨δ, hδ, ?_⟩
-  intro t ht
-  rw [show
-    stoneEvolution A hA t (x : H) =
-      stoneEvolution A hA s
-        (stoneEvolution A hA (t - s) (x : H)) by
-    simpa only [stoneEvolution_apply,
-      show s + (t - s) = t by ring] using
-      resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)]
-  rw [stoneEvolution_dist_eq A hA s]
-  have hshift : dist (t - s) 0 < δ := by
-    simpa [Real.dist_eq] using ht
-  simpa [stoneEvolution_zero] using hzero hshift
+  have hshift :
+      ContinuousAt (fun t : ℝ => stoneEvolution A hA (t - s) (x : H)) s := by
+    simpa [Function.comp_def] using
+      (stoneEvolution_apply_continuousAt_zero_domain A hA x).comp_of_eq
+        (by fun_prop) (by simp)
+  have hmapped :
+      ContinuousAt
+        (fun t : ℝ =>
+          stoneEvolution A hA s
+            (stoneEvolution A hA (t - s) (x : H))) s := by
+    simpa [Function.comp_def] using
+      (stoneEvolution A hA s).continuous.continuousAt.comp hshift
+  convert hmapped using 1
+  funext t
+  simpa only [stoneEvolution_apply, show s + (t - s) = t by ring] using
+    resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)
 
 /-- The limiting Stone evolution is jointly continuous in the vector and time variables.
 Continuity on the dense generator domain extends to the whole Hilbert space because every time

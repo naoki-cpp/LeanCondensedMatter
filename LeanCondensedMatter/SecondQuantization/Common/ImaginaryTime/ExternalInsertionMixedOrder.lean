@@ -241,6 +241,28 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicLegEquiv {E n : ℕ}
       (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
       (externalInsertionMixedTimeOrderedAtomicLegs_all_mem externalTime σ))
 
+/-- The mixed position occupied by a canonical external-insertion leg identity. -/
+noncomputable def externalInsertionMixedTimeOrderedAtomicLegPosition {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) : Fin (2 * (2 * n + E)) :=
+  (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm leg
+
+@[simp]
+theorem externalInsertionMixedTimeOrderedAtomicLegPosition_equiv {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * n + E))) :
+    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p) = p :=
+  (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm_apply_apply p
+
+@[simp]
+theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_position {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) :
+    externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) = leg :=
+  (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).apply_symm_apply leg
+
 /-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
 noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
