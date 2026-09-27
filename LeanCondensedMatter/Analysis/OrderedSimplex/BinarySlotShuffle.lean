@@ -1,17 +1,18 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffleIntegrand
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
+import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
 
 /-!
 # Ambient-slot binary-shuffle ordered-simplex integrals
 
-A recursive `BinaryShuffle` already carries an order-preserving equivalence from its two local slot
-families to the ambient slots. Using the generic ambient-slot integrand from the ordered-simplex
-analysis layer, this module proves that its ordinary ordered-simplex integral is the recursive
-contribution attached to the shuffle, and then transports the binary shuffle product identity to
-the ambient `SlotShuffle` presentation.
+This module defines the shuffled product integrand associated with an order-preserving ambient
+`BinaryShuffle.SlotShuffle`, proves the measurable-local-boundedness needed for integration, and
+relates its ordered-simplex integral to recursive binary-shuffle contributions.
+It then transports the binary shuffle product identity to the ambient `SlotShuffle` presentation.
 -/
 
 namespace Combinatorics
@@ -19,9 +20,33 @@ namespace BinaryShuffle
 
 open intervalIntegral MeasureTheory
 
+/-- Product of two local integrands after their coordinates are embedded by an ambient slot
+shuffle. -/
+noncomputable def SlotShuffle.integrand {m n : ℕ} (shuffle : SlotShuffle m n)
+    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
+    (τ : Fin (m + n) → ℝ) : ℂ :=
+  f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
+    g (fun j => τ (shuffle.slotEquiv (Sum.inr j)))
+
+/-- Measurable local boundedness is preserved by an ambient binary slot shuffle. -/
+private theorem measurableLocallyBounded_slotShuffleIntegrand {m n : ℕ}
+    (shuffle : SlotShuffle m n)
+    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
+    (hf : intervalIntegral.MeasurableLocallyBounded f)
+    (hg : intervalIntegral.MeasurableLocallyBounded g) :
+    intervalIntegral.MeasurableLocallyBounded (shuffle.integrand f g) := by
+  change intervalIntegral.MeasurableLocallyBounded (fun τ : Fin (m + n) → ℝ =>
+    f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
+      g (fun j => τ (shuffle.slotEquiv (Sum.inr j))))
+  exact
+    (hf.comp_finCoordinateSelection
+      (fun i => shuffle.slotEquiv (Sum.inl i))).mul
+      (hg.comp_finCoordinateSelection
+        (fun j => shuffle.slotEquiv (Sum.inr j)))
+
 /-- One recursive shuffle contribution is the ordinary ordered-simplex integral of its ambient-slot
 shuffled product. -/
-theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
+private theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
     ∀ {m n : ℕ} (σ : BinaryShuffle m n) (β : ℝ)
       (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
       orderedSimplexContribution σ β f g =
@@ -136,7 +161,7 @@ private theorem intervalIntegrable_orderedSimplexContribution_consLeft {m n : �
     (toSlotShuffle (.consLeft σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
   have hF : MeasurableLocallyBounded F := by
-    exact ((toSlotShuffle (.consLeft σ)).measurableLocallyBounded_integrand f g hf hg).comp_finCoordinateSelection
+    exact (measurableLocallyBounded_slotShuffleIntegrand (toSlotShuffle (.consLeft σ)) f g hf hg).comp_finCoordinateSelection
       (Fin.cast hdim)
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consLeft_boundary] using hInt
@@ -155,7 +180,7 @@ private theorem intervalIntegrable_orderedSimplexContribution_consRight {m n : �
     (toSlotShuffle (.consRight σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
   have hF : MeasurableLocallyBounded F := by
-    exact ((toSlotShuffle (.consRight σ)).measurableLocallyBounded_integrand f g hf hg).comp_finCoordinateSelection
+    exact (measurableLocallyBounded_slotShuffleIntegrand (toSlotShuffle (.consRight σ)) f g hf hg).comp_finCoordinateSelection
       (Fin.cast hdim)
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consRight_boundary] using hInt
@@ -211,17 +236,6 @@ private theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableL
       · simpa only [Finset.sum_fn] using
           (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntRight σ))
 
-/-- Explicit binary ordered-simplex shuffle identity under measurable local boundedness. -/
-theorem sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded
-    (m n : ℕ) (β : ℝ)
-    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
-    (hf : MeasurableLocallyBounded f) (hg : MeasurableLocallyBounded g) :
-    (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
-      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
-  rw [sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
-    m n β f g hf hg]
-  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded m n β f g hf hg
-
 /-- Ambient-slot form of the explicit binary ordered-simplex shuffle identity under measurable local
 boundedness. -/
 theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
@@ -233,7 +247,9 @@ theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLoc
       orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
   rw [sum_slotShuffle]
   simp_rw [← orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
-  exact sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded m n β f g hf hg
+  rw [sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
+    m n β f g hf hg]
+  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded m n β f g hf hg
 
 /-- Ambient-slot form of the explicit binary ordered-simplex shuffle identity. -/
 theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul (m n : ℕ) (β : ℝ)
