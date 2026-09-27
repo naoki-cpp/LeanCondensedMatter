@@ -90,5 +90,25 @@ noncomputable def vacuumComponentLegDataEquiv
         | inr p => rfl
       right_inv := fun _ => rfl }
 
+
+/-- If a finite leg type splits into external data and interaction-local data, and both the total
+number of legs and the number of local legs per interaction vertex are even, then the external
+sector has even cardinality. -/
+theorem externalCardEven_of_equiv_sum_prod
+    {Leg ExternalData InteractionData LocalData : Type}
+    [Fintype Leg] [Fintype ExternalData] [Fintype InteractionData] [Fintype LocalData]
+    (legEquiv : Leg ≃ ExternalData ⊕ (InteractionData × LocalData))
+    (hLeg : Even (Fintype.card Leg))
+    (hLocal : Even (Fintype.card LocalData)) :
+    Even (Fintype.card ExternalData) := by
+  have hcard :
+      Fintype.card Leg =
+        Fintype.card ExternalData + Fintype.card InteractionData * Fintype.card LocalData := by
+    rw [Fintype.card_congr legEquiv, Fintype.card_sum, Fintype.card_prod]
+  rcases hLeg with ⟨k, hk⟩
+  rcases hLocal with ⟨l, hl⟩
+  refine ⟨k - Fintype.card InteractionData * l, ?_⟩
+  omega
+
 end Common
 end SecondQuantization
