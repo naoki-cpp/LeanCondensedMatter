@@ -109,30 +109,30 @@ theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
 
 On the completed full Fock space this operator is generally unbounded; here it is only an
 algebraic endomorphism of the finite-particle exterior algebra. -/
-noncomputable def numberOperator :
+noncomputable def totalNumberOperator :
     AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   dGamma 𝓗₁ LinearMap.id
 
 @[simp]
-theorem numberOperator_vacuum :
-    numberOperator 𝓗₁ (vacuum 𝓗₁) = 0 := by
-  simp [numberOperator]
+theorem totalNumberOperator_vacuum :
+    totalNumberOperator 𝓗₁ (vacuum 𝓗₁) = 0 := by
+  simp [totalNumberOperator]
 
 @[simp]
-theorem numberOperator_oneParticle (f : 𝓗₁) :
-    numberOperator 𝓗₁ (oneParticle 𝓗₁ f) = oneParticle 𝓗₁ f := by
-  simp [numberOperator]
+theorem totalNumberOperator_oneParticle (f : 𝓗₁) :
+    totalNumberOperator 𝓗₁ (oneParticle 𝓗₁ f) = oneParticle 𝓗₁ f := by
+  simp [totalNumberOperator]
 
 /-- Adding one exterior generator raises the algebraic number operator by one. -/
-theorem numberOperator_oneParticle_mul (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
-    numberOperator 𝓗₁ (oneParticle 𝓗₁ f * Ψ) =
-      oneParticle 𝓗₁ f * Ψ + oneParticle 𝓗₁ f * numberOperator 𝓗₁ Ψ := by
-  simpa [numberOperator] using dGamma_oneParticle_mul 𝓗₁ LinearMap.id f Ψ
+theorem totalNumberOperator_oneParticle_mul (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
+    totalNumberOperator 𝓗₁ (oneParticle 𝓗₁ f * Ψ) =
+      oneParticle 𝓗₁ f * Ψ + oneParticle 𝓗₁ f * totalNumberOperator 𝓗₁ Ψ := by
+  simpa [totalNumberOperator] using dGamma_oneParticle_mul 𝓗₁ LinearMap.id f Ψ
 
 /-- Every second-quantized one-particle operator commutes with total particle number. -/
-theorem numberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    ConservationLaw.linearCommutator (numberOperator 𝓗₁) (dGamma 𝓗₁ T) = 0 := by
-  rw [numberOperator, dGamma_linearCommutator]
+theorem totalNumberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    ConservationLaw.linearCommutator (totalNumberOperator 𝓗₁) (dGamma 𝓗₁ T) = 0 := by
+  rw [totalNumberOperator, dGamma_linearCommutator]
   have h : ConservationLaw.linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
     apply LinearMap.ext
     intro f
