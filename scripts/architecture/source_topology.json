@@ -125,6 +125,7 @@
       "id": "singleParticleCurrentLayers",
       "sourceRoots": ["LeanCondensedMatter/QuantumMechanics/SingleParticle"],
       "layers": [
+        {"id": "generalizedCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent"]},
         {"id": "localizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]},
         {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]},
         {"id": "correctedCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent"]},
@@ -134,6 +135,7 @@
         {"id": "schwartzSpinCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"]}
       ],
       "edges": [
+        {"upstream": "generalizedCurrent", "downstream": "symmetrizedVelocity"},
         {"upstream": "localizedTransport", "downstream": "symmetrizedVelocity"},
         {"upstream": "localizedTransport", "downstream": "correctedCurrent"},
         {"upstream": "correctedCurrent", "downstream": "correctedCurrentAmbiguity"},
