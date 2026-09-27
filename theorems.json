@@ -110529,7 +110529,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (SecondQuantization.Fermionic.AlgebraicFock.dualRankOne 𝓗₁ f d) =\n    (SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) f ∘ₗ\n      (SecondQuantization.Fermionic.AlgebraicFock.annihilateDual 𝓗₁) d",
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (LinearMap.smulRight d f) =\n    (SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) f ∘ₗ\n      (SecondQuantization.Fermionic.AlgebraicFock.annihilateDual 𝓗₁) d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110845,45 +110845,6 @@
       "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_zero_hopping"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) (g : 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.dualRankOne 𝓗₁ f d) g = d g • f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.dualRankOne_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114942,7 +114903,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "SecondQuantization.Fermionic.Lattice.matrixUnit_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -115394,14 +115355,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -155381,48 +155342,6 @@
       "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsReversePhase_zero"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} (x y : Site),\n  SecondQuantization.Fermionic.AlgebraicFock.dualRankOne (SecondQuantization.Fermionic.Lattice.LatticeState Site)\n      (SecondQuantization.Fermionic.Lattice.latticeKet x) (Finsupp.lapply y) =\n    SecondQuantization.Fermionic.Lattice.matrixUnit x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dualRankOne_apply",
-      "SecondQuantization.Fermionic.Lattice.matrixUnit_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
