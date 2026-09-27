@@ -116,9 +116,9 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
     rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp]
     simp only [LinearMap.comp_apply]
     rw [hvelocity f]
-    simpa [velocityLocalizationFlux, operatorLocalCurrentPairing] using
-      symmetrizedVelocityTransport_eq_of_localizer_commutes
-        V (N (d f)) velocity m (hcomm (d f))
+    rw [velocityLocalizationFlux_apply, operatorLocalCurrentPairing_apply]
+    exact symmetrizedVelocityTransport_eq_of_localizer_commutes
+      V (N (d f)) velocity m (hcomm (d f))
 
 @[simp]
 theorem symmetrizedVelocityCurrentRepresentation_currentDensity
