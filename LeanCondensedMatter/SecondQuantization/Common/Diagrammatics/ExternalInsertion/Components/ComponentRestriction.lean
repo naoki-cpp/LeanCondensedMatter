@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
@@ -54,11 +53,7 @@ theorem ExternalInsertionDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin 
 private def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
-  match leg with
-  | .inl e => (Sum.inl e : ExternalInsertionVertex E S) ∈
-      (B : Finset (ExternalInsertionVertex E S))
-  | .inr p => (Sum.inr p.1 : ExternalInsertionVertex E S) ∈
-      (B : Finset (ExternalInsertionVertex E S))
+  componentLegVertex leg ∈ (B : Finset (ExternalInsertionVertex E S))
 
 /-- Flattening preserves the component-membership predicate. -/
 private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
@@ -93,18 +88,13 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
   invFun leg := by
     cases leg with
     | inl e =>
-        exact ⟨Sum.inl e.1, by
-          change (Sum.inl e.1 : ExternalInsertionVertex E S) ∈
-            (B : Finset (ExternalInsertionVertex E S))
-          exact Finset.mem_toLeft.1 e.2⟩
+        exact ⟨Sum.inl e.1, Finset.mem_toLeft.1 e.2⟩
     | inr p =>
         let v : ↥S :=
           ⟨p.1.1, interactionSector_subset
             (B : Finset (ExternalInsertionVertex E S)) p.1.2⟩
-        exact ⟨Sum.inr (v, p.2), by
-          change (Sum.inr v : ExternalInsertionVertex E S) ∈
-            (B : Finset (ExternalInsertionVertex E S))
-          exact (mem_interactionSector_subtype
+        exact ⟨Sum.inr (v, p.2),
+          (mem_interactionSector_subtype
             (B : Finset (ExternalInsertionVertex E S)) v).1 p.1.2⟩
   left_inv leg := by
     rcases leg with ⟨leg, hleg⟩
@@ -671,40 +661,14 @@ private theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosse
 interaction vertices. -/
 private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
+    (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
       ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S))) × Fin 4 where
-  toFun leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
-    | inr p =>
-        exact (⟨p.1.1,
-          (mem_interactionSector_subtype
-            (B : Finset (ExternalInsertionVertex E S)) p.1).2 hleg⟩, p.2)
-  invFun p :=
-    let v : ↥S :=
-      ⟨p.1.1, interactionSector_subset
-        (B : Finset (ExternalInsertionVertex E S)) p.1.2⟩
-    ⟨Sum.inr (v, p.2), by
-      change (Sum.inr v : ExternalInsertionVertex E S) ∈
-        (B : Finset (ExternalInsertionVertex E S))
-      exact (mem_interactionSector_subtype
-        (B : Finset (ExternalInsertionVertex E S)) v).1 p.1.2⟩
-  left_inv leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Subtype.ext
-        rfl
-  right_inv p := by
-    rcases p with ⟨v, l⟩
-    apply Prod.ext
-    · exact Subtype.ext (by rfl)
-    · rfl
+        (B : Finset (ExternalInsertionVertex E S))) × Fin 4 :=
+  SecondQuantization.Common.vacuumComponentLegDataEquiv
+    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+    (B := (B : Finset (ExternalInsertionVertex E S))) hVac
 
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
