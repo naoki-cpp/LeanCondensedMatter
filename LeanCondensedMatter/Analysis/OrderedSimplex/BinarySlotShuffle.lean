@@ -28,21 +28,8 @@ noncomputable def SlotShuffle.integrand {m n : ℕ} (shuffle : SlotShuffle m n)
   f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
     g (fun j => τ (shuffle.slotEquiv (Sum.inr j)))
 
-/-- The ambient shuffled product is continuous when both local integrands are continuous. -/
-theorem SlotShuffle.continuous_integrand {m n : ℕ} (shuffle : SlotShuffle m n)
-    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
-    (hf : Continuous f) (hg : Continuous g) :
-    Continuous (shuffle.integrand f g) := by
-  have hleft : Continuous (fun τ : Fin (m + n) → ℝ =>
-      fun i : Fin m => τ (shuffle.slotEquiv (Sum.inl i))) :=
-    continuous_pi fun i => continuous_apply (shuffle.slotEquiv (Sum.inl i))
-  have hright : Continuous (fun τ : Fin (m + n) → ℝ =>
-      fun j : Fin n => τ (shuffle.slotEquiv (Sum.inr j))) :=
-    continuous_pi fun j => continuous_apply (shuffle.slotEquiv (Sum.inr j))
-  exact (hf.comp hleft).mul (hg.comp hright)
-
 /-- Measurable local boundedness is preserved by an ambient binary slot shuffle. -/
-theorem SlotShuffle.measurableLocallyBounded_integrand {m n : ℕ}
+private theorem measurableLocallyBounded_slotShuffleIntegrand {m n : ℕ}
     (shuffle : SlotShuffle m n)
     (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
     (hf : intervalIntegral.MeasurableLocallyBounded f)
@@ -59,7 +46,7 @@ theorem SlotShuffle.measurableLocallyBounded_integrand {m n : ℕ}
 
 /-- One recursive shuffle contribution is the ordinary ordered-simplex integral of its ambient-slot
 shuffled product. -/
-theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
+private theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
     ∀ {m n : ℕ} (σ : BinaryShuffle m n) (β : ℝ)
       (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
       orderedSimplexContribution σ β f g =
@@ -174,7 +161,7 @@ private theorem intervalIntegrable_orderedSimplexContribution_consLeft {m n : �
     (toSlotShuffle (.consLeft σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
   have hF : MeasurableLocallyBounded F := by
-    exact ((toSlotShuffle (.consLeft σ)).measurableLocallyBounded_integrand f g hf hg).comp_finCoordinateSelection
+    exact (measurableLocallyBounded_slotShuffleIntegrand (toSlotShuffle (.consLeft σ)) f g hf hg).comp_finCoordinateSelection
       (Fin.cast hdim)
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consLeft_boundary] using hInt
@@ -193,7 +180,7 @@ private theorem intervalIntegrable_orderedSimplexContribution_consRight {m n : �
     (toSlotShuffle (.consRight σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
   have hF : MeasurableLocallyBounded F := by
-    exact ((toSlotShuffle (.consRight σ)).measurableLocallyBounded_integrand f g hf hg).comp_finCoordinateSelection
+    exact (measurableLocallyBounded_slotShuffleIntegrand (toSlotShuffle (.consRight σ)) f g hf hg).comp_finCoordinateSelection
       (Fin.cast hdim)
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consRight_boundary] using hInt
@@ -249,17 +236,6 @@ private theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableL
       · simpa only [Finset.sum_fn] using
           (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntRight σ))
 
-/-- Explicit binary ordered-simplex shuffle identity under measurable local boundedness. -/
-theorem sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded
-    (m n : ℕ) (β : ℝ)
-    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
-    (hf : MeasurableLocallyBounded f) (hg : MeasurableLocallyBounded g) :
-    (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
-      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
-  rw [sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
-    m n β f g hf hg]
-  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded m n β f g hf hg
-
 /-- Ambient-slot form of the explicit binary ordered-simplex shuffle identity under measurable local
 boundedness. -/
 theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
@@ -271,7 +247,9 @@ theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLoc
       orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
   rw [sum_slotShuffle]
   simp_rw [← orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
-  exact sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded m n β f g hf hg
+  rw [sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
+    m n β f g hf hg]
+  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded m n β f g hf hg
 
 /-- Ambient-slot form of the explicit binary ordered-simplex shuffle identity. -/
 theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul (m n : ℕ) (β : ℝ)
