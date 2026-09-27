@@ -63,21 +63,21 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_
   unfold finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal
   exact sum_gaussianCrossedDiagram _
 
+/-- The regulated crossed conductivity vanishes identically when the Gaussian disorder strength is
+zero because the two explicit crossed disorder correlators supply a factor `disorderStrength²`. -/
+@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_zero_disorder
+    (diagram : GaussianCrossedDiagram)
+    (e v m probeEnergy broadening hbar pMax rMax : ℝ) :
+  finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+      diagram e v m probeEnergy broadening 0 hbar pMax rMax = 0 := by
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity]
+
 /-- The total regulated crossed correction vanishes at zero Gaussian disorder strength. -/
 @[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_zero_disorder
     (e v m probeEnergy broadening hbar pMax rMax : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal
       e v m probeEnergy broadening 0 hbar pMax rMax = 0 := by
   simp [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal]
-
-/-- The regulated crossed conductivity vanishes identically when the Gaussian disorder strength is
-zero because the two explicit crossed disorder correlators supply a factor `disorderStrength²`. -/
-@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_zero_disorder
-    (diagram : GaussianCrossedDiagram)
-    (e v m probeEnergy broadening hbar pMax rMax : ℝ) :
-    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
-      diagram e v m probeEnergy broadening 0 hbar pMax rMax = 0 := by
-  simp [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity]
 
 /-- The regulated `Psi` conductivity remains real because its trace-level Hermitian-conjugate
 partner is included upstream and the remaining physical normalization is real. -/
