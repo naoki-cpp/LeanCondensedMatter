@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.Complex.RealDeriv
