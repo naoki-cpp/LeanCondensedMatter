@@ -48,10 +48,10 @@ noncomputable def boundedDirectionalResponseChannel
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) :
     QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrentLinearMap geometry
-    (system.hbar : ℂ) (q : ℂ) K direction
-  source := boundedDirectionalCurrentLinearMap geometry
-    (system.hbar : ℂ) (q : ℂ) K direction
+  measured := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  source := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
   observableVariation := boundedDirectionalContact geometry direction
     (system.hbar : ℂ) (q : ℂ) K
 
@@ -113,14 +113,7 @@ theorem finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact
           system expectation geometry direction K q ω η T +
         boundedDirectionalContactExpectation
           system expectation geometry direction K q T := by
-  unfold finiteTimeAdiabaticDirectionalCoefficient
-    QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse
-    boundedDirectionalResponseChannel
-    finiteTimeAdiabaticDirectionalRetardedCoefficient
-    boundedDirectionalContactExpectation
-    QuantumTheory.LinearResponse.ResponseChannel.retardedKernel
-    QuantumTheory.LinearResponse.ResponseChannel.contactExpectation
-  rw [boundedDirectionalCurrentLinearMap_apply]
+  rfl
 
 end
 end Transport
