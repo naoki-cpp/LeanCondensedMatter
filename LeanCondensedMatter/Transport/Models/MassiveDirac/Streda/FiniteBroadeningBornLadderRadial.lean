@@ -239,8 +239,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         (q • dressed) 0 • matrixOperator sigmaX +
           (q • dressed) 1 • matrixOperator sigmaY := by
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-    rw [inPlaneCurrentCLM_apply,
-      inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
+    rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
     simp [q, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v bare := by
