@@ -52,6 +52,7 @@ homomorphic normalization rules:
 - `diagonalExpectationValue_add`
 - `SchwartzTwoLevel1D.spatialLift_apply`
 - `SchwartzTwoLevel1D.internalOperator_apply`
+- `SchwartzTwoLevel1D.internalOperatorLinear_apply`
 - `SchwartzTwoLevel1D.multiplicationOperator_apply`
 - `SchwartzTwoLevel1D.multiplicationLinear_apply`
 - `nonrealShiftLinearEquiv_apply`
@@ -65,6 +66,7 @@ homomorphic normalization rules:
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
 - `ConservationLaw.symmetrizedProductRightLinear_apply`
+- `ConservationLaw.symmetrizedProductLeftLinear_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
 - `ConservationLaw.localizedQuantity_smul_id`
 - `ConservationLaw.localizationCommutatorFunctional_apply`
@@ -307,6 +309,7 @@ The following current simp boundaries are Green:
 These declarations are intentionally ordinary theorems rather than global simp rules. Their use is
 a substantive proof step, a coordinate/representation expansion, or a nontrivial analytic fact.
 
+- `ConservationLaw.symmetrizedProductBilinear_apply` — explicit bridge from the bilinear owner to the pointwise wrapper; keeping it out of the global simp set avoids a rewrite cycle.
 - `InternalSpace.dotProduct_pauliAxis` — explicit x/y/z coordinate expansion.
 - `purePointBoltzmannWeight_pos` — positivity fact, not normalization.
 - `purePointBoltzmannWeight_nonneg` — positivity fact, not normalization.

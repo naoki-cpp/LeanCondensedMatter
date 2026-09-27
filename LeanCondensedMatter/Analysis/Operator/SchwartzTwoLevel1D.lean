@@ -67,6 +67,28 @@ theorem internalOperator_apply (S : InternalMatrix) (ψ : State) (a : Fin 2) :
     internalOperator S ψ a = ∑ b : Fin 2, S a b • ψ b :=
   rfl
 
+/-- The internal-matrix action is complex-linear in the supplied two-level matrix. -/
+noncomputable def internalOperatorLinear :
+    InternalMatrix →ₗ[ℂ] (State →ₗ[ℂ] State) where
+  toFun := internalOperator
+  map_add' := by
+    intro S T
+    apply LinearMap.ext
+    intro ψ
+    funext a
+    simp [internalOperator, Finset.sum_add_distrib, add_smul]
+  map_smul' := by
+    intro c S
+    apply LinearMap.ext
+    intro ψ
+    funext a
+    simp [internalOperator, smul_smul]
+
+@[simp]
+theorem internalOperatorLinear_apply (S : InternalMatrix) :
+    internalOperatorLinear S = internalOperator S :=
+  rfl
+
 /-- Spatial and internal operators commute because they act on independent factors. -/
 theorem spatialLift_comp_internalOperator_comm
     (A : Spatial →ₗ[ℂ] Spatial) (S : InternalMatrix) :

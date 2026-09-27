@@ -23,8 +23,9 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
 - `QuantumTheory.SpinHalf.SpinSpace` is the real three-dimensional spin-component space. Unit vectors may be interpreted as pure
   polarization directions; arbitrary vectors retain the linear structure needed by spin components
   and response tensors.
-- `QuantumTheory.SpinHalf.spinMatrix ℏ n` is the spin-1/2 representation
-  `S(n) = ℏ (n · σ) / 2`.
+- `QuantumTheory.SpinHalf.spinMatrix ℏ` is the real-linear spin-1/2 vector observable
+  `n ↦ S(n) = ℏ (n · σ) / 2`. The Schwartz and finite-lattice spin-current realizations preserve
+  this real-linearity in the spin-space component.
 - `InternalSpace.PauliAxis` labels the Pauli representation basis only. It is not the type of a
   spin-component vector.
 

@@ -29,16 +29,32 @@ variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 
-/-- The symmetrized velocity current-density candidate `1/2 {v,m}`. -/
+/-- With velocity fixed, the symmetrized current density is complex-linear in the transported
+one-body quantity. -/
+noncomputable def symmetrizedVelocityCurrentLinear
+    (velocity : V →ₗ[ℂ] V) :
+    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
+  _root_.ConservationLaw.symmetrizedProductLeftLinear V velocity
+
+/-- The symmetrized velocity current-density candidate `1/2 {v,m}`, obtained by evaluating the
+transported-quantity linear map. -/
 noncomputable def symmetrizedVelocityCurrent
     (velocity m : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  _root_.ConservationLaw.symmetrizedProduct velocity m
+  symmetrizedVelocityCurrentLinear V velocity m
+
+@[simp]
+theorem symmetrizedVelocityCurrentLinear_apply
+    (velocity m : V →ₗ[ℂ] V) :
+    symmetrizedVelocityCurrentLinear V velocity m =
+      symmetrizedVelocityCurrent V velocity m :=
+  rfl
 
 @[simp]
 theorem symmetrizedVelocityCurrent_id
     (velocity : V →ₗ[ℂ] V) :
     symmetrizedVelocityCurrent V velocity LinearMap.id = velocity := by
-  simpa [symmetrizedVelocityCurrent] using
+  change _root_.ConservationLaw.symmetrizedProduct velocity LinearMap.id = velocity
+  simpa using
     (_root_.ConservationLaw.symmetrizedProduct_smul_id velocity (1 : ℂ))
 
 /-- General localized-transport decomposition. The second term measures the failure of the
@@ -51,8 +67,14 @@ theorem symmetrizedVelocityTransport_decomposition
         (symmetrizedVelocityCurrent V velocity m) +
       (1 / 4 : ℂ) • _root_.ConservationLaw.linearCommutator velocity
         (_root_.ConservationLaw.linearCommutator localizer m) := by
-  simpa [symmetrizedVelocityCurrent] using
-    (_root_.ConservationLaw.symmetrizedProduct_nested localizer velocity m)
+  change
+    _root_.ConservationLaw.symmetrizedProduct
+        (_root_.ConservationLaw.symmetrizedProduct localizer velocity) m =
+      _root_.ConservationLaw.symmetrizedProduct localizer
+        (_root_.ConservationLaw.symmetrizedProduct velocity m) +
+      (1 / 4 : ℂ) • _root_.ConservationLaw.linearCommutator velocity
+        (_root_.ConservationLaw.linearCommutator localizer m)
+  exact _root_.ConservationLaw.symmetrizedProduct_nested localizer velocity m
 
 /-- If localization commutes with the transported quantity, the correction vanishes and the
 transport is represented by the symmetrized velocity current density. -/
@@ -63,9 +85,13 @@ theorem symmetrizedVelocityTransport_eq_of_localizer_commutes
         (_root_.ConservationLaw.symmetrizedProduct localizer velocity) m =
       _root_.ConservationLaw.symmetrizedProduct localizer
         (symmetrizedVelocityCurrent V velocity m) := by
-  simpa [symmetrizedVelocityCurrent] using
-    (_root_.ConservationLaw.symmetrizedProduct_nested_eq_of_commutes
-      localizer velocity m hcomm)
+  change
+    _root_.ConservationLaw.symmetrizedProduct
+        (_root_.ConservationLaw.symmetrizedProduct localizer velocity) m =
+      _root_.ConservationLaw.symmetrizedProduct localizer
+        (_root_.ConservationLaw.symmetrizedProduct velocity m)
+  exact _root_.ConservationLaw.symmetrizedProduct_nested_eq_of_commutes
+    localizer velocity m hcomm
 
 /-- The symmetrized velocity current supplies a local current-density representation whenever the
 Heisenberg localization transport is first-order in `d` and the localized one-form operators
@@ -90,9 +116,9 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
     rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp]
     simp only [LinearMap.comp_apply]
     rw [hvelocity f]
-    simpa [velocityLocalizationFlux, operatorLocalCurrentPairing] using
-      symmetrizedVelocityTransport_eq_of_localizer_commutes
-        V (N (d f)) velocity m (hcomm (d f))
+    rw [velocityLocalizationFlux_apply, operatorLocalCurrentPairing_apply]
+    exact symmetrizedVelocityTransport_eq_of_localizer_commutes
+      V (N (d f)) velocity m (hcomm (d f))
 
 @[simp]
 theorem symmetrizedVelocityCurrentRepresentation_currentDensity

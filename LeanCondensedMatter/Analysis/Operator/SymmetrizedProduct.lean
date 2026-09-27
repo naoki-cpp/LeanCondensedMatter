@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import Mathlib.LinearAlgebra.BilinearMap
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -18,10 +19,25 @@ or particle-statistics interpretation. Those meanings belong to downstream layer
 
 namespace ConservationLaw
 
-/-- Symmetrized composition `1/2 {A, B}` of two complex-linear endomorphisms. -/
+/-- The symmetrized product as a bilinear operator-valued map. This is the algebraic owner of
+the construction; pointwise symmetrized products are obtained by evaluation. -/
+noncomputable def symmetrizedProductBilinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W] :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  (1 / 2 : ℂ) •
+    (LinearMap.llcomp ℂ W W W + (LinearMap.llcomp ℂ W W W).flip)
+
+/-- Symmetrized composition `1/2 {A, B}` of two complex-linear endomorphisms, obtained by
+evaluating the bilinear symmetrized-product map. -/
 noncomputable def symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) : W →ₗ[ℂ] W :=
-  (1 / 2 : ℂ) • (A.comp B + B.comp A)
+  symmetrizedProductBilinear W A B
+
+theorem symmetrizedProductBilinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) :
+    symmetrizedProductBilinear W A B = symmetrizedProduct A B :=
+  rfl
 
 @[simp]
 theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -29,19 +45,48 @@ theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
     symmetrizedProduct A B v = (1 / 2 : ℂ) • (A (B v) + B (A v)) := by
   rfl
 
+/-- Symmetrization with a fixed right-hand operator is linear in the left operator. -/
+noncomputable def symmetrizedProductRightLinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W]
+    (B : W →ₗ[ℂ] W) :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  LinearMap.flip (symmetrizedProductBilinear W) B
+
+@[simp]
+theorem symmetrizedProductRightLinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (B A : W →ₗ[ℂ] W) :
+    symmetrizedProductRightLinear W B A = symmetrizedProduct A B :=
+  rfl
+
+/-- Symmetrization with a fixed left-hand operator is linear in the right operator. -/
+noncomputable def symmetrizedProductLeftLinear
+    (W : Type*) [AddCommGroup W] [Module ℂ W]
+    (A : W →ₗ[ℂ] W) :
+    (W →ₗ[ℂ] W) →ₗ[ℂ] (W →ₗ[ℂ] W) :=
+  symmetrizedProductBilinear W A
+
+@[simp]
+theorem symmetrizedProductLeftLinear_apply
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) :
+    symmetrizedProductLeftLinear W A B = symmetrizedProduct A B :=
+  rfl
+
 /-- The symmetrized product is symmetric in its two arguments. -/
 theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
     symmetrizedProduct A B = symmetrizedProduct B A := by
   ext v
-  simp [symmetrizedProduct, add_comm]
+  simp only [symmetrizedProduct_apply]
+  rw [add_comm]
 
 @[simp]
 theorem symmetrizedProduct_zero_left {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) :
     symmetrizedProduct (0 : W →ₗ[ℂ] W) A = 0 := by
   ext v
-  simp [symmetrizedProduct]
+  simp
 
 @[simp]
 theorem symmetrizedProduct_zero_right {W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -56,8 +101,7 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) (q : ℂ) :
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
   ext v
-  simp [symmetrizedProduct]
-  module
+  simp [symmetrizedProduct_apply]; module
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -69,7 +113,7 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
     have h := congrArg (fun T : W →ₗ[ℂ] W => T v) hAB
     simpa [linearCommutator] using h
   have hcomm : A (B v) = B (A v) := sub_eq_zero.mp hzero
-  change (1 / 2 : ℂ) • (A (B v) + B (A v)) = A (B v)
+  rw [symmetrizedProduct_apply]
   rw [← hcomm]
   module
 
@@ -83,8 +127,7 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module ℂ W]
       symmetrizedProduct A (symmetrizedProduct v m) +
         (1 / 4 : ℂ) • linearCommutator v (linearCommutator A m) := by
   ext x
-  simp [symmetrizedProduct, linearCommutator]
-  module
+  simp [symmetrizedProduct_apply, linearCommutator]; module
 
 /-- If the outer localizer commutes with the transported quantity, nested symmetrization
 reassociates without a correction. -/
@@ -104,7 +147,6 @@ theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module
       symmetrizedProduct (linearCommutator h A) B +
         symmetrizedProduct A (linearCommutator h B) := by
   ext v
-  simp [linearCommutator, symmetrizedProduct]
-  module
+  simp [linearCommutator, symmetrizedProduct_apply]; module
 
 end ConservationLaw
