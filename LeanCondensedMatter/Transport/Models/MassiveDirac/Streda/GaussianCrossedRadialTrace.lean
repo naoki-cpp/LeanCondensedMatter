@@ -479,8 +479,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_paul
 /-- The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex
 conjugate. The final current vector and scalar carry the overall sign from
 `J_y(-r) = -σ_z J_y(r) σ_z`; all blocks on the right are evaluated at positive radius. -/
-/- The X scalar reduction follows from the vanishing y component of the positive-radius Green
-blocks; keep the explicit component formula adjacent to the generic Pauli reduction. -/
+/-- The radial `X` amplitude is the explicit scalar expansion of the generic Pauli reduction.
+The expansion uses the vanishing y component of the positive-radius Green blocks while retaining
+all three current Pauli components. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
@@ -584,6 +585,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]; ring
 
+/-- The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex
+conjugate. The final current vector and scalar carry the overall sign from
+`J_y(-r) = -σ_z J_y(r) σ_z`; all blocks on the right are evaluated at positive radius. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
