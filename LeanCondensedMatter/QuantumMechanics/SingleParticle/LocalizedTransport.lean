@@ -90,7 +90,6 @@ theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
     heisenbergScale, _root_.ConservationLaw.transportFunctional,
     _root_.ConservationLaw.localizationCommutatorFunctional,
     _root_.ConservationLaw.symmetrizedProductRightLinear,
-    _root_.ConservationLaw.symmetrizedProduct,
     _root_.ConservationLaw.linearCommutator]
 
 /-- A differential representation of Heisenberg transport together with the canonical source gives
