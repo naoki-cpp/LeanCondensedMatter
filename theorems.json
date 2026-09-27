@@ -15520,13 +15520,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "HilbertBasis.diagonalTerm_isCompact"
+      "HilbertBasis.diagonalOp_isCompact"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "HilbertBasis.diagonalTerm_isCompact"
+      "HilbertBasis.diagonalOp_isCompact"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -21707,7 +21707,7 @@
       "HilbertBasis.diagonalOpSpectralTraceClass"
     ],
     "dependencies": [
-      "HilbertBasis.diagonalTerm_isCompact",
+      "ContinuousLinearMap.isCompactOperator_rankOne",
       "HilbertBasis.hasSum_diagonalTerm"
     ],
     "crossModuleDirectWrapper": false,
@@ -21759,47 +21759,6 @@
       "QuantumTheory.diagonalDensityOperator"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (b : HilbertBasis ι ℂ H)\n  (a : ι → ℂ) (i : ι), IsCompactOperator ⇑(b.diagonalTerm a i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "HilbertBasis.diagonalTerm_isCompact",
-    "module": "LeanCondensedMatter.Analysis.Operator.Diagonal",
-    "externalAxioms": [],
-    "docString": "Every term of the diagonal operator series is compact. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "HilbertBasis.diagonalOp_isCompact"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.isCompactOperator_rankOne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "HilbertBasis.diagonalOp_isCompact"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
