@@ -298,6 +298,7 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
         refine Finset.sum_congr rfl fun q0 _ => ?_
         refine Finset.sum_congr rfl fun q' _ => ?_
         simp [LinearMap.smul_apply, LinearMap.comp_apply, map_smul, smul_smul, mul_assoc]
+        ring
       have hpoint (σ : ℝ) :
           Common.matrixCoeff
               ((interactionPicture ε (quarticInteraction g) σ).comp
