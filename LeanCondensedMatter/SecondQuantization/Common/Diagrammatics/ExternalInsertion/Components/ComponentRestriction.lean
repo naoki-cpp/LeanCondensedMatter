@@ -80,18 +80,10 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
         (B : Finset (ExternalInsertionVertex E S))) ⊕
         (↥(interactionSector
           (B : Finset (ExternalInsertionVertex E S))) × Fin 4) := by
-  change
-    {leg : Fin (2 * E) ⊕ (↥S × Fin 4) //
-      match leg with
-      | .inl e => (Sum.inl e : ExternalInsertionVertex E S) ∈
-          (B : Finset (ExternalInsertionVertex E S))
-      | .inr p => (Sum.inr p.1 : ExternalInsertionVertex E S) ∈
-          (B : Finset (ExternalInsertionVertex E S))} ≃
-      ↥(Finset.toLeft (B : Finset (ExternalInsertionVertex E S))) ⊕
-        (↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) × Fin 4)
-  exact componentLegDataEquiv (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-    (B := (B : Finset (ExternalInsertionVertex E S)))
+  simpa only [ExternalInsertionDiagram.unflattenedLegInComponent] using
+    (SecondQuantization.Common.componentLegDataEquiv
+      (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+      (B := (B : Finset (ExternalInsertionVertex E S))))
 
 /-- Reindex the flattened legs of one component by its external and interaction data. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
