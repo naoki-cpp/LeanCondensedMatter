@@ -22,7 +22,7 @@ private noncomputable def QuarticDiagram.componentRepresentative
   ⟨Classical.choose (d.vertexGraph.componentPartitionOn.part_surjOn C.2),
     (Classical.choose_spec (d.vertexGraph.componentPartitionOn.part_surjOn C.2)).1⟩
 
-private theorem SimpleGraph.componentBlockOn_componentRepresentative
+private theorem QuarticDiagram.componentBlockOn_componentRepresentative
     (d : QuarticDiagram InternalLabel N S) (C : d.vertexGraph.componentPartitionOn.parts) :
     d.vertexGraph.componentBlockOn (d.componentRepresentative C) = (C : Finset (Fin N)) := by
   change d.vertexGraph.componentPartitionOn.part
@@ -78,7 +78,7 @@ theorem interactionSector_slotSplitVacuumComponentPart
       ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
         (slotSplitVacuumVertex (vac.componentRepresentative C))) = _
   rw [interactionSector_componentBlock_slotSplitVacuumVertex]
-  exact vac.componentBlock_componentRepresentative C
+  exact vac.componentBlockOn_componentRepresentative C
 
 /-- The quartic-to-ambient vacuum component map is injective. -/
 private theorem slotSplitVacuumComponentPart_injective :
