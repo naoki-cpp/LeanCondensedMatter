@@ -121,8 +121,9 @@ theorem toggleOccupation_of_not_mem {i : Mode} {n : Occupation Mode} (h : i ∉ 
 @[simp]
 theorem toggleOccupation_involutive (i : Mode) :
     Function.Involutive (toggleOccupation i) := by
-  simpa [toggleOccupation] using
-    (symmDiff_left_involutive ({i} : Occupation Mode))
+  intro n
+  change (n ∆ {i}) ∆ {i} = n
+  exact symmDiff_symmDiff_cancel_right
 
 /-- Toggling two modes commutes. -/
 theorem toggleOccupation_comm (i j : Mode) (n : Occupation Mode) :
