@@ -70,6 +70,25 @@ noncomputable def componentLegDataEquiv
         · exact Subtype.ext (by rfl)
         · rfl
 
+@[simp]
+theorem componentLegDataEquiv_symm_inl_val
+    [DecidableEq External] [DecidableEq Vertex]
+    {S : Finset Vertex} (B : Finset (External ⊕ ↥S))
+    (e : ↥(Finset.toLeft B)) :
+    ((componentLegDataEquiv (Local := Local) B).symm (Sum.inl e)).1 =
+      Sum.inl e.1 :=
+  rfl
+
+@[simp]
+theorem componentLegDataEquiv_symm_inr_val
+    [DecidableEq External] [DecidableEq Vertex]
+    {S : Finset Vertex} (B : Finset (External ⊕ ↥S))
+    (v : ↥(interactionSector B)) (l : Local) :
+    ((componentLegDataEquiv (External := External) (Vertex := Vertex) B).symm
+      (Sum.inr (v, l))).1 =
+      Sum.inr (⟨v.1, interactionSector_subset B v.2⟩, l) :=
+  rfl
+
 /-- If a component contains no external vertex, its legs are exactly its interaction vertices paired
 with their local-leg data. -/
 noncomputable def vacuumComponentLegDataEquiv
