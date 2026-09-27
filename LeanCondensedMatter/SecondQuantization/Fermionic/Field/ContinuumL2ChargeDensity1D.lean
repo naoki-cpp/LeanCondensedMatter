@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
+import LeanCondensedMatter.Analysis.Operator.L2Multiplication
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import Mathlib.Tactic
 
@@ -35,34 +36,34 @@ open scoped ENNReal
 /-- The canonical `L²` multiplication family, viewed as algebraic linear endomorphisms so it can be
 second-quantized. -/
 noncomputable def continuumL2Multiplication1D :
-    L2MultiplicationRealLine.ComplexLInf →ₗ[ℂ]
-      (L2MultiplicationRealLine.ComplexL2 →ₗ[ℂ] L2MultiplicationRealLine.ComplexL2) :=
-  L2MultiplicationRealLine.multiplicationLinear
+    L2Multiplication.ComplexLInf (volume : Measure ℝ) →ₗ[ℂ]
+      (L2Multiplication.ComplexL2 (volume : Measure ℝ) →ₗ[ℂ] L2Multiplication.ComplexL2 (volume : Measure ℝ)) :=
+  L2Multiplication.multiplicationLinear (volume : Measure ℝ)
 
 /-- The abstract fermionic charge density specialized to canonical bounded multiplication on
 `L²(ℝ, ℂ)`. -/
 noncomputable def continuumL2ChargeDensity1D (q : ℂ) :
-    L2MultiplicationRealLine.ComplexLInf →ₗ[ℂ]
-      (AlgebraicFock L2MultiplicationRealLine.ComplexL2 →ₗ[ℂ]
-        AlgebraicFock L2MultiplicationRealLine.ComplexL2) :=
-  chargeDensity L2MultiplicationRealLine.ComplexL2 q continuumL2Multiplication1D
+    L2Multiplication.ComplexLInf (volume : Measure ℝ) →ₗ[ℂ]
+      (AlgebraicFock (L2Multiplication.ComplexL2 (volume : Measure ℝ)) →ₗ[ℂ]
+        AlgebraicFock (L2Multiplication.ComplexL2 (volume : Measure ℝ))) :=
+  chargeDensity (L2Multiplication.ComplexL2 (volume : Measure ℝ)) q continuumL2Multiplication1D
 
 @[simp]
 theorem continuumL2ChargeDensity1D_apply
-    (q : ℂ) (f : L2MultiplicationRealLine.ComplexLInf) :
+    (q : ℂ) (f : L2Multiplication.ComplexLInf (volume : Measure ℝ)) :
     continuumL2ChargeDensity1D q f =
-      q • AlgebraicFock.dGamma L2MultiplicationRealLine.ComplexL2
+      q • AlgebraicFock.dGamma (L2Multiplication.ComplexL2 (volume : Measure ℝ))
         (continuumL2Multiplication1D f) :=
   rfl
 
 /-- On the one-particle sector, the second-quantized continuum charge density is exactly the
 charge-scaled canonical bounded multiplication operator. -/
 theorem continuumL2ChargeDensity1D_oneParticle
-    (q : ℂ) (f : L2MultiplicationRealLine.ComplexLInf) (ψ : L2MultiplicationRealLine.ComplexL2) :
+    (q : ℂ) (f : L2Multiplication.ComplexLInf (volume : Measure ℝ)) (ψ : L2Multiplication.ComplexL2 (volume : Measure ℝ)) :
     continuumL2ChargeDensity1D q f
-        (AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2 ψ) =
-      AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2
-        (q • L2MultiplicationRealLine.multiplicationOperator f ψ) := by
+        (AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ)) ψ) =
+      AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ))
+        (q • L2Multiplication.multiplicationOperator (volume : Measure ℝ) f ψ) := by
   rw [continuumL2ChargeDensity1D_apply]
   simp only [LinearMap.smul_apply, AlgebraicFock.dGamma_oneParticle]
   rw [← map_smul]
@@ -73,13 +74,13 @@ charge-scaled real multiplication operator used by the analytic `L²` density ex
 theorem continuumL2ChargeDensity1D_oneParticle_real
     (q : ℝ) (test : ℝ → ℝ)
     (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
-    (ψ : L2MultiplicationRealLine.ComplexL2) :
+    (ψ : L2Multiplication.ComplexL2 (volume : Measure ℝ)) :
     continuumL2ChargeDensity1D (q : ℂ)
-        (L2MultiplicationRealLine.realMultiplier test htest)
-        (AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2 ψ) =
-      AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2
-        (((q : ℂ) • L2MultiplicationRealLine.multiplicationOperator
-          (L2MultiplicationRealLine.realMultiplier test htest)) ψ) := by
+        (L2Multiplication.realMultiplier (volume : Measure ℝ) test htest)
+        (AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ)) ψ) =
+      AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ))
+        (((q : ℂ) • L2Multiplication.multiplicationOperator (volume : Measure ℝ)
+          (L2Multiplication.realMultiplier (volume : Measure ℝ) test htest)) ψ) := by
   rw [continuumL2ChargeDensity1D_oneParticle]
   rfl
 
