@@ -19,7 +19,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 /-- The diagonal matrix element of a self-adjoint operator, bundled with its self-adjointness as a
 complex scalar. -/
-noncomputable def diagonalExpectationSelfAdjoint
+private noncomputable def diagonalExpectationSelfAdjoint
     (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (x : H) : selfAdjoint ℂ :=
   ⟨inner ℂ (T x) x, by
     change IsSelfAdjoint (inner ℂ (T x) x)
