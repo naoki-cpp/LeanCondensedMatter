@@ -1,4 +1,5 @@
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.SymmDiff
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 
 set_option linter.style.header false
@@ -20,6 +21,8 @@ grade is owned by `Common.OccupationBasis`; this module supplies the fermionic i
 
 namespace SecondQuantization
 namespace Fermionic
+
+open scoped symmDiff
 
 variable {Mode : Type*}
 
@@ -87,56 +90,47 @@ def insertOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
 def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   n.erase i
 
-/-- Toggle one fermionic mode. This is the common occupation reindexing underlying creation and
-annihilation, independent of any Hilbert-space completion. -/
+/-- Toggle one fermionic mode. This is symmetric difference with the singleton
+mode, so the occupation bookkeeping inherits the canonical Boolean-algebra laws for finite sets. -/
 def toggleOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
-  if i ∈ n then removeOccupation i n else insertOccupation i n
+  n ∆ {i}
 
 @[simp]
 theorem mem_toggleOccupation (i : Mode) (n : Occupation Mode) :
     i ∈ toggleOccupation i n ↔ i ∉ n := by
-  by_cases h : i ∈ n
-  · simp [toggleOccupation, h, removeOccupation]
-  · simp [toggleOccupation, h, insertOccupation]
-
-private theorem mem_toggleOccupation_of_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
-    j ∈ toggleOccupation i n ↔ j ∈ n := by
-  by_cases hi : i ∈ n
-  · simp [toggleOccupation, hi, removeOccupation, h]
-  · simp [toggleOccupation, hi, insertOccupation, h]
+  simp [toggleOccupation, Finset.mem_symmDiff]
 
 @[simp]
 theorem toggleOccupation_of_mem {i : Mode} {n : Occupation Mode} (h : i ∈ n) :
     toggleOccupation i n = removeOccupation i n := by
-  simp [toggleOccupation, h]
+  ext j
+  by_cases hj : j = i
+  · subst j
+    simp [toggleOccupation, Finset.mem_symmDiff, removeOccupation, h]
+  · simp [toggleOccupation, Finset.mem_symmDiff, removeOccupation, hj]
 
 @[simp]
 theorem toggleOccupation_of_not_mem {i : Mode} {n : Occupation Mode} (h : i ∉ n) :
     toggleOccupation i n = insertOccupation i n := by
-  simp [toggleOccupation, h]
+  ext j
+  by_cases hj : j = i
+  · subst j
+    simp [toggleOccupation, Finset.mem_symmDiff, insertOccupation, h]
+  · simp [toggleOccupation, Finset.mem_symmDiff, insertOccupation, hj]
 
 @[simp]
 theorem toggleOccupation_involutive (i : Mode) :
     Function.Involutive (toggleOccupation i) := by
-  intro n
-  by_cases h : i ∈ n
-  · simp [toggleOccupation, h, removeOccupation, insertOccupation]
-  · simp [toggleOccupation, h, removeOccupation, insertOccupation]
+  simpa [toggleOccupation] using
+    (symmDiff_left_involutive ({i} : Occupation Mode))
 
 /-- Toggling two modes commutes. -/
 theorem toggleOccupation_comm (i j : Mode) (n : Occupation Mode) :
     toggleOccupation i (toggleOccupation j n) =
       toggleOccupation j (toggleOccupation i n) := by
-  rcases eq_or_ne i j with rfl | hij
-  · rfl
-  ext k
-  by_cases hki : k = i
-  · subst k
-    simp only [mem_toggleOccupation, mem_toggleOccupation_of_ne hij]
-  · by_cases hkj : k = j
-    · subst k
-      simp only [mem_toggleOccupation, mem_toggleOccupation_of_ne (Ne.symm hij)]
-    · simp only [mem_toggleOccupation_of_ne hki, mem_toggleOccupation_of_ne hkj]
+  simpa [toggleOccupation] using
+    (symmDiff_right_comm
+      (a := n) (b := ({j} : Occupation Mode)) (c := ({i} : Occupation Mode)))
 
 /-- Toggling one mode is an equivalence of the full occupation basis. -/
 def toggleOccupationEquiv (i : Mode) : Occupation Mode ≃ Occupation Mode where
