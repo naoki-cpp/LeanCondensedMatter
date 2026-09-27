@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 
@@ -105,38 +105,19 @@ theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
 interaction vertices. -/
 noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex S))) :
+    (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex S))) :
     {leg : TwoPointLeg S // d.unflattenedLegInComponent B leg} ≃
-      ↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4 where
-  toFun leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
-    | inr p =>
-        exact (⟨p.1.1,
-          (mem_interactionSector_subtype
-            (B : Finset (TwoPointVertex S)) p.1).2 hleg⟩, p.2)
-  invFun p :=
-    let v : ↥S :=
-      ⟨p.1.1, interactionSector_subset
-        (B : Finset (TwoPointVertex S)) p.1.2⟩
-    ⟨Sum.inr (v, p.2), by
-      change (Sum.inr v : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S))
-      exact (mem_interactionSector_subtype
-        (B : Finset (TwoPointVertex S)) v).1 p.1.2⟩
-  left_inv leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Subtype.ext
-        rfl
-  right_inv p := by
-    rcases p with ⟨v, l⟩
-    apply Prod.ext
-    · exact Subtype.ext (by rfl)
-    · rfl
+      ↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4 := by
+  change
+    {leg : Fin 2 ⊕ (↥S × Fin 4) //
+      match leg with
+      | .inl e => (Sum.inl e : TwoPointVertex S) ∈
+          (B : Finset (TwoPointVertex S))
+      | .inr p => (Sum.inr p.1 : TwoPointVertex S) ∈
+          (B : Finset (TwoPointVertex S))} ≃
+      ↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4
+  exact vacuumComponentLegDataEquiv (B := (B : Finset (TwoPointVertex S))) hVac
 
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
