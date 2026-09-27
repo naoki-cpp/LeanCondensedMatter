@@ -42,7 +42,7 @@ theorem Pairing.vertexGraph_reachable_partner {n : ℕ} {Vertex : Type*}
 
 
 /-- Paired legs determine the same connected-component block in the induced vertex graph. -/
-theorem Pairing.vertexGraph_componentBlock_partner [Fintype Vertex]
+theorem Pairing.vertexGraph_componentBlock_partner {n : ℕ} {Vertex : Type*} [Fintype Vertex]
     (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)) :
     (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg leg) =
       (pairing.vertexGraph vertexOfLeg).componentBlock
@@ -53,7 +53,7 @@ theorem Pairing.vertexGraph_componentBlock_partner [Fintype Vertex]
 /-- Paired legs determine the same ambient component block when the induced graph is on a finite
 subtype. -/
 theorem Pairing.vertexGraph_componentBlockOn_partner
-    {α : Type*} [DecidableEq α] {s : Finset α}
+    {n : ℕ} {α : Type*} [DecidableEq α] {s : Finset α}
     (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → ↥s) (leg : Fin (2 * n)) :
     (pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg leg) =
       (pairing.vertexGraph vertexOfLeg).componentBlockOn
