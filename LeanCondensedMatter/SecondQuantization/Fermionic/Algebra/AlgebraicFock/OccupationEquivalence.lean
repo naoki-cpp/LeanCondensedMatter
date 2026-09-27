@@ -61,27 +61,12 @@ theorem occupationEquiv_symm_apply
     (occupationEquiv b).symm Ψ = (b.ExteriorAlgebra).repr Ψ :=
   rfl
 
-/-- Transport an exterior-Fock endomorphism into the occupation representation through a chosen
-one-particle basis. -/
-noncomputable def occupationConjugate
-    (b : Module.Basis Mode ℂ 𝓗₁)
-    (A : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
-    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  (occupationEquiv b).symm.toLinearMap.comp
-    (A.comp (occupationEquiv b).toLinearMap)
-
-/-- Conjugation by the occupation/exterior equivalence preserves composition. -/
-theorem occupationConjugate_comp
-    (b : Module.Basis Mode ℂ 𝓗₁)
-    (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
-    occupationConjugate b (A.comp B) =
-      (occupationConjugate b A).comp (occupationConjugate b B) := by
-  change
-    ((occupationEquiv b).symm.conjAlgEquiv ℂ) (A.comp B) =
-      (((occupationEquiv b).symm.conjAlgEquiv ℂ) A).comp
-        (((occupationEquiv b).symm.conjAlgEquiv ℂ) B)
-  rw [← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp]
-  exact map_mul ((occupationEquiv b).symm.conjAlgEquiv ℂ) A B
+/-- Conjugation of exterior-Fock endomorphisms into the occupation representation through a
+chosen one-particle basis, bundled as the induced algebra equivalence. -/
+noncomputable def occupationConjugate (b : Module.Basis Mode ℂ 𝓗₁) :
+    (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) ≃ₐ[ℂ]
+      (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
+  (occupationEquiv b).symm.conjAlgEquiv ℂ
 
 @[simp]
 theorem occupationEquiv_occupationConjugate_apply
