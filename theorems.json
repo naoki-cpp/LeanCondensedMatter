@@ -6816,6 +6816,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {n : ℕ} {α : Type u_1} [inst : DecidableEq α] {s : Finset α} (pairing : Combinatorics.Pairing n)\n  (vertexOfLeg : Fin (2 * n) → ↥s) (leg : Fin (2 * n)),\n  (pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg leg) =\n    (pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg (pairing.partner leg))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.vertexGraph_componentBlockOn_partner",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph",
+    "externalAxioms": [],
+    "docString": "Paired legs determine the same ambient component block when the induced graph is on a finite\nsubtype. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.vertexGraph_reachable_partner",
+      "SimpleGraph.componentBlockOn_eq_of_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {Vertex : Type u_1} [inst : DecidableEq Vertex] [inst_1 : Fintype Vertex] (pairing : Combinatorics.Pairing n)\n  (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)),\n  (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg leg) =\n    (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg (pairing.partner leg))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph",
+    "externalAxioms": [],
+    "docString": "Paired legs determine the same connected-component block in the induced vertex graph. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.vertexGraph_reachable_partner",
+      "SimpleGraph.componentBlock_eq_of_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} {Vertex : Type u_1} (pairing : Combinatorics.Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex)\n  (leg : Fin (2 * n)), (pairing.vertexGraph vertexOfLeg).Reachable (vertexOfLeg (pairing.partner leg)) (vertexOfLeg leg)",
     "standardAxioms": [
       "Classical.choice",
@@ -6835,10 +6923,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "Combinatorics.Pairing.vertexGraph_componentBlockOn_partner",
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.partner_involutive"
@@ -6846,12 +6932,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "Combinatorics.Pairing.vertexGraph_componentBlockOn_partner",
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10521,7 +10605,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} {CurrentDensity : Type u_5}\n  [inst : CommSemiring 𝕜] [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity] (d : Test →ₗ[𝕜] OneForm)\n  (pairing : ConservationLaw.LocalCurrentPairing) (j : CurrentDensity),\n  ConservationLaw.CurrentDensityEquivalent d pairing j j",
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {CurrentDensity : Type u_5} [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity]\n  (d : Test →ₗ[𝕜] OneForm) (pairing : ConservationLaw.LocalCurrentPairing) (j : CurrentDensity),\n  ConservationLaw.CurrentDensityEquivalent d pairing j j",
     "standardAxioms": [
       "Quot.sound",
       "propext"
@@ -10533,7 +10617,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.CurrentDensityEquivalent.refl",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
     "externalAxioms": [],
     "docString": "Weak current-density equivalence is reflexive. ",
     "directWrapperTargetModule": null,
@@ -10554,7 +10638,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} {CurrentDensity : Type u_5}\n  [inst : CommSemiring 𝕜] [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity] {d : Test →ₗ[𝕜] OneForm}\n  {pairing : ConservationLaw.LocalCurrentPairing} {j₁ j₂ : CurrentDensity},\n  ConservationLaw.CurrentDensityEquivalent d pairing j₁ j₂ → ConservationLaw.CurrentDensityEquivalent d pairing j₂ j₁",
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {CurrentDensity : Type u_5} [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity]\n  {d : Test →ₗ[𝕜] OneForm} {pairing : ConservationLaw.LocalCurrentPairing} {j₁ j₂ : CurrentDensity},\n  ConservationLaw.CurrentDensityEquivalent d pairing j₁ j₂ → ConservationLaw.CurrentDensityEquivalent d pairing j₂ j₁",
     "standardAxioms": [
       "Quot.sound",
       "propext"
@@ -10566,7 +10650,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.CurrentDensityEquivalent.symm",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
     "externalAxioms": [],
     "docString": "Weak current-density equivalence is symmetric. ",
     "directWrapperTargetModule": null,
@@ -10587,7 +10671,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} {CurrentDensity : Type u_5}\n  [inst : CommSemiring 𝕜] [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity] {d : Test →ₗ[𝕜] OneForm}\n  {pairing : ConservationLaw.LocalCurrentPairing} {j₁ j₂ j₃ : CurrentDensity},\n  ConservationLaw.CurrentDensityEquivalent d pairing j₁ j₂ →\n    ConservationLaw.CurrentDensityEquivalent d pairing j₂ j₃ → ConservationLaw.CurrentDensityEquivalent d pairing j₁ j₃",
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {CurrentDensity : Type u_5} [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity]\n  {d : Test →ₗ[𝕜] OneForm} {pairing : ConservationLaw.LocalCurrentPairing} {j₁ j₂ j₃ : CurrentDensity},\n  ConservationLaw.CurrentDensityEquivalent d pairing j₁ j₂ →\n    ConservationLaw.CurrentDensityEquivalent d pairing j₂ j₃ → ConservationLaw.CurrentDensityEquivalent d pairing j₁ j₃",
     "standardAxioms": [
       "Quot.sound",
       "propext"
@@ -10599,7 +10683,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.CurrentDensityEquivalent.trans",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
     "externalAxioms": [],
     "docString": "Weak current-density equivalence is transitive. ",
     "directWrapperTargetModule": null,
@@ -11413,7 +11497,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} {CurrentDensity : Type u_5}\n  [inst : CommSemiring 𝕜] [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity] {d : Test →ₗ[𝕜] OneForm}\n  {Φ : Test →ₗ[𝕜] Obs} {pairing : ConservationLaw.LocalCurrentPairing}\n  (R₁ R₂ : ConservationLaw.LocalCurrentDensityRepresentation d Φ pairing),\n  ConservationLaw.CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity",
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {CurrentDensity : Type u_5} [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {pairing : ConservationLaw.LocalCurrentPairing}\n  (R₁ R₂ : ConservationLaw.LocalCurrentDensityRepresentation d Φ pairing),\n  ConservationLaw.CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity",
     "standardAxioms": [
       "Quot.sound",
       "propext"
@@ -11425,7 +11509,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.LocalCurrentDensityRepresentation.currentDensityEquivalent",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
     "externalAxioms": [],
     "docString": "Any two densities representing the same transport functional are weakly equivalent on exact\ntest 1-forms. ",
     "directWrapperTargetModule": null,
@@ -12016,7 +12100,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} {CurrentDensity : Type u_5}\n  [inst : CommSemiring 𝕜] [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity] {d : Test →ₗ[𝕜] OneForm}\n  {Φ : Test →ₗ[𝕜] Obs} {pairing : ConservationLaw.LocalCurrentPairing},\n  ConservationLaw.SeparatesCurrentDensities d pairing →\n    ∀ (R₁ R₂ : ConservationLaw.LocalCurrentDensityRepresentation d Φ pairing), R₁.currentDensity = R₂.currentDensity",
+    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {CurrentDensity : Type u_5} [inst_7 : AddCommMonoid CurrentDensity] [inst_8 : _root_.Module 𝕜 CurrentDensity]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {pairing : ConservationLaw.LocalCurrentPairing},\n  ConservationLaw.SeparatesCurrentDensities d pairing →\n    ∀ (R₁ R₂ : ConservationLaw.LocalCurrentDensityRepresentation d Φ pairing), R₁.currentDensity = R₂.currentDensity",
     "standardAxioms": [
       "Quot.sound",
       "propext"
@@ -12028,7 +12112,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.localCurrentDensity_unique_of_separates",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
     "externalAxioms": [],
     "docString": "A local current density is unique when the concrete differential tests and pairing separate\ncurrent densities. ",
     "directWrapperTargetModule": null,
@@ -89809,8 +89893,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SimpleGraph.componentBlockOn_eq_of_reachable"
+      "Combinatorics.Pairing.vertexGraph_componentBlockOn_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -92261,8 +92344,7 @@
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SimpleGraph.componentBlock_eq_of_reachable"
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -92528,9 +92610,8 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
-      "SimpleGraph.componentBlock_eq_of_reachable"
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
+      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -131102,7 +131183,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
+      "Combinatorics.Pairing.vertexGraph_componentBlockOn_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
     ],
     "dependencies": [
@@ -131111,7 +131192,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
+      "Combinatorics.Pairing.vertexGraph_componentBlockOn_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
     ],
     "compiledConsumerCount": 2,
@@ -131235,10 +131316,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "SimpleGraph.componentBlock_eq_iff_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
+      "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
     "dependencies": [
       "SimpleGraph.mem_componentBlock"
@@ -131246,12 +131325,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "SimpleGraph.componentBlock_eq_iff_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
+      "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146181,8 +146258,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SimpleGraph.componentBlock_eq_of_reachable"
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
