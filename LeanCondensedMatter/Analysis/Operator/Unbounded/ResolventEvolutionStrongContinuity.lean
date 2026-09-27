@@ -91,7 +91,7 @@ private theorem stoneEvolution_apply_continuous_domain
   convert hmapped using 1
   funext t
   simpa only [stoneEvolution_apply, show s + (t - s) = t by ring] using
-    (resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)).symm
+    resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) (x : H)
 
 /-- The limiting Stone evolution is jointly continuous in the vector and time variables.
 Continuity on the dense generator domain extends to the whole Hilbert space because every time
