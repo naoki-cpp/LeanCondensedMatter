@@ -12985,7 +12985,7 @@
       "ConservationLaw.transportCommutator_smul_id",
       "ConservationLaw.transportFunctional_smul_id",
       "QuantumMechanics.SingleParticle.symmetrizedCurrentFlux_smul_id_eq_localPairing",
-      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_id"
+      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id"
     ],
     "dependencies": [
       "ConservationLaw.symmetrizedProduct_apply"
@@ -12997,7 +12997,7 @@
       "ConservationLaw.transportCommutator_smul_id",
       "ConservationLaw.transportFunctional_smul_id",
       "QuantumMechanics.SingleParticle.symmetrizedCurrentFlux_smul_id_eq_localPairing",
-      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_id"
+      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -36816,7 +36816,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (velocity m : V →ₗ[ℂ] V),\n  (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentLinear V velocity) m =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
+    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (velocity m : V →ₗ[ℂ] V),\n  (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentLinear V velocity) m =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36829,7 +36829,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentLinear_apply",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -36886,7 +36886,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (velocity : V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity LinearMap.id = velocity",
+    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (velocity : V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity LinearMap.id = velocity",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36899,19 +36899,62 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_id",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.symmetrizedProduct_smul_id"
+      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (velocity : V →ₗ[ℂ] V) (q : ℂ),\n  QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity (q • LinearMap.id) = q • velocity",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
+    "externalAxioms": [],
+    "docString": "A scalar transported quantity `q I` gives the charge-like current `q v`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_id",
+      "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_toLinearMap_eq_symmetrizedVelocityCurrent"
+    ],
+    "dependencies": [
+      "ConservationLaw.symmetrizedProduct_smul_id"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_id",
+      "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_toLinearMap_eq_symmetrizedVelocityCurrent"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55815,6 +55858,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_toLinearMap_eq_symmetrizedVelocityCurrent",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
@@ -55825,13 +55869,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_toLinearMap_eq_symmetrizedVelocityCurrent",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55864,6 +55909,44 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (direction : Fin 2) (e v : ℝ),\n  ↑(QuantumTheory.Transport.Models.MassiveDirac.currentOperator direction e v) =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent QuantumTheory.Transport.Models.MassiveDirac.DiracHilbert\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.velocityOperator direction v)) (↑(-e) • LinearMap.id)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_toLinearMap_eq_symmetrizedVelocityCurrent",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.CurrentBridge",
+    "externalAxioms": [],
+    "docString": "The massive-Dirac charge-current vertex is the generic one-particle current for transported\nquantity `(-e) I`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id",
+      "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_eq_charge_smul_velocityOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
