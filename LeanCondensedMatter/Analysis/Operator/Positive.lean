@@ -43,7 +43,7 @@ theorem isPositive_of_tendsto
           (𝓝 (RCLike.re (inner 𝕜 (T x) x))) :=
       RCLike.continuous_re.continuousAt.tendsto.comp
         (happly.inner tendsto_const_nhds)
-    exact isClosed_Ici.mem_of_tendsto hinner
+    exact (isClosed_Ici : IsClosed (Set.Ici (0 : ℝ))).mem_of_tendsto hinner
       (hpos.mono fun i hi => hi.re_inner_nonneg_left x)
 
 end ContinuousLinearMap
