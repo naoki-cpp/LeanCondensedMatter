@@ -20,15 +20,18 @@ namespace Common
 
 variable {External Vertex Local : Type}
 
+/-- The vertex incident to an unflattened external-or-interaction leg. -/
+def componentLegVertex {S : Finset Vertex} :
+    External ⊕ (↥S × Local) → External ⊕ ↥S
+  | .inl e => .inl e
+  | .inr p => .inr p.1
+
 /-- Legs incident to a finite component split into its external vertices and its interaction
 vertices paired with their local-leg data. -/
 noncomputable def componentLegDataEquiv
     [DecidableEq External] [DecidableEq Vertex]
     {S : Finset Vertex} (B : Finset (External ⊕ ↥S)) :
-    {leg : External ⊕ (↥S × Local) //
-      match leg with
-      | .inl e => (Sum.inl e : External ⊕ ↥S) ∈ B
-      | .inr p => (Sum.inr p.1 : External ⊕ ↥S) ∈ B} ≃
+    {leg : External ⊕ (↥S × Local) // componentLegVertex leg ∈ B} ≃
       ↥(Finset.toLeft B) ⊕ (↥(interactionSector B) × Local) where
   toFun leg := by
     rcases leg with ⟨leg, hleg⟩
@@ -73,10 +76,7 @@ noncomputable def vacuumComponentLegDataEquiv
     [DecidableEq External] [DecidableEq Vertex]
     {S : Finset Vertex} (B : Finset (External ⊕ ↥S))
     (hVac : ComponentIsVacuum B) :
-    {leg : External ⊕ (↥S × Local) //
-      match leg with
-      | .inl e => (Sum.inl e : External ⊕ ↥S) ∈ B
-      | .inr p => (Sum.inr p.1 : External ⊕ ↥S) ∈ B} ≃
+    {leg : External ⊕ (↥S × Local) // componentLegVertex leg ∈ B} ≃
       ↥(interactionSector B) × Local :=
   (componentLegDataEquiv B).trans
     { toFun := fun leg => by
