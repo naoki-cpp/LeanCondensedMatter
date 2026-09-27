@@ -112,52 +112,6 @@ zeroth-order meaning. -/
 abbrev LocalCurrentPairing :=
   CurrentDensity →ₗ[𝕜] (OneForm →ₗ[𝕜] Obs)
 
-/-- Two current densities are weakly equivalent when they pair equally against every exact test
-1-form `d f`. -/
-def CurrentDensityEquivalent
-    (d : Test →ₗ[𝕜] OneForm)
-    (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity))
-    (j₁ j₂ : CurrentDensity) : Prop :=
-  ∀ f, pairing j₁ (d f) = pairing j₂ (d f)
-
-namespace CurrentDensityEquivalent
-
-/-- Weak current-density equivalence is reflexive. -/
-theorem refl
-    (d : Test →ₗ[𝕜] OneForm)
-    (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity))
-    (j : CurrentDensity) :
-    CurrentDensityEquivalent d pairing j j := by
-  intro f
-  rfl
-
-/-- Weak current-density equivalence is symmetric. -/
-theorem symm
-    {d : Test →ₗ[𝕜] OneForm}
-    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)}
-    {j₁ j₂ : CurrentDensity}
-    (h : CurrentDensityEquivalent d pairing j₁ j₂) :
-    CurrentDensityEquivalent d pairing j₂ j₁ := by
-  intro f
-  exact (h f).symm
-
-/-- Weak current-density equivalence is transitive. -/
-theorem trans
-    {d : Test →ₗ[𝕜] OneForm}
-    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)}
-    {j₁ j₂ j₃ : CurrentDensity}
-    (h₁₂ : CurrentDensityEquivalent d pairing j₁ j₂)
-    (h₂₃ : CurrentDensityEquivalent d pairing j₂ j₃) :
-    CurrentDensityEquivalent d pairing j₁ j₃ := by
-  intro f
-  exact (h₁₂ f).trans (h₂₃ f)
-
-end CurrentDensityEquivalent
-
 /-- A transport functional has a local current-density representation relative to a supplied
 pairing when one density `j` represents `Φ` through `d`. -/
 structure LocalCurrentDensityRepresentation
@@ -183,40 +137,6 @@ def toDifferentialCurrentRepresentation
   current := pairing R.currentDensity
   isCurrent := R.isCurrentDensity
 
-/-- Any two densities representing the same transport functional are weakly equivalent on exact
-test 1-forms. -/
-theorem currentDensityEquivalent
-    {d : Test →ₗ[𝕜] OneForm}
-    {Φ : Test →ₗ[𝕜] Obs}
-    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)}
-    (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
-    CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity := by
-  intro f
-  calc
-    pairing R₁.currentDensity (d f) = Φ f := (R₁.isCurrentDensity f).symm
-    _ = pairing R₂.currentDensity (d f) := R₂.isCurrentDensity f
-
 end LocalCurrentDensityRepresentation
-
-/-- Exact differential tests and the chosen pairing separate current densities when weak
-equivalence implies equality. -/
-def SeparatesCurrentDensities
-    (d : Test →ₗ[𝕜] OneForm)
-    (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)) : Prop :=
-  ∀ ⦃j₁ j₂ : CurrentDensity⦄, CurrentDensityEquivalent d pairing j₁ j₂ → j₁ = j₂
-
-/-- A local current density is unique when the concrete differential tests and pairing separate
-current densities. -/
-theorem localCurrentDensity_unique_of_separates
-    {d : Test →ₗ[𝕜] OneForm}
-    {Φ : Test →ₗ[𝕜] Obs}
-    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)}
-    (hsep : SeparatesCurrentDensities d pairing)
-    (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
-    R₁.currentDensity = R₂.currentDensity :=
-  hsep (R₁.currentDensityEquivalent R₂)
 
 end ConservationLaw
