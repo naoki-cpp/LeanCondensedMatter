@@ -154,30 +154,6 @@ theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
     Even (Finset.toLeft
       (B : Finset (ExternalInsertionVertex E S))).card := by
   classical
-  let blockEquiv := d.componentBlockLegDataEquiv B
-  have hcard :
-      Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
-        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
-        (Finset.toLeft
-          (B : Finset (ExternalInsertionVertex E S))).card +
-          4 * (interactionSector
-            (B : Finset (ExternalInsertionVertex E S))).card := by
-    calc
-      Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
-          d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
-          Fintype.card
-            (↥(Finset.toLeft
-              (B : Finset (ExternalInsertionVertex E S))) ⊕
-              (↥(interactionSector
-                (B : Finset (ExternalInsertionVertex E S))) × Fin 4)) :=
-        Fintype.card_congr blockEquiv
-      _ = (Finset.toLeft
-            (B : Finset (ExternalInsertionVertex E S))).card +
-            4 * (interactionSector
-              (B : Finset (ExternalInsertionVertex E S))).card := by
-        rw [Fintype.card_sum, Fintype.card_prod, Fintype.card_coe,
-          Fintype.card_coe, Fintype.card_fin]
-        omega
   let restricted :=
     d.pairing.restrict
       (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
@@ -187,11 +163,8 @@ theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
         d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :=
     restricted.even_card
-  rw [hcard] at hEven
-  rcases hEven with ⟨k, hk⟩
-  refine ⟨k - 2 * (interactionSector
-    (B : Finset (ExternalInsertionVertex E S))).card, ?_⟩
-  omega
+  simpa only [Fintype.card_coe] using
+    externalCardEven_of_equiv_sum_prod (d.componentBlockLegDataEquiv B) hEven (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
 
 /-- The local external-sector parameter: half the number of one-legged external insertions
 carried by one connected component. -/

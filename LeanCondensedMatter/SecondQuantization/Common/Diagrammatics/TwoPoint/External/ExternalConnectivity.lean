@@ -60,46 +60,25 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
       constructor
       · exact fun h => False.elim (d.externalOne_not_mem_externalComponentPart hExt h)
       · simp
-  let dataEquiv :
-      {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
-        Fin 1 ⊕
-          (↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) × Fin 4) :=
-    (componentLegDataEquiv
-      (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
-      (d.vertexGraph.componentBlock (Sum.inl 0))).trans
-      (Equiv.sumCongr
-        (Fintype.equivFinOfCardEq (by simp [hExternalSector]))
-        (Equiv.refl _))
   let blockEquiv :
       {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg} ≃
-        Fin 1 ⊕
+        ↥(Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))) ⊕
           (↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) × Fin 4) :=
     ((twoPointLegEquiv S).subtypeEquiv fun leg =>
-        d.legInComponent_iff_unflattened d.externalComponentPart leg).trans dataEquiv
-  have hcard :
-      Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg} =
-        1 + 4 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card := by
-    calc
-      Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-          d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg} =
-          Fintype.card
-            (Fin 1 ⊕
-              (↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) × Fin 4)) :=
-        Fintype.card_congr blockEquiv
-      _ = 1 + 4 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card := by
-        simp [Nat.mul_comm]
+        d.legInComponent_iff_unflattened d.externalComponentPart leg).trans
+      (componentLegDataEquiv
+        (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
+        (d.vertexGraph.componentBlock (Sum.inl 0)))
   let restricted :=
     d.pairing.restrict (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)))
       (fun leg => d.legInComponent_partner_iff (d.vertexGraph.componentBlock (Sum.inl 0)) leg)
   have hEven :
-      Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg}) :=
-    restricted.even_card
-  rw [hcard] at hEven
-  obtain ⟨k, hk⟩ := hEven
-  omega
+      Even (Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))).card := by
+    simpa only [Fintype.card_coe] using
+      externalCardEven_of_equiv_sum_prod blockEquiv restricted.even_card (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
+  rw [hExternalSector] at hEven
+  simp at hEven
 
 /-- The two external component blocks always coincide. -/
 theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}
