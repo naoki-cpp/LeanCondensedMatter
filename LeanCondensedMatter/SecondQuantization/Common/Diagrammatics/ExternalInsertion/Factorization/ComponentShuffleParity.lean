@@ -77,34 +77,12 @@ private theorem ExternalInsertionDiagram.ambientInteractionVertex_ne
       (C : Finset (ExternalInsertionVertex E S)))) :
     d.ambientInteractionVertex B v ≠ d.ambientInteractionVertex C w := by
   intro hvw
-  have hvB :
-      (Sum.inr (d.ambientInteractionVertex B v) : ExternalInsertionVertex E S) ∈
-        (B : Finset (ExternalInsertionVertex E S)) :=
-    (mem_interactionSector_subtype
-      (B : Finset (ExternalInsertionVertex E S))
-      (d.ambientInteractionVertex B v)).1 v.2
-  have hwC :
-      (Sum.inr (d.ambientInteractionVertex C w) : ExternalInsertionVertex E S) ∈
-        (C : Finset (ExternalInsertionVertex E S)) :=
-    (mem_interactionSector_subtype
-      (C : Finset (ExternalInsertionVertex E S))
-      (d.ambientInteractionVertex C w)).1 w.2
-  have hvC :
-      (Sum.inr (d.ambientInteractionVertex B v) : ExternalInsertionVertex E S) ∈
-        (C : Finset (ExternalInsertionVertex E S)) := by
-    simpa only [hvw] using hwC
-  have hB :
-      d.vertexGraph.componentBlock
-          (Sum.inr (d.ambientInteractionVertex B v)) =
-        (B : Finset (ExternalInsertionVertex E S)) :=
-    (d.vertexGraph.componentBlock_eq_iff_mem B.2 _).2 hvB
-  have hC :
-      d.vertexGraph.componentBlock
-          (Sum.inr (d.ambientInteractionVertex B v)) =
-        (C : Finset (ExternalInsertionVertex E S)) :=
-    (d.vertexGraph.componentBlock_eq_iff_mem C.2 _).2 hvC
   apply hBC
-  exact Subtype.ext (hB.symm.trans hC)
+  apply interactionSector_component_unique d.vertexGraph
+    (d.ambientInteractionVertex B v) B C
+  · exact v.2
+  · rw [hvw]
+    exact w.2
 
 private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
     {S : Finset (Fin N)}

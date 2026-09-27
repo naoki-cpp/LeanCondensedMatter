@@ -90,5 +90,64 @@ theorem interactionSectorComponentEquiv_symm_val
     ((interactionSectorComponentEquiv G).symm x : ↥S).1 = x.2.1 :=
   rfl
 
+
+/-- The interaction sectors of all graph components exhaust the ambient interaction vertices. -/
+theorem sum_interactionSector_card_eq
+    [DecidableEq External] [Fintype External] [DecidableEq Vertex]
+    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S)) :
+    (∑ B : G.componentPartition.parts,
+      (interactionSector (B : Finset (External ⊕ ↥S))).card) = S.card := by
+  have hcard := Fintype.card_congr (interactionSectorComponentEquiv G)
+  simpa [Fintype.card_sigma] using hcard.symm
+
+/-- A commutative product over ambient interaction vertices factors over the interaction sectors of
+the graph components. -/
+theorem prod_eq_prod_interactionSectors
+    {M : Type*} [CommMonoid M]
+    [DecidableEq External] [Fintype External] [DecidableEq Vertex]
+    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S)) (f : ↥S → M) :
+    (∏ v : ↥S, f v) =
+      ∏ B : G.componentPartition.parts,
+        ∏ v : ↥(interactionSector (B : Finset (External ⊕ ↥S))),
+          f ⟨v.1, interactionSector_subset
+            (B : Finset (External ⊕ ↥S)) v.2⟩ := by
+  classical
+  let e := interactionSectorComponentEquiv G
+  calc
+    (∏ v : ↥S, f v) =
+        ∏ B : G.componentPartition.parts,
+          ∏ v : ↥(interactionSector (B : Finset (External ⊕ ↥S))),
+            f (e.symm ⟨B, v⟩) :=
+      Fintype.prod_equiv_sigma e f
+    _ = ∏ B : G.componentPartition.parts,
+        ∏ v : ↥(interactionSector (B : Finset (External ⊕ ↥S))),
+          f ⟨v.1, interactionSector_subset
+            (B : Finset (External ⊕ ↥S)) v.2⟩ := by
+      apply Fintype.prod_congr
+      intro B
+      apply Fintype.prod_congr
+      intro v
+      apply congrArg f
+      apply Subtype.ext
+      exact interactionSectorComponentEquiv_symm_val G ⟨B, v⟩
+
+/-- A fixed ambient interaction vertex belongs to the interaction sector of at most one graph
+component. -/
+theorem interactionSector_component_unique
+    [DecidableEq External] [Fintype External] [DecidableEq Vertex]
+    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S))
+    (v : ↥S) (B C : G.componentPartition.parts)
+    (hvB : (v : Vertex) ∈ interactionSector
+      (B : Finset (External ⊕ ↥S)))
+    (hvC : (v : Vertex) ∈ interactionSector
+      (C : Finset (External ⊕ ↥S))) :
+    B = C := by
+  have h :
+      (interactionSectorComponentEquiv G).symm ⟨B, ⟨v.1, hvB⟩⟩ =
+        (interactionSectorComponentEquiv G).symm ⟨C, ⟨v.1, hvC⟩⟩ := by
+    apply Subtype.ext
+    simp
+  exact congrArg Sigma.fst ((interactionSectorComponentEquiv G).symm.injective h)
+
 end Common
 end SecondQuantization

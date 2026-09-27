@@ -322,15 +322,6 @@ theorem ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply
               (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl v).2⟩ := by
   rfl
 
-/-- The component interaction sectors exhaust the ambient interaction vertices. -/
-theorem ExternalInsertionDiagram.sum_componentInteractionSector_card_eq
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    (∑ B : d.vertexGraph.componentPartition.parts,
-      (interactionSector
-        (B : Finset (ExternalInsertionVertex E S))).card) = S.card := by
-  have hcard := Fintype.card_congr (interactionSectorComponentEquiv d.vertexGraph)
-  simpa [Fintype.card_sigma] using hcard.symm
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
