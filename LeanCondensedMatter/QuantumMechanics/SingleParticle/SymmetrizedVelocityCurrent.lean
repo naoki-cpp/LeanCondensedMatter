@@ -1,20 +1,14 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
 
 set_option linter.style.header false
 
 /-!
-# Symmetrized velocity-current representation
+# Localized representation of the symmetrized velocity current
 
-For a distinguished one-particle velocity `v` and quantity `m`, the operator
-
-```text
-1/2 {v,m}
-```
-
-is a useful Hermitian current-density candidate. It is not taken here as the definition of current:
-the fundamental transport object remains the differential current functional supplied by the
-balance law. This module only proves when the symmetrized velocity operator represents that
-functional relative to the local pairing.
+The operator-level generalized current `jᵐ = 1/2 {v,m}` is owned independently by
+`SingleParticle.GeneralizedCurrent`. This module adds localization semantics: it proves when that
+operator represents the exact-differential transport supplied by a Heisenberg balance law.
 
 Without commutation between the localized one-form operator and `m`, nested symmetrization carries
 a double-commutator correction. Thus the symmetrized velocity current is a special current-density
@@ -28,34 +22,6 @@ variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
-
-/-- With velocity fixed, the symmetrized current density is complex-linear in the transported
-one-body quantity. -/
-noncomputable def symmetrizedVelocityCurrentLinear
-    (velocity : V →ₗ[ℂ] V) :
-    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  _root_.ConservationLaw.symmetrizedProductLeftLinear V velocity
-
-/-- The symmetrized velocity current-density candidate `1/2 {v,m}`, obtained by evaluating the
-transported-quantity linear map. -/
-noncomputable def symmetrizedVelocityCurrent
-    (velocity m : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  symmetrizedVelocityCurrentLinear V velocity m
-
-@[simp]
-theorem symmetrizedVelocityCurrentLinear_apply
-    (velocity m : V →ₗ[ℂ] V) :
-    symmetrizedVelocityCurrentLinear V velocity m =
-      symmetrizedVelocityCurrent V velocity m :=
-  rfl
-
-@[simp]
-theorem symmetrizedVelocityCurrent_id
-    (velocity : V →ₗ[ℂ] V) :
-    symmetrizedVelocityCurrent V velocity LinearMap.id = velocity := by
-  change _root_.ConservationLaw.symmetrizedProduct velocity LinearMap.id = velocity
-  simpa using
-    (_root_.ConservationLaw.symmetrizedProduct_smul_id velocity (1 : ℂ))
 
 /-- General localized-transport decomposition. The second term measures the failure of the
 localized one-form operator to commute with the transported quantity. -/

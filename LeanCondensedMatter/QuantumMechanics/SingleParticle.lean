@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent

@@ -35,6 +35,7 @@
         "LeanCondensedMatter/Analysis/ConservationLaw/SymmetricLocalizationAlgebra.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/CorrectedCurrentFlux.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/GeneralizedCurrent.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/CorrectedCurrent.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/CorrectedCurrentAmbiguity.lean",
@@ -355,9 +356,17 @@
       "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]
     },
     {
+      "id": "generalizedCurrentOperator",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/GeneralizedCurrent.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]
+    },
+    {
       "id": "generalizedCurrentSymmetrizedVelocity",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
-      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+      ]
     },
     {
       "id": "generalizedCurrentCorrectedBridge",
@@ -377,6 +386,7 @@
       "id": "generalizedCurrentSingleParticleUmbrella",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle.lean",
       "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent"
@@ -569,6 +579,7 @@
       "path": "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.CurrentBridge",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin",
@@ -637,6 +648,14 @@
       "modules": [
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Resolvent.SelfEnergy"
+      ]
+    },
+    {
+      "id": "massiveDiracGeneralizedCurrentBridge",
+      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/CurrentBridge.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator"
       ]
     },
     {

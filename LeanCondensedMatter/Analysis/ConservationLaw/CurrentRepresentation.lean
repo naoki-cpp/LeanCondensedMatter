@@ -29,6 +29,12 @@ density `j` and a supplied bilinear pairing such that `Φ(f) = pairing j (d f)`.
 The pairing is deliberately abstract. Concrete continuum models may realize it by a zeroth-order
 pairing such as `∫ α · j`, while lattice models may use a finite bond pairing. No locality claim is
 made merely from factorization through `d`.
+
+This module does not define current observables in general. Operator-level generalized currents,
+model-specific charge-current vertices, and response observables may exist without a weak
+differential representation. `IsDifferentialCurrent` records the additional local-balance fact
+that a supplied one-form functional represents `Φ` through `d`; it is not the root definition of
+every current operator.
 -/
 
 namespace ConservationLaw
