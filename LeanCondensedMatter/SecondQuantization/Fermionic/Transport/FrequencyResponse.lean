@@ -48,10 +48,10 @@ noncomputable def boundedDirectionalResponseChannel
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) :
     QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  source := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
+  measured := boundedDirectionalCurrentLinearMap geometry
+    (system.hbar : ℂ) (q : ℂ) K direction
+  source := boundedDirectionalCurrentLinearMap geometry
+    (system.hbar : ℂ) (q : ℂ) K direction
   observableVariation := boundedDirectionalContact geometry direction
     (system.hbar : ℂ) (q : ℂ) K
 
