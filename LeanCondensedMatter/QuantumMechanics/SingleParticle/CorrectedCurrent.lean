@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.IntrinsicLocalizedTransport
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
 
 set_option linter.style.header false
 
