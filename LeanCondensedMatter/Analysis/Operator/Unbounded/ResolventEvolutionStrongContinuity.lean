@@ -65,39 +65,10 @@ theorem norm_stoneEvolution_apply_sub_le_domain
 theorem stoneEvolution_apply_continuousAt_zero_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
     ContinuousAt (fun t : ℝ => stoneEvolution A hA t (x : H)) 0 := by
-  rw [Metric.continuousAt_iff]
-  intro ε hε
-  let M : ℝ := ‖A x‖
-  let δ : ℝ := ε / (M + 1)
-  have hM : 0 ≤ M := by
-    dsimp [M]
-    exact norm_nonneg _
-  have hden : 0 < M + 1 := by linarith
-  have hδ : 0 < δ := by
-    dsimp [δ]
-    positivity
-  refine ⟨δ, hδ, ?_⟩
-  intro t ht
-  have ht' : |t| < δ := by
-    simpa [Real.dist_eq] using ht
-  have hprod : M * |t| < ε := by
-    have hle : M * |t| ≤ M * δ :=
-      mul_le_mul_of_nonneg_left (le_of_lt ht') hM
-    have hfrac : M / (M + 1) < 1 :=
-      (div_lt_one hden).2 (by linarith)
-    have hMδ : M * δ < ε := by
-      calc
-        M * δ = ε * (M / (M + 1)) := by
-          dsimp [δ]
-          ring
-        _ < ε * 1 := mul_lt_mul_of_pos_left hfrac hε
-        _ = ε := by ring
-    exact lt_of_le_of_lt hle hMδ
-  rw [stoneEvolution_zero]
-  change dist (stoneEvolution A hA t (x : H)) (x : H) < ε
-  rw [dist_eq_norm]
-  exact lt_of_le_of_lt
-    (norm_stoneEvolution_apply_sub_le_domain A hA t x) hprod
+  apply continuousAt_of_locally_lipschitz zero_lt_one ‖A x‖
+  intro t _
+  simpa [stoneEvolution_zero, dist_eq_norm, Real.dist_eq] using
+    norm_stoneEvolution_apply_sub_le_domain A hA t x
 
 /-- On the generator domain, the limiting Stone evolution is continuous at every time. -/
 private theorem stoneEvolution_apply_continuous_domain
