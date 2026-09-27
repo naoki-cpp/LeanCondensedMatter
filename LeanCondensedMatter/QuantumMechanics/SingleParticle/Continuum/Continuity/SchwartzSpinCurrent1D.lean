@@ -92,12 +92,15 @@ theorem schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
         (SchwartzTwoLevel1D.velocityOperator ℏ κ)
         SchwartzTwoLevel1D.multiplicationLinear) := by
   intro f
-  simpa [heisenbergLocalizationFunctional, heisenbergScale,
-    localizationCommutatorFunctional, _root_.ConservationLaw.linearCommutator,
-    velocityLocalizationFlux, symmetrizedProductRightLinear,
-    _root_.ConservationLaw.symmetrizedProduct] using
+  rw [heisenbergLocalizationFunctional_apply, velocityLocalizationFlux_apply]
+  apply LinearMap.ext
+  intro ψ
+  have h := congrArg
+    (fun T : SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D => T ψ)
     (SchwartzTwoLevel1D.heisenberg_localization_eq_symmetrized_velocity
       ℏ κ potential internalH f)
+  simpa [heisenbergScale, _root_.ConservationLaw.linearCommutator_apply,
+    _root_.ConservationLaw.symmetrizedProduct_apply] using h
 
 /-- Multiplication localization commutes with a concrete spin component. -/
 theorem schwartzSpin_localization_commutator_eq_zero
