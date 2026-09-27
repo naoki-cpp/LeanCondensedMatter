@@ -37,8 +37,9 @@ theorem interactionPicture_quarticVertexOperator_eq_smul
     (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (τ : ℝ) :
     interactionPicture ε (quarticVertexOperator q) τ =
       quarticVertexTimeFactor ε q τ • quarticVertexOperator q := by
-  simpa [interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
-    quarticVertexTimeFactor] using
+  change Common.heisenbergEvolve (freeEigenvalue ε) τ (quarticVertexOperator q) =
+    quarticVertexTimeFactor ε q τ • quarticVertexOperator q
+  simpa [quarticVertexOperator, quarticVertexTimeFactor] using
     (Common.heisenbergEvolve_quarticVertexOperator
       (freeEigenvalue ε) ε create annihilate q τ
       (fun i => imaginaryTimeEvolve_create ε τ i)
@@ -109,7 +110,9 @@ theorem quarticVertexSequenceInteractionPicture_eq_smul (ε : Mode → ℝ) :
           (fun i => q i.succ) (fun i => τ i.succ)]
       simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
       congr 1
-      · rw [quarticVertexSequenceTimeFactor, Fin.prod_univ_succ]
+      · simpa [mul_comm] using
+          (quarticVertexSequenceTimeFactor_cons ε (q 0) (fun i => q i.succ)
+            (τ 0) (fun i => τ i.succ)).symm
       · rw [Module.End.mul_eq_comp]
         rw [← quarticVertexSequenceOperator_cons
           (q0 := q 0) (q := fun i => q i.succ)]
