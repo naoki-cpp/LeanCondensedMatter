@@ -65,17 +65,7 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
       (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
       (d.vertexGraph.componentBlock (Sum.inl 0))).trans
       (Equiv.sumCongr
-        (Equiv.ofBijective
-          (fun e : ↥(Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))) =>
-            (⟨e.1, by simpa [hExternalSector] using e.2⟩ : Fin 1))
-          (by
-            constructor
-            · intro a b _
-              exact Subtype.ext (by omega)
-            · intro e
-              refine ⟨⟨0, ?_⟩, ?_⟩
-              · simp [hExternalSector]
-              · exact Subtype.ext (by omega)))
+        (Fintype.equivFinOfCardEq (by simp [hExternalSector]))
         (Equiv.refl _))
   let blockEquiv :
       {leg : Fin (2 * (2 * S.card + 1)) //
