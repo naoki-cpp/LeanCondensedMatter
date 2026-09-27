@@ -78,14 +78,15 @@ theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
     symmetrizedProduct A B = symmetrizedProduct B A := by
   ext v
-  simp [symmetrizedProduct, add_comm]
+  simp only [symmetrizedProduct_apply]
+  rw [add_comm]
 
 @[simp]
 theorem symmetrizedProduct_zero_left {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) :
     symmetrizedProduct (0 : W →ₗ[ℂ] W) A = 0 := by
   ext v
-  simp [symmetrizedProduct]
+  simp
 
 @[simp]
 theorem symmetrizedProduct_zero_right {W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -100,8 +101,7 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) (q : ℂ) :
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
   ext v
-  simp [symmetrizedProduct]
-  module
+  simp [symmetrizedProduct_apply] <;> module
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -113,7 +113,7 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
     have h := congrArg (fun T : W →ₗ[ℂ] W => T v) hAB
     simpa [linearCommutator] using h
   have hcomm : A (B v) = B (A v) := sub_eq_zero.mp hzero
-  change (1 / 2 : ℂ) • (A (B v) + B (A v)) = A (B v)
+  rw [symmetrizedProduct_apply]
   rw [← hcomm]
   module
 
@@ -127,8 +127,7 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module ℂ W]
       symmetrizedProduct A (symmetrizedProduct v m) +
         (1 / 4 : ℂ) • linearCommutator v (linearCommutator A m) := by
   ext x
-  simp [symmetrizedProduct, linearCommutator]
-  module
+  simp [symmetrizedProduct_apply, linearCommutator] <;> module
 
 /-- If the outer localizer commutes with the transported quantity, nested symmetrization
 reassociates without a correction. -/
@@ -148,7 +147,6 @@ theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module
       symmetrizedProduct (linearCommutator h A) B +
         symmetrizedProduct A (linearCommutator h B) := by
   ext v
-  simp [linearCommutator, symmetrizedProduct]
-  module
+  simp [linearCommutator, symmetrizedProduct_apply] <;> module
 
 end ConservationLaw
