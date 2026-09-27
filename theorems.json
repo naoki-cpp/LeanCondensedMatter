@@ -111075,7 +111075,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {𝓗₁ : Type u_2} [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode),\n  SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b\n      ((SecondQuantization.Fermionic.AlgebraicFock.annihilateDual 𝓗₁) (b.coord i)) =\n    SecondQuantization.Fermionic.annihilate i",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {𝓗₁ : Type u_2} [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b)\n      ((SecondQuantization.Fermionic.AlgebraicFock.annihilateDual 𝓗₁) (b.coord i)) =\n    SecondQuantization.Fermionic.annihilate i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111123,46 +111123,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : LinearOrder Mode] [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁)\n  (A B : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁ →ₗ[ℂ] SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b (A ∘ₗ B) =\n    SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b A ∘ₗ\n      SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence",
-    "externalAxioms": [],
-    "docString": "Conjugation by the occupation/exterior equivalence preserves composition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {𝓗₁ : Type u_2} [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode),\n  SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b\n      ((SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) (b i)) =\n    SecondQuantization.Fermionic.create i",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {𝓗₁ : Type u_2} [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b)\n      ((SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) (b i)) =\n    SecondQuantization.Fermionic.create i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111291,7 +111252,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : LinearOrder Mode] [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁)\n  (A : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁ →ₗ[ℂ] SecondQuantization.Fermionic.AlgebraicFock 𝓗₁)\n  (Ψ : SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv b)\n      ((SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b A) Ψ) =\n    A ((SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv b) Ψ)",
+    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : LinearOrder Mode] [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁)\n  (A : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁ →ₗ[ℂ] SecondQuantization.Fermionic.AlgebraicFock 𝓗₁)\n  (Ψ : SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv b)\n      (((SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b) A) Ψ) =\n    A ((SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv b) Ψ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114447,7 +114408,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
       "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.latticeBasis_coord_eq_lapply"
