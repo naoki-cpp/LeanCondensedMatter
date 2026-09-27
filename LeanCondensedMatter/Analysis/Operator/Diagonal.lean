@@ -109,7 +109,7 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
         have hiCompact :
             IsCompactOperator (diagonalTerm b a i) := by
           change IsCompactOperator (a i • InnerProductSpace.rankOne ℂ (b i) (b i))
-          exact (ContinuousLinearMap.isCompactOperator_rankOne (b i) (b i)).smul (a i)
+          exact (InnerProductSpace.isCompactOperator_rankOne (b i) (b i)).smul (a i)
         exact hiCompact.add ih
   refine isCompactOperator_of_tendsto
     (l := Filter.atTop)
