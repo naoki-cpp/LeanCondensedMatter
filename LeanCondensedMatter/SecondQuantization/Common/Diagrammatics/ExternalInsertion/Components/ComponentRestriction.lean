@@ -75,10 +75,48 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
       ↥(Finset.toLeft
         (B : Finset (ExternalInsertionVertex E S))) ⊕
         (↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) :=
-  SecondQuantization.Common.componentLegDataEquiv
-    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-    (B := (B : Finset (ExternalInsertionVertex E S)))
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) where
+  toFun leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e =>
+        exact Sum.inl ⟨e, Finset.mem_toLeft.2 hleg⟩
+    | inr p =>
+        exact Sum.inr (⟨p.1.1,
+          (mem_interactionSector_subtype
+            (B : Finset (ExternalInsertionVertex E S)) p.1).2 hleg⟩, p.2)
+  invFun leg := by
+    cases leg with
+    | inl e =>
+        exact ⟨Sum.inl e.1, Finset.mem_toLeft.1 e.2⟩
+    | inr p =>
+        let v : ↥S :=
+          ⟨p.1.1, interactionSector_subset
+            (B : Finset (ExternalInsertionVertex E S)) p.1.2⟩
+        exact ⟨Sum.inr (v, p.2),
+          (mem_interactionSector_subtype
+            (B : Finset (ExternalInsertionVertex E S)) v).1 p.1.2⟩
+  left_inv leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e =>
+        apply Subtype.ext
+        rfl
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply Subtype.ext
+        rfl
+  right_inv leg := by
+    cases leg with
+    | inl e =>
+        apply congrArg Sum.inl
+        exact Subtype.ext (by rfl)
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply congrArg Sum.inr
+        apply Prod.ext
+        · exact Subtype.ext (by rfl)
+        · rfl
 
 /-- Reindex the flattened legs of one component by its external and interaction data. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
