@@ -196,9 +196,9 @@ private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
   change (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) = _
   calc
     (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) =
-        ∑ C : vac.componentPartition.parts, F (e C) :=
+        ∑ C : vac.vertexGraph.componentPartitionOn.parts, F (e C) :=
       (Equiv.sum_comp e F).symm
-    _ = ∑ C : vac.componentPartition.parts, (C : Finset (Fin n)).card := by
+    _ = ∑ C : vac.vertexGraph.componentPartitionOn.parts, (C : Finset (Fin n)).card := by
       apply Fintype.sum_congr
       intro C
       change (interactionSector
@@ -208,7 +208,7 @@ private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
         interactionSector_slotSplitVacuumComponentPart]
     _ = ((Finset.univ : Finset (Fin n)) \ T).card := by
       rw [Finset.sum_coe_sort]
-      exact vac.componentPartition.sum_card_parts
+      exact vac.vertexGraph.componentPartitionOn.sum_card_parts
 
 /-- The type of all ambient mixed vacuum pairs has the same cardinality as the normalized pairs of
 the standalone quartic vacuum pairing. -/

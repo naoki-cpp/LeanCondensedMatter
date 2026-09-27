@@ -39,7 +39,7 @@ private noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → 
   connectedWeight d := quarticWickDiagramAmplitude ε β g d.1
   weight_decompose d := by
     change quarticWickDiagramAmplitude ε β g d =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1
     exact quarticWickDiagramAmplitude_eq_prod_components ε β g d
 

@@ -36,7 +36,7 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
   let q := orderedLegToDiagramLeg
     ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1
   let v : ↥((Finset.univ : Finset (Fin n)) \ T) := vertexOfLeg q
-  let C : vac.componentPartition.parts :=
+  let C : vac.vertexGraph.componentPartitionOn.parts :=
     vac.fixedOrderPairComponent (slotSplitVacuumOrder T) pr
   change d.mixedPairComponent τ τ' σ
       (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
@@ -59,9 +59,9 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
         (Finset.subset_univ T) ext vac C).1 by rfl,
       interactionSector_slotSplitVacuumComponentPart]
     change (v.1 : Fin n) ∈ (C : Finset (Fin n))
-    change (v.1 : Fin n) ∈ vac.componentBlock v
-    unfold QuarticDiagram.componentBlock
-    exact vac.componentPartition.mem_part v.2
+    change (v.1 : Fin n) ∈ vac.vertexGraph.componentBlockOn v
+    unfold SimpleGraph.componentBlockOn
+    exact vac.vertexGraph.componentPartitionOn.mem_part v.2
 
 /-- Embed one restricted quartic component's normalized pairs into the corresponding ambient mixed
 vacuum-component pair fiber. -/
@@ -69,10 +69,10 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEmbedding
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.componentPartition.parts)
+    (C : vac.vertexGraph.componentPartitionOn.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    vac.LocalOrderedPair (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C ↪
+    vac.LocalOrderedPair (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C ↪
       (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
         (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 where
   toFun pr := by
@@ -95,11 +95,11 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.componentPartition.parts)
+    (C : vac.vertexGraph.componentPartitionOn.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Fintype.card
         (vac.LocalOrderedPair
-          (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C) =
+          (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C) =
       Fintype.card
         ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
           (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1) := by
@@ -108,11 +108,11 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
   calc
     Fintype.card
         (vac.LocalOrderedPair
-          (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C) =
+          (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C) =
         2 * (C : Finset (Fin n)).card := by
       simpa using
         ((vac.restrictComponent C.2).pairingInOrder
-          (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T) C)).card_normalizedPair
+          (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T) C)).card_normalizedPair
     _ = 2 * (interactionSector
         (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
       rw [interactionSector_slotSplitVacuumComponentPart]
@@ -126,10 +126,10 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.componentPartition.parts)
+    (C : vac.vertexGraph.componentPartitionOn.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    vac.LocalOrderedPair (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C ≃
+    vac.LocalOrderedPair (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C ≃
       (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
         (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 :=
   let emb := TwoPointDiagram.slotSplitVacuumComponentPairEmbedding T ext vac C τ τ' σ hσ
@@ -143,11 +143,11 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.componentPartition.parts)
+    (C : vac.vertexGraph.componentPartitionOn.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
     (pr : vac.LocalOrderedPair
-      (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C) :
+      (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C) :
     (TwoPointDiagram.slotSplitVacuumComponentPairEquiv
       T ext vac C τ τ' σ hσ pr).1 =
       TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
@@ -160,11 +160,11 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.componentPartition.parts)
+    (C : vac.vertexGraph.componentPartitionOn.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
     (p q : vac.LocalOrderedPair
-      (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C) :
+      (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C) :
     Crosses
         (TwoPointDiagram.slotSplitVacuumComponentPairEquiv
           T ext vac C τ τ' σ hσ p).1.1
@@ -182,18 +182,18 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.componentPartition.parts)
+    (C : vac.vertexGraph.componentPartitionOn.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).mixedComponentCrossingCount τ τ' σ
         (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 =
       ((vac.restrictComponent C.2).pairingInOrder
-        (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T) C)).crossingCount := by
+        (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T) C)).crossingCount := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let B : d.vertexGraph.componentPartition.parts :=
     (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1
   let LocalPair := vac.LocalOrderedPair
-    (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C
+    (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C
   let AmbientPair := d.MixedComponentPair τ τ' σ B
   let e : LocalPair ≃ AmbientPair :=
     TwoPointDiagram.slotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ

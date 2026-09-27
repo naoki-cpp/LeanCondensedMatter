@@ -28,7 +28,7 @@ theorem QuarticDiagram.pairingInOrder_evaluation_eq_prod_components
     (s : Statistics) {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (pairValue : Fin (2 * (2 * S.card)) → Fin (2 * (2 * S.card)) → ℂ)
-    (localPairValue : ∀ B : d.componentPartition.parts,
+    (localPairValue : ∀ B : d.vertexGraph.componentPartitionOn.parts,
       Fin (2 * (2 * (B : Finset (Fin N)).card)) →
       Fin (2 * (2 * (B : Finset (Fin N)).card)) → ℂ)
     (hvalue : ∀ B a b,
@@ -36,7 +36,7 @@ theorem QuarticDiagram.pairingInOrder_evaluation_eq_prod_components
         localPairValue B a b) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).evaluation
         ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s) pairValue =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).evaluation
           (((d.restrictComponent B.2).pairingInOrder (orders B)).weight s)
           (localPairValue B) := by

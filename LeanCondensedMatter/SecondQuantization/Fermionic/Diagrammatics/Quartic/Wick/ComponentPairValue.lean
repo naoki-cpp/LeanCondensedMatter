@@ -26,7 +26,7 @@ its restricted component diagram. -/
 private theorem orderedQuarticLegOperator_componentOrderedLeg
     (ε : Mode → ℝ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (τ : Fin S.card → ℝ) (B : d.componentPartition.parts)
+    (τ : Fin S.card → ℝ) (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     orderedQuarticLegOperator ε d (d.assembleVertexOrder orders shuffle) τ
         (d.componentOrderedLeg shuffle B p) =
@@ -44,7 +44,7 @@ ordered-leg enumeration. -/
 theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (τ : Fin S.card → ℝ) (B : d.componentPartition.parts)
+    (τ : Fin S.card → ℝ) (B : d.vertexGraph.componentPartitionOn.parts)
     (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ
         (d.componentOrderedLeg shuffle B a) (d.componentOrderedLeg shuffle B b) =

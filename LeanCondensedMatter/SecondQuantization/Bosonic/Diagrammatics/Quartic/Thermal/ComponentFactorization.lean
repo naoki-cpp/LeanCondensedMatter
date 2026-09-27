@@ -33,7 +33,7 @@ theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     QuarticDiagram.orderedFreeThermalFieldFamily d (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p) =
@@ -48,7 +48,7 @@ theorem QuarticDiagram.freeThermalPairValue_componentOrderedLeg
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (shuffle : d.ComponentShuffle) (B : d.vertexGraph.componentPartitionOn.parts)
     (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     freeThermalPairValue ε β
         (QuarticDiagram.orderedFreeThermalFieldFamily d
@@ -69,7 +69,7 @@ theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
     (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
     QuarticDiagram.orderedThermalPairingValue ε β d (d.assembleVertexOrder orders shuffle) =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticDiagram.orderedThermalPairingValue ε β (d.restrictComponent B.2) (orders B) := by
   classical
   simpa only [QuarticDiagram.orderedThermalPairingValue] using
@@ -92,7 +92,7 @@ theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
     QuarticDiagram.orderedThermalAmplitude ε β g d (d.assembleVertexOrder orders shuffle) =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) (orders B) := by
   classical
   unfold QuarticDiagram.orderedThermalAmplitude

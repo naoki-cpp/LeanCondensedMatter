@@ -21,19 +21,19 @@ variable {Label : Type*} {N : ℕ}
 /-- A vertex order on every connected-component block of `d`. -/
 abbrev QuarticDiagram.ComponentVertexOrders {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) :=
-  d.componentPartition.PartOrders
+  d.vertexGraph.componentPartitionOn.PartOrders
 
 /-- An order-preserving interleaving of all component-local slots into the ambient global slots. -/
 abbrev QuarticDiagram.ComponentShuffle {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) :=
-  d.componentPartition.PartShuffle
+  d.vertexGraph.componentPartitionOn.PartShuffle
 
 /-- The disjoint union of component-local slots, identified with the ambient vertex set using the
 chosen local order on every component. -/
 noncomputable def QuarticDiagram.componentVertexEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders) :
-    (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) ≃ ↥S :=
-  (Equiv.sigmaCongrRight fun B => orders B).trans d.componentPartition.equivSigmaParts.symm
+    (Σ B : d.vertexGraph.componentPartitionOn.parts, Fin (B : Finset (Fin N)).card) ≃ ↥S :=
+  (Equiv.sigmaCongrRight fun B => orders B).trans d.vertexGraph.componentPartitionOn.equivSigmaParts.symm
 
 /-- Assemble a global vertex order from component-local orders and an order-preserving shuffle. -/
 noncomputable def QuarticDiagram.assembleVertexOrder {S : Finset (Fin N)}
@@ -46,21 +46,21 @@ in the global slots in precisely that local order. -/
 noncomputable def QuarticDiagram.ComponentOrdersCompatible {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
     (orders : d.ComponentVertexOrders) : Prop :=
-  d.componentPartition.PartOrdersCompatible order orders
+  d.vertexGraph.componentPartitionOn.PartOrdersCompatible order orders
 
 /-- Read off the unique component shuffle from a global order and compatible component-local orders. -/
 noncomputable def QuarticDiagram.shuffleOfVertexOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
     (orders : d.ComponentVertexOrders) (h : d.ComponentOrdersCompatible order orders) :
     d.ComponentShuffle :=
-  d.componentPartition.shuffleOfOrder order orders h
+  d.vertexGraph.componentPartitionOn.shuffleOfOrder order orders h
 
 /-- A global vertex order is equivalent to component-local orders together with an
 order-preserving shuffle of their slots. -/
 noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) :
     QuarticVertexOrder S ≃ d.ComponentVertexOrders × d.ComponentShuffle :=
-  d.componentPartition.orderDecompositionEquiv
+  d.vertexGraph.componentPartitionOn.orderDecompositionEquiv
 
 end Common
 end SecondQuantization

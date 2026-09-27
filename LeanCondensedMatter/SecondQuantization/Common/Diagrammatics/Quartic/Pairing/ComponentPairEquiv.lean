@@ -25,26 +25,26 @@ variable {Label : Type*} {N : ℕ}
 ordered-leg enumeration. -/
 private noncomputable def QuarticDiagram.componentOrderedLegEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle) :
-    (Σ B : d.componentPartition.parts,
+    (Σ B : d.vertexGraph.componentPartitionOn.parts,
       Fin (2 * (2 * (B : Finset (Fin N)).card))) ≃ Fin (2 * (2 * S.card)) :=
-  (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
+  (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartitionOn.parts =>
       orderedQuarticLegEquiv (B : Finset (Fin N)).card).trans
     (((Equiv.sigmaProdDistrib
-        (fun B : d.componentPartition.parts => Fin (B : Finset (Fin N)).card)
+        (fun B : d.vertexGraph.componentPartitionOn.parts => Fin (B : Finset (Fin N)).card)
         (Fin 4)).symm).trans
       ((Equiv.prodCongr shuffle.slotEquiv (Equiv.refl (Fin 4))).trans
         (orderedQuarticLegEquiv S.card).symm))
 
 private theorem QuarticDiagram.componentOrderedLegEquiv_apply {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     d.componentOrderedLegEquiv shuffle ⟨B, p⟩ = d.componentOrderedLeg shuffle B p :=
   rfl
 
 private theorem QuarticDiagram.componentOrderedLegEquiv_partner {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (shuffle : d.ComponentShuffle) (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
         (d.componentOrderedLegEquiv shuffle ⟨B, p⟩) =
@@ -58,7 +58,7 @@ pairing. -/
 noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
-    (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) ≃
+    (Σ B : d.vertexGraph.componentPartitionOn.parts, d.LocalOrderedPair orders B) ≃
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).NormalizedPair :=
   (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPairSigmaEquiv
     (fun B => (d.restrictComponent B.2).pairingInOrder (orders B))
@@ -68,7 +68,7 @@ noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
 @[simp]
 theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (shuffle : d.ComponentShuffle) (B : d.vertexGraph.componentPartitionOn.parts)
     (pr : d.LocalOrderedPair orders B) :
     (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1 =
       (d.componentOrderedLeg shuffle B pr.1.1,

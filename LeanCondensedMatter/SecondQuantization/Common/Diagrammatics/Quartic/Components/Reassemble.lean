@@ -122,7 +122,7 @@ private theorem QuarticDiagram.reassemble_componentBlock_subset_part
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (v : ↥S) :
-    (QuarticDiagram.reassemble π F).componentBlock v ⊆ π.part (v : Fin N) := by
+    (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn v ⊆ π.part (v : Fin N) := by
   intro x hx
   change x ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn v at hx
   obtain ⟨hxS, hreach⟩ :=
@@ -180,7 +180,7 @@ private theorem QuarticDiagram.part_subset_reassemble_componentBlock
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (v : ↥S) :
-    π.part (v : Fin N) ⊆ (QuarticDiagram.reassemble π F).componentBlock v := by
+    π.part (v : Fin N) ⊆ (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn v := by
   intro x hx
   set B := (π.equivSigmaParts v).1
   have hxB : x ∈ (B : Finset (Fin N)) := hx
@@ -202,7 +202,7 @@ private theorem QuarticDiagram.reassemble_componentBlock_eq_part
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (v : ↥S) :
-    (QuarticDiagram.reassemble π F).componentBlock v = π.part (v : Fin N) :=
+    (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn v = π.part (v : Fin N) :=
   Finset.Subset.antisymm (QuarticDiagram.reassemble_componentBlock_subset_part π F v)
     (QuarticDiagram.part_subset_reassemble_componentBlock π F v)
 
@@ -210,24 +210,24 @@ private theorem QuarticDiagram.reassemble_componentBlock_eq_part
 theorem QuarticDiagram.componentPartition_reassemble {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
-    (QuarticDiagram.reassemble π F).componentPartition = π := by
+    (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn = π := by
   apply Finpartition.ext
   apply Finset.Subset.antisymm
   · intro B hB
     obtain ⟨v, hvS, hv⟩ :=
-      (QuarticDiagram.reassemble π F).componentPartition.part_surjOn hB
+      (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.part_surjOn hB
     have hblock :
-        (QuarticDiagram.reassemble π F).componentBlock (⟨v, hvS⟩ : ↥S) = B := by
-      simpa only [QuarticDiagram.componentBlock] using hv
+        (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn (⟨v, hvS⟩ : ↥S) = B := by
+      simpa only [SimpleGraph.componentBlockOn] using hv
     rw [← hblock, QuarticDiagram.reassemble_componentBlock_eq_part]
     exact π.part_mem.2 hvS
   · intro B hB
     obtain ⟨v, hvS, hv⟩ := π.part_surjOn hB
     have hmem :
-        (QuarticDiagram.reassemble π F).componentBlock (⟨v, hvS⟩ : ↥S) ∈
-          (QuarticDiagram.reassemble π F).componentPartition.parts := by
-      unfold QuarticDiagram.componentBlock
-      exact (QuarticDiagram.reassemble π F).componentPartition.part_mem.2 hvS
+        (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn (⟨v, hvS⟩ : ↥S) ∈
+          (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts := by
+      unfold SimpleGraph.componentBlockOn
+      exact (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.part_mem.2 hvS
     rwa [QuarticDiagram.reassemble_componentBlock_eq_part, hv] at hmem
 
 private theorem QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm
@@ -254,13 +254,13 @@ private theorem QuarticDiagram.restrictComponent_reassemble_vertexLabel
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (B : π.parts)
-    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts)
+    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts)
     (v : ↥(B : Finset (Fin N))) :
     ((QuarticDiagram.reassemble π F).restrictComponent hB').vertexLabel v =
       (F B).1.vertexLabel v := by
   set u := (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
     (q := (· ∈ (B : Finset (Fin N))))
-    (fun {_} hx => (QuarticDiagram.reassemble π F).componentPartition.le hB' hx)).symm v : ↥S)) with hu
+    (fun {_} hx => (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.le hB' hx)).symm v : ↥S)) with hu
   change (F (π.equivSigmaParts u).1).1.vertexLabel (π.equivSigmaParts u).2 =
       (F B).1.vertexLabel v
   have hueq : u = ((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
@@ -271,7 +271,7 @@ private theorem QuarticDiagram.blockLegEquiv_symm_reassemble_val {S : Finset (Fi
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (B : π.parts)
-    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts)
+    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts)
     (leg : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     ((((QuarticDiagram.reassemble π F).blockLegEquiv hB').symm leg :
         {leg : Fin (2 * (2 * S.card)) //
@@ -282,7 +282,7 @@ private theorem QuarticDiagram.blockLegEquiv_symm_reassemble_val {S : Finset (Fi
   change legOfVertexLocal
       ((((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
         (q := (· ∈ (B : Finset (Fin N))))
-        (fun {_} hx => (QuarticDiagram.reassemble π F).componentPartition.le hB' hx)).symm
+        (fun {_} hx => (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.le hB' hx)).symm
           (vertexOfLeg leg) : {v : ↥S // (v : Fin N) ∈ (B : Finset (Fin N))}) : ↥S))
       (localLegOfLeg leg) =
     legOfVertexLocal (QuarticDiagram.reassembleVertex π B (vertexOfLeg leg))
@@ -305,7 +305,7 @@ private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (B : π.parts)
-    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts) :
+    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts) :
     ((QuarticDiagram.reassemble π F).restrictComponent hB').pairing = (F B).1.pairing := by
   change (QuarticDiagram.reassemble π F).restrictedPairing hB' = (F B).1.pairing
   apply Combinatorics.PairingOn.ext
@@ -330,7 +330,7 @@ theorem QuarticDiagram.restrictComponent_reassemble {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (B : π.parts)
-    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts) :
+    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts) :
     (QuarticDiagram.reassemble π F).restrictComponent hB' = (F B).1 := by
   refine QuarticDiagram.ext
     (funext fun v =>
@@ -339,75 +339,75 @@ theorem QuarticDiagram.restrictComponent_reassemble {S : Finset (Fin N)}
 
 private theorem QuarticDiagram.reassemble_componentPartition_vertexLabel
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (v : ↥S) :
-    (QuarticDiagram.reassemble d.componentPartition
+    (QuarticDiagram.reassemble d.vertexGraph.componentPartitionOn
       fun B => d.restrictComponentConnected B.2).vertexLabel v = d.vertexLabel v := by
-  set B := (d.componentPartition.equivSigmaParts v).1
-  set v' := (d.componentPartition.equivSigmaParts v).2 with hv'def
+  set B := (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1
+  set v' := (d.vertexGraph.componentPartitionOn.equivSigmaParts v).2 with hv'def
   change (d.restrictComponent B.2).vertexLabel v' = d.vertexLabel v
   have hval : (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.componentPartition.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : Fin N) =
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : Fin N) =
       (v : Fin N) := by
     change (v' : Fin N) = (v : Fin N)
     rw [hv'def]
     simp [Finpartition.equivSigmaParts]
   have heq : (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.componentPartition.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) = v :=
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) = v :=
     Subtype.ext hval
   change d.vertexLabel (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.componentPartition.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) =
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) =
       d.vertexLabel v
   rw [heq]
 
 private theorem QuarticDiagram.subtypeSubtypeEquivSubtype_symm_equivSigmaParts_snd
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (v : ↥S) :
     (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
-        (q := (· ∈ (d.componentPartition.equivSigmaParts v).1.1))
-        (fun {_} hx => d.componentPartition.le (d.componentPartition.equivSigmaParts v).1.2 hx)).symm
-        (d.componentPartition.equivSigmaParts v).2 :
-        {w : ↥S // (w : Fin N) ∈ (d.componentPartition.equivSigmaParts v).1.1}) : ↥S) = v :=
+        (q := (· ∈ (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1.1))
+        (fun {_} hx => d.vertexGraph.componentPartitionOn.le (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1.2 hx)).symm
+        (d.vertexGraph.componentPartitionOn.equivSigmaParts v).2 :
+        {w : ↥S // (w : Fin N) ∈ (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1.1}) : ↥S) = v :=
   Subtype.ext (by
-    change ((d.componentPartition.equivSigmaParts v).2 : Fin N) = (v : Fin N)
+    change ((d.vertexGraph.componentPartitionOn.equivSigmaParts v).2 : Fin N) = (v : Fin N)
     simp [Finpartition.equivSigmaParts])
 
 private theorem QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (v : ↥S)
-    (hv : (v : Fin N) ∈ (d.componentPartition.equivSigmaParts v).1.1) :
+    (hv : (v : Fin N) ∈ (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1.1) :
     Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
-      (q := (· ∈ (d.componentPartition.equivSigmaParts v).1.1))
-      (fun {_} hx => d.componentPartition.le (d.componentPartition.equivSigmaParts v).1.2 hx) ⟨v, hv⟩ =
-      (d.componentPartition.equivSigmaParts v).2 := by
+      (q := (· ∈ (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1.1))
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1.2 hx) ⟨v, hv⟩ =
+      (d.vertexGraph.componentPartitionOn.equivSigmaParts v).2 := by
   rw [← Equiv.eq_symm_apply]
   exact (Subtype.ext (d.subtypeSubtypeEquivSubtype_symm_equivSigmaParts_snd v)).symm
 
 private theorem QuarticDiagram.equivSigmaParts_symm_subtypeSubtypeEquivSubtype
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) (w : ↥S) (hw : (w : Fin N) ∈ B) :
-    d.componentPartition.equivSigmaParts.symm
+    (hB : B ∈ d.vertexGraph.componentPartitionOn.parts) (w : ↥S) (hw : (w : Fin N) ∈ B) :
+    d.vertexGraph.componentPartitionOn.equivSigmaParts.symm
       ⟨⟨B, hB⟩, Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
-      (fun {_} hx => d.componentPartition.le hB hx) ⟨w, hw⟩⟩ =
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le hB hx) ⟨w, hw⟩⟩ =
       w := by
   apply Subtype.ext
   change (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
-      (fun {_} hx => d.componentPartition.le hB hx) ⟨w, hw⟩ : Fin N) =
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le hB hx) ⟨w, hw⟩ : Fin N) =
     (w : Fin N)
   rfl
 
 private theorem QuarticDiagram.reassemble_componentPartition_partner
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (v : ↥S) (i : Fin 4) :
-    (QuarticDiagram.reassemble d.componentPartition
+    (QuarticDiagram.reassemble d.vertexGraph.componentPartitionOn
         fun B => d.restrictComponentConnected B.2).pairing.partner (legOfVertexLocal v i) =
       d.pairing.partner (legOfVertexLocal v i) := by
-  set B := (d.componentPartition.equivSigmaParts v).1
-  set v' := (d.componentPartition.equivSigmaParts v).2
-  have hv : (v : Fin N) ∈ B.1 := d.componentPartition.mem_part v.2
+  set B := (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1
+  set v' := (d.vertexGraph.componentPartitionOn.equivSigmaParts v).2
+  have hv : (v : Fin N) ∈ B.1 := d.vertexGraph.componentPartitionOn.mem_part v.2
   have hleg0 : d.legInBlock B.1 (legOfVertexLocal v i) := by
-    unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
+    unfold QuarticDiagram.legInBlock SimpleGraph.componentBlockOn
     rw [vertexOfLeg_legOfVertexLocal]
-    exact (d.componentPartition.part_eq_iff_mem B.2).mpr hv
+    exact (d.vertexGraph.componentPartitionOn.part_eq_iff_mem B.2).mpr hv
   have hv1 : vertexOfLeg (d.blockLegEquiv B.2 ⟨legOfVertexLocal v i, hleg0⟩) = v' := by
     rw [QuarticDiagram.vertexOfLeg_blockLegEquiv]
     refine (congrArg (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.componentPartition.le B.2 hx))
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx))
       (Subtype.ext (a1 := (⟨vertexOfLeg (legOfVertexLocal v i), by
             simpa only [vertexOfLeg_legOfVertexLocal] using hv⟩ :
           {x : ↥S // (x : Fin N) ∈ B.1}))
@@ -423,15 +423,15 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
   set w := vertexOfLeg (d.pairing.partner (legOfVertexLocal v i))
   have hw : (w : Fin N) ∈ B.1 := by
     have hpartner := (d.legInBlock_partner_iff (B := B.1) (legOfVertexLocal v i)).mp hleg0
-    unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock at hpartner
-    exact (d.componentPartition.part_eq_iff_mem B.2).mp hpartner
+    unfold QuarticDiagram.legInBlock SimpleGraph.componentBlockOn at hpartner
+    exact (d.vertexGraph.componentPartitionOn.part_eq_iff_mem B.2).mp hpartner
   have hv2 : vertexOfLeg
       (d.blockLegEquiv B.2 (d.restrictedPartner B.1 ⟨legOfVertexLocal v i, hleg0⟩)) =
       Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.componentPartition.le B.2 hx) ⟨w, hw⟩ := by
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx) ⟨w, hw⟩ := by
     rw [QuarticDiagram.vertexOfLeg_blockLegEquiv]
     refine congrArg (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.componentPartition.le B.2 hx)) ?_
+      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)) ?_
     apply Subtype.ext
     change (vertexOfLeg (d.restrictedPartner B.1 ⟨legOfVertexLocal v i, hleg0⟩ :
       Fin (2 * (2 * S.card))) : ↥S) = w
@@ -441,9 +441,9 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
       localLegOfLeg (d.pairing.partner (legOfVertexLocal v i)) := by
     rw [QuarticDiagram.localLegOfLeg_blockLegEquiv, QuarticDiagram.restrictedPartner_val]
   have hlhs :
-      (QuarticDiagram.reassemble d.componentPartition
+      (QuarticDiagram.reassemble d.vertexGraph.componentPartitionOn
           fun B => d.restrictComponentConnected B.2).pairing.partner =
-        (QuarticDiagram.bigLegEquiv d.componentPartition).symm.permCongr
+        (QuarticDiagram.bigLegEquiv d.vertexGraph.componentPartitionOn).symm.permCongr
           (Equiv.sigmaCongrRight
             fun B => (d.restrictComponentConnected B.2).1.pairing.partner) := rfl
   rw [hlhs, Equiv.permCongr_apply, Equiv.symm_symm,
@@ -457,7 +457,7 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
 /-- Reassembling a diagram's connected component restrictions recovers the diagram. -/
 theorem QuarticDiagram.reassemble_componentPartition {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) :
-    QuarticDiagram.reassemble d.componentPartition
+    QuarticDiagram.reassemble d.vertexGraph.componentPartitionOn
       (fun B => d.restrictComponentConnected B.2) = d := by
   refine QuarticDiagram.ext (funext d.reassemble_componentPartition_vertexLabel) ?_
   apply Combinatorics.PairingOn.ext

@@ -25,7 +25,7 @@ private theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictCom
     (h : T ⊆ S)
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
     (vac : QuarticDiagram InternalLabel N (S \ T))
-    (w : InternalLabel → M) (C : vac.componentPartition.parts) :
+    (w : InternalLabel → M) (C : vac.vertexGraph.componentPartitionOn.parts) :
     (∏ v : ↥(interactionSector
         (((slotSplitVacuumComponentPart h ext vac C).1.1 :
           Finset (TwoPointVertex S)))),
@@ -60,7 +60,7 @@ private theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictCom
         · unfold QuarticDiagram.restrictComponent
           congr 2
         · have hvComp : (v : Fin N) ∈ S \ T :=
-            vac.componentPartition.le C.2 (e v).2
+            vac.vertexGraph.componentPartitionOn.le C.2 (e v).2
           exact (Finset.mem_sdiff.mp hvComp).2
     _ = ∏ v : ↥(C : Finset (Fin N)),
         w ((vac.restrictComponent C.2).vertexLabel v) :=
@@ -98,7 +98,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
         exact Finset.prod_subtype
           (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)
           (fun _ => Iff.rfl) _
-    _ = ∏ C : vac.componentPartition.parts,
+    _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
         ∏ v : ↥(interactionSector
           (((slotSplitVacuumComponentEquiv h ext vac hext C).1.1 :
             Finset (TwoPointVertex S)))),
@@ -113,7 +113,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
             w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
               ⟨v.1, interactionSector_subset
                 (B.1 : Finset (TwoPointVertex S)) v.2⟩))).symm
-    _ = ∏ C : vac.componentPartition.parts,
+    _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
         ∏ v : ↥(C : Finset (Fin N)),
           w ((vac.restrictComponent C.2).vertexLabel v) := by
       apply Fintype.prod_congr
@@ -123,7 +123,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
         h ext vac w C
     _ = ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
       simpa only [QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts] using
-        (Finpartition.prod_eq_prod_parts vac.componentPartition
+        (Finpartition.prod_eq_prod_parts vac.vertexGraph.componentPartitionOn
           (fun v => w (vac.vertexLabel v))).symm
 
 /-- The product of the Dyson signs carried by the ambient vacuum components is the Dyson sign of the
@@ -148,21 +148,21 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
         exact Finset.prod_subtype
           (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)
           (fun _ => Iff.rfl) _
-    _ = ∏ C : vac.componentPartition.parts,
+    _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
         (-1 : ℂ) ^ (interactionSector
           (((slotSplitVacuumComponentEquiv h ext vac hext C).1.1 :
             Finset (TwoPointVertex S)))).card := by
       exact (Equiv.prod_comp (slotSplitVacuumComponentEquiv h ext vac hext)
         (fun B => (-1 : ℂ) ^ (interactionSector
           (B.1 : Finset (TwoPointVertex S))).card)).symm
-    _ = ∏ C : vac.componentPartition.parts,
+    _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
         (-1 : ℂ) ^ (C : Finset (Fin N)).card := by
       apply Fintype.prod_congr
       intro C
       rw [slotSplitVacuumComponentEquiv_apply,
         interactionSector_slotSplitVacuumComponentPart]
     _ = (-1 : ℂ) ^ (S \ T).card :=
-      (Finpartition.pow_card_eq_prod_parts vac.componentPartition (-1 : ℂ)).symm
+      (Finpartition.pow_card_eq_prod_parts vac.vertexGraph.componentPartitionOn (-1 : ℂ)).symm
 
 end Common
 end SecondQuantization

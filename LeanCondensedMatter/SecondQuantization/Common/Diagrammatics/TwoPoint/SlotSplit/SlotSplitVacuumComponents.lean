@@ -18,16 +18,16 @@ namespace Common
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S T : Finset (Fin N)}
 
 private noncomputable def QuarticDiagram.componentRepresentative
-    (d : QuarticDiagram InternalLabel N S) (C : d.componentPartition.parts) : ↥S :=
-  ⟨Classical.choose (d.componentPartition.part_surjOn C.2),
-    (Classical.choose_spec (d.componentPartition.part_surjOn C.2)).1⟩
+    (d : QuarticDiagram InternalLabel N S) (C : d.vertexGraph.componentPartitionOn.parts) : ↥S :=
+  ⟨Classical.choose (d.vertexGraph.componentPartitionOn.part_surjOn C.2),
+    (Classical.choose_spec (d.vertexGraph.componentPartitionOn.part_surjOn C.2)).1⟩
 
-private theorem QuarticDiagram.componentBlock_componentRepresentative
-    (d : QuarticDiagram InternalLabel N S) (C : d.componentPartition.parts) :
-    d.componentBlock (d.componentRepresentative C) = (C : Finset (Fin N)) := by
-  change d.componentPartition.part
-      (Classical.choose (d.componentPartition.part_surjOn C.2)) = (C : Finset (Fin N))
-  exact (Classical.choose_spec (d.componentPartition.part_surjOn C.2)).2
+private theorem SimpleGraph.componentBlockOn_componentRepresentative
+    (d : QuarticDiagram InternalLabel N S) (C : d.vertexGraph.componentPartitionOn.parts) :
+    d.vertexGraph.componentBlockOn (d.componentRepresentative C) = (C : Finset (Fin N)) := by
+  change d.vertexGraph.componentPartitionOn.part
+      (Classical.choose (d.vertexGraph.componentPartitionOn.part_surjOn C.2)) = (C : Finset (Fin N))
+  exact (Classical.choose_spec (d.vertexGraph.componentPartitionOn.part_surjOn C.2)).2
 
 variable (h : T ⊆ S)
   (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
@@ -58,7 +58,7 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
 
 /-- Send a quartic vacuum-piece component to the corresponding ambient vacuum component. -/
 noncomputable def slotSplitVacuumComponentPart
-    (C : vac.componentPartition.parts) :
+    (C : vac.vertexGraph.componentPartitionOn.parts) :
     ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph) :=
   let v := vac.componentRepresentative C
   let d := TwoPointDiagram.ofSlotSplit h ext vac
@@ -69,7 +69,7 @@ noncomputable def slotSplitVacuumComponentPart
 
 /-- The ambient interaction part of the image component is exactly the original quartic component. -/
 theorem interactionSector_slotSplitVacuumComponentPart
-    (C : vac.componentPartition.parts) :
+    (C : vac.vertexGraph.componentPartitionOn.parts) :
     interactionSector
         ((slotSplitVacuumComponentPart h ext vac C).1.1 :
           Finset (TwoPointVertex S)) =
@@ -137,19 +137,19 @@ private theorem slotSplitVacuumComponentPart_surjective
       have hwNot : (w : Fin N) ∉ T :=
         not_mem_left_of_mem_vacuumComponentPart h ext vac hext B w hxB
       let v : ↥(S \ T) := ⟨w.1, Finset.mem_sdiff.mpr ⟨w.2, hwNot⟩⟩
-      let C : vac.componentPartition.parts :=
-        ⟨vac.componentBlock v, by
-          unfold QuarticDiagram.componentBlock
-          exact vac.componentPartition.part_mem.2 v.2⟩
+      let C : vac.vertexGraph.componentPartitionOn.parts :=
+        ⟨vac.vertexGraph.componentBlockOn v, by
+          unfold SimpleGraph.componentBlockOn
+          exact vac.vertexGraph.componentPartitionOn.part_mem.2 v.2⟩
       refine ⟨C, ?_⟩
       apply Subtype.ext
       apply TwoPointDiagram.interactionSector_component_unique
         (d := TwoPointDiagram.ofSlotSplit h ext vac) w
       · rw [interactionSector_slotSplitVacuumComponentPart]
-        change (w : Fin N) ∈ vac.componentPartition.part (v : Fin N)
+        change (w : Fin N) ∈ vac.vertexGraph.componentPartitionOn.part (v : Fin N)
         have hwv : (w : Fin N) = (v : Fin N) := rfl
         rw [hwv]
-        exact vac.componentPartition.mem_part v.2
+        exact vac.vertexGraph.componentPartitionOn.mem_part v.2
       · exact (mem_interactionSector_subtype
           (B.1 : Finset (TwoPointVertex S)) w).2 hxB
 
@@ -157,7 +157,7 @@ private theorem slotSplitVacuumComponentPart_surjective
 reassembled two-point diagram when the external piece is externally connected. -/
 noncomputable def slotSplitVacuumComponentEquiv
     (hext : ext.IsExternallyConnected) :
-    vac.componentPartition.parts ≃
+    vac.vertexGraph.componentPartitionOn.parts ≃
       ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph) :=
   Equiv.ofBijective (slotSplitVacuumComponentPart h ext vac)
     ⟨slotSplitVacuumComponentPart_injective h ext vac,
@@ -165,7 +165,7 @@ noncomputable def slotSplitVacuumComponentEquiv
 
 @[simp]
 theorem slotSplitVacuumComponentEquiv_apply
-    (hext : ext.IsExternallyConnected) (C : vac.componentPartition.parts) :
+    (hext : ext.IsExternallyConnected) (C : vac.vertexGraph.componentPartitionOn.parts) :
     slotSplitVacuumComponentEquiv h ext vac hext C =
       slotSplitVacuumComponentPart h ext vac C :=
   rfl

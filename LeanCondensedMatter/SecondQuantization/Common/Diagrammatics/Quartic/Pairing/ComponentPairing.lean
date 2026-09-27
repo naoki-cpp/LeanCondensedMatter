@@ -26,14 +26,14 @@ variable {Label : Type*} {N : ℕ}
 /-- The normalized ordered pairs of one restricted component. -/
 abbrev QuarticDiagram.LocalOrderedPair {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
-    (B : d.componentPartition.parts) :=
+    (B : d.vertexGraph.componentPartitionOn.parts) :=
   ((d.restrictComponent B.2).pairingInOrder (orders B)).NormalizedPair
 
 /-- Embed a component-local ordered flattened leg into the assembled global ordered-leg
 enumeration. -/
 noncomputable def QuarticDiagram.componentOrderedLeg {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartitionOn.parts) :
     Fin (2 * (2 * (B : Finset (Fin N)).card)) → Fin (2 * (2 * S.card)) :=
   fun p => (orderedQuarticLegEquiv S.card).symm
     (shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩,
@@ -42,7 +42,7 @@ noncomputable def QuarticDiagram.componentOrderedLeg {S : Finset (Fin N)}
 @[simp]
 theorem QuarticDiagram.orderedQuarticLegEquiv_componentOrderedLeg
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (shuffle : d.ComponentShuffle) (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B p) =
       (shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩,
@@ -52,7 +52,7 @@ theorem QuarticDiagram.orderedQuarticLegEquiv_componentOrderedLeg
 /-- The component ordered-leg embedding preserves the flattened-leg order. -/
 theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartitionOn.parts) :
     StrictMono (d.componentOrderedLeg shuffle B) := by
   intro a b hab
   let pa := orderedQuarticLegEquiv (B : Finset (Fin N)).card a
@@ -89,7 +89,7 @@ theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
 /-- The canonical order embedding of one component's flattened legs into the assembled order. -/
 noncomputable def QuarticDiagram.componentOrderedLegOrderEmbedding {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartitionOn.parts) :
     Fin (2 * (2 * (B : Finset (Fin N)).card)) ↪o Fin (2 * (2 * S.card)) :=
   OrderEmbedding.ofStrictMono (d.componentOrderedLeg shuffle B)
     (d.componentOrderedLeg_strictMono shuffle B)
@@ -99,7 +99,7 @@ component-local order. -/
 theorem QuarticDiagram.assembleVertexOrder_componentSlot_val
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) (i : Fin (B : Finset (Fin N)).card) :
+    (B : d.vertexGraph.componentPartitionOn.parts) (i : Fin (B : Finset (Fin N)).card) :
     ((d.assembleVertexOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩) : ↥S) : Fin N) =
       ((orders B i : ↥(B : Finset (Fin N))) : Fin N) := by
   simp [QuarticDiagram.assembleVertexOrder,
@@ -109,7 +109,7 @@ theorem QuarticDiagram.assembleVertexOrder_componentSlot_val
 theorem QuarticDiagram.restrictComponent_vertexLabel_componentOrder
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) (i : Fin (B : Finset (Fin N)).card) :
+    (B : d.vertexGraph.componentPartitionOn.parts) (i : Fin (B : Finset (Fin N)).card) :
     (d.restrictComponent B.2).vertexLabel (orders B i) =
       d.vertexLabel (d.assembleVertexOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩)) := by
   unfold QuarticDiagram.restrictComponent
@@ -136,14 +136,14 @@ theorem localLegOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
 /-- Embed a flattened leg of a restricted component into the ambient diagram's fixed flattened-leg
 enumeration. -/
 noncomputable def QuarticDiagram.componentDiagramLeg {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (B : d.componentPartition.parts) :
+    (d : QuarticDiagram Label N S) (B : d.vertexGraph.componentPartitionOn.parts) :
     Fin (2 * (2 * (B : Finset (Fin N)).card)) → Fin (2 * (2 * S.card)) :=
   fun p => ((d.blockLegEquiv B.2).symm p).1
 
 /-- `componentDiagramLeg` preserves the underlying labelled vertex. -/
 theorem QuarticDiagram.vertexOfLeg_componentDiagramLeg_val
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     ((vertexOfLeg (d.componentDiagramLeg B p) : ↥S) : Fin N) =
       ((vertexOfLeg p : ↥(B : Finset (Fin N))) : Fin N) := by
@@ -156,7 +156,7 @@ theorem QuarticDiagram.vertexOfLeg_componentDiagramLeg_val
 /-- `componentDiagramLeg` preserves the local leg index. -/
 theorem QuarticDiagram.localLegOfLeg_componentDiagramLeg
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     localLegOfLeg (d.componentDiagramLeg B p) = localLegOfLeg p := by
   let leg := (d.blockLegEquiv B.2).symm p
@@ -168,7 +168,7 @@ first embedding it into the assembled global ordered-leg enumeration. -/
 theorem QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p) =
@@ -211,7 +211,7 @@ theorem QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg
 agrees with the ambient diagram pairing partner. -/
 theorem QuarticDiagram.componentDiagramLeg_restrictedPairing_partner
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     d.componentDiagramLeg B ((d.restrictedPairing B.2).partner p) =
       d.pairing.partner (d.componentDiagramLeg B p) := by
@@ -225,7 +225,7 @@ component-local ordered pairing partner. -/
 theorem QuarticDiagram.pairingInOrder_partner_componentOrderedLeg
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
         (d.componentOrderedLeg shuffle B p) =
@@ -252,7 +252,7 @@ pair of the assembled global ordered pairing. -/
 theorem QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartitionOn.parts)
     (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) ∈
         (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs ↔

@@ -31,7 +31,7 @@ variable {Label : Type*} {N : ℕ}
 vertex slots. -/
 private theorem QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
+    (B C : d.vertexGraph.componentPartitionOn.parts) (hBC : B ≠ C)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card)))
     (q : Fin (2 * (2 * (C : Finset (Fin N)).card))) :
     d.componentOrderedLeg shuffle B p < d.componentOrderedLeg shuffle C q ↔
@@ -61,7 +61,7 @@ private theorem QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt
 the total number of leg-order inversions between two distinct components is even. -/
 private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C) :
+    (B C : d.vertexGraph.componentPartitionOn.parts) (hBC : B ≠ C) :
     (∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
       ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
         if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p
@@ -94,7 +94,7 @@ number. -/
 private theorem QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C) :
+    (B C : d.vertexGraph.componentPartitionOn.parts) (hBC : B ≠ C) :
     ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
         (d.componentPairEquiv orders shuffle) B C +
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
@@ -125,7 +125,7 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount % 2 =
-      (∑ B : d.componentPartition.parts,
+      (∑ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) % 2 := by
   rw [Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
@@ -150,12 +150,12 @@ theorem QuarticDiagram.pairingInOrder_weight_eq_prod_components
     (s : Statistics) {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).weight s := by
   exact BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
     s
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
-    (fun B : d.componentPartition.parts =>
+    (fun B : d.vertexGraph.componentPartitionOn.parts =>
       (d.restrictComponent B.2).pairingInOrder (orders B))
     (d.pairingInOrder_crossingCount_mod_two_eq_sum_components orders shuffle)
 

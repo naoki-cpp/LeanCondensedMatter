@@ -25,7 +25,7 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (τ : Fin S.card → ℝ) :
     d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) τ =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticWickDiagram.contractionIntegrand ε β
           (d.restrictComponentConnected B.2).1 (orders B)
           (shuffle.timeAssignment τ B) := by

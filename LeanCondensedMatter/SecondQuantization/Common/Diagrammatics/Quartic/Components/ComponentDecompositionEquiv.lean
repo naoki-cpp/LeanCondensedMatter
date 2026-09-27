@@ -22,14 +22,14 @@ noncomputable def QuarticDiagram.componentDecompose {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) :
     Σ π : Finpartition S,
       ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)) :=
-  ⟨d.componentPartition, fun B => d.restrictComponentConnected B.2⟩
+  ⟨d.vertexGraph.componentPartitionOn, fun B => d.restrictComponentConnected B.2⟩
 
 /-- Restricting a reassembled diagram as a connected diagram recovers the original block. -/
 theorem QuarticDiagram.restrictComponentConnected_reassemble {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     (B : π.parts)
-    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts) :
+    (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts) :
     (QuarticDiagram.reassemble π F).restrictComponentConnected hB' = F B := by
   apply Subtype.ext
   exact QuarticDiagram.restrictComponent_reassemble π F B hB'
@@ -37,11 +37,11 @@ theorem QuarticDiagram.restrictComponentConnected_reassemble {S : Finset (Fin N)
 private theorem QuarticDiagram.componentFamily_heq_of_partition_eq {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
-    (hπ : d.componentPartition = π)
+    (hπ : d.vertexGraph.componentPartitionOn = π)
     (hF : ∀ (B : Finset (Fin N)) (hBπ : B ∈ π.parts)
-      (hBd : B ∈ d.componentPartition.parts),
+      (hBd : B ∈ d.vertexGraph.componentPartitionOn.parts),
       d.restrictComponentConnected hBd = F ⟨B, hBπ⟩) :
-    HEq (fun B : d.componentPartition.parts => d.restrictComponentConnected B.2) F := by
+    HEq (fun B : d.vertexGraph.componentPartitionOn.parts => d.restrictComponentConnected B.2) F := by
   subst π
   apply heq_of_eq
   funext B
@@ -51,7 +51,7 @@ private theorem QuarticDiagram.componentFamily_reassemble_heq {S : Finset (Fin N
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
     HEq
-      (fun B : (QuarticDiagram.reassemble π F).componentPartition.parts =>
+      (fun B : (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts =>
         (QuarticDiagram.reassemble π F).restrictComponentConnected B.2)
       F := by
   apply QuarticDiagram.componentFamily_heq_of_partition_eq
