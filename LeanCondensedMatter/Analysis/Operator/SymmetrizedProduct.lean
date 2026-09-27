@@ -101,7 +101,7 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) (q : ℂ) :
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
   ext v
-  simp [symmetrizedProduct_apply] <;> module
+  simp [symmetrizedProduct_apply]; module
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -127,7 +127,7 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module ℂ W]
       symmetrizedProduct A (symmetrizedProduct v m) +
         (1 / 4 : ℂ) • linearCommutator v (linearCommutator A m) := by
   ext x
-  simp [symmetrizedProduct_apply, linearCommutator] <;> module
+  simp [symmetrizedProduct_apply, linearCommutator]; module
 
 /-- If the outer localizer commutes with the transported quantity, nested symmetrization
 reassociates without a correction. -/
@@ -147,6 +147,6 @@ theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module
       symmetrizedProduct (linearCommutator h A) B +
         symmetrizedProduct A (linearCommutator h B) := by
   ext v
-  simp [linearCommutator, symmetrizedProduct_apply] <;> module
+  simp [linearCommutator, symmetrizedProduct_apply]; module
 
 end ConservationLaw
