@@ -50,7 +50,7 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
     (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1
   change B = D
   let w : ↥(Finset.univ : Finset (Fin n)) := ⟨v.1, Finset.mem_univ _⟩
-  apply d.interactionSector_component_unique w B D
+  apply interactionSector_component_unique d.vertexGraph w B D
   · apply (mem_interactionSector_subtype
       (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) w).2
     change slotSplitVacuumVertex v ∈ d.vertexGraph.componentBlock (slotSplitVacuumVertex v)
