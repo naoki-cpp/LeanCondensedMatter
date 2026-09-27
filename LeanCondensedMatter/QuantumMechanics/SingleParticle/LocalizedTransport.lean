@@ -1,7 +1,7 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
+import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
+import LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
-import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 
@@ -92,21 +92,22 @@ theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
     _root_.ConservationLaw.symmetrizedProductRightLinear,
     _root_.ConservationLaw.linearCommutator]
 
-/-- A differential representation of Heisenberg transport together with the canonical source gives
-an abstract balance law for the symmetrically localized quantity. -/
-noncomputable def heisenbergSymmetricLocalizationBalanceLaw
+/-- Heisenberg evolution of a symmetrically localized one-body quantity gives the intrinsic balance
+law as soon as its transport functional depends only on differential test data.  No extension of
+that transport to arbitrary one-form-like data is chosen here. -/
+noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
-    (J : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hJ : _root_.ConservationLaw.IsDifferentialCurrent d
-      (heisenbergTransportFunctional V ℏ h M m) J) :
-    _root_.ConservationLaw.BalanceLaw
+    (htransport : _root_.ConservationLaw.DependsOnlyOnDifferential d
+      (heisenbergTransportFunctional V ℏ h M m)) :
+    _root_.ConservationLaw.IntrinsicBalanceLaw
       (heisenbergEvolution V ℏ h)
       (_root_.ConservationLaw.localizedQuantityFunctional V M m)
       d where
-  current := J
+  transport := heisenbergTransportFunctional V ℏ h M m
+  transport_depends := htransport
   source := heisenbergSourceFunctional V ℏ h M m
   balance := by
     intro f
@@ -114,10 +115,7 @@ noncomputable def heisenbergSymmetricLocalizationBalanceLaw
         _root_.ConservationLaw.linearCommutator h
           (_root_.ConservationLaw.localizedQuantity V M m f) = _
     rw [_root_.ConservationLaw.linearCommutator_localizedQuantity]
-    rw [smul_add]
-    change heisenbergTransportFunctional V ℏ h M m f +
-        heisenbergSourceFunctional V ℏ h M m f = _
-    rw [hJ f]
+    simp [heisenbergSourceFunctional, heisenbergTransportFunctional, smul_add]
 
 /-- A one-form-like test is paired with a one-body current-density operator by symmetric
 localization. This pairing does not choose which current density represents a given transport
