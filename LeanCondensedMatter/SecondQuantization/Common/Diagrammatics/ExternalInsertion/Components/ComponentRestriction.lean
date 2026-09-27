@@ -80,6 +80,27 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
     (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
     (B := (B : Finset (ExternalInsertionVertex E S)))
 
+@[simp] private theorem ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (e : ↥(Finset.toLeft (B : Finset (ExternalInsertionVertex E S)))) :
+    ((d.componentLegDataEquiv B).symm (Sum.inl e)).1 = Sum.inl e.1 := by
+  rfl
+
+@[simp] private theorem ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (v : ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
+    (l : Fin 4) :
+    ((d.componentLegDataEquiv B).symm (Sum.inr (v, l))).1 =
+      Sum.inr
+        (⟨v.1, interactionSector_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩, l) := by
+  rfl
+
+
 /-- Reindex the flattened legs of one component by its external and interaction data. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
     {S : Finset (Fin N)}
@@ -328,7 +349,6 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
     ExternalInsertionDiagram.componentBlockLegEquiv,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     ExternalInsertionDiagram.componentLegDataEquiv,
-    SecondQuantization.Common.componentLegDataEquiv,
     externalInsertionExternalLeg]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
@@ -350,7 +370,6 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
     ExternalInsertionDiagram.componentBlockLegEquiv,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     ExternalInsertionDiagram.componentLegDataEquiv,
-    SecondQuantization.Common.componentLegDataEquiv,
     externalInsertionInteractionLeg]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
