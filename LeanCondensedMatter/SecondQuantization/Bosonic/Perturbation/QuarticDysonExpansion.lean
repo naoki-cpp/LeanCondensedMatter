@@ -292,8 +292,13 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
                   quarticVertexSequenceOperator (Fin.cons q0 q') := by
         rw [interactionPicture_quarticInteraction_eq_sum, ih σ]
         ext x
-        simp [LinearMap.sum_apply, LinearMap.comp_apply, quarticVertexSequenceOperator_cons,
-          smul_smul, mul_assoc]
+        simp only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, map_smul,
+          Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul,
+          quarticVertexSequenceOperator_cons]
+        rw [Finset.sum_comm]
+        refine Finset.sum_congr rfl fun q0 _ => ?_
+        refine Finset.sum_congr rfl fun q' _ => ?_
+        ring
       have hpoint (σ : ℝ) :
           Common.matrixCoeff
               ((interactionPicture ε (quarticInteraction g) σ).comp
@@ -303,8 +308,14 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
                   quarticDysonSequenceCoeff ε g (fun i => q i.succ) σ) *
                 Common.matrixCoeff (quarticVertexSequenceOperator q) m k := by
         rw [hcomp σ]
-        simp only [← Common.matrixCoeffLinear_apply, map_sum, map_smul,
-          Common.matrixCoeffLinear_apply, smul_eq_mul]
+        change (Common.matrixCoeffLinear m k)
+            (∑ q0 : QuarticVertexLabel Mode,
+              ∑ q' : Fin n → QuarticVertexLabel Mode,
+                ((g q0 * quarticVertexTimeFactor ε q0 σ) *
+                    quarticDysonSequenceCoeff ε g q' σ) •
+                  quarticVertexSequenceOperator (Fin.cons q0 q')) = _
+        rw [map_sum]
+        simp only [map_sum, map_smul, Common.matrixCoeffLinear_apply, smul_eq_mul]
         rw [← Fintype.sum_prod_type']
         rw [← Equiv.sum_comp e (fun q : Fin (n + 1) → QuarticVertexLabel Mode =>
           ((g (q 0) * quarticVertexTimeFactor ε (q 0) σ) *
@@ -345,8 +356,13 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
             ∑ q : Fin (n + 1) → QuarticVertexLabel Mode,
               quarticDysonSequenceCoeff ε g q t *
                 Common.matrixCoeff (quarticVertexSequenceOperator q) m k := by
-        simp only [← Common.matrixCoeffLinear_apply, map_sum, map_smul,
-          Common.matrixCoeffLinear_apply, smul_eq_mul]
+        change (Common.matrixCoeffLinear m k)
+            (∑ q : Fin (n + 1) → QuarticVertexLabel Mode,
+              quarticDysonSequenceCoeff ε g q t • quarticVertexSequenceOperator q) = _
+        rw [map_sum]
+        refine Finset.sum_congr rfl fun q _ => ?_
+        rw [map_smul, Common.matrixCoeffLinear_apply]
+        rfl
       rw [hright, ← Finset.sum_neg_distrib]
       refine Finset.sum_congr rfl fun q _ => ?_
       rw [intervalIntegral.integral_mul_const]
