@@ -78,8 +78,8 @@ homomorphic normalization rules:
 - `orderedSimplexIntegral_zero`
 - `orderedSimplexIntegral_zero_fun`
 - `finiteDimensionalOperatorTrace_apply`
-- `L2MultiplicationRealLine.multiplicationOperator_apply`
-- `L2MultiplicationRealLine.multiplicationLinear_apply`
+- `L2Multiplication.multiplicationOperator_apply`
+- `L2Multiplication.multiplicationLinear_apply`
 - `PowerSeries.logOf_one`
 - `FamilySlotShuffleTo.timeAssignment_apply`
 - `SpectralTraceClass.trace_eq_spectralTrace`

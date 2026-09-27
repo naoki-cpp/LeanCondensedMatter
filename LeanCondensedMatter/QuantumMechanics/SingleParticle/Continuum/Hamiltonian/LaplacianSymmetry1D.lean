@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian
 import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
 import Mathlib.Analysis.Fourier.LpSpace
 import Mathlib.Tactic
+import Mathlib.Analysis.InnerProductSpace.LinearPMap
 
 set_option linter.style.header false
 

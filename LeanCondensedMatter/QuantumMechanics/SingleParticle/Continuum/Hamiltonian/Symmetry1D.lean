@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D
 import Mathlib.Tactic
+import Mathlib.Analysis.InnerProductSpace.LinearPMap
 
 set_option linter.style.header false
 
@@ -69,7 +70,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_symmetric
       congr 1
       · rw [inner_smul_left, inner_smul_right, continuumH2Laplacian1D_symmetric]
         simp
-      · exact L2MultiplicationRealLine.realMultiplicationOperator_symmetric potential hpotential
+      · exact realL2MultiplicationOperator1D_symmetric potential hpotential
           (ψ : ContinuumL2Wavefunction1D) (φ : ContinuumL2Wavefunction1D)
     _ = inner ℂ
         (ψ : ContinuumL2Wavefunction1D)
