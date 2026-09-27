@@ -161,22 +161,6 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
   simp [directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis]
   module
 
-/-- The physical in-plane massive-Dirac current as one complex-linear family of measured
-observables. The coefficient space is the actual in-plane component space used by the model; no
-separate current-specific direction type is introduced. -/
-noncomputable def inPlaneCurrentCLM
-    (e v : ℝ) :
-    (Fin 2 → ℂ) →L[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
-  ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) • inPlanePauliVertexCLM
-
-@[simp]
-theorem inPlaneCurrentCLM_apply
-    (e v : ℝ) (coefficients : Fin 2 → ℂ) :
-    inPlaneCurrentCLM e v coefficients =
-      inPlaneCurrentOperator e v coefficients := by
-  rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-  rfl
-
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
 theorem hamiltonian_isHermitian (v m px py : ℝ) :
     (hamiltonian v m px py).IsHermitian := by
