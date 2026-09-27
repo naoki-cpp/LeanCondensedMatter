@@ -67,7 +67,9 @@ theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
     d.legInComponent B leg ↔
       d.unflattenedLegInComponent B (twoPointLegEquiv S leg) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
-  rfl
+  unfold TwoPointDiagram.unflattenedLegInComponent twoPointLegVertex
+    twoPointVertexOfLeg componentLegVertex
+  cases twoPointLegEquiv S leg <;> rfl
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
