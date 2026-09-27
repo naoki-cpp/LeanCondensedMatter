@@ -96,17 +96,19 @@ number of legs and the number of local legs per interaction vertex are even, the
 sector has even cardinality. -/
 theorem externalCardEven_of_equiv_sum_prod
     {Leg ExternalData InteractionData LocalData : Type}
-    [Fintype Leg] [Fintype ExternalData] [Fintype InteractionData] [Fintype LocalData]
+    [Fintype Leg] [Fintype ExternalData] [Finite InteractionData] [Fintype LocalData]
     (legEquiv : Leg ≃ ExternalData ⊕ (InteractionData × LocalData))
     (hLeg : Even (Fintype.card Leg))
     (hLocal : Even (Fintype.card LocalData)) :
     Even (Fintype.card ExternalData) := by
+  letI := Fintype.ofFinite InteractionData
   have hcard :
       Fintype.card Leg =
         Fintype.card ExternalData + Fintype.card InteractionData * Fintype.card LocalData := by
     rw [Fintype.card_congr legEquiv, Fintype.card_sum, Fintype.card_prod]
   rcases hLeg with ⟨k, hk⟩
   rcases hLocal with ⟨l, hl⟩
+  rw [hl, Nat.mul_add] at hcard
   refine ⟨k - Fintype.card InteractionData * l, ?_⟩
   omega
 
