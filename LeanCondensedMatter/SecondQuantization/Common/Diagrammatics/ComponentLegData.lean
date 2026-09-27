@@ -18,7 +18,7 @@ for their flattened leg enumerations and for transporting those enumerations to 
 namespace SecondQuantization
 namespace Common
 
-variable {External Vertex Local : Type*}
+variable {External Vertex Local : Type}
 
 /-- Legs incident to a finite component split into its external vertices and its interaction
 vertices paired with their local-leg data. -/
