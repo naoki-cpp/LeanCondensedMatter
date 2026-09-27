@@ -116,8 +116,9 @@ theorem boundedDirectionalCurrentLinearMap_apply
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
     boundedDirectionalCurrentLinearMap geometry ℏ q K direction =
       boundedDirectionalCurrent geometry direction ℏ q K := by
-  simp [boundedDirectionalCurrentLinearMap, boundedDirectionalCurrent,
-    LatticeGeometry.bondCoordinate]
+  unfold boundedDirectionalCurrentLinearMap boundedDirectionalCurrent
+  simp only [LinearMap.smul_apply, Finset.sum_apply, LinearMap.smulRight_apply,
+    LinearMap.applyₗ_apply_apply, LatticeGeometry.bondCoordinate]
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
   norm_num
 
