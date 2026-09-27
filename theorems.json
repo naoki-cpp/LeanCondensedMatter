@@ -57209,6 +57209,80 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal e\n      v m probeEnergy broadening disorderStrength hbar pMax rMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x e v m probeEnergy broadening\n        disorderStrength hbar pMax rMax +\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi e v m probeEnergy broadening\n        disorderStrength hbar pMax rMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_eq_x_add_psi",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
+    "externalAxioms": [],
+    "docString": "The total regulated crossed correction is exactly the sum of its `X` and `Psi` topology\ncontributions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.sum_gaussianCrossedDiagram"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e v m probeEnergy broadening hbar pMax rMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal e\n      v m probeEnergy broadening 0 hbar pMax rMax =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_zero_disorder",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
+    "externalAxioms": [],
+    "docString": "The total regulated crossed correction vanishes at zero Gaussian disorder strength. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_zero_disorder"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi e v m probeEnergy broadening\n        disorderStrength hbar pMax rMax).im =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -57245,7 +57319,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (diagram : QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram)\n  (e v m probeEnergy broadening hbar pMax rMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity diagram\n      e v m probeEnergy broadening 0 hbar pMax rMax =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -57253,7 +57327,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57264,14 +57338,18 @@
     "docString": "The regulated crossed conductivity vanishes identically when the Gaussian disorder strength is\nzero because the two explicit crossed disorder correlators supply a factor `disorderStrength²`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_zero_disorder"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_zero_disorder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_zero_disorder"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65141,7 +65219,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram → M),\n  ∑ diagram, f diagram =\n    f QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x +\n      f QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi",
     "standardAxioms": [
       "Classical.choice",
@@ -65149,7 +65227,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65160,12 +65238,16 @@
     "docString": "A finite sum over the two Gaussian crossed topologies is the `X` contribution plus the `Psi`\ncontribution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_eq_x_add_psi"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_eq_x_add_psi"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92076,8 +92158,6 @@
       "Combinatorics.PairingOn.even_card",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.interactionSector_subset",
-      "SecondQuantization.Common.mem_interactionSector_subtype",
       "SimpleGraph.self_mem_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
@@ -101735,7 +101815,6 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
@@ -101753,7 +101832,6 @@
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
@@ -101763,7 +101841,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103491,7 +103569,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
@@ -103507,7 +103584,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
@@ -103517,7 +103593,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
