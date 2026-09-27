@@ -132,7 +132,7 @@ theorem totalNumberOperator_oneParticle_mul (f : 𝓗₁) (Ψ : AlgebraicFock �
 /-- Every second-quantized one-particle operator commutes with total particle number. -/
 theorem totalNumberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     ConservationLaw.linearCommutator (totalNumberOperator 𝓗₁) (dGamma 𝓗₁ T) = 0 := by
-  rw [numberOperator, dGamma_linearCommutator]
+  rw [totalNumberOperator, dGamma_linearCommutator]
   have h : ConservationLaw.linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
     apply LinearMap.ext
     intro f
