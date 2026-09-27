@@ -261,6 +261,12 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
       intro t
       apply Common.matrixCoeff_ext
       intro m k
+      change
+        Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) (n + 1) t
+            (Common.basisState k) m =
+          Common.matrixCoeff
+            (∑ q : Fin (n + 1) → QuarticVertexLabel Mode,
+              quarticDysonSequenceCoeff ε g q t • quarticVertexSequenceOperator q) m k
       rw [Common.dysonCoeff_succ_basisState_apply]
       change
         -∫ σ in (0 : ℝ)..t,
