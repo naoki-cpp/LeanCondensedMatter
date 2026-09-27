@@ -58,11 +58,9 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
     Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0)
       (basisState n)
   rw [numberOperator_basisState]
-  change (if i ∈ n then basisState n else 0) =
-    (if i ∈ n then (1 : ℂ) else 0) • basisState n
   by_cases hi : i ∈ n
-  · simp [hi]
-  · simp [hi]
+  · simp [hi, basisState, Common.diagonalOperator_basisState]
+  · simp [hi, basisState, Common.diagonalOperator_basisState]
 
 /-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Common.Statistics.zetaInt Common.Statistics.fermion`)**: an
 instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermionic
