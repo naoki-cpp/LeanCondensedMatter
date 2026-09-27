@@ -108,11 +108,14 @@ theorem quarticVertexSequenceInteractionPicture_eq_smul (ε : Mode → ℝ) :
         quarticVertexSequenceInteractionPicture_eq_smul ε
           (fun i => q i.succ) (fun i => τ i.succ)]
       simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
-      rw [quarticVertexSequenceOperator]
-      simp only [List.ofFn_succ, List.prod_cons]
       congr 1
-      rw [quarticVertexSequenceTimeFactor, Fin.prod_univ_succ]
-      rfl
+      · rw [quarticVertexSequenceTimeFactor, Fin.prod_univ_succ]
+      · rw [Module.End.mul_eq_comp]
+        rw [← quarticVertexSequenceOperator_cons
+          (q0 := q 0) (q := fun i => q i.succ)]
+        congr
+        funext i
+        refine Fin.cases ?_ ?_ i <;> simp
 
 end
 end Bosonic
