@@ -92,13 +92,6 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     diagonalOp b a (b j) = ∑' i, diagonalTerm b a i (b j) := hmap.tsum_eq.symm
     _ = a j • b j := htsum
 
-omit [CompleteSpace H] in
-/-- Every term of the diagonal operator series is compact. -/
-theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
-    IsCompactOperator (diagonalTerm b a i) := by
-  change IsCompactOperator (a i • InnerProductSpace.rankOne ℂ (b i) (b i))
-  exact (ContinuousLinearMap.isCompactOperator_rankOne (b i) (b i)).smul (a i)
-
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (ha : Summable fun i => ‖a i‖) : IsCompactOperator (diagonalOp b a) := by
@@ -113,7 +106,11 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
         simp only [Finset.sum_insert hi]
         change IsCompactOperator (fun x : H =>
           diagonalTerm b a i x + (∑ j ∈ s, diagonalTerm b a j) x)
-        exact (diagonalTerm_isCompact b a i).add ih
+        have hiCompact :
+            IsCompactOperator (diagonalTerm b a i) := by
+          change IsCompactOperator (a i • InnerProductSpace.rankOne ℂ (b i) (b i))
+          exact (ContinuousLinearMap.isCompactOperator_rankOne (b i) (b i)).smul (a i)
+        exact hiCompact.add ih
   refine isCompactOperator_of_tendsto
     (l := Filter.atTop)
     (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
