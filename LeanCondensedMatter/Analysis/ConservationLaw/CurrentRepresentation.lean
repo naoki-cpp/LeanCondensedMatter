@@ -29,6 +29,13 @@ density `j` and a supplied bilinear pairing such that `Φ(f) = pairing j (d f)`.
 The pairing is deliberately abstract. Concrete continuum models may realize it by a zeroth-order
 pairing such as `∫ α · j`, while lattice models may use a finite bond pairing. No locality claim is
 made merely from factorization through `d`.
+
+This module deliberately does not introduce a universal `Current` type. A family of measured-current
+observables indexed linearly by a physical direction or component space is represented directly by
+the corresponding `LinearMap` in the model or observable layer. `IsDifferentialCurrent` is the
+additional local-balance provenance asserting that such a current functional represents a transport
+through `d`; it is not a prerequisite for using an observable as a Kubo/Bastin/Středa current
+vertex.
 -/
 
 namespace ConservationLaw
