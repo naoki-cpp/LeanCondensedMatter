@@ -175,9 +175,9 @@ External-component semantics are shared at the Common diagrammatics boundary for
 vertex graph of the form `External ⊕ Internal`. `ComponentMeetsExternal`,
 `ComponentIsVacuum`, and `HasNoVacuumComponent` are graph-level notions;
 `externallySupportedComponentParts` and `vacuumComponentParts` classify the parts of
-`SimpleGraph.componentPartition` directly. Diagram families use
-`SimpleGraph.componentPartition` and `SimpleGraph.componentBlock` without family-specific
-forwarding APIs. For two-point diagrams, `IsExternallyConnected` remains a separate semantic
+`SimpleGraph.componentPartition` directly. Diagram families use the generic `SimpleGraph` component APIs directly: `componentPartition` and
+`componentBlock` for full finite vertex types, and `componentPartitionOn` and `componentBlockOn` for
+graphs whose vertex type is an ambient-finset subtype. No family-specific forwarding API is kept. For two-point diagrams, `IsExternallyConnected` remains a separate semantic
 condition and the parity of the two one-legged external vertices proves that their component blocks
 always coincide.
 

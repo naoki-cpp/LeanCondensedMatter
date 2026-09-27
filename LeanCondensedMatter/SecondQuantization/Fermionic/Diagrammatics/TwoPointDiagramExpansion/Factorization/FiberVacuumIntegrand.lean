@@ -248,7 +248,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
         (base.mixedComponentWeight Common.Statistics.fermion τ τ' σ) = _
     let e := Common.slotSplitVacuumComponentEquiv
       (Finset.subset_univ T) ext.1 vac hext
-    let orders := vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)
+    let orders := vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)
     let shuffle := vac.fixedOrderComponentShuffle (slotSplitVacuumOrder T)
     calc
       (Common.vacuumComponentParts base.vertexGraph).prod
@@ -256,11 +256,11 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
         ∏ B : ↥(Common.vacuumComponentParts base.vertexGraph),
           base.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1 := by
         exact Finset.prod_subtype (Common.vacuumComponentParts base.vertexGraph) (fun _ => Iff.rfl) _
-      _ = ∏ C : vac.componentPartition.parts,
+      _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
           base.mixedComponentWeight Common.Statistics.fermion τ τ' σ (e C).1 :=
         (Equiv.prod_comp e (fun B =>
           base.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1)).symm
-      _ = ∏ C : vac.componentPartition.parts,
+      _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
           ((vac.restrictComponent C.2).pairingInOrder (orders C)).weight
             Common.Statistics.fermion := by
         apply Fintype.prod_congr

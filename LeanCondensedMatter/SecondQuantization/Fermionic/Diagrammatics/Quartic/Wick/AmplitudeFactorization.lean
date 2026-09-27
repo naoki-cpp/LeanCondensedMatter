@@ -27,13 +27,13 @@ the corresponding sums for the connected-component restrictions. -/
 private theorem sum_orderedSimplexContribution_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) :
     (∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
           QuarticWickDiagram.orderedSimplexContribution ε β
             (d.restrictComponentConnected B.2).1 order := by
   classical
   let localContribution :
-      ∀ B : d.componentPartition.parts,
+      ∀ B : d.vertexGraph.componentPartitionOn.parts,
         Common.QuarticVertexOrder (B : Finset (Fin N)) → ℂ :=
     fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
       (d.restrictComponentConnected B.2).1 order
@@ -49,12 +49,12 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
               (d.assembleVertexOrder orders shuffle) := by
       rw [Fintype.sum_prod_type]
     _ = ∑ orders : d.ComponentVertexOrders,
-          ∏ B : d.componentPartition.parts, localContribution B (orders B) := by
+          ∏ B : d.vertexGraph.componentPartitionOn.parts, localContribution B (orders B) := by
       apply Fintype.sum_congr
       intro orders
       simp only [QuarticWickDiagram.orderedSimplexContribution]
       let componentIntegrand :
-          ∀ B : d.componentPartition.parts,
+          ∀ B : d.vertexGraph.componentPartitionOn.parts,
             (Fin (B : Finset (Fin N)).card → ℝ) → ℂ :=
         fun B => QuarticWickDiagram.contractionIntegrand ε β
           (d.restrictComponentConnected B.2).1 (orders B)
@@ -66,27 +66,27 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
           ε β orders shuffle τ
       simp_rw [hglobal]
       have hcard :
-          (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) = S.card := by
+          (∑ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card) = S.card := by
         rw [Finset.sum_coe_sort]
-        exact d.componentPartition.sum_card_parts
+        exact d.vertexGraph.componentPartitionOn.sum_card_parts
       simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
         componentIntegrand] using
         Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
-          (ι := d.componentPartition.parts)
-          (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
+          (ι := d.vertexGraph.componentPartitionOn.parts)
+          (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
           S.card hcard β componentIntegrand
           (fun B => intervalIntegral.Continuous.measurableLocallyBounded
             (continuous_contractionIntegrand ε β
               (d.restrictComponentConnected B.2).1 (orders B)))
-    _ = ∏ B : d.componentPartition.parts,
+    _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             localContribution B order := by
       simpa using
         (Finset.prod_univ_sum
-          (fun B : d.componentPartition.parts =>
+          (fun B : d.vertexGraph.componentPartitionOn.parts =>
             (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
           localContribution).symm
-    _ = ∏ B : d.componentPartition.parts,
+    _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticWickDiagram.orderedSimplexContribution ε β
               (d.restrictComponentConnected B.2).1 order := by
@@ -97,7 +97,7 @@ theorem quarticWickDiagramAmplitude_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) :
     quarticWickDiagramAmplitude ε β g d =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1 := by
   classical
   simp only [quarticWickDiagramAmplitude]

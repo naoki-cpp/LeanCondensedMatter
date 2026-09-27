@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
+import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
 set_option linter.style.header false
 
@@ -164,7 +165,7 @@ theorem interactionSector_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) 
     interactionSector
         ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
           (slotSplitVacuumVertex v)) =
-      vac.componentBlock v := by
+      vac.vertexGraph.componentBlockOn v := by
   ext x
   constructor
   · intro hx
@@ -190,8 +191,7 @@ theorem interactionSector_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) 
             ⟨y.1, (Finset.mem_sdiff.mp y.2).1⟩ := by
         exact Sum.inr.inj hy
       exact congrArg (fun z : ↥S => (z : Fin N)) hs
-    have hymem : (y : Fin N) ∈ vac.componentBlock v := by
-      change (y : Fin N) ∈ vac.vertexGraph.componentBlockOn v
+    have hymem : (y : Fin N) ∈ vac.vertexGraph.componentBlockOn v := by
       exact (vac.vertexGraph.mem_componentBlockOn v).2
         ⟨y.2, (vac.vertexGraph.reachable_comm).1 hvy⟩
     simpa [hxy] using hymem

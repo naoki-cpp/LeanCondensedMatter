@@ -42,7 +42,7 @@ private theorem QuarticDiagram.card_componentVertexOrders
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
     Fintype.card d.ComponentVertexOrders =
-      ∏ B : d.componentPartition.parts, (B : Finset (Fin N)).card.factorial := by
+      ∏ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card.factorial := by
   classical
   simp only [Common.QuarticDiagram.ComponentVertexOrders, Fintype.card_pi,
     Common.card_quarticVertexOrder]
@@ -51,7 +51,7 @@ private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
     Fintype.card d.ComponentShuffle *
-        (∏ B : d.componentPartition.parts, (B : Finset (Fin N)).card.factorial) =
+        (∏ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card.factorial) =
       S.card.factorial := by
   classical
   have hcard := Fintype.card_congr d.componentOrderDecompositionEquiv
@@ -66,7 +66,7 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
     (∑ order : Common.QuarticVertexOrder S,
       QuarticDiagram.orderedThermalAmplitude ε β g d order) =
       (Fintype.card d.ComponentShuffle : ℂ) *
-        ∏ B : d.componentPartition.parts,
+        ∏ B : d.vertexGraph.componentPartitionOn.parts,
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order := by
   classical
@@ -98,7 +98,7 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
         QuarticDiagram.orderedThermalAmplitude ε β g d
           (d.assembleVertexOrder orders shuffle)) =
         (Fintype.card d.ComponentShuffle : ℂ) *
-          ∏ B : d.componentPartition.parts,
+          ∏ B : d.vertexGraph.componentPartitionOn.parts,
             QuarticDiagram.orderedThermalAmplitude ε β g
               (d.restrictComponent B.2) (orders B) := by
     intro orders
@@ -108,7 +108,7 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
   rw [← Finset.mul_sum]
   congr 1
   have hdist := Finset.prod_univ_sum
-    (fun B : d.componentPartition.parts =>
+    (fun B : d.vertexGraph.componentPartitionOn.parts =>
       (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
     (fun B order =>
       QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order)
@@ -122,7 +122,7 @@ theorem QuarticDiagram.thermalAmplitude_eq_prod_components
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
     QuarticDiagram.thermalAmplitude ε β g d =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1 := by
   classical
   rw [QuarticDiagram.thermalAmplitude,
@@ -139,17 +139,17 @@ theorem QuarticDiagram.thermalAmplitude_eq_prod_components
   have hcardC :
       (S.card.factorial : ℂ) =
         (Fintype.card d.ComponentShuffle : ℂ) *
-          (∏ B : d.componentPartition.parts,
+          (∏ B : d.vertexGraph.componentPartitionOn.parts,
             ((B : Finset (Fin N)).card.factorial : ℂ)) := by
     exact_mod_cast hcard.symm
   rw [hcardC]
   simp only [mul_inv_rev]
   rw [mul_assoc
-    (∏ B : d.componentPartition.parts,
+    (∏ B : d.vertexGraph.componentPartitionOn.parts,
       ((B : Finset (Fin N)).card.factorial : ℂ))⁻¹
     (Fintype.card d.ComponentShuffle : ℂ)⁻¹
     ((Fintype.card d.ComponentShuffle : ℂ) *
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
           QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order)]
   rw [← mul_assoc (Fintype.card d.ComponentShuffle : ℂ)⁻¹
@@ -167,7 +167,7 @@ noncomputable def quarticThermalDiagramMultiplicativeWeight
   connectedWeight d := QuarticDiagram.thermalAmplitude ε β g d.1
   weight_decompose d := by
     change QuarticDiagram.thermalAmplitude ε β g d =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1
     exact QuarticDiagram.thermalAmplitude_eq_prod_components ε β g d
 
