@@ -38,6 +38,38 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConducti
     finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral
       diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
 
+/-- The physically normalized finite-cutoff finite-broadening Gaussian crossed correction.
+
+The two leading crossed topologies remain indexed upstream, but their physical response is exposed
+through one additive boundary here. This keeps the `X` / `Psi` decomposition available for later
+evaluation while giving downstream Hall consumers one object for the complete Gaussian crossed
+correction. No crossed topology is absorbed into the non-crossing ladder by this definition. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) : ℂ :=
+  ∑ diagram : GaussianCrossedDiagram,
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+      diagram e v m probeEnergy broadening disorderStrength hbar pMax rMax
+
+/-- The total regulated crossed correction is exactly the sum of its `X` and `Psi` topology
+contributions. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_eq_x_add_psi
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal
+        e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .x e v m probeEnergy broadening disorderStrength hbar pMax rMax +
+      finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal
+  exact sum_gaussianCrossedDiagram _
+
+/-- The total regulated crossed correction vanishes at zero Gaussian disorder strength. -/
+@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal_zero_disorder
+    (e v m probeEnergy broadening hbar pMax rMax : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal
+      e v m probeEnergy broadening 0 hbar pMax rMax = 0 := by
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal]
+
 /-- The regulated crossed conductivity vanishes identically when the Gaussian disorder strength is
 zero because the two explicit crossed disorder correlators supply a factor `disorderStrength²`. -/
 @[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_zero_disorder
