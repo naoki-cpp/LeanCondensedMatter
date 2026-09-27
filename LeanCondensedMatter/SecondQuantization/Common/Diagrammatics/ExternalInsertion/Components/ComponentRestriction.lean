@@ -149,12 +149,13 @@ private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset 
     (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold ExternalInsertionDiagram.legInComponent
-  have hEq :
-      d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg) =
-        d.vertexGraph.componentBlock (externalInsertionVertexOfLeg (d.pairing.partner leg)) :=
-    d.vertexGraph.componentBlock_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner externalInsertionVertexOfLeg leg).symm
-  rw [hEq]
+  change
+    (d.pairing.vertexGraph (externalInsertionVertexOfLeg (E := E))).componentBlock
+        (externalInsertionVertexOfLeg leg) = B ↔
+      (d.pairing.vertexGraph (externalInsertionVertexOfLeg (E := E))).componentBlock
+        (externalInsertionVertexOfLeg (d.pairing.partner leg)) = B
+  rw [d.pairing.vertexGraph_componentBlock_partner
+    (externalInsertionVertexOfLeg (E := E)) leg]
 
 /-- Every connected component contains an even number of external insertions. -/
 theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
