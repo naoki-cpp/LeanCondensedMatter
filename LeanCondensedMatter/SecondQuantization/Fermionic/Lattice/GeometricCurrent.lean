@@ -98,30 +98,6 @@ noncomputable def boundedDirectionalCurrent
       (geometry.bondCoordinate direction x y : ℂ) •
         boundedBondCurrent ℏ q K x y
 
-/-- The geometric current components form a real-linear family in the spatial covector selecting
-the measured flow direction. This bundles the existing directional current without introducing a
-parallel current type. -/
-noncomputable def boundedDirectionalCurrentLinearMap
-    (geometry : LatticeGeometry Site E) (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
-    (E →ₗ[ℝ] ℝ) →ₗ[ℝ]
-      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (2 : ℝ)⁻¹ •
-    ∑ x : Site, ∑ y : Site,
-      (LinearMap.applyₗ (R := ℝ) (geometry.bondDisplacement x y)).smulRight
-        (boundedBondCurrent ℏ q K x y)
-
-@[simp]
-theorem boundedDirectionalCurrentLinearMap_apply
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
-    boundedDirectionalCurrentLinearMap geometry ℏ q K direction =
-      boundedDirectionalCurrent geometry direction ℏ q K := by
-  unfold boundedDirectionalCurrentLinearMap boundedDirectionalCurrent
-  simp only [LinearMap.smul_apply, Finset.sum_apply, LinearMap.smulRight_apply,
-    LinearMap.applyₗ_apply_apply, LatticeGeometry.bondCoordinate]
-  rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
-  norm_num
-
 /-- Geometric contact operator for a uniform source in the selected direction. The squared bond
 coordinate is the chain-rule factor from differentiating the measured current after the Peierls
 phase has already been differentiated once. -/
