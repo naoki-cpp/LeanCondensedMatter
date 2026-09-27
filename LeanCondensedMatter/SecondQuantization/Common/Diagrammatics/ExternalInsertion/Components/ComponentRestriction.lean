@@ -164,7 +164,7 @@ theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
         d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :=
     restricted.even_card
   simpa only [Fintype.card_coe] using
-    externalCardEven_of_equiv_sum_prod (d.componentBlockLegDataEquiv B) hEven (by exact ⟨2, by omega⟩)
+    externalCardEven_of_equiv_sum_prod (d.componentBlockLegDataEquiv B) hEven (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
 
 /-- The local external-sector parameter: half the number of one-legged external insertions
 carried by one connected component. -/
