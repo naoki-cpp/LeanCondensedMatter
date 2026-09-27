@@ -94,24 +94,6 @@ private noncomputable def finiteKuboBastinOccupationResolvedVertexResponse
       purePointKuboBastinOccupationResolvedVertexTerm
         system data interpolation measured source omega eta mn) +
     purePointNormalizedExpectation system data observableVariation
-
-/-- The generalized finite spectral Bastin response equals its occupation-resolved form. -/
-private theorem finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source observableVariation : H →L[ℂ] H)
-    (omega eta : ℝ) :
-    finiteKuboBastinSpectralVertexResponse
-        system data measured source observableVariation omega eta =
-      finiteKuboBastinOccupationResolvedVertexResponse
-        system data interpolation measured source observableVariation omega eta := by
-  unfold finiteKuboBastinSpectralVertexResponse
-    finiteKuboBastinOccupationResolvedVertexResponse
-  congr 1
-  apply Finset.sum_congr rfl
-  intro mn _
-  exact purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
-    system data interpolation measured source omega eta mn
-
 /-- Occupation-resolved generalized response attached directly to a neutral response channel. -/
 noncomputable def finiteKuboBastinOccupationResolvedChannelResponse
     (interpolation : PurePointOccupationInterpolation system data)
@@ -119,6 +101,20 @@ noncomputable def finiteKuboBastinOccupationResolvedChannelResponse
     (omega eta : ℝ) : ℂ :=
   finiteKuboBastinOccupationResolvedVertexResponse system data interpolation
     channel.measured channel.source channel.observableVariation omega eta
+
+/-- The public occupation-resolved channel response exposes its aggregate transition sum without
+exposing the private response-level implementation. -/
+theorem finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum
+    (interpolation : PurePointOccupationInterpolation system data)
+    (channel : ResponseChannel H)
+    (omega eta : ℝ) :
+    finiteKuboBastinOccupationResolvedChannelResponse
+        system data interpolation channel omega eta =
+      (∑ mn : ι × ι,
+        purePointKuboBastinOccupationResolvedVertexTerm
+          system data interpolation channel.measured channel.source omega eta mn) +
+        purePointNormalizedExpectation system data channel.observableVariation := by
+  rfl
 
 /-- The neutral finite spectral channel response equals its occupation-resolved form. -/
 theorem finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
@@ -128,11 +124,13 @@ theorem finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
     finiteKuboBastinSpectralChannelResponse system data channel omega eta =
       finiteKuboBastinOccupationResolvedChannelResponse
         system data interpolation channel omega eta := by
-  simpa [finiteKuboBastinSpectralChannelResponse,
-    finiteKuboBastinOccupationResolvedChannelResponse] using
-    finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
-      system data interpolation channel.measured channel.source
-        channel.observableVariation omega eta
+  rw [finiteKuboBastinSpectralChannelResponse_eq_vertexSum,
+    finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro mn _
+  exact purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
+    system data interpolation channel.measured channel.source omega eta mn
 
 end
 end Transport

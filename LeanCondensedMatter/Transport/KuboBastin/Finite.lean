@@ -93,6 +93,16 @@ noncomputable def finiteKuboBastinSpectralChannelResponse
   finiteKuboBastinSpectralVertexResponse system data
     channel.measured channel.source channel.observableVariation omega eta
 
+/-- The public channel response exposes its aggregate spectral vertex sum without exposing the
+private response-level implementation. -/
+theorem finiteKuboBastinSpectralChannelResponse_eq_vertexSum
+    (channel : ResponseChannel H)
+    (omega eta : ℝ) :
+    finiteKuboBastinSpectralChannelResponse system data channel omega eta =
+      finiteKuboBastinSpectralVertexSum system data channel.measured channel.source omega eta +
+        purePointNormalizedExpectation system data channel.observableVariation := by
+  rfl
+
 /-- At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is
 exactly its finite Kubo–Bastin spectral response. -/
 theorem adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral

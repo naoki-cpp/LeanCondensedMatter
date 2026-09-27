@@ -96,8 +96,8 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
         system data geometry direction K q omega eta convention := by
   unfold finiteKuboGreenwoodDirectionalConductivity
     finiteKuboBastinSpectralDirectionalConductivity
-    finiteKuboBastinSpectralChannelResponse
-    finiteDirectionalCurrentResponseChannel
+  rw [finiteKuboBastinSpectralChannelResponse_eq_vertexSum]
+  unfold finiteDirectionalCurrentResponseChannel
     finiteKuboBastinSpectralVertexSum
   congr 1
   congr 1

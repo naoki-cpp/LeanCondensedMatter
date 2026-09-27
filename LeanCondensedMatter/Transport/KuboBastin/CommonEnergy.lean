@@ -163,8 +163,9 @@ theorem finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy
         system data interpolation channel omega eta =
       finiteKuboBastinCommonEnergyChannelResponse
         system data interpolation channel omega eta := by
-  unfold finiteKuboBastinOccupationResolvedChannelResponse
-    finiteKuboBastinCommonEnergyChannelResponse
+  rw [finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum]
+  unfold finiteKuboBastinCommonEnergyChannelResponse
+    finiteKuboBastinCommonEnergyVertexResponse
   rw [integral_finiteKuboBastinCommonVertexEnergyKernel]
 
 theorem finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
