@@ -3942,7 +3942,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg.0.SecondQuantization.Common.orderedQuarticLegFamily_cast_mul_add"
     ],
     "dependencies": [
       "Combinatorics.FiniteIndex.blockCoordinate_lt"
@@ -3951,7 +3951,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg.0.SecondQuantization.Common.orderedQuarticLegFamily_cast_mul_add"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -4145,10 +4145,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
@@ -4158,6 +4158,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons",
       "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val"
     ],
     "dependencies": [
@@ -4167,9 +4168,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons",
       "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48711,6 +48713,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
       "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
     ],
@@ -48724,10 +48727,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
       "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69250,6 +69254,1003 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.broadening ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.broadening_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → 0 < params.broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.broadening_pos",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.effectiveMass ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → 0 < params.effectiveMass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_pos",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.hbar ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.hbar_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.hbar_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → 0 < params.hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.hbar_pos",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.hbar_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.hbar_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters}, params.IsRegular → 0 ≤ params.momentumCutoff",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.momentumCutoff_nonneg",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (measured source : Fin 2) (p : ℝ),\n  QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct params measured source p =\n    ∫ (θ : ℝ) in 0..2 * Real.pi,\n      (QuantumTheory.Transport.Models.Parabolic2DEG.currentProductAngularCoefficients params measured source p).eval θ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "The model-level angular reduction is exactly the integral of the canonical harmonic\nrepresentation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (measured source : Fin 2),\n  measured ≠ source →\n    ∀ (p : ℝ), QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct params measured source p = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_zero_of_ne",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "The isotropic current product has no constant angular harmonic for unequal directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffResponseComponent_eq_zero_of_ne"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.radialCurrentScale_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffResponseComponent_eq_zero_of_ne"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters),\n  params.IsRegular →\n    QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime params *\n        QuantumTheory.Transport.Models.Parabolic2DEG.lorentzianNormalization params =\n      QuantumTheory.Transport.Models.Parabolic2DEG.kuboTracePrefactor params",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "Finite-parameter Drude/Kubo normalization identity under the model's explicit physical\nregularity assumptions. No cutoff, thermodynamic, or zero-broadening limit is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters),\n  params.IsRegular →\n    ∀ (p : ℝ),\n      ↑(QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime params *\n              QuantumTheory.Transport.Models.Parabolic2DEG.lorentzianNormalization params) *\n          QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight params p =\n        ↑(QuantumTheory.Transport.Models.Parabolic2DEG.kuboTracePrefactor params) *\n          QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight params p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "Pointwise version of the finite Drude/Kubo normalization identity on the canonical Středa\nsurface Green-sector weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters),\n  params.broadening ≠ 0 → Continuous fun p => QuantumTheory.Transport.Models.Parabolic2DEG.greenScalar side params p 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.continuous_greenScalar_radial",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "The radial scalar Green function is continuous at every finite nonzero broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (direction : Fin 2) (p θ : ℝ),\n  QuantumTheory.Transport.Models.Parabolic2DEG.currentComponent params direction (p * Real.cos θ) (p * Real.sin θ) =\n    QuantumTheory.Transport.Models.Parabolic2DEG.radialCurrentScale params p *\n      if direction = 0 then Real.cos θ else Real.sin θ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.currentComponent_polar",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "On a polar momentum circle, every Cartesian current component is the named radial current scale\ntimes the corresponding sine/cosine factor. This pins the angular reduction to the model current\nconvention. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (direction : Fin 2) (px py : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.Parabolic2DEG.currentOperator params direction px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.currentOperator_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "The current operator is self-adjoint because the signed charge and velocity are real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (measured source : Fin 2),\n  measured ≠ source →\n    QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityComponent params measured source = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityComponent_eq_zero_of_ne",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "Under the explicit off-diagonal hypothesis, the normalized conductivity component vanishes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityTensor_hallComponent_eq_zero_of_ne"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffResponseComponent_eq_zero_of_ne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityTensor_hallComponent_eq_zero_of_ne"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (measured source : Fin 2),\n  (QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityTensor params).component measured source =\n    QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityComponent params measured source",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityTensor_component",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (i j : Fin 2),\n  i ≠ j → (QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityTensor params).hallComponent i j = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityTensor_hallComponent_eq_zero_of_ne",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "Under the explicit off-diagonal hypothesis, the Hall projection of the isotropic benchmark\nvanishes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityComponent_eq_zero_of_ne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (measured source : Fin 2),\n  measured ≠ source →\n    QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffResponseComponent params measured source = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffResponseComponent_eq_zero_of_ne",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "Under the explicit off-diagonal hypothesis, the finite isotropic raw response vanishes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityComponent_eq_zero_of_ne"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_zero_of_ne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.finiteCutoffConductivityComponent_eq_zero_of_ne"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters)\n  (px py : ℝ),\n  params.broadening ≠ 0 → QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator side params px py ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "Finite nonzero broadening keeps the scalar Green denominator away from zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.continuous_greenScalar_radial"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
+      "QuantumTheory.Transport.spectralParameterOfRegulator_sub_real_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.continuous_greenScalar_radial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters)\n  (px py : ℝ),\n  params.broadening ≠ 0 →\n    ∀ (ψ : QuantumTheory.Transport.Models.Parabolic2DEG.BandHilbert),\n      (QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator side params px py) ψ =\n        QuantumTheory.Transport.Models.Parabolic2DEG.greenScalar side params px py • ψ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "The canonical operator Green function acts by the named scalar Green factor. This is the\nexplicit bridge that lets response code use scalar one-band algebra without bypassing the common\nresolvent boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_eq_greenScalar_smul_id"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.hamiltonianOperator_isSelfAdjoint",
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
+      "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_eigenvector"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_eq_greenScalar_smul_id"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters)\n  (px py : ℝ),\n  params.broadening ≠ 0 →\n    QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator side params px py =\n      QuantumTheory.Transport.Models.Parabolic2DEG.greenScalar side params px py • 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_eq_greenScalar_smul_id",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "Operator/scalar Green bridge for the one-band model. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (px py : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.Parabolic2DEG.hamiltonianOperator params px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.hamiltonianOperator_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "The Hamiltonian operator is self-adjoint because its scalar coefficient is real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (p : ℝ),\n  QuantumTheory.Transport.Models.Parabolic2DEG.radialCurrentScale params p =\n    params.signedCharge * p / params.effectiveMass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.radialCurrentScale_eq",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_zero_of_ne"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_zero_of_ne"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (p : ℝ),\n  QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight params p =\n    QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace\n      (QuantumTheory.Transport.Models.Parabolic2DEG.hamiltonianOperator params p 0) 1 1 params.chemicalPotential\n      params.broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "The radial Green-sector weight is itself a specialization of the generic regularized Středa\nsurface primitive, rather than an RA-only approximation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
+      "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel params measured source px py =\n    QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace\n      (QuantumTheory.Transport.Models.Parabolic2DEG.hamiltonianOperator params px py)\n      (QuantumTheory.Transport.Models.Parabolic2DEG.currentOperator params measured px py)\n      (QuantumTheory.Transport.Models.Parabolic2DEG.currentOperator params source px py) params.chemicalPotential\n      params.broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
+    "externalAxioms": [],
+    "docString": "The model point kernel is exactly the generic clean regularized Středa surface primitive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
+      "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.Parabolic2DEG.Parameters) (direction : Fin 2) (px py : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.Parabolic2DEG.velocityOperator params direction px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.Parabolic2DEG.velocityOperator_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+    "externalAxioms": [],
+    "docString": "The velocity operator is self-adjoint because its scalar coefficient is real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.PositiveTransportLifetime), 0 < self.lifetime",
     "standardAxioms": [
       "Classical.choice",
@@ -70026,6 +71027,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply",
       "QuantumTheory.Transport.spectralResolvent_mul_spectralShift",
       "QuantumTheory.Transport.spectralShift_mul_spectralResolvent",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_injective",
@@ -70043,13 +71046,15 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply",
       "QuantumTheory.Transport.spectralResolvent_mul_spectralShift",
       "QuantumTheory.Transport.spectralShift_mul_spectralResolvent",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_injective",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_dissipative",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_channels"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74074,7 +75079,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -74086,7 +75091,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized"
     ],
     "dependencies": [
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
@@ -74094,9 +75101,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74201,7 +75210,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -74213,6 +75222,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply",
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy"
     ],
     "dependencies": [
@@ -74224,9 +75234,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenOperator_apply",
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74577,6 +75588,7 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_eigenvector"
     ],
@@ -74586,10 +75598,11 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_eigenvector"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74826,6 +75839,8 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.continuous_retardedAdvancedResolventDifferenceDerivative_energy",
@@ -74842,6 +75857,8 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.continuous_retardedAdvancedResolventDifferenceDerivative_energy",
@@ -74850,7 +75867,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_retardedAdvancedResolventDifference",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_smrckaStredaSurfaceFactor"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74925,6 +75942,8 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
@@ -74942,6 +75961,8 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
@@ -74951,7 +75972,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_retardedAdvancedResolventDifference",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_smrckaStredaSurfaceFactor"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -81416,7 +82437,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -81428,15 +82449,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField"
+      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField",
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField"
+      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField",
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86598,6 +87621,44 @@
       "SecondQuantization.Bosonic.particleNumber_vacuum"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n  SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct q =\n    SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n      SecondQuantization.Bosonic.annihilate q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField",
+    "externalAxioms": [],
+    "docString": "The flattened bosonic free-thermal-field product is exactly the Common bare quartic\nvertex-sequence operator. This is the operator bridge from the quartic Dyson expansion to the\nbosonic Gibbs/Wick layer. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_quarticFreeThermalField",
+      "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103070,6 +104131,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {n : ℕ} (f0 : Fin 4 → α) (f : Fin n → Fin 4 → α),\n  List.ofFn (SecondQuantization.Common.orderedQuarticLegFamily (Fin.cons f0 f)) =\n    List.ofFn f0 ++ List.ofFn (SecondQuantization.Common.orderedQuarticLegFamily f)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
+    "externalAxioms": [],
+    "docString": "Prepending one vertex-local block prepends its four entries to the canonical flattened quartic\nleg list. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg.0.SecondQuantization.Common.orderedQuarticLegFamily_cast_mul_add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (v : ↥S) (l : Fin 4),\n  SecondQuantization.Common.localLegOfLeg (SecondQuantization.Common.legOfVertexLocal v l) = l",
     "standardAxioms": [
       "Classical.choice",
@@ -106593,6 +107696,47 @@
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : Monoid α] {n : ℕ} (f : Fin n → Fin 4 → α),\n  (List.ofFn (SecondQuantization.Common.orderedQuarticLegFamily f)).prod =\n    (List.ofFn fun i => (List.ofFn (f i)).prod).prod",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
+    "externalAxioms": [],
+    "docString": "The product of the canonical row-major flattened quartic-leg family is the ordered product\nof the four-leg product at each vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128818,7 +129962,7 @@
     "name": "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
     "externalAxioms": [],
-    "docString": "**`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,\n`Common.heisenbergEvolve_quarticVertexOperator_eq_prod`, the inductive hypothesis, and\n`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
+    "docString": "The ordered product of the flattened evolved quartic legs is exactly the Common\ninteraction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by\n`Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic\nimaginary-time specialization. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -147924,6 +149068,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {n : ℕ} (f : Fin n → Fin 4 → α) (i : Fin n) (j : Fin 4) (h : 2 * (2 * n) = n * 4),\n  SecondQuantization.Common.orderedQuarticLegFamily f (Fin.cast ⋯ ⟨↑i * 4 + ↑j, ⋯⟩) = f i j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg.0.SecondQuantization.Common.orderedQuarticLegFamily_cast_mul_add",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
+    "externalAxioms": [],
+    "docString": "Evaluating the canonical flattened family at the row-major coordinate `i * 4 + j` recovers\nthe corresponding vertex-local value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B C : ↥d.vertexGraph.componentPartitionOn.parts),\n  B ≠ C →\n    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount\n            (d.componentPairEquiv orders shuffle) B C +\n          (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount\n            (d.componentPairEquiv orders shuffle) C B) %\n        2 =\n      0",
     "standardAxioms": [
       "Classical.choice",
@@ -153823,43 +155008,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (i : Fin n) (j : Fin 4)\n  (h : 2 * (2 * n) = n * 4),\n  SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ (Fin.cast ⋯ ⟨↑i * 4 + ↑j, ⋯⟩) =\n    SecondQuantization.Fermionic.imaginaryTimeEvolve ε (τ i)\n      (SecondQuantization.Fermionic.quarticLocalLegOperator (q i) j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
