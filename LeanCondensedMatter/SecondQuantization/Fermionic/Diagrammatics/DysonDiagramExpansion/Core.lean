@@ -70,7 +70,9 @@ theorem continuous_matrixCoeff_quarticVertexSequenceInteractionPicture (ε : Mod
             (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)) k j *
             Common.matrixCoeff
               (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n (fun i => q i.succ) (fun i => τ i.succ)) j n' :=
-      fun τ => by rw [Common.quarticVertexSequenceInteractionPicture_succ, Common.matrixCoeff_comp]
+      fun τ => by
+        rw [Common.quarticVertexSequenceInteractionPicture_succ, Common.matrixCoeff_comp]
+        simp only [interactionPicture, quarticVertexOperator]
     simp_rw [heq]
     exact continuous_finsetSum _ fun j _ =>
       ((Common.continuous_matrixCoeff_interactionPicture
