@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
+import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
@@ -12,7 +13,9 @@ set_option linter.style.header false
 This module owns the representation-independent scalar Fourier transform used when a two-dimensional
 physical-momentum integral is written in polar coordinates with a finite radial cutoff. The transform
 includes the physical continuum normalization `d²p / (2πℏ)²` and the polar Jacobian `p`, while the
-consumer supplies the momentum-space scalar field.
+consumer supplies the momentum-space scalar field. The Cartesian Fourier phase itself is inherited
+from the dimension-independent `Analysis.FourierGeometry` layer; this module owns only its
+two-dimensional polar specialization and angular reduction.
 
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
@@ -35,12 +38,24 @@ open scoped Interval
 def polarPoint2D (radius angle : ℝ) : Fin 2 → ℝ :=
   ![radius * Real.cos angle, radius * Real.sin angle]
 
+/-- The two-dimensional polar point is the generic finite-dimensional radial scaling specialized to
+its usual unit direction `(cos φ, sin φ)`. -/
+theorem polarPoint2D_eq_radialPoint (radius angle : ℝ) :
+    polarPoint2D radius angle =
+      radialPoint radius ![Real.cos angle, Real.sin angle] := by
+  funext i
+  fin_cases i <;> simp [polarPoint2D, radialPoint]
+
+/-- Negating the radius negates a two-dimensional polar point at fixed angle. -/
+theorem neg_polarPoint2D (radius angle : ℝ) :
+    -(polarPoint2D radius angle) = polarPoint2D (-radius) angle := by
+  rw [polarPoint2D_eq_radialPoint, polarPoint2D_eq_radialPoint,
+    radialPoint_neg_radius]
+
 /-- Fourier phase `exp(i p·r / ℏ)` for polar momentum `(p cos θ, p sin θ)` in two dimensions. -/
 def physicalMomentumPolarFourierPhase
     (hbar p θ : ℝ) (r : Fin 2 → ℝ) : ℂ :=
-  Complex.exp
-    (Complex.I *
-      (((p * (r 0 * Real.cos θ + r 1 * Real.sin θ) / hbar : ℝ) : ℂ)))
+  physicalMomentumFourierPhase hbar (polarPoint2D p θ) r
 
 /-- Dimensionless radial phase `exp(i z cos θ)` that appears after aligning the real-space point with
 the polar axis. -/
@@ -53,8 +68,9 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
     (hbar p θ radius angle : ℝ) :
     physicalMomentumPolarFourierPhase hbar p θ (polarPoint2D radius angle) =
       polarFourierRadialPhase (p * radius / hbar) (θ - angle) := by
-  unfold physicalMomentumPolarFourierPhase polarFourierRadialPhase
-  simp only [polarPoint2D, Matrix.cons_val_zero, Matrix.cons_val_one, Real.cos_sub]
+  unfold physicalMomentumPolarFourierPhase physicalMomentumFourierPhase polarFourierRadialPhase
+  simp only [polarPoint2D, dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Real.cos_sub]
   apply congrArg Complex.exp
   push_cast
   ring_nf

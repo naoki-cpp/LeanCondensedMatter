@@ -712,11 +712,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]
   ring
 
-private theorem neg_polarPoint2D_zero (radius : ℝ) :
-    -(polarPoint2D radius 0) = polarPoint2D (-radius) 0 := by
-  funext i
-  fin_cases i <;> simp [polarPoint2D]
-
 /-- On the real-space radial axis, the two-dimensional crossed trace kernel is exactly the radial
 trace kernel assembled from the already reduced Green and current blocks. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq
@@ -727,7 +722,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq
         (polarPoint2D radius 0) =
       finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         diagram v m probeEnergy broadening disorderStrength hbar pMax radius := by
-  have hneg := neg_polarPoint2D_zero radius
+  have hneg := neg_polarPoint2D radius 0
   cases diagram with
   | x =>
       simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
