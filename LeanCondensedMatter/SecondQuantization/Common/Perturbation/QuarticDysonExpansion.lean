@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Quartic Dyson sequence helpers
 
-Statistics-independent scalar and interaction-picture identities used when a finitely supported
-quartic interaction is expanded into fixed vertex-label sequences.  Particle-statistics-specific
-layers provide concrete ladder operators and their free imaginary-time eigenoperator laws.
+Statistics-independent scalar and ordered-simplex identities used when a quartic Dyson expansion is
+resolved into fixed vertex-label sequences. Particle-statistics-specific layers provide the concrete
+interaction operators whose Dyson coefficients consume these helpers.
 -/
 
 namespace SecondQuantization
@@ -16,7 +16,7 @@ namespace Common
 
 noncomputable section
 
-variable {Mode Config : Type*}
+variable {Mode : Type*}
 
 /-- The scalar time factor of a fixed vertex sequence is jointly continuous. -/
 theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
@@ -111,7 +111,6 @@ theorem quarticDysonSequenceCoeff_cons {n : ℕ}
     ring
   rw [hrewrite, intervalIntegral.integral_const_mul]
   ring
-
 
 end
 end Common
