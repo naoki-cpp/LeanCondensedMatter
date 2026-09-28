@@ -66,7 +66,7 @@ private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → 
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]
       symm
-      simpa [interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
+      simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
         quarticLocalLegOperator] using
         (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
           (fermionEnergy ε) create annihilate (q v) (σ v))
