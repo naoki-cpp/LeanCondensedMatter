@@ -39,7 +39,8 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
       intrinsicHallConductivityCutoff e hbar m εF Λ := by
   unfold bastinCleanHallConductivityCutoff
   rw [zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq]
-  unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
+  unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaConductivityNormalization
+      bastinStredaTraceConductivityPrefactor
     intrinsicHallConductivityCutoff intrinsicHallPrefactorFromMomentumMeasure
   field_simp [Real.pi_ne_zero]
 
