@@ -24,7 +24,6 @@
     {
       "id": "generalizedCurrentOwners",
       "paths": [
-        "LeanCondensedMatter/Analysis/Operator/LinearCommutator.lean",
         "LeanCondensedMatter/Analysis/Operator/SymmetrizedProduct.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/DifferentialDependence.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/CurrentRepresentation.lean",
