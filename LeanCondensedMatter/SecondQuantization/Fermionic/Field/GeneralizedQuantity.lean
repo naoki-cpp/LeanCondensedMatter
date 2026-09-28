@@ -83,7 +83,7 @@ quantity. This is a global statement only; no local-current representation is in
 theorem oneBodyObservable_commutes_of_commutes (h m : 𝓗₁ →ₗ[ℂ] 𝓗₁)
     (hm : ⁅h, m⁆ = 0) :
     ⁅AlgebraicFock.dGamma 𝓗₁ h, oneBodyObservable 𝓗₁ m⁆ = 0 := by
-  rw [oneBodyObservable, AlgebraicFock.dGamma_linearCommutator, hm,
+  rw [oneBodyObservable, AlgebraicFock.dGamma_lie, hm,
     AlgebraicFock.dGamma_zero]
 
 end Field
