@@ -136,8 +136,9 @@ theorem boundedLatticeOperator_lie
     boundedLatticeOperator ⁅A, B⁆ =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
         (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
-  rw [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
-    boundedLatticeOperator_sub, boundedLatticeOperator_comp,
+  rw [LieRing.of_associative_ring_bracket]
+  change boundedLatticeOperator (A.comp B - B.comp A) = _
+  rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
     boundedLatticeOperator_comp]
 
 /-- Bounded many-particle hopping Hamiltonian on the finite-lattice Hilbert Fock space. -/
