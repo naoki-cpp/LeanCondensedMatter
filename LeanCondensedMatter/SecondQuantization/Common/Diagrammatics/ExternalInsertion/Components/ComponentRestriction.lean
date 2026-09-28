@@ -360,6 +360,12 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
       (externalInsertionLegEquiv (d.externalPairCount B)
         (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
           (Sum.inl e)
+  have hShuffle :
+      (Equiv.sumCongr (d.externalSectorOrderIso B).toEquiv
+        (Equiv.refl (↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4))).symm.symm (Sum.inl e) =
+        Sum.inl (d.externalSectorOrderIso B e) := by
+    rfl
   have hAmbient :
       (externalInsertionLegEquiv E S)
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1) =
@@ -370,7 +376,7 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    hLocal, Equiv.sumCongr_apply, Sum.map_inl,
+    hLocal, hShuffle,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     Equiv.symm_trans_apply,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val,
@@ -404,6 +410,13 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
       (externalInsertionLegEquiv (d.externalPairCount B)
         (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
           (Sum.inr (v, l))
+  have hShuffle :
+      (Equiv.sumCongr (d.externalSectorOrderIso B).toEquiv
+        (Equiv.refl (↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4))).symm.symm
+          (Sum.inr (v, l)) =
+        Sum.inr (v, l) := by
+    rfl
   have hAmbient :
       (externalInsertionLegEquiv E S)
           (externalInsertionInteractionLeg (E := E)
@@ -420,7 +433,7 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    hLocal, Equiv.sumCongr_apply, Sum.map_inr,
+    hLocal, hShuffle,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     Equiv.symm_trans_apply,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val,
