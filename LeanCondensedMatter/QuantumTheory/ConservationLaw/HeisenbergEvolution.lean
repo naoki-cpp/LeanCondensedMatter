@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter
-import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -21,6 +21,8 @@ chosen current extension.
 namespace QuantumTheory
 namespace ConservationLaw
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 
 /-- Scalar converting a commutator with the Hamiltonian into the Heisenberg derivative. -/
@@ -31,13 +33,13 @@ noncomputable def heisenbergScale (ℏ : ℝ) : ℂ :=
 noncomputable def heisenbergEvolution
     (ℏ : ℝ) (h : V →ₗ[ℂ] V) :
     (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.commutatorEvolution h
+  heisenbergScale ℏ • LieAlgebra.ad ℂ (Module.End ℂ V) h
 
 @[simp]
 theorem heisenbergEvolution_apply
     (ℏ : ℝ) (h A : V →ₗ[ℂ] V) :
     heisenbergEvolution V ℏ h A =
-      heisenbergScale ℏ • _root_.ConservationLaw.linearCommutator h A :=
+      heisenbergScale ℏ • ⁅h, A⁆ :=
   rfl
 
 /-- Any represented balance law for algebraic commutator evolution acquires the physical Heisenberg
@@ -50,10 +52,10 @@ noncomputable def heisenbergBalanceLaw
     (Q : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (d : Test →ₗ[ℂ] OneForm)
     (B : _root_.ConservationLaw.BalanceLaw
-      (_root_.ConservationLaw.commutatorEvolution h) Q d) :
+      (LieAlgebra.ad ℂ (Module.End ℂ V) h) Q d) :
     _root_.ConservationLaw.BalanceLaw (heisenbergEvolution V ℏ h) Q d := by
   change _root_.ConservationLaw.BalanceLaw
-    (heisenbergScale ℏ • _root_.ConservationLaw.commutatorEvolution h) Q d
+    (heisenbergScale ℏ • LieAlgebra.ad ℂ (Module.End ℂ V) h) Q d
   refine
     ((_root_.ConservationLaw.IntrinsicBalanceLaw.ofRepresented B).scaleEvolution
       (heisenbergScale ℏ)).toRepresented
