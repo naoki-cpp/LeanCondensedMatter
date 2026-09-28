@@ -131,7 +131,18 @@ theorem boundedDirectionalContact_eq_neg_sq_smul_bondHamiltonianMoment
       (-((peierlsCoupling ℏ q) ^ 2)) •
         boundedDirectionalBondHamiltonianMoment geometry direction ℏ q K := by
   unfold boundedDirectionalContact boundedDirectionalBondHamiltonianMoment
-  rw [smul_smul]
+  have hxy : ∀ x y : Site,
+      ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
+          boundedBondContact K ℏ q x y =
+        (-((peierlsCoupling ℏ q) ^ 2)) •
+          (((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
+            boundedPeierlsBondHamiltonian K ℏ q x y 0) := by
+    intro x y
+    rw [boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
+    rw [smul_smul, smul_smul]
+    congr 1
+    ring
+  rw [← smul_smul]
   congr 1
   rw [Finset.smul_sum]
   apply Finset.sum_congr rfl
@@ -139,9 +150,7 @@ theorem boundedDirectionalContact_eq_neg_sq_smul_bondHamiltonianMoment
   rw [Finset.smul_sum]
   apply Finset.sum_congr rfl
   intro y _
-  rw [boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero, smul_smul]
-  congr 1
-  ring
+  exact hxy x y
 
 /-- Hermitian hopping and real physical parameters make every geometric current component
 self-adjoint. -/
