@@ -199,8 +199,11 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
           (((Complex.I * q) / ℏ) •
             AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
     rw [boundedLatticeOperator_smul]
-  simpa only [boundedPeierlsBondHamiltonian, boundedOneBodyOperator, map_neg,
-    hcurrent] using h
+  change HasAlgebraicDerivAt
+    (fun A => boundedOneBodyOperatorLinearMap (Site := Site)
+      (K.peierlsBondHamiltonian ℏ q x y A))
+    (-boundedBondCurrent ℏ q K x y) 0
+  simpa only [map_neg, hcurrent] using h
 
 /-- Reversing a bond negates its bounded current observable. -/
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
