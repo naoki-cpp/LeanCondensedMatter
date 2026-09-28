@@ -459,6 +459,3 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
   — canonical finite free-fermion entropy endpoint expressing the Gibbs-state von Neumann entropy
   as the sum of binary Fermi–Dirac mode entropies.
-- `SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod` — A single evolved
-  quartic vertex is the composed product of its four individually evolved local legs in the
-  canonical local-leg order.

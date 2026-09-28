@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLe
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 
 set_option linter.style.header false
@@ -39,7 +39,7 @@ omit [Fintype Mode] in
 /-- **`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —
 by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
 reduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,
-`interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and
+`Common.heisenbergEvolve_quarticVertexOperator_eq_prod`, the inductive hypothesis, and
 `List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε
 q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
 (tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into
@@ -67,7 +67,13 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
       (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
         (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
           (fun i => q i.succ) (fun i => τ i.succ))
-    rw [interactionPicture_quarticVertexOperator_eq_prod,
+    rw [show interactionPicture ε (quarticVertexOperator (q 0)) (τ 0) =
+        (List.ofFn (fun l : Fin 4 =>
+          imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))).prod by
+      simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
+        quarticLocalLegOperator] using
+        (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
+          (fermionEnergy ε) create annihilate (q 0) (τ 0)),
       ← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture ε n
         (fun i => q i.succ) (fun i => τ i.succ),
       ← Module.End.mul_eq_comp, ← List.prod_append, List.ofFn_congr h2, ← List.ofFn_fin_append]

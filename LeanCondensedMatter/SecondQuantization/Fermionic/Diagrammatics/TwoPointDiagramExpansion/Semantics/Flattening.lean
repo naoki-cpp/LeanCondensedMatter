@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
 
 set_option linter.style.header false
@@ -65,7 +65,11 @@ private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → 
   | inr v =>
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]
-      exact (interactionPicture_quarticVertexOperator_eq_prod ε (q v) (σ v)).symm
+      symm
+      simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
+        quarticLocalLegOperator] using
+        (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
+          (fermionEnergy ε) create annihilate (q v) (σ v))
 
 /-- The complete atomic operator list in mixed imaginary-time order. -/
 noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)

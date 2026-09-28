@@ -76,6 +76,19 @@ theorem heisenbergEvolve_quarticVertexOperator
   push_cast
   ring
 
+/-- A quartic vertex evolved in imaginary time is the ordered product of its four evolved
+local-leg operators. This uses only multiplicativity of diagonal Heisenberg evolution and is
+independent of particle statistics. -/
+theorem heisenbergEvolve_quarticVertexOperator_eq_prod
+    (energy : Config → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : QuarticVertexLabel Mode) (τ : ℝ) :
+    heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) =
+      (List.ofFn (fun l : Fin 4 =>
+        heisenbergEvolve energy τ (quarticLocalLegOperator create annihilate q l))).prod := by
+  simp only [quarticVertexOperator, ← Module.End.mul_eq_comp, map_mul]
+  simp [Module.End.mul_eq_comp, Module.End.one_eq_id, quarticLocalLegOperator, List.ofFn_succ]
+
 /-- Ordered interaction-picture product of a finite quartic-vertex sequence. Coordinate zero is
 the outermost/latest operator, matching the ordered-simplex convention used by Dyson expansion. -/
 noncomputable def quarticVertexSequenceInteractionPicture
