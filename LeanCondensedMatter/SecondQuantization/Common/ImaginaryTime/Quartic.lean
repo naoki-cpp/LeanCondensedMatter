@@ -82,9 +82,8 @@ theorem heisenbergEvolve_quarticVertexOperator
     (hannihilate : ∀ i, heisenbergEvolve energy τ (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) :
     heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) =
-      Complex.exp ((τ : ℂ) * (quarticVertexEnergyShift ε q : ℂ)) •
-        quarticVertexOperator create annihilate q := by
-  simp only [quarticVertexOperator, ← Module.End.mul_eq_comp, map_mul]
+      quarticVertexTimeFactor ε q τ • quarticVertexOperator create annihilate q := by
+  simp only [quarticVertexOperator, quarticVertexTimeFactor, ← Module.End.mul_eq_comp, map_mul]
   rw [hcreate, hcreate, hannihilate, hannihilate]
   simp only [Module.End.mul_eq_comp, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
   congr 1
