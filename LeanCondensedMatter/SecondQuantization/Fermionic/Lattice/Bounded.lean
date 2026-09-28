@@ -137,7 +137,7 @@ theorem boundedLatticeOperator_lie
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
         (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
   rw [LieRing.of_associative_ring_bracket]
-  change boundedLatticeOperator (A.comp B - B.comp A) = _
+  simp only [Module.End.mul_eq_comp]
   rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
     boundedLatticeOperator_comp]
 
