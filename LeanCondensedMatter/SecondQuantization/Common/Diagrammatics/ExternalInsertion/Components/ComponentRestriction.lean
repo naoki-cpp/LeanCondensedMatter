@@ -642,53 +642,33 @@ private theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosse
           (d.componentDiagramLeg_restrictComponent_pairing_partner B i).symm)
       p q
 
-/-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
-interaction vertices. -/
-private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
-    {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
-      ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S))) × Fin 4 :=
-  SecondQuantization.Common.vacuumComponentLegDataEquiv
-    (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-    (B := (B : Finset (ExternalInsertionVertex E S))) hVac
-
-/-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
-noncomputable def ExternalInsertionDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
-    {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} ≃
-      Fin (2 * (2 * (interactionSector
-        (B : Finset (ExternalInsertionVertex E S))).card)) :=
-  ((externalInsertionLegEquiv E S).subtypeEquiv fun leg =>
-      d.legInComponent_iff_unflattened B leg).trans
-    ((d.vacuumLegDataEquiv B hVac).trans
-      (quarticLegEquiv (interactionSector
-        (B : Finset (ExternalInsertionVertex E S)))).symm)
-
-/-- The perfect pairing induced on a vacuum component. -/
-noncomputable def ExternalInsertionDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
-    Pairing (2 * (interactionSector
-      (B : Finset (ExternalInsertionVertex E S))).card) :=
-  d.pairing.restrictAlongEquiv (d.legInComponent B)
-    (fun leg => d.legInComponent_partner_iff (B : Finset (ExternalInsertionVertex E S)) leg)
-    (d.vacuumBlockLegEquiv B hVac)
-
 /-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
+    (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     QuarticDiagram InternalLabel N
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))) where
   vertexLabel v :=
     d.vertexLabel ⟨v.1, interactionSector_subset
       (B : Finset (ExternalInsertionVertex E S)) v.2⟩
-  pairing := d.restrictedVacuumPairing B hVac
+  pairing := by
+    let legEquiv :
+        {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} ≃
+          Fin (2 * (2 * (interactionSector
+            (B : Finset (ExternalInsertionVertex E S))).card)) :=
+      ((externalInsertionLegEquiv E S).subtypeEquiv fun leg =>
+          d.legInComponent_iff_unflattened B leg).trans
+        ((SecondQuantization.Common.vacuumComponentLegDataEquiv
+          (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+          (B := (B : Finset (ExternalInsertionVertex E S))) hVac).trans
+          (quarticLegEquiv (interactionSector
+            (B : Finset (ExternalInsertionVertex E S)))).symm)
+    exact d.pairing.restrictAlongEquiv (d.legInComponent B)
+      (fun leg => d.legInComponent_partner_iff
+        (B : Finset (ExternalInsertionVertex E S)) leg)
+      legEquiv
 
 end Common
 end SecondQuantization
