@@ -73,7 +73,6 @@
       "sourceRoots": ["LeanCondensedMatter/Analysis"],
       "layers": [
         {"id": "zetaCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.ScalarExchange"]},
-        {"id": "linearCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.LinearCommutator"]},
         {"id": "symmetrizedProduct", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]},
         {"id": "differentialDependence", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.DifferentialDependence"]},
         {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation"]},
@@ -84,8 +83,6 @@
         {"id": "correctedCurrentFlux", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"]}
       ],
       "edges": [
-        {"upstream": "zetaCommutator", "downstream": "linearCommutator"},
-        {"upstream": "linearCommutator", "downstream": "symmetrizedProduct"},
         {"upstream": "differentialDependence", "downstream": "currentRepresentation"},
         {"upstream": "differentialDependence", "downstream": "intrinsicBalanceLaw"},
         {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
@@ -104,7 +101,6 @@
       "layers": [
         {"id": "analysisCurrent", "modulePrefixes": [
           "LeanCondensedMatter.Analysis.ScalarExchange",
-          "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
           "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
           "LeanCondensedMatter.Analysis.ConservationLaw.DifferentialDependence",
           "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
