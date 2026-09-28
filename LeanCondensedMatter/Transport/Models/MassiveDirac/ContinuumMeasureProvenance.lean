@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
 
 set_option linter.style.header false
 
