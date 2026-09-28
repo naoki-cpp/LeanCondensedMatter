@@ -206,10 +206,10 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
       (inner ℂ ψ
         (finiteCutoffContinuumBornSelfEnergyOfRegulator
           v m probeEnergy regulator disorderStrength hbar pMax ψ)).im ≤ 0 := by
-  have hpref : 0 ≤ continuumBornAngularMeasurePrefactor hbar := by
-    unfold continuumBornAngularMeasurePrefactor momentumMeasurePrefactor
+  have hpref : 0 ≤ fullAngleMomentumMeasurePrefactor hbar := by
+    unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
     positivity
-  have hscale : 0 ≤ disorderStrength * continuumBornAngularMeasurePrefactor hbar :=
+  have hscale : 0 ≤ disorderStrength * fullAngleMomentumMeasurePrefactor hbar :=
     mul_nonneg hdisorder hpref
   have hgreen :=
     regulator_mul_im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply_nonpos
@@ -219,11 +219,11 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
     Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   calc
     regulator *
-        ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+        ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
           (inner ℂ ψ
             (finiteCutoffContinuumBornGreenIntegralOfRegulator
               v m probeEnergy regulator pMax ψ)).im) =
-      (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+      (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
         (regulator *
           (inner ℂ ψ
             (finiteCutoffContinuumBornGreenIntegralOfRegulator
