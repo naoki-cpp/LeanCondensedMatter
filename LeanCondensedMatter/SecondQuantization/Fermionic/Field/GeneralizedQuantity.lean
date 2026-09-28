@@ -24,6 +24,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 variable {Test : Type*} [AddCommGroup Test] [Module ℂ Test]
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -66,12 +68,11 @@ theorem manyBodyLocalizedQuantity_smul_id
 /-- Second quantization preserves the generalized balance decomposition. -/
 theorem dGamma_commutator_manyBodyLocalizedQuantity (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
-    ConservationLaw.linearCommutator
-        (AlgebraicFock.dGamma 𝓗₁ h) (manyBodyLocalizedQuantity 𝓗₁ M m f) =
+    ⁅AlgebraicFock.dGamma 𝓗₁ h, manyBodyLocalizedQuantity 𝓗₁ M m f⁆ =
       AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f) +
         AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f) := by
-  rw [manyBodyLocalizedQuantity, AlgebraicFock.dGamma_linearCommutator,
-    _root_.ConservationLaw.linearCommutator_localizedQuantity]
+  rw [manyBodyLocalizedQuantity, AlgebraicFock.dGamma_lie,
+    _root_.ConservationLaw.lie_localizedQuantity]
   simpa only [AlgebraicFock.dGammaLinear_apply] using
     (AlgebraicFock.dGammaLinear 𝓗₁).map_add
       (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f)
@@ -80,9 +81,8 @@ theorem dGamma_commutator_manyBodyLocalizedQuantity (h : 𝓗₁ →ₗ[ℂ] �
 /-- A vanishing one-particle commutator gives conservation of the corresponding total many-body
 quantity. This is a global statement only; no local-current representation is inferred. -/
 theorem oneBodyObservable_commutes_of_commutes (h m : 𝓗₁ →ₗ[ℂ] 𝓗₁)
-    (hm : _root_.ConservationLaw.linearCommutator h m = 0) :
-    ConservationLaw.linearCommutator
-        (AlgebraicFock.dGamma 𝓗₁ h) (oneBodyObservable 𝓗₁ m) = 0 := by
+    (hm : ⁅h, m⁆ = 0) :
+    ⁅AlgebraicFock.dGamma 𝓗₁ h, oneBodyObservable 𝓗₁ m⁆ = 0 := by
   rw [oneBodyObservable, AlgebraicFock.dGamma_linearCommutator, hm,
     AlgebraicFock.dGamma_zero]
 
