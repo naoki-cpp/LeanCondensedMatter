@@ -76,7 +76,8 @@ private theorem dGamma_lie_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
               oneParticle 𝓗₁ f * dGamma 𝓗₁ (⁅S, T⁆) x := by
           rw [hx]
         _ = dGamma 𝓗₁ (⁅S, T⁆) (oneParticle 𝓗₁ f * x) := by
-          rw [dGamma_oneParticle_mul, LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
+          rw [dGamma_oneParticle_mul]
+          simp [LieRing.of_associative_ring_bracket, Module.End.mul_apply]
 
 /-- Fermionic second quantization as a Lie algebra homomorphism between endomorphism algebras. -/
 noncomputable def dGammaLieHom :
