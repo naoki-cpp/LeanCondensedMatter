@@ -93,7 +93,7 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : â
   apply congrArg List.ofFn
   funext i
   simp [FreeThermalField.operator_quarticFreeThermalField,
-    quarticVertexOperator, Common.quarticVertexOperator, quarticLocalLegOperator,
+    Common.quarticVertexOperator, quarticLocalLegOperator,
     Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp]
 
 end
