@@ -52,7 +52,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
             (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) =
         (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
-    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
+    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaConductivityNormalization
+      bastinStredaTraceConductivityPrefactor
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
