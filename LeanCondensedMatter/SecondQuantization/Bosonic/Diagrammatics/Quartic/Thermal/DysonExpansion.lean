@@ -324,8 +324,9 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
     exact Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
       (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
       S.card hcard t localIntegrand
-      (fun B => (Common.continuous_quarticVertexSequenceTimeFactor ε
-        (fun i => (d.restrictComponent B.2).vertexLabel (orders B i))).measurableLocallyBounded)
+      (fun B => intervalIntegral.Continuous.measurableLocallyBounded
+        (Common.continuous_quarticVertexSequenceTimeFactor ε
+          (fun i => (d.restrictComponent B.2).vertexLabel (orders B i))))
   simp only [QuarticDiagram.orderedDysonThermalAmplitude, Common.quarticDysonSequenceCoeff]
   have hpair (shuffle : d.ComponentShuffle) :
       QuarticDiagram.orderedThermalPairingValue ε β d
