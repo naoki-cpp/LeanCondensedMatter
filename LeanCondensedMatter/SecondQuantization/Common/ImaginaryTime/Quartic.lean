@@ -40,23 +40,6 @@ noncomputable def quarticVertexTimeFactor (ε : Mode → ℝ)
     (q : QuarticVertexLabel Mode) (τ : ℝ) : ℂ :=
   Complex.exp ((τ : ℂ) * (quarticVertexEnergyShift ε q : ℂ))
 
-/-- Ordered product of a finite sequence of quartic vertex operators. -/
-noncomputable def quarticVertexSequenceOperator {n : ℕ}
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (q : Fin n → QuarticVertexLabel Mode) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  (List.ofFn fun i => quarticVertexOperator create annihilate (q i)).prod
-
-/-- Prepending one quartic vertex prepends its operator by composition. -/
-@[simp]
-theorem quarticVertexSequenceOperator_cons {n : ℕ}
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
-    quarticVertexSequenceOperator create annihilate (Fin.cons q0 q) =
-      (quarticVertexOperator create annihilate q0).comp
-        (quarticVertexSequenceOperator create annihilate q) := by
-  simp [quarticVertexSequenceOperator, Module.End.mul_eq_comp]
-
 /-- Product of the scalar imaginary-time factors of a finite quartic-vertex sequence. -/
 noncomputable def quarticVertexSequenceTimeFactor {n : ℕ}
     (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) : ℂ :=
