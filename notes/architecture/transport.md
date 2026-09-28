@@ -18,7 +18,8 @@ LeanCondensedMatter.Transport
 LeanCondensedMatter.Transport.Analysis   (opt-in analytical utilities)
 
 LeanCondensedMatter.Transport.Models
-        └── MassiveDirac
+        ├── MassiveDirac
+        └── Parabolic2DEG
 ```
 
 `LeanCondensedMatter.Transport` does not import the concrete `Transport.Models` track or the opt-in
@@ -130,6 +131,15 @@ proving their restricted shift is a unit. The disorder layer does not expose sep
 one-rung, or residual routing APIs and does not assume a Ward identity.
 
 ## Concrete models
+
+`Transport.Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
+normalization benchmark. It keeps effective mass, chemical potential, radial cutoff, positive
+spectral broadening, signed charge/current convention, reduced Planck constant, and momentum-measure
+normalization explicit. Its pointwise response consumes the common finite-broadening Středa surface
+kernel `RA - (RR + AA)/2` through the model's named current and Green operators. The reduced
+finite-cutoff response remains a response-level object until the named `ℏ/(2π)` Kubo trace
+prefactor is attached; only then is it exposed through `Core.ConductivityTensor`. No thermodynamic,
+cutoff-removal, or zero-broadening limit is part of this benchmark.
 
 `Transport.Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
 Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
