@@ -344,12 +344,20 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
           (interactionSector
             (B : Finset (ExternalInsertionVertex E S))) e) =
       externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
+  have hLocal :
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S))))
+          (externalInsertionExternalLeg (d.externalPairCount B)
+            (interactionSector (B : Finset (ExternalInsertionVertex E S))) e) =
+        Sum.inl e :=
+    (externalInsertionLegEquiv (d.externalPairCount B)
+      (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply (Sum.inl e)
   apply (externalInsertionLegEquiv E S).injective
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    externalInsertionExternalLeg, Equiv.symm_symm_apply,
-    Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inl,
+    Equiv.symm_symm_apply, hLocal,
+    Equiv.sumCongr_apply, Sum.map_inl,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     Equiv.symm_trans_apply,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val,
@@ -369,12 +377,20 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
       externalInsertionInteractionLeg (E := E)
         ⟨v.1, interactionSector_subset
           (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
+  have hLocal :
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S))))
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) =
+        Sum.inr (v, l) :=
+    (externalInsertionLegEquiv (d.externalPairCount B)
+      (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
+        (Sum.inr (v, l))
   apply (externalInsertionLegEquiv E S).injective
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    externalInsertionInteractionLeg, Equiv.symm_symm_apply,
-    Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inr,
+    Equiv.symm_symm_apply, hLocal,
+    Equiv.sumCongr_apply, Sum.map_inr,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     Equiv.symm_trans_apply,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val,
