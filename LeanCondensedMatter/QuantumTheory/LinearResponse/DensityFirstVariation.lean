@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Star
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -34,6 +35,8 @@ layers.
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -91,13 +94,13 @@ theorem hasDerivAt_perturbedDensityOperator_zero_of_bound
 
 /-- If the first propagator variation is skew-adjoint, the density variation is its commutator with
 `ρ₀`. -/
-theorem densityOperatorFirstVariation_eq_commutator_of_star_eq_neg
+theorem densityOperatorFirstVariation_eq_lie_of_star_eq_neg
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H)) (t : ℝ)
     (hK : star (timeDependentPropagatorFirstVariation system V t) =
       -timeDependentPropagatorFirstVariation system V t) :
     densityOperatorFirstVariation system ρ V t =
-      timeDependentPropagatorFirstVariation system V t * ρ.op -
-        ρ.op * timeDependentPropagatorFirstVariation system V t := by
+      ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ := by
+  rw [LieRing.of_associative_ring_bracket]
   simp [densityOperatorFirstVariation, hK, sub_eq_add_neg]
 
 end
