@@ -250,8 +250,8 @@ theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude [Fin
       exact
         (freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude
           ε β hpos g S order t).symm
-    _ = (S.card.factorial : ℂ)⁻¹ * (S.card.factorial : ℂ) *
-        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
+    _ = (S.card.factorial : ℂ)⁻¹ * ((S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t) := by
       rw [Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
       simp [nsmul_eq_mul]
     _ = freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
