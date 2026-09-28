@@ -84352,6 +84352,44 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) (t : ℝ),\n      ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card\n            t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g d t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "The total physical quartic-diagram weight is the canonical vertex moment:\n`|S|!` times the convergence-aware bosonic Dyson coefficient. The factorial is the number of\nglobal vertex orders; unlike the static coefficientwise amplitude, it is not divided out because the\nordered-simplex shuffle sum is exactly what later factorizes over connected components. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
+      "SecondQuantization.Common.card_quarticVertexOrder"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β σ : ℝ),\n  ∀ V ∈ SecondQuantization.Bosonic.freeGibbsDomain ε β,\n    SecondQuantization.Bosonic.interactionPicture ε V σ ∘ₗ\n        SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 0 σ ∈\n      SecondQuantization.Bosonic.freeGibbsDomain ε β",
     "standardAxioms": [
       "Classical.choice",
@@ -84593,15 +84631,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteractionOn support g) n\n          t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g (fun i => ↑(q i)) t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily (fun i => ↑(q i)) a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily (fun i => ↑(q i)) b)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84612,7 +84650,9 @@
     "docString": "The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite\nsum over support-valued vertex sequences and bosonic pairings. The scalar\n`quarticDysonSequenceCoeff` carries the full ordered-simplex imaginary-time integration, while the\npairing evaluation is the existing static free-boson thermal Wick factor. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
@@ -84624,8 +84664,52 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N))\n      (order : SecondQuantization.Common.QuarticVertexOrder S) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "The physical finite-order bosonic quartic Dyson coefficient is the sum of fixed-order physical\nquartic diagram amplitudes. This is the canonical reindexing of the concrete\n`vertex sequence × pairing` expansion through `Common.quarticDiagramEquivOrderedData`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.sum_quarticDiagram_eq_sum_orderedData",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96283,6 +96367,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected.0.SecondQuantization.Bosonic.QuarticDiagram.card_componentShuffle_mul_componentFactorials",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected.0.SecondQuantization.Bosonic.QuarticDiagram.card_componentVertexOrders"
@@ -96291,11 +96376,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected.0.SecondQuantization.Bosonic.QuarticDiagram.card_componentShuffle_mul_componentFactorials",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected.0.SecondQuantization.Bosonic.QuarticDiagram.card_componentVertexOrders"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108834,7 +108920,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108846,15 +108932,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116035,7 +116123,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.boundedBondOperator_eq",
       "SecondQuantization.Fermionic.Lattice.boundedBondCurrent_eq_peierlsCoupling_smul",
-      "SecondQuantization.Fermionic.Lattice.bounded_discrete_continuity"
+      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.bounded_discrete_continuity",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -116043,9 +116133,11 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.boundedBondOperator_eq",
       "SecondQuantization.Fermionic.Lattice.boundedBondCurrent_eq_peierlsCoupling_smul",
-      "SecondQuantization.Fermionic.Lattice.bounded_discrete_continuity"
+      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.bounded_discrete_continuity",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116179,6 +116271,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (operator :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site),\n  SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator operator =\n    SecondQuantization.Fermionic.Lattice.boundedLatticeOperator\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma (SecondQuantization.Fermionic.Lattice.LatticeState Site)\n        operator)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
+    "externalAxioms": [],
+    "docString": "Canonical computation rule for the bounded realization of a one-body operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent K ℏ q x y 0 =\n    SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y",
     "standardAxioms": [
@@ -116202,7 +116329,8 @@
       "SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsCurrent_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.peierlsBondCurrentOperator_zero"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.peierlsBondCurrentOperator_zero",
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -116492,7 +116620,8 @@
     ],
     "dependencies": [
       "HasAlgebraicDerivAt.map",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero",
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -146334,6 +146463,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude_eq_prod_components"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) n t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
