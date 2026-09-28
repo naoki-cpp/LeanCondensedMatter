@@ -8,6 +8,7 @@ import LeanCondensedMatter.Transport.Streda.TraceSpectral
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 import LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation
 import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
+import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 
 set_option linter.style.header false
 
@@ -15,6 +16,6 @@ set_option linter.style.header false
 # Středa transport
 
 Finite regularized Středa transport theory: operator and trace kernels, retarded–advanced algebra,
-energy integration, generalized static response, response matrices, spectral representations, and
-spectral energy integrals.
+energy integration, generalized static response, response matrices, spectral representations,
+spectral energy integrals, and representation-level conductivity normalization.
 -/
