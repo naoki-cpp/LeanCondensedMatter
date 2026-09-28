@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
+import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -28,6 +29,8 @@ second quantization so both layers may reuse the same identity.
 -/
 
 namespace SchwartzKinetic1D
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -116,12 +119,11 @@ theorem multiplicationOperator_comp_comm (f g : Space) :
   ring
 
 /-- The local multiplication potential contributes no localization commutator. -/
-theorem schrodinger_localization_commutator_eq_kinetic
+theorem lie_schrodinger_localization_eq_kinetic
     (κ : ℝ) (potential f : Space) :
-    (schrodingerOperator κ potential).comp (multiplicationOperator f) -
-        (multiplicationOperator f).comp (schrodingerOperator κ potential) =
-      (kineticOperator κ).comp (multiplicationOperator f) -
-        (multiplicationOperator f).comp (kineticOperator κ) := by
+    ⁅schrodingerOperator κ potential, multiplicationOperator f⁆ =
+      ⁅kineticOperator κ, multiplicationOperator f⁆ := by
+  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
   rw [schrodingerOperator]
   ext ψ
   simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
@@ -139,15 +141,15 @@ theorem schrodinger_localization_commutator_eq_kinetic
 theorem heisenberg_localization_eq_symmetrized_velocity
     (ℏ κ : ℝ) (potential f : Space) :
     (Complex.I / (ℏ : ℂ)) •
-        ((schrodingerOperator κ potential).comp (multiplicationOperator f) -
-          (multiplicationOperator f).comp (schrodingerOperator κ potential)) =
+        ⁅schrodingerOperator κ potential, multiplicationOperator f⁆ =
       (1 / 2 : ℂ) •
         ((multiplicationOperator (derivative f)).comp (velocityOperator ℏ κ) +
           (velocityOperator ℏ κ).comp (multiplicationOperator (derivative f))) := by
-  rw [schrodinger_localization_commutator_eq_kinetic]
+  rw [lie_schrodinger_localization_eq_kinetic]
   apply LinearMap.ext
   intro ψ
-  simp only [LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply,
+  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+    LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply,
     LinearMap.add_apply, kineticOperator, velocityOperator]
   rw [secondDerivative_multiplication_apply]
   rw [derivative_multiplication_apply]
