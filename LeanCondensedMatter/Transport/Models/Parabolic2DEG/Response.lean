@@ -41,8 +41,8 @@ def currentProductAngularCoefficients
     (params : Parameters) (measured source : Fin 2) (p : ℝ) :
     AngularHarmonicCoefficients ℂ :=
   let amplitude : ℂ := (((radialCurrentScale params p) ^ 2 : ℝ) : ℂ)
-  if hEq : measured = source then
-    if hX : measured = 0 then
+  if _hEq : measured = source then
+    if _hX : measured = 0 then
       { constant := amplitude / 2
         firstCosine := 0
         firstSine := 0
@@ -159,7 +159,6 @@ theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePref
       kuboTracePrefactor params := by
   unfold broadeningTransportLifetime lorentzianNormalization kuboTracePrefactor
   field_simp [hbroadening, Real.pi_ne_zero]
-  ring
 
 /-- Pointwise version of the finite Drude/Kubo normalization identity on the named Green weight. -/
 theorem broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight
