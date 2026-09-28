@@ -34,15 +34,10 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Canonical physical-momentum measure normalization `1/(2πℏ)²`. Parameters keep the actual
-chosen normalization explicit, so consumers may compare it with this named convention. -/
-def canonicalMomentumMeasureNormalization (params : Parameters) : ℝ :=
-  momentumMeasurePrefactor params.hbar
-
 /-- Predicate stating that the explicitly stored measure normalization is the canonical
-two-dimensional physical-momentum convention. -/
+two-dimensional physical-momentum convention owned by `Transport.Analysis.ContinuumMeasure`. -/
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
-  params.momentumMeasureNormalization = canonicalMomentumMeasureNormalization params
+  params.momentumMeasureNormalization = momentumMeasurePrefactor params.hbar
 
 /-- Radial current scale before angular projection, routed through the model's named current
 component rather than reconstructing the charge/velocity normalization in the response layer. -/
