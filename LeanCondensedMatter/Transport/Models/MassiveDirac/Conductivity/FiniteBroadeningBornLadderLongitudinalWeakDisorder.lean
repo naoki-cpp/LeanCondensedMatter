@@ -55,7 +55,8 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
               (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) =
         (((e ^ 2 * hbar * v ^ 2 * (probeEnergy ^ 2 - m ^ 2) /
           (Real.pi * (probeEnergy ^ 2 + 3 * m ^ 2)) : ℝ) : ℂ)) := by
-    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
+    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaConductivityNormalization
+      bastinStredaTraceConductivityPrefactor
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
