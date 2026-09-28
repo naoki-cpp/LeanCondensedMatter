@@ -30,15 +30,6 @@ theorem disorder_mul_fullAngleMomentumMeasurePrefactor_eq_two_pi_mul_disorderMea
   unfold fullAngleMomentumMeasurePrefactor continuumBornDisorderMeasurePrefactor
   ring
 
-/-- For a radial response whose full polar angle has not yet been accounted for, restoring the trace
-prefactor and angular-reduced measure is one angular `2π` times the canonical combined normalization. -/
-theorem bastinTrace_mul_fullAngleMomentumMeasurePrefactor_eq_two_pi_mul_normalization
-    (hbar : ℝ) :
-    bastinStredaTraceConductivityPrefactor hbar * fullAngleMomentumMeasurePrefactor hbar =
-      (2 * Real.pi) * bastinStredaPhysicalMomentumConductivityNormalization hbar := by
-  unfold fullAngleMomentumMeasurePrefactor bastinStredaPhysicalMomentumConductivityNormalization
-  ring
-
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
