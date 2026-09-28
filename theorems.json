@@ -15787,6 +15787,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {𝕜 : Type u_1} {H : Type u_2} [inst : RCLike 𝕜] [inst_1 : NormedAddCommGroup H] [inst_2 : InnerProductSpace 𝕜 H]\n  {α : Type u_3} {l : Filter α} [l.NeBot] {F : α → H →L[𝕜] H} {T : H →L[𝕜] H},\n  Filter.Tendsto F l (nhds T) → (∀ᶠ (i : α) in l, (F i).IsPositive) → T.IsPositive",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isPositive_of_tendsto",
+    "module": "LeanCondensedMatter.Analysis.Operator.Positive",
+    "externalAxioms": [],
+    "docString": "Positivity is closed under convergence in the continuous-linear-map topology. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "HilbertBasis.diagonalOp_isPositive"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "HilbertBasis.diagonalOp_isPositive"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T),\n  (↑T).IsSymmetric →\n    (Module.End.eigenspace (↑T) 0 ⊔\n          Submodule.span ℂ (Set.range (ContinuousLinearMap.eigenvectorFamily hT))).topologicalClosure =\n      ⊤",
     "standardAxioms": [
       "Classical.choice",
@@ -21710,8 +21749,8 @@
       "HilbertBasis.diagonalOpSpectralTraceClass"
     ],
     "dependencies": [
-      "HilbertBasis.hasSum_diagonalTerm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Diagonal.0.HilbertBasis.isPositive_of_tendsto"
+      "ContinuousLinearMap.isPositive_of_tendsto",
+      "HilbertBasis.hasSum_diagonalTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -133279,45 +133318,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {α : Type u_2} {l : Filter α} [l.NeBot]\n  {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}, Filter.Tendsto F l (nhds T) → (∀ᶠ (i : α) in l, (F i).IsPositive) → T.IsPositive",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Diagonal.0.HilbertBasis.isPositive_of_tendsto",
-    "module": "LeanCondensedMatter.Analysis.Operator.Diagonal",
-    "externalAxioms": [],
-    "docString": "Positivity is closed under convergence in the continuous-linear-map topology. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "HilbertBasis.diagonalOp_isPositive"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "HilbertBasis.diagonalOp_isPositive"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
