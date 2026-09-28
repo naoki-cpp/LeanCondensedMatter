@@ -103,19 +103,19 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htargetReal :
       (-2 : ℝ) * ((-e) * v) ^ 2 * (momentumMeasurePrefactor hbar)⁻¹ *
-          ((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+          ((Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
             (v ^ 2 * (probeEnergy ^ 2 + m ^ 2))) *
             (2 * (probeEnergy ^ 2 + m ^ 2) /
               (probeEnergy ^ 2 + 3 * m ^ 2))) =
         -8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
           (probeEnergy ^ 2 + 3 * m ^ 2) := by
-    unfold continuumBornAngularMeasurePrefactor
+    unfold fullAngleMomentumMeasurePrefactor
     (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
   have htargetCast := congrArg Complex.ofReal htargetReal
   push_cast at htargetCast
   have htarget :
       ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
-          ((((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+          ((((Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
             (v ^ 2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ)) *
             (((2 * (probeEnergy ^ 2 + m ^ 2) /
               (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) =
@@ -186,14 +186,14 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
       (-2 : ℝ) * ((-e) * v) ^ 2 * (momentumMeasurePrefactor hbar)⁻¹ *
           (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
               m probeEnergy *
-            (4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+            (4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
               (probeEnergy ^ 2 + m ^ 2) /
               (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) =
         -8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
           (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 := by
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-      continuumBornAngularMeasurePrefactor
+      fullAngleMomentumMeasurePrefactor
     (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
   have htargetCast := congrArg Complex.ofReal htargetReal
   push_cast at htargetCast
@@ -201,7 +201,7 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
       ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
           ((continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
               m probeEnergy : ℂ) *
-            (((4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+            (((4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
               (probeEnergy ^ 2 + m ^ 2) /
               (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) =
         (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
