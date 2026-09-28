@@ -73,8 +73,8 @@ localization correction.
 
 Fermionic second quantization consumes those definitions and owns only representation-specific lifts.
 Mathlib `LieHom`, with the associative-endomorphism Lie bracket, is the canonical bundle for `dGamma`:
-its underlying linear map supplies linear transport APIs, while the semantic `linearCommutator`
-preservation theorem is derived from `LieHom.map_lie`.
+its underlying linear map supplies linear transport APIs, while preservation of the ordinary
+Mathlib Lie bracket is derived from `LieHom.map_lie`.
 
 ## Fermionic ownership
 
