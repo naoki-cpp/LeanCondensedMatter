@@ -66,14 +66,35 @@ theorem interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField
 /-- Flatten `n` ordered quartic vertices into their `4 n` free thermal field labels. -/
 noncomputable def quarticFreeThermalFieldFamily {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : Fin (2 * (2 * n)) → FreeThermalField Mode :=
-  fun leg =>
-    let vl := Common.orderedQuarticLegEquiv n leg
-    quarticFreeThermalField (q vl.1) vl.2
+  Common.orderedQuarticLegFamily fun i l => quarticFreeThermalField (q i) l
 
 /-- Ordered algebraic product of all local legs of a finite list of quartic vertices. -/
 noncomputable def quarticFreeThermalOrderedProduct {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   FreeThermalField.orderedProduct (List.ofFn (quarticFreeThermalFieldFamily q))
+
+/-- The flattened bosonic free-thermal-field product is exactly the Common bare quartic
+vertex-sequence operator. This is the operator bridge from the quartic Dyson expansion to the
+bosonic Gibbs/Wick layer. -/
+theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : ℕ}
+    (q : Fin n → QuarticVertexLabel Mode) :
+    quarticFreeThermalOrderedProduct q =
+      Common.quarticVertexSequenceOperator create annihilate q := by
+  simp only [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct, List.map_ofFn,
+    quarticFreeThermalFieldFamily, Common.quarticVertexSequenceOperator]
+  change
+    (List.ofFn (Common.orderedQuarticLegFamily
+      (fun i : Fin n => fun l : Fin 4 =>
+        FreeThermalField.operator (quarticFreeThermalField (q i) l)))).prod =
+      (List.ofFn (fun i : Fin n =>
+        Common.quarticVertexOperator create annihilate (q i))).prod
+  rw [Common.prod_orderedQuarticLegFamily_eq_vertexProducts]
+  apply congrArg List.prod
+  apply congrArg List.ofFn
+  funext i
+  simp [FreeThermalField.operator_quarticFreeThermalField,
+    Common.quarticVertexOperator, quarticLocalLegOperator,
+    Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp]
 
 end
 end Bosonic

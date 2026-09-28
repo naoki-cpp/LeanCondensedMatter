@@ -39,6 +39,7 @@ theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
         (d.componentOrderedLeg shuffle B p) =
       QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) p := by
   unfold QuarticDiagram.orderedFreeThermalFieldFamily quarticFreeThermalFieldFamily
+    Common.orderedQuarticLegFamily
   simp only [d.orderedQuarticLegEquiv_componentOrderedLeg]
   rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
 
