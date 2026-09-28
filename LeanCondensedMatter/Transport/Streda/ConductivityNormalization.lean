@@ -36,6 +36,16 @@ physical-momentum measure `d²p/(2πℏ)²`. -/
 def bastinStredaPhysicalMomentumConductivityNormalization (hbar : ℝ) : ℝ :=
   bastinStredaConductivityNormalization hbar (momentumMeasurePrefactor hbar)
 
+/-- Attaching the trace prefactor to the exact full-angle radial measure is one angular `2π`
+times the canonical two-dimensional physical-momentum conductivity normalization. -/
+theorem bastinStredaTrace_mul_fullAngleMomentumMeasurePrefactor_eq
+    (hbar : ℝ) :
+    bastinStredaTraceConductivityPrefactor hbar * fullAngleMomentumMeasurePrefactor hbar =
+      (2 * Real.pi) * bastinStredaPhysicalMomentumConductivityNormalization hbar := by
+  unfold fullAngleMomentumMeasurePrefactor bastinStredaPhysicalMomentumConductivityNormalization
+    bastinStredaConductivityNormalization
+  ring
+
 end
 
 end Transport
