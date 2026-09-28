@@ -147,7 +147,7 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
   have h := congrArg (boundedLatticeOperatorAlgEquiv (Site := Site))
     (discrete_continuity ℏ q K x)
   simpa only [map_add, map_smul, map_sum, map_zero,
-    LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+    LieRing.of_associative_ring_bracket, ← Module.End.mul_eq_comp,
     map_sub, map_mul, ← ContinuousLinearMap.mul_def,
     boundedHoppingHamiltonian, boundedSiteChargeDensity, boundedBondCurrent,
     boundedLatticeOperator] using h
