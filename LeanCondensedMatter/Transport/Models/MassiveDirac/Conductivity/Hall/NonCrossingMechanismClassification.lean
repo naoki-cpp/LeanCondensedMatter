@@ -59,7 +59,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
-        let normalization : ℂ := ((bastinStredaConductivityNormalization hbar : ℝ) : ℂ)
+        let normalization : ℂ := ((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ)
         inPlaneCoefficientVector
           (normalization * ((-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)))
           (normalization * ((-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))))
@@ -107,7 +107,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
             (probeEnergy ^ 2 - m ^ 2) /
             (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ))) := by
     simpa [inPlaneCoefficientVector] using tendsto_pi_nhds.mp hraw (1 : Fin 2)
-  let normalization : ℂ := ((bastinStredaConductivityNormalization hbar : ℝ) : ℂ)
+  let normalization : ℂ := ((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ)
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
@@ -118,7 +118,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
         (((-e ^ 2 * probeEnergy * m /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)) : ℝ) : ℂ)) := by
     dsimp [normalization]
-    unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
@@ -131,7 +131,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
         (((-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
     dsimp [normalization]
-    unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
