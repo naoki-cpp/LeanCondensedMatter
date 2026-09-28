@@ -26,6 +26,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 variable {Test : Type*} [AddCommGroup Test] [Module ℂ Test]
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -56,19 +58,9 @@ quantization of the one-particle commutator. -/
 theorem dGamma_commutator_chargeDensity (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
-    ConservationLaw.linearCommutator (AlgebraicFock.dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
-      q • AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator h (M f)) := by
-  calc
-    ConservationLaw.linearCommutator (AlgebraicFock.dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
-        ConservationLaw.linearCommutator
-          (AlgebraicFock.dGamma 𝓗₁ h) (q • AlgebraicFock.dGamma 𝓗₁ (M f)) := by
-      rw [chargeDensity_apply]
-    _ = q • ConservationLaw.linearCommutator
-          (AlgebraicFock.dGamma 𝓗₁ h) (AlgebraicFock.dGamma 𝓗₁ (M f)) :=
-      ConservationLaw.linearCommutator_smul_right q
-        (AlgebraicFock.dGamma 𝓗₁ h) (AlgebraicFock.dGamma 𝓗₁ (M f))
-    _ = q • AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator h (M f)) := by
-      rw [AlgebraicFock.dGamma_linearCommutator]
+    ⁅AlgebraicFock.dGamma 𝓗₁ h, chargeDensity 𝓗₁ q M f⁆ =
+      q • AlgebraicFock.dGamma 𝓗₁ ⁅h, M f⁆ := by
+  rw [chargeDensity_apply, lie_smul, AlgebraicFock.dGamma_lie]
 
 /-- Algebraic Heisenberg-form identity for smeared charge density:
 
@@ -82,9 +74,9 @@ theorem heisenberg_commutator_chargeDensity (ℏ q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
     (Complex.I / ℏ) •
-        ConservationLaw.linearCommutator (AlgebraicFock.dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
+        ⁅AlgebraicFock.dGamma 𝓗₁ h, chargeDensity 𝓗₁ q M f⁆ =
       ((Complex.I * q) / ℏ) •
-        AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator h (M f)) := by
+        AlgebraicFock.dGamma 𝓗₁ ⁅h, M f⁆ := by
   rw [dGamma_commutator_chargeDensity]
   rw [smul_smul]
   congr 1
