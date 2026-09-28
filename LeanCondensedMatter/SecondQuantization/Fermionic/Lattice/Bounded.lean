@@ -88,6 +88,16 @@ noncomputable def boundedOneBodyOperator
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperatorLinearMap operator
 
+
+/-- Canonical computation rule for the bounded realization of a one-body operator. -/
+@[simp]
+theorem boundedOneBodyOperator_eq
+    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    boundedOneBodyOperator operator =
+      boundedLatticeOperator
+        (AlgebraicFock.dGamma (LatticeState Site) operator) :=
+  rfl
+
 @[simp]
 theorem boundedLatticeOperator_add
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
