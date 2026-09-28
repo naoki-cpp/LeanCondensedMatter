@@ -185,20 +185,15 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
   have h :=
     (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
       (boundedOneBodyOperatorLinearMap (Site := Site))
-  unfold boundedPeierlsBondHamiltonian
-  convert h using 1
-  · rfl
-  · rw [map_neg]
+  have hcurrent :
+      boundedOneBodyOperator (K.oneParticleBondCurrent ℏ q x y) =
+        boundedBondCurrent ℏ q K x y := by
     unfold boundedOneBodyOperator boundedOneBodyOperatorLinearMap
-    change
-      -boundedLatticeOperatorLinearMap
-          (AlgebraicFock.dGammaLinear (LatticeState Site)
-            (K.oneParticleBondCurrent ℏ q x y)) =
-        -boundedBondCurrent ℏ q K x y
-    congr 1
     unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
     rw [map_smul, map_smul]
     rfl
+  simpa only [boundedPeierlsBondHamiltonian, boundedOneBodyOperator, map_neg,
+    hcurrent] using h
 
 /-- Reversing a bond negates its bounded current observable. -/
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
