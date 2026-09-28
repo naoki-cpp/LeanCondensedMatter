@@ -55,6 +55,18 @@ theorem radialCurrentScale_eq (params : Parameters) (p : ℝ) :
   simp [radialCurrentScale, currentComponent, velocityComponent, momentumComponent]
   ring
 
+/-- On a polar momentum circle, every Cartesian current component is the named radial current scale
+times the corresponding sine/cosine factor. This pins the angular reduction to the model current
+convention. -/
+theorem currentComponent_polar
+    (params : Parameters) (direction : Fin 2) (p θ : ℝ) :
+    currentComponent params direction (p * Real.cos θ) (p * Real.sin θ) =
+      radialCurrentScale params p *
+        (if direction = 0 then Real.cos θ else Real.sin θ) := by
+  fin_cases direction <;>
+    simp [radialCurrentScale, currentComponent, velocityComponent, momentumComponent] <;>
+    ring
+
 /-- Canonical constant/second-harmonic representation of the product of two Cartesian current
 components on a circle of radius `p`.
 
@@ -227,7 +239,9 @@ theorem finiteCutoffConductivityTensor_hallComponent_eq_zero_of_ne
 
 /-- Finite broadening interpreted as a transport lifetime through the linewidth convention
 `η = ℏ / (2 τ_η)`. This is a finite-parameter convention, not a zero-broadening limit; it matches
-the standard single-particle retarded self-energy convention `Σᴿ = -iℏ/(2τ)`. -/
+the standard single-particle retarded self-energy convention `Σᴿ = -iℏ/(2τ)`; see G. D. Mahan,
+*Many-Particle Physics*, 3rd ed. (Kluwer/Plenum, 2000), for the impurity-broadened Green-function
+linewidth convention. -/
 def broadeningTransportLifetime (params : Parameters) : ℝ :=
   params.hbar / (2 * params.broadening)
 
