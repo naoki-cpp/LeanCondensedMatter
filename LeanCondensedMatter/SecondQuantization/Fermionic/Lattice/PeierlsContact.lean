@@ -111,8 +111,15 @@ theorem boundedPeierlsBondCurrent_zero (K : LocallyFiniteHopping Site)
   rw [boundedPeierlsBondCurrent, K.peierlsBondCurrentOperator_zero]
   unfold boundedOneBodyOperator boundedOneBodyOperatorLinearMap
   unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
-  rw [map_smul, map_smul]
-  rfl
+  rw [map_smul]
+  change
+    ((Complex.I * q) / ℏ) •
+        boundedLatticeOperator
+          (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+      boundedLatticeOperator
+        (((Complex.I * q) / ℏ) •
+          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+  rw [boundedLatticeOperator_smul]
 
 /-- The bounded transport preserves the weak algebraic derivative of the Peierls current family. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
