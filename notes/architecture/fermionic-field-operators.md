@@ -97,8 +97,8 @@ Fermionic.Validation
 families, finite-lattice bounded realizations, and model-level current identities. It does not own
 generic response, conductivity, disorder, or validation theory.
 
-`Fermionic.Field` is a narrow side interface for basis-independent density constructions, continuum
-density specializations, and the `dGamma` bridge for generalized localized quantities. It does not
+`Fermionic.Field` is a narrow side interface for basis-independent density constructions, bounded
+continuum `L²` density specialization, and the `dGamma` bridge for generalized localized quantities. It does not
 own generic one-body current semantics or lattice/transport models.
 
 `Fermionic.Transport` is the downstream specialization layer for fermionic response. It consumes
