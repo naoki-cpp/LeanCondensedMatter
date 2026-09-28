@@ -46,19 +46,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htarget :
-      (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ)) *
+      (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ)) *
           (((-16 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
             (probeEnergy ^ 2 + m ^ 2) /
             (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) =
         (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
-    unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
     ring
   have hnormalized :=
-    hresponse.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
+    hresponse.const_mul (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ))
   rw [htarget] at hnormalized
   simpa [
     finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
