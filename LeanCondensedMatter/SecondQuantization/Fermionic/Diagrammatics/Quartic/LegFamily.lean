@@ -22,19 +22,18 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- The time-labelled fermionic field at a flattened leg position for an arbitrary vertex-label
 sequence and time assignment. -/
 noncomputable def quarticLegFieldForSequence {n : ℕ}
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    TimedField Mode :=
-  let slotLeg := Common.orderedQuarticLegEquiv n p
-  ⟨τ slotLeg.1, quarticLocalLegExternalFieldLabel
-    (Common.quarticLocalLeg (q slotLeg.1) slotLeg.2)⟩
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
+    Fin (2 * (2 * n)) → TimedField Mode :=
+  Common.orderedQuarticLegFamily fun i l =>
+    ⟨τ i, quarticLocalLegExternalFieldLabel (Common.quarticLocalLeg (q i) l)⟩
 
 /-- The atomic operator at a flattened leg position for an arbitrary vertex-label sequence and time
 assignment. -/
 noncomputable def quarticLegOperatorForSequence (ε : Mode → ℝ) {n : ℕ}
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  let slotLeg := Common.orderedQuarticLegEquiv n p
-  imaginaryTimeEvolve ε (τ slotLeg.1) (quarticLocalLegOperator (q slotLeg.1) slotLeg.2)
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
+    Fin (2 * (2 * n)) → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
+  Common.orderedQuarticLegFamily fun i l =>
+    imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)
 
 omit [Fintype Mode] in
 /-- Mapping the canonical quartic leg field to its operator recovers the operator family. -/
@@ -42,7 +41,8 @@ theorem timedFieldOperator_quarticLegFieldForSequence (ε : Mode → ℝ) {n : �
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     timedFieldOperator ε (quarticLegFieldForSequence q τ p) =
       quarticLegOperatorForSequence ε q τ p := by
-  rw [quarticLegFieldForSequence, quarticLegOperatorForSequence]
+  rw [quarticLegFieldForSequence, quarticLegOperatorForSequence,
+    Common.orderedQuarticLegFamily]
   simpa [quarticLocalLegOperator, Common.quarticLocalLegOperator] using
     (timedFieldOperator_quarticLocalLeg ε
       (τ (Common.orderedQuarticLegEquiv n p).1)
@@ -66,7 +66,7 @@ theorem quarticLegOperatorForSequence_eq_smul {n : ℕ} (ε : Mode → ℝ)
       Complex.exp ((τ (flatVertexIndex n p) *
         quarticLegEnergyShiftForSequence ε q p : ℝ) : ℂ) •
         quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
-  rw [quarticLegOperatorForSequence]
+  rw [quarticLegOperatorForSequence, Common.orderedQuarticLegFamily]
   simpa [imaginaryTimeEvolve, quarticLocalLegOperator, Common.quarticLocalLegOperator,
     quarticLegEnergyShiftForSequence, quarticLocalLegEnergyShift,
     Common.flatVertexIndex, Common.flatLocalLeg] using
