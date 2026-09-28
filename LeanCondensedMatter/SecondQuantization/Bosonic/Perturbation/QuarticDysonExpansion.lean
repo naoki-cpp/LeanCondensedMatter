@@ -312,7 +312,8 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
         have hseq :
             Fin.cons (q0 : QuarticVertexLabel Mode)
                 (fun i => (q' i : QuarticVertexLabel Mode)) =
-              (fun i => ((Fin.cons q0 q') i : QuarticVertexLabel Mode)) := by
+              (fun i : Fin (n + 1) =>
+                ((Fin.cons q0 q') i : QuarticVertexLabel Mode)) := by
           funext i
           refine Fin.cases ?_ ?_ i <;> simp
         rw [hseq]
