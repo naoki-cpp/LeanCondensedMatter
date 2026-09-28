@@ -22,7 +22,7 @@ is skew-adjoint after second quantization and finite-Hilbert transport. Multipli
 imaginary physical factor `i q / ℏ`, with real `q` and `ℏ`, therefore produces a self-adjoint bond
 current.
 
-Response theorems consuming these self-adjoint currents live downstream in `Fermionic.Field`.
+Response theorems consuming these self-adjoint currents live downstream in `Fermionic.Transport`.
 -/
 
 namespace SecondQuantization
@@ -65,8 +65,15 @@ theorem boundedBondOperator_eq (K : LocallyFiniteHopping Site) (x y : Site) :
             K.amplitude y x • matrixUnit y x) = _
     rw [map_sub, map_smul, map_smul]
     rfl
-  rw [hdGamma, boundedLatticeOperator_sub,
-    boundedLatticeOperator_smul, boundedLatticeOperator_smul]
+  rw [hdGamma]
+  change
+    boundedLatticeOperatorLinearMap
+        (K.amplitude x y •
+            AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y) -
+          K.amplitude y x •
+            AlgebraicFock.dGamma (LatticeState Site) (matrixUnit y x)) =
+      _
+  rw [map_sub, map_smul, map_smul]
   rfl
 
 /-- Under Hermitian hopping amplitudes, the oriented hopping difference is skew-adjoint. -/
@@ -87,7 +94,14 @@ theorem boundedBondCurrent_eq_peierlsCoupling_smul
     boundedBondCurrent ℏ q K x y =
       peierlsCoupling ℏ q • K.boundedBondOperator x y := by
   unfold boundedBondCurrent bondCurrent LocallyFiniteHopping.boundedBondOperator peierlsCoupling
-  rw [boundedLatticeOperator_smul]
+  change
+    boundedLatticeOperatorLinearMap
+        (((Complex.I * q) / ℏ) •
+          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+      ((Complex.I * q) / ℏ) •
+        boundedLatticeOperator
+          (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+  rw [map_smul]
 
 /-- Physical real parameters automatically give a self-adjoint bounded bond current. -/
 theorem isSelfAdjoint_boundedBondCurrent_ofReal
