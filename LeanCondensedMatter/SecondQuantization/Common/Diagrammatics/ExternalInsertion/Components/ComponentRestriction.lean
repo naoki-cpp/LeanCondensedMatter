@@ -66,58 +66,6 @@ private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Fin
   unfold externalInsertionVertexOfLeg
   cases externalInsertionLegEquiv E S leg <;> rfl
 
-/-- The legs of one component, before flattening, split into its external insertions and
-the four local legs of its interaction vertices. -/
-private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) :
-    {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
-      ↥(Finset.toLeft
-        (B : Finset (ExternalInsertionVertex E S))) ⊕
-        (↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) where
-  toFun leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e =>
-        exact Sum.inl ⟨e, Finset.mem_toLeft.2 hleg⟩
-    | inr p =>
-        exact Sum.inr (⟨p.1.1,
-          (mem_interactionSector_subtype
-            (B : Finset (ExternalInsertionVertex E S)) p.1).2 hleg⟩, p.2)
-  invFun leg := by
-    cases leg with
-    | inl e =>
-        exact ⟨Sum.inl e.1, Finset.mem_toLeft.1 e.2⟩
-    | inr p =>
-        let v : ↥S :=
-          ⟨p.1.1, interactionSector_subset
-            (B : Finset (ExternalInsertionVertex E S)) p.1.2⟩
-        exact ⟨Sum.inr (v, p.2),
-          (mem_interactionSector_subtype
-            (B : Finset (ExternalInsertionVertex E S)) v).1 p.1.2⟩
-  left_inv leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e =>
-        apply Subtype.ext
-        rfl
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Subtype.ext
-        rfl
-  right_inv leg := by
-    cases leg with
-    | inl e =>
-        apply congrArg Sum.inl
-        exact Subtype.ext (by rfl)
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply congrArg Sum.inr
-        apply Prod.ext
-        · exact Subtype.ext (by rfl)
-        · rfl
-
 /-- Reindex the flattened legs of one component by its external and interaction data. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
     {S : Finset (Fin N)}
@@ -131,7 +79,30 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
           (B : Finset (ExternalInsertionVertex E S))) × Fin 4) :=
   ((externalInsertionLegEquiv E S).subtypeEquiv fun leg =>
       d.legInComponent_iff_unflattened B leg).trans
-    (d.componentLegDataEquiv B)
+    (SecondQuantization.Common.componentLegDataEquiv
+      (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
+      (B := (B : Finset (ExternalInsertionVertex E S))))
+
+private theorem ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (e : ↥(Finset.toLeft (B : Finset (ExternalInsertionVertex E S)))) :
+    ((d.componentBlockLegDataEquiv B).symm (Sum.inl e)).1 =
+      externalInsertionExternalLeg E S e.1 := by
+  rfl
+
+private theorem ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (v : ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
+    (l : Fin 4) :
+    ((d.componentBlockLegDataEquiv B).symm (Sum.inr (v, l))).1 =
+      externalInsertionInteractionLeg (E := E)
+        ⟨v.1, interactionSector_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
+  rfl
 
 private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -361,12 +332,33 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
           (interactionSector
             (B : Finset (ExternalInsertionVertex E S))) e) =
       externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
-  apply (externalInsertionLegEquiv E S).injective
-  simp [ExternalInsertionDiagram.componentDiagramLeg,
+  have hLocal :
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).symm.symm
+          (externalInsertionExternalLeg (d.externalPairCount B)
+            (interactionSector (B : Finset (ExternalInsertionVertex E S))) e) =
+        Sum.inl e := by
+    change
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S))))
+          (externalInsertionExternalLeg (d.externalPairCount B)
+            (interactionSector (B : Finset (ExternalInsertionVertex E S))) e) =
+        Sum.inl e
+    exact
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
+          (Sum.inl e)
+  have hShuffle :
+      (Equiv.sumCongr (d.externalSectorOrderIso B).toEquiv
+        (Equiv.refl (↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4))).symm.symm (Sum.inl e) =
+        Sum.inl (d.externalSectorOrderIso B e) := by
+    rfl
+  rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    ExternalInsertionDiagram.componentLegDataEquiv,
-    externalInsertionExternalLeg]
+    Equiv.symm_trans_apply, Equiv.symm_trans_apply,
+    hLocal, hShuffle,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
 vertex and local quartic leg. -/
@@ -382,12 +374,32 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
       externalInsertionInteractionLeg (E := E)
         ⟨v.1, interactionSector_subset
           (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
-  apply (externalInsertionLegEquiv E S).injective
-  simp [ExternalInsertionDiagram.componentDiagramLeg,
+  have hLocal :
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).symm.symm
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) =
+        Sum.inr (v, l) := by
+    change
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S))))
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) =
+        Sum.inr (v, l)
+    exact
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
+          (Sum.inr (v, l))
+  have hShuffle :
+      (Equiv.sumCongr (d.externalSectorOrderIso B).toEquiv
+        (Equiv.refl (↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4))).symm.symm
+          (Sum.inr (v, l)) =
+        Sum.inr (v, l) := by
+    rfl
+  rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    ExternalInsertionDiagram.componentLegDataEquiv,
-    externalInsertionInteractionLeg]
+    Equiv.symm_trans_apply, Equiv.symm_trans_apply,
+    hLocal, hShuffle,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
