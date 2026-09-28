@@ -485,10 +485,10 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     (hbroadening : broadening ≠ 0) :
     finiteCutoffContinuumBornDysonGreenLoopMatrix
         side v m probeEnergy broadening 0 hbar pMax =
-      (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+      (((fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
           finiteCutoffContinuumBornIntegralOfRegulator
             .scalar v m probeEnergy (side.regulator broadening) pMax) • (1 : Matrix2) +
-        (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+        (((fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
           finiteCutoffContinuumBornIntegralOfRegulator
             .z v m probeEnergy (side.regulator broadening) pMax) • sigmaZ := by
   have hregulator : side.regulator broadening ≠ 0 :=
@@ -528,7 +528,7 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     simp_rw [hkernel]
     rw [intervalIntegral.integral_const_mul,
       intervalIntegral.integral_add hscalar hz]
-    unfold finiteCutoffContinuumBornIntegralOfRegulator continuumBornAngularMeasurePrefactor
+    unfold finiteCutoffContinuumBornIntegralOfRegulator fullAngleMomentumMeasurePrefactor
     push_cast
     ring
   · simp only [Matrix.add_apply, Matrix.smul_apply]
@@ -574,7 +574,7 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     simp_rw [hkernel]
     rw [intervalIntegral.integral_const_mul,
       intervalIntegral.integral_sub hscalar hz]
-    unfold finiteCutoffContinuumBornIntegralOfRegulator continuumBornAngularMeasurePrefactor
+    unfold finiteCutoffContinuumBornIntegralOfRegulator fullAngleMomentumMeasurePrefactor
     push_cast
     ring
 
@@ -587,7 +587,7 @@ theorem matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disord
     matrixOperator
         (finiteCutoffContinuumBornDysonGreenLoopMatrix
           side v m probeEnergy broadening 0 hbar pMax) =
-      (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ)) •
+      (((fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ)) •
         finiteCutoffContinuumBornGreenIntegralOfRegulator
           v m probeEnergy (side.regulator broadening) pMax := by
   rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_channels
