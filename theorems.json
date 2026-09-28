@@ -11574,42 +11574,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (S T : V →ₗ[ℂ] V),\n  (ConservationLaw.commutatorEvolution S) T = ConservationLaw.linearCommutator S T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.commutatorEvolution_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.commutatorEvolution h) ((ConservationLaw.localizedQuantityFunctional V M m) f) =\n    (ConservationLaw.transportFunctional V h M m) f + (ConservationLaw.sourceFunctional V h M m) f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ((LieAlgebra.ad ℂ (Module.End ℂ V)) h) ((ConservationLaw.localizedQuantityFunctional V M m) f) =\n    (ConservationLaw.transportFunctional V h M m) f + (ConservationLaw.sourceFunctional V h M m) f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -11621,7 +11586,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "ConservationLaw.commutatorEvolution_localizedQuantityFunctional",
+    "name": "ConservationLaw.ad_localizedQuantityFunctional",
     "module": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "The packaged localized quantity satisfies the same transport/source decomposition. ",
@@ -11629,7 +11594,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.linearCommutator_localizedQuantity"
+      "ConservationLaw.lie_localizedQuantity"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -11773,87 +11738,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (S T : V →ₗ[ℂ] V) (v : V),\n  (ConservationLaw.linearCommutator S T) v = S (T v) - T (S v)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M A B : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (A ∘ₗ B) =\n    ConservationLaw.linearCommutator M A ∘ₗ B + A ∘ₗ ConservationLaw.linearCommutator M B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_comp_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": "Leibniz rule for a commutator with a composition on the right:\n`[M, A B] = [M,A] B + A [M,B]`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "dependencies": [
-      "ScalarExchange.zetaCommutator_mul_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h (ConservationLaw.localizedQuantity V M m f) =\n    ConservationLaw.transportCommutator V h M m f + ConservationLaw.sourceCommutator V h M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅h, ConservationLaw.localizedQuantity V M m f⁆ =\n    ConservationLaw.transportCommutator V h M m f + ConservationLaw.sourceCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -11865,26 +11750,26 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_localizedQuantity",
+    "name": "ConservationLaw.lie_localizedQuantity",
     "module": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "The commutator is a derivation on symmetric localization, giving transport plus source. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.commutatorEvolution_localizedQuantityFunctional",
-      "ConservationLaw.linearCommutator_localizedQuantity_of_commutes",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity"
+      "ConservationLaw.ad_localizedQuantityFunctional",
+      "ConservationLaw.lie_localizedQuantity_of_commutes",
+      "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
     "dependencies": [
-      "ConservationLaw.linearCommutator_symmetrizedProduct"
+      "ConservationLaw.lie_symmetrizedProduct"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.commutatorEvolution_localizedQuantityFunctional",
-      "ConservationLaw.linearCommutator_localizedQuantity_of_commutes",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity"
+      "ConservationLaw.ad_localizedQuantityFunctional",
+      "ConservationLaw.lie_localizedQuantity_of_commutes",
+      "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -11898,7 +11783,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h m = 0 →\n    ConservationLaw.linearCommutator h (ConservationLaw.localizedQuantity V M m f) =\n      ConservationLaw.transportCommutator V h M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅h, m⁆ = 0 → ⁅h, ConservationLaw.localizedQuantity V M m f⁆ = ConservationLaw.transportCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -11910,7 +11795,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_localizedQuantity_of_commutes",
+    "name": "ConservationLaw.lie_localizedQuantity_of_commutes",
     "module": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "For a conserved quantity, the localized balance identity contains only transport. ",
@@ -11918,7 +11803,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.linearCommutator_localizedQuantity",
+      "ConservationLaw.lie_localizedQuantity",
       "ConservationLaw.symmetrizedProduct_zero_right"
     ],
     "crossModuleDirectWrapper": false,
@@ -11936,91 +11821,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (S : V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.linearCommutator S (q • LinearMap.id) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_smul_id_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": "A scalar multiple of the identity commutes with every complex-linear endomorphism. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.localizationCorrectionCurrentFlux_smul_id",
-      "ConservationLaw.sourceCommutator_smul_id",
-      "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.localizationCorrectionCurrentFlux_smul_id",
-      "ConservationLaw.sourceCommutator_smul_id",
-      "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (q : ℂ) (S T : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator S (q • T) = q • ConservationLaw.linearCommutator S T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_smul_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": "The ordinary commutator is linear in its right argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-      "SecondQuantization.Fermionic.Lattice.discrete_continuity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-      "SecondQuantization.Fermionic.Lattice.discrete_continuity"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M A B : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (A - B) =\n    ConservationLaw.linearCommutator M A - ConservationLaw.linearCommutator M B",
+    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (h A B : W →ₗ[ℂ] W),\n  ⁅h, ConservationLaw.symmetrizedProduct A B⁆ =\n    ConservationLaw.symmetrizedProduct ⁅h, A⁆ B + ConservationLaw.symmetrizedProduct A ⁅h, B⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12032,53 +11833,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_sub_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": "A commutator is additive over subtraction in its second argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (h A B : W →ₗ[ℂ] W),\n  ConservationLaw.linearCommutator h (ConservationLaw.symmetrizedProduct A B) =\n    ConservationLaw.symmetrizedProduct (ConservationLaw.linearCommutator h A) B +\n      ConservationLaw.symmetrizedProduct A (ConservationLaw.linearCommutator h B)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_symmetrizedProduct",
+    "name": "ConservationLaw.lie_symmetrizedProduct",
     "module": "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
     "externalAxioms": [],
     "docString": "The commutator acts as a derivation on the symmetrized product. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.linearCommutator_localizedQuantity"
+      "ConservationLaw.lie_localizedQuantity"
     ],
     "dependencies": [
       "ConservationLaw.symmetrizedProduct_apply"
@@ -12086,7 +11848,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.linearCommutator_localizedQuantity"
+      "ConservationLaw.lie_localizedQuantity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -12135,7 +11897,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.localizationCommutatorFunctional V h M) f = ConservationLaw.linearCommutator h (M f)",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.localizationCommutatorFunctional V h M) f = ⁅h, M f⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12170,7 +11932,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {OneForm : Type u_1} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_2)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity m : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (α : OneForm),\n  (ConservationLaw.localizationCorrectionCurrentFlux V velocity m N) α =\n    (1 / 4) • ConservationLaw.linearCommutator velocity (ConservationLaw.linearCommutator (N α) m)",
+    "statement": "∀ {OneForm : Type u_1} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_2)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity m : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (α : OneForm), (ConservationLaw.localizationCorrectionCurrentFlux V velocity m N) α = (1 / 4) • ⁅velocity, ⁅N α, m⁆⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12211,7 +11973,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {OneForm : Type u_1} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_2)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity m : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  (∀ (α : OneForm), ConservationLaw.linearCommutator (N α) m = 0) →\n    ConservationLaw.localizationCorrectionCurrentFlux V velocity m N = 0",
+    "statement": "∀ {OneForm : Type u_1} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_2)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity m : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  (∀ (α : OneForm), ⁅N α, m⁆ = 0) → ConservationLaw.localizationCorrectionCurrentFlux V velocity m N = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12276,7 +12038,6 @@
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
     ],
     "dependencies": [
-      "ConservationLaw.linearCommutator_smul_id_right",
       "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes"
     ],
     "crossModuleDirectWrapper": false,
@@ -12331,7 +12092,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator (M f) m = 0 → ConservationLaw.localizedQuantity V M m f = M f ∘ₗ m",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅M f, m⁆ = 0 → ConservationLaw.localizedQuantity V M m f = M f ∘ₗ m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12367,7 +12128,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.localizedQuantity V M (q • LinearMap.id) f = q • M f",
     "standardAxioms": [
       "Classical.choice",
@@ -12375,7 +12136,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -12386,18 +12147,14 @@
     "docString": "Charge-like quantities `q I` reduce to scalar multiplication under symmetric localization. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id"
-    ],
+    "dependents": [],
     "dependencies": [
       "ConservationLaw.symmetrizedProduct_smul_id"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12487,7 +12244,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h m = 0 → ConservationLaw.sourceCommutator V h M m f = 0",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅h, m⁆ = 0 → ConservationLaw.sourceCommutator V h M m f = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12548,7 +12305,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.linearCommutator_smul_id_right",
       "ConservationLaw.sourceCommutator_eq_zero_of_commutes"
     ],
     "crossModuleDirectWrapper": false,
@@ -12764,7 +12520,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.linearCommutator_symmetrizedProduct",
+      "ConservationLaw.lie_symmetrizedProduct",
       "ConservationLaw.symmetrizedProduct_comm",
       "ConservationLaw.symmetrizedProduct_eq_comp_of_commutes",
       "ConservationLaw.symmetrizedProduct_nested",
@@ -12775,7 +12531,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.linearCommutator_symmetrizedProduct",
+      "ConservationLaw.lie_symmetrizedProduct",
       "ConservationLaw.symmetrizedProduct_comm",
       "ConservationLaw.symmetrizedProduct_eq_comp_of_commutes",
       "ConservationLaw.symmetrizedProduct_nested",
@@ -12835,7 +12591,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A B : W →ₗ[ℂ] W),\n  ConservationLaw.linearCommutator A B = 0 → ConservationLaw.symmetrizedProduct A B = A ∘ₗ B",
+    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A B : W →ₗ[ℂ] W),\n  ⁅A, B⁆ = 0 → ConservationLaw.symmetrizedProduct A B = A ∘ₗ B",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12876,7 +12632,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A v m : W →ₗ[ℂ] W),\n  ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct A v) m =\n    ConservationLaw.symmetrizedProduct A (ConservationLaw.symmetrizedProduct v m) +\n      (1 / 4) • ConservationLaw.linearCommutator v (ConservationLaw.linearCommutator A m)",
+    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A v m : W →ₗ[ℂ] W),\n  ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct A v) m =\n    ConservationLaw.symmetrizedProduct A (ConservationLaw.symmetrizedProduct v m) + (1 / 4) • ⁅v, ⁅A, m⁆⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12921,7 +12677,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A v m : W →ₗ[ℂ] W),\n  ConservationLaw.linearCommutator A m = 0 →\n    ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct A v) m =\n      ConservationLaw.symmetrizedProduct A (ConservationLaw.symmetrizedProduct v m)",
+    "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A v m : W →ₗ[ℂ] W),\n  ⁅A, m⁆ = 0 →\n    ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct A v) m =\n      ConservationLaw.symmetrizedProduct A (ConservationLaw.symmetrizedProduct v m)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13071,7 +12827,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.linearCommutator_localizedQuantity_of_commutes",
+      "ConservationLaw.lie_localizedQuantity_of_commutes",
       "ConservationLaw.sourceCommutator_eq_zero_of_commutes"
     ],
     "dependencies": [
@@ -13081,7 +12837,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.linearCommutator_localizedQuantity_of_commutes",
+      "ConservationLaw.lie_localizedQuantity_of_commutes",
       "ConservationLaw.sourceCommutator_eq_zero_of_commutes"
     ],
     "compiledConsumerCount": 2,
@@ -13096,7 +12852,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.transportCommutator V h M (q • LinearMap.id) f = q • ConservationLaw.linearCommutator h (M f)",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.transportCommutator V h M (q • LinearMap.id) f = q • ⁅h, M f⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36389,7 +36145,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M) f =\n    QuantumTheory.ConservationLaw.heisenbergScale ℏ • ConservationLaw.linearCommutator h (M f)",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M) f =\n    QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, M f⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36533,7 +36289,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n    ConservationLaw.linearCommutator M X ∘ₗ Py + X ∘ₗ ConservationLaw.linearCommutator M Py -\n      (ConservationLaw.linearCommutator M Y ∘ₗ Px + Y ∘ₗ ConservationLaw.linearCommutator M Px)",
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ =\n    ⁅M, X⁆ ∘ₗ Py + X ∘ₗ ⁅M, Py⁆ - (⁅M, Y⁆ ∘ₗ Px + Y ∘ₗ ⁅M, Px⁆)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36545,23 +36301,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
     "docString": "Expansion of a localization commutator with algebraic orbital angular momentum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
     ],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_comp_right",
-      "ConservationLaw.linearCommutator_sub_right"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -36575,7 +36328,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (ℏ : ℝ),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M Px = (Complex.I * ↑ℏ) • Dx →\n        ConservationLaw.linearCommutator M Py = (Complex.I * ↑ℏ) • Dy →\n          ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n            X ∘ₗ ((Complex.I * ↑ℏ) • Dy) - Y ∘ₗ ((Complex.I * ↑ℏ) • Dx)",
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (ℏ : ℝ),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 →\n      ⁅M, Px⁆ = (Complex.I * ↑ℏ) • Dx →\n        ⁅M, Py⁆ = (Complex.I * ↑ℏ) • Dy →\n          ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ =\n            X ∘ₗ ((Complex.I * ↑ℏ) • Dy) - Y ∘ₗ ((Complex.I * ↑ℏ) • Dx)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36587,15 +36340,15 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
     "docString": "Continuum-sign specialization for `Pᵢ = -i ℏ ∂ᵢ`:\n`[M_f,L_z] = X (iℏ D_y) - Y (iℏ D_x)` once the momentum commutators have been identified with\nmultiplication by the derivatives of the localizer. ",
     "directWrapperTargetModule": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
-    "directWrapperOf": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers",
+    "directWrapperOf": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers",
     "dependents": [],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36612,7 +36365,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      (ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) ≠ 0 ↔\n        X ∘ₗ ConservationLaw.linearCommutator M Py - Y ∘ₗ ConservationLaw.linearCommutator M Px ≠ 0)",
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 →\n      (⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ ≠ 0 ↔ X ∘ₗ ⁅M, Py⁆ - Y ∘ₗ ⁅M, Px⁆ ≠ 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36624,7 +36377,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_ne_zero_iff",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
     "docString": "Exact nonvanishing criterion under position-localizer commutation.\n\nThis makes the obstruction explicit: continuum-like `L_z` fails to commute with localization exactly\nwhen the derivative-localization combination on the right is nonzero. ",
@@ -36632,7 +36385,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36649,7 +36402,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n        X ∘ₗ ConservationLaw.linearCommutator M Py - Y ∘ₗ ConservationLaw.linearCommutator M Px",
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 → ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ = X ∘ₗ ⁅M, Py⁆ - Y ∘ₗ ⁅M, Px⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36661,24 +36414,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
     "docString": "If localization commutes with position, its orbital commutator is controlled entirely by the\nmomentum-localization commutators:\n\n`[M,L_z] = X [M,Pᵧ] - Y [M,Pₓ]`.\n",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_ne_zero_iff",
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_ne_zero_iff",
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -36692,7 +36445,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M Px = c • Dx →\n        ConservationLaw.linearCommutator M Py = c • Dy →\n          ConservationLaw.linearCommutator M (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) =\n            X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)",
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 →\n      ⁅M, Px⁆ = c • Dx →\n        ⁅M, Py⁆ = c • Dy →\n          ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ = X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36704,22 +36457,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
     "docString": "Specialization when the momentum-localization commutators are represented by supplied\n\"derivative localizer\" operators `Dx` and `Dy` with a common scalar coefficient `c`.\n\nFor continuum momentum `Pᵢ = -i ℏ ∂ᵢ`, the physical coefficient is `c = i ℏ` and `Di` is\nmultiplication by `∂ᵢ f`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -36890,7 +36643,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N))\n  (hcomm : ∀ (α : OneForm), ConservationLaw.linearCommutator (N α) m = 0),\n  (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity\n        hcomm).currentDensity =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N))\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity\n        hcomm).currentDensity =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37005,7 +36758,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (localizer velocity m : V →ₗ[ℂ] V),\n  ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct localizer velocity) m =\n    ConservationLaw.symmetrizedProduct localizer\n        (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m) +\n      (1 / 4) • ConservationLaw.linearCommutator velocity (ConservationLaw.linearCommutator localizer m)",
+    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (localizer velocity m : V →ₗ[ℂ] V),\n  ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct localizer velocity) m =\n    ConservationLaw.symmetrizedProduct localizer\n        (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m) +\n      (1 / 4) • ⁅velocity, ⁅localizer, m⁆⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37042,7 +36795,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (localizer velocity m : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator localizer m = 0 →\n    ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct localizer velocity) m =\n      ConservationLaw.symmetrizedProduct localizer\n        (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m)",
+    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (localizer velocity m : V →ₗ[ℂ] V),\n  ⁅localizer, m⁆ = 0 →\n    ConservationLaw.symmetrizedProduct (ConservationLaw.symmetrizedProduct localizer velocity) m =\n      ConservationLaw.symmetrizedProduct localizer\n        (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37114,7 +36867,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ℏ : ℝ) (h A : V →ₗ[ℂ] V),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) A =\n    QuantumTheory.ConservationLaw.heisenbergScale ℏ • ConservationLaw.linearCommutator h A",
+    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ℏ : ℝ) (h A : V →ₗ[ℂ] V),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) A = QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, A⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41116,10 +40869,8 @@
       "QuantumTheory.LinearResponse.retardedSusceptibility_eq_timeDifference_of_stationary"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_sub",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_zero"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_zero",
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -42079,7 +41830,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) MeasureTheory.volume 0\n      t →\n    expectation.toContinuousLinearMap\n        (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n            QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t -\n          QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t *\n            QuantumTheory.LinearResponse.heisenbergEvolution system A t) =\n      -(Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          expectation.toContinuousLinearMap\n            (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n                QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s -\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s *\n                QuantumTheory.LinearResponse.heisenbergEvolution system A t)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) MeasureTheory.volume 0\n      t →\n    expectation.toContinuousLinearMap\n        ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n          QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆ =\n      -(Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          expectation.toContinuousLinearMap\n            ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43137,7 +42888,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam => QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation V A₀ A₁ lam t)\n                ((-(Complex.I / ↑system.hbar) •\n                    ∫ (s : ℝ) in 0..t,\n                      expectation.toContinuousLinearMap\n                        (QuantumTheory.LinearResponse.heisenbergEvolution system A₀ t *\n                            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s -\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s *\n                            QuantumTheory.LinearResponse.heisenbergEvolution system A₀ t)) +\n                  expectation.toContinuousLinearMap (QuantumTheory.LinearResponse.heisenbergEvolution system A₁ t))\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam => QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation V A₀ A₁ lam t)\n                ((-(Complex.I / ↑system.hbar) •\n                    ∫ (s : ℝ) in 0..t,\n                      expectation.toContinuousLinearMap\n                        ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A₀ t,\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆) +\n                  expectation.toContinuousLinearMap (QuantumTheory.LinearResponse.heisenbergEvolution system A₁ t))\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43344,7 +43095,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                ((Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      expectation.toContinuousLinearMap\n                        (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n                            QuantumTheory.LinearResponse.heisenbergEvolution system B s -\n                          QuantumTheory.LinearResponse.heisenbergEvolution system B s *\n                            QuantumTheory.LinearResponse.heisenbergEvolution system A t))\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                ((Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      expectation.toContinuousLinearMap\n                        ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n                          QuantumTheory.LinearResponse.heisenbergEvolution system B s⁆)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43514,7 +43265,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t)\n                    A)\n                (-(Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    expectation.toContinuousLinearMap\n                      (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s -\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s *\n                          QuantumTheory.LinearResponse.heisenbergEvolution system A t))\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t)\n                    A)\n                (-(Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    expectation.toContinuousLinearMap\n                      ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43556,7 +43307,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            HasDerivAt\n              (fun lam =>\n                (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n              (expectation.toContinuousLinearMap\n                (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n                    QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t -\n                  QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t *\n                    QuantumTheory.LinearResponse.heisenbergEvolution system A t))\n              0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            HasDerivAt\n              (fun lam =>\n                (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n              (expectation.toContinuousLinearMap\n                ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n                  QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆)\n              0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43764,7 +43515,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t : ℝ),\n  HasDerivAt (QuantumTheory.LinearResponse.heisenbergEvolution system A)\n    ((Complex.I / ↑system.hbar) •\n      (↑system.hamiltonian * QuantumTheory.LinearResponse.heisenbergEvolution system A t -\n        QuantumTheory.LinearResponse.heisenbergEvolution system A t * ↑system.hamiltonian))\n    t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t : ℝ),\n  HasDerivAt (QuantumTheory.LinearResponse.heisenbergEvolution system A)\n    ((Complex.I / ↑system.hbar) • ⁅↑system.hamiltonian, QuantumTheory.LinearResponse.heisenbergEvolution system A t⁆) t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43916,7 +43667,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_add"
@@ -43924,7 +43675,49 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A B : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.heisenbergEvolution system ⁅A, B⁆ t =\n    ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n      QuantumTheory.LinearResponse.heisenbergEvolution system B t⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.heisenbergEvolution_lie",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+    "externalAxioms": [],
+    "docString": "Free Heisenberg evolution preserves the associative operator Lie bracket. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_mul",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -43957,7 +43750,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_lie"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut"
@@ -43965,7 +43758,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_lie"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -43998,7 +43791,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_lie"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut"
@@ -44006,7 +43799,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_lie"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -44976,6 +44769,48 @@
       "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A B : H →L[ℂ] H) (t s : ℝ),\n  ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n      QuantumTheory.LinearResponse.heisenbergEvolution system B s⁆ =\n    QuantumTheory.LinearResponse.heisenbergEvolution system\n      ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A (t - s), B⁆ s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+    "externalAxioms": [],
+    "docString": "A two-time Heisenberg commutator is the time-`s` evolution of the relative-time\ncommutator. This is the algebraic bridge used to reduce Kubo kernels to operator commutators at a\nsingle relative time. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_lie"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47048,7 +46883,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ),\n  -(Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        expectation.toContinuousLinearMap\n          (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s -\n            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s *\n              QuantumTheory.LinearResponse.heisenbergEvolution system A t) =\n    (Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        ↑(f s) *\n          expectation.toContinuousLinearMap\n            (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n                QuantumTheory.LinearResponse.heisenbergEvolution system B s -\n              QuantumTheory.LinearResponse.heisenbergEvolution system B s *\n                QuantumTheory.LinearResponse.heisenbergEvolution system A t)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ),\n  -(Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        expectation.toContinuousLinearMap\n          ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n              (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s⁆ =\n    (Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        ↑(f s) *\n          expectation.toContinuousLinearMap\n            ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n              QuantumTheory.LinearResponse.heisenbergEvolution system B s⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47091,7 +46926,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) {t : ℝ},\n  0 ≤ t →\n    (Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          ↑(f s) *\n            expectation.toContinuousLinearMap\n              (QuantumTheory.LinearResponse.heisenbergEvolution system A t *\n                  QuantumTheory.LinearResponse.heisenbergEvolution system B s -\n                QuantumTheory.LinearResponse.heisenbergEvolution system B s *\n                  QuantumTheory.LinearResponse.heisenbergEvolution system A t) =\n      ∫ (s : ℝ) in 0..t, ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) {t : ℝ},\n  0 ≤ t →\n    (Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          ↑(f s) *\n            expectation.toContinuousLinearMap\n              ⁅QuantumTheory.LinearResponse.heisenbergEvolution system A t,\n                QuantumTheory.LinearResponse.heisenbergEvolution system B s⁆ =\n      ∫ (s : ℝ) in 0..t, ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48311,7 +48146,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (t : ℝ),\n  HasDerivAt (fun s => (QuantumTheory.LinearResponse.evolveDensityOperator system ρ s).op)\n    (-(Complex.I / ↑system.hbar) •\n      (↑system.hamiltonian * (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).op -\n        (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).op * ↑system.hamiltonian))\n    t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (t : ℝ),\n  HasDerivAt (fun s => (QuantumTheory.LinearResponse.evolveDensityOperator system ρ s).op)\n    (-(Complex.I / ↑system.hbar) •\n      ⁅↑system.hamiltonian, (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).op⁆)\n    t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80113,7 +79948,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {A : Type u_1} [inst : Ring A] [inst_1 : Algebra ℂ A] (ζ η : ℂ) (a b c : A),\n  ScalarExchange.zetaCommutator (ζ * η) a (b * c) =\n    ScalarExchange.zetaCommutator ζ a b * c + ζ • (b * ScalarExchange.zetaCommutator η a c)",
     "standardAxioms": [
       "Classical.choice",
@@ -80121,7 +79956,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -80132,16 +79967,12 @@
     "docString": "Mixed-sign product rule in the right argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_comp_right"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_comp_right"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101876,6 +101707,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : SecondQuantization.Common.QuarticVertexLabel Mode) (τ : ℝ),\n  (SecondQuantization.Common.heisenbergEvolve energy τ)\n      (SecondQuantization.Common.quarticVertexOperator create annihilate q) =\n    (List.ofFn fun l =>\n        (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticLocalLegOperator create annihilate q l)).prod",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator_eq_prod",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": "A quartic vertex evolved in imaginary time is the ordered product of its four evolved\nlocal-leg operators. This uses only multiplicativity of diagonal Heisenberg evolution and is\nindependent of particle statistics. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy 0) A = A",
     "standardAxioms": [
       "Classical.choice",
@@ -103021,7 +102891,7 @@
       "SecondQuantization.Common.dysonCoeff_zero",
       "SecondQuantization.Common.matrixCoeff_ext",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.anticomm_create_create",
@@ -103047,7 +102917,7 @@
       "SecondQuantization.Common.dysonCoeff_zero",
       "SecondQuantization.Common.matrixCoeff_ext",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.anticomm_create_create",
@@ -111284,7 +111154,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
@@ -111296,7 +111166,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
@@ -111356,7 +111226,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T) =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator S T)",
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S, SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T⁆ =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ ⁅S, T⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111368,7 +111238,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
     "externalAxioms": [],
     "docString": "Second quantization preserves ordinary commutators. ",
@@ -111377,8 +111247,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
       "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
+      "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity",
       "SecondQuantization.Fermionic.Lattice.discrete_continuity"
     ],
     "dependencies": [],
@@ -111387,11 +111256,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
       "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
+      "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity",
       "SecondQuantization.Fermionic.Lattice.discrete_continuity"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111472,7 +111340,7 @@
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
@@ -111485,7 +111353,7 @@
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
@@ -111564,7 +111432,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerBondContact_zero_charge",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_zero_hopping"
     ],
@@ -111576,11 +111443,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerBondContact_zero_charge",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerContact_zero_hopping"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112156,7 +112022,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T) =\n    0",
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁,\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T⁆ =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112176,7 +112042,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -113219,7 +113085,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113231,17 +113097,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id"
+      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id"
+      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113632,7 +113496,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (f : Test),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h)\n      ((SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f) =\n    q • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator h (M f))",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (f : Test),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n      (SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f⁆ =\n    q • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ ⁅h, M f⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113654,8 +113518,7 @@
       "SecondQuantization.Fermionic.Field.heisenberg_commutator_chargeDensity"
     ],
     "dependencies": [
-      "ConservationLaw.linearCommutator_smul_right",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
       "SecondQuantization.Fermionic.Field.chargeDensity_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -113675,7 +113538,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h)\n      (SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity 𝓗₁ M m f) =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.transportCommutator 𝓗₁ h M m f) +\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.sourceCommutator 𝓗₁ h M m f)",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n      (SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity 𝓗₁ M m) f⁆ =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.transportCommutator 𝓗₁ h M m f) +\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.sourceCommutator 𝓗₁ h M m f)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113687,7 +113550,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.dGamma_commutator_manyBodyLocalizedQuantity",
+    "name": "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity",
     "externalAxioms": [],
     "docString": "Second quantization preserves the generalized balance decomposition. ",
@@ -113695,8 +113558,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.linearCommutator_localizedQuantity",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator"
+      "ConservationLaw.lie_localizedQuantity",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
+      "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113713,7 +113577,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (ℏ q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (f : Test),\n  (Complex.I / ℏ) •\n      ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h)\n        ((SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f) =\n    (Complex.I * q / ℏ) •\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator h (M f))",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (ℏ q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (f : Test),\n  (Complex.I / ℏ) •\n      ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n        (SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f⁆ =\n    (Complex.I * q / ℏ) • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ ⁅h, M f⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113749,107 +113613,35 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (q : ℂ) (f : Test),\n  SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity 𝓗₁ M (q • LinearMap.id) f =\n    (SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f",
+    "terminal": false,
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  (SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity 𝓗₁ M m) f =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.localizedQuantity 𝓗₁ M m f)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id",
+    "name": "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_apply",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity",
     "externalAxioms": [],
-    "docString": "The generalized localized many-body quantity recovers the existing charge-density API for\n`m = q I`. ",
+    "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.localizedQuantity_smul_id",
-      "SecondQuantization.Fermionic.Field.chargeDensity_apply"
+    "dependents": [
+      "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_2) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (h m : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator h m = 0 →\n    ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h)\n        (SecondQuantization.Fermionic.Field.oneBodyObservable 𝓗₁ m) =\n      0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity",
-    "externalAxioms": [],
-    "docString": "A vanishing one-particle commutator gives conservation of the corresponding total many-body\nquantity. This is a global statement only; no local-current representation is inferred. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_2) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (q : ℂ),\n  SecondQuantization.Fermionic.Field.oneBodyObservable 𝓗₁ (q • LinearMap.id) =\n    q • SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator 𝓗₁",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity",
-    "externalAxioms": [],
-    "docString": "Charge-like total observables are scalar multiples of the algebraic number operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114556,7 +114348,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (x : Site),\n  ConservationLaw.linearCommutator K.operator (SecondQuantization.Fermionic.Lattice.siteProjector x) =\n    -∑ y ∈ K.incident x, K.bondOperator x y",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (x : Site),\n  ⁅K.operator, SecondQuantization.Fermionic.Lattice.siteProjector x⁆ = -∑ y ∈ K.incident x, K.bondOperator x y",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114568,7 +114360,7 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+    "name": "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice",
     "externalAxioms": [],
     "docString": "The local one-particle commutator is the negative finite sum of oriented bond operators. ",
@@ -114657,14 +114449,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_latticeKet"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_latticeKet"
     ],
     "compiledConsumerCount": 2,
@@ -114700,7 +114492,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_eq_zero_of_not_mem",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_swap_eq_zero_of_not_mem",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -114708,7 +114500,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_eq_zero_of_not_mem",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_swap_eq_zero_of_not_mem",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -115260,13 +115052,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_linearCommutator"
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_linearCommutator"
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -115280,7 +115072,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (A B :\n    SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site) →ₗ[ℂ]\n      SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site)),\n  SecondQuantization.Fermionic.Lattice.boundedLatticeOperator (ConservationLaw.linearCommutator A B) =\n    SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A ∘SL\n        SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B -\n      SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B ∘SL\n        SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (A B :\n    SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site) →ₗ[ℂ]\n      SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site)),\n  SecondQuantization.Fermionic.Lattice.boundedLatticeOperator ⁅A, B⁆ =\n    SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A ∘SL\n        SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B -\n      SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B ∘SL\n        SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115292,7 +115084,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_linearCommutator",
+    "name": "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
     "externalAxioms": [],
     "docString": "Bounded transport preserves the ordinary algebraic commutator. ",
@@ -115385,14 +115177,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.boundedBondOperator_eq",
-      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_linearCommutator"
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.boundedBondOperator_eq",
-      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_linearCommutator"
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -115550,7 +115342,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_add",
-      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_linearCommutator",
+      "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie",
       "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_smul",
       "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_sum",
       "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_zero",
@@ -115613,7 +115405,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (ℏ q : ℂ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (x : Site),\n  (Complex.I / ℏ) •\n        ConservationLaw.linearCommutator (SecondQuantization.Fermionic.Lattice.hoppingHamiltonian K)\n          (SecondQuantization.Fermionic.Lattice.siteChargeDensity q x) +\n      ∑ y ∈ K.incident x, SecondQuantization.Fermionic.Lattice.bondCurrent ℏ q K x y =\n    0",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (ℏ q : ℂ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (x : Site),\n  (Complex.I / ℏ) •\n        ⁅SecondQuantization.Fermionic.Lattice.hoppingHamiltonian K,\n          SecondQuantization.Fermionic.Lattice.siteChargeDensity q x⁆ +\n      ∑ y ∈ K.incident x, SecondQuantization.Fermionic.Lattice.bondCurrent ℏ q K x y =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115635,9 +115427,8 @@
       "SecondQuantization.Fermionic.Lattice.bounded_discrete_continuity"
     ],
     "dependencies": [
-      "ConservationLaw.linearCommutator_smul_right",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -116045,14 +115836,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
       "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector",
       "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
     ],
     "compiledConsumerCount": 2,
@@ -116168,13 +115959,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -116715,7 +116506,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm)\n  (Φ :\n    Test →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (velocity m :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ] SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (N :\n    OneForm →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site),\n  ConservationLaw.IsDifferentialCurrent d Φ\n      (ConservationLaw.nestedSymmetrizedCurrentFlux (SecondQuantization.Fermionic.Lattice.LatticeState Site) velocity m\n        N) →\n    (∀ (α : OneForm), ConservationLaw.linearCommutator (N α) m = 0) →\n      ∀ (t s : ℝ),\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n          SecondQuantization.Fermionic.Transport.boundedSymmetrizedCurrentFluxRetardedResponse system expectation source\n              velocity m N t s ∘ₗ\n            d",
+    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm)\n  (Φ :\n    Test →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (velocity m :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ] SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (N :\n    OneForm →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site),\n  ConservationLaw.IsDifferentialCurrent d Φ\n      (ConservationLaw.nestedSymmetrizedCurrentFlux (SecondQuantization.Fermionic.Lattice.LatticeState Site) velocity m\n        N) →\n    (∀ (α : OneForm), ⁅N α, m⁆ = 0) →\n      ∀ (t s : ℝ),\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n          SecondQuantization.Fermionic.Transport.boundedSymmetrizedCurrentFluxRetardedResponse system expectation source\n              velocity m N t s ∘ₗ\n            d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116777,7 +116568,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.linearCommutator_smul_id_right",
       "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes"
     ],
     "crossModuleDirectWrapper": false,
@@ -128073,45 +127863,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (τ : ℝ),\n  SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator q) τ =\n    (List.ofFn fun l =>\n        SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ\n          (SecondQuantization.Fermionic.quarticLocalLegOperator q l)).prod",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct",
-    "externalAxioms": [],
-    "docString": "A single evolved quartic vertex is the composed product of its four individually evolved local\nlegs in the canonical local-leg order. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 =\n        ↑n.factorial * (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonFormalLogPartitionFunction ε β V)",
     "standardAxioms": [
       "Classical.choice",
@@ -129372,7 +129123,7 @@
     "name": "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
     "externalAxioms": [],
-    "docString": "**`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,\n`interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and\n`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
+    "docString": "**`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,\n`Common.heisenbergEvolve_quarticVertexOperator_eq_prod`, the inductive hypothesis, and\n`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -144698,7 +144449,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A X : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.commutatorExpectation✝ expectation A) X =\n    expectation.toContinuousLinearMap (A * X - X * A)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A X : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.commutatorExpectation✝ expectation A) X = expectation.toContinuousLinearMap ⁅A, X⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153473,7 +153224,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T) =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator S T)",
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S, SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T⁆ =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ ⁅S, T⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153485,7 +153236,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
     "externalAxioms": [],
     "docString": null,
@@ -153493,7 +153244,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.linearCommutator_apply",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
     ],
@@ -155492,7 +155242,7 @@
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prod_atomicOperators"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod",
+      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator_eq_prod",
       "SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators_interaction",
       "SecondQuantization.Fermionic.twoPointTimedEventOperator_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators_external"
