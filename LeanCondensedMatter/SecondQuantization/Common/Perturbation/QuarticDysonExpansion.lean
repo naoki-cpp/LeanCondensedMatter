@@ -112,32 +112,6 @@ theorem quarticDysonSequenceCoeff_cons {n : ℕ}
   rw [hrewrite, intervalIntegral.integral_const_mul]
   ring
 
-/-- A finitely supported quartic interaction evolves as the finite sum of its bare vertices with
-scalar vertex time factors, provided the ladder operators obey the stated free evolution laws. -/
-theorem heisenbergEvolve_quarticInteractionOn_eq_sum
-    (energy : Config → ℝ) (ε : Mode → ℝ)
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (support : Finset (QuarticVertexLabel Mode)) (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ)
-    (hcreate : ∀ i, heisenbergEvolve energy τ (create i) =
-      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i)
-    (hannihilate : ∀ i, heisenbergEvolve energy τ (annihilate i) =
-      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) :
-    heisenbergEvolve energy τ (quarticInteractionOn support create annihilate g) =
-      ∑ q : ↥support,
-        (g q * quarticVertexTimeFactor ε q τ) • quarticVertexOperator create annihilate q := by
-  classical
-  have hinteraction :
-      quarticInteractionOn support create annihilate g =
-        ∑ q : ↥support, g q • quarticVertexOperator create annihilate q := by
-    change (∑ q ∈ support, g q • quarticVertexOperator create annihilate q) = _
-    rw [← Finset.sum_subtype support (fun _ => Iff.rfl)
-      (fun q => g q • quarticVertexOperator create annihilate q)]
-  rw [hinteraction, map_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [map_smul, heisenbergEvolve_quarticVertexOperator energy ε create annihilate
-    (q : QuarticVertexLabel Mode) τ hcreate hannihilate]
-  simp [smul_smul]
 
 end
 end Common
