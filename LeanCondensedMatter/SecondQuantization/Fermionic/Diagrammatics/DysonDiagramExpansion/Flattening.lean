@@ -70,7 +70,7 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
     rw [show interactionPicture ε (quarticVertexOperator (q 0)) (τ 0) =
         (List.ofFn (fun l : Fin 4 =>
           imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))).prod by
-      simpa [interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
+      simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
         quarticLocalLegOperator] using
         (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
           (fermionEnergy ε) create annihilate (q 0) (τ 0)),
