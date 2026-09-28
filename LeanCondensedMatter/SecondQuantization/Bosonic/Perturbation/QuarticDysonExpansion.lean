@@ -224,7 +224,8 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
       rw [Common.dysonCoeff_zero]
       have huniq : Unique (Fin 0 → ↥support) := Pi.uniqueOfIsEmpty _
       rw [Fintype.sum_unique]
-      simp [quarticDysonSequenceCoeff, quarticVertexSequenceOperator]
+      simp [quarticDysonSequenceCoeff, quarticVertexSequenceOperator,
+        quarticVertexSequenceTimeFactor, Module.End.one_eq_id]
   | succ n ih =>
       intro t
       apply Common.matrixCoeff_ext
@@ -308,7 +309,14 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                 (fun i => (q i : QuarticVertexLabel Mode))) m k)]
         refine Finset.sum_congr rfl fun p _ => ?_
         obtain ⟨q0, q'⟩ := p
-        simp [e]
+        have hseq :
+            Fin.cons (q0 : QuarticVertexLabel Mode)
+                (fun i => (q' i : QuarticVertexLabel Mode)) =
+              (fun i => ((Fin.cons q0 q') i : QuarticVertexLabel Mode)) := by
+          funext i
+          refine Fin.cases ?_ ?_ i <;> simp
+        rw [hseq]
+        rfl
       rw [show
         (fun σ : ℝ =>
           Common.matrixCoeff
