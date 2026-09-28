@@ -49,8 +49,8 @@ theorem polarPoint2D_eq_radialPoint (radius angle : ℝ) :
 /-- Negating the radius negates a two-dimensional polar point at fixed angle. -/
 theorem neg_polarPoint2D (radius angle : ℝ) :
     -(polarPoint2D radius angle) = polarPoint2D (-radius) angle := by
-  funext i
-  fin_cases i <;> simp [polarPoint2D]
+  rw [polarPoint2D_eq_radialPoint, polarPoint2D_eq_radialPoint,
+    radialPoint_neg_radius]
 
 /-- Fourier phase `exp(i p·r / ℏ)` for polar momentum `(p cos θ, p sin θ)` in two dimensions. -/
 def physicalMomentumPolarFourierPhase
