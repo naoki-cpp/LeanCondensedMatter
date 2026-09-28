@@ -83368,6 +83368,45 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n  SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε)\n      (SecondQuantization.Bosonic.quarticInteractionOn support g) n t =\n    ∑ q,\n      SecondQuantization.Common.quarticDysonSequenceCoeff ε g (fun i => ↑(q i)) t •\n        SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate fun i => ↑(q i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "The actual arbitrary-occupation-space Dyson coefficient of a finitely supported bosonic quartic\ninteraction is a finite sum over support-valued vertex-label sequences. Each summand is a static\nbare operator product multiplied by its scalar ordered-simplex Dyson coefficient.\n\nThe ambient mode type need not be finite, and no infinite Gibbs sum/integral interchange is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.exchangeCommutator SecondQuantization.Common.Statistics.boson\n      (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create i) =\n    LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
@@ -85410,6 +85449,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "dependencies": [
@@ -85421,9 +85461,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85469,7 +85510,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (τ : ℝ) (i : Mode),\n  SecondQuantization.Bosonic.imaginaryTimeEvolve ε τ (SecondQuantization.Bosonic.create i) =\n    Complex.exp (↑τ * ↑(ε i)) • SecondQuantization.Bosonic.create i",
     "standardAxioms": [
       "Classical.choice",
@@ -85477,7 +85518,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85488,15 +85529,19 @@
     "docString": "The creation operator evolves with energy shift `ε i`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88752,7 +88797,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88796,7 +88841,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.interactionSector_subset",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97882,6 +97927,126 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (ε : Mode → ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n  Continuous (SecondQuantization.Common.quarticDysonSequenceCoeff ε g q)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "A fixed vertex-sequence Dyson coefficient is continuous in its upper imaginary-time bound. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuous_quarticVertexSequenceTimeFactor",
+      "intervalIntegral.continuous_orderedSimplexIntegral_of_continuous"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (ε : Mode → ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n  Continuous (SecondQuantization.Common.quarticVertexSequenceTimeFactor ε q)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.continuous_quarticVertexSequenceTimeFactor",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "The scalar time factor of a fixed vertex sequence is jointly continuous. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (q : SecondQuantization.Common.QuarticVertexLabel Mode),\n  Continuous (SecondQuantization.Common.quarticVertexTimeFactor ε q)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.continuous_quarticVertexTimeFactor",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "The one-vertex scalar time factor is continuous in imaginary time. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    q ≠ 0 → ∀ (n : Config), SecondQuantization.Common.diagonalCoeff A n = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -98707,6 +98872,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n  (∀ (τ : ℝ) (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (τ : ℝ) (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      ∀ (n : ℕ) (t : ℝ),\n        SecondQuantization.Common.dysonCoeff energy\n            (SecondQuantization.Common.quarticInteractionOn support create annihilate g) n t =\n          ∑ q,\n            SecondQuantization.Common.quarticDysonSequenceCoeff ε g (fun i => ↑(q i)) t •\n              SecondQuantization.Common.quarticVertexSequenceOperator create annihilate fun i => ↑(q i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "The finite-order Dyson coefficient of a finitely supported quartic interaction is the sum over\nsupport-valued vertex sequences of their scalar ordered-simplex coefficients multiplying the\ncorresponding bare vertex products. This is statistics-independent once the ladder operators obey\nthe stated free imaginary-time eigenoperator laws. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
+      "SecondQuantization.Common.continuous_quarticVertexTimeFactor",
+      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
+      "SecondQuantization.Common.dysonCoeff_zero",
+      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.matrixCoeffLinear_apply",
+      "SecondQuantization.Common.matrixCoeff_ext",
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
+      "SecondQuantization.Common.quarticVertexSequenceOperator_cons"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ)\n  (τ : ℝ),\n  SecondQuantization.Common.dysonCoeff energy V (n + 1) τ =\n    -SecondQuantization.Common.operatorIntervalIntegral\n        (fun σ =>\n          SecondQuantization.Common.interactionPicture energy V σ ∘ₗ SecondQuantization.Common.dysonCoeff energy V n σ)\n        0 τ",
     "standardAxioms": [
       "Classical.choice",
@@ -98779,6 +98993,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Common.dysonCoeff_at_zero",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
@@ -98791,10 +99006,11 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Common.dysonCoeff_at_zero",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98833,6 +99049,7 @@
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_one",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply",
@@ -98853,12 +99070,13 @@
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_one",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101577,15 +101795,56 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : SecondQuantization.Common.QuarticVertexLabel Mode) (τ : ℝ),\n  (∀ (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticVertexOperator create annihilate q) =\n        Complex.exp (↑τ * ↑(SecondQuantization.Common.quarticVertexEnergyShift ε q)) •\n          SecondQuantization.Common.quarticVertexOperator create annihilate q",
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ : ℝ),\n  (∀ (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticInteractionOn support create annihilate g) =\n        ∑ q,\n          (g ↑q * SecondQuantization.Common.quarticVertexTimeFactor ε (↑q) τ) •\n            SecondQuantization.Common.quarticVertexOperator create annihilate ↑q",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": "A finitely supported quartic interaction evolves as the finite sum of its bare vertices with\nscalar vertex time factors, provided the ladder operators obey the stated free evolution laws. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : SecondQuantization.Common.QuarticVertexLabel Mode) (τ : ℝ),\n  (∀ (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticVertexOperator create annihilate q) =\n        SecondQuantization.Common.quarticVertexTimeFactor ε q τ •\n          SecondQuantization.Common.quarticVertexOperator create annihilate q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -101596,12 +101855,16 @@
     "docString": "A quartic vertex assembled from ladder eigenoperators evolves with their total energy shift. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102936,7 +103199,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102948,15 +103211,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103309,6 +103574,7 @@
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
@@ -103325,6 +103591,7 @@
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
@@ -103332,7 +103599,7 @@
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
       "SecondQuantization.Common.operatorIntervalIntegral_zero"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106368,6 +106635,128 @@
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (ε : Mode → ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (q0 : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (t : ℝ),\n  SecondQuantization.Common.quarticDysonSequenceCoeff ε g (Fin.cons q0 q) t =\n    -∫ (σ : ℝ) in 0..t,\n        g q0 * SecondQuantization.Common.quarticVertexTimeFactor ε q0 σ *\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g q σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "Prepending a vertex gives the outer-time recursion for a fixed-sequence Dyson coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.quarticVertexSequenceTimeFactor_cons",
+      "intervalIntegral.orderedSimplexIntegral_congr",
+      "intervalIntegral.orderedSimplexIntegral_smul",
+      "intervalIntegral.orderedSimplexIntegral_succ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} {n : ℕ}\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q0 : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n  SecondQuantization.Common.quarticVertexSequenceOperator create annihilate (Fin.cons q0 q) =\n    SecondQuantization.Common.quarticVertexOperator create annihilate q0 ∘ₗ\n      SecondQuantization.Common.quarticVertexSequenceOperator create annihilate q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticVertexSequenceOperator_cons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic",
+    "externalAxioms": [],
+    "docString": "Prepending one quartic vertex prepends its operator by composition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (ε : Mode → ℝ) (q0 : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : ℝ) (τ : Fin n → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceTimeFactor ε (Fin.cons q0 q) (Fin.cons σ τ) =\n    SecondQuantization.Common.quarticVertexTimeFactor ε q0 σ *\n      SecondQuantization.Common.quarticVertexSequenceTimeFactor ε q τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticVertexSequenceTimeFactor_cons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": "Prepending a vertex and its time prepends the corresponding scalar factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146104,6 +146493,84 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (e : ↥(↑B).toLeft),\n  ↑((SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv✝ d B).symm (Sum.inl e)) =\n    SecondQuantization.Common.externalInsertionExternalLeg E S ↑e",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (v : ↥(SecondQuantization.Common.interactionSector ↑B)) (l : Fin 4),\n  ↑((SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv✝ d B).symm (Sum.inr (v, l))) =\n    SecondQuantization.Common.externalInsertionInteractionLeg ⟨↑v, ⋯⟩ l",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts), StrictMono (d.componentDiagramLeg B)",
     "standardAxioms": [
@@ -146259,7 +146726,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent (↑B) leg ↔\n    SecondQuantization.Common.ExternalInsertionDiagram.unflattenedLegInComponent✝ d B\n      ((SecondQuantization.Common.externalInsertionLegEquiv E S) leg)",
     "standardAxioms": [
       "Classical.choice",
@@ -146278,22 +146745,17 @@
     "docString": "Flattening preserves the component-membership predicate. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.ExternalInsertionDiagram.vacuumBlockLegEquiv",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164404,6 +164866,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_bound",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_boundary",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
@@ -164413,12 +164876,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_bound",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_boundary",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
       "intervalIntegral.orderedSimplexIntegral_finsetSum"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164778,6 +165242,7 @@
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
       "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient",
@@ -164793,13 +165258,14 @@
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
       "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consLeft_boundary",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -165070,6 +165536,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "intervalIntegral.orderedSimplexIntegral_neg"
@@ -165080,11 +165547,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "intervalIntegral.orderedSimplexIntegral_neg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -165115,6 +165583,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "intervalIntegral.orderedSimplexIntegral_congr",
       "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti",
       "intervalIntegral.orderedSimplexIntegral_const",
@@ -165126,6 +165595,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "intervalIntegral.orderedSimplexIntegral_congr",
       "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti",
       "intervalIntegral.orderedSimplexIntegral_const",
@@ -165133,7 +165603,7 @@
       "intervalIntegral.orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded",
       "intervalIntegral.orderedSimplexIntegral_smul"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
