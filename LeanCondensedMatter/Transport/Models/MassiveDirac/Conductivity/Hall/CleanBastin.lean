@@ -24,11 +24,11 @@ noncomputable section
 open Filter QuantumTheory.Transport
 
 /-- Finite-cutoff Hall response obtained from the canonical occupation-weighted clean Bastin-pair
-radial integral. `bastinStredaConductivityNormalization` attaches the trace factor and physical
+radial integral. `bastinStredaPhysicalMomentumConductivityNormalization` attaches the trace factor and physical
 momentum measure exactly once; only the radial reduction's angular `2π` remains explicit here. -/
 def bastinCleanHallConductivityCutoff
     (e hbar m εF Λ : ℝ) : ℝ :=
-  (2 * Real.pi * bastinStredaConductivityNormalization hbar) *
+  (2 * Real.pi * bastinStredaPhysicalMomentumConductivityNormalization hbar) *
     zeroTemperatureOccupiedCleanInterbandBastinPairCutoff e m εF Λ
 
 /-- The canonical clean radial Bastin-pair integral has exactly the same finite-cutoff normalization
@@ -39,7 +39,7 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
       intrinsicHallConductivityCutoff e hbar m εF Λ := by
   unfold bastinCleanHallConductivityCutoff
   rw [zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq]
-  unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+  unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaTraceConductivityPrefactor
     intrinsicHallConductivityCutoff intrinsicHallPrefactorFromMomentumMeasure
   field_simp [Real.pi_ne_zero]
 
