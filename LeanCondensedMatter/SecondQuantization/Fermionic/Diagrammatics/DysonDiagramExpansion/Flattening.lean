@@ -72,7 +72,7 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
               (fun i => q i.succ) (fun i => τ i.succ)
         exact prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
           ε n (fun i => q i.succ) (fun i => τ i.succ)]
-      simp only [Module.End.mul_eq_comp]
+      rfl
 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
