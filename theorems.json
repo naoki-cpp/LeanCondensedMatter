@@ -81364,7 +81364,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode) (l : Fin 4),\n  (SecondQuantization.Bosonic.quarticFreeThermalField q l).operator =\n    SecondQuantization.Bosonic.quarticLocalLegOperator q l",
     "standardAxioms": [
       "Classical.choice",
@@ -81372,7 +81372,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -81383,12 +81383,16 @@
     "docString": "The thermal-field realization agrees with the existing quartic local-leg operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85405,6 +85409,44 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (q : SecondQuantization.Common.QuarticVertexLabel Mode) (τ : ℝ),\n  SecondQuantization.Bosonic.interactionPicture ε (SecondQuantization.Bosonic.quarticVertexOperator q) τ =\n    (List.ofFn fun l =>\n        SecondQuantization.Bosonic.imaginaryTimeEvolve ε τ\n          (SecondQuantization.Bosonic.quarticFreeThermalField q l).operator).prod",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField",
+    "externalAxioms": [],
+    "docString": "The interaction-picture bosonic quartic vertex is the ordered product of the evolved\noperators represented by its four free-thermal-field labels. This is the bosonic thermal\nspecialization of the statistics-independent Common quartic operator-product identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_quarticFreeThermalField",
+      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator_eq_prod"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -101713,8 +101755,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -101726,15 +101768,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111246,7 +111290,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
       "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity",
       "SecondQuantization.Fermionic.Lattice.discrete_continuity"
     ],
@@ -111255,11 +111298,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_commutes_dGamma",
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
       "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity",
       "SecondQuantization.Fermionic.Lattice.discrete_continuity"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111376,7 +111418,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -111388,8 +111430,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum",
-      "SecondQuantization.Fermionic.Field.chargeDensity_vacuum"
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
@@ -111397,10 +111438,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum",
-      "SecondQuantization.Fermionic.Field.chargeDensity_vacuum"
+      "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_vacuum"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113077,7 +113117,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  (SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f =\n    q • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (M f)",
     "standardAxioms": [
       "Classical.choice",
@@ -113085,7 +113125,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113096,49 +113136,8 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  ((SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f) (SecondQuantization.Fermionic.AlgebraicFock.vacuum 𝓗₁) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.chargeDensity_vacuum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity",
-    "externalAxioms": [],
-    "docString": "Every smeared charge density kills the vacuum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_vacuum"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -113495,48 +113494,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (f : Test),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n      (SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f⁆ =\n    q • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ ⁅h, M f⁆",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity",
-    "externalAxioms": [],
-    "docString": "The commutator of a second-quantized Hamiltonian with smeared charge density is the second\nquantization of the one-particle commutator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.heisenberg_commutator_chargeDensity"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
-      "SecondQuantization.Fermionic.Field.chargeDensity_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.heisenberg_commutator_chargeDensity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n      (SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity 𝓗₁ M m) f⁆ =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.transportCommutator 𝓗₁ h M m f) +\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.sourceCommutator 𝓗₁ h M m f)",
     "standardAxioms": [
@@ -113561,43 +113518,6 @@
       "ConservationLaw.lie_localizedQuantity",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
       "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (ℏ q : ℂ) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁) (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (f : Test),\n  (Complex.I / ℏ) •\n      ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n        (SecondQuantization.Fermionic.Field.chargeDensity 𝓗₁ q M) f⁆ =\n    (Complex.I * q / ℏ) • SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ ⁅h, M f⁆",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.heisenberg_commutator_chargeDensity",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity",
-    "externalAxioms": [],
-    "docString": "Algebraic Heisenberg-form identity for smeared charge density:\n\n```text\n(i / ℏ) [dΓ(h), ρ(f)] = (i q / ℏ) dΓ([h, M(f)]).\n```\n\nThis identity is purely algebraic. Analytic domain assumptions for an unbounded Schrödinger\nHamiltonian or continuum multiplication operator belong to the weak-continuity layer. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Field.dGamma_commutator_chargeDensity"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -146503,7 +146423,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumBlockLegEquiv",
+      "SecondQuantization.Common.ExternalInsertionDiagram.restrictVacuumComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv"
     ],
     "compiledConsumerCount": 2,
