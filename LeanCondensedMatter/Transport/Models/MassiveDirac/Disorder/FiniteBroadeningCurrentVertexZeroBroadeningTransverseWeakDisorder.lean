@@ -46,9 +46,9 @@ private theorem transverseAngularNumeratorBoundary_eq_disorder_mul
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
         1 0 v m probeEnergy disorderStrength hbar pMax =
       (disorderStrength : ℂ) *
-        (((2 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+        (((2 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
           v ^ 2 : ℝ) : ℂ)) := by
-  let a : ℂ := ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ)
+  let a : ℂ := ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ)
   let jR := finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
     .retarded v m probeEnergy pMax
   let jA := finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
@@ -141,7 +141,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
           (disorderStrength : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        (((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+        (((Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
           (v ^ 2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ))) := by
   let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
   let x := fun disorderStrength : ℝ =>
@@ -153,7 +153,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   let ry := fun disorderStrength : ℝ =>
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
       v m probeEnergy disorderStrength hbar pMax 1
-  let c : ℂ := (((2 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+  let c : ℂ := (((2 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
     v ^ 2 : ℝ) : ℂ))
   have hl : l ≤ nhds 0 := by
     dsimp [l, nhdsWithin]
@@ -205,7 +205,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       c *
           ((continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
               m probeEnergy : ℂ) * (((probeEnergy ^ 2 - m ^ 2 : ℝ) : ℂ))⁻¹) =
-        (((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+        (((Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
           (v ^ 2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ)) := by
     dsimp [c]
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
