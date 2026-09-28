@@ -100,7 +100,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
         intervalIntegral.orderedSimplexIntegral S.card β
           (fun τ => (freeGibbsDensityOperator ε β).expectation
             (Common.finiteHilbertOperatorAlgEquiv
-              (nestedVertexOperatorComp ε S.card q τ))) =
+              (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate S.card q τ))) =
       ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
         ∑ pairing : Pairing (2 * S.card),
           intervalIntegral.orderedSimplexIntegral S.card β
@@ -108,11 +108,11 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
     Finset.sum_congr rfl fun q _ => by
       have hpoint (τ : Fin S.card → ℝ) :
           (freeGibbsDensityOperator ε β).expectation
-              (Common.finiteHilbertOperatorAlgEquiv (nestedVertexOperatorComp ε S.card q τ)) =
+              (Common.finiteHilbertOperatorAlgEquiv (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate S.card q τ)) =
             ∑ pairing : Pairing (2 * S.card),
               flatVertexLegPairingEvaluation ε β q τ pairing := by
         rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-          ← prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp]
+          ← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
         have hgen :=
           Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
             Common.Statistics.fermion (fermionEnergy ε) β (2 * S.card)
