@@ -12,6 +12,7 @@
         "LeanCondensedMatter/Transport.lean",
         "LeanCondensedMatter/Transport/Models.lean",
         "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
+        "LeanCondensedMatter/Transport/Models/Parabolic2DEG.lean",
         "LeanCondensedMatter/SecondQuantization.lean"
       ]
     },
@@ -571,7 +572,18 @@
     {
       "id": "transportModelsUmbrella",
       "path": "LeanCondensedMatter/Transport/Models.lean",
-      "modules": ["LeanCondensedMatter.Transport.Models.MassiveDirac"]
+      "modules": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac",
+        "LeanCondensedMatter.Transport.Models.Parabolic2DEG"
+      ]
+    },
+    {
+      "id": "parabolic2DEGPublicUmbrella",
+      "path": "LeanCondensedMatter/Transport/Models/Parabolic2DEG.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response"
+      ]
     },
     {
       "id": "massiveDiracPublicUmbrella",
