@@ -308,12 +308,24 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
         ∏ B : d.vertexGraph.componentPartitionOn.parts,
           intervalIntegral.orderedSimplexIntegral (B : Finset (Fin N)).card t
             (localIntegrand B) := by
-    simp_rw [QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder ε d orders]
+    rw [show
+      (fun shuffle : d.ComponentShuffle =>
+        intervalIntegral.orderedSimplexIntegral S.card t
+          (Common.quarticVertexSequenceTimeFactor ε
+            (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i)))) =
+        (fun shuffle : d.ComponentShuffle =>
+          intervalIntegral.orderedSimplexIntegral S.card t
+            (shuffle.ambientIntegrand localIntegrand)) by
+      funext shuffle
+      congr 1
+      funext τ
+      exact QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder
+        ε d orders shuffle τ]
     exact Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
       (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
       S.card hcard t localIntegrand
-      (fun B => Common.measurableLocallyBounded_quarticVertexSequenceTimeFactor ε
-        (fun i => (d.restrictComponent B.2).vertexLabel (orders B i)))
+      (fun B => (Common.continuous_quarticVertexSequenceTimeFactor ε
+        (fun i => (d.restrictComponent B.2).vertexLabel (orders B i))).measurableLocallyBounded)
   simp only [QuarticDiagram.orderedDysonThermalAmplitude, Common.quarticDysonSequenceCoeff]
   have hpair (shuffle : d.ComponentShuffle) :
       QuarticDiagram.orderedThermalPairingValue ε β d
@@ -345,14 +357,37 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
               (Common.quarticVertexSequenceTimeFactor ε
                 (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i)))) *
             pairingProduct) by
-      simp_rw [mul_assoc]
-      rw [← Finset.sum_mul, ← Finset.mul_sum]]
+      calc
+        _ = ∑ shuffle : d.ComponentShuffle,
+            ((-1 : ℂ) ^ S.card * d.vertexWeight g) *
+              (intervalIntegral.orderedSimplexIntegral S.card t
+                (Common.quarticVertexSequenceTimeFactor ε
+                  (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i))) *
+                pairingProduct) := by
+              apply Finset.sum_congr rfl
+              intro shuffle _
+              ring
+        _ = ((-1 : ℂ) ^ S.card * d.vertexWeight g) *
+            ∑ shuffle : d.ComponentShuffle,
+              (intervalIntegral.orderedSimplexIntegral S.card t
+                (Common.quarticVertexSequenceTimeFactor ε
+                  (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i))) *
+                pairingProduct) := by
+              rw [Finset.mul_sum]
+        _ = _ := by
+              rw [Finset.sum_mul]]
   rw [htime]
   rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g]
   dsimp only [pairingProduct, localIntegrand]
   rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
   apply Finset.prod_congr rfl
   intro B _
+  change
+    ((-1 : ℂ) ^ (B : Finset (Fin N)).card *
+        (d.restrictComponent B.2).vertexWeight g) *
+        (_ * _) =
+      (((-1 : ℂ) ^ (B : Finset (Fin N)).card *
+        ∏ x, g ((d.restrictComponent B.2).vertexLabel (orders B x))) * _) * _
   rw [Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order
     (d.restrictComponent B.2) g (orders B)]
   ring
