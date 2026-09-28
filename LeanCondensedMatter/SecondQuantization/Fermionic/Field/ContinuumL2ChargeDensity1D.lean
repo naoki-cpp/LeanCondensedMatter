@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.L2Multiplication
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -33,33 +32,28 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal
 
-/-- The canonical `L²` multiplication family, viewed as algebraic linear endomorphisms so it can be
-second-quantized. -/
-noncomputable def continuumL2Multiplication1D :
-    L2Multiplication.ComplexLInf (volume : Measure ℝ) →ₗ[ℂ]
-      (L2Multiplication.ComplexL2 (volume : Measure ℝ) →ₗ[ℂ] L2Multiplication.ComplexL2 (volume : Measure ℝ)) :=
-  L2Multiplication.multiplicationLinear (volume : Measure ℝ)
-
 /-- The abstract fermionic charge density specialized to canonical bounded multiplication on
 `L²(ℝ, ℂ)`. -/
 noncomputable def continuumL2ChargeDensity1D (q : ℂ) :
     L2Multiplication.ComplexLInf (volume : Measure ℝ) →ₗ[ℂ]
       (AlgebraicFock (L2Multiplication.ComplexL2 (volume : Measure ℝ)) →ₗ[ℂ]
         AlgebraicFock (L2Multiplication.ComplexL2 (volume : Measure ℝ))) :=
-  chargeDensity (L2Multiplication.ComplexL2 (volume : Measure ℝ)) q continuumL2Multiplication1D
+  chargeDensity (L2Multiplication.ComplexL2 (volume : Measure ℝ)) q
+    (L2Multiplication.multiplicationLinear (volume : Measure ℝ))
 
 @[simp]
 theorem continuumL2ChargeDensity1D_apply
     (q : ℂ) (f : L2Multiplication.ComplexLInf (volume : Measure ℝ)) :
     continuumL2ChargeDensity1D q f =
       q • AlgebraicFock.dGamma (L2Multiplication.ComplexL2 (volume : Measure ℝ))
-        (continuumL2Multiplication1D f) :=
+        (L2Multiplication.multiplicationOperator (volume : Measure ℝ) f).toLinearMap :=
   rfl
 
 /-- On the one-particle sector, the second-quantized continuum charge density is exactly the
 charge-scaled canonical bounded multiplication operator. -/
 theorem continuumL2ChargeDensity1D_oneParticle
-    (q : ℂ) (f : L2Multiplication.ComplexLInf (volume : Measure ℝ)) (ψ : L2Multiplication.ComplexL2 (volume : Measure ℝ)) :
+    (q : ℂ) (f : L2Multiplication.ComplexLInf (volume : Measure ℝ))
+    (ψ : L2Multiplication.ComplexL2 (volume : Measure ℝ)) :
     continuumL2ChargeDensity1D q f
         (AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ)) ψ) =
       AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ))
@@ -67,21 +61,6 @@ theorem continuumL2ChargeDensity1D_oneParticle
   rw [continuumL2ChargeDensity1D_apply]
   simp only [LinearMap.smul_apply, AlgebraicFock.dGamma_oneParticle]
   rw [← map_smul]
-  rfl
-
-/-- For a real bounded test function and real charge, the one-particle restriction is the same
-charge-scaled real multiplication operator used by the analytic `L²` density expectation theorem. -/
-theorem continuumL2ChargeDensity1D_oneParticle_real
-    (q : ℝ) (test : ℝ → ℝ)
-    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
-    (ψ : L2Multiplication.ComplexL2 (volume : Measure ℝ)) :
-    continuumL2ChargeDensity1D (q : ℂ)
-        (L2Multiplication.realMultiplier (volume : Measure ℝ) test htest)
-        (AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ)) ψ) =
-      AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 (volume : Measure ℝ))
-        (((q : ℂ) • L2Multiplication.multiplicationOperator (volume : Measure ℝ)
-          (L2Multiplication.realMultiplier (volume : Measure ℝ) test htest)) ψ) := by
-  rw [continuumL2ChargeDensity1D_oneParticle]
   rfl
 
 end
