@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
 
 set_option linter.style.header false
