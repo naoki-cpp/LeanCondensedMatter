@@ -86,6 +86,23 @@ theorem listOfFn_orderedQuarticLegFamily_cons {α : Type*} {n : ℕ}
     rw [← hk] at hrest
     exact hrest.symm
 
+/-- The product of the canonical row-major flattened quartic-leg family is the ordered product
+of the four-leg product at each vertex. -/
+theorem prod_orderedQuarticLegFamily_eq_vertexProducts {α : Type*} [Monoid α] :
+    ∀ {n : ℕ} (f : Fin n → Fin 4 → α),
+      (List.ofFn (orderedQuarticLegFamily f)).prod =
+        (List.ofFn (fun i => (List.ofFn (f i)).prod)).prod := by
+  intro n
+  induction n with
+  | zero =>
+      intro f
+      simp [orderedQuarticLegFamily]
+  | succ n ih =>
+      intro f
+      rw [← Fin.cons_self_tail f, listOfFn_orderedQuarticLegFamily_cons, List.prod_append]
+      rw [List.ofFn_succ, List.prod_cons]
+      rw [ih]
+
 /-- The vertex slot containing an ordered flattened quartic leg. -/
 noncomputable def flatVertexIndex (n : ℕ) (p : Fin (2 * (2 * n))) : Fin n :=
   (orderedQuarticLegEquiv n p).1
