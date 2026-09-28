@@ -94,8 +94,10 @@ Fermionic.Validation
 `Fermionic.Field` and `Fermionic.Lattice` are sibling realization layers.
 
 `Fermionic.Lattice` owns discrete one-particle lattice data, hopping, charge/bond currents, Peierls
-families, finite-lattice bounded realizations, and model-level current identities. It does not own
-generic response, conductivity, disorder, or validation theory.
+families, finite-lattice bounded realizations, and model-level current identities. In particular,
+`Lattice.Bounded` owns the canonical linear realization from one-body operators through `dGamma` to
+bounded finite-Fock observables. It does not own generic response, conductivity, disorder, or
+validation theory.
 
 `Fermionic.Field` is a narrow side interface for basis-independent density constructions, bounded
 `L²` multiplication density realizations, and the `dGamma` bridge for generalized localized quantities. It does not
