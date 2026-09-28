@@ -82057,6 +82057,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete"
     ],
     "dependencies": [
@@ -82070,9 +82071,10 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84269,7 +84271,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n  SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε)\n      (SecondQuantization.Bosonic.quarticInteractionOn support g) n t =\n    ∑ q,\n      SecondQuantization.Common.quarticDysonSequenceCoeff ε g (fun i => ↑(q i)) t •\n        SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate fun i => ↑(q i)",
     "standardAxioms": [
       "Classical.choice",
@@ -84277,7 +84279,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84288,7 +84290,9 @@
     "docString": "The actual arbitrary-occupation-space Dyson coefficient of a finitely supported bosonic quartic\ninteraction is a finite sum over support-valued vertex-label sequences. Each summand is a static\nbare operator product multiplied by its scalar ordered-simplex Dyson coefficient.\n\nThe ambient mode type need not be finite, and no infinite Gibbs sum/integral interchange is used. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
@@ -84296,8 +84300,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84577,6 +84583,49 @@
       "SecondQuantization.Bosonic.freeEigenvalue_createOccupation"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteractionOn support g) n\n          t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g (fun i => ↑(q i)) t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily (fun i => ↑(q i)) a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily (fun i => ↑(q i)) b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite\nsum over support-valued vertex sequences and bosonic pairings. The scalar\n`quarticDysonSequenceCoeff` carries the full ordered-simplex imaginary-time integration, while the\npairing evaluation is the existing static free-boson thermal Wick factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsSummable_smul",
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85095,7 +85144,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85107,7 +85156,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
+      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
@@ -85117,9 +85167,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
+      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85326,6 +85377,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
       "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
     ],
@@ -85336,10 +85388,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
       "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85358,7 +85411,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85370,7 +85423,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum"
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
@@ -85378,9 +85432,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum"
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85838,7 +85893,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
@@ -85847,9 +85903,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87631,7 +87688,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {n : ℕ} (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n  SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct q =\n    SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n      SecondQuantization.Bosonic.annihilate q",
     "standardAxioms": [
       "Classical.choice",
@@ -87639,7 +87696,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -87650,15 +87707,19 @@
     "docString": "The flattened bosonic free-thermal-field product is exactly the Common bare quartic\nvertex-sequence operator. This is the operator bridge from the quartic Dyson expansion to the\nbosonic Gibbs/Wick layer. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.operator_quarticFreeThermalField",
       "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
