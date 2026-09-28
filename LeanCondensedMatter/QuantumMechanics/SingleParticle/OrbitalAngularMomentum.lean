@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -27,14 +28,14 @@ continuum specialization `Pᵢ = -i ℏ ∂ᵢ`, one has schematically
 may automatically be fed through a localizer-commuting conventional-current theorem.
 
 No unbounded-operator or second-quantization structure is used here. Generic commutator product and
-additivity rules remain owned upstream by `Analysis.Operator.LinearCommutator`; this module owns
+additivity rules come from Mathlib's associative Lie bracket; this module owns
 the orbital-angular-momentum interpretation and continuum-sign specialization.
 -/
 
 namespace QuantumMechanics
 namespace SingleParticle
 
-open ConservationLaw
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
@@ -47,26 +48,28 @@ noncomputable def orbitalAngularMomentumZ
   X.comp Py - Y.comp Px
 
 /-- Expansion of a localization commutator with algebraic orbital angular momentum. -/
-theorem linearCommutator_orbitalAngularMomentumZ
+theorem lie_orbitalAngularMomentumZ
     (M X Y Px Py : V →ₗ[ℂ] V) :
-    linearCommutator M (orbitalAngularMomentumZ X Y Px Py) =
-      ((linearCommutator M X).comp Py + X.comp (linearCommutator M Py)) -
-        ((linearCommutator M Y).comp Px + Y.comp (linearCommutator M Px)) := by
-  rw [orbitalAngularMomentumZ, linearCommutator_sub_right,
-    linearCommutator_comp_right, linearCommutator_comp_right]
+    ⁅M, orbitalAngularMomentumZ X Y Px Py⁆ =
+      ((⁅M, X⁆).comp Py + X.comp (⁅M, Py⁆)) -
+        ((⁅M, Y⁆).comp Px + Y.comp (⁅M, Px⁆)) := by
+  ext v
+  simp [orbitalAngularMomentumZ, LieRing.of_associative_ring_bracket,
+    Module.End.mul_eq_comp]
+  module
 
 /-- If localization commutes with position, its orbital commutator is controlled entirely by the
 momentum-localization commutators:
 
 `[M,L_z] = X [M,Pᵧ] - Y [M,Pₓ]`.
 -/
-theorem linearCommutator_orbitalAngularMomentumZ_of_commutes_position
+theorem lie_orbitalAngularMomentumZ_of_commutes_position
     (M X Y Px Py : V →ₗ[ℂ] V)
-    (hX : linearCommutator M X = 0)
-    (hY : linearCommutator M Y = 0) :
-    linearCommutator M (orbitalAngularMomentumZ X Y Px Py) =
-      X.comp (linearCommutator M Py) - Y.comp (linearCommutator M Px) := by
-  rw [linearCommutator_orbitalAngularMomentumZ, hX, hY]
+    (hX : ⁅M, X⁆ = 0)
+    (hY : ⁅M, Y⁆ = 0) :
+    ⁅M, orbitalAngularMomentumZ X Y Px Py⁆ =
+      X.comp (⁅M, Py⁆) - Y.comp (⁅M, Px⁆) := by
+  rw [lie_orbitalAngularMomentumZ, hX, hY]
   simp
 
 /-- Specialization when the momentum-localization commutators are represented by supplied
@@ -74,42 +77,42 @@ theorem linearCommutator_orbitalAngularMomentumZ_of_commutes_position
 
 For continuum momentum `Pᵢ = -i ℏ ∂ᵢ`, the physical coefficient is `c = i ℏ` and `Di` is
 multiplication by `∂ᵢ f`. -/
-theorem linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers
+theorem lie_orbitalAngularMomentumZ_of_derivative_localizers
     (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (c : ℂ)
-    (hX : linearCommutator M X = 0)
-    (hY : linearCommutator M Y = 0)
-    (hPx : linearCommutator M Px = c • Dx)
-    (hPy : linearCommutator M Py = c • Dy) :
-    linearCommutator M (orbitalAngularMomentumZ X Y Px Py) =
+    (hX : ⁅M, X⁆ = 0)
+    (hY : ⁅M, Y⁆ = 0)
+    (hPx : ⁅M, Px⁆ = c • Dx)
+    (hPy : ⁅M, Py⁆ = c • Dy) :
+    ⁅M, orbitalAngularMomentumZ X Y Px Py⁆ =
       X.comp (c • Dy) - Y.comp (c • Dx) := by
-  rw [linearCommutator_orbitalAngularMomentumZ_of_commutes_position M X Y Px Py hX hY,
+  rw [lie_orbitalAngularMomentumZ_of_commutes_position M X Y Px Py hX hY,
     hPx, hPy]
 
 /-- Exact nonvanishing criterion under position-localizer commutation.
 
 This makes the obstruction explicit: continuum-like `L_z` fails to commute with localization exactly
 when the derivative-localization combination on the right is nonzero. -/
-theorem linearCommutator_orbitalAngularMomentumZ_ne_zero_iff
+theorem lie_orbitalAngularMomentumZ_ne_zero_iff
     (M X Y Px Py : V →ₗ[ℂ] V)
-    (hX : linearCommutator M X = 0)
-    (hY : linearCommutator M Y = 0) :
-    linearCommutator M (orbitalAngularMomentumZ X Y Px Py) ≠ 0 ↔
-      X.comp (linearCommutator M Py) - Y.comp (linearCommutator M Px) ≠ 0 := by
-  rw [linearCommutator_orbitalAngularMomentumZ_of_commutes_position M X Y Px Py hX hY]
+    (hX : ⁅M, X⁆ = 0)
+    (hY : ⁅M, Y⁆ = 0) :
+    ⁅M, orbitalAngularMomentumZ X Y Px Py⁆ ≠ 0 ↔
+      X.comp (⁅M, Py⁆) - Y.comp (⁅M, Px⁆) ≠ 0 := by
+  rw [lie_orbitalAngularMomentumZ_of_commutes_position M X Y Px Py hX hY]
 
 /-- Continuum-sign specialization for `Pᵢ = -i ℏ ∂ᵢ`:
 `[M_f,L_z] = X (iℏ D_y) - Y (iℏ D_x)` once the momentum commutators have been identified with
 multiplication by the derivatives of the localizer. -/
-theorem linearCommutator_orbitalAngularMomentumZ_continuum_sign
+theorem lie_orbitalAngularMomentumZ_continuum_sign
     (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (ℏ : ℝ)
-    (hX : linearCommutator M X = 0)
-    (hY : linearCommutator M Y = 0)
-    (hPx : linearCommutator M Px = (Complex.I * (ℏ : ℂ)) • Dx)
-    (hPy : linearCommutator M Py = (Complex.I * (ℏ : ℂ)) • Dy) :
-    linearCommutator M (orbitalAngularMomentumZ X Y Px Py) =
+    (hX : ⁅M, X⁆ = 0)
+    (hY : ⁅M, Y⁆ = 0)
+    (hPx : ⁅M, Px⁆ = (Complex.I * (ℏ : ℂ)) • Dx)
+    (hPy : ⁅M, Py⁆ = (Complex.I * (ℏ : ℂ)) • Dy) :
+    ⁅M, orbitalAngularMomentumZ X Y Px Py⁆ =
       X.comp ((Complex.I * (ℏ : ℂ)) • Dy) -
         Y.comp ((Complex.I * (ℏ : ℂ)) • Dx) := by
-  exact linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers
+  exact lie_orbitalAngularMomentumZ_of_derivative_localizers
     M X Y Px Py Dx Dy (Complex.I * (ℏ : ℂ)) hX hY hPx hPy
 
 end SingleParticle

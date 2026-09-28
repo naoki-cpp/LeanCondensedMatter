@@ -2,7 +2,6 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded
 import LeanCondensedMatter.Analysis.Operator.Spectral
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt
 import LeanCondensedMatter.Analysis.Operator.Compact

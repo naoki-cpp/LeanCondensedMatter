@@ -30,6 +30,8 @@ namespace QuantumMechanics
 namespace SingleParticle
 namespace Continuum
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open QuantumTheory.ConservationLaw
 
 noncomputable section
@@ -56,7 +58,7 @@ theorem schwartzVelocityLocalizationFlux_isDifferentialCurrent1D
   have h := congrArg
     (fun T : SchwartzOneParticle1D →ₗ[ℂ] SchwartzOneParticle1D => T ψ)
     (SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
-  simpa [heisenbergScale, _root_.ConservationLaw.linearCommutator_apply,
+  simpa [heisenbergScale, LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
     _root_.ConservationLaw.symmetrizedProduct_apply] using h
 
 /-- Probability transport (`m = I`) on the Schwartz Schrödinger model is locally represented by the
@@ -79,8 +81,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
     SchwartzKinetic1D.multiplicationLinear
     (schwartzVelocityLocalizationFlux_isDifferentialCurrent1D ℏ κ potential)
     (fun α => by
-      simpa using _root_.ConservationLaw.linearCommutator_smul_id_right
-        (SchwartzKinetic1D.multiplicationLinear α) (1 : ℂ))
+      simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp])
 
 @[simp]
 theorem schwartzOperatorProbabilityCurrentRepresentation1D_currentDensity
@@ -111,8 +112,8 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
     (schwartzVelocityLocalizationFlux_isDifferentialCurrent1D ℏ κ potential)
-    (fun α => _root_.ConservationLaw.linearCommutator_smul_id_right
-      (SchwartzKinetic1D.multiplicationLinear α) q)
+    (fun α => by
+      simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp])
 
 @[simp]
 theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity

@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -16,6 +17,8 @@ The limit `η → 0⁺` remains a separate question and is not formed in this mo
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 open Set MeasureTheory
 
@@ -44,7 +47,8 @@ theorem continuous_commutatorSusceptibility_timeDifference
     ((continuous_const : Continuous (fun _ : ℝ => Complex.I / (system.hbar : ℂ))).mul hexpect)
     using 1
   funext τ
-  simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero]
+  simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero,
+    LieRing.of_associative_ring_bracket]
 
 /-- The causal time-difference kernel is Borel measurable; its only possible jump is at zero. -/
 theorem measurable_retardedTimeDifferenceKernel
@@ -91,11 +95,14 @@ theorem norm_retardedTimeDifferenceKernel_le
       system expectation A B hτnonneg]
     simp only [commutatorSusceptibility, heisenbergEvolution_zero]
     let X : H →L[ℂ] H :=
-      heisenbergEvolution system A τ * B -
-        B * heisenbergEvolution system A τ
+      ⁅heisenbergEvolution system A τ, B⁆
     have hX : ‖X‖ ≤ 2 * ‖A‖ * ‖B‖ := by
+      change
+        ‖heisenbergEvolution system A τ * B -
+          B * heisenbergEvolution system A τ‖ ≤ 2 * ‖A‖ * ‖B‖
       calc
-        ‖X‖ ≤ ‖heisenbergEvolution system A τ * B‖ +
+        ‖heisenbergEvolution system A τ * B - B * heisenbergEvolution system A τ‖ ≤
+            ‖heisenbergEvolution system A τ * B‖ +
             ‖B * heisenbergEvolution system A τ‖ :=
           norm_sub_le _ _
         _ ≤ ‖heisenbergEvolution system A τ‖ * ‖B‖ +
@@ -104,6 +111,8 @@ theorem norm_retardedTimeDifferenceKernel_le
         _ = 2 * ‖A‖ * ‖B‖ := by
           rw [norm_heisenbergEvolution]
           ring
+    change ‖(Complex.I / (system.hbar : ℂ)) * expectation X‖ ≤
+      retardedTimeDifferenceKernelNormBound system expectation A B
     have hexpect : ‖expectation X‖ ≤
         ‖expectation.toContinuousLinearMap‖ * ‖X‖ :=
       expectation.toContinuousLinearMap.le_opNorm X

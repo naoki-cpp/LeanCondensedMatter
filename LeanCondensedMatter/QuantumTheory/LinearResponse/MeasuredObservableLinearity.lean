@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -16,6 +17,8 @@ convention is assumed.
 namespace QuantumTheory
 namespace LinearResponse
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -32,14 +35,14 @@ noncomputable def retardedSusceptibilityMeasuredLinearMap
     retardedSusceptibility system expectation measured source t s
   map_add' := fun A₁ A₂ => by
     by_cases h : s ≤ t
-    · simp [retardedSusceptibility, commutatorSusceptibility, heisenbergEvolution,
-        h, mul_add, add_mul]
+    · simp [retardedSusceptibility, commutatorSusceptibility,
+        LieRing.of_associative_ring_bracket, heisenbergEvolution, h, mul_add, add_mul]
       ring
     · simp [retardedSusceptibility, h]
   map_smul' := fun c A => by
     by_cases h : s ≤ t
-    · simp [retardedSusceptibility, commutatorSusceptibility, heisenbergEvolution,
-        h, smul_eq_mul]
+    · simp [retardedSusceptibility, commutatorSusceptibility,
+        LieRing.of_associative_ring_bracket, heisenbergEvolution, h, smul_eq_mul]
       ring
     · simp [retardedSusceptibility, h]
 

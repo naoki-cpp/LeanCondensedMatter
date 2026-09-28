@@ -27,6 +27,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Transport
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open _root_.SecondQuantization.Fermionic.Lattice
 
 noncomputable section
@@ -182,7 +184,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         (LatticeState Site) velocity m N))
-    (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0)
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
       (boundedSymmetrizedCurrentFluxRetardedResponse
@@ -227,7 +229,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id
   apply boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     system expectation source d Φ velocity (q • LinearMap.id) N hΦ
   intro α
-  exact _root_.ConservationLaw.linearCommutator_smul_id_right (N α) q
+  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
 
 end
 end Transport

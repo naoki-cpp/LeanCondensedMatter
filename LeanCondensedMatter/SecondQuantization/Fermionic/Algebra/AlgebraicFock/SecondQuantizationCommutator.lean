@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
 import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -15,9 +15,7 @@ the commutator of their second quantizations:
 [dGamma S, dGamma T] = dGamma [S, T].
 ```
 
-Mathlib's `LieHom` supplies the canonical bundled structure. The ordinary linear-map commutator is
-owned upstream by `Analysis.Operator.LinearCommutator`; the theorem stated with that semantic API is
-derived below from the bundled Lie-homomorphism law.
+Mathlib's `LieHom` and associative-endomorphism Lie bracket supply the canonical bundled structure.
 -/
 
 namespace SecondQuantization
@@ -26,14 +24,16 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-private theorem dGamma_linearCommutator_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    ConservationLaw.linearCommutator (dGamma 𝓗₁ S) (dGamma 𝓗₁ T) =
-      dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) := by
+attribute [local instance 100] LieRing.ofAssociativeRing
+
+private theorem dGamma_lie_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    ⁅dGamma 𝓗₁ S, dGamma 𝓗₁ T⁆ =
+      dGamma 𝓗₁ (⁅S, T⁆) := by
   apply LinearMap.ext
   intro Ψ
   change
     dGamma 𝓗₁ S (dGamma 𝓗₁ T Ψ) - dGamma 𝓗₁ T (dGamma 𝓗₁ S Ψ) =
-      dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) Ψ
+      dGamma 𝓗₁ (⁅S, T⁆) Ψ
   induction Ψ using CliffordAlgebra.left_induction with
   | algebraMap c => simp
   | add x y hx hy =>
@@ -44,14 +44,14 @@ private theorem dGamma_linearCommutator_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) 
             (dGamma 𝓗₁ S (dGamma 𝓗₁ T x) - dGamma 𝓗₁ T (dGamma 𝓗₁ S x)) +
               (dGamma 𝓗₁ S (dGamma 𝓗₁ T y) - dGamma 𝓗₁ T (dGamma 𝓗₁ S y)) := by
           abel
-        _ = dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) x +
-              dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) y := by
+        _ = dGamma 𝓗₁ (⁅S, T⁆) x +
+              dGamma 𝓗₁ (⁅S, T⁆) y := by
           rw [hx, hy]
   | ι_mul x f hx =>
       change
         dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
             dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
-          dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) (oneParticle 𝓗₁ f * x)
+          dGamma 𝓗₁ (⁅S, T⁆) (oneParticle 𝓗₁ f * x)
       calc
         dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
               dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
@@ -74,12 +74,11 @@ private theorem dGamma_linearCommutator_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) 
           rw [map_sub, sub_mul, mul_sub]
           abel
         _ = oneParticle 𝓗₁ (S (T f) - T (S f)) * x +
-              oneParticle 𝓗₁ f * dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) x := by
+              oneParticle 𝓗₁ f * dGamma 𝓗₁ (⁅S, T⁆) x := by
           rw [hx]
-        _ = dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) (oneParticle 𝓗₁ f * x) := by
-          rw [dGamma_oneParticle_mul, ConservationLaw.linearCommutator_apply]
-
-attribute [local instance 100] LieRing.ofAssociativeRing
+        _ = dGamma 𝓗₁ (⁅S, T⁆) (oneParticle 𝓗₁ f * x) := by
+          rw [dGamma_oneParticle_mul]
+          simp [LieRing.of_associative_ring_bracket, Module.End.mul_apply]
 
 /-- Fermionic second quantization as a Lie algebra homomorphism between endomorphism algebras. -/
 noncomputable def dGammaLieHom :
@@ -88,9 +87,8 @@ noncomputable def dGammaLieHom :
   toLinearMap := dGammaLinear 𝓗₁
   map_lie' := by
     intro S T
-    simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
-      ConservationLaw.linearCommutator] using
-      (dGamma_linearCommutator_raw 𝓗₁ S T).symm
+    simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp] using
+      (dGamma_lie_raw 𝓗₁ S T).symm
 
 @[simp]
 theorem dGammaLieHom_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
@@ -98,11 +96,10 @@ theorem dGammaLieHom_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
   rfl
 
 /-- Second quantization preserves ordinary commutators. -/
-theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    ConservationLaw.linearCommutator (dGamma 𝓗₁ S) (dGamma 𝓗₁ T) =
-      dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) := by
-  simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
-    ConservationLaw.linearCommutator] using
+theorem dGamma_lie (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    ⁅dGamma 𝓗₁ S, dGamma 𝓗₁ T⁆ =
+      dGamma 𝓗₁ (⁅S, T⁆) := by
+  simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp] using
     (LieHom.map_lie (dGammaLieHom 𝓗₁) S T).symm
 
 /-- The algebraic total particle-number operator, identified as `dGamma id`.
@@ -131,12 +128,12 @@ theorem totalNumberOperator_oneParticle_mul (f : 𝓗₁) (Ψ : AlgebraicFock �
 
 /-- Every second-quantized one-particle operator commutes with total particle number. -/
 theorem totalNumberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    ConservationLaw.linearCommutator (totalNumberOperator 𝓗₁) (dGamma 𝓗₁ T) = 0 := by
-  rw [totalNumberOperator, dGamma_linearCommutator]
-  have h : ConservationLaw.linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
+    ⁅totalNumberOperator 𝓗₁, dGamma 𝓗₁ T⁆ = 0 := by
+  rw [totalNumberOperator, dGamma_lie]
+  have h : ⁅(LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁), T⁆ = 0 := by
     apply LinearMap.ext
     intro f
-    simp [ConservationLaw.linearCommutator]
+    simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
   rw [h, dGamma_zero]
 
 end AlgebraicFock

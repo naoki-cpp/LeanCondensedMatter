@@ -36,9 +36,6 @@ homomorphic normalization rules:
 - `InternalSpace.pauliVectorCoefficient_pauliZ_conjugate`
 - `InternalSpace.pauliScalarCoefficient_neg`
 - `InternalSpace.pauliVectorCoefficient_neg`
-- `linearCommutator_apply`
-- `commutatorEvolution_apply`
-- `linearCommutator_smul_id_right`
 - `PowerSeries.coeff_normalizeByConstantCoeff`
 - `ConservationLaw.shiftCurrentSource_current`
 - `ConservationLaw.shiftCurrentSource_source`

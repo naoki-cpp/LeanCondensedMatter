@@ -4,6 +4,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
 import Mathlib.Analysis.Normed.Operator.Mul
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -45,6 +46,8 @@ is a separate theorem.
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -200,17 +203,16 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
       (fun lam : ℝ =>
         timeDependentPerturbedExpectationFunctional system expectation V lam t A)
       (expectation
-        (heisenbergEvolution system A t *
-            timeDependentPropagatorFirstVariation system V t -
-          timeDependentPropagatorFirstVariation system V t *
-            heisenbergEvolution system A t))
+        ⁅heisenbergEvolution system A t,
+          timeDependentPropagatorFirstVariation system V t⁆)
       0 := by
   have h :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
       system expectation A hM hV ht
   have hK := star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
     system V hVself t
-  simpa [hK, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
+  simpa [LieRing.of_associative_ring_bracket, hK, sub_eq_add_neg,
+    add_comm, add_left_comm, add_assoc] using h
 
 /-- The continuous linear functional `X ↦ ω(A X - X A)`. -/
 private noncomputable def commutatorExpectation
@@ -224,8 +226,8 @@ private theorem commutatorExpectation_apply
     (expectation : NormalizedExpectation H)
     (A X : H →L[ℂ] H) :
     commutatorExpectation expectation A X =
-      expectation (A * X - X * A) := by
-  simp [commutatorExpectation]
+      expectation ⁅A, X⁆ := by
+  simp [commutatorExpectation, LieRing.of_associative_ring_bracket]
 
 /-- The commutator with the first propagator variation is the interval integral of the
 instantaneous commutator response. -/
@@ -235,25 +237,19 @@ theorem expectation_commutator_firstVariation_eq_integral
     (hInt : IntervalIntegrable
       (timeDependentInteractionPerturbation system V) MeasureTheory.volume 0 t) :
     expectation
-        (heisenbergEvolution system A t *
-            timeDependentPropagatorFirstVariation system V t -
-          timeDependentPropagatorFirstVariation system V t *
-            heisenbergEvolution system A t) =
+        ⁅heisenbergEvolution system A t,
+          timeDependentPropagatorFirstVariation system V t⁆ =
       (-(Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
-            (heisenbergEvolution system A t *
-                timeDependentInteractionPerturbation system V s -
-              timeDependentInteractionPerturbation system V s *
-                heisenbergEvolution system A t) := by
+            ⁅heisenbergEvolution system A t,
+              timeDependentInteractionPerturbation system V s⁆ := by
   let L := commutatorExpectation expectation (heisenbergEvolution system A t)
   have hmap := ContinuousLinearMap.intervalIntegral_comp_comm L hInt
   calc
     expectation
-        (heisenbergEvolution system A t *
-            timeDependentPropagatorFirstVariation system V t -
-          timeDependentPropagatorFirstVariation system V t *
-            heisenbergEvolution system A t) =
+        ⁅heisenbergEvolution system A t,
+          timeDependentPropagatorFirstVariation system V t⁆ =
         L (timeDependentPropagatorFirstVariation system V t) := by
       simp [L, commutatorExpectation_apply]
     _ = L ((-(Complex.I / (system.hbar : ℂ))) •
@@ -271,10 +267,8 @@ theorem expectation_commutator_firstVariation_eq_integral
     _ = (-(Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
-            (heisenbergEvolution system A t *
-                timeDependentInteractionPerturbation system V s -
-              timeDependentInteractionPerturbation system V s *
-                heisenbergEvolution system A t) := by
+            ⁅heisenbergEvolution system A t,
+              timeDependentInteractionPerturbation system V s⁆ := by
       simp [L, commutatorExpectation_apply]
 
 /-- The general bounded Kubo formula for the pullback of an ordinary expectation by a pointwise
@@ -294,10 +288,8 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
       ((-(Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
-            (heisenbergEvolution system A t *
-                timeDependentInteractionPerturbation system V s -
-              timeDependentInteractionPerturbation system V s *
-                heisenbergEvolution system A t))
+            ⁅heisenbergEvolution system A t,
+              timeDependentInteractionPerturbation system V s⁆)
       0 := by
   have h :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint

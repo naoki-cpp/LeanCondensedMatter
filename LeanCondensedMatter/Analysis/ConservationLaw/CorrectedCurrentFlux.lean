@@ -32,6 +32,8 @@ transport through a differential is a separate downstream statement.
 
 namespace ConservationLaw
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 variable {OneForm : Type*}
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
@@ -81,7 +83,7 @@ theorem localizationCorrectionCurrentFlux_apply
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) (α : OneForm) :
     localizationCorrectionCurrentFlux V velocity m N α =
-      (1 / 4 : ℂ) • linearCommutator velocity (linearCommutator (N α) m) := by
+      (1 / 4 : ℂ) • ⁅velocity, ⁅N α, m⁆⁆ := by
   change
     symmetrizedProduct (symmetrizedProduct (N α) velocity) m -
       symmetrizedProduct (N α) (symmetrizedProduct velocity m) = _
@@ -102,12 +104,12 @@ theorem nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
 theorem localizationCorrectionCurrentFlux_eq_zero_of_commutes
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hcomm : ∀ α, linearCommutator (N α) m = 0) :
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     localizationCorrectionCurrentFlux V velocity m N = 0 := by
   apply LinearMap.ext
   intro α
   rw [localizationCorrectionCurrentFlux_apply V velocity m N α, hcomm α]
-  simp [linearCommutator]
+  simp
 
 /-- Charge-like transported quantities `q I` have no localization correction. -/
 @[simp]
@@ -118,6 +120,6 @@ theorem localizationCorrectionCurrentFlux_smul_id
   apply localizationCorrectionCurrentFlux_eq_zero_of_commutes V velocity
     (q • LinearMap.id) N
   intro α
-  exact linearCommutator_smul_id_right (N α) q
+  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
 
 end ConservationLaw

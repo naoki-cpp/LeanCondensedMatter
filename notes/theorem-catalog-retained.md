@@ -91,7 +91,7 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
   for the named time-ordered external-field construction: swapping both fields and times produces
   the fermionic statistics sign.
-- `QuantumMechanics.SingleParticle.linearCommutator_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
+- `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
   specialization fixing the derivative-localizer coefficient to `iℏ`; it records the expected
   orbital-angular-momentum localization commutator rather than a proof-routing alias.
 - `LinearPMap.resolventApproximationEvolution_continuous` — canonical operator-norm continuity
@@ -439,7 +439,7 @@ or consumer structure changes.
   canonical outgoing-locality companion to `amplitude_eq_zero_of_not_mem`.
 - `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.bondOperator_swap` — canonical
   orientation-reversal law for the one-particle bond-current operator.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector` —
+- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector` —
   one-particle local continuity identity expressing the hopping/projector commutator as the finite
   outgoing bond-operator sum.
 - `SecondQuantization.Fermionic.Lattice.bondCurrent_swap` — physical orientation-reversal law for

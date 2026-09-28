@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator
 import Mathlib.LinearAlgebra.Finsupp.LSum
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -22,6 +23,8 @@ open scoped BigOperators
 namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 /-- Algebraic one-particle states on an arbitrary discrete lattice. Every vector has finite support,
 but the site type itself need not be finite. -/
@@ -122,8 +125,8 @@ theorem bondOperator_swap (K : LocallyFiniteHopping Site) (x y : Site) :
   simp [bondOperator]
 
 /-- The local one-particle commutator is the negative finite sum of oriented bond operators. -/
-theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
-    ConservationLaw.linearCommutator K.operator (siteProjector x) =
+theorem lie_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
+    ⁅K.operator, siteProjector x⁆ =
       -∑ y ∈ K.incident x, K.bondOperator x y := by
   classical
   have hcolumn (source : Site) :
@@ -197,8 +200,8 @@ theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site
           subst y
           exact hz hy
         simp [hyz]
-  simp only [ConservationLaw.linearCommutator, hopP, hPop, bondOperator,
-    Finset.sum_sub_distrib]
+  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+    hopP, hPop, bondOperator, Finset.sum_sub_distrib]
   abel
 
 end LocallyFiniteHopping
@@ -244,16 +247,16 @@ theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Si
 theorem discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-          ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) +
+          ⁅hoppingHamiltonian K, siteChargeDensity q x⁆ +
         ∑ y ∈ K.incident x, bondCurrent ℏ q K x y = 0 := by
   have hheisenberg :
       (Complex.I / ℏ) •
-          ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
+          ⁅hoppingHamiltonian K, siteChargeDensity q x⁆ =
         -∑ y ∈ K.incident x, bondCurrent ℏ q K x y := by
     unfold hoppingHamiltonian siteChargeDensity
-    rw [ConservationLaw.linearCommutator_smul_right]
-    rw [AlgebraicFock.dGamma_linearCommutator]
-    rw [K.linearCommutator_siteProjector]
+    rw [lie_smul]
+    rw [AlgebraicFock.dGamma_lie]
+    rw [K.lie_siteProjector]
     have hdGamma :
         AlgebraicFock.dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
           -∑ y ∈ K.incident x,

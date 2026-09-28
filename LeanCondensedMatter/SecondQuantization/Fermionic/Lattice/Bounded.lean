@@ -28,6 +28,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open scoped BigOperators
 
 noncomputable section
@@ -128,13 +130,14 @@ theorem boundedLatticeOperator_comp
   exact map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
 
 /-- Bounded transport preserves the ordinary algebraic commutator. -/
-theorem boundedLatticeOperator_linearCommutator
+theorem boundedLatticeOperator_lie
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
-    boundedLatticeOperator (ConservationLaw.linearCommutator A B) =
+    boundedLatticeOperator ⁅A, B⁆ =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
         (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
-  unfold ConservationLaw.linearCommutator
+  rw [LieRing.of_associative_ring_bracket]
+  simp only [Module.End.mul_eq_comp]
   rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
     boundedLatticeOperator_comp]
 
@@ -213,7 +216,7 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
     (discrete_continuity ℏ q K x)
   simpa only [boundedLatticeOperator_add, boundedLatticeOperator_smul,
     boundedLatticeOperator_sum, boundedLatticeOperator_zero,
-    boundedLatticeOperator_linearCommutator, boundedHoppingHamiltonian,
+    boundedLatticeOperator_lie, boundedHoppingHamiltonian,
     boundedSiteChargeDensity, boundedBondCurrent] using h
 
 end FiniteLattice

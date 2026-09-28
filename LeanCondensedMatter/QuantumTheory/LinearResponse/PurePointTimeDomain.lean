@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics
 import Mathlib.Topology.Algebra.InfiniteSum.Module
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -27,6 +28,8 @@ transition series with the fixed-rate Bochner time integral is left to the next 
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -269,7 +272,7 @@ theorem commutatorSusceptibility_purePoint_eq_timeDomainSeries
         (purePointNormalizedExpectation system data) A B τ 0 =
       purePointTimeDomainSeries system data A B τ := by
   rw [commutatorSusceptibility]
-  simp only [heisenbergEvolution_zero]
+  simp only [heisenbergEvolution_zero, LieRing.of_associative_ring_bracket]
   rw [map_sub]
   rw [purePointExpectation_heisenberg_mul_eq_tsum system data A B τ hsum]
   rw [purePointExpectation_mul_heisenberg_eq_tsum system data A B τ hsum]

@@ -24,6 +24,8 @@ represented balance constructions, first quantization, and second quantization.
 
 namespace ConservationLaw
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 variable {Test : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
@@ -51,7 +53,7 @@ theorem localizedQuantityFunctional_apply
 /-- When localization commutes with the quantity, symmetric localization reduces to `M f ∘ m`. -/
 theorem localizedQuantity_eq_comp_of_commutes
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (m : V →ₗ[ℂ] V) (f : Test)
-    (hcomm : linearCommutator (M f) m = 0) :
+    (hcomm : ⁅M f, m⁆ = 0) :
     localizedQuantity V M m f = (M f).comp m := by
   simpa [localizedQuantity] using
     (symmetrizedProduct_eq_comp_of_commutes (M f) m hcomm)
@@ -68,13 +70,13 @@ noncomputable def localizationCommutatorFunctional
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (commutatorEvolution h).comp M
+  (LieAlgebra.ad ℂ (Module.End ℂ V) h).comp M
 
 @[simp]
 theorem localizationCommutatorFunctional_apply
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (f : Test) :
-    localizationCommutatorFunctional V h M f = linearCommutator h (M f) :=
+    localizationCommutatorFunctional V h M f = ⁅h, M f⁆ := by
   rfl
 
 /-- Canonical transport part of the symmetric-localization commutator identity. -/
@@ -82,7 +84,7 @@ noncomputable def transportCommutator
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  symmetrizedProduct (linearCommutator h (M f)) m
+  symmetrizedProduct ⁅h, M f⁆ m
 
 /-- The transport contribution packaged linearly in the test object. -/
 noncomputable def transportFunctional
@@ -106,7 +108,7 @@ noncomputable def sourceCommutator
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  symmetrizedProduct (M f) (linearCommutator h m)
+  symmetrizedProduct (M f) ⁅h, m⁆
 
 /-- The source/torque contribution packaged linearly in the test object. -/
 noncomputable def sourceFunctional
@@ -114,7 +116,7 @@ noncomputable def sourceFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (symmetrizedProductRightLinear V (linearCommutator h m)).comp M
+  (symmetrizedProductRightLinear V ⁅h, m⁆).comp M
 
 @[simp]
 theorem sourceFunctional_apply
@@ -125,23 +127,23 @@ theorem sourceFunctional_apply
   rfl
 
 /-- The commutator is a derivation on symmetric localization, giving transport plus source. -/
-theorem linearCommutator_localizedQuantity
+theorem lie_localizedQuantity
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
-    linearCommutator h (localizedQuantity V M m f) =
+    ⁅h, localizedQuantity V M m f⁆ =
       transportCommutator V h M m f + sourceCommutator V h M m f := by
   simpa [localizedQuantity, transportCommutator, sourceCommutator] using
-    linearCommutator_symmetrizedProduct h (M f) m
+    lie_symmetrizedProduct h (M f) m
 
 /-- The packaged localized quantity satisfies the same transport/source decomposition. -/
-theorem commutatorEvolution_localizedQuantityFunctional
+theorem ad_localizedQuantityFunctional
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
-    commutatorEvolution h (localizedQuantityFunctional V M m f) =
+    (LieAlgebra.ad ℂ (Module.End ℂ V) h) (localizedQuantityFunctional V M m f) =
       transportFunctional V h M m f + sourceFunctional V h M m f := by
-  simpa using linearCommutator_localizedQuantity V h M m f
+  simpa using lie_localizedQuantity V h M m f
 
 /-- A conserved one-body quantity has no local source/torque contribution. -/
 @[simp]
@@ -149,19 +151,19 @@ theorem sourceCommutator_eq_zero_of_commutes
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test)
-    (hm : linearCommutator h m = 0) :
+    (hm : ⁅h, m⁆ = 0) :
     sourceCommutator V h M m f = 0 := by
   simp [sourceCommutator, hm]
 
 /-- For a conserved quantity, the localized balance identity contains only transport. -/
-theorem linearCommutator_localizedQuantity_of_commutes
+theorem lie_localizedQuantity_of_commutes
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test)
-    (hm : linearCommutator h m = 0) :
-    linearCommutator h (localizedQuantity V M m f) =
+    (hm : ⁅h, m⁆ = 0) :
+    ⁅h, localizedQuantity V M m f⁆ =
       transportCommutator V h M m f := by
-  rw [linearCommutator_localizedQuantity]
+  rw [lie_localizedQuantity]
   simp [sourceCommutator, hm]
 
 /-- Charge-like quantities have transport `q [h,M(f)]`. -/
@@ -170,7 +172,7 @@ theorem transportCommutator_smul_id
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (q : ℂ) (f : Test) :
     transportCommutator V h M (q • LinearMap.id) f =
-      q • linearCommutator h (M f) := by
+      q • ⁅h, M f⁆ := by
   simp [transportCommutator]
 
 /-- Charge-like quantities have no source/torque term. -/
@@ -179,7 +181,7 @@ theorem sourceCommutator_smul_id
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (q : ℂ) (f : Test) :
     sourceCommutator V h M (q • LinearMap.id) f = 0 := by
   apply sourceCommutator_eq_zero_of_commutes V h M (q • LinearMap.id) f
-  exact linearCommutator_smul_id_right h q
+  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
 
 /-- For `m = q I`, the transport functional is `q` times the bare localization commutator. -/
 theorem transportFunctional_smul_id
