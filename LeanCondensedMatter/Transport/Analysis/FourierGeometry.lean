@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Complex.Exponential
 import Mathlib.LinearAlgebra.Matrix.DotProduct
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
