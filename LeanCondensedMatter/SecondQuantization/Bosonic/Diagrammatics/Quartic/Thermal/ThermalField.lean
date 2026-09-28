@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 
@@ -38,6 +40,28 @@ theorem FreeThermalField.operator_quarticFreeThermalField
   cases h : Common.quarticLocalLeg q l <;>
     simp [quarticFreeThermalField, quarticLocalLegOperator, Common.quarticLocalLegOperator,
       FreeThermalField.operator, h]
+
+/-- The interaction-picture bosonic quartic vertex is the ordered product of the evolved
+operators represented by its four free-thermal-field labels. This is the bosonic thermal
+specialization of the statistics-independent Common quartic operator-product identity. -/
+theorem interactionPicture_quarticVertexOperator_eq_prod_quarticFreeThermalField
+    (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (τ : ℝ) :
+    interactionPicture ε (quarticVertexOperator q) τ =
+      (List.ofFn (fun l : Fin 4 =>
+        imaginaryTimeEvolve ε τ
+          (FreeThermalField.operator (quarticFreeThermalField q l)))).prod := by
+  change Common.interactionPicture (freeEigenvalue ε)
+      (Common.quarticVertexOperator create annihilate q) τ = _
+  rw [show Common.interactionPicture (freeEigenvalue ε)
+      (Common.quarticVertexOperator create annihilate q) τ =
+      Common.heisenbergEvolve (freeEigenvalue ε) τ
+        (Common.quarticVertexOperator create annihilate q) by rfl]
+  rw [Common.heisenbergEvolve_quarticVertexOperator_eq_prod]
+  apply congrArg List.prod
+  apply congrArg List.ofFn
+  funext l
+  rw [FreeThermalField.operator_quarticFreeThermalField]
+  rfl
 
 /-- Flatten `n` ordered quartic vertices into their `4 n` free thermal field labels. -/
 noncomputable def quarticFreeThermalFieldFamily {n : ℕ}
