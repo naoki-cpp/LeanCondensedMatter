@@ -225,17 +225,12 @@ private theorem star_finiteCutoffContinuumBornGreenIntegralOfRegulator
       exact star_continuumBornRadialGreenKernelOfRegulator
         v m probeEnergy regulator p hregulator
 
-/-- Angular factor multiplying the existing physical-momentum measure after radial reduction:
-`2π /(2πℏ)²`. -/
-def continuumBornAngularMeasurePrefactor (hbar : ℝ) : ℝ :=
-  2 * Real.pi * momentumMeasurePrefactor hbar
-
 /-- Finite-cutoff coefficient of either surviving Born self-energy channel at arbitrary signed
 regulator. -/
 noncomputable def finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator
     (channel : BornSelfEnergyChannel)
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+  (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornIntegralOfRegulator
       channel v m probeEnergy regulator pMax)
 
@@ -261,7 +256,7 @@ finite-ensemble `secondMomentStrength` from `ScalarCovariance.lean`. -/
 noncomputable def finiteCutoffContinuumBornSelfEnergyOfRegulator
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) •
+  ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) •
     finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy regulator pMax
 
 /-- Physical-side specialization of the finite-cutoff continuum Born self-energy. -/
@@ -402,7 +397,7 @@ private theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
         v m probeEnergy regulator disorderStrength hbar pMax := by
   rw [finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator,
     finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq]
-  unfold finiteCutoffContinuumBornSelfEnergyOfRegulator continuumBornAngularMeasurePrefactor
+  unfold finiteCutoffContinuumBornSelfEnergyOfRegulator fullAngleMomentumMeasurePrefactor
     continuumBornDisorderMeasurePrefactor
   rw [← algebraMap_smul ℂ (2 * Real.pi)
     (finiteCutoffContinuumBornGreenIntegralOfRegulator
