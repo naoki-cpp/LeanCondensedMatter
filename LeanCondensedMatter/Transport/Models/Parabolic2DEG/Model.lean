@@ -132,7 +132,7 @@ theorem currentOperator_eq_charge_smul_velocityOperator
       (((params.signedCharge : ℝ) : ℂ)) • velocityOperator params direction px py := by
   unfold currentOperator velocityOperator currentComponent
   push_cast
-  simp [smul_smul]
+  module
 
 /-- The Hamiltonian operator is self-adjoint because its scalar coefficient is real. -/
 theorem hamiltonianOperator_isSelfAdjoint
