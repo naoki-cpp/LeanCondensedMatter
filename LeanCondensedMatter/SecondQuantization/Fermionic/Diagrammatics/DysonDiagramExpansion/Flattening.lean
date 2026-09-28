@@ -24,8 +24,8 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [Fintype Mode] in
 /-- The ordered product of the flattened evolved quartic legs is exactly the Common
-interaction-picture quartic-vertex sequence. The row-major `4n` list decomposition is owned by
-`Common.listOfFn_orderedQuarticLegFamily_cons`; this theorem supplies only the fermionic
+interaction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by
+`Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic
 imaginary-time specialization. -/
 theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
     (ε : Mode → ℝ) :
@@ -36,20 +36,11 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
       simp [List.ofFn, Module.End.one_eq_id]
   | n + 1, q, τ => by
       rw [Common.quarticVertexSequenceInteractionPicture_succ]
-      change List.prod (List.ofFn (Common.orderedQuarticLegFamily
-        (fun i : Fin (n + 1) => fun l : Fin 4 =>
-          imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)))) = _
-      have hfamily :
+      change
+        (List.ofFn (Common.orderedQuarticLegFamily
           (fun i : Fin (n + 1) => fun l : Fin 4 =>
-            imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)) =
-            Fin.cons
-              (fun l : Fin 4 =>
-                imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))
-              (fun i : Fin n => fun l : Fin 4 =>
-                imaginaryTimeEvolve ε (τ i.succ) (quarticLocalLegOperator (q i.succ) l)) := by
-        funext i
-        refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-      rw [hfamily, Common.listOfFn_orderedQuarticLegFamily_cons, List.prod_append]
+            imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)))).prod = _
+      rw [Common.prod_orderedQuarticLegFamily_eq_vertexProducts, List.ofFn_succ, List.prod_cons]
       rw [show
           (List.ofFn (fun l : Fin 4 =>
             imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))).prod =
@@ -60,12 +51,13 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
           (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
             (fermionEnergy ε) create annihilate (q 0) (τ 0))]
       rw [show
-          (List.ofFn (Common.orderedQuarticLegFamily
-            (fun i : Fin n => fun l : Fin 4 =>
+          (List.ofFn (fun i : Fin n =>
+            (List.ofFn (fun l : Fin 4 =>
               imaginaryTimeEvolve ε (τ i.succ)
-                (quarticLocalLegOperator (q i.succ) l)))).prod =
+                (quarticLocalLegOperator (q i.succ) l))).prod)).prod =
             Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
               (fun i => q i.succ) (fun i => τ i.succ) by
+        rw [← Common.prod_orderedQuarticLegFamily_eq_vertexProducts]
         change List.prod (List.ofFn
           (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))) =
             Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
