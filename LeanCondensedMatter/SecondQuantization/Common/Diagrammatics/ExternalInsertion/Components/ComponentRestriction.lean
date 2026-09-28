@@ -116,6 +116,27 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
       d.legInComponent_iff_unflattened B leg).trans
     (d.componentLegDataEquiv B)
 
+private theorem ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (e : ↥(Finset.toLeft (B : Finset (ExternalInsertionVertex E S)))) :
+    ((d.componentBlockLegDataEquiv B).symm (Sum.inl e)).1 =
+      externalInsertionExternalLeg E S e.1 := by
+  rfl
+
+private theorem ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (v : ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
+    (l : Fin 4) :
+    ((d.componentBlockLegDataEquiv B).symm (Sum.inr (v, l))).1 =
+      externalInsertionInteractionLeg (E := E)
+        ⟨v.1, interactionSector_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
+  rfl
+
 private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : Finset (ExternalInsertionVertex E S))
@@ -377,9 +398,7 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
     hLocal, hShuffle,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    Equiv.symm_trans_apply,
-    ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val,
     hAmbient]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
@@ -434,9 +453,7 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
     hLocal, hShuffle,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv,
-    Equiv.symm_trans_apply,
-    ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val,
     hAmbient]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
