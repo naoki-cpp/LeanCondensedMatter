@@ -22,7 +22,7 @@ is skew-adjoint after second quantization and finite-Hilbert transport. Multipli
 imaginary physical factor `i q / ℏ`, with real `q` and `ℏ`, therefore produces a self-adjoint bond
 current.
 
-Response theorems consuming these self-adjoint currents live downstream in `Fermionic.Field`.
+Response theorems consuming these self-adjoint currents live downstream in `Fermionic.Transport`.
 -/
 
 namespace SecondQuantization

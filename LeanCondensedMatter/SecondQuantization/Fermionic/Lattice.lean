@@ -19,5 +19,5 @@ It owns discrete lattice states, finite spinful one-particle operators, locally 
 and bond currents, Peierls families, finite-lattice bounded realizations, Hermiticity/current
 equivalences, and geometric aggregation. Generic Kubo, frequency-response, conductivity, Středa,
 disorder, and validation mathematics do not belong to this layer. Response specializations consume
-these model operators from downstream `Fermionic.Field` or `Fermionic.Transport` modules.
+these model operators from downstream `Fermionic.Transport` modules.
 -/

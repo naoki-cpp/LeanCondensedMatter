@@ -129,15 +129,14 @@ theorem boundedLatticeOperator_comp
   rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
   exact map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
 
-/-- Bounded transport preserves the ordinary algebraic commutator. -/
+/-- Bounded transport preserves the ordinary Mathlib Lie bracket. -/
 theorem boundedLatticeOperator_lie
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator ⁅A, B⁆ =
-      (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
-        (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
-  rw [LieRing.of_associative_ring_bracket]
-  simp only [Module.End.mul_eq_comp]
+      ⁅boundedLatticeOperator A, boundedLatticeOperator B⁆ := by
+  rw [LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket]
+  simp only [Module.End.mul_eq_comp, ContinuousLinearMap.mul_def]
   rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
     boundedLatticeOperator_comp]
 
@@ -209,8 +208,7 @@ representation. -/
 theorem bounded_discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-          ((boundedHoppingHamiltonian K).comp (boundedSiteChargeDensity q x) -
-            (boundedSiteChargeDensity q x).comp (boundedHoppingHamiltonian K)) +
+          ⁅boundedHoppingHamiltonian K, boundedSiteChargeDensity q x⁆ +
         ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 := by
   have h := congrArg (boundedLatticeOperator (Site := Site))
     (discrete_continuity ℏ q K x)
