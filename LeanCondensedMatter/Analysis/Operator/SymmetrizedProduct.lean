@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.LinearAlgebra.BilinearMap
 import Mathlib.Tactic.Module
 
@@ -18,6 +18,8 @@ or particle-statistics interpretation. Those meanings belong to downstream layer
 -/
 
 namespace ConservationLaw
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 /-- The symmetrized product as a bilinear operator-valued map. This is the algebraic owner of
 the construction; pointwise symmetrized products are obtained by evaluation. -/
@@ -106,12 +108,12 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module ℂ W]
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W)
-    (hAB : linearCommutator A B = 0) :
+    (hAB : ⁅A, B⁆ = 0) :
     symmetrizedProduct A B = A.comp B := by
   ext v
   have hzero : A (B v) - B (A v) = 0 := by
     have h := congrArg (fun T : W →ₗ[ℂ] W => T v) hAB
-    simpa [linearCommutator] using h
+    simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp] using h
   have hcomm : A (B v) = B (A v) := sub_eq_zero.mp hzero
   rw [symmetrizedProduct_apply]
   rw [← hcomm]
@@ -125,28 +127,30 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A v m : W →ₗ[ℂ] W) :
     symmetrizedProduct (symmetrizedProduct A v) m =
       symmetrizedProduct A (symmetrizedProduct v m) +
-        (1 / 4 : ℂ) • linearCommutator v (linearCommutator A m) := by
+        (1 / 4 : ℂ) • ⁅v, ⁅A, m⁆⁆ := by
   ext x
-  simp [symmetrizedProduct_apply, linearCommutator]; module
+  simp [symmetrizedProduct_apply, LieRing.of_associative_ring_bracket,
+    Module.End.mul_eq_comp]; module
 
 /-- If the outer localizer commutes with the transported quantity, nested symmetrization
 reassociates without a correction. -/
 theorem symmetrizedProduct_nested_eq_of_commutes
     {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A v m : W →ₗ[ℂ] W)
-    (hAm : linearCommutator A m = 0) :
+    (hAm : ⁅A, m⁆ = 0) :
     symmetrizedProduct (symmetrizedProduct A v) m =
       symmetrizedProduct A (symmetrizedProduct v m) := by
   rw [symmetrizedProduct_nested A v m, hAm]
-  simp [linearCommutator]
+  simp
 
 /-- The commutator acts as a derivation on the symmetrized product. -/
-theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
+theorem lie_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
     (h A B : W →ₗ[ℂ] W) :
-    linearCommutator h (symmetrizedProduct A B) =
-      symmetrizedProduct (linearCommutator h A) B +
-        symmetrizedProduct A (linearCommutator h B) := by
+    ⁅h, symmetrizedProduct A B⁆ =
+      symmetrizedProduct ⁅h, A⁆ B +
+        symmetrizedProduct A ⁅h, B⁆ := by
   ext v
-  simp [linearCommutator, symmetrizedProduct_apply]; module
+  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+    symmetrizedProduct_apply]; module
 
 end ConservationLaw
