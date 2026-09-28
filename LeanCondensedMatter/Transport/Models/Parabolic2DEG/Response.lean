@@ -177,6 +177,11 @@ noncomputable def finiteBroadeningRadialKernel
     angularIntegratedCurrentProduct params measured source p *
       stredaSurfaceGreenWeight params p
 
+/-- Named longitudinal specialization of the finite-broadening radial kernel. -/
+noncomputable def finiteBroadeningLongitudinalRadialKernel
+    (params : Parameters) (direction : Fin 2) (p : ℝ) : ℂ :=
+  finiteBroadeningRadialKernel params direction direction p
+
 /-- Finite-cutoff, finite-broadening ordered response component before the Kubo trace prefactor.
 The explicit momentum-measure normalization is attached exactly once here. -/
 noncomputable def finiteCutoffResponseComponent
