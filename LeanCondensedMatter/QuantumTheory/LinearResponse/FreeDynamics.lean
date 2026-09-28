@@ -208,6 +208,19 @@ theorem heisenbergEvolution_lie
   simp only [LieRing.of_associative_ring_bracket]
   rw [heisenbergEvolution_sub, heisenbergEvolution_mul, heisenbergEvolution_mul]
 
+/-- A two-time Heisenberg commutator is the time-`s` evolution of the relative-time
+commutator. This is the algebraic bridge used to reduce Kubo kernels to operator commutators at a
+single relative time. -/
+theorem lie_heisenbergEvolution_eq_relativeTime
+    (A B : H →L[ℂ] H) (t s : ℝ) :
+    ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆ =
+      heisenbergEvolution system ⁅heisenbergEvolution system A (t - s), B⁆ s := by
+  have h :=
+    (heisenbergEvolution_lie system (heisenbergEvolution system A (t - s)) B s).symm
+  rw [heisenbergEvolution_heisenbergEvolution,
+    show t - s + s = t by ring] at h
+  exact h
+
 /-- Unitary free conjugation preserves the operator norm exactly. -/
 @[simp]
 theorem norm_heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) :
