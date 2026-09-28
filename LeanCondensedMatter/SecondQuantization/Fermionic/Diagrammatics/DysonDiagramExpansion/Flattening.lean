@@ -23,103 +23,52 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-! ## Flattening `Common.quarticVertexSequenceInteractionPicture` into a `4n`-atom `List.prod` -/
 
 omit [Fintype Mode] in
-private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (i : Fin n) (j : Fin 4)
-    (h : 2 * (2 * n) = n * 4) :
-    quarticLegOperatorForSequence ε q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
-      imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  have hcoord :
-      Common.orderedQuarticLegEquiv n
-          (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) = (i, j) := by
-    simpa [Common.orderedQuarticLegEquiv] using
-      (FiniteIndex.blockEquiv_cast_mul_add h i j)
-  rw [quarticLegOperatorForSequence, hcoord]
-
-omit [Fintype Mode] in
-/-- **`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —
-by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
-reduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,
-`Common.heisenbergEvolve_quarticVertexOperator_eq_prod`, the inductive hypothesis, and
-`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε
-q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
-(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into
-`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at
-vertex `0` directly; the `right` branch uses the general finite-block coordinate theorem
-`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller
-`n`-fold piece in `i' * 4 + j'` form, then matches both sides via
-`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`
-for the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as
-naturals. -/
-theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture (ε : Mode → ℝ) :
+/-- The ordered product of the flattened evolved quartic legs is exactly the Common
+interaction-picture quartic-vertex sequence. The row-major `4n` list decomposition is owned by
+`Common.listOfFn_orderedQuarticLegFamily_cons`; this theorem supplies only the fermionic
+imaginary-time specialization. -/
+theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
+    (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
       List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
         Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ
-  | 0, q, τ => by
-    have h0 : 2 * (2 * 0) = 0 := by ring
-    have : IsEmpty (Fin (2 * (2 * 0))) := h0 ▸ Fin.isEmpty
-    simp [List.ofFn, Module.End.one_eq_id]
+  | 0, _, _ => by
+      simp [quarticLegOperatorForSequence, Common.orderedQuarticLegFamily,
+        List.ofFn, Module.End.one_eq_id]
   | n + 1, q, τ => by
-    have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
-    have hcard' : 2 * (2 * n) = n * 4 := by ring
-    have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
-    rw [Common.quarticVertexSequenceInteractionPicture_succ]
-    change List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
-      (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
-        (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
-          (fun i => q i.succ) (fun i => τ i.succ))
-    rw [show interactionPicture ε (quarticVertexOperator (q 0)) (τ 0) =
-        (List.ofFn (fun l : Fin 4 =>
-          imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))).prod by
-      simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
-        quarticLocalLegOperator] using
-        (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
-          (fermionEnergy ε) create annihilate (q 0) (τ 0)),
-      ← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture ε n
-        (fun i => q i.succ) (fun i => τ i.succ),
-      ← Module.End.mul_eq_comp, ← List.prod_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
-    refine congrArg List.prod
-      (congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_)))
-    · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
-          Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
-        apply Fin.ext
-        simp
-      change quarticLegOperatorForSequence ε q τ (Fin.cast h2.symm (Fin.castAdd _ j)) =
-        Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
-          (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
-          (Fin.castAdd _ j)
-      rw [Fin.append_left, e1, quarticLegOperatorForSequence_cast_mul_add ε q τ 0 j hcard]
-    · have hk : k = Fin.cast hcard'.symm
-          ⟨(Common.orderedQuarticLegEquiv n k).1 * 4 +
-              (Common.orderedQuarticLegEquiv n k).2, by
-            have := (Common.orderedQuarticLegEquiv n k).2.isLt
-            omega⟩ :=
-        FiniteIndex.eq_cast_mul_add_blockEquiv hcard' k
-      have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
-          ⟨((Common.orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 +
-              ((Common.orderedQuarticLegEquiv n k).2 : ℕ),
-            by
-              have := (Common.orderedQuarticLegEquiv n k).2.isLt
-              omega⟩ := by
-        apply Fin.ext
-        simp only [Fin.val_cast, Fin.val_natAdd, Fin.val_succ]
-        have hkval : (k : ℕ) =
-            (Common.orderedQuarticLegEquiv n k).1 * 4 + (Common.orderedQuarticLegEquiv n k).2 := by
-          have := congrArg Fin.val hk
-          simpa using this
-        omega
-      change quarticLegOperatorForSequence ε q τ (Fin.cast h2.symm (Fin.natAdd 4 k)) =
-        Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
-          (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
-          (Fin.natAdd 4 k)
-      rw [Fin.append_right, e2,
-        quarticLegOperatorForSequence_cast_mul_add ε q τ
-          (Common.orderedQuarticLegEquiv n k).1.succ
-          (Common.orderedQuarticLegEquiv n k).2 hcard]
-      have hrest := quarticLegOperatorForSequence_cast_mul_add ε
-        (fun i => q i.succ) (fun i => τ i.succ)
-        (Common.orderedQuarticLegEquiv n k).1 (Common.orderedQuarticLegEquiv n k).2 hcard'
-      rw [← hk] at hrest
-      exact hrest.symm
+      rw [Common.quarticVertexSequenceInteractionPicture_succ]
+      rw [quarticLegOperatorForSequence]
+      have hfamily :
+          (fun i : Fin (n + 1) => fun l : Fin 4 =>
+            imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)) =
+            Fin.cons
+              (fun l : Fin 4 =>
+                imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))
+              (fun i : Fin n => fun l : Fin 4 =>
+                imaginaryTimeEvolve ε (τ i.succ) (quarticLocalLegOperator (q i.succ) l)) := by
+        funext i
+        refine Fin.cases ?_ (fun i => ?_) i <;> rfl
+      rw [hfamily, Common.listOfFn_orderedQuarticLegFamily_cons, List.prod_append]
+      rw [show
+          (List.ofFn (fun l : Fin 4 =>
+            imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) l))).prod =
+              interactionPicture ε (quarticVertexOperator (q 0)) (τ 0) by
+        symm
+        simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator,
+          imaginaryTimeEvolve, quarticLocalLegOperator] using
+          (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
+            (fermionEnergy ε) create annihilate (q 0) (τ 0))]
+      rw [show
+          (List.ofFn (Common.orderedQuarticLegFamily
+            (fun i : Fin n => fun l : Fin 4 =>
+              imaginaryTimeEvolve ε (τ i.succ)
+                (quarticLocalLegOperator (q i.succ) l)))).prod =
+            Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
+              (fun i => q i.succ) (fun i => τ i.succ) by
+        simpa [quarticLegOperatorForSequence] using
+          prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
+            ε n (fun i => q i.succ) (fun i => τ i.succ)]
+      exact Module.End.mul_eq_comp
 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
