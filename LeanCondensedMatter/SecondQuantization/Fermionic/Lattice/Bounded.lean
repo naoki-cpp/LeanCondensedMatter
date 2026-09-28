@@ -186,9 +186,9 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
     (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
       (boundedOneBodyOperatorLinearMap (Site := Site))
   have hcurrent :
-      boundedOneBodyOperator (K.oneParticleBondCurrent ℏ q x y) =
+      boundedOneBodyOperatorLinearMap (Site := Site) (K.oneParticleBondCurrent ℏ q x y) =
         boundedBondCurrent ℏ q K x y := by
-    unfold boundedOneBodyOperator boundedOneBodyOperatorLinearMap
+    unfold boundedOneBodyOperatorLinearMap
     unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
     rw [map_smul]
     change
