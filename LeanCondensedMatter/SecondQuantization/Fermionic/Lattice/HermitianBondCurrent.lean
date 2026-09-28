@@ -102,6 +102,7 @@ theorem boundedBondCurrent_eq_peierlsCoupling_smul
         boundedLatticeOperator
           (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
   rw [map_smul]
+  rfl
 
 /-- Physical real parameters automatically give a self-adjoint bounded bond current. -/
 theorem isSelfAdjoint_boundedBondCurrent_ofReal
