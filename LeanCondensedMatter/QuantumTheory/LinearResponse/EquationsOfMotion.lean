@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.SpecialFunctions.Exponential
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -19,6 +20,8 @@ finite-dimensional assumption or unbounded-operator domain argument is used.
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -84,8 +87,7 @@ theorem schrodingerEquation (ψ : StateVector H) (t : ℝ) :
 theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
     HasDerivAt (heisenbergEvolution system A)
       ((Complex.I / (system.hbar : ℂ)) •
-        (system.hamiltonian.1 * heisenbergEvolution system A t -
-          heisenbergEvolution system A t * system.hamiltonian.1)) t := by
+        ⁅system.hamiltonian.1, heisenbergEvolution system A t⁆) t := by
   let G := schrodingerGenerator system
   let U := freePropagator system t
   let Uneg := freePropagator system (-t)
@@ -118,9 +120,8 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
       heisenbergEvolution system A t * schrodingerGenerator system -
           schrodingerGenerator system * heisenbergEvolution system A t =
         (Complex.I / (system.hbar : ℂ)) •
-          (system.hamiltonian.1 * heisenbergEvolution system A t -
-            heisenbergEvolution system A t * system.hamiltonian.1) := by
-    rw [schrodingerGenerator]
+          ⁅system.hamiltonian.1, heisenbergEvolution system A t⁆ := by
+    rw [LieRing.of_associative_ring_bracket, schrodingerGenerator]
     simp only [mul_smul_comm, smul_mul_assoc]
     module
   rw [← hderiv]
@@ -131,8 +132,7 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
 theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
       ((-(Complex.I / (system.hbar : ℂ))) •
-        (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
-          (evolveDensityOperator system ρ t).op * system.hamiltonian.1)) t := by
+        ⁅system.hamiltonian.1, (evolveDensityOperator system ρ t).op⁆) t := by
   have h := (heisenbergEquation system ρ.op (-t)).scomp t (hasDerivAt_neg t)
   have hevolved (s : ℝ) :
       heisenbergEvolution system ρ.op (-s) = (evolveDensityOperator system ρ s).op := by
@@ -143,7 +143,7 @@ theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
         funext s
         exact hevolved s] at h
   rw [hevolved t] at h
-  simpa using h
+  simpa [LieRing.of_associative_ring_bracket] using h
 
 end
 end LinearResponse
