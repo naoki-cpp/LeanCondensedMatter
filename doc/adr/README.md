@@ -14,6 +14,16 @@ All records in this initial set have status **accepted**, meaning implemented in
 - [0008 — Separate diagram combinatorics, physical amplitudes, and convergence](0008-diagrammatics-and-analysis.md)
 - [0009 — Keep generic response separate from physical conductivity and models](0009-response-and-conductivity.md)
 - [0010 — Use Lean for semantic guarantees and source audits for architecture](0010-verification-boundaries.md)
+- [0011 — Define bounded operator functions through functional calculus](0011-functional-calculus.md)
+- [0012 — Reconstruct compact self-adjoint operators on their nonzero spectral support](0012-nonzero-spectral-support.md)
+- [0013 — Construct discrete heat operators from summable spectral weights](0013-diagonal-heat-operator.md)
+- [0014 — Keep operator ideals and determinants within proved domains](0014-operator-ideals-and-fredholm-determinants.md)
+- [0015 — Normalize countable discrete measurements pointwise](0015-countable-discrete-povms.md)
+- [0016 — Normalize heat data before constructing the Gibbs state](0016-heat-operator-first-gibbs-states.md)
+- [0017 — Derive crystal structure from weak atomic configurations](0017-crystal-from-atomic-configurations.md)
+- [0018 — Keep finite-band Berry geometry upstream of physical models](0018-finite-band-berry-geometry.md)
+
+[Historical review coverage](history-review.md) tracks the issue-focused sequential review, records PR-only number gaps as skips, and identifies the next issue to inspect. Historical evidence sections distinguish recorded motivations from current implementation constraints.
 
 Lean declarations are authoritative for mathematical meaning. [Architecture notes](../../notes/architecture/) describe the current subsystem layout, [roadmaps](../../notes/roadmap.md) describe targets and remaining work, and these ADRs explain why the enduring boundaries exist. An ADR is not a proof milestone or a replacement for those documents.
 
