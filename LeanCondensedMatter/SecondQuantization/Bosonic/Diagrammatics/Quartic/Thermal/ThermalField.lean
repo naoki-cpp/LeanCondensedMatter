@@ -127,7 +127,8 @@ theorem quarticFreeThermalOrderedProduct_cons {n : ℕ}
         (Fin.castAdd _ j)
     rw [Fin.append_left, e1,
       FreeThermalField.operator_quarticFreeThermalFieldFamily_cast_mul_add
-        (Fin.cons q0 q) 0 j hcard]
+        (Fin.cons q0 q) 0 j hcard, Fin.cons_zero]
+    exact (FreeThermalField.operator_quarticFreeThermalField q0 j).symm
   · have hk : k = Fin.cast hcard'.symm
         ⟨(Common.orderedQuarticLegEquiv n k).1 * 4 +
             (Common.orderedQuarticLegEquiv n k).2, by
@@ -172,13 +173,14 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : �
     (q : Fin n → QuarticVertexLabel Mode) :
     quarticFreeThermalOrderedProduct q =
       Common.quarticVertexSequenceOperator create annihilate q := by
-  induction n generalizing q with
+  induction n with
   | zero =>
       simp [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct,
         Common.quarticVertexSequenceOperator, Module.End.one_eq_id]
   | succ n ih =>
       rw [← Fin.cons_self_tail q, quarticFreeThermalOrderedProduct_cons,
         Common.quarticVertexSequenceOperator_cons, ih]
+      rfl
 
 end
 end Bosonic
