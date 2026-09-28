@@ -30,12 +30,30 @@ set_option linter.style.header false
 /-!
 # Statistics-independent two-point diagrammatics
 
-Two-point diagrams with two distinguished external legs, full connected-component partitions,
-generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
-decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
-products, slot-split vacuum pairing transport, vacuum-pair image/component equivalences and
-componentwise pair/crossing transport, generic mixed-order pairings, standalone external-piece
-transport and pair equivalence, component pair
-fibers and their dependent-sum decomposition, crossing
-decomposition and even-crossing factorization, pair transport, and fixed-order chamber locality.
+This package contains the combinatorial infrastructure for paired diagrams with two distinguished
+one-legged external vertices and quartic interaction vertices. It does not attach operator
+amplitudes or choose bosonic or fermionic statistics.
+
+A special feature of the two-point family is that the two external vertices are automatically in
+the same connected component: a component containing exactly one external leg would have an odd
+number of legs and therefore could not carry a perfect pairing. Hence, for two-point diagrams,
+external connectedness is equivalent to the absence of vacuum components.
+
+The subpackages separate the main combinatorial responsibilities:
+
+* `Core` defines the diagram syntax, flattened leg enumeration, vertex graph, and the semantic
+  predicates for vacuum-free and externally connected diagrams.
+* `Components` restricts connected components, identifies the canonical external component and
+  vacuum components, and provides componentwise finite-sum and finite-product decompositions.
+* `External` isolates the external component, splits its interaction slots from the vacuum
+  remainder, and packages the resulting standalone external piece together with pairing transport.
+* `SlotSplit` compares the ambient two-point diagram with the external/vacuum slot decomposition,
+  transporting vacuum pairings and vacuum components to the corresponding quartic diagrams.
+* `Mixed` transports the fixed pairing to mixed imaginary-time order and develops component-local
+  positions, pairings, normalized-pair equivalences, crossing decompositions, parity, and
+  fixed-order-chamber locality.
+
+The representation is intentionally kept distinct from `ExternalInsertionDiagram`. The two
+families share lower-level component and leg-data machinery, while the mature two-point API keeps
+its own canonical normal forms for the downstream two-point expansion.
 -/
