@@ -28,51 +28,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Scalar imaginary-time factor carried by one quartic vertex. -/
-noncomputable def quarticVertexTimeFactor (ε : Mode → ℝ)
-    (q : QuarticVertexLabel Mode) (τ : ℝ) : ℂ :=
-  Complex.exp ((τ : ℂ) * (quarticVertexEnergyShift ε q : ℂ))
-
-/-- A single quartic vertex evolves by its scalar free-energy-shift factor. -/
-private theorem interactionPicture_quarticVertexOperator_eq_smul
-    (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (τ : ℝ) :
-    interactionPicture ε (quarticVertexOperator q) τ =
-      quarticVertexTimeFactor ε q τ • quarticVertexOperator q := by
-  change Common.heisenbergEvolve (freeEigenvalue ε) τ (quarticVertexOperator q) =
-    quarticVertexTimeFactor ε q τ • quarticVertexOperator q
-  simpa [quarticVertexOperator, quarticVertexTimeFactor] using
-    (Common.heisenbergEvolve_quarticVertexOperator
-      (freeEigenvalue ε) ε create annihilate q τ
-      (fun i => imaginaryTimeEvolve_create ε τ i)
-      (fun i => imaginaryTimeEvolve_annihilate ε τ i))
-
-/-- Ordered product of a finite sequence of bare quartic vertex operators. -/
-noncomputable def quarticVertexSequenceOperator {n : ℕ}
-    (q : Fin n → QuarticVertexLabel Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  (List.ofFn fun i => quarticVertexOperator (q i)).prod
-
-/-- Prepending one vertex prepends its operator by composition. -/
-private theorem quarticVertexSequenceOperator_cons {n : ℕ}
-    (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
-    quarticVertexSequenceOperator (Fin.cons q0 q) =
-      (quarticVertexOperator q0).comp (quarticVertexSequenceOperator q) := by
-  simp [quarticVertexSequenceOperator, Module.End.mul_eq_comp]
-
-/-- Product of all scalar imaginary-time factors in a fixed vertex sequence. -/
-noncomputable def quarticVertexSequenceTimeFactor {n : ℕ}
-    (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) : ℂ :=
-  ∏ i, quarticVertexTimeFactor ε (q i) (τ i)
-
-/-- Prepending a vertex and its time prepends the corresponding scalar time factor. -/
-private theorem quarticVertexSequenceTimeFactor_cons {n : ℕ}
-    (ε : Mode → ℝ) (q0 : QuarticVertexLabel Mode)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : ℝ) (τ : Fin n → ℝ) :
-    quarticVertexSequenceTimeFactor ε (Fin.cons q0 q) (Fin.cons σ τ) =
-      quarticVertexTimeFactor ε q0 σ * quarticVertexSequenceTimeFactor ε q τ := by
-  rw [quarticVertexSequenceTimeFactor, Fin.prod_univ_succ]
-  simp [quarticVertexSequenceTimeFactor]
-
 /-- The scalar time factor of a fixed vertex sequence is jointly continuous. -/
 private theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
     (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) :
@@ -214,7 +169,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
         ∑ q : Fin n → ↥support,
           quarticDysonSequenceCoeff ε g
               (fun i => (q i : QuarticVertexLabel Mode)) t •
-            quarticVertexSequenceOperator
+            Common.quarticVertexSequenceOperator create annihilate
               (fun i => (q i : QuarticVertexLabel Mode)) := by
   classical
   intro n
@@ -224,7 +179,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
       rw [Common.dysonCoeff_zero]
       have huniq : Unique (Fin 0 → ↥support) := Pi.uniqueOfIsEmpty _
       rw [Fintype.sum_unique]
-      simp [quarticDysonSequenceCoeff, quarticVertexSequenceOperator,
+      simp [quarticDysonSequenceCoeff, Common.quarticVertexSequenceOperator,
         quarticVertexSequenceTimeFactor, Module.End.one_eq_id]
   | succ n ih =>
       intro t
@@ -237,7 +192,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
             (∑ q : Fin (n + 1) → ↥support,
               quarticDysonSequenceCoeff ε g
                   (fun i => (q i : QuarticVertexLabel Mode)) t •
-                quarticVertexSequenceOperator
+                Common.quarticVertexSequenceOperator create annihilate
                   (fun i => (q i : QuarticVertexLabel Mode))) m k
       rw [Common.dysonCoeff_succ_basisState_apply]
       change
@@ -249,7 +204,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
             (∑ q : Fin (n + 1) → ↥support,
               quarticDysonSequenceCoeff ε g
                   (fun i => (q i : QuarticVertexLabel Mode)) t •
-                quarticVertexSequenceOperator
+                Common.quarticVertexSequenceOperator create annihilate
                   (fun i => (q i : QuarticVertexLabel Mode))) m k
       let e : ↥support × (Fin n → ↥support) ≃ (Fin (n + 1) → ↥support) :=
         { toFun := fun p => Fin.cons p.1 p.2
@@ -264,13 +219,13 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                 ((g q0 * quarticVertexTimeFactor ε q0 σ) *
                     quarticDysonSequenceCoeff ε g
                       (fun i => (q' i : QuarticVertexLabel Mode)) σ) •
-                  quarticVertexSequenceOperator
+                  Common.quarticVertexSequenceOperator create annihilate
                     (Fin.cons (q0 : QuarticVertexLabel Mode)
                       (fun i => (q' i : QuarticVertexLabel Mode))) := by
         rw [interactionPicture_quarticInteractionOn_eq_sum, ih σ]
         ext x
         simp only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum,
-          Finsupp.finsetSum_apply, quarticVertexSequenceOperator_cons]
+          Finsupp.finsetSum_apply, Common.quarticVertexSequenceOperator_cons]
         rw [Finset.sum_comm]
         refine Finset.sum_congr rfl fun q0 _ => ?_
         refine Finset.sum_congr rfl fun q' _ => ?_
@@ -285,7 +240,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                   quarticDysonSequenceCoeff ε g
                     (fun i => (q i.succ : QuarticVertexLabel Mode)) σ) *
                 Common.matrixCoeff
-                  (quarticVertexSequenceOperator
+                  (Common.quarticVertexSequenceOperator create annihilate
                     (fun i => (q i : QuarticVertexLabel Mode))) m k := by
         rw [hcomp σ]
         change (Common.matrixCoeffLinear m k)
@@ -294,7 +249,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                 ((g q0 * quarticVertexTimeFactor ε q0 σ) *
                     quarticDysonSequenceCoeff ε g
                       (fun i => (q' i : QuarticVertexLabel Mode)) σ) •
-                  quarticVertexSequenceOperator
+                  Common.quarticVertexSequenceOperator create annihilate
                     (Fin.cons (q0 : QuarticVertexLabel Mode)
                       (fun i => (q' i : QuarticVertexLabel Mode)))) = _
         rw [map_sum]
@@ -330,7 +285,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                 quarticDysonSequenceCoeff ε g
                   (fun i => (q i.succ : QuarticVertexLabel Mode)) σ) *
               Common.matrixCoeff
-                (quarticVertexSequenceOperator
+                (Common.quarticVertexSequenceOperator create annihilate
                   (fun i => (q i : QuarticVertexLabel Mode))) m k) by
           funext σ
           exact hpoint σ]
@@ -341,7 +296,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                   quarticDysonSequenceCoeff ε g
                     (fun i => (q i.succ : QuarticVertexLabel Mode)) σ) *
                 Common.matrixCoeff
-                  (quarticVertexSequenceOperator
+                  (Common.quarticVertexSequenceOperator create annihilate
                     (fun i => (q i : QuarticVertexLabel Mode))) m k)
             MeasureTheory.volume 0 t := by
         intro q
@@ -356,19 +311,19 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
             (∑ q : Fin (n + 1) → ↥support,
               quarticDysonSequenceCoeff ε g
                   (fun i => (q i : QuarticVertexLabel Mode)) t •
-                quarticVertexSequenceOperator
+                Common.quarticVertexSequenceOperator create annihilate
                   (fun i => (q i : QuarticVertexLabel Mode))) m k =
             ∑ q : Fin (n + 1) → ↥support,
               quarticDysonSequenceCoeff ε g
                   (fun i => (q i : QuarticVertexLabel Mode)) t *
                 Common.matrixCoeff
-                  (quarticVertexSequenceOperator
+                  (Common.quarticVertexSequenceOperator create annihilate
                     (fun i => (q i : QuarticVertexLabel Mode))) m k := by
         change (Common.matrixCoeffLinear m k)
             (∑ q : Fin (n + 1) → ↥support,
               quarticDysonSequenceCoeff ε g
                   (fun i => (q i : QuarticVertexLabel Mode)) t •
-                quarticVertexSequenceOperator
+                Common.quarticVertexSequenceOperator create annihilate
                   (fun i => (q i : QuarticVertexLabel Mode))) = _
         rw [map_sum]
         refine Finset.sum_congr rfl fun q _ => ?_
