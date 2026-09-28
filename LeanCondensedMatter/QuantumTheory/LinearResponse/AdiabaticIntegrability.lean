@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -17,6 +18,8 @@ The limit `η → 0⁺` remains a separate question and is not formed in this mo
 namespace QuantumTheory
 namespace LinearResponse
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open Set MeasureTheory
 
 noncomputable section
@@ -33,12 +36,11 @@ theorem continuous_commutatorSusceptibility_timeDifference
       commutatorSusceptibility system expectation A B τ 0) := by
   have hA := continuous_heisenbergEvolution system A
   have hcomm : Continuous (fun τ : ℝ =>
-      heisenbergEvolution system A τ * B -
-        B * heisenbergEvolution system A τ) :=
-    (hA.mul continuous_const).sub (continuous_const.mul hA)
-  have hexpect : Continuous (fun τ : ℝ => expectation
-      (heisenbergEvolution system A τ * B -
-        B * heisenbergEvolution system A τ)) :=
+      ⁅heisenbergEvolution system A τ, B⁆) := by
+    simpa only [LieRing.of_associative_ring_bracket] using
+      (hA.mul continuous_const).sub (continuous_const.mul hA)
+  have hexpect : Continuous (fun τ : ℝ =>
+      expectation ⁅heisenbergEvolution system A τ, B⁆) :=
     expectation.toContinuousLinearMap.continuous.comp hcomm
   convert
     ((continuous_const : Continuous (fun _ : ℝ => Complex.I / (system.hbar : ℂ))).mul hexpect)
@@ -91,11 +93,14 @@ theorem norm_retardedTimeDifferenceKernel_le
       system expectation A B hτnonneg]
     simp only [commutatorSusceptibility, heisenbergEvolution_zero]
     let X : H →L[ℂ] H :=
-      heisenbergEvolution system A τ * B -
-        B * heisenbergEvolution system A τ
+      ⁅heisenbergEvolution system A τ, B⁆
     have hX : ‖X‖ ≤ 2 * ‖A‖ * ‖B‖ := by
+      change
+        ‖heisenbergEvolution system A τ * B -
+          B * heisenbergEvolution system A τ‖ ≤ 2 * ‖A‖ * ‖B‖
       calc
-        ‖X‖ ≤ ‖heisenbergEvolution system A τ * B‖ +
+        ‖heisenbergEvolution system A τ * B - B * heisenbergEvolution system A τ‖ ≤
+            ‖heisenbergEvolution system A τ * B‖ +
             ‖B * heisenbergEvolution system A τ‖ :=
           norm_sub_le _ _
         _ ≤ ‖heisenbergEvolution system A τ‖ * ‖B‖ +
@@ -104,6 +109,8 @@ theorem norm_retardedTimeDifferenceKernel_le
         _ = 2 * ‖A‖ * ‖B‖ := by
           rw [norm_heisenbergEvolution]
           ring
+    change ‖(Complex.I / (system.hbar : ℂ)) * expectation X‖ ≤
+      retardedTimeDifferenceKernelNormBound system expectation A B
     have hexpect : ‖expectation X‖ ≤
         ‖expectation.toContinuousLinearMap‖ * ‖X‖ :=
       expectation.toContinuousLinearMap.le_opNorm X
