@@ -66,10 +66,12 @@ The implementation uses `Analysis.AngularHarmonics.AngularHarmonicCoefficients` 
 constant/first/second-harmonic representation. `Analysis.PolarFourier` consumes it both for ordinary
 full-angle integration and for phase-weighted reduction at an arbitrary polar point; concrete
 massive-Dirac consumers specialize it to the radial axis where the sine and mixed channels drop out.
-Continuum measure factors are kept separate from trace/current normalization. The model-local
-`ContinuumMeasureProvenance` module records the equalities between the disorder-line measure, the
-self-energy angular measure, and the Bastin/Streda normalization, while crossed real-space Fourier
-blocks retain their momentum measure upstream.
+Continuum measure factors are kept separate from trace/current normalization.
+`Analysis.ContinuumMeasure` owns both the bare two-dimensional physical-momentum prefactor and its
+exact full-angle radial specialization, while `Streda.ConductivityNormalization` owns the
+model-independent static Bastin/Středa trace prefactor and its composition with an explicit measure.
+The model-local `ContinuumMeasureProvenance` module now records only the remaining disorder-stage
+bridge equality, while crossed real-space Fourier blocks retain their momentum measure upstream.
 
 ## SCBA and ladder boundary
 

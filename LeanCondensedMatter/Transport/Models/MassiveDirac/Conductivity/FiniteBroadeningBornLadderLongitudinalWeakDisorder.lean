@@ -48,19 +48,20 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htarget :
-      (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ)) *
+      (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ)) *
           (2 * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
             (((momentumMeasurePrefactor hbar : ℝ) : ℂ))⁻¹ *
             (((probeEnergy ^ 2 - m ^ 2) /
               (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) =
         (((e ^ 2 * hbar * v ^ 2 * (probeEnergy ^ 2 - m ^ 2) /
           (Real.pi * (probeEnergy ^ 2 + 3 * m ^ 2)) : ℝ) : ℂ)) := by
-    unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+    unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaConductivityNormalization
+      bastinStredaTraceConductivityPrefactor
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
   have hnormalized :=
-    hmomentum.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
+    hmomentum.const_mul (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ))
   rw [htarget] at hnormalized
   simpa [
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary,

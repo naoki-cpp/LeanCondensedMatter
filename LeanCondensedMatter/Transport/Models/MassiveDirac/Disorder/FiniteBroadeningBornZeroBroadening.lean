@@ -34,7 +34,7 @@ def finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   (probeEnergy : ℂ) -
-    ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+    ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
       ((probeEnergy : ℂ) *
         finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
           side v m probeEnergy pMax)
@@ -44,7 +44,7 @@ def finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   (m : ℂ) +
-    ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+    ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
       ((m : ℂ) *
         finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
           side v m probeEnergy pMax)
@@ -184,7 +184,7 @@ energy and mass. The real part is intentional here: this quantity tracks the rea
 not a conversion from a complex observable to a real one. -/
 def finiteCutoffContinuumBornBoundaryRealRenormalization
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℝ :=
-  (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+  (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
     (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
       .retarded v m probeEnergy pMax).re
 
@@ -193,7 +193,7 @@ real part of the common complex boundary value. -/
 theorem finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+    (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
         (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
           side v m probeEnergy pMax).re =
       finiteCutoffContinuumBornBoundaryRealRenormalization
@@ -208,11 +208,11 @@ private theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_
     (v m p probeEnergy disorderStrength hbar pMax : ℝ) :
     (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
       side v m p probeEnergy disorderStrength hbar pMax).im =
-      -2 * (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+      -2 * (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
         (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
           side v m probeEnergy pMax).im *
         (probeEnergy ^ 2 + m ^ 2 -
-          (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+          (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
             (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
               side v m probeEnergy pMax).re *
             (probeEnergy ^ 2 - m ^ 2)) := by
@@ -224,10 +224,10 @@ private theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_
     add_zero, zero_add]
   ring
 
-private theorem continuumBornAngularMeasurePrefactor_pos
+private theorem fullAngleMomentumMeasurePrefactor_pos
     (hbar : ℝ) (hhbar : hbar ≠ 0) :
-    0 < continuumBornAngularMeasurePrefactor hbar := by
-  unfold continuumBornAngularMeasurePrefactor momentumMeasurePrefactor
+    0 < fullAngleMomentumMeasurePrefactor hbar := by
+  unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
   have hden : 0 < (2 * Real.pi * hbar) ^ 2 :=
     sq_pos_of_ne_zero
       (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar)
@@ -250,16 +250,16 @@ theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
     rw [← sq_abs m]
     nlinarith [abs_nonneg m]
   have hgap : 0 < probeEnergy ^ 2 - m ^ 2 := sub_pos.mpr hmetalSq
-  have hmeasure : 0 < continuumBornAngularMeasurePrefactor hbar :=
-    continuumBornAngularMeasurePrefactor_pos hbar hhbar
+  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar :=
+    fullAngleMomentumMeasurePrefactor_pos hbar hhbar
   have hg :
-      0 < disorderStrength * continuumBornAngularMeasurePrefactor hbar :=
+      0 < disorderStrength * fullAngleMomentumMeasurePrefactor hbar :=
     mul_pos hdisorder hmeasure
   let J : ℂ :=
     finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
       side v m probeEnergy pMax
   let lambda : ℝ :=
-    (disorderStrength * continuumBornAngularMeasurePrefactor hbar) * J.re
+    (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) * J.re
   have hlambda : lambda < 1 := by
     dsimp [lambda, J]
     rw [finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side]
@@ -284,7 +284,7 @@ theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
         side v m p probeEnergy disorderStrength hbar pMax).im ≠ 0 := by
     rw [finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq]
     change
-      -2 * (disorderStrength * continuumBornAngularMeasurePrefactor hbar) * J.im *
+      -2 * (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) * J.im *
         (probeEnergy ^ 2 + m ^ 2 - lambda * (probeEnergy ^ 2 - m ^ 2)) ≠ 0
     exact mul_ne_zero
       (mul_ne_zero (mul_ne_zero (by norm_num) (ne_of_gt hg)) hJim)

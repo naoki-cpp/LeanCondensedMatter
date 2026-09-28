@@ -22,7 +22,7 @@ Eq. (13), before restoring the remaining physical conductivity normalization. Th
 upstream already include the physical momentum measure `d²p / (2πℏ)²`, so downstream conductivity
 normalization must not attach `momentumMeasurePrefactor hbar` a second time. In the massive-Dirac
 normalization API the remaining scalar boundary is therefore the trace-only
-`bastinTraceConductivityPrefactor`, not `bastinStredaConductivityNormalization`, which would attach a
+`bastinStredaTraceConductivityPrefactor`, not `bastinStredaPhysicalMomentumConductivityNormalization`, which would attach a
 second momentum measure.
 
 No infinite-radius limit, momentum-cutoff removal, zero-broadening or weak-disorder limit,

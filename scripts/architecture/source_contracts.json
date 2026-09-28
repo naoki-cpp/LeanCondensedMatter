@@ -63,6 +63,8 @@
         "LeanCondensedMatter/Transport/KuboBastin/Occupation.lean",
         "LeanCondensedMatter/Transport/KuboBastin/CommonEnergy.lean",
         "LeanCondensedMatter/Transport/Streda/GeneralizedStatic.lean",
+        "LeanCondensedMatter/Transport/Analysis/ContinuumMeasure.lean",
+        "LeanCondensedMatter/Transport/Streda/ConductivityNormalization.lean",
         "LeanCondensedMatter/Transport/Disorder/Finite.lean",
         "LeanCondensedMatter/Transport/Disorder/Resolvent.lean",
         "LeanCondensedMatter/Transport/Disorder/Moments.lean",
@@ -637,7 +639,8 @@
       "path": "LeanCondensedMatter/Transport/Streda.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Streda.ResponseMatrix",
-        "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation"
+        "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation",
+        "LeanCondensedMatter.Transport.Streda.ConductivityNormalization"
       ]
     },
     {

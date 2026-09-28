@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
 
 set_option linter.style.header false
@@ -14,7 +14,7 @@ momentum measure `d²p / (2πℏ)²`. Consequently this layer restores only
 - the two physical charge-current scales, giving `(e v)²`; and
 - the trace-only Bastin prefactor `ℏ / (2π)`.
 
-It deliberately does not attach `bastinStredaConductivityNormalization`, which would insert an
+It deliberately does not attach `bastinStredaPhysicalMomentumConductivityNormalization`, which would insert an
 additional momentum-measure factor. The result remains the regulated ordered measured-`x`,
 source-`y` crossed conductivity contribution. No real-space or momentum-cutoff removal,
 zero-broadening or weak-disorder limit, closed `X` value, or `Psi = 0` conductivity evaluation is
@@ -30,11 +30,11 @@ conductivity contribution.
 
 The two crossed current blocks are built from dimensionless Pauli current vertices upstream, so the
 physical current scale contributes `(e v)²`. Their Fourier transforms already contain the physical
-momentum measure, hence only `bastinTraceConductivityPrefactor` is attached here. -/
+momentum measure, hence only `bastinStredaTraceConductivityPrefactor` is attached here. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
     (diagram : GaussianCrossedDiagram)
     (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) : ℂ :=
-  (((bastinTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+  (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
     finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral
       diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
 

@@ -3,6 +3,7 @@ import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
+import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -33,15 +34,20 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Canonical physical-momentum measure normalization `1/(2πℏ)²`. Parameters keep the actual
-chosen normalization explicit, so consumers may compare it with this named convention. -/
-def canonicalMomentumMeasureNormalization (params : Parameters) : ℝ :=
-  momentumMeasurePrefactor params.hbar
-
 /-- Predicate stating that the explicitly stored measure normalization is the canonical
-two-dimensional physical-momentum convention. -/
+two-dimensional physical-momentum convention owned by `Transport.Analysis.ContinuumMeasure`. -/
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
-  params.momentumMeasureNormalization = canonicalMomentumMeasureNormalization params
+  params.momentumMeasureNormalization = momentumMeasurePrefactor params.hbar
+
+/-- Under the canonical physical-momentum convention, the stored measure followed by exact
+full-angle reduction is the shared radial measure prefactor. -/
+theorem UsesCanonicalMomentumMeasure.mul_two_pi_eq_fullAngleMomentumMeasurePrefactor
+    {params : Parameters} (hmeasure : UsesCanonicalMomentumMeasure params) :
+    params.momentumMeasureNormalization * (2 * Real.pi) =
+      fullAngleMomentumMeasurePrefactor params.hbar := by
+  rw [hmeasure]
+  unfold fullAngleMomentumMeasurePrefactor
+  ring
 
 /-- Radial current scale before angular projection, routed through the model's named current
 component rather than reconstructing the charge/velocity normalization in the response layer. -/
@@ -190,16 +196,11 @@ noncomputable def finiteCutoffResponseComponent
     ∫ p : ℝ in (0 : ℝ)..params.momentumCutoff,
       finiteBroadeningRadialKernel params measured source p
 
-/-- Static Kubo/Středa trace prefactor attached only when the finite response is promoted to a
-physical conductivity. -/
-def kuboTracePrefactor (params : Parameters) : ℝ :=
-  params.hbar / (2 * Real.pi)
-
 /-- Finite-cutoff conductivity component obtained from the raw model response by the named Kubo
 trace normalization. -/
 noncomputable def finiteCutoffConductivityComponent
     (params : Parameters) (measured source : Fin 2) : ℂ :=
-  ((kuboTracePrefactor params : ℝ) : ℂ) *
+  ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
     finiteCutoffResponseComponent params measured source
 
 /-- Common physical conductivity seam for the finite parabolic benchmark. -/
@@ -256,11 +257,11 @@ def lorentzianNormalization (params : Parameters) : ℝ :=
 
 /-- Finite-parameter Drude/Kubo normalization identity under the model's explicit physical
 regularity assumptions. No cutoff, thermodynamic, or zero-broadening limit is used. -/
-theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor
+theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor
     (params : Parameters) (hregular : params.IsRegular) :
     broadeningTransportLifetime params * lorentzianNormalization params =
-      kuboTracePrefactor params := by
-  unfold broadeningTransportLifetime lorentzianNormalization kuboTracePrefactor
+      bastinStredaTraceConductivityPrefactor params.hbar := by
+  unfold broadeningTransportLifetime lorentzianNormalization bastinStredaTraceConductivityPrefactor
   field_simp [hregular.broadening_ne_zero, Real.pi_ne_zero]
 
 /-- Pointwise version of the finite Drude/Kubo normalization identity on the canonical Středa
@@ -269,8 +270,8 @@ theorem broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight
     (params : Parameters) (hregular : params.IsRegular) (p : ℝ) :
     (((broadeningTransportLifetime params * lorentzianNormalization params : ℝ) : ℂ)) *
         stredaSurfaceGreenWeight params p =
-      (((kuboTracePrefactor params : ℝ) : ℂ)) * stredaSurfaceGreenWeight params p := by
-  rw [broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor
+      (((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ)) * stredaSurfaceGreenWeight params p := by
+  rw [broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor
     params hregular]
 
 end

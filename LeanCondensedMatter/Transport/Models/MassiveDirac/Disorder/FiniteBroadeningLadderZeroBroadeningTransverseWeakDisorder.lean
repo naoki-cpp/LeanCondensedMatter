@@ -40,7 +40,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
           (disorderStrength : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        (((4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+        (((4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
           (probeEnergy ^ 2 + m ^ 2) /
           (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
   let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
@@ -94,20 +94,20 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
     rw [hOneMinusC]
     norm_num
   have htargetReal :
-      (Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+      (Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
           (v ^ 2 * (probeEnergy ^ 2 + m ^ 2))) *
           (((probeEnergy ^ 2 + 3 * m ^ 2) /
             (2 * (probeEnergy ^ 2 + m ^ 2))) ^ 2)⁻¹ =
-        4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+        4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
           (probeEnergy ^ 2 + m ^ 2) /
           (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
     field_simp [hvelocity, ne_of_gt hsum, ne_of_gt hden]
     ring
   have htarget :
-      (((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+      (((Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
           (v ^ 2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ)) *
           (inPlaneLadderDeterminant targetRung)⁻¹ =
-        (((4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+        (((4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
           (probeEnergy ^ 2 + m ^ 2) /
           (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
     rw [hdetEq]
@@ -139,7 +139,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBo
           (disorderStrength : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        (((4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+        (((4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
           (probeEnergy ^ 2 + m ^ 2) /
           (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
   have haction :=

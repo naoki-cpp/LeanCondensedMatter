@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
 
 set_option linter.style.header false
@@ -33,7 +33,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCo
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     ConductivityTensor (Fin 2) where
   component := fun measured source =>
-    ((bastinStredaConductivityNormalization hbar : ℝ) : ℂ) *
+    ((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ) *
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
         measured source e v m probeEnergy broadening disorderStrength hbar pMax
 

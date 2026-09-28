@@ -124,6 +124,16 @@ noncomputable def currentOperator
   (((currentComponent params direction px py : ℝ) : ℂ)) •
     (1 : BandHilbert →L[ℂ] BandHilbert)
 
+/-- The bounded current vertex is the signed carrier charge multiplying the bounded velocity. -/
+@[simp]
+theorem currentOperator_eq_charge_smul_velocityOperator
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    currentOperator params direction px py =
+      (((params.signedCharge : ℝ) : ℂ)) • velocityOperator params direction px py := by
+  unfold currentOperator velocityOperator currentComponent
+  push_cast
+  module
+
 /-- The Hamiltonian operator is self-adjoint because its scalar coefficient is real. -/
 theorem hamiltonianOperator_isSelfAdjoint
     (params : Parameters) (px py : ℝ) :

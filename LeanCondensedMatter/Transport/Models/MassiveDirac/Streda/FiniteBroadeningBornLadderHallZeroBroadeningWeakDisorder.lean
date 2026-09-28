@@ -58,14 +58,14 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htarget :
       ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
-          (((4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+          (((4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
             (probeEnergy ^ 2 + m ^ 2) /
             (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) =
         (((-16 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
           (probeEnergy ^ 2 + m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) := by
     dsimp [q, measure]
-    unfold continuumBornAngularMeasurePrefactor
+    unfold fullAngleMomentumMeasurePrefactor
     push_cast
     field_simp [hvelocity, hmeasureReal, hden]
     ring

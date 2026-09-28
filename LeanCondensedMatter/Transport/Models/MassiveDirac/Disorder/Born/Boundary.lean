@@ -219,7 +219,7 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
           channel side v m probeEnergy broadening disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+        (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
           (bornSelfEnergyChannelWeight channel side m probeEnergy 0 *
             finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
               side v m probeEnergy pMax))) := by
@@ -230,9 +230,9 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
     finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator,
     finiteCutoffContinuumBornIntegral] using
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))
+      (fun _ : ℝ => ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))).mul hchannel
+      (nhds ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ))).mul hchannel
 
 end
 

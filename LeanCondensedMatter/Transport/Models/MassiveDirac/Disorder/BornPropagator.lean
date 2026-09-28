@@ -78,7 +78,7 @@ self-energy. -/
 theorem continuumBornDampingScale_eq_selfEnergyPrefactor
     (v disorderStrength hbar : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
     continuumBornDampingScale v disorderStrength hbar =
-      (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+      (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
         (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi) := by
   rw [continuumBornDampingPrefactor_eq disorderStrength hbar v hhbar hvelocity]
   rfl

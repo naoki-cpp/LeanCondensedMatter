@@ -62,7 +62,8 @@ weights. This split lets arbitrary-occupation and band-filling consumers avoid t
 Lorentzian edge analysis.
 
 `Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
-`d²p/(2πℏ)²`; it is not a dimension-independent transport invariant. `Analysis.AngularHarmonics`
+`d²p/(2πℏ)²` and its exact full-angle radial prefactor `2π/(2πℏ)²`; these are continuum conventions,
+not dimension-independent transport invariants. `Analysis.AngularHarmonics`
 owns the reusable constant/first/second harmonic
 coefficient decomposition and ordinary full-angle cancellation laws. `Analysis.PolarFourier`
 consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
@@ -91,8 +92,9 @@ adapter rather than owning duplicate pure-point spectral proofs.
 available.
 
 `KuboBastin` owns the finite/pure-point response algebra built on that spectral adapter. `Streda` owns the static
-surface/sea operator and traced response representation. `Core.ConductivityTensor` is independent of
-either representation.
+surface/sea operator and traced response representation, together with the representation-level
+`ℏ/(2π)` trace prefactor and its composition with an explicitly supplied continuum-measure
+normalization. `Core.ConductivityTensor` is independent of either representation.
 
 ## Disorder boundary
 
@@ -155,14 +157,14 @@ normalization, real Born-renormalization bounds, and ladder determinant nonvanis
 at the result boundaries that consume them; the regime package is not a replacement for the scaling
 domain or for generic denominator APIs.
 
-The massive-Dirac continuum normalization keeps each physical factor at the narrowest model-local
-stage that owns it. `Disorder.Born.SelfEnergy` owns the full-angle radial measure used by the Born
-self-energy; `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times one
-bare physical-momentum measure independently of where angular reduction is performed; and
-`Conductivity.Normalization` separately owns the Bastin/Středa trace prefactor and the combined
-trace-plus-measure normalization. `MassiveDirac.ContinuumMeasureProvenance` records the bridge
-equalities between these stages, including the placement of the angular `2π`. Momentum-space
-non-crossing responses consume the combined conductivity normalization only after their response
+The massive-Dirac continuum normalization keeps each physical factor at the narrowest owner.
+`Analysis.ContinuumMeasure` owns both the bare physical-momentum measure and its exact full-angle
+radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times
+one bare physical-momentum measure independently of where angular reduction is performed, while
+`Streda.ConductivityNormalization` owns the model-independent Bastin/Středa trace prefactor and its
+composition with continuum normalization. `MassiveDirac.ContinuumMeasureProvenance` retains only
+model-specific bridge equalities involving the disorder stage. Momentum-space non-crossing
+responses consume the physical-momentum conductivity normalization only after their response
 integral is formed. Real-space crossed Fourier blocks already contain their physical momentum
 measures upstream, so a later crossed conductivity boundary must consume only the remaining
 trace/current normalization rather than attach another momentum measure.

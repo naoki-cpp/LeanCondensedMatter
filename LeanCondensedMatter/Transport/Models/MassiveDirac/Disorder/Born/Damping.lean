@@ -79,11 +79,11 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
 `disorderStrength / (4 ℏ² v²)`. -/
 theorem continuumBornDampingPrefactor_eq
     (disorderStrength hbar v : ℝ) (hhbar : hbar ≠ 0) (hvelocity : v ≠ 0) :
-    (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+    (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
         (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi) =
       disorderStrength / (4 * hbar ^ 2 * v ^ 2) := by
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  unfold continuumBornAngularMeasurePrefactor momentumMeasurePrefactor
+  unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
   (field_simp [hhbar, hvelocity, hpi]; ring)
 
 /-- At fixed finite cutoff beyond the on-shell circle, the imaginary part of the scalar Pauli
@@ -99,7 +99,7 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
           .scalar side v m probeEnergy broadening disorderStrength hbar pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+        ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
           (probeEnergy *
             (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))))) := by
   have hcomplex :=
@@ -124,7 +124,7 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
           .z side v m probeEnergy broadening disorderStrength hbar pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+        ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
           (m *
             (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))))) := by
   have hcomplex :=
@@ -224,7 +224,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
           v m fermiEnergy broadening disorderStrength hbar pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        (-((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+        (-((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
           (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi) *
             (fermiEnergy + m ^ 2 / fermiEnergy)))) := by
   have hfermi : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
@@ -236,7 +236,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
             v m fermiEnergy broadening disorderStrength hbar pMax).im)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds
-          ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+          ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
             (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)))) := by
     simpa [SpectralSide.sign] using
       (tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadening_zero
@@ -248,7 +248,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
             v m fermiEnergy broadening disorderStrength hbar pMax).im)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds
-          ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+          ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
             (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)))) := by
     simpa [SpectralSide.sign] using
       (tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_zero
@@ -263,10 +263,10 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
             v m fermiEnergy broadening disorderStrength hbar pMax).im)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds
-          ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+          ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
               (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) +
             (m / fermiEnergy) *
-              ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+              ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
                 (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi))))) := by
     refine hsum.congr' ?_
     filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
@@ -275,12 +275,12 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
       hvelocity hmF.le (ne_of_gt hbroadening)]
     simp
   have htarget :
-      (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+      (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
             (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) +
           (m / fermiEnergy) *
-            ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+            ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
               (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi))) =
-        -((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+        -((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
           (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi) *
             (fermiEnergy + m ^ 2 / fermiEnergy)) := by
     field_simp [hfermiNe]
@@ -307,7 +307,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_dam
   have hprefactor :=
     continuumBornDampingPrefactor_eq disorderStrength hbar v hhbar hvelocity
   have htarget :
-      -((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+      -((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
           (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi) *
             (fermiEnergy + m ^ 2 / fermiEnergy)) =
         -continuumBornUpperBandDampingEnergy
