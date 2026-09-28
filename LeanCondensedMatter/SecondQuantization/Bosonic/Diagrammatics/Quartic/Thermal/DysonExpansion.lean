@@ -26,6 +26,9 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+/-- File-local classical equality matches the concrete free-thermal pair kernel. -/
+local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
+
 /-- The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite
 sum over support-valued vertex sequences and bosonic pairings. The scalar
 `quarticDysonSequenceCoeff` carries the full ordered-simplex imaginary-time integration, while the
