@@ -73,31 +73,6 @@ noncomputable def quarticFreeThermalOrderedProduct {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   FreeThermalField.orderedProduct (List.ofFn (quarticFreeThermalFieldFamily q))
 
-/-- Prepending one quartic vertex prepends its four thermal-field operators to the flattened
-ordered product. -/
-@[simp]
-theorem quarticFreeThermalOrderedProduct_cons {n : ℕ}
-    (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
-    quarticFreeThermalOrderedProduct (Fin.cons q0 q) =
-      (quarticVertexOperator q0).comp (quarticFreeThermalOrderedProduct q) := by
-  rw [quarticFreeThermalOrderedProduct, quarticFreeThermalFieldFamily]
-  have hfamily :
-      (fun i : Fin (n + 1) => fun l : Fin 4 =>
-        quarticFreeThermalField
-          ((Fin.cons q0 q : Fin (n + 1) → QuarticVertexLabel Mode) i) l) =
-        (Fin.cons (fun l : Fin 4 => quarticFreeThermalField q0 l)
-          (fun i : Fin n => fun l : Fin 4 => quarticFreeThermalField (q i) l) :
-          Fin (n + 1) → Fin 4 → FreeThermalField Mode) := by
-    funext i
-    refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-  rw [hfamily, Common.listOfFn_orderedQuarticLegFamily_cons]
-  simp [quarticFreeThermalOrderedProduct, quarticFreeThermalFieldFamily,
-    FreeThermalField.orderedProduct, List.map_ofFn,
-    FreeThermalField.operator_quarticFreeThermalField,
-    quarticVertexOperator, Common.quarticVertexOperator, quarticLocalLegOperator,
-    Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp,
-    LinearMap.comp_assoc]
-
 /-- The flattened bosonic free-thermal-field product is exactly the Common bare quartic
 vertex-sequence operator. This is the operator bridge from the quartic Dyson expansion to the
 bosonic Gibbs/Wick layer. -/
@@ -105,14 +80,21 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : �
     (q : Fin n → QuarticVertexLabel Mode) :
     quarticFreeThermalOrderedProduct q =
       Common.quarticVertexSequenceOperator create annihilate q := by
-  induction n with
-  | zero =>
-      simp [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct,
-        Common.quarticVertexSequenceOperator, Module.End.one_eq_id]
-  | succ n ih =>
-      rw [← Fin.cons_self_tail q, quarticFreeThermalOrderedProduct_cons,
-        Common.quarticVertexSequenceOperator_cons, ih]
-      rfl
+  simp only [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct, List.map_ofFn,
+    quarticFreeThermalFieldFamily, Common.quarticVertexSequenceOperator]
+  change
+    (List.ofFn (Common.orderedQuarticLegFamily
+      (fun i : Fin n => fun l : Fin 4 =>
+        FreeThermalField.operator (quarticFreeThermalField (q i) l)))).prod =
+      (List.ofFn (fun i : Fin n =>
+        Common.quarticVertexOperator create annihilate (q i))).prod
+  rw [Common.prod_orderedQuarticLegFamily_eq_vertexProducts]
+  apply congrArg List.prod
+  apply congrArg List.ofFn
+  funext i
+  simp [FreeThermalField.operator_quarticFreeThermalField,
+    quarticVertexOperator, Common.quarticVertexOperator, quarticLocalLegOperator,
+    Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp]
 
 end
 end Bosonic
