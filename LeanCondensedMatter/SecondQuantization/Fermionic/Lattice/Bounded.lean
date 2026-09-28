@@ -73,6 +73,73 @@ noncomputable def boundedLatticeOperator
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedLatticeOperatorAlgEquiv A
 
+@[simp]
+theorem boundedLatticeOperator_add
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    boundedLatticeOperator (A + B) =
+      boundedLatticeOperator A + boundedLatticeOperator B := by
+  simpa [boundedLatticeOperator] using
+    map_add (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
+
+@[simp]
+theorem boundedLatticeOperator_sub
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    boundedLatticeOperator (A - B) =
+      boundedLatticeOperator A - boundedLatticeOperator B := by
+  simpa [boundedLatticeOperator] using
+    map_sub (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
+
+@[simp]
+theorem boundedLatticeOperator_smul (c : ℂ)
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    boundedLatticeOperator (c • A) = c • boundedLatticeOperator A := by
+  simpa [boundedLatticeOperator] using
+    map_smul (boundedLatticeOperatorAlgEquiv (Site := Site)) c A
+
+@[simp]
+theorem boundedLatticeOperator_zero :
+    boundedLatticeOperator
+        (0 : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+          AlgebraicFock (LatticeState Site)) = 0 := by
+  simpa [boundedLatticeOperator] using
+    map_zero (boundedLatticeOperatorAlgEquiv (Site := Site))
+
+@[simp]
+theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
+    (F : ι → AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    boundedLatticeOperator (∑ i ∈ s, F i) =
+      ∑ i ∈ s, boundedLatticeOperator (F i) := by
+  change boundedLatticeOperatorLinearMap (∑ i ∈ s, F i) = _
+  rw [map_sum]
+  rfl
+
+@[simp]
+theorem boundedLatticeOperator_comp
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    boundedLatticeOperator (A.comp B) =
+      (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
+  change
+    boundedLatticeOperatorAlgEquiv (A.comp B) =
+      (boundedLatticeOperatorAlgEquiv A).comp (boundedLatticeOperatorAlgEquiv B)
+  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
+  exact map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
+
+/-- Bounded transport preserves the ordinary Mathlib Lie bracket. -/
+theorem boundedLatticeOperator_lie
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    boundedLatticeOperator ⁅A, B⁆ =
+      ⁅boundedLatticeOperator A, boundedLatticeOperator B⁆ := by
+  rw [LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket]
+  simp only [Module.End.mul_eq_comp, ContinuousLinearMap.mul_def]
+  rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
+    boundedLatticeOperator_comp]
+
 /-- Bounded many-particle hopping Hamiltonian on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedHoppingHamiltonian (K : LocallyFiniteHopping Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
@@ -141,16 +208,14 @@ representation. -/
 theorem bounded_discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-          ((boundedHoppingHamiltonian K).comp (boundedSiteChargeDensity q x) -
-            (boundedSiteChargeDensity q x).comp (boundedHoppingHamiltonian K)) +
+          ⁅boundedHoppingHamiltonian K, boundedSiteChargeDensity q x⁆ +
         ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 := by
-  have h := congrArg (boundedLatticeOperatorAlgEquiv (Site := Site))
+  have h := congrArg (boundedLatticeOperator (Site := Site))
     (discrete_continuity ℏ q K x)
-  simpa only [map_add, map_smul, map_sum, map_zero,
-    LieRing.of_associative_ring_bracket, ← Module.End.mul_eq_comp,
-    map_sub, map_mul, ← ContinuousLinearMap.mul_def,
-    boundedHoppingHamiltonian, boundedSiteChargeDensity, boundedBondCurrent,
-    boundedLatticeOperator] using h
+  simpa only [boundedLatticeOperator_add, boundedLatticeOperator_smul,
+    boundedLatticeOperator_sum, boundedLatticeOperator_zero,
+    boundedLatticeOperator_lie, boundedHoppingHamiltonian,
+    boundedSiteChargeDensity, boundedBondCurrent] using h
 
 end FiniteLattice
 
