@@ -252,11 +252,11 @@ def lorentzianNormalization (params : Parameters) : ℝ :=
 
 /-- Finite-parameter Drude/Kubo normalization identity under the model's explicit physical
 regularity assumptions. No cutoff, thermodynamic, or zero-broadening limit is used. -/
-theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor
+theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor
     (params : Parameters) (hregular : params.IsRegular) :
     broadeningTransportLifetime params * lorentzianNormalization params =
       bastinStredaTraceConductivityPrefactor params.hbar := by
-  unfold broadeningTransportLifetime lorentzianNormalization kuboTracePrefactor
+  unfold broadeningTransportLifetime lorentzianNormalization bastinStredaTraceConductivityPrefactor
   field_simp [hregular.broadening_ne_zero, Real.pi_ne_zero]
 
 /-- Pointwise version of the finite Drude/Kubo normalization identity on the canonical Středa
@@ -266,7 +266,7 @@ theorem broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight
     (((broadeningTransportLifetime params * lorentzianNormalization params : ℝ) : ℂ)) *
         stredaSurfaceGreenWeight params p =
       (((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ)) * stredaSurfaceGreenWeight params p := by
-  rw [broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor
+  rw [broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor
     params hregular]
 
 end
