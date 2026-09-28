@@ -146,7 +146,7 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆
+              ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆)
       0 := by
   have hgeneral :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
