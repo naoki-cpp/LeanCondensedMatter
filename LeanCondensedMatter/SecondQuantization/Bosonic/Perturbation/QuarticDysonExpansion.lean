@@ -52,15 +52,8 @@ noncomputable def quarticVertexSequenceOperator {n : ℕ}
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (List.ofFn fun i => quarticVertexOperator (q i)).prod
 
-@[simp]
-theorem quarticVertexSequenceOperator_zero
-    (q : Fin 0 → QuarticVertexLabel Mode) :
-    quarticVertexSequenceOperator q =
-      (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-  simp [quarticVertexSequenceOperator, Module.End.one_eq_id]
-
 /-- Prepending one vertex prepends its operator by composition. -/
-theorem quarticVertexSequenceOperator_cons {n : ℕ}
+private theorem quarticVertexSequenceOperator_cons {n : ℕ}
     (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
     quarticVertexSequenceOperator (Fin.cons q0 q) =
       (quarticVertexOperator q0).comp (quarticVertexSequenceOperator q) := by
@@ -71,14 +64,8 @@ noncomputable def quarticVertexSequenceTimeFactor {n : ℕ}
     (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) : ℂ :=
   ∏ i, quarticVertexTimeFactor ε (q i) (τ i)
 
-@[simp]
-theorem quarticVertexSequenceTimeFactor_zero
-    (ε : Mode → ℝ) (q : Fin 0 → QuarticVertexLabel Mode) (τ : Fin 0 → ℝ) :
-    quarticVertexSequenceTimeFactor ε q τ = 1 := by
-  simp [quarticVertexSequenceTimeFactor]
-
 /-- Prepending a vertex and its time prepends the corresponding scalar time factor. -/
-theorem quarticVertexSequenceTimeFactor_cons {n : ℕ}
+private theorem quarticVertexSequenceTimeFactor_cons {n : ℕ}
     (ε : Mode → ℝ) (q0 : QuarticVertexLabel Mode)
     (q : Fin n → QuarticVertexLabel Mode) (σ : ℝ) (τ : Fin n → ℝ) :
     quarticVertexSequenceTimeFactor ε (Fin.cons q0 q) (Fin.cons σ τ) =
@@ -87,7 +74,7 @@ theorem quarticVertexSequenceTimeFactor_cons {n : ℕ}
   simp [quarticVertexSequenceTimeFactor]
 
 /-- The scalar time factor of a fixed vertex sequence is jointly continuous. -/
-theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
+private theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
     (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) :
     Continuous (quarticVertexSequenceTimeFactor ε q) := by
   unfold quarticVertexSequenceTimeFactor quarticVertexTimeFactor
@@ -95,41 +82,8 @@ theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
     Complex.continuous_exp.comp
       (((Complex.continuous_ofReal.comp (continuous_apply i))).mul continuous_const)
 
-/-- The ordered product of interaction-picture vertices factors into a scalar time factor and the
-corresponding bare ordered vertex product. -/
-theorem quarticVertexSequenceInteractionPicture_eq_smul (ε : Mode → ℝ) :
-    ∀ {n : ℕ} (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
-      (List.ofFn fun i => interactionPicture ε (quarticVertexOperator (q i)) (τ i)).prod =
-        quarticVertexSequenceTimeFactor ε q τ • quarticVertexSequenceOperator q
-  | 0, q, τ => by
-      simp [quarticVertexSequenceOperator, quarticVertexSequenceTimeFactor,
-        Module.End.one_eq_id]
-  | n + 1, q, τ => by
-      rw [List.ofFn_succ, List.prod_cons,
-        interactionPicture_quarticVertexOperator_eq_smul,
-        quarticVertexSequenceInteractionPicture_eq_smul ε
-          (fun i => q i.succ) (fun i => τ i.succ)]
-      simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
-      congr 1
-      · have hq : Fin.cons (q 0) (fun i => q i.succ) = q := by
-          change Fin.cons (q 0) (Fin.tail q) = q
-          exact Fin.cons_self_tail q
-        have hτ : Fin.cons (τ 0) (fun i => τ i.succ) = τ := by
-          change Fin.cons (τ 0) (Fin.tail τ) = τ
-          exact Fin.cons_self_tail τ
-        simpa [mul_comm, hq, hτ] using
-          (quarticVertexSequenceTimeFactor_cons ε (q 0) (fun i => q i.succ)
-            (τ 0) (fun i => τ i.succ)).symm
-      · rw [Module.End.mul_eq_comp]
-        rw [← quarticVertexSequenceOperator_cons
-          (q0 := q 0) (q := fun i => q i.succ)]
-        congr
-        funext i
-        refine Fin.cases ?_ ?_ i <;> simp
-
-
 /-- The one-vertex scalar time factor is continuous in imaginary time. -/
-theorem continuous_quarticVertexTimeFactor
+private theorem continuous_quarticVertexTimeFactor
     (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
     Continuous (quarticVertexTimeFactor ε q) := by
   unfold quarticVertexTimeFactor
@@ -146,7 +100,7 @@ noncomputable def quarticDysonSequenceCoeff {n : ℕ}
     intervalIntegral.orderedSimplexIntegral n t (quarticVertexSequenceTimeFactor ε q)
 
 /-- A fixed vertex-sequence Dyson coefficient is continuous in its upper imaginary-time bound. -/
-theorem continuous_quarticDysonSequenceCoeff {n : ℕ}
+private theorem continuous_quarticDysonSequenceCoeff {n : ℕ}
     (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (q : Fin n → QuarticVertexLabel Mode) :
     Continuous (quarticDysonSequenceCoeff ε g q) := by
@@ -165,7 +119,7 @@ theorem continuous_quarticDysonSequenceCoeff {n : ℕ}
 /-- The fixed-sequence coefficient obeys the same outer-time recursion as the Dyson expansion:
 prepending a vertex contributes its coupling and free-evolution scalar, while the extra Dyson
 vertex contributes the minus sign. -/
-theorem quarticDysonSequenceCoeff_cons {n : ℕ}
+private theorem quarticDysonSequenceCoeff_cons {n : ℕ}
     (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) (t : ℝ) :
     quarticDysonSequenceCoeff ε g (Fin.cons q0 q) t =
@@ -219,7 +173,7 @@ theorem quarticDysonSequenceCoeff_cons {n : ℕ}
 
 /-- The interaction-picture quartic interaction is the finite sum of its bare vertices, with all
 time dependence exposed as scalar factors. -/
-theorem interactionPicture_quarticInteraction_eq_sum [Fintype Mode]
+private theorem interactionPicture_quarticInteraction_eq_sum [Fintype Mode]
     (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ) :
     interactionPicture ε (quarticInteraction g) τ =
       ∑ q : QuarticVertexLabel Mode,
