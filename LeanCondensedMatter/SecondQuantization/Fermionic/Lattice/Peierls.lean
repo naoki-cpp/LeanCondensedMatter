@@ -87,8 +87,9 @@ namespace LocallyFiniteHopping
 /-- The two oriented hopping terms on a link with opposite Peierls phases.
 
 This is the link contribution, not the full hopping Hamiltonian. Link variables remain separate
-from a uniform vector potential, whose geometric link lengths and directions belong to the
-macroscopic conductivity layer. -/
+from a uniform vector potential. Geometric link coordinates and their finite-lattice aggregation
+are owned by `Lattice.GeometricCurrent` and `Lattice.GeometricPeierls`; response and conductivity
+specializations remain downstream in `Fermionic.Transport`. -/
 noncomputable def peierlsBondHamiltonian (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     LatticeState Site →ₗ[ℂ] LatticeState Site :=
