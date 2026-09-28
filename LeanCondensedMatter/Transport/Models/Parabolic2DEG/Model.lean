@@ -197,7 +197,8 @@ theorem greenOperator_eq_greenScalar_smul_id
     (hbroadening : params.broadening ≠ 0) :
     greenOperator side params px py =
       greenScalar side params px py • (1 : BandHilbert →L[ℂ] BandHilbert) := by
-  ext ψ
+  apply ContinuousLinearMap.ext
+  intro ψ
   rw [greenOperator_apply side params px py hbroadening]
   simp
 
