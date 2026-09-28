@@ -204,60 +204,51 @@ theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitu
       rfl
 
 
-/-- Order-averaged physical bosonic quartic Dyson diagram amplitude. Averaging removes the arbitrary
-choice of a global vertex enumeration while preserving the physical Dyson coefficient. -/
+/-- Physical bosonic quartic Dyson diagram amplitude, summed over all global vertex orders.
+The ordered-simplex regions associated with these orders are the pieces that shuffle-factorize over
+connected components, so this physical amplitude is a sum rather than the static order average used
+by `QuarticDiagram.thermalAmplitude`. -/
 noncomputable def QuarticDiagram.dysonThermalAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S) (t : ℝ) : ℂ :=
-  (S.card.factorial : ℂ)⁻¹ *
-    ∑ order : Common.QuarticVertexOrder S,
-      QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t
+  ∑ order : Common.QuarticVertexOrder S,
+    QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t
 
-/-- The convergence-aware physical bosonic quartic Dyson coefficient is exactly the total
-order-averaged physical quartic-diagram weight. -/
-theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude [Fintype Mode]
+/-- The total physical quartic-diagram weight is the canonical vertex moment:
+`|S|!` times the convergence-aware bosonic Dyson coefficient. The factorial is the number of
+global vertex orders; unlike the static coefficientwise amplitude, it is not divided out because the
+ordered-simplex shuffle sum is exactly what later factorizes over connected components. -/
+theorem factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
+    [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) (t : ℝ) :
-    freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t =
+    (S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t =
       ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
         QuarticDiagram.dysonThermalAmplitude ε β g d t := by
   classical
-  symm
   calc
-    (∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
-        QuarticDiagram.dysonThermalAmplitude ε β g d t) =
-      ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
-        (S.card.factorial : ℂ)⁻¹ *
-          ∑ order : Common.QuarticVertexOrder S,
-            QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := rfl
-    _ = (S.card.factorial : ℂ)⁻¹ *
+    (S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t =
+      ∑ _order : Common.QuarticVertexOrder S,
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
+          rw [Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
+          simp [nsmul_eq_mul]
+    _ = ∑ order : Common.QuarticVertexOrder S,
         ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
-          ∑ order : Common.QuarticVertexOrder S,
-            QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := by
-      rw [Finset.mul_sum]
-    _ = (S.card.factorial : ℂ)⁻¹ *
-        ∑ order : Common.QuarticVertexOrder S,
-          ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
-            QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := by
-      rw [Finset.sum_comm]
-    _ = (S.card.factorial : ℂ)⁻¹ *
-        ∑ _order : Common.QuarticVertexOrder S,
-          freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
-      congr 1
+          QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := by
       apply Finset.sum_congr rfl
       intro order _
       exact
-        (freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude
-          ε β hpos g S order t).symm
-    _ = (S.card.factorial : ℂ)⁻¹ * ((S.card.factorial : ℂ) *
-        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t) := by
-      rw [Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
-      simp [nsmul_eq_mul]
-    _ = freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
-      have hfac : (S.card.factorial : ℂ) ≠ 0 := by
-        exact_mod_cast Nat.factorial_ne_zero S.card
-      rw [← mul_assoc, inv_mul_cancel₀ hfac, one_mul]
+        freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude
+          ε β hpos g S order t
+    _ = ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
+        ∑ order : Common.QuarticVertexOrder S,
+          QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := by
+      rw [Finset.sum_comm]
+    _ = ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
+        QuarticDiagram.dysonThermalAmplitude ε β g d t := rfl
 
 end
 end Bosonic
