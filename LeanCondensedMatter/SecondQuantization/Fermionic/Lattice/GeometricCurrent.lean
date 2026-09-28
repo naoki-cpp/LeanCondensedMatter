@@ -142,6 +142,8 @@ theorem boundedDirectionalContact_eq_neg_sq_smul_bondHamiltonianMoment
     rw [smul_smul, smul_smul]
     congr 1
     ring
+  rw [smul_smul]
+  rw [mul_comm (-((peierlsCoupling ℏ q) ^ 2)) (2 : ℂ)⁻¹]
   rw [← smul_smul]
   congr 1
   rw [Finset.smul_sum]
