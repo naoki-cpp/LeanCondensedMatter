@@ -1,5 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
 
+import Mathlib.Algebra.Lie.OfAssociative
+
 set_option linter.style.header false
 
 /-!
@@ -24,6 +26,8 @@ correlation-function invariance axiom.
 namespace QuantumTheory
 namespace LinearResponse
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open Set
 
 noncomputable section
@@ -38,8 +42,7 @@ noncomputable def commutatorSusceptibility
     (A B : H →L[ℂ] H) (t s : ℝ) : ℂ :=
   (Complex.I / (system.hbar : ℂ)) *
     expectation
-      (heisenbergEvolution system A t * heisenbergEvolution system B s -
-        heisenbergEvolution system B s * heisenbergEvolution system A t)
+      ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆
 
 /-- The retarded susceptibility is the commutator susceptibility in the causal region and zero
 when the source time lies after the observation time. -/
@@ -76,8 +79,7 @@ theorem commutatorSusceptibility_eq_timeDifference_of_stationary
   simp only [heisenbergEvolution_zero]
   apply congrArg (fun z : ℂ => (Complex.I / (system.hbar : ℂ)) * z)
   let C : H →L[ℂ] H :=
-    heisenbergEvolution system A (t - s) * B -
-      B * heisenbergEvolution system A (t - s)
+    ⁅heisenbergEvolution system A (t - s), B⁆
   have hA :
       heisenbergEvolution system (heisenbergEvolution system A (t - s)) s =
         heisenbergEvolution system A t := by
@@ -86,15 +88,13 @@ theorem commutatorSusceptibility_eq_timeDifference_of_stationary
     ring
   calc
     expectation
-        (heisenbergEvolution system A t * heisenbergEvolution system B s -
-          heisenbergEvolution system B s * heisenbergEvolution system A t) =
+        ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆ =
       expectation (heisenbergEvolution system C s) := by
         congr 1
         simp [C, hA]
     _ = expectation C := hstationary s C
     _ = expectation
-        (heisenbergEvolution system A (t - s) * B -
-          B * heisenbergEvolution system A (t - s)) := by
+        ⁅heisenbergEvolution system A (t - s), B⁆ := by
         rfl
 
 /-- Under stationarity, the retarded kernel is the causal extension of a one-time-difference
@@ -124,8 +124,7 @@ theorem sourceCoupled_responseIntegral_eq_retardedSusceptibility
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) *
           expectation
-            (heisenbergEvolution system A t * heisenbergEvolution system B s -
-              heisenbergEvolution system B s * heisenbergEvolution system A t)) =
+            ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆) =
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) * retardedSusceptibility system expectation A B t s := by
   rw [← intervalIntegral.integral_smul]
