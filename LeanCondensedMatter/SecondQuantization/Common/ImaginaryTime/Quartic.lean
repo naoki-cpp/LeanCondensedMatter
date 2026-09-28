@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
@@ -75,6 +75,47 @@ theorem heisenbergEvolve_quarticVertexOperator
   simp only [quarticVertexEnergyShift]
   push_cast
   ring
+
+/-- Ordered interaction-picture product of a finite quartic-vertex sequence. Coordinate zero is
+the outermost/latest operator, matching the ordered-simplex convention used by Dyson expansion. -/
+noncomputable def quarticVertexSequenceInteractionPicture
+    (energy : Config → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    (n : ℕ) → (Fin n → QuarticVertexLabel Mode) → (Fin n → ℝ) →
+      AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
+  | 0, _, _ => LinearMap.id
+  | _ + 1, q, τ =>
+      (interactionPicture energy (quarticVertexOperator create annihilate (q 0)) (τ 0)).comp
+        (quarticVertexSequenceInteractionPicture energy create annihilate _
+          (fun i => q i.succ) (fun i => τ i.succ))
+
+@[simp]
+theorem quarticVertexSequenceInteractionPicture_zero
+    (energy : Config → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : Fin 0 → QuarticVertexLabel Mode) (τ : Fin 0 → ℝ) :
+    quarticVertexSequenceInteractionPicture energy create annihilate 0 q τ = LinearMap.id := rfl
+
+theorem quarticVertexSequenceInteractionPicture_succ
+    (energy : Config → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (n : ℕ) (q : Fin (n + 1) → QuarticVertexLabel Mode) (τ : Fin (n + 1) → ℝ) :
+    quarticVertexSequenceInteractionPicture energy create annihilate (n + 1) q τ =
+      (interactionPicture energy (quarticVertexOperator create annihilate (q 0)) (τ 0)).comp
+        (quarticVertexSequenceInteractionPicture energy create annihilate n
+          (fun i => q i.succ) (fun i => τ i.succ)) := rfl
+
+theorem quarticVertexSequenceInteractionPicture_cons
+    (energy : Config → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (n : ℕ) (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode)
+    (σ : ℝ) (τ : Fin n → ℝ) :
+    quarticVertexSequenceInteractionPicture energy create annihilate (n + 1)
+        (Fin.cons q0 q) (Fin.cons σ τ) =
+      (interactionPicture energy (quarticVertexOperator create annihilate q0) σ).comp
+        (quarticVertexSequenceInteractionPicture energy create annihilate n q τ) := by
+  rw [quarticVertexSequenceInteractionPicture_succ]
+  simp
 
 /-- A finitely supported quartic interaction evolves as the finite sum of its bare vertices with
 scalar vertex time factors, provided the ladder operators obey the stated free evolution laws. -/

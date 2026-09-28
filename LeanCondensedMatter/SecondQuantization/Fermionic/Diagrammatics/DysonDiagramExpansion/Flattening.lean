@@ -20,7 +20,7 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-! ## Flattening `nestedVertexOperatorComp` into a `4n`-atom `List.prod` -/
+/-! ## Flattening `Common.quarticVertexSequenceInteractionPicture` into a `4n`-atom `List.prod` -/
 
 omit [Fintype Mode] in
 private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
@@ -36,9 +36,9 @@ private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode 
   rw [quarticLegOperatorForSequence, hcoord]
 
 omit [Fintype Mode] in
-/-- **`nestedVertexOperatorComp`, flattened into a `List.prod` of its `4n` atomic legs** —
+/-- **`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —
 by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
-reduces, via `nestedVertexOperatorComp_succ`,
+reduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,
 `interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and
 `List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε
 q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
@@ -50,10 +50,10 @@ vertex `0` directly; the `right` branch uses the general finite-block coordinate
 `quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`
 for the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as
 naturals. -/
-theorem prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
+theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
       List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
-        nestedVertexOperatorComp ε n q τ
+        Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ
   | 0, q, τ => by
     have h0 : 2 * (2 * 0) = 0 := by ring
     have : IsEmpty (Fin (2 * (2 * 0))) := h0 ▸ Fin.isEmpty
@@ -62,8 +62,13 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε 
     have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
     have hcard' : 2 * (2 * n) = n * 4 := by ring
     have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
-    rw [nestedVertexOperatorComp_succ, interactionPicture_quarticVertexOperator_eq_prod,
-      ← prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp ε n
+    rw [Common.quarticVertexSequenceInteractionPicture_succ]
+    change List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
+      (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
+        (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
+          (fun i => q i.succ) (fun i => τ i.succ))
+    rw [interactionPicture_quarticVertexOperator_eq_prod,
+      ← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture ε n
         (fun i => q i.succ) (fun i => τ i.succ),
       ← Module.End.mul_eq_comp, ← List.prod_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
     refine congrArg List.prod
