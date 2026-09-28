@@ -88,7 +88,7 @@ noncomputable def QuarticDiagram.orderedDysonThermalAmplitude
   Common.quarticDysonSequenceCoeff ε g (fun i => d.vertexLabel (order i)) t *
     QuarticDiagram.orderedThermalPairingValue ε β d order
 
-private theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation
+private theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ) :
     freeGibbsDysonCoeff ε β (quarticInteraction g) n t =
@@ -100,7 +100,6 @@ private theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation
                 freeThermalPairValue ε β
                   (quarticFreeThermalFieldFamily q a)
                   (quarticFreeThermalFieldFamily q b)) := by
-  letI := Fintype.ofFinite Mode
   let e :
       (Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode))) ≃
         (Fin n → QuarticVertexLabel Mode) :=
@@ -124,13 +123,26 @@ private theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation
               (quarticFreeThermalFieldFamily q b))
   have h := freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
     (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) ε β hpos g n t
-  have h' :
-      freeGibbsDysonCoeff ε β (quarticInteraction g) n t =
-        ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)), F (e q) := by
-    simpa [F, e, quarticInteraction, quarticInteractionOn, Common.quarticInteraction] using h
   calc
     freeGibbsDysonCoeff ε β (quarticInteraction g) n t =
-        ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)), F (e q) := h'
+        freeGibbsDysonCoeff ε β
+          (quarticInteractionOn (Finset.univ : Finset (QuarticVertexLabel Mode)) g) n t := by
+            rfl
+    _ = ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)),
+        Common.quarticDysonSequenceCoeff ε g
+            (fun i => (q i : QuarticVertexLabel Mode)) t *
+          ∑ pairing : Pairing (2 * n),
+            pairing.evaluation (pairing.weight .boson)
+              (fun a b =>
+                freeThermalPairValue ε β
+                  (quarticFreeThermalFieldFamily
+                    (fun i => (q i : QuarticVertexLabel Mode)) a)
+                  (quarticFreeThermalFieldFamily
+                    (fun i => (q i : QuarticVertexLabel Mode)) b)) := h
+    _ = ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)), F (e q) := by
+      apply Finset.sum_congr rfl
+      intro q _
+      rfl
     _ = ∑ q : Fin n → QuarticVertexLabel Mode, F q := Equiv.sum_comp e F
     _ = ∑ q : Fin n → QuarticVertexLabel Mode,
         Common.quarticDysonSequenceCoeff ε g q t *
@@ -144,14 +156,13 @@ private theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation
 /-- The physical finite-order bosonic quartic Dyson coefficient is the sum of fixed-order physical
 quartic diagram amplitudes. This is the canonical reindexing of the concrete
 `vertex sequence × pairing` expansion through `Common.quarticDiagramEquivOrderedData`. -/
-theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude
+theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N))
     (order : Common.QuarticVertexOrder S) (t : ℝ) :
     freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t =
       ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
         QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := by
-  letI := Fintype.ofFinite Mode
   classical
   rw [freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation ε β hpos g S.card t]
   let F : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card → ℂ := fun x =>
