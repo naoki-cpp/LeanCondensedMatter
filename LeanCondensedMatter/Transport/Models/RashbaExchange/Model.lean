@@ -87,11 +87,14 @@ def hamiltonian (params : Parameters) (px py : ℝ) : Matrix2 :=
 def bandEnergy (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
   kineticEnergy params px py + bandSign band * spinOrbitEnergy params px py
 
+def relativeBandEnergy (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
+  bandEnergy params band px py - params.chemicalPotential
+
 def occupation
     (occupationLaw : ℝ → ℝ) (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
   bandStateOccupation occupationLaw
-    (fun b p : Band × (ℝ × ℝ) => bandEnergy params b p.2.1 p.2.2)
-    band (band, (px, py))
+    (fun b p : ℝ × ℝ => relativeBandEnergy params b p.1 p.2)
+    band (px, py)
 
 def velocityOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : Matrix2 :=
   if direction = 0 then
