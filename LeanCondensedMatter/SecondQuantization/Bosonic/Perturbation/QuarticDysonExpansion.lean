@@ -179,7 +179,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
         intro q
         exact ((((continuous_const.mul
           (Common.continuous_quarticVertexTimeFactor ε (q 0))).mul
-            (continuous_Common.quarticDysonSequenceCoeff ε g
+            (Common.continuous_quarticDysonSequenceCoeff ε g
               (fun i => (q i.succ : QuarticVertexLabel Mode)))).mul
               continuous_const).intervalIntegrable 0 t)
       rw [intervalIntegral.integral_finsetSum (fun q _ => hintegrability q)]
@@ -216,7 +216,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
         funext i
         refine Fin.cases ?_ ?_ i <;> simp
       have hcoeff :=
-        Common.Common.quarticDysonSequenceCoeff_cons ε g (q 0 : QuarticVertexLabel Mode)
+        Common.quarticDysonSequenceCoeff_cons ε g (q 0 : QuarticVertexLabel Mode)
           (fun i => (q i.succ : QuarticVertexLabel Mode)) t
       rw [hq] at hcoeff
       rw [hcoeff]
