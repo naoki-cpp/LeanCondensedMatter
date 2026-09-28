@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation
 import Mathlib.Analysis.CStarAlgebra.Basic
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -24,6 +25,8 @@ perturbations whose integrated first variation is skew-adjoint.
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -88,13 +91,12 @@ theorem star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
 
 /-- Under the sufficient physical condition `V(t)† = V(t)`, the first density variation is the
 Liouville commutator `[K_V(t), ρ₀]`. -/
-theorem densityOperatorFirstVariation_eq_commutator_of_isSelfAdjoint
+theorem densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H))
     (hV : ∀ s, IsSelfAdjoint (V s)) (t : ℝ) :
     densityOperatorFirstVariation system ρ V t =
-      timeDependentPropagatorFirstVariation system V t * ρ.op -
-        ρ.op * timeDependentPropagatorFirstVariation system V t :=
-  densityOperatorFirstVariation_eq_commutator_of_star_eq_neg system ρ V t
+      ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ :=
+  densityOperatorFirstVariation_eq_lie_of_star_eq_neg system ρ V t
     (star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint system V hV t)
 
 end
