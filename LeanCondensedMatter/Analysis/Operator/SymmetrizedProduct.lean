@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.LinearAlgebra.BilinearMap
 import Mathlib.Tactic.Module
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
