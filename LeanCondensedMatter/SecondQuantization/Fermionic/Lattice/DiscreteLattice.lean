@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator
 import Mathlib.LinearAlgebra.Finsupp.LSum
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
