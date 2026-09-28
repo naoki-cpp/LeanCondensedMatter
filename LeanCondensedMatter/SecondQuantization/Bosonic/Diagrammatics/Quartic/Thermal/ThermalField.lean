@@ -80,8 +80,15 @@ theorem quarticFreeThermalOrderedProduct_cons {n : ℕ}
     (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
     quarticFreeThermalOrderedProduct (Fin.cons q0 q) =
       (quarticVertexOperator q0).comp (quarticFreeThermalOrderedProduct q) := by
-  rw [quarticFreeThermalOrderedProduct, quarticFreeThermalFieldFamily,
-    Common.listOfFn_orderedQuarticLegFamily_cons]
+  rw [quarticFreeThermalOrderedProduct, quarticFreeThermalFieldFamily]
+  have hfamily :
+      (fun i : Fin (n + 1) => fun l : Fin 4 =>
+        quarticFreeThermalField (Fin.cons q0 q i) l) =
+        Fin.cons (fun l : Fin 4 => quarticFreeThermalField q0 l)
+          (fun i : Fin n => fun l : Fin 4 => quarticFreeThermalField (q i) l) := by
+    funext i
+    refine Fin.cases ?_ (fun i => ?_) i <;> rfl
+  rw [hfamily, Common.listOfFn_orderedQuarticLegFamily_cons]
   simp [FreeThermalField.orderedProduct, List.map_ofFn,
     FreeThermalField.operator_quarticFreeThermalField,
     quarticVertexOperator, quarticLocalLegOperator, Common.quarticLocalLegOperator,
