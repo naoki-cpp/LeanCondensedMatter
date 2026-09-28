@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -24,6 +25,8 @@ formula, rather than by introducing a second response convention.
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 open Set
 
@@ -83,51 +86,39 @@ theorem sourceCoupled_responseIntegral_eq
     ((-(Complex.I / (system.hbar : ℂ))) •
       ∫ s in (0 : ℝ)..t,
         expectation
-          (heisenbergEvolution system A t *
-              timeDependentInteractionPerturbation system
-                (sourceCoupledPerturbation f B) s -
+          ⁅heisenbergEvolution system A t,
             timeDependentInteractionPerturbation system
-                (sourceCoupledPerturbation f B) s *
-              heisenbergEvolution system A t)) =
+              (sourceCoupledPerturbation f B) s⁆) =
       ((Complex.I / (system.hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              (heisenbergEvolution system A t * heisenbergEvolution system B s -
-                heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
+              ⁅heisenbergEvolution system A t,
+                heisenbergEvolution system B s⁆) := by
   let g : ℝ → ℂ := fun s =>
     (f s : ℂ) *
       expectation
-        (heisenbergEvolution system A t * heisenbergEvolution system B s -
-          heisenbergEvolution system B s * heisenbergEvolution system A t)
+        ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆
   have hfun :
       (fun s : ℝ =>
         expectation
-          (heisenbergEvolution system A t *
-              timeDependentInteractionPerturbation system
-                (sourceCoupledPerturbation f B) s -
+          ⁅heisenbergEvolution system A t,
             timeDependentInteractionPerturbation system
-                (sourceCoupledPerturbation f B) s *
-              heisenbergEvolution system A t)) =
+              (sourceCoupledPerturbation f B) s⁆) =
         fun s => -g s := by
     funext s
     rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
     calc
       expectation
-          (heisenbergEvolution system A t *
-              ((-(f s : ℂ)) • heisenbergEvolution system B s) -
-            ((-(f s : ℂ)) • heisenbergEvolution system B s) *
-              heisenbergEvolution system A t) =
+          ⁅heisenbergEvolution system A t,
+            (-(f s : ℂ)) • heisenbergEvolution system B s⁆ =
         expectation
           ((-(f s : ℂ)) •
-            (heisenbergEvolution system A t * heisenbergEvolution system B s -
-              heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
-        congr 1
-        rw [mul_smul_comm, smul_mul_assoc, smul_sub]
+            ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆) := by
+        rw [lie_smul]
       _ = (-(f s : ℂ)) *
           expectation
-            (heisenbergEvolution system A t * heisenbergEvolution system B s -
-              heisenbergEvolution system B s * heisenbergEvolution system A t) := by
+            ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆ := by
         exact map_smul expectation.toContinuousLinearMap _ _
       _ = -g s := by
         simp [g]
@@ -155,8 +146,7 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              (heisenbergEvolution system A t * heisenbergEvolution system B s -
-                heisenbergEvolution system B s * heisenbergEvolution system A t))
+              ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆
       0 := by
   have hgeneral :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
