@@ -21,6 +21,8 @@ of that functional under additional assumptions.
 namespace QuantumMechanics
 namespace SingleParticle
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open QuantumTheory.ConservationLaw
 
 variable {Test OneForm : Type*}
@@ -56,7 +58,7 @@ theorem heisenbergLocalizationFunctional_apply
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (f : Test) :
     heisenbergLocalizationFunctional V ℏ h M f =
-      heisenbergScale ℏ • _root_.ConservationLaw.linearCommutator h (M f) :=
+      heisenbergScale ℏ • ⁅h, M f⁆ :=
   rfl
 
 @[simp]
@@ -90,7 +92,7 @@ theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
     heisenbergScale, _root_.ConservationLaw.transportFunctional,
     _root_.ConservationLaw.localizationCommutatorFunctional,
     _root_.ConservationLaw.symmetrizedProductRightLinear,
-    _root_.ConservationLaw.linearCommutator]
+    LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
 
 /-- Heisenberg evolution of a symmetrically localized one-body quantity gives the intrinsic balance
 law as soon as its transport functional depends only on differential test data.  No extension of
@@ -112,9 +114,8 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
   balance := by
     intro f
     change heisenbergScale ℏ •
-        _root_.ConservationLaw.linearCommutator h
-          (_root_.ConservationLaw.localizedQuantity V M m f) = _
-    rw [_root_.ConservationLaw.linearCommutator_localizedQuantity]
+        ⁅h, _root_.ConservationLaw.localizedQuantity V M m f⁆ = _
+    rw [_root_.ConservationLaw.lie_localizedQuantity]
     simp [heisenbergSourceFunctional, heisenbergTransportFunctional, smul_add]
 
 /-- A one-form-like test is paired with a one-body current-density operator by symmetric
