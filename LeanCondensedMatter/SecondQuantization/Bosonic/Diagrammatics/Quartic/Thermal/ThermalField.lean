@@ -91,7 +91,8 @@ theorem quarticFreeThermalOrderedProduct_cons {n : ℕ}
     funext i
     refine Fin.cases ?_ (fun i => ?_) i <;> rfl
   rw [hfamily, Common.listOfFn_orderedQuarticLegFamily_cons]
-  simp [FreeThermalField.orderedProduct, List.map_ofFn,
+  simp [quarticFreeThermalOrderedProduct, quarticFreeThermalFieldFamily,
+    FreeThermalField.orderedProduct, List.map_ofFn,
     FreeThermalField.operator_quarticFreeThermalField,
     quarticVertexOperator, quarticLocalLegOperator, Common.quarticLocalLegOperator,
     List.ofFn_succ, Module.End.mul_eq_comp]
