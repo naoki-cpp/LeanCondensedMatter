@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertex
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion
 
 set_option linter.style.header false
 
@@ -19,4 +20,9 @@ conjugation reduces Gibbs summability to summability of the bare interaction. Fi
 interactions satisfy a uniform quadratic particle-number bound, so free Boltzmann moments imply the
 required Gibbs-domain membership. Their first Dyson coefficients are therefore Gibbs-summable, and
 their normalized Gibbs expectations satisfy the corresponding interval recursion.
+
+For finitely supported quartic interactions, the free interaction-picture evolution of each vertex
+is a scalar energy-shift factor times the bare vertex operator. This gives a finite vertex-sequence
+expansion of the physical Dyson coefficient before taking an infinite bosonic Gibbs expectation,
+without requiring the ambient mode type itself to be finite.
 -/
