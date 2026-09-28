@@ -144,15 +144,15 @@
       "id": "fermionicTransportCurrentAdapters",
       "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
       "layers": [
-        {"id": "boundedOneBody", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"]},
+        {"id": "boundedOneBodyResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"]},
         {"id": "intrinsicFluxResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse"]},
         {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"]},
         {"id": "correctedCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"]},
         {"id": "spinCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse"]}
       ],
       "edges": [
-        {"upstream": "boundedOneBody", "downstream": "intrinsicFluxResponse"},
-        {"upstream": "boundedOneBody", "downstream": "symmetrizedVelocity"},
+        {"upstream": "boundedOneBodyResponse", "downstream": "intrinsicFluxResponse"},
+        {"upstream": "boundedOneBodyResponse", "downstream": "symmetrizedVelocity"},
         {"upstream": "intrinsicFluxResponse", "downstream": "correctedCurrentResponse"},
         {"upstream": "symmetrizedVelocity", "downstream": "spinCurrentResponse"}
       ]

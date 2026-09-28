@@ -17,13 +17,12 @@ The measured current must therefore be treated as the source-dependent family
 J(A) = -∂ₐ H(A) = J₀ + A J₁ + O(A²),
 ```
 
-where `J₁ = -∂ₐ² H(0)`. This module constructs `J(A)` and its algebraic derivative `J₁`, transports
-both through `AlgebraicFock.dGamma` and the finite-lattice bounded realization, and specializes the general
-observable-variation Kubo theorem. The final response contains both the retarded current-current
-kernel and the explicit contact term.
+where `J₁ = -∂ₐ² H(0)`. This module constructs `J(A)` and its algebraic derivative `J₁`, then
+transports both through the canonical finite-lattice bounded one-body realization.
 
-The foundational derivative remains complexified and algebraic. The response theorem uses a real
-source profile `f`; at observation time `t`, the affine current coefficient is `f(t) J₁`.
+The foundational derivative remains complexified and algebraic. Observable-variation response
+theorems consuming the resulting current and contact operators live downstream in
+`Fermionic.Transport`.
 -/
 
 namespace SecondQuantization
@@ -95,15 +94,13 @@ variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 noncomputable def boundedPeierlsBondCurrent (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator
-    (AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondCurrentOperator ℏ q x y A))
+  boundedOneBodyOperator (K.peierlsBondCurrentOperator ℏ q x y A)
 
 /-- Bounded contact operator on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedBondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator
-    (AlgebraicFock.dGamma (LatticeState Site) (K.oneParticleBondContact ℏ q x y))
+  boundedOneBodyOperator (K.oneParticleBondContact ℏ q x y)
 
 /-- At zero source, the bounded Peierls current is the bounded continuity-derived current. -/
 @[simp]
@@ -111,29 +108,26 @@ theorem boundedPeierlsBondCurrent_zero (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
     boundedPeierlsBondCurrent K ℏ q x y 0 =
       boundedBondCurrent ℏ q K x y := by
-  unfold boundedPeierlsBondCurrent boundedBondCurrent
-  rw [K.peierlsBondCurrentOperator_zero]
-  unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
-  congr 1
-  simpa only [AlgebraicFock.dGammaLinear_apply] using
-    (AlgebraicFock.dGammaLinear (LatticeState Site)).map_smul
-      ((Complex.I * q) / ℏ) (K.bondOperator x y)
+  rw [boundedPeierlsBondCurrent, K.peierlsBondCurrentOperator_zero]
+  unfold boundedOneBodyOperator boundedOneBodyOperatorLinearMap
+  unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
+  rw [map_smul]
+  change
+    ((Complex.I * q) / ℏ) •
+        boundedLatticeOperator
+          (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+      boundedLatticeOperator
+        (((Complex.I * q) / ℏ) •
+          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+  rw [boundedLatticeOperator_smul]
 
 /-- The bounded transport preserves the weak algebraic derivative of the Peierls current family. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (boundedPeierlsBondCurrent K ℏ q x y)
       (boundedBondContact K ℏ q x y) 0 := by
-  have hFock :
-      HasAlgebraicDerivAt
-        (fun A => AlgebraicFock.dGamma (LatticeState Site)
-          (K.peierlsBondCurrentOperator ℏ q x y A))
-        (AlgebraicFock.dGamma (LatticeState Site)
-          (K.oneParticleBondContact ℏ q x y)) 0 := by
-    exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
-      (AlgebraicFock.dGammaLinear (LatticeState Site))
-  unfold boundedPeierlsBondCurrent boundedBondContact
-  exact hFock.map (boundedLatticeOperatorLinearMap (Site := Site))
+  exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
+    (boundedOneBodyOperatorLinearMap (Site := Site))
 
 end Bounded
 

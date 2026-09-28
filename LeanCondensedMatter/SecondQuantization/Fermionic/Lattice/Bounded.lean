@@ -73,6 +73,31 @@ noncomputable def boundedLatticeOperator
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedLatticeOperatorAlgEquiv A
 
+
+/-- Linear finite-lattice realization of an arbitrary one-body operator as a bounded Fock-space
+observable. -/
+noncomputable def boundedOneBodyOperatorLinearMap :
+    (LatticeState Site →ₗ[ℂ] LatticeState Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
+  (boundedLatticeOperatorLinearMap (Site := Site)).comp
+    (AlgebraicFock.dGammaLinear (LatticeState Site))
+
+/-- Bounded Fock-space observable associated with one supplied one-body operator. -/
+noncomputable def boundedOneBodyOperator
+    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
+  boundedOneBodyOperatorLinearMap operator
+
+
+/-- Canonical computation rule for the bounded realization of a one-body operator. -/
+@[simp]
+theorem boundedOneBodyOperator_eq
+    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    boundedOneBodyOperator operator =
+      boundedLatticeOperator
+        (AlgebraicFock.dGamma (LatticeState Site) operator) :=
+  rfl
+
 @[simp]
 theorem boundedLatticeOperator_add
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
@@ -160,40 +185,35 @@ noncomputable def boundedBondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Sit
 noncomputable def boundedPeierlsBondHamiltonian (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator
-    (AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A))
+  boundedOneBodyOperator (K.peierlsBondHamiltonian ℏ q x y A)
 
 /-- The Peierls derivative/current equivalence survives the finite-dimensional bounded transport. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (boundedPeierlsBondHamiltonian K ℏ q x y)
       (-boundedBondCurrent ℏ q K x y) 0 := by
-  have hFock :
-      HasAlgebraicDerivAt
-        (fun A => AlgebraicFock.dGamma (LatticeState Site)
-          (K.peierlsBondHamiltonian ℏ q x y A))
-        (-bondCurrent ℏ q K x y) 0 := by
-    have h :=
-      (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
-        (AlgebraicFock.dGammaLinear (LatticeState Site))
-    convert h using 1
-    · rfl
-    · change
-        -bondCurrent ℏ q K x y =
-          AlgebraicFock.dGammaLinear (LatticeState Site)
-            (-K.oneParticleBondCurrent ℏ q x y)
-      symm
-      rw [map_neg]
-      unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
-      rw [map_smul]
-      rfl
-  unfold boundedPeierlsBondHamiltonian boundedBondCurrent
-  have h := hFock.map (boundedLatticeOperatorLinearMap (Site := Site))
+  have h :=
+    (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
+      (boundedOneBodyOperatorLinearMap (Site := Site))
+  have hcurrent :
+      boundedOneBodyOperatorLinearMap (Site := Site) (K.oneParticleBondCurrent ℏ q x y) =
+        boundedBondCurrent ℏ q K x y := by
+    unfold boundedOneBodyOperatorLinearMap
+    unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
+    rw [map_smul]
+    change
+      ((Complex.I * q) / ℏ) •
+          boundedLatticeOperator
+            (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+        boundedLatticeOperator
+          (((Complex.I * q) / ℏ) •
+            AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+    rw [boundedLatticeOperator_smul]
   change HasAlgebraicDerivAt
-    (fun A => boundedLatticeOperatorLinearMap
-      (AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A)))
-    (-boundedLatticeOperatorLinearMap (bondCurrent ℏ q K x y)) 0
-  simpa only [map_neg] using h
+    (fun A => boundedOneBodyOperatorLinearMap (Site := Site)
+      (K.peierlsBondHamiltonian ℏ q x y A))
+    (-boundedBondCurrent ℏ q K x y) 0
+  simpa only [map_neg, hcurrent] using h
 
 /-- Reversing a bond negates its bounded current observable. -/
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
