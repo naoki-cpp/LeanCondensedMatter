@@ -41138,7 +41138,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t =\n        QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t * ρ.op -\n          ρ.op * QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t =\n        ⁅QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t, ρ.op⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41150,7 +41150,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_isSelfAdjoint",
+    "name": "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation",
     "externalAxioms": [],
     "docString": "Under the sufficient physical condition `V(t)† = V(t)`, the first density variation is the\nLiouville commutator `[K_V(t), ρ₀]`. ",
@@ -41158,7 +41158,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_star_eq_neg",
+      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_star_eq_neg",
       "QuantumTheory.LinearResponse.star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
@@ -41176,7 +41176,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) =\n      -QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t →\n    QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t =\n      QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t * ρ.op -\n        ρ.op * QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) =\n      -QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t →\n    QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t =\n      ⁅QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t, ρ.op⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41188,20 +41188,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_star_eq_neg",
+    "name": "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_star_eq_neg",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation",
     "externalAxioms": [],
     "docString": "If the first propagator variation is skew-adjoint, the density variation is its commutator with\n`ρ₀`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -47223,7 +47223,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint"
     ],
@@ -47233,7 +47233,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_commutator_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint"
     ],
@@ -80229,7 +80229,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (ℏ κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  (Complex.I / ↑ℏ) •\n      (SchwartzKinetic1D.schrodingerOperator κ potential ∘ₗ SchwartzKinetic1D.multiplicationOperator f -\n        SchwartzKinetic1D.multiplicationOperator f ∘ₗ SchwartzKinetic1D.schrodingerOperator κ potential) =\n    (1 / 2) •\n      (SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f) ∘ₗ\n          SchwartzKinetic1D.velocityOperator ℏ κ +\n        SchwartzKinetic1D.velocityOperator ℏ κ ∘ₗ\n          SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f))",
+    "statement": "∀ (ℏ κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  (Complex.I / ↑ℏ) • ⁅SchwartzKinetic1D.schrodingerOperator κ potential, SchwartzKinetic1D.multiplicationOperator f⁆ =\n    (1 / 2) •\n      (SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f) ∘ₗ\n          SchwartzKinetic1D.velocityOperator ℏ κ +\n        SchwartzKinetic1D.velocityOperator ℏ κ ∘ₗ\n          SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80250,13 +80250,54 @@
     "dependents": [],
     "dependencies": [
       "SchwartzKinetic1D.derivative_multiplication_apply",
-      "SchwartzKinetic1D.schrodinger_localization_commutator_eq_kinetic",
+      "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic",
       "SchwartzKinetic1D.secondDerivative_multiplication_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  ⁅SchwartzKinetic1D.schrodingerOperator κ potential, SchwartzKinetic1D.multiplicationOperator f⁆ =\n    ⁅SchwartzKinetic1D.kineticOperator κ, SchwartzKinetic1D.multiplicationOperator f⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
+    "externalAxioms": [],
+    "docString": "The local multiplication potential contributes no localization commutator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
+    ],
+    "dependencies": [
+      "SchwartzKinetic1D.multiplicationOperator_comp_comm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80322,54 +80363,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SchwartzKinetic1D.schrodinger_localization_commutator_eq_kinetic"
+      "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SchwartzKinetic1D.schrodinger_localization_commutator_eq_kinetic"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  SchwartzKinetic1D.schrodingerOperator κ potential ∘ₗ SchwartzKinetic1D.multiplicationOperator f -\n      SchwartzKinetic1D.multiplicationOperator f ∘ₗ SchwartzKinetic1D.schrodingerOperator κ potential =\n    SchwartzKinetic1D.kineticOperator κ ∘ₗ SchwartzKinetic1D.multiplicationOperator f -\n      SchwartzKinetic1D.multiplicationOperator f ∘ₗ SchwartzKinetic1D.kineticOperator κ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzKinetic1D.schrodinger_localization_commutator_eq_kinetic",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-    "externalAxioms": [],
-    "docString": "The local multiplication potential contributes no localization commutator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
-    ],
-    "dependencies": [
-      "SchwartzKinetic1D.multiplicationOperator_comp_comm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
+      "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
