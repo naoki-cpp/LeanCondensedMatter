@@ -7,8 +7,9 @@ set_option linter.style.header false
 # Statistics-independent quartic interaction structure
 
 A number-conserving quartic interaction vertex carries two creation modes and two annihilation modes.
-The local-leg ordering, generic ladder-map operator constructors, finite-support interaction sums, and
-free-energy shifts are independent of particle statistics and imaginary-time evolution.
+The local-leg ordering, generic ladder-map operator constructors, finite vertex-sequence products,
+finite-support interaction sums, and free-energy shifts are independent of particle statistics and
+imaginary-time evolution.
 
 A quartic interaction only needs finitely many nonzero vertex labels, not a finite ambient mode type.
 `quarticInteractionOn` takes that finite support explicitly. The finite-mode constructor
@@ -83,6 +84,23 @@ abbrev quarticVertexOperator
     (q : QuarticVertexLabel Mode) : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   (create q.create₁).comp
     ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))
+
+/-- Ordered product of a finite sequence of quartic vertex operators. -/
+noncomputable def quarticVertexSequenceOperator {n : ℕ}
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : Fin n → QuarticVertexLabel Mode) :
+    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
+  (List.ofFn fun i => quarticVertexOperator create annihilate (q i)).prod
+
+/-- Prepending one quartic vertex prepends its operator by composition. -/
+@[simp]
+theorem quarticVertexSequenceOperator_cons {n : ℕ}
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
+    quarticVertexSequenceOperator create annihilate (Fin.cons q0 q) =
+      (quarticVertexOperator create annihilate q0).comp
+        (quarticVertexSequenceOperator create annihilate q) := by
+  simp [quarticVertexSequenceOperator, Module.End.mul_eq_comp]
 
 /-- A quartic interaction supported on a specified finite set of vertex labels.
 
