@@ -17,7 +17,7 @@ namespace Common
 
 noncomputable section
 
-variable {Mode : Type*}
+variable {Mode Config : Type*}
 
 /-- The scalar time factor of a fixed vertex sequence is jointly continuous. -/
 theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
