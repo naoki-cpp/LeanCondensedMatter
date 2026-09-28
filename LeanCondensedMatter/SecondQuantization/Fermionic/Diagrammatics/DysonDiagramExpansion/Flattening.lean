@@ -33,11 +33,12 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
       List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
         Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ
   | 0, _, _ => by
-      simp [quarticLegOperatorForSequence, Common.orderedQuarticLegFamily,
-        List.ofFn, Module.End.one_eq_id]
+      simp [quarticLegOperatorForSequence, List.ofFn, Module.End.one_eq_id]
   | n + 1, q, τ => by
       rw [Common.quarticVertexSequenceInteractionPicture_succ]
-      rw [quarticLegOperatorForSequence]
+      change List.prod (List.ofFn (Common.orderedQuarticLegFamily
+        (fun i : Fin (n + 1) => fun l : Fin 4 =>
+          imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)))) = _
       have hfamily :
           (fun i : Fin (n + 1) => fun l : Fin 4 =>
             imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)) =
@@ -65,10 +66,13 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
                 (quarticLocalLegOperator (q i.succ) l)))).prod =
             Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
               (fun i => q i.succ) (fun i => τ i.succ) by
-        simpa [quarticLegOperatorForSequence] using
-          prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
-            ε n (fun i => q i.succ) (fun i => τ i.succ)]
-      exact Module.End.mul_eq_comp
+        change List.prod (List.ofFn
+          (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))) =
+            Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
+              (fun i => q i.succ) (fun i => τ i.succ)
+        exact prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
+          ε n (fun i => q i.succ) (fun i => τ i.succ)]
+      simp only [Module.End.mul_eq_comp]
 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
