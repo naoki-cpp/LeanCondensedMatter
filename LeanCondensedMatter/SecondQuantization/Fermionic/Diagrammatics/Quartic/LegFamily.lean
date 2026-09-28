@@ -48,9 +48,9 @@ theorem timedFieldOperator_quarticLegFieldForSequence (ε : Mode → ℝ) {n : �
             (q (Common.orderedQuarticLegEquiv n p).1)
             (Common.orderedQuarticLegEquiv n p).2)⟩ =
     imaginaryTimeEvolve ε (τ (Common.orderedQuarticLegEquiv n p).1)
-      (quarticLocalLeg
+      (quarticLocalLegOperator
         (q (Common.orderedQuarticLegEquiv n p).1)
-        (Common.orderedQuarticLegEquiv n p).2).operator create annihilate
+        (Common.orderedQuarticLegEquiv n p).2)
   simpa [quarticLocalLegOperator, Common.quarticLocalLegOperator] using
     (timedFieldOperator_quarticLocalLeg ε
       (τ (Common.orderedQuarticLegEquiv n p).1)
