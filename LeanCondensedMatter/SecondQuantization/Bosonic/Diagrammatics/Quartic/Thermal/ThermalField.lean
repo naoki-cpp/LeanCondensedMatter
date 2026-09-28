@@ -70,10 +70,115 @@ noncomputable def quarticFreeThermalFieldFamily {n : ℕ}
     let vl := Common.orderedQuarticLegEquiv n leg
     quarticFreeThermalField (q vl.1) vl.2
 
+/-- At a row-major block coordinate, the flattened thermal-field family recovers the
+corresponding local leg of the selected quartic vertex. -/
+private theorem FreeThermalField.operator_quarticFreeThermalFieldFamily_cast_mul_add {n : ℕ}
+    (q : Fin n → QuarticVertexLabel Mode) (i : Fin n) (j : Fin 4)
+    (h : 2 * (2 * n) = n * 4) :
+    FreeThermalField.operator
+        (quarticFreeThermalFieldFamily q
+          (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩)) =
+      quarticLocalLegOperator (q i) j := by
+  have hcoord :
+      Common.orderedQuarticLegEquiv n
+          (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) = (i, j) := by
+    simpa [Common.orderedQuarticLegEquiv] using
+      (Combinatorics.FiniteIndex.blockEquiv_cast_mul_add h i j)
+  rw [quarticFreeThermalFieldFamily, hcoord,
+    FreeThermalField.operator_quarticFreeThermalField]
+
 /-- Ordered algebraic product of all local legs of a finite list of quartic vertices. -/
 noncomputable def quarticFreeThermalOrderedProduct {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   FreeThermalField.orderedProduct (List.ofFn (quarticFreeThermalFieldFamily q))
+
+/-- Prepending one quartic vertex prepends its four thermal-field operators to the flattened
+ordered product. -/
+@[simp]
+theorem quarticFreeThermalOrderedProduct_cons {n : ℕ}
+    (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode) :
+    quarticFreeThermalOrderedProduct (Fin.cons q0 q) =
+      (quarticVertexOperator q0).comp (quarticFreeThermalOrderedProduct q) := by
+  have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
+  have hcard' : 2 * (2 * n) = n * 4 := by ring
+  have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
+  have hvertex :
+      (List.ofFn (fun j : Fin 4 =>
+        FreeThermalField.operator (quarticFreeThermalField q0 j))).prod =
+        quarticVertexOperator q0 := by
+    simp [FreeThermalField.operator_quarticFreeThermalField,
+      quarticVertexOperator, quarticLocalLegOperator, Common.quarticLocalLegOperator,
+      List.ofFn_succ, Module.End.mul_eq_comp]
+  simp only [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct, List.map_ofFn]
+  rw [← hvertex, ← Module.End.mul_eq_comp, ← List.prod_append,
+    List.ofFn_congr h2, ← List.ofFn_fin_append]
+  refine congrArg List.prod
+    (congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_)))
+  · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
+        Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
+      apply Fin.ext
+      simp
+    change FreeThermalField.operator
+        (quarticFreeThermalFieldFamily (Fin.cons q0 q)
+          (Fin.cast h2.symm (Fin.castAdd _ j))) =
+      Fin.append
+        (fun j : Fin 4 => FreeThermalField.operator (quarticFreeThermalField q0 j))
+        (fun k => FreeThermalField.operator (quarticFreeThermalFieldFamily q k))
+        (Fin.castAdd _ j)
+    rw [Fin.append_left, e1,
+      FreeThermalField.operator_quarticFreeThermalFieldFamily_cast_mul_add
+        (Fin.cons q0 q) 0 j hcard]
+  · have hk : k = Fin.cast hcard'.symm
+        ⟨(Common.orderedQuarticLegEquiv n k).1 * 4 +
+            (Common.orderedQuarticLegEquiv n k).2, by
+          have := (Common.orderedQuarticLegEquiv n k).2.isLt
+          omega⟩ :=
+      Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv hcard' k
+    have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
+        ⟨((Common.orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 +
+            ((Common.orderedQuarticLegEquiv n k).2 : ℕ),
+          by
+            have := (Common.orderedQuarticLegEquiv n k).2.isLt
+            omega⟩ := by
+      apply Fin.ext
+      simp only [Fin.val_cast, Fin.val_natAdd, Fin.val_succ]
+      have hkval : (k : ℕ) =
+          (Common.orderedQuarticLegEquiv n k).1 * 4 +
+            (Common.orderedQuarticLegEquiv n k).2 := by
+        have := congrArg Fin.val hk
+        simpa using this
+      omega
+    change FreeThermalField.operator
+        (quarticFreeThermalFieldFamily (Fin.cons q0 q)
+          (Fin.cast h2.symm (Fin.natAdd 4 k))) =
+      Fin.append
+        (fun j : Fin 4 => FreeThermalField.operator (quarticFreeThermalField q0 j))
+        (fun k => FreeThermalField.operator (quarticFreeThermalFieldFamily q k))
+        (Fin.natAdd 4 k)
+    rw [Fin.append_right, e2,
+      FreeThermalField.operator_quarticFreeThermalFieldFamily_cast_mul_add
+        (Fin.cons q0 q) (Common.orderedQuarticLegEquiv n k).1.succ
+          (Common.orderedQuarticLegEquiv n k).2 hcard]
+    have hrest := FreeThermalField.operator_quarticFreeThermalFieldFamily_cast_mul_add q
+      (Common.orderedQuarticLegEquiv n k).1
+      (Common.orderedQuarticLegEquiv n k).2 hcard'
+    rw [← hk] at hrest
+    exact hrest.symm
+
+/-- The flattened bosonic free-thermal-field product is exactly the Common bare quartic
+vertex-sequence operator. This is the operator bridge from the quartic Dyson expansion to the
+bosonic Gibbs/Wick layer. -/
+theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : ℕ}
+    (q : Fin n → QuarticVertexLabel Mode) :
+    quarticFreeThermalOrderedProduct q =
+      Common.quarticVertexSequenceOperator create annihilate q := by
+  induction n generalizing q with
+  | zero =>
+      simp [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct,
+        Common.quarticVertexSequenceOperator, Module.End.one_eq_id]
+  | succ n ih =>
+      rw [← Fin.cons_self_tail q, quarticFreeThermalOrderedProduct_cons,
+        Common.quarticVertexSequenceOperator_cons, ih]
 
 end
 end Bosonic
