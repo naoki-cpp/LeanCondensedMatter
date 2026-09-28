@@ -62,7 +62,12 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
     have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
     have hcard' : 2 * (2 * n) = n * 4 := by ring
     have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
-    rw [Common.quarticVertexSequenceInteractionPicture_succ, interactionPicture_quarticVertexOperator_eq_prod,
+    rw [Common.quarticVertexSequenceInteractionPicture_succ]
+    change List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
+      (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
+        (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n
+          (fun i => q i.succ) (fun i => τ i.succ))
+    rw [interactionPicture_quarticVertexOperator_eq_prod,
       ← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture ε n
         (fun i => q i.succ) (fun i => τ i.succ),
       ← Module.End.mul_eq_comp, ← List.prod_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
