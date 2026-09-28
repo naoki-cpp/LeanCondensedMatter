@@ -54,8 +54,7 @@ theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff [Finite Mode] 
 
 set_option linter.unusedFintypeInType false in
 /-- **Joint continuity, in the full time vector `τ`, of a matrix coefficient of
-`Common.quarticVertexSequenceInteractionPicture`** — by induction on `n`: the base case is constant (`nested...Comp ε 0
-q τ = LinearMap.id`); the successor case's matrix coefficient is a finite sum of products of a
+`Common.quarticVertexSequenceInteractionPicture`** — by induction on `n`: the base case is constant (`n = 0` gives `LinearMap.id`); the successor case's matrix coefficient is a finite sum of products of a
 single-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interactionPicture`,
 precomposed with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the
 "tail" projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum
@@ -77,11 +76,11 @@ theorem continuous_matrixCoeff_quarticVertexSequenceInteractionPicture (ε : Mod
       ((Common.continuous_matrixCoeff_interactionPicture
           (fermionEnergy ε) (quarticVertexOperator (q 0)) k j).comp
           (continuous_apply 0)).mul
-        ((continuous_matrixCoeff_Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n (fun i => q i.succ) j n').comp
+        ((continuous_matrixCoeff_quarticVertexSequenceInteractionPicture ε n (fun i => q i.succ) j n').comp
           (continuous_pi fun i => continuous_apply i.succ))
 
 /-- Joint continuity, in the full time vector `τ`, of the canonical finite Gibbs expectation of
-an `L`-prefixed `Common.quarticVertexSequenceInteractionPicture`. The diagonal expectation formula reduces continuity to
+an `L`-prefixed Common quartic interaction-picture sequence. The diagonal expectation formula reduces continuity to
 a finite sum of continuous matrix coefficients. -/
 private theorem finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture
     (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
@@ -92,7 +91,7 @@ private theorem finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInte
   simp_rw [Common.finiteGibbsExpectation_eq_sum, Common.matrixCoeff_comp]
   exact continuous_finsetSum _ fun k' _ => continuous_const.mul
     (continuous_finsetSum _ fun j _ => continuous_const.mul
-      (continuous_matrixCoeff_Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q j k'))
+      (continuous_matrixCoeff_quarticVertexSequenceInteractionPicture ε n q j k'))
 
 /-- Joint continuity of the canonical free Gibbs density-state expectation of an
 `L`-prefixed quartic interaction-picture vertex sequence. The finite diagonal calculation above remains private proof machinery. -/
@@ -104,7 +103,7 @@ theorem continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequen
         (Common.finiteHilbertOperatorAlgEquiv
           (L.comp (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ)))) := by
   simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-    finiteGibbsExpectation_continuous_comp_Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate β n q L
+    finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture ε β n q L
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_neg_apply (ε : Mode → ℝ) (β : ℝ)
@@ -127,7 +126,7 @@ private theorem finiteGibbsExpectation_fintype_sum {ι : Type*} [Fintype ι]
 
 /-- **The key induction: `dysonCoeff` of `quarticInteraction`, left-composed with an arbitrary
 fixed prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over vertex-label sequences of an
-`orderedSimplexIntegral` of `L`-prefixed `Common.quarticVertexSequenceInteractionPicture` values.** The prefix `L`
+`orderedSimplexIntegral` of `L`-prefixed Common quartic interaction-picture sequences.** The prefix `L`
 generalizes the induction so the successor case can absorb the newly-peeled-off outermost vertex
 factor into `L` before invoking the inductive hypothesis on the remaining `n`-fold piece; the
 bound `t` likewise generalizes so the inductive step's inner integral (over `[0, σ]` for the
@@ -254,7 +253,7 @@ private theorem finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : 
       have hcontF : Continuous (Function.uncurry
           (fun (σ : ℝ) (τ' : Fin n → ℝ) => Common.finiteGibbsExpectation (fermionEnergy ε) β
             (L.comp (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate (n + 1) q (Fin.cons σ τ'))))) :=
-        (finiteGibbsExpectation_continuous_comp_Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate β (n + 1) q L).comp
+        (finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture ε β (n + 1) q L).comp
           (Continuous.finCons continuous_fst continuous_snd)
       have hcont := intervalIntegral.continuous_orderedSimplexIntegral_of_continuous n
         (id : ℝ → ℝ) _ continuous_id hcontF
