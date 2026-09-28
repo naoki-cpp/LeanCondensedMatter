@@ -151,7 +151,14 @@ private theorem interactionPicture_quarticInteractionOn_eq_sum
   change g (q : QuarticVertexLabel Mode) •
       interactionPicture ε (quarticVertexOperator (q : QuarticVertexLabel Mode)) τ =
     (g q * quarticVertexTimeFactor ε q τ) • quarticVertexOperator q
-  rw [interactionPicture_quarticVertexOperator_eq_smul]
+  change g (q : QuarticVertexLabel Mode) •
+      Common.heisenbergEvolve (freeEigenvalue ε) τ
+        (quarticVertexOperator (q : QuarticVertexLabel Mode)) =
+    (g q * quarticVertexTimeFactor ε q τ) • quarticVertexOperator q
+  rw [Common.heisenbergEvolve_quarticVertexOperator
+    (freeEigenvalue ε) ε create annihilate (q : QuarticVertexLabel Mode) τ
+    (fun i => imaginaryTimeEvolve_create ε τ i)
+    (fun i => imaginaryTimeEvolve_annihilate ε τ i)]
   simp [smul_smul]
 
 /-- The actual arbitrary-occupation-space Dyson coefficient of a finitely supported quartic
@@ -260,7 +267,7 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
               quarticDysonSequenceCoeff ε g
                 (fun i => (q i.succ : QuarticVertexLabel Mode)) σ) *
             Common.matrixCoeff
-              (quarticVertexSequenceOperator
+              (Common.quarticVertexSequenceOperator create annihilate
                 (fun i => (q i : QuarticVertexLabel Mode))) m k)]
         refine Finset.sum_congr rfl fun p _ => ?_
         obtain ⟨q0, q'⟩ := p
