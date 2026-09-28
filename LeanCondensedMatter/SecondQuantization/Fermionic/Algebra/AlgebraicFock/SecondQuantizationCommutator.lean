@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
 import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
