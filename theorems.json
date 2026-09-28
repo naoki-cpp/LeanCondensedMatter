@@ -111377,7 +111377,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
+      "SecondQuantization.Fermionic.Field.l2ChargeDensity_oneParticle"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
@@ -111386,7 +111386,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
+      "SecondQuantization.Fermionic.Field.l2ChargeDensity_oneParticle"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -113192,83 +113192,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ (q : ℂ) (f : L2Multiplication.ComplexLInf MeasureTheory.volume),\n  (SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D q) f =\n    q •\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma (L2Multiplication.ComplexL2 MeasureTheory.volume)\n        ↑(L2Multiplication.multiplicationOperator MeasureTheory.volume f)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumL2ChargeDensity1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (q : ℂ) (f : L2Multiplication.ComplexLInf MeasureTheory.volume) (ψ : L2Multiplication.ComplexL2 MeasureTheory.volume),\n  ((SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D q) f)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 MeasureTheory.volume)) ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 MeasureTheory.volume))\n      (q • (L2Multiplication.multiplicationOperator MeasureTheory.volume f) ψ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumL2ChargeDensity1D",
-    "externalAxioms": [],
-    "docString": "On the one-particle sector, the second-quantized continuum charge density is exactly the\ncharge-scaled canonical bounded multiplication operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (𝓗₁ : Type u_2)\n  [inst_2 : AddCommGroup 𝓗₁] [inst_3 : _root_.Module ℂ 𝓗₁] (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (M : Test →ₗ[ℂ] 𝓗₁ →ₗ[ℂ] 𝓗₁)\n  (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test),\n  ⁅SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ h,\n      (SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity 𝓗₁ M m) f⁆ =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.transportCommutator 𝓗₁ h M m f) +\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.sourceCommutator 𝓗₁ h M m f)",
     "standardAxioms": [
@@ -113293,6 +113216,83 @@
       "ConservationLaw.lie_localizedQuantity",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie",
       "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : MeasurableSpace α] (μ : MeasureTheory.Measure α) (q : ℂ) (f : L2Multiplication.ComplexLInf μ),\n  (SecondQuantization.Fermionic.Field.l2ChargeDensity μ q) f =\n    q •\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma (L2Multiplication.ComplexL2 μ)\n        ↑(L2Multiplication.multiplicationOperator μ f)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Field.l2ChargeDensity_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.L2ChargeDensity",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Field.l2ChargeDensity_oneParticle"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Field.l2ChargeDensity_oneParticle"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} [inst : MeasurableSpace α] (μ : MeasureTheory.Measure α) (q : ℂ) (f : L2Multiplication.ComplexLInf μ)\n  (ψ : L2Multiplication.ComplexL2 μ),\n  ((SecondQuantization.Fermionic.Field.l2ChargeDensity μ q) f)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 μ)) ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 μ))\n      (q • (L2Multiplication.multiplicationOperator μ f) ψ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Field.l2ChargeDensity_oneParticle",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.L2ChargeDensity",
+    "externalAxioms": [],
+    "docString": "On the one-particle sector, the second-quantized `L²` charge density is exactly the\ncharge-scaled canonical bounded multiplication operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle",
+      "SecondQuantization.Fermionic.Field.l2ChargeDensity_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
