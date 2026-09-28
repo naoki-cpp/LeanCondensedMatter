@@ -184,6 +184,9 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                   quarticVertexSequenceOperator create annihilate
                     (Fin.cons (q0 : QuarticVertexLabel Mode)
                       (fun i => (q' i : QuarticVertexLabel Mode))) := by
+        change
+          (heisenbergEvolve energy σ (quarticInteractionOn support create annihilate g)).comp
+              (dysonCoeff energy (quarticInteractionOn support create annihilate g) n σ) = _
         rw [heisenbergEvolve_quarticInteractionOn_eq_sum energy ε create annihilate
           support g σ (hcreate σ) (hannihilate σ), ih σ]
         ext x
