@@ -271,11 +271,10 @@ private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrd
   rw [← Equiv.prod_comp shuffle.slotEquiv]
   rw [Finset.prod_sigma']
   apply Fintype.prod_congr
-  intro B
-  apply Fintype.prod_congr
-  intro i
-  simp only [Combinatorics.FamilySlotShuffleTo.timeAssignment]
-  rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
+  intro x
+  obtain ⟨B, i⟩ := x
+  simp only [Combinatorics.FamilySlotShuffleTo.timeAssignment_apply]
+  rw [← d.restrictComponent_vertexLabel_componentOrder orders shuffle B i]
 
 /-- For fixed component-local vertex orders, summing the physical ordered Dyson amplitude over all
 order-preserving component shuffles gives the product of the corresponding component-local ordered
@@ -313,8 +312,8 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
     exact Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
       (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
       S.card hcard t localIntegrand
-      (fun B => (Common.continuous_quarticVertexSequenceTimeFactor ε
-        (fun i => (d.restrictComponent B.2).vertexLabel (orders B i))).measurableLocallyBounded)
+      (fun B => Common.measurableLocallyBounded_quarticVertexSequenceTimeFactor ε
+        (fun i => (d.restrictComponent B.2).vertexLabel (orders B i)))
   simp only [QuarticDiagram.orderedDysonThermalAmplitude, Common.quarticDysonSequenceCoeff]
   have hpair (shuffle : d.ComponentShuffle) :
       QuarticDiagram.orderedThermalPairingValue ε β d
@@ -346,17 +345,17 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
               (Common.quarticVertexSequenceTimeFactor ε
                 (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i)))) *
             pairingProduct) by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro shuffle _
-      ring]
+      simp_rw [mul_assoc]
+      rw [← Finset.sum_mul, ← Finset.mul_sum]]
   rw [htime]
   rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g]
   dsimp only [pairingProduct, localIntegrand]
   rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
   apply Finset.prod_congr rfl
   intro B _
-  rfl
+  rw [Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order
+    (d.restrictComponent B.2) g (orders B)]
+  ring
 
 /-- The physical bosonic quartic Dyson diagram amplitude factors over the connected components of
 the diagram. The proof reindexes global vertex orders into component-local orders and shuffles, then
