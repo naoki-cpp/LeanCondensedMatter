@@ -33,7 +33,7 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
       List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
         Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ
   | 0, _, _ => by
-      simp [quarticLegOperatorForSequence, List.ofFn, Module.End.one_eq_id]
+      simp [List.ofFn, Module.End.one_eq_id]
   | n + 1, q, τ => by
       rw [Common.quarticVertexSequenceInteractionPicture_succ]
       change List.prod (List.ofFn (Common.orderedQuarticLegFamily
