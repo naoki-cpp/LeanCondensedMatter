@@ -39,6 +39,16 @@ two-dimensional physical-momentum convention owned by `Transport.Analysis.Contin
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
   params.momentumMeasureNormalization = momentumMeasurePrefactor params.hbar
 
+/-- Under the canonical physical-momentum convention, the stored measure followed by exact
+full-angle reduction is the shared radial measure prefactor. -/
+theorem UsesCanonicalMomentumMeasure.mul_two_pi_eq_fullAngleMomentumMeasurePrefactor
+    {params : Parameters} (hmeasure : UsesCanonicalMomentumMeasure params) :
+    params.momentumMeasureNormalization * (2 * Real.pi) =
+      fullAngleMomentumMeasurePrefactor params.hbar := by
+  rw [hmeasure]
+  unfold fullAngleMomentumMeasurePrefactor
+  ring
+
 /-- Radial current scale before angular projection, routed through the model's named current
 component rather than reconstructing the charge/velocity normalization in the response layer. -/
 def radialCurrentScale (params : Parameters) (p : ℝ) : ℝ :=
