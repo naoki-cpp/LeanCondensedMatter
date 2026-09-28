@@ -270,7 +270,7 @@ The basis-independent algebraic field architecture is documented separately in
 [`fermionic-field-operators.md`](fermionic-field-operators.md). The one-body/current boundary is
 
 ```text
-Analysis.Operator.LinearCommutator
+Mathlib.Algebra.Lie.OfAssociative (`⁅A,B⁆`)
         ↓
 Analysis.ConservationLaw.CurrentRepresentation
         ↓
