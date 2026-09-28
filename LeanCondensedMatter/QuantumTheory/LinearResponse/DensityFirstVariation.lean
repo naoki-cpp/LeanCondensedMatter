@@ -101,7 +101,7 @@ theorem densityOperatorFirstVariation_eq_lie_of_star_eq_neg
     densityOperatorFirstVariation system ρ V t =
       ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ := by
   rw [LieRing.of_associative_ring_bracket]
-  simp [densityOperatorFirstVariation, hK, sub_eq_add_neg]
+  simp only [densityOperatorFirstVariation, hK, mul_neg, sub_eq_add_neg]
 
 end
 end LinearResponse
