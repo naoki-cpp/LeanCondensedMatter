@@ -98,9 +98,6 @@ noncomputable def boundedDirectionalCurrent
       (geometry.bondCoordinate direction x y : ℂ) •
         boundedBondCurrent ℏ q K x y
 
-/-- Geometric contact operator for a uniform source in the selected direction. The squared bond
-coordinate is the chain-rule factor from differentiating the measured current after the Peierls
-phase has already been differentiated once. -/
 /-- Squared-coordinate moment of the zero-source bond Hamiltonians in a selected spatial
 direction. This is the geometric operator multiplying the universal Peierls contact coefficient
 `-(i q / ℏ)²`; no response normalization is included. -/
@@ -113,6 +110,9 @@ noncomputable def boundedDirectionalBondHamiltonianMoment
       ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
         boundedPeierlsBondHamiltonian K ℏ q x y 0
 
+/-- Geometric contact operator for a uniform source in the selected direction. The squared bond
+coordinate is the chain-rule factor from differentiating the measured current after the Peierls
+phase has already been differentiated once. -/
 noncomputable def boundedDirectionalContact
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
@@ -139,8 +139,9 @@ theorem boundedDirectionalContact_eq_neg_sq_smul_bondHamiltonianMoment
   rw [Finset.smul_sum]
   apply Finset.sum_congr rfl
   intro y _
-  rw [boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
-  module
+  rw [boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero, smul_smul]
+  congr 1
+  ring
 
 /-- Hermitian hopping and real physical parameters make every geometric current component
 self-adjoint. -/
