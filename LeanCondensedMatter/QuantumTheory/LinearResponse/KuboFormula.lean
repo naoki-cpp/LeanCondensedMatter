@@ -211,7 +211,8 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
       system expectation A hM hV ht
   have hK := star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
     system V hVself t
-  simpa [hK, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
+  simpa [LieRing.of_associative_ring_bracket, hK, sub_eq_add_neg,
+    add_comm, add_left_comm, add_assoc] using h
 
 /-- The continuous linear functional `X ↦ ω(A X - X A)`. -/
 private noncomputable def commutatorExpectation
