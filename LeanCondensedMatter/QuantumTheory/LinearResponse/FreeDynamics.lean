@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Algebra.Star.UnitaryStarAlgAut
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -23,6 +24,8 @@ exponentials and products require operator-domain arguments.
 
 namespace QuantumTheory
 namespace LinearResponse
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -195,6 +198,15 @@ theorem heisenbergEvolution_sub
   rw [heisenbergEvolution_eq_conjStarAlgAut, heisenbergEvolution_eq_conjStarAlgAut,
     heisenbergEvolution_eq_conjStarAlgAut]
   exact map_sub _ A B
+
+/-- Free Heisenberg evolution preserves the associative operator Lie bracket. -/
+@[simp]
+theorem heisenbergEvolution_lie
+    (A B : H →L[ℂ] H) (t : ℝ) :
+    heisenbergEvolution system ⁅A, B⁆ t =
+      ⁅heisenbergEvolution system A t, heisenbergEvolution system B t⁆ := by
+  simp only [LieRing.of_associative_ring_bracket]
+  rw [heisenbergEvolution_sub, heisenbergEvolution_mul, heisenbergEvolution_mul]
 
 /-- Unitary free conjugation preserves the operator norm exactly. -/
 @[simp]
