@@ -22043,6 +22043,7 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.diracPauliCoefficients_dot_self",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
@@ -22058,12 +22059,13 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.diracPauliCoefficients_dot_self",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57695,7 +57697,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have a :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have b :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have c := b;\n    have d :=\n      -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n          1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have u := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        axis 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vr :=\n      InternalSpace.pauliZConjugateVector fun axis =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have w := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vy :=\n      -InternalSpace.pauliZConjugateVector fun axis =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            axis 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have amplitude :=\n      2 *\n        ((a * b + u ⬝ᵥ vr) * (c * d + w ⬝ᵥ vy) +\n          (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr) ⬝ᵥ\n            (c • vy + d • w + Complex.I • InternalSpace.pauliCross w vy));\n    amplitude + (starRingEnd ℂ) amplitude",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have a :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have b :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have c := b;\n    have d :=\n      -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n          1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have ux :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have uy :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        InternalSpace.PauliAxis.y 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have uz :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        InternalSpace.PauliAxis.z 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have qx :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        InternalSpace.PauliAxis.x 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have qy :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have qz :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        InternalSpace.PauliAxis.z 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have grx :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n        InternalSpace.PauliAxis.x QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening\n        disorderStrength hbar pMax radius;\n    have grz :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n        InternalSpace.PauliAxis.z QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening\n        disorderStrength hbar pMax radius;\n    have amplitude :=\n      2 *\n        ((a * b - ux * grx + uz * grz) * (c * d + grx * qx - grz * qz) +\n              (-a * grx + b * ux + Complex.I * uy * grz) * (c * qx + d * grx - Complex.I * grz * qy) +\n            (b * uy - Complex.I * (uz * grx + ux * grz)) * (c * qy + Complex.I * (grz * qx + grx * qz)) +\n          (a * grz + b * uz + Complex.I * uy * grx) * (-c * qz + d * grz + Complex.I * grx * qy));\n    amplitude + (starRingEnd ℂ) amplitude",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57707,13 +57709,53 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": "The radial `Psi` amplitude is the explicit scalar expansion of the generic Pauli reduction.\nThe positive-radius retarded Green y component is zero; the crossed-current vector at the second\ninsertion retains all of its x/y/z Pauli components and its radial sign is kept explicit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have a :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n        0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have b :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have c := b;\n    have d :=\n      -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n          1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have u := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n        axis 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vr :=\n      InternalSpace.pauliZConjugateVector fun axis =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have w := fun axis =>\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have vy :=\n      -InternalSpace.pauliZConjugateVector fun axis =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            axis 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n    have amplitude :=\n      2 *\n        ((a * b + u ⬝ᵥ vr) * (c * d + w ⬝ᵥ vy) +\n          (a • vr + b • u + Complex.I • InternalSpace.pauliCross u vr) ⬝ᵥ\n            (c • vy + d • w + Complex.I • InternalSpace.pauliCross w vy));\n    amplitude + (starRingEnd ℂ) amplitude",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
     "docString": "The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex\nconjugate. The final current vector and scalar carry the overall sign from\n`J_y(-r) = -σ_z J_y(r) σ_z`; all blocks on the right are evaluated at positive radius. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components"
+    ],
     "dependencies": [
       "InternalSpace.pauliScalarCoefficient_neg",
       "InternalSpace.pauliScalarCoefficient_pauliZ_conjugate",
@@ -57725,8 +57767,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111333,8 +111377,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real",
       "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
     ],
     "dependencies": [
@@ -111344,11 +111386,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real",
       "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113152,162 +113192,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (test : ℝ → ℝ) (x : ℝ), SecondQuantization.Fermionic.Field.complexTestOfReal1D test x = ↑(test x)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.complexTestOfReal1D_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ (q : ℂ) (f : ℝ → ℂ),\n  (SecondQuantization.Fermionic.Field.continuumChargeDensity1D q) f =\n    q •\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma SecondQuantization.Fermionic.Field.ContinuumWavefunction1D\n        (SecondQuantization.Fermionic.Field.continuumMultiplication1D f)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (q : ℂ) (f ψ : SecondQuantization.Fermionic.Field.ContinuumWavefunction1D),\n  ((SecondQuantization.Fermionic.Field.continuumChargeDensity1D q) f)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle\n          SecondQuantization.Fermionic.Field.ContinuumWavefunction1D)\n        ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle SecondQuantization.Fermionic.Field.ContinuumWavefunction1D)\n      fun x => q * f x * ψ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D",
-    "externalAxioms": [],
-    "docString": "On the one-particle sector, the continuum charge-density operator is exactly pointwise\ncharge-weighted multiplication. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (q : ℝ) (test : ℝ → ℝ) (ψ : SecondQuantization.Fermionic.Field.ContinuumWavefunction1D),\n  ((SecondQuantization.Fermionic.Field.continuumChargeDensity1D ↑q)\n        (SecondQuantization.Fermionic.Field.complexTestOfReal1D test))\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle\n          SecondQuantization.Fermionic.Field.ContinuumWavefunction1D)\n        ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle SecondQuantization.Fermionic.Field.ContinuumWavefunction1D)\n      fun x => ↑(q * test x) * ψ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle_real",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D",
-    "externalAxioms": [],
-    "docString": "For real charge and real test function, the algebraic many-body charge density restricts on the\none-particle sector to the same pointwise factor `q * test * ψ` used by the continuum charge\nsmearing convention. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle",
-      "SecondQuantization.Fermionic.Field.continuumChargeDensity1D_oneParticle"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (q : ℂ) (f : L2Multiplication.ComplexLInf MeasureTheory.volume),\n  (SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D q) f =\n    q •\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma (L2Multiplication.ComplexL2 MeasureTheory.volume)\n        (SecondQuantization.Fermionic.Field.continuumL2Multiplication1D f)",
+    "statement": "∀ (q : ℂ) (f : L2Multiplication.ComplexLInf MeasureTheory.volume),\n  (SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D q) f =\n    q •\n      SecondQuantization.Fermionic.AlgebraicFock.dGamma (L2Multiplication.ComplexL2 MeasureTheory.volume)\n        ↑(L2Multiplication.multiplicationOperator MeasureTheory.volume f)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113345,7 +113231,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (q : ℂ) (f : L2Multiplication.ComplexLInf MeasureTheory.volume) (ψ : L2Multiplication.ComplexL2 MeasureTheory.volume),\n  ((SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D q) f)\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 MeasureTheory.volume)) ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 MeasureTheory.volume))\n      (q • (L2Multiplication.multiplicationOperator MeasureTheory.volume f) ψ)",
     "standardAxioms": [
       "Classical.choice",
@@ -113353,7 +113239,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113364,122 +113250,11 @@
     "docString": "On the one-particle sector, the second-quantized continuum charge density is exactly the\ncharge-scaled canonical bounded multiplication operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle_real"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle",
       "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_apply"
     ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle_real"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (q : ℝ) (test : ℝ → ℝ) (htest : MeasureTheory.MemLp (fun x => ↑(test x)) ⊤ MeasureTheory.volume)\n  (ψ : L2Multiplication.ComplexL2 MeasureTheory.volume),\n  ((SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D ↑q)\n        (L2Multiplication.realMultiplier MeasureTheory.volume test htest))\n      ((SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 MeasureTheory.volume)) ψ) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle (L2Multiplication.ComplexL2 MeasureTheory.volume))\n      ((↑q •\n          L2Multiplication.multiplicationOperator MeasureTheory.volume\n            (L2Multiplication.realMultiplier MeasureTheory.volume test htest))\n        ψ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle_real",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumL2ChargeDensity1D",
-    "externalAxioms": [],
-    "docString": "For a real bounded test function and real charge, the one-particle restriction is the same\ncharge-scaled real multiplication operator used by the analytic `L²` density expectation theorem. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Field.continuumL2ChargeDensity1D_oneParticle"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (f ψ : SecondQuantization.Fermionic.Field.ContinuumWavefunction1D) (x : ℝ),\n  (SecondQuantization.Fermionic.Field.continuumMultiplication1D f) ψ x = f x * ψ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumMultiplication1D_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (f ψ : SecondQuantization.Fermionic.Field.ContinuumWavefunction1D) (x : ℝ),\n  (SecondQuantization.Fermionic.Field.continuumMultiplicationOperator1D f) ψ x = f x * ψ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Field.continuumMultiplicationOperator1D_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
