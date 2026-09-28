@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Model
+import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Response
 
 set_option linter.style.header false
