@@ -23,6 +23,8 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 private theorem dGamma_lie_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     ⁅dGamma 𝓗₁ S, dGamma 𝓗₁ T⁆ =
       dGamma 𝓗₁ (⁅S, T⁆) := by
@@ -75,8 +77,6 @@ private theorem dGamma_lie_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
           rw [hx]
         _ = dGamma 𝓗₁ (⁅S, T⁆) (oneParticle 𝓗₁ f * x) := by
           rw [dGamma_oneParticle_mul, LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
-
-attribute [local instance 100] LieRing.ofAssociativeRing
 
 /-- Fermionic second quantization as a Lie algebra homomorphism between endomorphism algebras. -/
 noncomputable def dGammaLieHom :
