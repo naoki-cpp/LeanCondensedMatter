@@ -346,22 +346,35 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
       externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
   have hLocal :
       (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).symm.symm
+          (externalInsertionExternalLeg (d.externalPairCount B)
+            (interactionSector (B : Finset (ExternalInsertionVertex E S))) e) =
+        Sum.inl e := by
+    change
+      (externalInsertionLegEquiv (d.externalPairCount B)
         (interactionSector (B : Finset (ExternalInsertionVertex E S))))
           (externalInsertionExternalLeg (d.externalPairCount B)
             (interactionSector (B : Finset (ExternalInsertionVertex E S))) e) =
-        Sum.inl e :=
-    (externalInsertionLegEquiv (d.externalPairCount B)
-      (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply (Sum.inl e)
+        Sum.inl e
+    exact
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
+          (Sum.inl e)
+  have hAmbient :
+      (externalInsertionLegEquiv E S)
+          (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1) =
+        Sum.inl (d.externalSectorOrderIso B e).1 :=
+    (externalInsertionLegEquiv E S).apply_symm_apply
+      (Sum.inl (d.externalSectorOrderIso B e).1)
   apply (externalInsertionLegEquiv E S).injective
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    Equiv.symm_symm_apply, hLocal,
-    Equiv.sumCongr_apply, Sum.map_inl,
+    hLocal, Equiv.sumCongr_apply, Sum.map_inl,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     Equiv.symm_trans_apply,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inl_val,
-    Equiv.apply_symm_apply]
+    hAmbient]
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
 vertex and local quartic leg. -/
@@ -379,22 +392,39 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
           (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
   have hLocal :
       (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).symm.symm
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) =
+        Sum.inr (v, l) := by
+    change
+      (externalInsertionLegEquiv (d.externalPairCount B)
         (interactionSector (B : Finset (ExternalInsertionVertex E S))))
           (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) =
-        Sum.inr (v, l) :=
-    (externalInsertionLegEquiv (d.externalPairCount B)
-      (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
-        (Sum.inr (v, l))
+        Sum.inr (v, l)
+    exact
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (interactionSector (B : Finset (ExternalInsertionVertex E S)))).apply_symm_apply
+          (Sum.inr (v, l))
+  have hAmbient :
+      (externalInsertionLegEquiv E S)
+          (externalInsertionInteractionLeg (E := E)
+            ⟨v.1, interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l) =
+        Sum.inr
+          (⟨v.1, interactionSector_subset
+            (B : Finset (ExternalInsertionVertex E S)) v.2⟩, l) :=
+    (externalInsertionLegEquiv E S).apply_symm_apply
+      (Sum.inr
+        (⟨v.1, interactionSector_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩, l))
   apply (externalInsertionLegEquiv E S).injective
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    Equiv.symm_symm_apply, hLocal,
-    Equiv.sumCongr_apply, Sum.map_inr,
+    hLocal, Equiv.sumCongr_apply, Sum.map_inr,
     ExternalInsertionDiagram.componentBlockLegDataEquiv,
     Equiv.symm_trans_apply,
     ExternalInsertionDiagram.componentLegDataEquiv_symm_inr_val,
-    Equiv.apply_symm_apply]
+    hAmbient]
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
