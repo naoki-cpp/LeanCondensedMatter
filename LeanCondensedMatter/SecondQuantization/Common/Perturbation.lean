@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSuppo
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
@@ -21,8 +22,10 @@ set_option linter.style.header false
 
 The public layer includes finite reachable supports, finite-support coefficientwise integration, and
 a single finite-order Dyson coefficient construction valid for arbitrary configuration types,
-together with direct matrix-coefficient continuity and interval-integrability. On finite
-configuration types, that canonical recursion also satisfies the coefficientwise reconstructed
+together with direct matrix-coefficient continuity and interval-integrability. Statistics-independent
+quartic Dyson helpers package the canonical scalar time factors and fixed-sequence coefficients used
+by particle-specific finite-support expansions. On finite configuration types, that canonical recursion
+also satisfies the coefficientwise reconstructed
 operator-integral equation used by the continuous finite-dimensional realization.
 
 The remaining norm bounds, analytic evolution, trace series, and exponential identities are
