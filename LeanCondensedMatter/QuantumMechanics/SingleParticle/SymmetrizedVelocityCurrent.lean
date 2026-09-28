@@ -18,6 +18,8 @@ representation, not a universal transport law.
 namespace QuantumMechanics
 namespace SingleParticle
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
@@ -31,22 +33,20 @@ theorem symmetrizedVelocityTransport_decomposition
         (_root_.ConservationLaw.symmetrizedProduct localizer velocity) m =
       _root_.ConservationLaw.symmetrizedProduct localizer
         (symmetrizedVelocityCurrent V velocity m) +
-      (1 / 4 : ℂ) • _root_.ConservationLaw.linearCommutator velocity
-        (_root_.ConservationLaw.linearCommutator localizer m) := by
+      (1 / 4 : ℂ) • ⁅velocity, ⁅localizer, m⁆⁆ := by
   change
     _root_.ConservationLaw.symmetrizedProduct
         (_root_.ConservationLaw.symmetrizedProduct localizer velocity) m =
       _root_.ConservationLaw.symmetrizedProduct localizer
         (_root_.ConservationLaw.symmetrizedProduct velocity m) +
-      (1 / 4 : ℂ) • _root_.ConservationLaw.linearCommutator velocity
-        (_root_.ConservationLaw.linearCommutator localizer m)
+      (1 / 4 : ℂ) • ⁅velocity, ⁅localizer, m⁆⁆
   exact _root_.ConservationLaw.symmetrizedProduct_nested localizer velocity m
 
 /-- If localization commutes with the transported quantity, the correction vanishes and the
 transport is represented by the symmetrized velocity current density. -/
 theorem symmetrizedVelocityTransport_eq_of_localizer_commutes
     (localizer velocity m : V →ₗ[ℂ] V)
-    (hcomm : _root_.ConservationLaw.linearCommutator localizer m = 0) :
+    (hcomm : ⁅localizer, m⁆ = 0) :
     _root_.ConservationLaw.symmetrizedProduct
         (_root_.ConservationLaw.symmetrizedProduct localizer velocity) m =
       _root_.ConservationLaw.symmetrizedProduct localizer
@@ -71,7 +71,7 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
     (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N))
-    (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0) :
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       d
       (heisenbergTransportFunctional V ℏ h M m)
@@ -96,7 +96,7 @@ theorem symmetrizedVelocityCurrentRepresentation_currentDensity
     (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
       (heisenbergLocalizationFunctional V ℏ h M)
       (velocityLocalizationFlux V velocity N))
-    (hcomm : ∀ α, _root_.ConservationLaw.linearCommutator (N α) m = 0) :
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     (symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm).currentDensity =
       symmetrizedVelocityCurrent V velocity m :=
   rfl
