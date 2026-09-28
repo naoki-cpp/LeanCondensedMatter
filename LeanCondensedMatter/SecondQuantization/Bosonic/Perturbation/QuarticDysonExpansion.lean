@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 
 set_option linter.style.header false
