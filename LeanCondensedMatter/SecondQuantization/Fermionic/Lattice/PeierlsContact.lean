@@ -57,6 +57,17 @@ noncomputable def oneParticleBondContact (K : LocallyFiniteHopping Site)
     ((-peierlsCoupling ℏ q) * peierlsCoupling ℏ q) •
       (K.amplitude y x • matrixUnit y x)
 
+/-- The bond contact is the zero-source Peierls bond Hamiltonian multiplied by
+`-(i q / ℏ)²`. This is the bond-level diamagnetic identity behind the contact term. -/
+theorem oneParticleBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero
+    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
+    K.oneParticleBondContact ℏ q x y =
+      (-((peierlsCoupling ℏ q) ^ 2)) •
+        K.peierlsBondHamiltonian ℏ q x y 0 := by
+  rw [K.peierlsBondHamiltonian_zero]
+  unfold oneParticleBondContact
+  module
+
 /-- At zero gauge field, the Peierls current family is the continuity-derived current. -/
 @[simp]
 theorem peierlsBondCurrentOperator_zero (K : LocallyFiniteHopping Site)
@@ -101,6 +112,18 @@ noncomputable def boundedBondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperator (K.oneParticleBondContact ℏ q x y)
+
+/-- The bond-level diamagnetic identity survives the canonical bounded one-body realization. -/
+theorem boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero
+    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
+    boundedBondContact K ℏ q x y =
+      (-((peierlsCoupling ℏ q) ^ 2)) •
+        boundedPeierlsBondHamiltonian K ℏ q x y 0 := by
+  rw [boundedBondContact,
+    K.oneParticleBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
+  unfold boundedPeierlsBondHamiltonian
+  exact map_smul (boundedOneBodyOperatorLinearMap (Site := Site))
+    (-((peierlsCoupling ℏ q) ^ 2)) (K.peierlsBondHamiltonian ℏ q x y 0)
 
 /-- At zero source, the bounded Peierls current is the bounded continuity-derived current. -/
 @[simp]
