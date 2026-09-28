@@ -101,6 +101,18 @@ noncomputable def boundedDirectionalCurrent
 /-- Geometric contact operator for a uniform source in the selected direction. The squared bond
 coordinate is the chain-rule factor from differentiating the measured current after the Peierls
 phase has already been differentiated once. -/
+/-- Squared-coordinate moment of the zero-source bond Hamiltonians in a selected spatial
+direction. This is the geometric operator multiplying the universal Peierls contact coefficient
+`-(i q / ℏ)²`; no response normalization is included. -/
+noncomputable def boundedDirectionalBondHamiltonianMoment
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
+  (2 : ℂ)⁻¹ •
+    ∑ x : Site, ∑ y : Site,
+      ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
+        boundedPeierlsBondHamiltonian K ℏ q x y 0
+
 noncomputable def boundedDirectionalContact
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
@@ -109,6 +121,26 @@ noncomputable def boundedDirectionalContact
     ∑ x : Site, ∑ y : Site,
       ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
         boundedBondContact K ℏ q x y
+
+/-- The geometric contact is the squared-coordinate bond-Hamiltonian moment multiplied by the
+universal Peierls coefficient `-(i q / ℏ)²`. -/
+theorem boundedDirectionalContact_eq_neg_sq_smul_bondHamiltonianMoment
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedDirectionalContact geometry direction ℏ q K =
+      (-((peierlsCoupling ℏ q) ^ 2)) •
+        boundedDirectionalBondHamiltonianMoment geometry direction ℏ q K := by
+  unfold boundedDirectionalContact boundedDirectionalBondHamiltonianMoment
+  rw [smul_smul]
+  congr 1
+  rw [Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro y _
+  rw [boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
+  module
 
 /-- Hermitian hopping and real physical parameters make every geometric current component
 self-adjoint. -/
