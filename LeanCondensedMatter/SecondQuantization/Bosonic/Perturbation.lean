@@ -21,8 +21,8 @@ interactions satisfy a uniform quadratic particle-number bound, so free Boltzman
 required Gibbs-domain membership. Their first Dyson coefficients are therefore Gibbs-summable, and
 their normalized Gibbs expectations satisfy the corresponding interval recursion.
 
-For finite-mode quartic interactions, the free interaction-picture evolution of each vertex is a
-scalar energy-shift factor times the bare vertex operator. This supplies the time-factorized
-finite-vertex-sequence representation needed to expand physical Dyson coefficients before taking an
-infinite bosonic Gibbs expectation.
+For finitely supported quartic interactions, the free interaction-picture evolution of each vertex
+is a scalar energy-shift factor times the bare vertex operator. This gives a finite vertex-sequence
+expansion of the physical Dyson coefficient before taking an infinite bosonic Gibbs expectation,
+without requiring the ambient mode type itself to be finite.
 -/
