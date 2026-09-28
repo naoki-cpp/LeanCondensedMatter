@@ -96,12 +96,11 @@ theorem prod_orderedQuarticLegFamily_eq_vertexProducts {α : Type*} [Monoid α] 
   induction n with
   | zero =>
       intro f
-      simp [orderedQuarticLegFamily]
+      simp
   | succ n ih =>
       intro f
-      rw [← Fin.cons_self_tail f, listOfFn_orderedQuarticLegFamily_cons, List.prod_append]
-      rw [List.ofFn_succ, List.prod_cons]
-      rw [ih]
+      rw [← Fin.cons_self_tail f, listOfFn_orderedQuarticLegFamily_cons, List.prod_append, ih]
+      simp only [List.ofFn_succ, List.prod_cons, Fin.cons_zero, Fin.cons_succ]
 
 /-- The vertex slot containing an ordered flattened quartic leg. -/
 noncomputable def flatVertexIndex (n : ℕ) (p : Fin (2 * (2 * n))) : Fin n :=
