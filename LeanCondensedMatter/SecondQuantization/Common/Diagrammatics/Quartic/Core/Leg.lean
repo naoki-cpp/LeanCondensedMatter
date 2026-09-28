@@ -19,6 +19,73 @@ variable {N : ℕ}
 noncomputable def orderedQuarticLegEquiv (n : ℕ) : Fin (2 * (2 * n)) ≃ Fin n × Fin 4 :=
   Combinatorics.FiniteIndex.blockEquiv (by ring)
 
+/-- Reindex a vertex-indexed family of four local values into the canonical row-major
+flattened quartic-leg order. -/
+noncomputable def orderedQuarticLegFamily {α : Type*} {n : ℕ}
+    (f : Fin n → Fin 4 → α) : Fin (2 * (2 * n)) → α :=
+  fun p =>
+    let vl := orderedQuarticLegEquiv n p
+    f vl.1 vl.2
+
+/-- Evaluating the canonical flattened family at the row-major coordinate `i * 4 + j` recovers
+the corresponding vertex-local value. -/
+theorem orderedQuarticLegFamily_cast_mul_add {α : Type*} {n : ℕ}
+    (f : Fin n → Fin 4 → α) (i : Fin n) (j : Fin 4)
+    (h : 2 * (2 * n) = n * 4) :
+    orderedQuarticLegFamily f
+        (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) = f i j := by
+  have hcoord :
+      orderedQuarticLegEquiv n
+          (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) = (i, j) := by
+    simpa [orderedQuarticLegEquiv] using
+      (Combinatorics.FiniteIndex.blockEquiv_cast_mul_add h i j)
+  rw [orderedQuarticLegFamily, hcoord]
+
+/-- Prepending one vertex-local block prepends its four entries to the canonical flattened quartic
+leg list. -/
+theorem listOfFn_orderedQuarticLegFamily_cons {α : Type*} {n : ℕ}
+    (f0 : Fin 4 → α) (f : Fin n → Fin 4 → α) :
+    List.ofFn (orderedQuarticLegFamily (Fin.cons f0 f)) =
+      List.ofFn f0 ++ List.ofFn (orderedQuarticLegFamily f) := by
+  have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
+  have hcard' : 2 * (2 * n) = n * 4 := by ring
+  have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
+  rw [List.ofFn_congr h2, ← List.ofFn_fin_append]
+  refine congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_))
+  · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
+        Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
+      apply Fin.ext
+      simp
+    rw [Fin.append_left, e1,
+      orderedQuarticLegFamily_cast_mul_add (Fin.cons f0 f) 0 j hcard, Fin.cons_zero]
+  · have hk : k = Fin.cast hcard'.symm
+        ⟨(orderedQuarticLegEquiv n k).1 * 4 +
+            (orderedQuarticLegEquiv n k).2, by
+          have := (orderedQuarticLegEquiv n k).2.isLt
+          omega⟩ :=
+      Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv hcard' k
+    have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
+        ⟨((orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 +
+            ((orderedQuarticLegEquiv n k).2 : ℕ),
+          by
+            have := (orderedQuarticLegEquiv n k).2.isLt
+            omega⟩ := by
+      apply Fin.ext
+      simp only [Fin.val_cast, Fin.val_natAdd, Fin.val_succ]
+      have hkval : (k : ℕ) =
+          (orderedQuarticLegEquiv n k).1 * 4 +
+            (orderedQuarticLegEquiv n k).2 := by
+        have := congrArg Fin.val hk
+        simpa using this
+      omega
+    rw [Fin.append_right, e2,
+      orderedQuarticLegFamily_cast_mul_add (Fin.cons f0 f)
+        (orderedQuarticLegEquiv n k).1.succ (orderedQuarticLegEquiv n k).2 hcard]
+    have hrest := orderedQuarticLegFamily_cast_mul_add f
+      (orderedQuarticLegEquiv n k).1 (orderedQuarticLegEquiv n k).2 hcard'
+    rw [← hk] at hrest
+    exact hrest.symm
+
 /-- The vertex slot containing an ordered flattened quartic leg. -/
 noncomputable def flatVertexIndex (n : ℕ) (p : Fin (2 * (2 * n))) : Fin n :=
   (orderedQuarticLegEquiv n p).1
