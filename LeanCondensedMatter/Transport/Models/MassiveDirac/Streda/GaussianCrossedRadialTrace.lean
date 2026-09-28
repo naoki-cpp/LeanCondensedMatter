@@ -633,6 +633,85 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pa
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient]
 
+/-- The radial `Psi` amplitude is the explicit scalar expansion of the generic Pauli reduction.
+The positive-radius retarded Green y component is zero; the crossed-current vector at the second
+insertion retains all of its x/y/z Pauli components and its radial sign is kept explicit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius =
+      let a :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+          0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let b :=
+        finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      let c := b
+      let d :=
+        -finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+          1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let ux :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let uy :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let uz :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let qx :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let qy :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let qz :=
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .z 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let grx :=
+        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+          .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      let grz :=
+        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+          .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      let amplitude :=
+        2 *
+          ((a * b - ux * grx + uz * grz) * (c * d + grx * qx - grz * qz) +
+            (-a * grx + b * ux + Complex.I * uy * grz) *
+              (c * qx + d * grx - Complex.I * grz * qy) +
+            (b * uy - Complex.I * (uz * grx + ux * grz)) *
+              (c * qy + Complex.I * (grz * qx + grx * qz)) +
+            (a * grz + b * uz + Complex.I * uy * grx) *
+              (-c * qz + d * grz + Complex.I * grx * qy))
+      amplitude + (starRingEnd ℂ) amplitude := by
+  have hret_y :
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+          .y .retarded v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
+    unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      InternalSpace.pauliVectorCoefficient]
+  have hret_fun :
+      (fun axis =>
+        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+          axis .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) =
+        (fun axis =>
+          match axis with
+          | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+              .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+          | .y => 0
+          | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+              .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) := by
+    funext axis
+    cases axis
+    · rfl
+    · exact hret_y
+    · rfl
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar]
+  rw [hret_fun]
+  simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]
+  ring
+
 private theorem neg_polarPoint2D_zero (radius : ℝ) :
     -(polarPoint2D radius 0) = polarPoint2D (-radius) 0 := by
   funext i
