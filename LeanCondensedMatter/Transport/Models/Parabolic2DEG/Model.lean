@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Resolvent.Basic
+import LeanCondensedMatter.Transport.Resolvent.Spectral
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Tactic
 
@@ -14,14 +14,16 @@ electron gas,
 ε(p) = |p|² / (2 m_eff).
 ```
 
-The benchmark keeps the signed carrier charge, reduced Planck constant, finite radial momentum
-cutoff, finite spectral broadening, momentum-measure normalization, and final response
-normalization explicit. No infinite-volume, cutoff-removal, zero-broadening, or universal-limit
-identification is made here.
+The benchmark uses physical momentum rather than wave vector and keeps the signed carrier charge,
+reduced Planck constant, finite radial momentum cutoff, finite spectral broadening, and
+momentum-measure normalization explicit. No infinite-volume, cutoff-removal, zero-broadening, or
+universal-limit identification is made here.
 
 The current convention is `j = q v`, where `q` is the signed carrier charge stored in
 `Parameters.signedCharge`. In particular an electron convention is represented by a negative
-`signedCharge`; no additional minus sign is inserted downstream.
+`signedCharge`; no additional minus sign is inserted downstream. The parabolic effective-mass
+dispersion is the standard continuum benchmark convention; all normalization choices remain
+explicit rather than being inferred from that dispersion.
 -/
 
 namespace QuantumTheory.Transport.Models.Parabolic2DEG
@@ -30,7 +32,9 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Physical and normalization data needed to interpret one finite parabolic-2DEG calculation. -/
+/-- Physical and measure-normalization data needed to interpret one finite parabolic-2DEG
+calculation. Response normalization is deliberately not stored here; the response layer attaches
+its named Kubo/Středa prefactor before constructing a physical conductivity tensor. -/
 structure Parameters where
   /-- Effective mass `m_eff` in the parabolic dispersion. -/
   effectiveMass : ℝ
@@ -42,19 +46,34 @@ structure Parameters where
   broadening : ℝ
   /-- Signed carrier charge `q`; the model current convention is `j = q v`. -/
   signedCharge : ℝ
-  /-- Reduced Planck constant used when comparing Drude and Kubo normalizations. -/
+  /-- Reduced Planck constant. -/
   hbar : ℝ
   /-- Scalar multiplying the radial/angular momentum integral. This records the chosen measure
   normalization explicitly; for physical momentum one may choose `1 / (2πℏ)²`. -/
   momentumMeasureNormalization : ℝ
-  /-- Remaining scalar response normalization applied after the momentum integral. -/
-  responseNormalization : ℝ
 
-/-- Explicit regularity domain for the physical interpretation of the finite benchmark. -/
+/-- Explicit physical regularity domain for the finite benchmark. -/
 structure Parameters.IsRegular (params : Parameters) : Prop where
-  effectiveMass_ne_zero : params.effectiveMass ≠ 0
-  broadening_ne_zero : params.broadening ≠ 0
+  effectiveMass_pos : 0 < params.effectiveMass
+  broadening_pos : 0 < params.broadening
   momentumCutoff_nonneg : 0 ≤ params.momentumCutoff
+  hbar_pos : 0 < params.hbar
+
+namespace Parameters.IsRegular
+
+theorem effectiveMass_ne_zero {params : Parameters} (h : params.IsRegular) :
+    params.effectiveMass ≠ 0 :=
+  ne_of_gt h.effectiveMass_pos
+
+theorem broadening_ne_zero {params : Parameters} (h : params.IsRegular) :
+    params.broadening ≠ 0 :=
+  ne_of_gt h.broadening_pos
+
+theorem hbar_ne_zero {params : Parameters} (h : params.IsRegular) :
+    params.hbar ≠ 0 :=
+  ne_of_gt h.hbar_pos
+
+end Parameters.IsRegular
 
 /-- The one-band Hilbert space used by the scalar parabolic benchmark. -/
 abbrev BandHilbert := ℂ
@@ -91,12 +110,37 @@ noncomputable def hamiltonianOperator
   (((bandEnergy params px py : ℝ) : ℂ)) •
     (1 : BandHilbert →L[ℂ] BandHilbert)
 
+/-- One-band velocity operator represented by the named velocity component. -/
+noncomputable def velocityOperator
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    BandHilbert →L[ℂ] BandHilbert :=
+  (((velocityComponent params direction px py : ℝ) : ℂ)) •
+    (1 : BandHilbert →L[ℂ] BandHilbert)
+
 /-- One-band current operator, represented as scalar multiplication by the named current component. -/
 noncomputable def currentOperator
     (params : Parameters) (direction : Fin 2) (px py : ℝ) :
     BandHilbert →L[ℂ] BandHilbert :=
   (((currentComponent params direction px py : ℝ) : ℂ)) •
     (1 : BandHilbert →L[ℂ] BandHilbert)
+
+/-- The Hamiltonian operator is self-adjoint because its scalar coefficient is real. -/
+theorem hamiltonianOperator_isSelfAdjoint
+    (params : Parameters) (px py : ℝ) :
+    IsSelfAdjoint (hamiltonianOperator params px py) := by
+  simp [hamiltonianOperator, isSelfAdjoint_iff]
+
+/-- The velocity operator is self-adjoint because its scalar coefficient is real. -/
+theorem velocityOperator_isSelfAdjoint
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    IsSelfAdjoint (velocityOperator params direction px py) := by
+  simp [velocityOperator, isSelfAdjoint_iff]
+
+/-- The current operator is self-adjoint because the signed charge and velocity are real. -/
+theorem currentOperator_isSelfAdjoint
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    IsSelfAdjoint (currentOperator params direction px py) := by
+  simp [currentOperator, isSelfAdjoint_iff]
 
 /-- Scalar denominator of the side-indexed one-band Green function. -/
 def greenDenominator
@@ -125,6 +169,37 @@ theorem greenDenominator_ne_zero
     spectralParameterOfRegulator_sub_real_ne_zero
       params.chemicalPotential (side.regulator params.broadening)
       (bandEnergy params px py) (side.regulator_ne_zero hbroadening)
+
+/-- The canonical operator Green function acts by the named scalar Green factor. This is the
+explicit bridge that lets response code use scalar one-band algebra without bypassing the common
+resolvent boundary. -/
+theorem greenOperator_apply
+    (side : SpectralSide) (params : Parameters) (px py : ℝ)
+    (hbroadening : params.broadening ≠ 0) (ψ : BandHilbert) :
+    greenOperator side params px py ψ = greenScalar side params px py • ψ := by
+  have heigen :
+      hamiltonianOperator params px py ψ =
+        (((bandEnergy params px py : ℝ) : ℂ)) • ψ := by
+    simp [hamiltonianOperator]
+  simpa [greenOperator, spectralResolvent, spectralParameter,
+    greenScalar, greenDenominator] using
+    (resolvent_spectralParameterOfRegulator_apply_eigenvector
+      (hamiltonianOperator params px py)
+      (hamiltonianOperator_isSelfAdjoint params px py)
+      heigen
+      params.chemicalPotential
+      (side.regulator params.broadening)
+      (side.regulator_ne_zero hbroadening))
+
+/-- Operator/scalar Green bridge for the one-band model. -/
+theorem greenOperator_eq_greenScalar_smul_id
+    (side : SpectralSide) (params : Parameters) (px py : ℝ)
+    (hbroadening : params.broadening ≠ 0) :
+    greenOperator side params px py =
+      greenScalar side params px py • (1 : BandHilbert →L[ℂ] BandHilbert) := by
+  ext ψ
+  rw [greenOperator_apply side params px py hbroadening]
+  simp
 
 /-- The radial scalar Green function is continuous at every finite nonzero broadening. -/
 theorem continuous_greenScalar_radial
