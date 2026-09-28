@@ -34,7 +34,7 @@ noncomputable def quarticVertexTimeFactor (ε : Mode → ℝ)
   Complex.exp ((τ : ℂ) * (quarticVertexEnergyShift ε q : ℂ))
 
 /-- A single quartic vertex evolves by its scalar free-energy-shift factor. -/
-theorem interactionPicture_quarticVertexOperator_eq_smul
+private theorem interactionPicture_quarticVertexOperator_eq_smul
     (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (τ : ℝ) :
     interactionPicture ε (quarticVertexOperator q) τ =
       quarticVertexTimeFactor ε q τ • quarticVertexOperator q := by
