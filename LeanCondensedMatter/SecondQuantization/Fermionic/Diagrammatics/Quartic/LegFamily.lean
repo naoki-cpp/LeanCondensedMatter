@@ -41,8 +41,16 @@ theorem timedFieldOperator_quarticLegFieldForSequence (ε : Mode → ℝ) {n : �
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     timedFieldOperator ε (quarticLegFieldForSequence q τ p) =
       quarticLegOperatorForSequence ε q τ p := by
-  rw [quarticLegFieldForSequence, quarticLegOperatorForSequence,
-    Common.orderedQuarticLegFamily]
+  change timedFieldOperator ε
+      ⟨τ (Common.orderedQuarticLegEquiv n p).1,
+        quarticLocalLegExternalFieldLabel
+          (Common.quarticLocalLeg
+            (q (Common.orderedQuarticLegEquiv n p).1)
+            (Common.orderedQuarticLegEquiv n p).2)⟩ =
+    imaginaryTimeEvolve ε (τ (Common.orderedQuarticLegEquiv n p).1)
+      (quarticLocalLeg
+        (q (Common.orderedQuarticLegEquiv n p).1)
+        (Common.orderedQuarticLegEquiv n p).2).operator create annihilate
   simpa [quarticLocalLegOperator, Common.quarticLocalLegOperator] using
     (timedFieldOperator_quarticLocalLeg ε
       (τ (Common.orderedQuarticLegEquiv n p).1)
