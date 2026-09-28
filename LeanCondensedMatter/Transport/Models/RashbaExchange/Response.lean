@@ -1,7 +1,8 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model
+import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -9,96 +10,126 @@ set_option linter.style.header false
 /-!
 # Finite Rashba-exchange anomalous-Hall response
 
-This layer keeps Berry data, occupation, response normalization, and the final conductivity tensor
-distinct. The finite clean Hall benchmark is a finite-cutoff, finite-broadening algebraic kernel:
-broadening regularizes the interband denominator, while the cutoff and momentum measure remain
-explicit. It is not a zero-broadening, thermodynamic, or universal Hall-value statement.
+The clean finite-broadening response is routed through the canonical supplied-Green Středa surface
+primitive `RA - (RR + AA)/2`. No phenomenological broadening factor is attached to the Berry
+curvature. The latter remains independent clean-band data in `Model`.
 
-The ordered Hall kernel is defined from the model Berry curvature and supplied occupation law.
-Antisymmetry is introduced only at the response boundary by the orientation of the ordered Cartesian
-pair; no spin-current or device-level Hall observable is identified with this charge-current
-response.
+The raw response integrates the point kernel over the explicit finite physical-momentum disk and
+attaches the stored continuum-measure normalization exactly once. Only the subsequent conductivity
+boundary attaches the common static Bastin–Středa trace prefactor. No cutoff-removal,
+zero-broadening, weak-disorder, or universal-Hall-value statement is made here.
 -/
 
 namespace QuantumTheory.Transport.Models.RashbaExchange
 
 noncomputable section
 
+open MeasureTheory
 open QuantumTheory.Transport
+open scoped Interval
 
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
   params.momentumMeasureNormalization = momentumMeasurePrefactor params.hbar
 
-/-- Lorentzian finite-broadening factor multiplying the clean interband Berry kernel. -/
-def finiteBroadeningFactor (params : Parameters) (px py : ℝ) : ℝ :=
-  spinOrbitEnergy params px py ^ 2 /
-    (spinOrbitEnergy params px py ^ 2 + params.broadening ^ 2)
+/-- Supplied-Green response seam. Disorder code may replace either Green operator and the source
+vertex without reconstructing the Rashba Hamiltonian or measured charge-current vertex. -/
+noncomputable def suppliedHallPointKernel
+    (params : Parameters) (measured : Fin 2) (px py : ℝ)
+    (retardedGreen sourceVertex advancedGreen :
+      RashbaHilbert →L[ℂ] RashbaHilbert) : ℂ :=
+  suppliedGreenStredaSurfacePrimitiveTraceKernel
+    (currentBoundedOperator params measured px py)
+    retardedGreen sourceVertex advancedGreen
 
-/-- Occupation-weighted finite-broadening Berry kernel before momentum integration. -/
-def finiteBroadeningBerryHallKernel
-    (occupationLaw : ℝ → ℝ) (params : Parameters) (px py : ℝ) : ℝ :=
-  ∑ band : Band,
-    occupation occupationLaw params band px py *
-      berryCurvature params band px py *
-        finiteBroadeningFactor params px py
+/-- Exact clean finite-broadening Středa point kernel. -/
+noncomputable def cleanHallPointKernel
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
+  suppliedHallPointKernel params measured px py
+    (greenOperator .retarded params px py)
+    (currentBoundedOperator params source px py)
+    (greenOperator .advanced params px py)
 
-/-- Orientation of an ordered Cartesian Hall pair: `xy = +1`, `yx = -1`, diagonal entries zero. -/
-def hallOrientation (measured source : Fin 2) : ℝ :=
-  if measured = source then 0 else if measured = 0 then 1 else -1
+/-- The clean point kernel is exactly the generic regularized Středa surface primitive. -/
+theorem cleanHallPointKernel_eq_regularized
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
+    cleanHallPointKernel params measured source px py =
+      regularizedStredaSurfacePrimitiveTrace
+        (hamiltonianOperator params px py)
+        (currentBoundedOperator params measured px py)
+        (currentBoundedOperator params source px py)
+        params.chemicalPotential params.broadening := by
+  symm
+  simpa [cleanHallPointKernel, suppliedHallPointKernel, greenOperator,
+    spectralResolvent] using
+    (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
+      (hamiltonianOperator params px py)
+      (currentBoundedOperator params measured px py)
+      (currentBoundedOperator params source px py)
+      params.chemicalPotential params.broadening)
 
-/-- Ordered finite clean Hall-response kernel. This is the response/vertex boundary that downstream
-clean or disorder code can consume without reconstructing the model's band/Berry algebra. -/
-def finiteCleanHallKernel
-    (occupationLaw : ℝ → ℝ) (params : Parameters)
-    (measured source : Fin 2) (px py : ℝ) : ℝ :=
-  hallOrientation measured source *
-    finiteBroadeningBerryHallKernel occupationLaw params px py
+/-- Ordered Hall projection of the clean point response. Antisymmetry is algebraic and therefore
+does not assume a rotational symmetry or a limiting procedure. -/
+noncomputable def antisymmetricCleanHallPointKernel
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
+  (1 / 2 : ℂ) *
+    (cleanHallPointKernel params measured source px py -
+      cleanHallPointKernel params source measured px py)
 
-@[simp] theorem hallOrientation_self (direction : Fin 2) :
-    hallOrientation direction direction = 0 := by
-  simp [hallOrientation]
-
-theorem hallOrientation_swap (measured source : Fin 2) :
-    hallOrientation source measured = -hallOrientation measured source := by
-  fin_cases measured <;> fin_cases source <;> simp [hallOrientation]
-
-theorem finiteCleanHallKernel_swap
-    (occupationLaw : ℝ → ℝ) (params : Parameters)
-    (measured source : Fin 2) (px py : ℝ) :
-    finiteCleanHallKernel occupationLaw params source measured px py =
-      -finiteCleanHallKernel occupationLaw params measured source px py := by
-  rw [finiteCleanHallKernel, finiteCleanHallKernel, hallOrientation_swap]
+theorem antisymmetricCleanHallPointKernel_swap
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
+    antisymmetricCleanHallPointKernel params source measured px py =
+      -antisymmetricCleanHallPointKernel params measured source px py := by
+  unfold antisymmetricCleanHallPointKernel
   ring
 
-@[simp] theorem finiteCleanHallKernel_self
-    (occupationLaw : ℝ → ℝ) (params : Parameters)
-    (direction : Fin 2) (px py : ℝ) :
-    finiteCleanHallKernel occupationLaw params direction direction px py = 0 := by
-  simp [finiteCleanHallKernel]
+@[simp] theorem antisymmetricCleanHallPointKernel_self
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    antisymmetricCleanHallPointKernel params direction direction px py = 0 := by
+  simp [antisymmetricCleanHallPointKernel]
 
-@[simp] theorem finiteBroadeningBerryHallKernel_exchange_zero
-    (occupationLaw : ℝ → ℝ) (params : Parameters) (px py : ℝ)
-    (hDelta : params.exchangeSplitting = 0) :
-    finiteBroadeningBerryHallKernel occupationLaw params px py = 0 := by
-  simp [finiteBroadeningBerryHallKernel, berryCurvature_exchange_zero params _ px py hDelta]
+/-- Restrict a point kernel to the explicit finite circular momentum domain. -/
+noncomputable def finiteDiskHallIntegrand
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
+  if inMomentumDomain params px py then
+    antisymmetricCleanHallPointKernel params measured source px py
+  else 0
 
-@[simp] theorem finiteBroadeningBerryHallKernel_rashba_zero
-    (occupationLaw : ℝ → ℝ) (params : Parameters) (px py : ℝ)
-    (hAlpha : params.rashbaVelocity = 0) :
-    finiteBroadeningBerryHallKernel occupationLaw params px py = 0 := by
-  simp [finiteBroadeningBerryHallKernel, berryCurvature_rashba_zero params _ px py hAlpha]
+/-- Finite-cutoff raw Hall response over the bounding square, with the disk restriction enforced
+pointwise. The physical-momentum measure normalization is attached exactly once. -/
+noncomputable def finiteCutoffHallResponseComponent
+    (params : Parameters) (measured source : Fin 2) : ℂ :=
+  ((params.momentumMeasureNormalization : ℝ) : ℂ) *
+    ∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+      ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        finiteDiskHallIntegrand params measured source px py
 
-/-- Charge-current Hall normalization before momentum integration. The two current vertices
-contribute `q²`; the static trace prefactor remains the common Bastin–Středa `ℏ/(2π)`. -/
-def hallResponseNormalization (params : Parameters) : ℝ :=
-  params.signedCharge ^ 2 * bastinStredaTraceConductivityPrefactor params.hbar
+theorem finiteCutoffHallResponseComponent_swap
+    (params : Parameters) (measured source : Fin 2) :
+    finiteCutoffHallResponseComponent params source measured =
+      -finiteCutoffHallResponseComponent params measured source := by
+  unfold finiteCutoffHallResponseComponent finiteDiskHallIntegrand
+  simp_rw [antisymmetricCleanHallPointKernel_swap]
+  simp only [ite_neg, intervalIntegral.integral_neg]
+  ring
 
-/-- A zero carrier charge kills the physical charge-current normalization without changing the
-underlying Berry data. -/
-@[simp] theorem hallResponseNormalization_charge_zero
-    (params : Parameters) (hq : params.signedCharge = 0) :
-    hallResponseNormalization params = 0 := by
-  simp [hallResponseNormalization, hq]
+/-- Physical conductivity component: the finite raw response receives the common static
+Bastin–Středa trace prefactor only at this boundary. -/
+noncomputable def finiteCutoffHallConductivityComponent
+    (params : Parameters) (measured source : Fin 2) : ℂ :=
+  ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
+    finiteCutoffHallResponseComponent params measured source
+
+noncomputable def finiteCutoffHallConductivityTensor
+    (params : Parameters) : ConductivityTensor (Fin 2) where
+  component := finiteCutoffHallConductivityComponent params
+
+theorem finiteCutoffHallConductivityComponent_swap
+    (params : Parameters) (measured source : Fin 2) :
+    finiteCutoffHallConductivityComponent params source measured =
+      -finiteCutoffHallConductivityComponent params measured source := by
+  rw [finiteCutoffHallConductivityComponent, finiteCutoffHallConductivityComponent,
+    finiteCutoffHallResponseComponent_swap]
+  ring
 
 end
 end QuantumTheory.Transport.Models.RashbaExchange
