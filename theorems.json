@@ -114767,7 +114767,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (A B :\n    SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site) →ₗ[ℂ]\n      SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site)),\n  SecondQuantization.Fermionic.Lattice.boundedLatticeOperator ⁅A, B⁆ =\n    SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A ∘SL\n        SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B -\n      SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B ∘SL\n        SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (A B :\n    SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site) →ₗ[ℂ]\n      SecondQuantization.Fermionic.AlgebraicFock (SecondQuantization.Fermionic.Lattice.LatticeState Site)),\n  SecondQuantization.Fermionic.Lattice.boundedLatticeOperator ⁅A, B⁆ =\n    ⁅SecondQuantization.Fermionic.Lattice.boundedLatticeOperator A,\n      SecondQuantization.Fermionic.Lattice.boundedLatticeOperator B⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114782,7 +114782,7 @@
     "name": "SecondQuantization.Fermionic.Lattice.boundedLatticeOperator_lie",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
     "externalAxioms": [],
-    "docString": "Bounded transport preserves the ordinary algebraic commutator. ",
+    "docString": "Bounded transport preserves the ordinary Mathlib Lie bracket. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -115016,7 +115016,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (ℏ q : ℂ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (x : Site),\n  (Complex.I / ℏ) •\n        (SecondQuantization.Fermionic.Lattice.boundedHoppingHamiltonian K ∘SL\n            SecondQuantization.Fermionic.Lattice.boundedSiteChargeDensity q x -\n          SecondQuantization.Fermionic.Lattice.boundedSiteChargeDensity q x ∘SL\n            SecondQuantization.Fermionic.Lattice.boundedHoppingHamiltonian K) +\n      ∑ y ∈ K.incident x, SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y =\n    0",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (ℏ q : ℂ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (x : Site),\n  (Complex.I / ℏ) •\n        ⁅SecondQuantization.Fermionic.Lattice.boundedHoppingHamiltonian K,\n          SecondQuantization.Fermionic.Lattice.boundedSiteChargeDensity q x⁆ +\n      ∑ y ∈ K.incident x, SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
