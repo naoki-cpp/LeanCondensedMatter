@@ -94,8 +94,9 @@ theorem quarticFreeThermalOrderedProduct_cons {n : ℕ}
   simp [quarticFreeThermalOrderedProduct, quarticFreeThermalFieldFamily,
     FreeThermalField.orderedProduct, List.map_ofFn,
     FreeThermalField.operator_quarticFreeThermalField,
-    quarticVertexOperator, quarticLocalLegOperator, Common.quarticLocalLegOperator,
-    List.ofFn_succ, Module.End.mul_eq_comp]
+    quarticVertexOperator, Common.quarticVertexOperator, quarticLocalLegOperator,
+    Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp,
+    LinearMap.comp_assoc]
 
 /-- The flattened bosonic free-thermal-field product is exactly the Common bare quartic
 vertex-sequence operator. This is the operator bridge from the quartic Dyson expansion to the
