@@ -29,7 +29,7 @@ noncomputable def orderedQuarticLegFamily {α : Type*} {n : ℕ}
 
 /-- Evaluating the canonical flattened family at the row-major coordinate `i * 4 + j` recovers
 the corresponding vertex-local value. -/
-theorem orderedQuarticLegFamily_cast_mul_add {α : Type*} {n : ℕ}
+private theorem orderedQuarticLegFamily_cast_mul_add {α : Type*} {n : ℕ}
     (f : Fin n → Fin 4 → α) (i : Fin n) (j : Fin 4)
     (h : 2 * (2 * n) = n * 4) :
     orderedQuarticLegFamily f
