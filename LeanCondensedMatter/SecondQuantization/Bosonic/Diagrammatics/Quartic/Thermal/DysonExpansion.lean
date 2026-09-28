@@ -322,20 +322,6 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
             (d.restrictComponent B.2) (orders B) :=
     QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β d orders shuffle
   simp_rw [hpair]
-  have hweight :
-      (-1 : ℂ) ^ S.card * ∏ i, g (d.vertexLabel (d.assembleVertexOrder orders
-        (Classical.choice inferInstance) i)) =
-        ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          ((-1 : ℂ) ^ (B : Finset (Fin N)).card *
-            ∏ i, g ((d.restrictComponent B.2).vertexLabel (orders B i))) := by
-    rw [show (∏ i, g (d.vertexLabel (d.assembleVertexOrder orders
-        (Classical.choice inferInstance) i))) = d.vertexWeight g by
-      unfold Common.QuarticDiagram.vertexWeight
-      exact Equiv.prod_comp (d.assembleVertexOrder orders (Classical.choice inferInstance))
-        (fun v => g (d.vertexLabel v))]
-    simpa only [Common.QuarticDiagram.restrictComponentConnected,
-      Common.QuarticDiagram.vertexWeight] using
-      Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g
   have hvertex (shuffle : d.ComponentShuffle) :
       (∏ i, g (d.vertexLabel (d.assembleVertexOrder orders shuffle i))) = d.vertexWeight g := by
     unfold Common.QuarticDiagram.vertexWeight
