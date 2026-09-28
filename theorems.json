@@ -100219,7 +100219,7 @@
     "dependents": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_eq_sum_diagonal",
@@ -100233,7 +100233,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -103258,7 +103258,7 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_comp_support"
@@ -103272,7 +103272,7 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -106679,6 +106679,117 @@
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (n : ℕ) (q0 : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : ℝ) (τ : Fin n → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate (n + 1) (Fin.cons q0 q)\n      (Fin.cons σ τ) =\n    SecondQuantization.Common.interactionPicture energy\n        (SecondQuantization.Common.quarticVertexOperator create annihilate q0) σ ∘ₗ\n      SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate n q τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_succ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (n : ℕ) (q : Fin (n + 1) → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin (n + 1) → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate (n + 1) q τ =\n    SecondQuantization.Common.interactionPicture energy\n        (SecondQuantization.Common.quarticVertexOperator create annihilate (q 0)) (τ 0) ∘ₗ\n      SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate n (fun i => q i.succ)\n        fun i => τ i.succ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_succ",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin 0 → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin 0 → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate 0 q τ = LinearMap.id",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124422,7 +124533,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  Continuous fun τ =>\n    (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n        (L ∘ₗ SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  Continuous fun τ =>\n    (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n        (L ∘ₗ\n          SecondQuantization.Common.quarticVertexSequenceInteractionPicture\n            (SecondQuantization.Fermionic.fermionEnergy ε) SecondQuantization.Fermionic.create\n            SecondQuantization.Fermionic.annihilate n q τ))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124434,16 +124545,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
+    "name": "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "Joint continuity of the canonical free Gibbs density-state expectation of an\n`L`-prefixed nested vertex product. The finite diagonal calculation above remains private proof machinery. ",
+    "docString": "Joint continuity of the canonical free Gibbs density-state expectation of an\n`L`-prefixed quartic interaction-picture vertex sequence. The finite diagonal calculation above remains private proof machinery. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -124503,7 +124614,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [Fintype Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (k n' : SecondQuantization.Fermionic.Occupation Mode),\n  Continuous fun τ =>\n    SecondQuantization.Common.matrixCoeff (SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ) k n'",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [Fintype Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (k n' : SecondQuantization.Fermionic.Occupation Mode),\n  Continuous fun τ =>\n    SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Common.quarticVertexSequenceInteractionPicture (SecondQuantization.Fermionic.fermionEnergy ε)\n        SecondQuantization.Fermionic.create SecondQuantization.Fermionic.annihilate n q τ)\n      k n'",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124515,20 +124626,20 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.continuous_matrixCoeff_nestedVertexOperatorComp",
+    "name": "SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "**Joint continuity, in the full time vector `τ`, of a matrix coefficient of\n`nestedVertexOperatorComp`** — by induction on `n`: the base case is constant (`nested...Comp ε 0\nq τ = LinearMap.id`); the successor case's matrix coefficient is a finite sum of products of a\nsingle-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interactionPicture`,\nprecomposed with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the\n\"tail\" projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum\n`Common.matrixCoeff_comp` needs), just not in the statement itself — the linter can't see that. ",
+    "docString": "**Joint continuity, in the full time vector `τ`, of a matrix coefficient of\n`Common.quarticVertexSequenceInteractionPicture`** — by induction on `n`: the base case is constant (`n = 0` gives `LinearMap.id`); the successor case's matrix coefficient is a finite sum of products of a\nsingle-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interactionPicture`,\nprecomposed with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the\n\"tail\" projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum\n`Common.matrixCoeff_comp` needs), just not in the statement itself — the linter can't see that. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -125099,7 +125210,7 @@
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
       "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation",
@@ -126494,7 +126605,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n        (L ∘ₗ\n          SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε)\n            (SecondQuantization.Fermionic.quarticInteraction g) n t)) =\n    (-1) ^ n *\n      ∑ q,\n        (∏ i, g (q i)) *\n          intervalIntegral.orderedSimplexIntegral n t fun τ =>\n            (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n              (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n                (L ∘ₗ SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n        (L ∘ₗ\n          SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε)\n            (SecondQuantization.Fermionic.quarticInteraction g) n t)) =\n    (-1) ^ n *\n      ∑ q,\n        (∏ i, g (q i)) *\n          intervalIntegral.orderedSimplexIntegral n t fun τ =>\n            (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n              (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n                (L ∘ₗ\n                  SecondQuantization.Common.quarticVertexSequenceInteractionPicture\n                    (SecondQuantization.Fermionic.fermionEnergy ε) SecondQuantization.Fermionic.create\n                    SecondQuantization.Fermionic.annihilate n q τ))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126643,7 +126754,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
@@ -126661,7 +126772,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
@@ -128445,117 +128556,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q0 : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (q' : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : ℝ) (τ' : Fin n → ℝ),\n  SecondQuantization.Fermionic.nestedVertexOperatorComp ε (n + 1) (Fin.cons q0 q') (Fin.cons σ τ') =\n    SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator q0) σ ∘ₗ\n      SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q' τ'",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.nestedVertexOperatorComp_cons",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
-    "externalAxioms": [],
-    "docString": "**`nestedVertexOperatorComp` at `n + 1`, on `Fin.cons`-assembled label/time data**: unfolds\n`nestedVertexOperatorComp_succ` and simplifies the resulting `(Fin.cons q0 q') 0`/`(Fin.cons σ\nτ') 0`/tail expressions via `Fin.cons_zero`/`Fin.cons_succ`. The form the key induction's\nsuccessor case needs to fold a peeled-off outermost vertex factor back into a single\n`nestedVertexOperatorComp` term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.nestedVertexOperatorComp_succ"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin (n + 1) → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin (n + 1) → ℝ),\n  SecondQuantization.Fermionic.nestedVertexOperatorComp ε (n + 1) q τ =\n    SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator (q 0))\n        (τ 0) ∘ₗ\n      SecondQuantization.Fermionic.nestedVertexOperatorComp ε n (fun i => q i.succ) fun i => τ i.succ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.nestedVertexOperatorComp_succ",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.nestedVertexOperatorComp_cons"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.nestedVertexOperatorComp_cons"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ)\n  (q : Fin 0 → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin 0 → ℝ),\n  SecondQuantization.Fermionic.nestedVertexOperatorComp ε 0 q τ = LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.nestedVertexOperatorComp_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  ‖SecondQuantization.Fermionic.fermionPhase i n‖ = 1",
     "standardAxioms": [
@@ -129357,7 +129357,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n  (List.ofFn (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ)).prod =\n    SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n  (List.ofFn (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ)).prod =\n    SecondQuantization.Common.quarticVertexSequenceInteractionPicture (SecondQuantization.Fermionic.fermionEnergy ε)\n      SecondQuantization.Fermionic.create SecondQuantization.Fermionic.annihilate n q τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129369,10 +129369,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
+    "name": "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
     "externalAxioms": [],
-    "docString": "**`nestedVertexOperatorComp`, flattened into a `List.prod` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `nestedVertexOperatorComp_succ`,\n`interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and\n`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
+    "docString": "**`Common.quarticVertexSequenceInteractionPicture`, flattened into a `List.prod` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `Common.quarticVertexSequenceInteractionPicture_succ`,\n`interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and\n`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -154215,7 +154215,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (L ∘ₗ\n        SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε)\n          (SecondQuantization.Fermionic.quarticInteraction g) n t) =\n    (-1) ^ n *\n      ∑ q,\n        (∏ i, g (q i)) *\n          intervalIntegral.orderedSimplexIntegral n t fun τ =>\n            SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n              (L ∘ₗ SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (L ∘ₗ\n        SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε)\n          (SecondQuantization.Fermionic.quarticInteraction g) n t) =\n    (-1) ^ n *\n      ∑ q,\n        (∏ i, g (q i)) *\n          intervalIntegral.orderedSimplexIntegral n t fun τ =>\n            SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n              (L ∘ₗ\n                SecondQuantization.Common.quarticVertexSequenceInteractionPicture\n                  (SecondQuantization.Fermionic.fermionEnergy ε) SecondQuantization.Fermionic.create\n                  SecondQuantization.Fermionic.annihilate n q τ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154230,7 +154230,7 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "**The key induction: `dysonCoeff` of `quarticInteraction`, left-composed with an arbitrary\nfixed prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over vertex-label sequences of an\n`orderedSimplexIntegral` of `L`-prefixed `nestedVertexOperatorComp` values.** The prefix `L`\ngeneralizes the induction so the successor case can absorb the newly-peeled-off outermost vertex\nfactor into `L` before invoking the inductive hypothesis on the remaining `n`-fold piece; the\nbound `t` likewise generalizes so the inductive step's inner integral (over `[0, σ]` for the\nrecursion's own integration variable `σ`) is exactly an instance of the same statement, rather\nthan requiring a separate lemma for non-`β` bounds. ",
+    "docString": "**The key induction: `dysonCoeff` of `quarticInteraction`, left-composed with an arbitrary\nfixed prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over vertex-label sequences of an\n`orderedSimplexIntegral` of `L`-prefixed Common quartic interaction-picture sequences.** The prefix `L`\ngeneralizes the induction so the successor case can absorb the newly-peeled-off outermost vertex\nfactor into `L` before invoking the inductive hypothesis on the remaining `n`-fold piece; the\nbound `t` likewise generalizes so the inductive step's inner integral (over `[0, σ]` for the\nrecursion's own integration variable `σ`) is exactly an instance of the same statement, rather\nthan requiring a separate lemma for non-`β` bounds. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -154244,7 +154244,7 @@
       "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Common.matrixCoeff_comp",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_fintype_sum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_neg_apply",
       "intervalIntegral.continuous_orderedSimplexIntegral_of_continuous"
@@ -154266,7 +154266,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  Continuous fun τ =>\n    SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (L ∘ₗ SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  Continuous fun τ =>\n    SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (L ∘ₗ\n        SecondQuantization.Common.quarticVertexSequenceInteractionPicture (SecondQuantization.Fermionic.fermionEnergy ε)\n          SecondQuantization.Fermionic.create SecondQuantization.Fermionic.annihilate n q τ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154278,25 +154278,25 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "Joint continuity, in the full time vector `τ`, of the canonical finite Gibbs expectation of\nan `L`-prefixed `nestedVertexOperatorComp`. The diagonal expectation formula reduces continuity to\na finite sum of continuous matrix coefficients. ",
+    "docString": "Joint continuity, in the full time vector `τ`, of the canonical finite Gibbs expectation of\nan `L`-prefixed Common quartic interaction-picture sequence. The diagonal expectation formula reduces continuity to\na finite sum of continuous matrix coefficients. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.matrixCoeff_comp",
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_nestedVertexOperatorComp"
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
     "compiledConsumerCount": 2,
