@@ -3,6 +3,7 @@ import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
+import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -190,16 +191,11 @@ noncomputable def finiteCutoffResponseComponent
     ∫ p : ℝ in (0 : ℝ)..params.momentumCutoff,
       finiteBroadeningRadialKernel params measured source p
 
-/-- Static Kubo/Středa trace prefactor attached only when the finite response is promoted to a
-physical conductivity. -/
-def kuboTracePrefactor (params : Parameters) : ℝ :=
-  params.hbar / (2 * Real.pi)
-
 /-- Finite-cutoff conductivity component obtained from the raw model response by the named Kubo
 trace normalization. -/
 noncomputable def finiteCutoffConductivityComponent
     (params : Parameters) (measured source : Fin 2) : ℂ :=
-  ((kuboTracePrefactor params : ℝ) : ℂ) *
+  ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
     finiteCutoffResponseComponent params measured source
 
 /-- Common physical conductivity seam for the finite parabolic benchmark. -/
@@ -259,7 +255,7 @@ regularity assumptions. No cutoff, thermodynamic, or zero-broadening limit is us
 theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor
     (params : Parameters) (hregular : params.IsRegular) :
     broadeningTransportLifetime params * lorentzianNormalization params =
-      kuboTracePrefactor params := by
+      bastinStredaTraceConductivityPrefactor params.hbar := by
   unfold broadeningTransportLifetime lorentzianNormalization kuboTracePrefactor
   field_simp [hregular.broadening_ne_zero, Real.pi_ne_zero]
 
@@ -269,7 +265,7 @@ theorem broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight
     (params : Parameters) (hregular : params.IsRegular) (p : ℝ) :
     (((broadeningTransportLifetime params * lorentzianNormalization params : ℝ) : ℂ)) *
         stredaSurfaceGreenWeight params p =
-      (((kuboTracePrefactor params : ℝ) : ℂ)) * stredaSurfaceGreenWeight params p := by
+      (((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ)) * stredaSurfaceGreenWeight params p := by
   rw [broadeningTransportLifetime_mul_lorentzianNormalization_eq_kuboTracePrefactor
     params hregular]
 
