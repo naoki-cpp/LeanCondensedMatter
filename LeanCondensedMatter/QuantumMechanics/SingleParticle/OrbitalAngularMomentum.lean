@@ -53,8 +53,10 @@ theorem lie_orbitalAngularMomentumZ
     ⁅M, orbitalAngularMomentumZ X Y Px Py⁆ =
       ((⁅M, X⁆).comp Py + X.comp (⁅M, Py⁆)) -
         ((⁅M, Y⁆).comp Px + Y.comp (⁅M, Px⁆)) := by
-  simp only [orbitalAngularMomentumZ, ← Module.End.mul_eq_comp]
-  rw [lie_sub, leibniz_lie, leibniz_lie]
+  ext v
+  simp [orbitalAngularMomentumZ, LieRing.of_associative_ring_bracket,
+    Module.End.mul_eq_comp]
+  module
 
 /-- If localization commutes with position, its orbital commutator is controlled entirely by the
 momentum-localization commutators:
