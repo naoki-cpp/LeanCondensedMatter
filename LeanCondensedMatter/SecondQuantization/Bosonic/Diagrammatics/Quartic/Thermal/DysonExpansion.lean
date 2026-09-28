@@ -24,7 +24,7 @@ open Common Combinatorics
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*} [Finite Mode]
 
 /-- File-local classical equality matches the concrete free-thermal pair kernel. -/
 local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
@@ -49,6 +49,7 @@ theorem freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
                     (fun i => (q i : QuarticVertexLabel Mode)) a)
                   (quarticFreeThermalFieldFamily
                     (fun i => (q i : QuarticVertexLabel Mode)) b)) := by
+  letI := Fintype.ofFinite Mode
   classical
   rw [freeGibbsDysonCoeff, dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
   have hsumm : ∀ q : Fin n → ↥support,
