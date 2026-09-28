@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 import Mathlib.Analysis.Complex.RealDeriv
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -62,10 +63,8 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
       (((-(Complex.I / (system.hbar : ℂ))) •
           ∫ s in (0 : ℝ)..t,
             expectation
-              (heisenbergEvolution system A₀ t *
-                  timeDependentInteractionPerturbation system V s -
-                timeDependentInteractionPerturbation system V s *
-                  heisenbergEvolution system A₀ t)) +
+              ⁅heisenbergEvolution system A₀ t,
+                timeDependentInteractionPerturbation system V s⁆) +
         expectation (heisenbergEvolution system A₁ t))
       0 := by
   have hfixed :=
@@ -97,13 +96,12 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
       HasDerivAt
         (fun lam : ℝ => affinePerturbedExpectation system expectation V A₀ A₁ lam t)
         (expectation
-            (heisenbergEvolution system A₀ t *
-                timeDependentPropagatorFirstVariation system V t -
-              timeDependentPropagatorFirstVariation system V t *
-                heisenbergEvolution system A₀ t) +
+            ⁅heisenbergEvolution system A₀ t,
+              timeDependentPropagatorFirstVariation system V t⁆ +
           expectation (heisenbergEvolution system A₁ t))
         0 := by
-    simpa [hK, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using hbase
+    simpa [LieRing.of_associative_ring_bracket, hK, sub_eq_add_neg,
+      add_comm, add_left_comm, add_assoc] using hbase
   rw [expectation_commutator_firstVariation_eq_integral
     system expectation V A₀ t hInt] at hself
   exact hself
