@@ -63,7 +63,8 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
   simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
-    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two,
+    EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
+    EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
     -Complex.ofReal_cos, -Complex.ofReal_sin]
   module
 
@@ -91,7 +92,8 @@ theorem EuclideanHarmonicCoefficients.toAngular2D_eval
     have h := congrFun (congrFun coefficients.second_symm 0) 1
     simpa using h
   simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
-    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two, hdiag, hoff,
+    EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
+    EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two, hdiag, hoff,
     -Complex.ofReal_cos, -Complex.ofReal_sin]
   module
 
