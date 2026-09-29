@@ -433,29 +433,14 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
           firstSine := c
           secondCosine := d
           secondMixed := e }
-      let coefficients : AngularHarmonicCoefficients ℂ :=
-        { constant := a
-          firstCosine :=
-            ((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c
-          firstSine :=
-            -((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c
-          secondCosine :=
-            (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * d +
-              ((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ) * e
-          secondMixed :=
-            -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
-              (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
-      have hrotate (θ : ℝ) : source.eval (θ + angle) = coefficients.eval θ := by
-        simp only [source, coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul]
-        rw [Real.cos_add, Real.sin_add]
-        push_cast
-        ring
+      let coefficients := source.rotate2D angle
       change
         (∫ α : ℝ in (0 : ℝ)..(2 * Real.pi),
           ((p : ℂ) * polarFourierRadialPhase z α) * source.eval (α + angle)) =
           _
-      simp_rw [hrotate]
-      simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+      simp_rw [← source.rotate2D_eval angle]
+      simpa [source, coefficients, AngularHarmonicCoefficients.rotate2D,
+        AngularHarmonicCoefficients.eval, smul_eq_mul] using
         coefficients.integral_polarFourierRadialPhase z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
