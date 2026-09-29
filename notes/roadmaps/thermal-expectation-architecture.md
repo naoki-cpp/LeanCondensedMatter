@@ -32,14 +32,14 @@ The reusable finite coordinate layer is split by responsibility:
 | `QuantumTheory/Gibbs/PurePoint.lean` | Boltzmann weights, partition functions, probabilities, pure-point Gibbs states. |
 | `Common/Algebra/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
 | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Canonical finite density-state expectation adapter and pure-point probability formula. |
-| `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, trace-ratio formulas, and weighted-coordinate comparison. |
+| `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
 | `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Algebra/FiniteWeightedTrace.lean` | Finite unnormalized weighted sums. |
-| `Common/Thermal/WeightedDiagonalFunctional.lean` | Generic normalized finite coordinate functional. |
 | `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Pairing-specific finite Gibbs two-point, peel, four-point, and recursion formulas. |
 
-A generic complex-weight coordinate functional acquires a Gibbs interpretation only after
-specialization to physical Boltzmann weights. For finite fermionic mode types,
+Raw `weightedTrace` and `weightSum` formulas are coordinate infrastructure, not normalized-state
+models. The finite Gibbs expectation retains the canonical pure-point density state as its physical
+meaning. For finite fermionic mode types,
 `freePartitionFunction_eq_coe_purePointPartitionFunction` identifies the complex finite-coordinate
 partition function with the canonical real pure-point partition function after coercion to `ℂ`.
 

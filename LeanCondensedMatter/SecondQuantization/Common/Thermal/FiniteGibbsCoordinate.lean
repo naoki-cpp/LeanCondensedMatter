@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
@@ -10,8 +9,7 @@ set_option linter.style.openClassical false
 # Finite Gibbs coordinate formulas
 
 This module owns the finite-coordinate realization of the canonical pure-point Gibbs expectation:
-complex Boltzmann weights, diagonal-evolution trace formulas, the physical trace-ratio identity, and
-the comparison with the normalized weighted diagonal functional.
+complex Boltzmann weights, diagonal-evolution trace formulas, and the physical trace-ratio identity.
 
 These facts are thermal infrastructure independent of Bloch--de Dominicis. Pairing-specific modules
 consume this API downstream; perturbative finite-coordinate calculations may use it directly.
@@ -110,16 +108,6 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
   rw [← purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
   push_cast
   field_simp
-
-/-- The canonical finite Gibbs expectation agrees with the normalized Boltzmann-weighted diagonal
-coordinate formula. -/
-theorem finiteGibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteGibbsExpectation energy β A =
-      normalizedWeightedDiagonal (boltzmannWeight energy β) A := by
-  rw [finiteGibbsExpectation_eq_trace_div, normalizedWeightedDiagonal_eq_weightedTrace_div,
-    traceFock_diagonalEvolution_comp_eq_weightedTrace,
-    traceFock_diagonalEvolution_eq_weightSum]
 
 end Common
 end SecondQuantization
