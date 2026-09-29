@@ -118,7 +118,6 @@ theorem AngularHarmonicCoefficients.rotate2D_constant
     (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
     (coefficients.rotate2D angle).constant = coefficients.constant := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
-    EuclideanHarmonicCoefficients.orthogonalTransform,
     AngularHarmonicCoefficients.toEuclidean2D]
 
 @[simp]
@@ -128,10 +127,7 @@ theorem AngularHarmonicCoefficients.rotate2D_firstCosine
       ((Real.cos angle : ℝ) : ℂ) * coefficients.firstCosine +
         ((Real.sin angle : ℝ) : ℂ) * coefficients.firstSine := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
-    EuclideanHarmonicCoefficients.orthogonalTransform,
-    EuclideanHarmonicCoefficients.complexifyMatrix,
-    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D,
-    Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_firstSine
@@ -140,10 +136,7 @@ theorem AngularHarmonicCoefficients.rotate2D_firstSine
       -((Real.sin angle : ℝ) : ℂ) * coefficients.firstCosine +
         ((Real.cos angle : ℝ) : ℂ) * coefficients.firstSine := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
-    EuclideanHarmonicCoefficients.orthogonalTransform,
-    EuclideanHarmonicCoefficients.complexifyMatrix,
-    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D,
-    Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_secondCosine
@@ -154,10 +147,7 @@ theorem AngularHarmonicCoefficients.rotate2D_secondCosine
         ((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ) *
           coefficients.secondMixed := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
-    EuclideanHarmonicCoefficients.orthogonalTransform,
-    EuclideanHarmonicCoefficients.complexifyMatrix,
-    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D,
-    Matrix.mul_apply, Fin.sum_univ_two]
+    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
   ring
 
 @[simp]
@@ -169,10 +159,7 @@ theorem AngularHarmonicCoefficients.rotate2D_secondMixed
         (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
           coefficients.secondMixed := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
-    EuclideanHarmonicCoefficients.orthogonalTransform,
-    EuclideanHarmonicCoefficients.complexifyMatrix,
-    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D,
-    Matrix.mul_apply, Fin.sum_univ_two]
+    AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
   ring
 
 /-- Rotating the coefficient data is equivalent to shifting the polar direction. -/
