@@ -4,7 +4,7 @@ status: accepted
 
 # Keep generic response separate from physical conductivity and models
 
-Keep Transport generic and model-independent: response kernels and channels state the measured observable, source, and contact contribution, while ConductivityTensor represents physical conductivity only after the required physical assumptions and normalization are supplied.
+Keep Transport generic and model-independent: response kernels and channels state the measured observable, source, and first-order variation of the measured observable; that variation supplies the explicit contact contribution. ConductivityTensor represents physical conductivity only after the required physical assumptions and normalization are supplied.
 
 Keep finite response identities and generic disorder/ladder algebra upstream of model-specific constructions. Exact disorder averages, Born and SCBA approximations, and algebraic ladder solutions have distinct meanings; interpreting a total algebraic solution as a physical fixed point requires its own hypotheses.
 
