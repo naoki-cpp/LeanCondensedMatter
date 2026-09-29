@@ -51,8 +51,13 @@ noncomputable def currentBoundedOperator
 noncomputable def greenOperator
     (side : SpectralSide) (params : Parameters) (px py : ℝ) :
     RashbaHilbert →L[ℂ] RashbaHilbert :=
-  spectralResolvent side (hamiltonianOperator params px py)
-    params.chemicalPotential params.broadening
+  match side with
+  | .retarded =>
+      retardedResolvent (hamiltonianOperator params px py)
+        params.chemicalPotential params.broadening
+  | .advanced =>
+      advancedResolvent (hamiltonianOperator params px py)
+        params.chemicalPotential params.broadening
 
 end
 end QuantumTheory.Transport.Models.RashbaExchange
