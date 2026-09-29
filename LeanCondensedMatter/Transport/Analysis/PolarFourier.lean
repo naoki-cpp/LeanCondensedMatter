@@ -439,8 +439,7 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
           ((p : ℂ) * polarFourierRadialPhase z α) * source.eval (α + angle)) =
           _
       simp_rw [← source.rotate2D_eval angle]
-      simpa [source, coefficients, AngularHarmonicCoefficients.rotate2D,
-        AngularHarmonicCoefficients.eval, smul_eq_mul] using
+      simpa [source, coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
         coefficients.integral_polarFourierRadialPhase z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
