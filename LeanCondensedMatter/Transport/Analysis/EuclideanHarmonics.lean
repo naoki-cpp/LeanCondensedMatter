@@ -11,8 +11,10 @@ Coordinate representation of the degree-zero, degree-one, and degree-two angular
 transport angular reductions in arbitrary finite dimension.
 
 The first harmonic is a vector. The second harmonic is represented by a symmetric traceless matrix,
-so evaluation on a direction `ω` is the quadratic form `ωᵀ Q ω`. This module only owns the
-algebraic harmonic data; sphere measures and spherical-coordinate charts remain downstream.
+so evaluation on a direction `ω` is the quadratic contraction `ωᵢ ωⱼ Qᵢⱼ`. The coefficient type
+remains generic, matching `AngularHarmonicCoefficients`, so the same decomposition can describe
+scalars, matrices, or bounded operators. Sphere measures and spherical-coordinate charts remain
+downstream.
 -/
 
 namespace QuantumTheory
@@ -23,13 +25,13 @@ noncomputable section
 open scoped BigOperators
 
 /-- Constant, vector, and symmetric-traceless quadratic angular data in `n` dimensions. -/
-structure EuclideanHarmonicCoefficients (n : ℕ) where
+structure EuclideanHarmonicCoefficients (n : ℕ) (E : Type*) [AddCommMonoid E] where
   /-- Degree-zero harmonic. -/
-  constant : ℂ
+  constant : E
   /-- Degree-one harmonic coefficients. -/
-  first : Fin n → ℂ
+  first : Fin n → E
   /-- Degree-two harmonic coefficients. -/
-  second : Matrix (Fin n) (Fin n) ℂ
+  second : Matrix (Fin n) (Fin n) E
   /-- The quadratic coefficient is symmetric. -/
   second_symm : second.IsSymm
   /-- The quadratic coefficient is traceless. -/
@@ -38,12 +40,12 @@ structure EuclideanHarmonicCoefficients (n : ℕ) where
 namespace EuclideanHarmonicCoefficients
 
 /-- Evaluate the constant, vector, and symmetric-traceless quadratic harmonics on a real direction. -/
-def eval {n : ℕ} (coefficients : EuclideanHarmonicCoefficients n)
-    (direction : Fin n → ℝ) : ℂ :=
+def eval {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : EuclideanHarmonicCoefficients n E) (direction : Fin n → ℝ) : E :=
   coefficients.constant +
-    ∑ i, ((direction i : ℝ) : ℂ) * coefficients.first i +
+    ∑ i, ((direction i : ℝ) : ℂ) • coefficients.first i +
       ∑ i, ∑ j,
-        ((direction i : ℝ) : ℂ) * ((direction j : ℝ) : ℂ) * coefficients.second i j
+        ((((direction i : ℝ) : ℂ) * ((direction j : ℝ) : ℂ))) • coefficients.second i j
 
 end EuclideanHarmonicCoefficients
 
@@ -53,14 +55,15 @@ def polarDirection2D (angle : ℝ) : Fin 2 → ℝ :=
 
 /-- Interpret the existing two-dimensional trigonometric coefficients as vector and
 symmetric-traceless quadratic Euclidean harmonic data. The mixed coefficient is split equally
-between the two off-diagonal matrix entries because both contribute to `ωᵀ Q ω`. -/
+between the two off-diagonal matrix entries because both contribute to the quadratic contraction. -/
 def AngularHarmonicCoefficients.toEuclidean2D
-    (coefficients : AngularHarmonicCoefficients ℂ) : EuclideanHarmonicCoefficients 2 where
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) : EuclideanHarmonicCoefficients 2 E where
   constant := coefficients.constant
   first := ![coefficients.firstCosine, coefficients.firstSine]
   second :=
-    !![coefficients.secondCosine, coefficients.secondMixed / 2;
-       coefficients.secondMixed / 2, -coefficients.secondCosine]
+    !![coefficients.secondCosine, (2 : ℂ)⁻¹ • coefficients.secondMixed;
+       (2 : ℂ)⁻¹ • coefficients.secondMixed, -coefficients.secondCosine]
   second_symm := by
     intro i j
     fin_cases i <;> fin_cases j <;> simp
@@ -70,12 +73,13 @@ def AngularHarmonicCoefficients.toEuclidean2D
 /-- The legacy two-dimensional trigonometric evaluation is exactly the Euclidean vector/STF
 quadratic evaluation on the polar unit direction. -/
 theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
   simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
-    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two, smul_eq_mul]
-  ring
+    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two]
+  module
 
 end
 
