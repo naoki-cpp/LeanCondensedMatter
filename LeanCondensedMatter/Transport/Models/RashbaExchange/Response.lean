@@ -53,7 +53,7 @@ noncomputable def cleanHallPointKernel
 
 /-- The disorder/vertex seam specialized to clean resolvents and the bare charge-current source
 vertex is definitionally the clean surface kernel. -/
-@[simp] theorem suppliedHallPointKernel_bare_eq_clean
+theorem suppliedHallPointKernel_bare_eq_clean
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
     suppliedHallPointKernel params measured px py
         (greenOperator .retarded params px py)
