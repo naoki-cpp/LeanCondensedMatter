@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
-import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
+import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 
 set_option linter.style.header false
 
