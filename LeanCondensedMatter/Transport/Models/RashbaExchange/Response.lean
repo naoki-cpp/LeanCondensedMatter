@@ -109,27 +109,36 @@ theorem finiteDiskHallIntegrand_swap
       -finiteDiskHallIntegrand params measured source px py := by
   classical
   unfold finiteDiskHallIntegrand
-  split <;> simp only [neg_zero]
+  split
   · exact antisymmetricCleanHallPointKernel_swap params measured source px py
-  · rfl
+  · simp
 
 theorem finiteCutoffHallResponseComponent_swap
     (params : Parameters) (measured source : Fin 2) :
     finiteCutoffHallResponseComponent params source measured =
       -finiteCutoffHallResponseComponent params measured source := by
   unfold finiteCutoffHallResponseComponent
-  rw [show
-    (∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-      ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+  have hinner (px : ℝ) :
+      (∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
         finiteDiskHallIntegrand params source measured px py) =
-      -(∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        -(∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+          finiteDiskHallIntegrand params measured source px py) := by
+    rw [← intervalIntegral.integral_neg]
+    apply intervalIntegral.integral_congr
+    intro py _
+    exact finiteDiskHallIntegrand_swap params measured source px py
+  have houter :
+      (∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
         ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-          finiteDiskHallIntegrand params measured source px py) by
-    simp_rw [finiteDiskHallIntegrand_swap]
-    rw [intervalIntegral.integral_neg]
-    congr 1
-    funext px
-    rw [intervalIntegral.integral_neg]]
+          finiteDiskHallIntegrand params source measured px py) =
+        -(∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+          ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+            finiteDiskHallIntegrand params measured source px py) := by
+    rw [← intervalIntegral.integral_neg]
+    apply intervalIntegral.integral_congr
+    intro px _
+    exact hinner px
+  rw [houter]
   ring
 
 /-- Physical conductivity component: the finite raw response receives the common static
