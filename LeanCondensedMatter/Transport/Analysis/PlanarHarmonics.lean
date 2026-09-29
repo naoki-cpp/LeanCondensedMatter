@@ -158,6 +158,7 @@ theorem AngularHarmonicCoefficients.rotate2D_firstSine
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
 
+set_option linter.flexible false in
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_secondCosine
     {E : Type*} [AddCommMonoid E] [Module ℂ E]
@@ -170,9 +171,12 @@ theorem AngularHarmonicCoefficients.rotate2D_secondCosine
   letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
-  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-  module
+  match_scalars <;>
+    (try rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]) <;>
+    simp only [Complex.coe_algebraMap] <;>
+    ring
 
+set_option linter.flexible false in
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_secondMixed
     {E : Type*} [AddCommMonoid E] [Module ℂ E]
@@ -185,8 +189,10 @@ theorem AngularHarmonicCoefficients.rotate2D_secondMixed
   letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
-  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-  module
+  match_scalars <;>
+    (try rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]) <;>
+    simp only [Complex.coe_algebraMap] <;>
+    ring
 
 /-- Rotating the coefficient data is equivalent to shifting the polar direction. -/
 theorem AngularHarmonicCoefficients.rotate2D_eval
