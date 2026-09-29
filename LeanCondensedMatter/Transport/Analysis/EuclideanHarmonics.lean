@@ -81,6 +81,16 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two]
   module
 
+/-- Shifting the polar angle is evaluation of the same Euclidean harmonic data on the shifted
+unit direction. This is the coordinate-free replacement for expanding every first- and
+second-harmonic trigonometric coefficient under angle addition. -/
+theorem AngularHarmonicCoefficients.eval_add_eq_toEuclidean2D_eval
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle θ : ℝ) :
+    coefficients.eval (θ + angle) =
+      coefficients.toEuclidean2D.eval (polarDirection2D (θ + angle)) :=
+  coefficients.eval_eq_toEuclidean2D_eval (θ + angle)
+
 end
 
 end Transport
