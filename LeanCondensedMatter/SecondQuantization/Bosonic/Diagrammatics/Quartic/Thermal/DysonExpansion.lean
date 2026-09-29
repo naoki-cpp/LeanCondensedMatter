@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
@@ -442,6 +444,52 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
               (d.restrictComponent B.2) order t)).symm
     _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponent B.2) t := rfl
+
+variable [Fintype Mode]
+
+/-- The physical time-integrated bosonic quartic Dyson amplitude as a multiplicative diagram
+weight. This is the diagrammatic moment forced by the convergence-aware Dyson coefficient, rather
+than the static order-averaged thermal weight. -/
+noncomputable def quarticDysonThermalDiagramMultiplicativeWeight
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} :
+    Combinatorics.MultiplicativeWeight
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
+  objectWeight d := QuarticDiagram.dysonThermalAmplitude ε β g d t
+  connectedWeight d := QuarticDiagram.dysonThermalAmplitude ε β g d.1 t
+  weight_decompose d := by
+    change QuarticDiagram.dysonThermalAmplitude ε β g d t =
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
+        QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponentConnected B.2).1 t
+    simpa only [Common.QuarticDiagram.restrictComponentConnected] using
+      QuarticDiagram.dysonThermalAmplitude_eq_prod_components ε β g d t
+
+/-- The normalized finite-set moment carried by the physical time-integrated bosonic quartic Dyson
+diagrams. -/
+noncomputable def quarticDysonThermalMoment
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} :
+    Combinatorics.NormalizedSetFunction (Fin N) ℂ :=
+  (quarticDysonThermalDiagramMultiplicativeWeight ε β g t).normalizedObjectMoment
+
+/-- The physical Dyson moment is exactly the factorial-normalized convergence-aware bosonic Dyson
+coefficient. -/
+theorem quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} (S : Finset (Fin N)) :
+    quarticDysonThermalMoment ε β g t S =
+      (S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
+  change
+    (quarticDysonThermalDiagramMultiplicativeWeight ε β g t).objectMoment S =
+      (S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t
+  change
+    (∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
+      QuarticDiagram.dysonThermalAmplitude ε β g d t) =
+      (S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t
+  exact
+    (factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
+      ε β hpos g S t).symm
 
 end
 end Bosonic
