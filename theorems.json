@@ -84587,7 +84587,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) (t : ℝ),\n      ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card\n            t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g d t",
     "standardAxioms": [
       "Classical.choice",
@@ -84595,7 +84595,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84606,15 +84606,19 @@
     "docString": "The total physical quartic-diagram weight is the canonical vertex moment:\n`|S|!` times the convergence-aware bosonic Dyson coefficient. The factorial is the number of\nglobal vertex orders; unlike the static coefficientwise amplitude, it is not divided out because the\nordered-simplex shuffle sum is exactly what later factorizes over connected components. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
       "SecondQuantization.Common.card_quarticVertexOrder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87998,6 +88002,43 @@
       "SecondQuantization.Bosonic.particleNumber_vacuum"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} (S : Finset (Fin N)),\n      (SecondQuantization.Bosonic.quarticDysonThermalMoment ε β g t).toFun S =\n        ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "The physical Dyson moment is exactly the factorial-normalized convergence-aware bosonic Dyson\ncoefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
