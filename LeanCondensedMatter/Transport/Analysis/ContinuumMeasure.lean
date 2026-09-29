@@ -20,6 +20,9 @@ conductivity data.
 namespace QuantumTheory
 namespace Transport
 
+/-- Squared norm of a two-dimensional physical-momentum coordinate. -/
+def momentumSq2D (px py : ℝ) : ℝ := px ^ 2 + py ^ 2
+
 /-- The `ℏ`-dependent prefactor in the two-dimensional physical-momentum continuum measure
 `d²p / (2πℏ)²`. This is a continuum convention rather than a generic transport invariant. -/
 noncomputable def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
