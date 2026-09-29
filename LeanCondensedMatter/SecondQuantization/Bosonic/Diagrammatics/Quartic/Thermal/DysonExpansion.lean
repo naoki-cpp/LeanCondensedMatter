@@ -445,6 +445,8 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
     _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
         QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponent B.2) t := rfl
 
+variable [Fintype Mode]
+
 /-- The physical time-integrated bosonic quartic Dyson amplitude as a multiplicative diagram
 weight. This is the diagrammatic moment forced by the convergence-aware Dyson coefficient, rather
 than the static order-averaged thermal weight. -/
@@ -471,12 +473,15 @@ noncomputable def quarticDysonThermalMoment
 /-- The physical Dyson moment is exactly the factorial-normalized convergence-aware bosonic Dyson
 coefficient. -/
 theorem quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
-    [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} (S : Finset (Fin N)) :
     quarticDysonThermalMoment ε β g t S =
       (S.card.factorial : ℂ) *
         freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t := by
+  change
+    (quarticDysonThermalDiagramMultiplicativeWeight ε β g t).objectMoment S =
+      (S.card.factorial : ℂ) *
+        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card t
   change
     (∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
       QuarticDiagram.dysonThermalAmplitude ε β g d t) =
