@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
+import LeanCondensedMatter.Transport.Analysis.EuclideanHarmonics
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
@@ -376,30 +377,6 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
   simp_rw [hpoint]
   simpa [f] using intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi
 
-private theorem angular_second_harmonics_add
-    (angle θ : ℝ) (a b c d e : ℂ) :
-    a + ((Real.cos (θ + angle) : ℝ) : ℂ) * b +
-          ((Real.sin (θ + angle) : ℝ) : ℂ) * c +
-          ((((Real.cos (θ + angle) : ℝ) : ℂ) ^ 2) -
-            (((Real.sin (θ + angle) : ℝ) : ℂ) ^ 2)) * d +
-          (((Real.cos (θ + angle) : ℝ) : ℂ) *
-            ((Real.sin (θ + angle) : ℝ) : ℂ)) * e =
-      a + ((Real.cos θ : ℝ) : ℂ) *
-            (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c) +
-          ((Real.sin θ : ℝ) : ℂ) *
-            (-((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c) +
-          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-            (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
-                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
-              (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e) +
-          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-            ((-4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ))) * d +
-              (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
-                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * e)) := by
-  rw [Real.cos_add, Real.sin_add]
-  push_cast
-  ring
-
 private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
     (z p angle : ℝ) (a b c d e : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
@@ -450,7 +427,12 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
             (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
                 (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
               (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)) := by
-      simp_rw [f, angular_second_harmonics_add]
+      let source : AngularHarmonicCoefficients ℂ :=
+        { constant := a
+          firstCosine := b
+          firstSine := c
+          secondCosine := d
+          secondMixed := e }
       let coefficients : AngularHarmonicCoefficients ℂ :=
         { constant := a
           firstCosine :=
@@ -463,7 +445,14 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
           secondMixed :=
             -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
               (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
-      simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+      have hrotate (θ : ℝ) : source.eval (θ + angle) = coefficients.eval θ := by
+        rw [source.eval_add_eq_toEuclidean2D_eval, polarDirection2D_add]
+        simp [source, coefficients, AngularHarmonicCoefficients.toEuclidean2D,
+          EuclideanHarmonicCoefficients.eval, rotationMatrix2D, polarDirection2D,
+          Matrix.mulVec, Fin.sum_univ_two]
+        module
+      simp_rw [f, ← hrotate]
+      simpa [source, AngularHarmonicCoefficients.eval, smul_eq_mul] using
         coefficients.integral_polarFourierRadialPhase z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
