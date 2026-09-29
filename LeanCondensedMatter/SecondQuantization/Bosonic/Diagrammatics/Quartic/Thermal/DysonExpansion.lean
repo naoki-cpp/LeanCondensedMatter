@@ -253,9 +253,9 @@ theorem factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermal
         QuarticDiagram.dysonThermalAmplitude ε β g d t := rfl
 
 
+omit [Finite Mode] in
 /-- The scalar quartic imaginary-time factor of an assembled global order is the family-shuffle
 integrand of the corresponding component-local time factors. -/
-omit [Finite Mode] in
 private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder
     (ε : Mode → ℝ) {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
@@ -277,6 +277,7 @@ private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrd
   simp only [Combinatorics.FamilySlotShuffleTo.timeAssignment_apply]
   rw [← d.restrictComponent_vertexLabel_componentOrder orders shuffle B i]
 
+omit [Finite Mode] in
 /-- For fixed component-local vertex orders, summing the physical ordered Dyson amplitude over all
 order-preserving component shuffles gives the product of the corresponding component-local ordered
 Dyson amplitudes. -/
