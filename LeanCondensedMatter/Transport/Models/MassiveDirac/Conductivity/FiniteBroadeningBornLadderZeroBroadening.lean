@@ -80,27 +80,23 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
         ((finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
           e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax).component
           measured source)) := by
-  rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
-    hdisorder, hmetal, hcutoff⟩
   have hxx :=
     tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivity_broadening_zero
-      e v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
-      hdisorder hmetal hcutoff hrenorm hdet
+      e regime hrenorm hdet
   have hxy :=
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivity_broadening_zero
-      e v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
-      hdisorder hmetal hcutoff hrenorm hdet
+      e regime hrenorm hdet
   fin_cases measured <;> fin_cases source
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxx
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxy
   · apply Tendsto.congr' ?_ hxy.neg
     filter_upwards with broadening
     exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy
-      e v m probeEnergy broadening disorderStrength hbar pMax).symm
+      e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax).symm
   · apply Tendsto.congr' ?_ hxx
     filter_upwards with broadening
     exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx
-      e v m probeEnergy broadening disorderStrength hbar pMax).symm
+      e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax).symm
 
 end
 
