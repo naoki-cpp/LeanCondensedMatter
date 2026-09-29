@@ -42,18 +42,20 @@ theorem polarDirection2D_add (θ angle : ℝ) :
 symmetric-traceless quadratic Euclidean harmonic data. The mixed coefficient is split equally
 between the two off-diagonal matrix entries because both contribute to the quadratic contraction. -/
 def AngularHarmonicCoefficients.toEuclidean2D
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
-    (coefficients : AngularHarmonicCoefficients E) : EuclideanHarmonicCoefficients 2 E where
-  constant := coefficients.constant
-  first := ![coefficients.firstCosine, coefficients.firstSine]
-  second :=
-    !![coefficients.secondCosine, (2 : ℂ)⁻¹ • coefficients.secondMixed;
-       (2 : ℂ)⁻¹ • coefficients.secondMixed, -coefficients.secondCosine]
-  second_symm := by
-    ext i j
-    fin_cases i <;> fin_cases j <;> simp
-  second_trace := by
-    simp [Matrix.trace, Fin.sum_univ_two]
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) : EuclideanHarmonicCoefficients 2 E := by
+  letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
+  exact
+    { constant := coefficients.constant
+      first := ![coefficients.firstCosine, coefficients.firstSine]
+      second :=
+        !![coefficients.secondCosine, (2 : ℂ)⁻¹ • coefficients.secondMixed;
+           (2 : ℂ)⁻¹ • coefficients.secondMixed, -coefficients.secondCosine]
+      second_symm := by
+        ext i j
+        fin_cases i <;> fin_cases j <;> simp
+      second_trace := by
+        simp [Matrix.trace, Fin.sum_univ_two] }
 
 -- The bridge proof intentionally uses `simp` to normalize finite vector/matrix notation before
 -- coefficient comparison.
@@ -61,10 +63,11 @@ set_option linter.flexible false in
 /-- The legacy two-dimensional trigonometric evaluation is exactly the Euclidean vector/STF
 quadratic evaluation on the polar unit direction. -/
 theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
+  letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
     EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
     EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
@@ -76,7 +79,7 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
 
 /-- Convert two-dimensional Euclidean STF data back to the legacy trigonometric coordinates. -/
 def EuclideanHarmonicCoefficients.toAngular2D
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients 2 E) : AngularHarmonicCoefficients E where
   constant := coefficients.constant
   firstCosine := coefficients.first 0
@@ -88,10 +91,11 @@ def EuclideanHarmonicCoefficients.toAngular2D
 set_option linter.flexible false in
 /-- The Euclidean-to-trigonometric bridge preserves evaluation on the polar unit direction. -/
 theorem EuclideanHarmonicCoefficients.toAngular2D_eval
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients 2 E) (angle : ℝ) :
     coefficients.toAngular2D.eval angle =
       coefficients.eval (polarDirection2D angle) := by
+  letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   have hdiag : coefficients.second 1 1 = -coefficients.second 0 0 := by
     have h : coefficients.second 0 0 + coefficients.second 1 1 = 0 := by
       simpa [Matrix.trace, Fin.sum_univ_two] using coefficients.second_trace
@@ -120,64 +124,70 @@ theorem rotationMatrix2D_mem_orthogonalGroup (angle : ℝ) :
 /-- Rotate two-dimensional trigonometric coefficients by specializing the generic Euclidean
 orthogonal pullback. -/
 def AngularHarmonicCoefficients.rotate2D
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
-    AngularHarmonicCoefficients ℂ :=
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
+    AngularHarmonicCoefficients E :=
   ((coefficients.toEuclidean2D).orthogonalTransform
       (rotationMatrix2D angle) (rotationMatrix2D_mem_orthogonalGroup angle)).toAngular2D
 
-
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_constant
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     (coefficients.rotate2D angle).constant = coefficients.constant := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D]
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_firstCosine
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     (coefficients.rotate2D angle).firstCosine =
-      ((Real.cos angle : ℝ) : ℂ) * coefficients.firstCosine +
-        ((Real.sin angle : ℝ) : ℂ) * coefficients.firstSine := by
+      ((Real.cos angle : ℝ) : ℂ) • coefficients.firstCosine +
+        ((Real.sin angle : ℝ) : ℂ) • coefficients.firstSine := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_firstSine
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     (coefficients.rotate2D angle).firstSine =
-      -((Real.sin angle : ℝ) : ℂ) * coefficients.firstCosine +
-        ((Real.cos angle : ℝ) : ℂ) * coefficients.firstSine := by
+      (-((Real.sin angle : ℝ) : ℂ)) • coefficients.firstCosine +
+        ((Real.cos angle : ℝ) : ℂ) • coefficients.firstSine := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_secondCosine
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     (coefficients.rotate2D angle).secondCosine =
-      (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
-          coefficients.secondCosine +
-        ((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ) *
+      ((((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) •
+          coefficients.secondCosine) +
+        (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) •
           coefficients.secondMixed := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
-  ring
+  module
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_secondMixed
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     (coefficients.rotate2D angle).secondMixed =
-      -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+      ((-4 : ℂ) * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ))) •
           coefficients.secondCosine +
-        (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
-          coefficients.secondMixed := by
+        ((((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) •
+          coefficients.secondMixed) := by
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
-  ring
+  module
 
 /-- Rotating the coefficient data is equivalent to shifting the polar direction. -/
 theorem AngularHarmonicCoefficients.rotate2D_eval
-    (coefficients : AngularHarmonicCoefficients ℂ) (angle θ : ℝ) :
+    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (angle θ : ℝ) :
     (coefficients.rotate2D angle).eval θ = coefficients.eval (θ + angle) := by
   rw [AngularHarmonicCoefficients.rotate2D,
     EuclideanHarmonicCoefficients.toAngular2D_eval,
