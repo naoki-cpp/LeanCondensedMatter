@@ -89,11 +89,12 @@ theorem contract_pullbackVector {n : ℕ} {E : Type*} [AddCommMonoid E] [Module 
   apply Finset.sum_congr rfl
   intro j hj
   simp only [Matrix.mulVec, dotProduct]
+  simp_rw [smul_smul]
   rw [← Finset.sum_smul]
   congr 1
   apply Finset.sum_congr rfl
   intro i hi
-  simp [smul_eq_mul, mul_comm]
+  rw [mul_comm]
 
 /-- Contracting each row commutes with pullback of the row index. -/
 theorem contract_pullbackRows {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
@@ -165,7 +166,8 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     have h := congrFun (congrFun hmatrixC k) l
     simpa [Matrix.mul_apply, Matrix.one_apply] using h
   have htrace : Matrix.trace (pullbackMatrix matrixC coefficients.second) = 0 := by
-    change (∑ i, ∑ k, matrixC k i • ∑ l, matrixC l i • coefficients.second k l) = 0
+    simp only [Matrix.trace, Matrix.diag, pullbackMatrix, pullbackVector,
+      Finset.sum_apply, Pi.smul_apply]
     simp_rw [Finset.smul_sum, ← mul_smul]
     calc
       (∑ i, ∑ k, ∑ l,
@@ -226,7 +228,8 @@ theorem orthogonalTransform_second_apply {n : ℕ} {E : Type*}
     (coefficients.orthogonalTransform matrix horthogonal).second i j =
       ∑ k, (((matrix k i : ℝ) : ℂ)) •
         ∑ l, (((matrix l j : ℝ) : ℂ)) • coefficients.second k l := by
-  simp [orthogonalTransform, pullbackMatrix, complexifyMatrix]
+  simp [orthogonalTransform, pullbackMatrix, pullbackVector, complexifyMatrix,
+    Finset.sum_apply, Pi.smul_apply]
 
 /-- Orthogonal pullback of the coefficient data is equivalent to evaluating the original
 harmonics on the transformed direction. -/
