@@ -38,7 +38,7 @@ vertex without reconstructing the Rashba Hamiltonian or measured charge-current 
 noncomputable def suppliedHallPointKernel
     (params : Parameters) (measured : Fin 2) (px py : ℝ)
     (retardedGreen sourceVertex advancedGreen :
-      MassiveDirac.DiracHilbert →L[ℂ] MassiveDirac.DiracHilbert) : ℂ :=
+      InternalSpace.PauliHilbert →L[ℂ] InternalSpace.PauliHilbert) : ℂ :=
   suppliedGreenStredaSurfacePrimitiveTraceKernel
     (currentBoundedOperator params measured px py)
     retardedGreen sourceVertex advancedGreen
