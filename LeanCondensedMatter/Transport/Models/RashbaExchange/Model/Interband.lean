@@ -131,7 +131,8 @@ theorem forceMatrixTraceNumerator_xy_eq
     simp [Matrix.trace, Matrix.mul_apply, InternalSpace.pauliCombination_eq_components,
       InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
       sub_eq_add_neg]
-    rw [hI]
+    ring_nf
+    simp [hI]
     linear_combination -(cx * cy) * hnorm
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
