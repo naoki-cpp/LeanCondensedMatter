@@ -52,6 +52,19 @@ noncomputable def currentBoundedOperator
   unfold currentBoundedOperator velocityBoundedOperator currentOperator matrixOperator
   rw [map_smul]
 
+/-- When the Rashba coupling vanishes, each in-plane charge-current vertex is a scalar multiple of
+the identity. This is the operator-level degeneracy used by the Hall-response zero theorem. -/
+theorem currentBoundedOperator_rashba_zero
+    (params : Parameters) (direction : Fin 2) (px py : ℝ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    currentBoundedOperator params direction px py =
+      (((params.signedCharge *
+        (if direction = 0 then px / params.effectiveMass else py / params.effectiveMass) : ℝ) : ℂ)) •
+        (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) := by
+  fin_cases direction <;>
+    simp [currentBoundedOperator, currentOperator, velocityOperator, matrixOperator, hAlpha,
+      smul_smul]
+
 /-- The explicit Rashba-exchange Hamiltonian matrix is Hermitian for real model parameters. -/
 theorem hamiltonian_isHermitian (params : Parameters) (px py : ℝ) :
     (hamiltonian params px py).IsHermitian := by
