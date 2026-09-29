@@ -74,6 +74,7 @@ theorem eval_eq_dotProduct {n : ℕ}
         complexDirection direction ⬝ᵥ
           Matrix.mulVec coefficients.second (complexDirection direction) := by
   simp only [eval, complexDirection, Matrix.mulVec, dotProduct, Finset.mul_sum, smul_eq_mul]
+  congr 1
   apply Finset.sum_congr rfl
   intro i hi
   apply Finset.sum_congr rfl
@@ -91,6 +92,9 @@ def orthogonalTransform {n : ℕ}
   have hmatrixC : matrixC * matrixC.transpose = 1 := by
     have hmatrix :=
       (Matrix.mem_orthogonalGroup_iff (Fin n) ℝ).mp horthogonal
+    change matrix.map Complex.ofRealHom *
+        (matrix.map Complex.ofRealHom).transpose = 1
+    rw [← Matrix.transpose_map]
     simpa [matrixC, complexifyMatrix] using
       congrArg (fun m : Matrix (Fin n) (Fin n) ℝ => m.map Complex.ofRealHom) hmatrix
   refine
@@ -120,8 +124,7 @@ theorem orthogonalTransform_eval {n : ℕ}
       coefficients.eval (Matrix.mulVec matrix direction) := by
   rw [eval_eq_dotProduct, eval_eq_dotProduct, complexDirection_mulVec]
   simp only [orthogonalTransform, Matrix.mulVec_mulVec, dotProduct_comm]
-  rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec,
-    Matrix.dotProduct_transpose_mulVec, dotProduct_comm]
+  rw [Matrix.dotProduct_transpose_mulVec, dotProduct_comm]
 
 end EuclideanHarmonicCoefficients
 
@@ -190,8 +193,8 @@ theorem EuclideanHarmonicCoefficients.toAngular2D_eval
     coefficients.toAngular2D.eval angle =
       coefficients.eval (polarDirection2D angle) := by
   have hdiag : coefficients.second 1 1 = -coefficients.second 0 0 := by
-    have h := coefficients.second_trace
-    simp [Matrix.trace, Fin.sum_univ_two] at h
+    have h : coefficients.second 0 0 + coefficients.second 1 1 = 0 := by
+      simpa [Matrix.trace, Fin.sum_univ_two] using coefficients.second_trace
     exact eq_neg_of_add_eq_zero_right h
   have hoff : coefficients.second 1 0 = coefficients.second 0 1 := by
     have h := congrFun (congrFun coefficients.second_symm 0) 1
