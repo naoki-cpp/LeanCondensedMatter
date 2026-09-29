@@ -171,5 +171,13 @@ def berryCurvature (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
     berryCurvature params band px py = 0 := by
   simp [berryCurvature, hAlpha]
 
+/-- Opposite bands carry opposite Berry curvature wherever the totalized closed formula is used. -/
+@[simp] theorem berryCurvature_oppositeBand
+    (params : Parameters) (band : Band) (px py : ℝ) :
+    berryCurvature params (oppositeBand band) px py =
+      -berryCurvature params band px py := by
+  simp [berryCurvature, bandSign_oppositeBand]
+  ring
+
 end
 end QuantumTheory.Transport.Models.RashbaExchange
