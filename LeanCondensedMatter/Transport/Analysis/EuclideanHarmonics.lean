@@ -125,21 +125,22 @@ theorem orthogonalTransform_eval {n : ℕ}
   rw [eval_eq_dotProduct, eval_eq_dotProduct, complexDirection_mulVec]
   simp only [orthogonalTransform, Matrix.mulVec_mulVec, dotProduct_comm]
   congr 1
-  calc
-    complexDirection direction ⬝ᵥ
-        ((complexifyMatrix matrix).transpose * coefficients.second * complexifyMatrix matrix).mulVec
-          (complexDirection direction) =
+  · rw [Matrix.dotProduct_transpose_mulVec]
+  · calc
       complexDirection direction ⬝ᵥ
-        (complexifyMatrix matrix).transpose.mulVec
-          ((coefficients.second * complexifyMatrix matrix).mulVec
-            (complexDirection direction)) := by
-        rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec]
-    _ = (coefficients.second * complexifyMatrix matrix).mulVec (complexDirection direction) ⬝ᵥ
-        (complexifyMatrix matrix).mulVec (complexDirection direction) := by
-      exact Matrix.dotProduct_transpose_mulVec _ _ _
-    _ = (complexifyMatrix matrix).mulVec (complexDirection direction) ⬝ᵥ
-        (coefficients.second * complexifyMatrix matrix).mulVec (complexDirection direction) :=
-      dotProduct_comm _ _
+          ((complexifyMatrix matrix).transpose * coefficients.second * complexifyMatrix matrix).mulVec
+            (complexDirection direction) =
+        complexDirection direction ⬝ᵥ
+          (complexifyMatrix matrix).transpose.mulVec
+            ((coefficients.second * complexifyMatrix matrix).mulVec
+              (complexDirection direction)) := by
+          rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec]
+      _ = (coefficients.second * complexifyMatrix matrix).mulVec (complexDirection direction) ⬝ᵥ
+          (complexifyMatrix matrix).mulVec (complexDirection direction) := by
+        exact Matrix.dotProduct_transpose_mulVec _ _ _
+      _ = (complexifyMatrix matrix).mulVec (complexDirection direction) ⬝ᵥ
+          (coefficients.second * complexifyMatrix matrix).mulVec (complexDirection direction) :=
+        dotProduct_comm _ _
 
 end EuclideanHarmonicCoefficients
 
