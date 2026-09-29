@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
+import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -66,6 +67,36 @@ theorem cleanHallPointKernel_eq_regularized
       (currentBoundedOperator params measured px py)
       (currentBoundedOperator params source px py)
       params.chemicalPotential params.broadening)
+
+/-- Full finite-broadening Bastin response at one momentum point over an explicit finite energy
+window. Unlike the surface primitive above, this is the complete canonical traced Bastin energy
+integral and therefore retains both the surface-derivative and residual-sea contributions. -/
+noncomputable def cleanBastinPointResponse
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
+  regularizedTracedBastinEnergyIntegral
+    (hamiltonianOperator params px py)
+    (currentBoundedOperator params measured px py)
+    (currentBoundedOperator params source px py)
+    params.broadening lowerEnergy upperEnergy occupation
+
+/-- Ordered Hall projection of the full finite-broadening Bastin response. -/
+noncomputable def antisymmetricCleanBastinPointResponse
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
+  (1 / 2 : ℂ) *
+    (cleanBastinPointResponse params measured source px py lowerEnergy upperEnergy occupation -
+      cleanBastinPointResponse params source measured px py lowerEnergy upperEnergy occupation)
+
+theorem antisymmetricCleanBastinPointResponse_swap
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
+    antisymmetricCleanBastinPointResponse params source measured px py
+        lowerEnergy upperEnergy occupation =
+      -antisymmetricCleanBastinPointResponse params measured source px py
+        lowerEnergy upperEnergy occupation := by
+  unfold antisymmetricCleanBastinPointResponse
+  ring
 
 /-- Ordered Hall projection of the clean point response. Antisymmetry is algebraic and therefore
 does not assume a rotational symmetry or a limiting procedure. -/
@@ -142,23 +173,26 @@ theorem finiteCutoffHallResponseComponent_swap
   rw [houter]
   ring
 
-/-- Physical conductivity component: the finite raw response receives the common static
-Bastin–Středa trace prefactor only at this boundary. -/
-noncomputable def finiteCutoffHallConductivityComponent
+/-- Surface-projected diagnostic component. This deliberately remains a response-level object:
+the Středa surface primitive at the chemical potential is not, by itself, the full Bastin Hall
+conductivity. Full finite-broadening Hall conductivity must be built from
+`cleanBastinPointResponse` (or an equivalent generic Středa representation) with an explicit
+energy window and occupation. -/
+noncomputable def finiteCutoffSurfaceDiagnosticComponent
     (params : Parameters) (measured source : Fin 2) : ℂ :=
   ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
     finiteCutoffHallResponseComponent params measured source
 
 /-- Antisymmetric finite-cutoff Hall conductivity packaged as a physical conductivity tensor. -/
-noncomputable def finiteCutoffHallConductivityTensor
+noncomputable def finiteCutoffSurfaceDiagnosticTensor
     (params : Parameters) : ConductivityTensor (Fin 2) where
-  component := finiteCutoffHallConductivityComponent params
+  component := finiteCutoffSurfaceDiagnosticComponent params
 
-theorem finiteCutoffHallConductivityComponent_swap
+theorem finiteCutoffSurfaceDiagnosticComponent_swap
     (params : Parameters) (measured source : Fin 2) :
-    finiteCutoffHallConductivityComponent params source measured =
-      -finiteCutoffHallConductivityComponent params measured source := by
-  rw [finiteCutoffHallConductivityComponent, finiteCutoffHallConductivityComponent,
+    finiteCutoffSurfaceDiagnosticComponent params source measured =
+      -finiteCutoffSurfaceDiagnosticComponent params measured source := by
+  rw [finiteCutoffSurfaceDiagnosticComponent, finiteCutoffSurfaceDiagnosticComponent,
     finiteCutoffHallResponseComponent_swap]
   ring
 
