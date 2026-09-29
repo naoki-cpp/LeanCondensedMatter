@@ -97,15 +97,37 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     -Complex.ofReal_cos, -Complex.ofReal_sin]
   module
 
-/-- Shifting the polar angle is evaluation of the same Euclidean harmonic data on the shifted
-unit direction. This is the coordinate-free replacement for expanding every first- and
-second-harmonic trigonometric coefficient under angle addition. -/
-theorem AngularHarmonicCoefficients.eval_add_eq_toEuclidean2D_eval
-    {E : Type*} [AddCommGroup E] [Module ℂ E]
-    (coefficients : AngularHarmonicCoefficients E) (angle θ : ℝ) :
-    coefficients.eval (θ + angle) =
-      coefficients.toEuclidean2D.eval (polarDirection2D (θ + angle)) :=
-  coefficients.eval_eq_toEuclidean2D_eval (θ + angle)
+/-- Rotate two-dimensional harmonic coefficients so evaluation at `θ` equals evaluation
+of the original coefficients at `θ + angle`. -/
+def AngularHarmonicCoefficients.rotate2D
+    (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
+    AngularHarmonicCoefficients ℂ where
+  constant := coefficients.constant
+  firstCosine :=
+    ((Real.cos angle : ℝ) : ℂ) * coefficients.firstCosine +
+      ((Real.sin angle : ℝ) : ℂ) * coefficients.firstSine
+  firstSine :=
+    -((Real.sin angle : ℝ) : ℂ) * coefficients.firstCosine +
+      ((Real.cos angle : ℝ) : ℂ) * coefficients.firstSine
+  secondCosine :=
+    (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
+        coefficients.secondCosine +
+      ((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ) *
+        coefficients.secondMixed
+  secondMixed :=
+    -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+        coefficients.secondCosine +
+      (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
+        coefficients.secondMixed
+
+/-- Rotating the coefficient data is equivalent to shifting the polar direction. -/
+theorem AngularHarmonicCoefficients.rotate2D_eval
+    (coefficients : AngularHarmonicCoefficients ℂ) (angle θ : ℝ) :
+    (coefficients.rotate2D angle).eval θ = coefficients.eval (θ + angle) := by
+  simp only [AngularHarmonicCoefficients.rotate2D, AngularHarmonicCoefficients.eval, smul_eq_mul]
+  rw [Real.cos_add, Real.sin_add]
+  push_cast
+  ring
 
 end
 
