@@ -70,7 +70,7 @@ def pullbackVector {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
 def pullbackMatrix {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (matrix : Matrix (Fin n) (Fin n) ℂ)
     (values : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (Fin n) E :=
-  fun i j => ∑ k, matrix k i • ∑ l, matrix l j • values k l
+  pullbackVector matrix (fun k => pullbackVector matrix (values k))
 
 theorem complexDirection_mulVec {n : ℕ}
     (matrix : Matrix (Fin n) (Fin n) ℝ) (direction : Fin n → ℝ) :
@@ -84,17 +84,15 @@ theorem contract_pullbackVector {n : ℕ} {E : Type*} [AddCommMonoid E] [Module 
     (matrix : Matrix (Fin n) (Fin n) ℂ) (weights : Fin n → ℂ) (values : Fin n → E) :
     contract weights (pullbackVector matrix values) =
       contract (Matrix.mulVec matrix weights) values := by
-  simp only [contract, pullbackVector, Finset.smul_sum, smul_assoc]
+  simp only [contract, pullbackVector, Finset.smul_sum]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro j hj
-  change (∑ i, (weights i * matrix j i) • values j) =
-    (∑ i, matrix j i * weights i) • values j
+  simp only [Matrix.mulVec, dotProduct]
   rw [← Finset.sum_smul]
-  congr 1
   apply Finset.sum_congr rfl
   intro i hi
-  rw [mul_comm]
+  simp [smul_smul, mul_comm]
 
 /-- Contracting each row commutes with pullback of the row index. -/
 theorem contract_pullbackRows {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
@@ -103,15 +101,14 @@ theorem contract_pullbackRows {n : ℕ} {E : Type*} [AddCommMonoid E] [Module �
     (fun i => contract weights ((pullbackVector matrix rows) i)) =
       pullbackVector matrix (fun i => contract weights (rows i)) := by
   funext i
-  change (∑ j, weights j • ∑ k, matrix k i • rows k j) =
-    ∑ k, matrix k i • ∑ j, weights j • rows k j
-  simp_rw [Finset.smul_sum]
+  simp only [contract, pullbackVector, Finset.sum_apply, Pi.smul_apply]
+  simp_rw [Finset.smul_sum, smul_smul]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro k hk
   apply Finset.sum_congr rfl
   intro j hj
-  rw [smul_comm]
+  rw [mul_comm]
 
 /-- Quadratic contraction is contravariant in both indices. -/
 theorem quadraticContract_pullbackMatrix {n : ℕ} {E : Type*}
@@ -121,14 +118,8 @@ theorem quadraticContract_pullbackMatrix {n : ℕ} {E : Type*}
     contract weights (fun i => contract weights (pullbackMatrix matrix values i)) =
       contract (Matrix.mulVec matrix weights)
         (fun i => contract (Matrix.mulVec matrix weights) (values i)) := by
-  rw [show
-    (fun i => contract weights (pullbackMatrix matrix values i)) =
-      pullbackVector matrix
-        (fun k => contract weights (pullbackVector matrix (values k))) by
-          simpa [pullbackMatrix] using
-            contract_pullbackRows weights matrix
-              (fun k => pullbackVector matrix (values k))]
-  rw [contract_pullbackVector]
+  simp only [pullbackMatrix]
+  rw [contract_pullbackRows, contract_pullbackVector]
   congr 1
   funext k
   exact contract_pullbackVector matrix weights (values k)
@@ -141,14 +132,15 @@ theorem pullbackMatrix_isSymm {n : ℕ} {E : Type*}
     (pullbackMatrix matrix values).IsSymm := by
   apply Matrix.IsSymm.ext
   intro i j
-  simp only [pullbackMatrix]
+  simp only [pullbackMatrix, pullbackVector, Finset.sum_apply, Pi.smul_apply]
+  simp_rw [Finset.smul_sum, smul_smul]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro k hk
   apply Finset.sum_congr rfl
   intro l hl
   rw [hvalues.apply]
-  rw [smul_comm]
+  rw [mul_comm]
 
 /-- Pull back Euclidean harmonic coefficients along a real orthogonal transformation.
 The linear coefficient transforms as `Rᵀ b` and the quadratic coefficient as `Rᵀ Q R`.
@@ -195,7 +187,7 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
             intro k hk
             apply Finset.sum_congr rfl
             intro l hl
-            rw [hentry]
+            simp [hentry]
       _ = Matrix.trace coefficients.second := by
             simp [Matrix.trace]
       _ = 0 := coefficients.second_trace
