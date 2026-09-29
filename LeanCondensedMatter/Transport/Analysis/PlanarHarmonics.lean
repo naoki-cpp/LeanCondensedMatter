@@ -55,6 +55,9 @@ def AngularHarmonicCoefficients.toEuclidean2D
   second_trace := by
     simp [Matrix.trace, Fin.sum_univ_two]
 
+-- The bridge proof intentionally uses `simp` to normalize finite vector/matrix notation before
+-- coefficient comparison.
+set_option linter.flexible false in
 /-- The legacy two-dimensional trigonometric evaluation is exactly the Euclidean vector/STF
 quadratic evaluation on the polar unit direction. -/
 theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
@@ -62,11 +65,10 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
-  set_option linter.flexible false in
-    simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
-      EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
-      EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
-      -Complex.ofReal_cos, -Complex.ofReal_sin]
+  simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
+    EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
+    EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
+    -Complex.ofReal_cos, -Complex.ofReal_sin]
   match_scalars <;>
     (try rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]) <;>
     simp only [Complex.coe_algebraMap] <;>
@@ -82,6 +84,8 @@ def EuclideanHarmonicCoefficients.toAngular2D
   secondCosine := coefficients.second 0 0
   secondMixed := (2 : ℂ) • coefficients.second 0 1
 
+-- The inverse bridge uses the same finite-coordinate normalization strategy.
+set_option linter.flexible false in
 /-- The Euclidean-to-trigonometric bridge preserves evaluation on the polar unit direction. -/
 theorem EuclideanHarmonicCoefficients.toAngular2D_eval
     {E : Type*} [AddCommGroup E] [Module ℂ E]
@@ -95,11 +99,10 @@ theorem EuclideanHarmonicCoefficients.toAngular2D_eval
   have hoff : coefficients.second 1 0 = coefficients.second 0 1 := by
     have h := congrFun (congrFun coefficients.second_symm 0) 1
     simpa using h
-  set_option linter.flexible false in
-    simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
-      EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
-      EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
-      hdiag, hoff, -Complex.ofReal_cos, -Complex.ofReal_sin]
+  simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
+    EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
+    EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two, hdiag, hoff,
+    -Complex.ofReal_cos, -Complex.ofReal_sin]
   match_scalars <;>
     (try rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]) <;>
     simp only [Complex.coe_algebraMap] <;>
