@@ -61,7 +61,7 @@ def rotationMatrix2D (angle : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
 /-- Polar unit directions transform by the ordinary two-dimensional rotation matrix. -/
 theorem polarDirection2D_add (θ angle : ℝ) :
     polarDirection2D (θ + angle) =
-      rotationMatrix2D angle *ᵥ polarDirection2D θ := by
+      Matrix.mulVec (rotationMatrix2D angle) (polarDirection2D θ) := by
   funext i
   fin_cases i <;>
     simp [polarDirection2D, rotationMatrix2D, Matrix.mulVec, dotProduct,
@@ -80,7 +80,7 @@ def AngularHarmonicCoefficients.toEuclidean2D
     !![coefficients.secondCosine, (2 : ℂ)⁻¹ • coefficients.secondMixed;
        (2 : ℂ)⁻¹ • coefficients.secondMixed, -coefficients.secondCosine]
   second_symm := by
-    intro i j
+    ext i j
     fin_cases i <;> fin_cases j <;> simp
   second_trace := by
     simp [Matrix.trace, Fin.sum_univ_two]
@@ -93,7 +93,8 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
   simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
-    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two]
+    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two,
+    ← Complex.ofReal_cos, ← Complex.ofReal_sin]
   module
 
 /-- Shifting the polar angle is evaluation of the same Euclidean harmonic data on the shifted
