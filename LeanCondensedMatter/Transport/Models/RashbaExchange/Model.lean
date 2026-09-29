@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Transport.Analysis.BandOccupation
-import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
+import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Tactic
 
 set_option linter.style.header false
