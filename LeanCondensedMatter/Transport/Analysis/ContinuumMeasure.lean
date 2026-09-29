@@ -13,15 +13,12 @@ d²p / (2πℏ)².
 ```
 
 The full-angle radial specialization also lives here now that multiple transport models consume it.
-Both declarations are continuum-measure conventions, not model Hamiltonian, disorder, response, or
-conductivity data.
+These declarations are continuum-measure conventions, not Euclidean kinematics, model Hamiltonian,
+disorder, response, or conductivity data.
 -/
 
 namespace QuantumTheory
 namespace Transport
-
-/-- Squared norm of a two-dimensional physical-momentum coordinate. -/
-def momentumSq2D (px py : ℝ) : ℝ := px ^ 2 + py ^ 2
 
 /-- The `ℏ`-dependent prefactor in the two-dimensional physical-momentum continuum measure
 `d²p / (2πℏ)²`. This is a continuum convention rather than a generic transport invariant. -/
