@@ -46,6 +46,7 @@ noncomputable def dysonVertexMomentSetFunction {α : Type*} (ε : Mode → ℝ) 
   map_empty := by
     simp [dysonVertexMoment]
 
+omit [LinearOrder Mode] in
 @[simp]
 theorem dysonVertexMomentSetFunction_apply {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
