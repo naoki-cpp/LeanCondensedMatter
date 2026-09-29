@@ -20,12 +20,10 @@ noncomputable section
 open ContinuousLinearMap
 open QuantumTheory.Transport
 
-abbrev RashbaHilbert := EuclideanSpace ℂ (Fin 2)
-
 /-- Band projector transported to the bounded-operator representation. -/
 noncomputable def bandProjectorOperator
     (params : Parameters) (band : Band) (px py : ℝ) :
-    RashbaHilbert →L[ℂ] RashbaHilbert :=
+    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (bandProjector params band px py)
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)`. -/
@@ -77,7 +75,7 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
 private theorem shiftedHamiltonian_mul_bandProjectorOperator
     (z : ℂ) (params : Parameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
-    (algebraMap ℂ (RashbaHilbert →L[ℂ] RashbaHilbert) z -
+    (algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) z -
         hamiltonianOperator params px py) *
         bandProjectorOperator params band px py =
       (z - ((bandEnergy params band px py : ℝ) : ℂ)) •
@@ -104,7 +102,7 @@ theorem continuousAt_projectorResolventCoefficient
 /-- Gauge-free finite-band spectral candidate for the resolvent. -/
 noncomputable def projectorResolvent
     (z : ℂ) (params : Parameters) (px py : ℝ) :
-    RashbaHilbert →L[ℂ] RashbaHilbert :=
+    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   ∑ band : Band,
     projectorResolventCoefficient z params band px py •
       bandProjectorOperator params band px py
@@ -140,7 +138,7 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
     (hE : spinOrbitEnergy params px py ≠ 0)
     (hlower : z - ((bandEnergy params .lower px py : ℝ) : ℂ) ≠ 0)
     (hupper : z - ((bandEnergy params .upper px py : ℝ) : ℂ) ≠ 0) :
-    (algebraMap ℂ (RashbaHilbert →L[ℂ] RashbaHilbert) z -
+    (algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) z -
         hamiltonianOperator params px py) *
         projectorResolvent z params px py = 1 := by
   simp only [projectorResolvent, sum_band]
