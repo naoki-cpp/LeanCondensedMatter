@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
