@@ -106,7 +106,14 @@ theorem forceMatrixTraceNumerator_xy_eq
     have hsq := spinOrbitEnergy_sq params px py
     unfold spinOrbitEnergySq momentumSq2D at hsq
     field_simp [hEc]
-    exact_mod_cast hsq
+    have hreal :
+        bandSign band ^ 2 *
+            (params.rashbaVelocity ^ 2 * (py ^ 2 + px ^ 2) +
+              params.exchangeSplitting ^ 2) =
+          spinOrbitEnergy params px py ^ 2 := by
+      rw [bandSign_sq, hsq]
+      ring
+    exact_mod_cast hreal
   have htrace
       (u : InternalSpace.PauliAxis → ℂ) (cx cy a : ℂ)
       (hnorm : dotProduct u u = 1) :
@@ -118,11 +125,14 @@ theorem forceMatrixTraceNumerator_xy_eq
               ((1 : InternalSpace.PauliMatrix) + InternalSpace.pauliCombination u)) *
             (cy • (1 : InternalSpace.PauliMatrix) + a • InternalSpace.pauliX)) =
         a ^ 2 * (u .x * u .y) - Complex.I * a ^ 2 * u .z := by
+    have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+      simpa [pow_two] using Complex.I_mul_I
     rw [InternalSpace.dotProduct_pauliAxis] at hnorm
     simp [Matrix.trace, Matrix.mul_apply, InternalSpace.pauliCombination_eq_components,
       InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
       sub_eq_add_neg]
-    linear_combination (cx * cy / 2) * hnorm
+    rw [hI]
+    linear_combination -(cx * cy) * hnorm
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
   change Matrix.trace
@@ -165,8 +175,7 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature
     Complex.ofReal_re, Complex.ofReal_im]
   cases band <;>
     simp [berryCurvature, bandSign] <;>
-    field_simp [hE] <;>
-    ring
+    field_simp [hE]
 
 end
 
