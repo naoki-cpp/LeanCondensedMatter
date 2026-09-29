@@ -49,6 +49,24 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
       (fun τ i => imaginaryTimeEvolve_annihilate ε τ i)
       n t)
 
+/-- On a finite mode type, the bosonic quartic Dyson coefficient is the direct specialization of
+the Common all-label quartic Dyson expansion. -/
+theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
+    (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+    ∀ (n : ℕ) (t : ℝ),
+      Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) n t =
+        ∑ q : Fin n → QuarticVertexLabel Mode,
+          Common.quarticDysonSequenceCoeff ε g q t •
+            Common.quarticVertexSequenceOperator create annihilate q := by
+  intro n t
+  simpa [quarticInteraction] using
+    (Common.dysonCoeff_quarticInteraction_eq_sum
+      (energy := freeEigenvalue ε) (ε := ε) (create := create) (annihilate := annihilate)
+      g
+      (fun τ i => imaginaryTimeEvolve_create ε τ i)
+      (fun τ i => imaginaryTimeEvolve_annihilate ε τ i)
+      n t)
+
 end
 end Bosonic
 end SecondQuantization

@@ -130,6 +130,45 @@ theorem quarticVertexSequenceInteractionPicture_cons
   rw [quarticVertexSequenceInteractionPicture_succ]
   simp
 
+/-- A quartic interaction-picture vertex sequence built from ladder eigenoperators is its bare
+ordered vertex product multiplied by the product of the scalar imaginary-time factors. -/
+theorem quarticVertexSequenceInteractionPicture_eq_smul
+    (energy : Config → ℝ) (ε : Mode → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hcreate : ∀ τ i, heisenbergEvolve energy τ (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i)
+    (hannihilate : ∀ τ i, heisenbergEvolve energy τ (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) :
+    ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
+      quarticVertexSequenceInteractionPicture energy create annihilate n q τ =
+        quarticVertexSequenceTimeFactor ε q τ •
+          quarticVertexSequenceOperator create annihilate q := by
+  intro n
+  induction n with
+  | zero =>
+      intro q τ
+      simp [quarticVertexSequenceTimeFactor, quarticVertexSequenceOperator,
+        Module.End.one_eq_id]
+  | succ n ih =>
+      intro q τ
+      rw [quarticVertexSequenceInteractionPicture_succ]
+      change
+        (heisenbergEvolve energy (τ 0)
+          (quarticVertexOperator create annihilate (q 0))).comp
+            (quarticVertexSequenceInteractionPicture energy create annihilate n
+              (fun i => q i.succ) (fun i => τ i.succ)) = _
+      rw [heisenbergEvolve_quarticVertexOperator energy ε create annihilate
+        (q 0) (τ 0) (hcreate (τ 0)) (hannihilate (τ 0)), ih]
+      rw [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
+      rw [show q = Fin.cons (q 0) (fun i => q i.succ) by
+        funext i
+        exact Fin.cases rfl (fun j => rfl) i]
+      rw [show τ = Fin.cons (τ 0) (fun i => τ i.succ) by
+        funext i
+        exact Fin.cases rfl (fun j => rfl) i]
+      rw [quarticVertexSequenceTimeFactor_cons]
+      simp only [Fin.cons_zero, Fin.cons_succ, quarticVertexSequenceOperator_cons]
+
 /-- A finitely supported quartic interaction evolves as the finite sum of its bare vertices with
 scalar vertex time factors, provided the ladder operators obey the stated free evolution laws. -/
 theorem heisenbergEvolve_quarticInteractionOn_eq_sum
