@@ -1,4 +1,3 @@
-import Mathlib.LinearAlgebra.Matrix.Module
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.UnitaryGroup
 import Mathlib.Tactic
@@ -23,7 +22,7 @@ namespace Transport
 
 noncomputable section
 
-open scoped BigOperators Matrix.Module
+open scoped BigOperators
 
 /-- Constant, vector, and symmetric-traceless quadratic angular data in `n` dimensions. -/
 structure EuclideanHarmonicCoefficients (n : ℕ) (E : Type*) [AddCommMonoid E] where
@@ -49,7 +48,7 @@ def contract {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
 def complexDirection {n : ℕ} (direction : Fin n → ℝ) : Fin n → ℂ :=
   fun i => direction i
 
-/-- Evaluate the constant, vector, and symmetric-traceless quadratic harmonics on a real direction. -/
+/-- Evaluate constant, vector, and STF quadratic data on a real direction. -/
 def eval {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E) (direction : Fin n → ℝ) : E :=
   let weights := complexDirection direction
@@ -62,57 +61,104 @@ def complexifyMatrix {n : ℕ}
     (matrix : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℂ :=
   matrix.map Complex.ofRealHom
 
+/-- Pull back a coefficient vector along a complex matrix. -/
+def pullbackVector {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (matrix : Matrix (Fin n) (Fin n) ℂ) (values : Fin n → E) : Fin n → E :=
+  fun i => ∑ j, matrix j i • values j
+
+/-- Pull back both indices of a coefficient matrix along a complex matrix. -/
+def pullbackMatrix {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (matrix : Matrix (Fin n) (Fin n) ℂ)
+    (values : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (Fin n) E :=
+  fun i j => ∑ k, matrix k i • ∑ l, matrix l j • values k l
+
 theorem complexDirection_mulVec {n : ℕ}
     (matrix : Matrix (Fin n) (Fin n) ℝ) (direction : Fin n → ℝ) :
     complexDirection (Matrix.mulVec matrix direction) =
-      complexifyMatrix matrix • complexDirection direction := by
+      Matrix.mulVec (complexifyMatrix matrix) (complexDirection direction) := by
   funext i
-  simp [complexDirection, complexifyMatrix, Matrix.Module.smul_apply, Matrix.mulVec, dotProduct]
+  simp [complexDirection, complexifyMatrix, Matrix.mulVec, dotProduct]
 
-/-- Contraction is contravariant with respect to the matrix-module action. -/
-theorem contract_transpose_smul {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
+/-- Contraction is contravariant with respect to coefficient-vector pullback. -/
+theorem contract_pullbackVector {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (matrix : Matrix (Fin n) (Fin n) ℂ) (weights : Fin n → ℂ) (values : Fin n → E) :
-    contract weights (matrix.transpose • values) =
-      contract (matrix • weights) values := by
-  simp only [contract, Matrix.Module.smul_apply, Matrix.transpose_apply,
-    Finset.smul_sum, smul_assoc, smul_eq_mul]
+    contract weights (pullbackVector matrix values) =
+      contract (Matrix.mulVec matrix weights) values := by
+  simp only [contract, pullbackVector, Finset.smul_sum, smul_assoc]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro j hj
+  change (∑ i, (weights i * matrix j i) • values j) =
+    (∑ i, matrix j i * weights i) • values j
   rw [← Finset.sum_smul]
   congr 1
   apply Finset.sum_congr rfl
   intro i hi
   rw [mul_comm]
 
-/-- Contracting each row commutes with the matrix-module action on the row index. -/
-theorem contract_matrix_smul_rows {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
+/-- Contracting each row commutes with pullback of the row index. -/
+theorem contract_pullbackRows {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (weights : Fin n → ℂ) (matrix : Matrix (Fin n) (Fin n) ℂ)
     (rows : Fin n → Fin n → E) :
-    (fun i => contract weights ((matrix • rows) i)) =
-      matrix • (fun i => contract weights (rows i)) := by
+    (fun i => contract weights ((pullbackVector matrix rows) i)) =
+      pullbackVector matrix (fun i => contract weights (rows i)) := by
   funext i
-  simp only [contract, Matrix.Module.smul_apply, Pi.smul_apply,
-    Finset.smul_sum, smul_assoc]
+  change (∑ j, weights j • ∑ k, matrix k i • rows k j) =
+    ∑ k, matrix k i • ∑ j, weights j • rows k j
+  simp_rw [Finset.smul_sum]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
+  intro k hk
+  apply Finset.sum_congr rfl
   intro j hj
-  rw [← Finset.sum_smul]
+  rw [smul_comm]
+
+/-- Quadratic contraction is contravariant in both indices. -/
+theorem quadraticContract_pullbackMatrix {n : ℕ} {E : Type*}
+    [AddCommMonoid E] [Module ℂ E]
+    (matrix : Matrix (Fin n) (Fin n) ℂ) (weights : Fin n → ℂ)
+    (values : Matrix (Fin n) (Fin n) E) :
+    contract weights (fun i => contract weights (pullbackMatrix matrix values i)) =
+      contract (Matrix.mulVec matrix weights)
+        (fun i => contract (Matrix.mulVec matrix weights) (values i)) := by
+  rw [show
+    (fun i => contract weights (pullbackMatrix matrix values i)) =
+      pullbackVector matrix
+        (fun k => contract weights (pullbackVector matrix (values k))) by
+          simpa [pullbackMatrix] using
+            contract_pullbackRows weights matrix
+              (fun k => pullbackVector matrix (values k))]
+  rw [contract_pullbackVector]
   congr 1
+  funext k
+  exact contract_pullbackVector matrix weights (values k)
+
+/-- Pullback of a symmetric coefficient matrix is symmetric. -/
+theorem pullbackMatrix_isSymm {n : ℕ} {E : Type*}
+    [AddCommMonoid E] [Module ℂ E]
+    (matrix : Matrix (Fin n) (Fin n) ℂ)
+    {values : Matrix (Fin n) (Fin n) E} (hvalues : values.IsSymm) :
+    (pullbackMatrix matrix values).IsSymm := by
+  apply Matrix.IsSymm.ext
+  intro i j
+  simp only [pullbackMatrix]
+  rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro k hk
-  rw [mul_comm]
+  apply Finset.sum_congr rfl
+  intro l hl
+  rw [hvalues.apply]
+  rw [smul_comm]
 
 /-- Pull back Euclidean harmonic coefficients along a real orthogonal transformation.
 The linear coefficient transforms as `Rᵀ b` and the quadratic coefficient as `Rᵀ Q R`.
-The construction is coefficient-generic: only the complex module structure on `E` is used. -/
-def orthogonalTransform {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
+The construction is coefficient-generic. -/
+def orthogonalTransform {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
     EuclideanHarmonicCoefficients n E := by
   let matrixC := complexifyMatrix matrix
-  let matrixT := matrixC.transpose
   have hmatrixC : matrixC * matrixC.transpose = 1 := by
     have hmatrix :=
       (Matrix.mem_orthogonalGroup_iff (Fin n) ℝ).mp horthogonal
@@ -125,27 +171,9 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
       ∑ i, matrixC k i * matrixC l i = if k = l then 1 else 0 := by
     have h := congrFun (congrFun hmatrixC k) l
     simpa [Matrix.mul_apply, Matrix.one_apply] using h
-  refine
-    { constant := coefficients.constant
-      first := matrixT • coefficients.first
-      second := matrixT • (fun k => matrixT • coefficients.second k)
-      second_symm := ?_
-      second_trace := ?_ }
-  · rw [Matrix.IsSymm]
-    funext i j
-    simp only [Matrix.transpose_apply, Matrix.Module.smul_apply, Pi.smul_apply,
-      Finset.smul_sum, smul_assoc]
-    rw [Finset.sum_comm]
-    apply Finset.sum_congr rfl
-    intro k hk
-    apply Finset.sum_congr rfl
-    intro l hl
-    rw [coefficients.second_symm.apply]
-    rw [mul_comm]
-  · simp only [Matrix.trace, Matrix.Module.smul_apply, Pi.smul_apply,
-      Finset.smul_sum, smul_assoc]
-    change (∑ i, ∑ k, ∑ l,
-      (matrixC k i * matrixC l i) • coefficients.second k l) = 0
+  have htrace : Matrix.trace (pullbackMatrix matrixC coefficients.second) = 0 := by
+    change (∑ i, ∑ k, matrixC k i • ∑ l, matrixC l i • coefficients.second k l) = 0
+    simp_rw [Finset.smul_sum, ← mul_smul]
     calc
       (∑ i, ∑ k, ∑ l,
           (matrixC k i * matrixC l i) • coefficients.second k l) =
@@ -161,7 +189,7 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
             intro k hk
             apply Finset.sum_congr rfl
             intro l hl
-            rw [← Finset.sum_smul]
+            rw [Finset.sum_smul]
       _ = ∑ k, ∑ l, (if k = l then 1 else 0) • coefficients.second k l := by
             apply Finset.sum_congr rfl
             intro k hk
@@ -171,9 +199,15 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
       _ = Matrix.trace coefficients.second := by
             simp [Matrix.trace]
       _ = 0 := coefficients.second_trace
+  exact
+    { constant := coefficients.constant
+      first := pullbackVector matrixC coefficients.first
+      second := pullbackMatrix matrixC coefficients.second
+      second_symm := pullbackMatrix_isSymm matrixC coefficients.second_symm
+      second_trace := htrace }
 
 @[simp]
-theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
+theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
@@ -182,28 +216,28 @@ theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommGroup E] [Mod
 
 @[simp]
 theorem orthogonalTransform_first_apply {n : ℕ} {E : Type*}
-    [AddCommGroup E] [Module ℂ E]
+    [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) (i : Fin n) :
     (coefficients.orthogonalTransform matrix horthogonal).first i =
       ∑ j, (((matrix j i : ℝ) : ℂ)) • coefficients.first j := by
-  simp [orthogonalTransform, complexifyMatrix, Matrix.Module.smul_apply]
+  simp [orthogonalTransform, pullbackVector, complexifyMatrix]
 
 @[simp]
 theorem orthogonalTransform_second_apply {n : ℕ} {E : Type*}
-    [AddCommGroup E] [Module ℂ E]
+    [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) (i j : Fin n) :
     (coefficients.orthogonalTransform matrix horthogonal).second i j =
       ∑ k, (((matrix k i : ℝ) : ℂ)) •
         ∑ l, (((matrix l j : ℝ) : ℂ)) • coefficients.second k l := by
-  simp [orthogonalTransform, complexifyMatrix, Matrix.Module.smul_apply]
+  simp [orthogonalTransform, pullbackMatrix, complexifyMatrix]
 
 /-- Orthogonal pullback of the coefficient data is equivalent to evaluating the original
 harmonics on the transformed direction. -/
-theorem orthogonalTransform_eval {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
+theorem orthogonalTransform_eval {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ)
@@ -213,36 +247,22 @@ theorem orthogonalTransform_eval {n : ℕ} {E : Type*} [AddCommGroup E] [Module 
   let matrixC := complexifyMatrix matrix
   let weights := complexDirection direction
   have hdir :
-      complexDirection (Matrix.mulVec matrix direction) = matrixC • weights := by
+      complexDirection (Matrix.mulVec matrix direction) =
+        Matrix.mulVec matrixC weights := by
     simpa [matrixC, weights] using complexDirection_mulVec matrix direction
-  have hinner (k : Fin n) :
-      contract weights (matrixC.transpose • coefficients.second k) =
-        contract (matrixC • weights) (coefficients.second k) :=
-    contract_transpose_smul matrixC weights (coefficients.second k)
-  simp only [eval, orthogonalTransform]
+  simp only [eval]
   change
     coefficients.constant +
-        contract weights (matrixC.transpose • coefficients.first) +
+        contract weights (pullbackVector matrixC coefficients.first) +
           contract weights
-            (fun i =>
-              contract weights
-                ((matrixC.transpose •
-                  (fun k => matrixC.transpose • coefficients.second k)) i)) =
+            (fun i => contract weights (pullbackMatrix matrixC coefficients.second i)) =
       coefficients.constant +
         contract (complexDirection (Matrix.mulVec matrix direction)) coefficients.first +
           contract (complexDirection (Matrix.mulVec matrix direction))
             (fun i =>
               contract (complexDirection (Matrix.mulVec matrix direction))
                 (coefficients.second i))
-  rw [contract_transpose_smul matrixC weights coefficients.first, hdir]
-  have hrows :=
-    contract_matrix_smul_rows weights matrixC.transpose
-      (fun k => matrixC.transpose • coefficients.second k)
-  rw [hrows]
-  rw [contract_transpose_smul matrixC weights
-    (fun k => contract weights (matrixC.transpose • coefficients.second k))]
-  simp_rw [hinner]
-  rw [hdir]
+  rw [contract_pullbackVector, quadraticContract_pullbackMatrix, hdir]
 
 end EuclideanHarmonicCoefficients
 
