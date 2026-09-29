@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
