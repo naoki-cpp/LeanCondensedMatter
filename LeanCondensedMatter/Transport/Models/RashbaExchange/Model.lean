@@ -67,7 +67,9 @@ def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
   radialMomentumSq px py ≤ params.momentumCutoff ^ 2
 
 instance (params : Parameters) (px py : ℝ) :
-    Decidable (inMomentumDomain params px py) := inferInstance
+    Decidable (inMomentumDomain params px py) := by
+  unfold inMomentumDomain
+  exact instDecidableLE
 
 def kineticEnergy (params : Parameters) (px py : ℝ) : ℝ :=
   radialMomentumSq px py / (2 * params.effectiveMass)
