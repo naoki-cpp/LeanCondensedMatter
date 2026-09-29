@@ -68,7 +68,7 @@ theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryC
 resolvents. -/
 noncomputable def projectorBastinOperatorIntegrand
     (params : Parameters) (px py probeEnergy broadening : ℝ) :
-    RashbaHilbert →L[ℂ] RashbaHilbert :=
+    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   let retarded :=
     projectorResolvent
       (retardedSpectralParameter probeEnergy broadening) params px py
