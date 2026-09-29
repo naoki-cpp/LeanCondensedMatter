@@ -22463,7 +22463,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.SpinHalf.spinMatrix_isHermitian",
-      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_isHermitian"
     ],
     "dependencies": [
       "InternalSpace.pauliBasis_isHermitian",
@@ -22473,9 +22474,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.SpinHalf.spinMatrix_isHermitian",
-      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_isHermitian"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70298,6 +70300,1024 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.RashbaExchange.Parameters}, params.IsRegular → 0 < params.broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.Parameters.IsRegular.broadening_pos",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.RashbaExchange.Parameters}, params.IsRegular → 0 < params.effectiveMass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.Parameters.IsRegular.effectiveMass_pos",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.RashbaExchange.Parameters}, params.IsRegular → 0 < params.hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.Parameters.IsRegular.hbar_pos",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Transport.Models.RashbaExchange.Parameters}, params.IsRegular → 0 ≤ params.momentumCutoff",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.Parameters.IsRegular.momentumCutoff_nonneg",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse params measured source px py\n        lowerEnergy upperEnergy occupation =\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_rashba_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "The full finite-broadening Hall projection vanishes pointwise when the Rashba coupling is zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse params source measured px py\n      lowerEnergy upperEnergy occupation =\n    -QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse params measured source px py\n        lowerEnergy upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (direction : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanSurfaceHallPointKernel params direction direction px\n      py =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanSurfaceHallPointKernel_self",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanSurfaceHallPointKernel params source measured px py =\n    -QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanSurfaceHallPointKernel params measured source px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanSurfaceHallPointKernel_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskSurfaceHallIntegrand_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskSurfaceHallIntegrand_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  params.exchangeSplitting = 0 → QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params band px py = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.berryCurvature_exchange_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  params.rashbaVelocity = 0 → QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params band px py = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.berryCurvature_rashba_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse params measured source px py lowerEnergy\n        upperEnergy occupation =\n      QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse params source measured px py lowerEnergy\n        upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "With zero Rashba coupling the two current vertices are scalar identity operators, so exchanging\nthe measured and source directions leaves the full finite-broadening Bastin response unchanged. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_rashba_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskBastinIntegrand_rashba_zero_swap"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator_rashba_zero",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Response.0.QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_scalarCurrent_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_rashba_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskBastinIntegrand_rashba_zero_swap"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel params measured source px py =\n    QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace\n      (QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py)\n      (QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params measured px py)\n      (QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params source px py)\n      params.chemicalPotential params.broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "The clean point kernel is exactly the generic regularized Středa surface primitive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator_eq_charge_smul_velocity",
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (direction : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params direction px py =\n    ↑params.signedCharge • QuantumTheory.Transport.Models.RashbaExchange.velocityBoundedOperator params direction px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator_eq_charge_smul_velocity",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (direction : Fin 2) (px py : ℝ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params direction px py =\n      ↑(params.signedCharge * if direction = 0 then px / params.effectiveMass else py / params.effectiveMass) • 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator_rashba_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
+    "externalAxioms": [],
+    "docString": "When the Rashba coupling vanishes, each in-plane charge-current vertex is a scalar multiple of\nthe identity. This is the operator-level degeneracy used by the Hall-response zero theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  (QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor params lowerEnergy upperEnergy\n          occupation).component\n      measured source =\n    QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityComponent params measured source\n      lowerEnergy upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_component",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  (QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor params lowerEnergy upperEnergy\n          occupation).hallComponent\n      measured source =\n    ↑(QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor params.hbar) *\n      QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent params measured source\n        lowerEnergy upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_eq",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "The Hall projection of the completed conductivity tensor is exactly the conductivity prefactor\ntimes the derived finite-cutoff Hall response. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_rashba_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_rashba_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    (QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor params lowerEnergy upperEnergy\n            occupation).hallComponent\n        measured source =\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_rashba_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "The physical Hall conductivity vanishes at zero Rashba coupling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent_rashba_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent params measured source\n        lowerEnergy upperEnergy occupation =\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent_rashba_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "The finite-cutoff Hall response vanishes when the Rashba coupling is zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_rashba_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinResponseComponent_rashba_zero_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinConductivityTensor_hallComponent_rashba_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent params source measured\n      lowerEnergy upperEnergy occupation =\n    -QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent params measured source\n        lowerEnergy upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinResponseComponent params source measured lowerEnergy\n        upperEnergy occupation =\n      QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinResponseComponent params measured source\n        lowerEnergy upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinResponseComponent_rashba_zero_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "Zero Rashba coupling makes the complete finite-cutoff ordered Bastin response symmetric. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent_rashba_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskBastinIntegrand_rashba_zero_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinHallResponseComponent_rashba_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2),\n  QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceDiagnosticComponent params source measured =\n    -QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceDiagnosticComponent params measured source",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceDiagnosticComponent_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceHallResponseComponent_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2),\n  QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceHallResponseComponent params source measured =\n    -QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceHallResponseComponent params measured source",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceHallResponseComponent_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceDiagnosticComponent_swap"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskSurfaceHallIntegrand_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceDiagnosticComponent_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.finiteDiskBastinIntegrand params source measured px py lowerEnergy\n        upperEnergy occupation =\n      QuantumTheory.Transport.Models.RashbaExchange.finiteDiskBastinIntegrand params measured source px py lowerEnergy\n        upperEnergy occupation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskBastinIntegrand_rashba_zero_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "At zero Rashba coupling the ordered finite-disk Bastin integrand is symmetric under exchange of\nthe measured and source directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinResponseComponent_rashba_zero_swap"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffBastinResponseComponent_rashba_zero_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.finiteDiskSurfaceHallIntegrand params source measured px py =\n    -QuantumTheory.Transport.Models.RashbaExchange.finiteDiskSurfaceHallIntegrand params measured source px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.finiteDiskSurfaceHallIntegrand_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceHallResponseComponent_swap"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.antisymmetricCleanSurfaceHallPointKernel_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.finiteCutoffSurfaceHallResponseComponent_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
+    "externalAxioms": [],
+    "docString": "The bounded Rashba-exchange Hamiltonian is self-adjoint, providing the analytic provenance\nrequired by the generic finite-broadening Středa/Bastin layer. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  Matrix.IsHermitian (QuantumTheory.Transport.Models.RashbaExchange.hamiltonian params px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_isHermitian",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
+    "externalAxioms": [],
+    "docString": "The explicit Rashba-exchange Hamiltonian matrix is Hermitian for real model parameters. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "InternalSpace.pauliCombination_ofReal_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.suppliedSurfaceHallPointKernel params measured px py\n      (QuantumTheory.Transport.Models.RashbaExchange.greenOperator QuantumTheory.Transport.SpectralSide.retarded params\n        px py)\n      (QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params source px py)\n      (QuantumTheory.Transport.Models.RashbaExchange.greenOperator QuantumTheory.Transport.SpectralSide.advanced params\n        px py) =\n    QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel params measured source px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.suppliedSurfaceHallPointKernel_bare_eq_clean",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": "The disorder/vertex seam specialized to clean resolvents and the bare charge-current source\nvertex is definitionally the clean surface kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.PositiveTransportLifetime), 0 < self.lifetime",
     "standardAxioms": [
@@ -75296,7 +76316,8 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
-      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized"
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
     ],
     "dependencies": [
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
@@ -75306,9 +76327,10 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
-      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized"
+      "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82261,7 +83283,8 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
@@ -82275,9 +83298,10 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84639,6 +85663,49 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (n : ℕ) (t : ℝ),\n  SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε)\n      (SecondQuantization.Bosonic.quarticInteraction g) n t =\n    ∑ q,\n      SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t •\n        SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "On a finite mode type, the bosonic quartic Dyson coefficient is the direct specialization of\nthe Common all-label quartic Dyson expansion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
+      "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.exchangeCommutator SecondQuantization.Common.Statistics.boson\n      (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create i) =\n    LinearMap.id",
     "standardAxioms": [
@@ -84719,7 +85786,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) (t : ℝ),\n      ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card\n            t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g d t",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) (t : ℝ),\n      ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card\n            t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g d t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85002,15 +86069,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteractionOn support g) n\n          t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g (fun i => ↑(q i)) t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily (fun i => ↑(q i)) a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily (fun i => ↑(q i)) b)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85021,9 +86088,7 @@
     "docString": "The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite\nsum over support-valued vertex sequences and bosonic pairings. The scalar\n`quarticDysonSequenceCoeff` carries the full ordered-simplex imaginary-time integration, while the\npairing evaluation is the existing static free-boson thermal Wick factor. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
@@ -85035,10 +86100,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85050,7 +86113,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N))\n      (order : SecondQuantization.Common.QuarticVertexOrder S) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N))\n      (order : SecondQuantization.Common.QuarticVertexOrder S) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card t =\n        ∑ d, SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85221,7 +86284,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85233,8 +86296,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsPartition_ne_zero",
@@ -85244,10 +86306,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85311,7 +86372,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85323,8 +86384,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create"
@@ -85332,10 +86392,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85616,7 +86675,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
@@ -85627,9 +86687,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85838,7 +86899,8 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Common.tsumTrace_smul"
@@ -85849,9 +86911,10 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85883,7 +86946,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
@@ -85892,85 +86956,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (k : Mode), 0 < β * ε k) (i j : Mode),\n  SecondQuantization.Bosonic.freeGibbsSummable ε β\n      (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.create j) →\n    (1 - Complex.exp ↑(-ε i * β)) *\n        (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n          (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.create j) =\n      if i = j then 1 else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
-    "externalAxioms": [],
-    "docString": "The same normalized two-point equation stated through the convergence-aware functional adapter.\nThe explicit summability witness selects the in-domain value, so no out-of-domain totalization\nbranch is used. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (k : Mode), 0 < β * ε k) (i j : Mode),\n  SecondQuantization.Bosonic.freeGibbsSummable ε β\n      (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.create j) →\n    1 - Complex.exp ↑(-ε i * β) ≠ 0 →\n      (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n          (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.create j) =\n        (if i = j then 1 else 0) / (1 - Complex.exp ↑(-ε i * β))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
-    "externalAxioms": [],
-    "docString": "Divided free two-point value through the total expectation adapter, restricted by the explicit\nsummability witness. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86002,8 +86991,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
       "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
@@ -86014,11 +87001,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
       "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86353,7 +87338,8 @@
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
@@ -86363,9 +87349,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86868,6 +87855,7 @@
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "dependencies": [
@@ -86880,9 +87868,10 @@
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86936,7 +87925,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -86948,7 +87937,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesEnergyShift_create",
@@ -86957,9 +87947,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88148,7 +89139,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} (S : Finset (Fin N)),\n      (SecondQuantization.Bosonic.quarticDysonThermalMoment ε β g t).toFun S =\n        ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card t",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} (S : Finset (Fin N)),\n      (SecondQuantization.Bosonic.quarticDysonThermalMoment ε β g t).toFun S =\n        ↑S.card.factorial *\n          SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) S.card t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88196,7 +89187,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -88208,7 +89199,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.operator_quarticFreeThermalField",
@@ -88217,9 +89209,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96943,15 +97936,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (L : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (a b : ℝ),\n  (∀ (k n : Config),\n      IntervalIntegrable (fun σ => SecondQuantization.Common.matrixCoeff (F σ) k n) MeasureTheory.volume a b) →\n    L ∘ₗ SecondQuantization.Common.operatorIntervalIntegral F a b =\n      SecondQuantization.Common.operatorIntervalIntegral (fun σ => L ∘ₗ F σ) a b",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -96962,9 +97955,7 @@
     "docString": "**Left-composition with a fixed operator commutes with `operatorIntervalIntegral`**:\n`L ∘ (∫ F) = ∫ (L ∘ F)`, given interval-integrability of every matrix coefficient `F` contributes.\nBoth sides reduce, via `matrixCoeff_comp`/`matrixCoeff_operatorIntervalIntegral`, to the same\n`∑ k, matrixCoeff L m k * ∫ σ, matrixCoeff (F σ) k n` vs. `∫ σ, ∑ k, matrixCoeff L m k *\nmatrixCoeff (F σ) k n` — the finite-sum/integral interchange `intervalIntegral.integral_finsetSum`\nsupplies, after pulling the constant `matrixCoeff L m k` in/out of each summand's integral\n(`intervalIntegral.integral_const_mul`). Needed to move an already-evaluated interaction-picture\nvertex factor past the ordered-simplex integral over the *remaining* Dyson coefficient. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_comp",
       "SecondQuantization.Common.matrixCoeff_ext",
@@ -96972,10 +97963,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100428,7 +101417,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -100440,7 +101429,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum"
     ],
     "dependencies": [
       "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
@@ -100456,9 +101446,53 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : Fintype Mode] (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n  (∀ (τ : ℝ) (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (τ : ℝ) (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      ∀ (n : ℕ) (t : ℝ),\n        SecondQuantization.Common.dysonCoeff energy (SecondQuantization.Common.quarticInteraction create annihilate g) n\n            t =\n          ∑ q,\n            SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t •\n              SecondQuantization.Common.quarticVertexSequenceOperator create annihilate q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
+    "externalAxioms": [],
+    "docString": "On a finite mode type, the quartic Dyson coefficient is the sum over all vertex-label\nsequences of the statistics-independent scalar ordered-simplex coefficient times the bare vertex\nproduct. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100492,8 +101526,7 @@
       "SecondQuantization.Common.continuousDysonCoeff_succ",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_one",
-      "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ"
     ],
     "dependencies": [
       "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
@@ -100506,10 +101539,9 @@
       "SecondQuantization.Common.continuousDysonCoeff_succ",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_one",
-      "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100601,8 +101633,7 @@
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "dependencies": [
       "SecondQuantization.Common.linearMap_ext_basisState",
@@ -100622,10 +101653,9 @@
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101888,15 +102918,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (a b : ℝ),\n  (∀ (n : Config),\n      IntervalIntegrable (fun τ => SecondQuantization.Common.matrixCoeff (F τ) n n) MeasureTheory.volume a b) →\n    SecondQuantization.Common.finiteGibbsExpectation energy β\n        (SecondQuantization.Common.operatorIntervalIntegral F a b) =\n      ∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteGibbsExpectation energy β (F τ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -101907,19 +102937,15 @@
     "docString": "The canonical finite Gibbs expectation commutes with coefficientwise finite operator\nintegration. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102074,18 +103100,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -103351,9 +104377,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator",
@@ -103363,15 +104389,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104847,7 +105875,6 @@
       "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [
@@ -104861,10 +105888,9 @@
       "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108164,7 +109190,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (n : ℕ) (q : Fin (n + 1) → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin (n + 1) → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate (n + 1) q τ =\n    SecondQuantization.Common.interactionPicture energy\n        (SecondQuantization.Common.quarticVertexOperator create annihilate (q 0)) (τ 0) ∘ₗ\n      SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate n (fun i => q i.succ)\n        fun i => τ i.succ",
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (τ : ℝ) (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (τ : ℝ) (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      ∀ (n : ℕ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n        SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate n q τ =\n          SecondQuantization.Common.quarticVertexSequenceTimeFactor ε q τ •\n            SecondQuantization.Common.quarticVertexSequenceOperator create annihilate q",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108176,6 +109202,50 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": "A quartic interaction-picture vertex sequence built from ladder eigenoperators is its bare\nordered vertex product multiplied by the product of the scalar imaginary-time factors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_succ",
+      "SecondQuantization.Common.quarticVertexSequenceOperator_cons",
+      "SecondQuantization.Common.quarticVertexSequenceTimeFactor_cons"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (n : ℕ) (q : Fin (n + 1) → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin (n + 1) → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate (n + 1) q τ =\n    SecondQuantization.Common.interactionPicture energy\n        (SecondQuantization.Common.quarticVertexOperator create annihilate (q 0)) (τ 0) ∘ₗ\n      SecondQuantization.Common.quarticVertexSequenceInteractionPicture energy create annihilate n (fun i => q i.succ)\n        fun i => τ i.succ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_succ",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
     "externalAxioms": [],
@@ -108183,15 +109253,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons"
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons"
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_cons",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108245,7 +109317,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108257,15 +109329,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum"
+      "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108284,7 +109358,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108296,15 +109370,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons"
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons"
+      "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125653,15 +126729,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ)\n  (k n' : SecondQuantization.Fermionic.Occupation Mode),\n  Continuous fun σ =>\n    SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Fermionic.interactionPicture ε V σ ∘ₗ\n        SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε) V n σ)\n      k n'",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -125669,12 +126745,10 @@
     "name": "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "**Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of `(interactionPicture ε V\nσ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of\n`Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via\n`Common.matrixCoeff_comp`), the integrability the inductive step's\n`Common.comp_operatorIntervalIntegral`/`Common.finiteGibbsExpectation_operatorIntervalIntegral`\nneed. ",
+    "docString": "**Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of\n`(interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`.**\nThis is the general finite-mode continuity interface obtained from\n`Common.continuous_matrixCoeff_interactionPicture`,\n`Common.continuous_matrixCoeff_dysonCoeff`, and `Common.matrixCoeff_comp`; it is retained\nindependently of the quartic specialization below for downstream arguments that need continuity\nof an interaction-picture operator composed with a Dyson coefficient. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.continuous_matrixCoeff_dysonCoeff",
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
@@ -125682,10 +126756,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127703,15 +128775,21 @@
     "name": "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "The quartic Dyson coefficient expansion through the canonical free Gibbs density-state\nexpectation. The finite Gibbs induction above is private proof machinery. ",
+    "docString": "The quartic Dyson coefficient expansion through the canonical free Gibbs density-state\nexpectation. The operator-level Dyson expansion and scalar ordered-simplex coefficient are supplied\nby the statistics-independent Common quartic Dyson seam. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
     ],
     "dependencies": [
+      "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum",
+      "SecondQuantization.Common.finiteGibbsExpectation_smul",
+      "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
+      "intervalIntegral.orderedSimplexIntegral_congr",
+      "intervalIntegral.orderedSimplexIntegral_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128824,6 +129902,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalFieldOperator_annihilation_eq_smul",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
@@ -128840,6 +129919,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalFieldOperator_annihilation_eq_smul",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
@@ -128848,7 +129928,7 @@
       "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128915,6 +129995,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalFieldOperator_creation_eq_smul",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
@@ -128931,6 +130012,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalFieldOperator_creation_eq_smul",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
@@ -128939,7 +130021,7 @@
       "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146828,7 +147910,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) n t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q b)",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) n t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q b)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146850,7 +147932,13 @@
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsSummable_smul",
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -155467,57 +156555,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (L ∘ₗ\n        SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε)\n          (SecondQuantization.Fermionic.quarticInteraction g) n t) =\n    (-1) ^ n *\n      ∑ q,\n        (∏ i, g (q i)) *\n          intervalIntegral.orderedSimplexIntegral n t fun τ =>\n            SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n              (L ∘ₗ\n                SecondQuantization.Common.quarticVertexSequenceInteractionPicture\n                  (SecondQuantization.Fermionic.fermionEnergy ε) SecondQuantization.Fermionic.create\n                  SecondQuantization.Fermionic.annihilate n q τ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
-    "externalAxioms": [],
-    "docString": "**The key induction: `dysonCoeff` of `quarticInteraction`, left-composed with an arbitrary\nfixed prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over vertex-label sequences of an\n`orderedSimplexIntegral` of `L`-prefixed Common quartic interaction-picture sequences.** The prefix `L`\ngeneralizes the induction so the successor case can absorb the newly-peeled-off outermost vertex\nfactor into `L` before invoking the inductive hypothesis on the remaining `n`-fold piece; the\nbound `t` likewise generalizes so the inductive step's inner integral (over `[0, σ]` for the\nrecursion's own integration variable `σ`) is exactly an instance of the same statement, rather\nthan requiring a separate lemma for non-`β` bounds. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Common.dysonCoeff_succ",
-      "SecondQuantization.Common.dysonCoeff_zero",
-      "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
-      "SecondQuantization.Common.matrixCoeff_comp",
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_fintype_sum",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_neg_apply",
-      "intervalIntegral.continuous_orderedSimplexIntegral_of_continuous"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (L : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  Continuous fun τ =>\n    SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (L ∘ₗ\n        SecondQuantization.Common.quarticVertexSequenceInteractionPicture (SecondQuantization.Fermionic.fermionEnergy ε)\n          SecondQuantization.Fermionic.create SecondQuantization.Fermionic.annihilate n q τ)",
     "standardAxioms": [
       "Classical.choice",
@@ -155525,7 +156562,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -155537,8 +156574,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
@@ -155548,86 +156584,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {ι : Type u_2} [inst_1 : Fintype ι] (ε : Mode → ℝ) (β : ℝ)\n  (F : ι → SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β (∑ i, F i) =\n    ∑ i, SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β (F i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_fintype_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (A : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β (-A) =\n    -SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_neg_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
+      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -164832,6 +165789,86 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (hamiltonian : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) (a b : ℂ) (energy broadening : ℝ),\n  QuantumTheory.Transport.regularizedBastinOperatorIntegrand hamiltonian (a • 1) (b • 1) energy broadening =\n    QuantumTheory.Transport.regularizedBastinOperatorIntegrand hamiltonian (b • 1) (a • 1) energy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Response.0.QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinOperatorIntegrand_scalarCurrent_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Response.0.QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_scalarCurrent_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Response.0.QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_scalarCurrent_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (hamiltonian : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) (a b : ℂ) (energy broadening : ℝ),\n  QuantumTheory.Transport.regularizedBastinTraceIntegrand hamiltonian (a • 1) (b • 1) energy broadening =\n    QuantumTheory.Transport.regularizedBastinTraceIntegrand hamiltonian (b • 1) (a • 1) energy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Response.0.QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_scalarCurrent_swap",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Response.0.QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinOperatorIntegrand_scalarCurrent_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {A : Type u_1} [inst : Ring A] {freeGreen dressedGreen selfEnergy freeInverse dressedInverse : A},\n  QuantumTheory.Transport.IsSelfEnergy freeGreen dressedGreen selfEnergy →\n    freeInverse * freeGreen = 1 → dressedGreen * dressedInverse = 1 → selfEnergy = freeInverse - dressedInverse",
     "standardAxioms": [
       "propext"
@@ -166047,7 +167084,6 @@
       "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_bound",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_boundary",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
       "intervalIntegral.orderedSimplexIntegral_finsetSum"
     ],
     "dependencies": [],
@@ -166057,10 +167093,9 @@
       "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_bound",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.Calculus.0.intervalIntegral.continuous_orderedSimplexIntegral_boundary",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
       "intervalIntegral.orderedSimplexIntegral_finsetSum"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166422,6 +167457,7 @@
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consLeft_boundary",
@@ -166438,12 +167474,13 @@
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consLeft_boundary",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166716,6 +167753,7 @@
     "dependents": [
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "intervalIntegral.orderedSimplexIntegral_neg"
     ],
@@ -166727,10 +167765,11 @@
     "compiledConsumers": [
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "intervalIntegral.orderedSimplexIntegral_neg"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
