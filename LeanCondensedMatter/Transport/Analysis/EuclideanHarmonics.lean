@@ -178,7 +178,28 @@ theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommMonoid E] [Mo
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
     (coefficients.orthogonalTransform matrix horthogonal).constant = coefficients.constant := by
-  rfl
+  simp [orthogonalTransform]
+
+@[simp]
+theorem orthogonalTransform_first_apply {n : ℕ} {E : Type*}
+    [AddCommMonoid E] [Module ℂ E]
+    (coefficients : EuclideanHarmonicCoefficients n E)
+    (matrix : Matrix (Fin n) (Fin n) ℝ)
+    (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) (i : Fin n) :
+    (coefficients.orthogonalTransform matrix horthogonal).first i =
+      ∑ j, (((matrix j i : ℝ) : ℂ)) • coefficients.first j := by
+  simp [orthogonalTransform, complexifyMatrix, Matrix.Module.smul_apply]
+
+@[simp]
+theorem orthogonalTransform_second_apply {n : ℕ} {E : Type*}
+    [AddCommMonoid E] [Module ℂ E]
+    (coefficients : EuclideanHarmonicCoefficients n E)
+    (matrix : Matrix (Fin n) (Fin n) ℝ)
+    (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) (i j : Fin n) :
+    (coefficients.orthogonalTransform matrix horthogonal).second i j =
+      ∑ k, (((matrix k i : ℝ) : ℂ)) •
+        ∑ l, (((matrix l j : ℝ) : ℂ)) • coefficients.second k l := by
+  simp [orthogonalTransform, complexifyMatrix, Matrix.Module.smul_apply]
 
 /-- Orthogonal pullback of the coefficient data is equivalent to evaluating the original
 harmonics on the transformed direction. -/
