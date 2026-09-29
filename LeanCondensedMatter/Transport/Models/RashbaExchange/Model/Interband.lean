@@ -133,7 +133,7 @@ theorem forceMatrixTraceNumerator_xy_eq
       sub_eq_add_neg]
     ring_nf
     simp [hI]
-    linear_combination -(cx * cy) * hnorm
+    linear_combination (cx * cy / 2) * hnorm
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
   change Matrix.trace
