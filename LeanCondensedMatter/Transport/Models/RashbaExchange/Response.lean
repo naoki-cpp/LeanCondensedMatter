@@ -51,6 +51,17 @@ noncomputable def cleanHallPointKernel
     (currentBoundedOperator params source px py)
     (greenOperator .advanced params px py)
 
+/-- The disorder/vertex seam specialized to clean resolvents and the bare charge-current source
+vertex is definitionally the clean surface kernel. -/
+@[simp] theorem suppliedHallPointKernel_bare_eq_clean
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
+    suppliedHallPointKernel params measured px py
+        (greenOperator .retarded params px py)
+        (currentBoundedOperator params source px py)
+        (greenOperator .advanced params px py) =
+      cleanHallPointKernel params measured source px py := by
+  rfl
+
 /-- The clean point kernel is exactly the generic regularized Středa surface primitive. -/
 theorem cleanHallPointKernel_eq_regularized
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
@@ -119,7 +130,7 @@ theorem antisymmetricCleanHallPointKernel_swap
   simp [antisymmetricCleanHallPointKernel]
 
 /-- Restrict a point kernel to the explicit finite circular momentum domain. -/
-noncomputable def finiteDiskHallIntegrand
+noncomputable def finiteDiskSurfaceHallIntegrand
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ := by
   classical
   exact if inMomentumDomain params px py then
@@ -128,44 +139,44 @@ noncomputable def finiteDiskHallIntegrand
 
 /-- Finite-cutoff raw Hall response over the bounding square, with the disk restriction enforced
 pointwise. The physical-momentum measure normalization is attached exactly once. -/
-noncomputable def finiteCutoffHallResponseComponent
+noncomputable def finiteCutoffSurfaceHallResponseComponent
     (params : Parameters) (measured source : Fin 2) : ℂ :=
   ((params.momentumMeasureNormalization : ℝ) : ℂ) *
     ∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
       ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-        finiteDiskHallIntegrand params measured source px py
+        finiteDiskSurfaceHallIntegrand params measured source px py
 
-theorem finiteDiskHallIntegrand_swap
+theorem finiteDiskSurfaceHallIntegrand_swap
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
-    finiteDiskHallIntegrand params source measured px py =
-      -finiteDiskHallIntegrand params measured source px py := by
+    finiteDiskSurfaceHallIntegrand params source measured px py =
+      -finiteDiskSurfaceHallIntegrand params measured source px py := by
   classical
-  unfold finiteDiskHallIntegrand
+  unfold finiteDiskSurfaceHallIntegrand
   split
   · exact antisymmetricCleanHallPointKernel_swap params measured source px py
   · simp
 
-theorem finiteCutoffHallResponseComponent_swap
+theorem finiteCutoffSurfaceHallResponseComponent_swap
     (params : Parameters) (measured source : Fin 2) :
-    finiteCutoffHallResponseComponent params source measured =
-      -finiteCutoffHallResponseComponent params measured source := by
-  unfold finiteCutoffHallResponseComponent
+    finiteCutoffSurfaceHallResponseComponent params source measured =
+      -finiteCutoffSurfaceHallResponseComponent params measured source := by
+  unfold finiteCutoffSurfaceHallResponseComponent
   have hinner (px : ℝ) :
       (∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-        finiteDiskHallIntegrand params source measured px py) =
+        finiteDiskSurfaceHallIntegrand params source measured px py) =
         -(∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-          finiteDiskHallIntegrand params measured source px py) := by
+          finiteDiskSurfaceHallIntegrand params measured source px py) := by
     rw [← intervalIntegral.integral_neg]
     apply intervalIntegral.integral_congr
     intro py _
-    exact finiteDiskHallIntegrand_swap params measured source px py
+    exact finiteDiskSurfaceHallIntegrand_swap params measured source px py
   have houter :
       (∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
         ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-          finiteDiskHallIntegrand params source measured px py) =
+          finiteDiskSurfaceHallIntegrand params source measured px py) =
         -(∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
           ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-            finiteDiskHallIntegrand params measured source px py) := by
+            finiteDiskSurfaceHallIntegrand params measured source px py) := by
     rw [← intervalIntegral.integral_neg]
     apply intervalIntegral.integral_congr
     intro px _
@@ -173,27 +184,122 @@ theorem finiteCutoffHallResponseComponent_swap
   rw [houter]
   ring
 
-/-- Surface-projected diagnostic component. This deliberately remains a response-level object:
-the Středa surface primitive at the chemical potential is not, by itself, the full Bastin Hall
-conductivity. Full finite-broadening Hall conductivity must be built from
-`cleanBastinPointResponse` (or an equivalent generic Středa representation) with an explicit
-energy window and occupation. -/
+/-- Restrict the antisymmetric full Bastin point response to the explicit finite
+circular momentum domain. -/
+noncomputable def finiteDiskBastinHallIntegrand
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ := by
+  classical
+  exact if inMomentumDomain params px py then
+    antisymmetricCleanBastinPointResponse params measured source px py
+      lowerEnergy upperEnergy occupation
+  else 0
+
+theorem finiteDiskBastinHallIntegrand_swap
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
+    finiteDiskBastinHallIntegrand params source measured px py
+        lowerEnergy upperEnergy occupation =
+      -finiteDiskBastinHallIntegrand params measured source px py
+        lowerEnergy upperEnergy occupation := by
+  classical
+  unfold finiteDiskBastinHallIntegrand
+  split
+  · exact antisymmetricCleanBastinPointResponse_swap
+      params measured source px py lowerEnergy upperEnergy occupation
+  · simp
+
+/-- Complete finite-cutoff, finite-broadening clean Hall response. The energy integral is the
+canonical traced Bastin response; the outer momentum integral is restricted to the finite disk and
+receives the explicit physical-momentum measure normalization exactly once. -/
+noncomputable def finiteCutoffBastinHallResponseComponent
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
+  ((params.momentumMeasureNormalization : ℝ) : ℂ) *
+    ∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+      ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        finiteDiskBastinHallIntegrand params measured source px py
+          lowerEnergy upperEnergy occupation
+
+theorem finiteCutoffBastinHallResponseComponent_swap
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
+    finiteCutoffBastinHallResponseComponent params source measured
+        lowerEnergy upperEnergy occupation =
+      -finiteCutoffBastinHallResponseComponent params measured source
+        lowerEnergy upperEnergy occupation := by
+  unfold finiteCutoffBastinHallResponseComponent
+  have hinner (px : ℝ) :
+      (∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        finiteDiskBastinHallIntegrand params source measured px py
+          lowerEnergy upperEnergy occupation) =
+        -(∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+          finiteDiskBastinHallIntegrand params measured source px py
+            lowerEnergy upperEnergy occupation) := by
+    rw [← intervalIntegral.integral_neg]
+    apply intervalIntegral.integral_congr
+    intro py _
+    exact finiteDiskBastinHallIntegrand_swap params measured source px py
+      lowerEnergy upperEnergy occupation
+  have houter :
+      (∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+          finiteDiskBastinHallIntegrand params source measured px py
+            lowerEnergy upperEnergy occupation) =
+        -(∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+          ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+            finiteDiskBastinHallIntegrand params measured source px py
+              lowerEnergy upperEnergy occupation) := by
+    rw [← intervalIntegral.integral_neg]
+    apply intervalIntegral.integral_congr
+    intro px _
+    exact hinner px
+  rw [houter]
+  ring
+
+/-- Physical finite-cutoff Hall conductivity obtained only after the full Bastin energy response
+and finite momentum integral have both been assembled. -/
+noncomputable def finiteCutoffBastinHallConductivityComponent
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
+  ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
+    finiteCutoffBastinHallResponseComponent params measured source
+      lowerEnergy upperEnergy occupation
+
+/-- Full finite-cutoff, finite-broadening anomalous-Hall conductivity tensor. -/
+noncomputable def finiteCutoffBastinHallConductivityTensor
+    (params : Parameters) (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
+    ConductivityTensor (Fin 2) where
+  component := fun measured source =>
+    finiteCutoffBastinHallConductivityComponent params measured source
+      lowerEnergy upperEnergy occupation
+
+theorem finiteCutoffBastinHallConductivityComponent_swap
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
+    finiteCutoffBastinHallConductivityComponent params source measured
+        lowerEnergy upperEnergy occupation =
+      -finiteCutoffBastinHallConductivityComponent params measured source
+        lowerEnergy upperEnergy occupation := by
+  rw [finiteCutoffBastinHallConductivityComponent,
+    finiteCutoffBastinHallConductivityComponent,
+    finiteCutoffBastinHallResponseComponent_swap]
+  ring
+
+/-- Surface-projected normalized diagnostic. The common trace prefactor is useful for comparison,
+but this object deliberately remains outside `ConductivityTensor`: the Středa surface primitive
+at the chemical potential is not, by itself, the full Bastin Hall conductivity. -/
 noncomputable def finiteCutoffSurfaceDiagnosticComponent
     (params : Parameters) (measured source : Fin 2) : ℂ :=
   ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
-    finiteCutoffHallResponseComponent params measured source
-
-/-- Antisymmetric finite-cutoff Hall conductivity packaged as a physical conductivity tensor. -/
-noncomputable def finiteCutoffSurfaceDiagnosticTensor
-    (params : Parameters) : ConductivityTensor (Fin 2) where
-  component := finiteCutoffSurfaceDiagnosticComponent params
+    finiteCutoffSurfaceHallResponseComponent params measured source
 
 theorem finiteCutoffSurfaceDiagnosticComponent_swap
     (params : Parameters) (measured source : Fin 2) :
     finiteCutoffSurfaceDiagnosticComponent params source measured =
       -finiteCutoffSurfaceDiagnosticComponent params measured source := by
   rw [finiteCutoffSurfaceDiagnosticComponent, finiteCutoffSurfaceDiagnosticComponent,
-    finiteCutoffHallResponseComponent_swap]
+    finiteCutoffSurfaceHallResponseComponent_swap]
   ring
 
 end
