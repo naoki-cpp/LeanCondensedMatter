@@ -118,6 +118,7 @@ private theorem normalizedSpinHamiltonian_mul_self
   rw [smul_mul_assoc, mul_smul_comm, smul_smul]
   rw [spinHamiltonian_mul_self, hEnergySq, smul_smul]
   field_simp [hEc]
+  simp
 
 private theorem spinHamiltonian_eq_energy_smul_normalized
     (params : Parameters) (px py : ℝ)
@@ -200,7 +201,6 @@ theorem hamiltonian_mul_bandProjector
   have hH :
       hamiltonian params px py = ε • (1 : InternalSpace.PauliMatrix) + E • Q := by
     rw [hamiltonian_eq_kinetic_add_spinHamiltonian, hSpin]
-    rfl
   have hP :
       bandProjector params band px py =
         (1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
