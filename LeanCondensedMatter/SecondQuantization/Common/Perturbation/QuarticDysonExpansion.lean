@@ -311,6 +311,64 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
       rw [hcoeff]
       ring
 
+
+/-- On a finite mode type, the quartic Dyson coefficient is the sum over all vertex-label
+sequences of the statistics-independent scalar ordered-simplex coefficient times the bare vertex
+product. -/
+theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
+    (energy : Config → ℝ) (ε : Mode → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (hcreate : ∀ τ i, heisenbergEvolve energy τ (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i)
+    (hannihilate : ∀ τ i, heisenbergEvolve energy τ (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i)
+    (n : ℕ) (t : ℝ) :
+    dysonCoeff energy (quarticInteraction create annihilate g) n t =
+      ∑ q : Fin n → QuarticVertexLabel Mode,
+        quarticDysonSequenceCoeff ε g q t •
+          quarticVertexSequenceOperator create annihilate q := by
+  let e :
+      (Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode))) ≃
+        (Fin n → QuarticVertexLabel Mode) :=
+    { toFun := fun q i => q i
+      invFun := fun q i => ⟨q i, Finset.mem_univ _⟩
+      left_inv := by
+        intro q
+        funext i
+        apply Subtype.ext
+        rfl
+      right_inv := by
+        intro q
+        rfl }
+  let F : (Fin n → QuarticVertexLabel Mode) →
+      (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := fun q =>
+    quarticDysonSequenceCoeff ε g q t •
+      quarticVertexSequenceOperator create annihilate q
+  have h := dysonCoeff_quarticInteractionOn_eq_sum
+    energy ε create annihilate
+    (Finset.univ : Finset (QuarticVertexLabel Mode)) g hcreate hannihilate n t
+  calc
+    dysonCoeff energy (quarticInteraction create annihilate g) n t =
+        dysonCoeff energy
+          (quarticInteractionOn (Finset.univ : Finset (QuarticVertexLabel Mode))
+            create annihilate g) n t := by
+      rfl
+    _ = ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)),
+        quarticDysonSequenceCoeff ε g
+            (fun i => (q i : QuarticVertexLabel Mode)) t •
+          quarticVertexSequenceOperator create annihilate
+            (fun i => (q i : QuarticVertexLabel Mode)) := h
+    _ = ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)), F (e q) := by
+      apply Finset.sum_congr rfl
+      intro q _
+      rfl
+    _ = ∑ q : Fin n → QuarticVertexLabel Mode, F q := Equiv.sum_comp e F
+    _ = ∑ q : Fin n → QuarticVertexLabel Mode,
+        quarticDysonSequenceCoeff ε g q t •
+          quarticVertexSequenceOperator create annihilate q := rfl
+
+
 end
 end Common
 end SecondQuantization
