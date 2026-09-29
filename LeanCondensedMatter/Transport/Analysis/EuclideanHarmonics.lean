@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.UnitaryGroup
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -46,6 +47,75 @@ def eval {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     ∑ i, ((direction i : ℝ) : ℂ) • coefficients.first i +
       ∑ i, ∑ j,
         ((((direction i : ℝ) : ℂ) * ((direction j : ℝ) : ℂ))) • coefficients.second i j
+
+/-- Entrywise complexification of a real square matrix. -/
+def complexifyMatrix {n : ℕ}
+    (matrix : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℂ :=
+  matrix.map Complex.ofReal
+
+/-- Entrywise complexification of a real direction vector. -/
+def complexDirection {n : ℕ} (direction : Fin n → ℝ) : Fin n → ℂ :=
+  fun i => direction i
+
+theorem complexDirection_mulVec {n : ℕ}
+    (matrix : Matrix (Fin n) (Fin n) ℝ) (direction : Fin n → ℝ) :
+    complexDirection (Matrix.mulVec matrix direction) =
+      Matrix.mulVec (complexifyMatrix matrix) (complexDirection direction) := by
+  funext i
+  simp [complexDirection, complexifyMatrix, Matrix.mulVec, dotProduct]
+
+/-- For complex coefficients, Euclidean harmonic evaluation is the familiar linear plus quadratic
+matrix contraction. -/
+theorem eval_eq_dotProduct {n : ℕ}
+    (coefficients : EuclideanHarmonicCoefficients n ℂ) (direction : Fin n → ℝ) :
+    coefficients.eval direction =
+      coefficients.constant +
+        complexDirection direction ⬝ᵥ coefficients.first +
+        complexDirection direction ⬝ᵥ
+          Matrix.mulVec coefficients.second (complexDirection direction) := by
+  simp [eval, complexDirection, Matrix.mulVec, dotProduct, Finset.mul_sum, smul_eq_mul]
+  ring
+
+/-- Pull back complex Euclidean harmonic coefficients along a real orthogonal transformation.
+The linear coefficient transforms as `Rᵀ b` and the quadratic coefficient as `Rᵀ Q R`. -/
+def orthogonalTransform {n : ℕ}
+    (coefficients : EuclideanHarmonicCoefficients n ℂ)
+    (matrix : Matrix (Fin n) (Fin n) ℝ)
+    (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
+    EuclideanHarmonicCoefficients n ℂ := by
+  let matrixC := complexifyMatrix matrix
+  have hmatrixC : matrixC * matrixCᵀ = 1 := by
+    have hmatrix :=
+      (Matrix.mem_orthogonalGroup_iff (Fin n) ℝ).mp horthogonal
+    simpa [matrixC, complexifyMatrix] using
+      congrArg (fun m : Matrix (Fin n) (Fin n) ℝ => m.map Complex.ofRealHom) hmatrix
+  refine
+    { constant := coefficients.constant
+      first := Matrix.mulVec matrixCᵀ coefficients.first
+      second := matrixCᵀ * coefficients.second * matrixC
+      second_symm := ?_
+      second_trace := ?_ }
+  · rw [Matrix.IsSymm]
+    simp [Matrix.transpose_mul, coefficients.second_symm, Matrix.mul_assoc]
+  · calc
+      Matrix.trace (matrixCᵀ * coefficients.second * matrixC) =
+          Matrix.trace (matrixC * matrixCᵀ * coefficients.second) := by
+            exact Matrix.trace_mul_cycle _ _ _
+      _ = Matrix.trace coefficients.second := by rw [hmatrixC, Matrix.one_mul]
+      _ = 0 := coefficients.second_trace
+
+/-- Orthogonal pullback of the coefficient data is equivalent to evaluating the original
+harmonics on the transformed direction. -/
+theorem orthogonalTransform_eval {n : ℕ}
+    (coefficients : EuclideanHarmonicCoefficients n ℂ)
+    (matrix : Matrix (Fin n) (Fin n) ℝ)
+    (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ)
+    (direction : Fin n → ℝ) :
+    (coefficients.orthogonalTransform matrix horthogonal).eval direction =
+      coefficients.eval (Matrix.mulVec matrix direction) := by
+  rw [eval_eq_dotProduct, eval_eq_dotProduct, complexDirection_mulVec]
+  simp [orthogonalTransform, Matrix.mulVec_mulVec,
+    Matrix.dotProduct_transpose_mulVec, dotProduct_comm]
 
 end EuclideanHarmonicCoefficients
 
@@ -97,37 +167,59 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     -Complex.ofReal_cos, -Complex.ofReal_sin]
   module
 
-/-- Rotate two-dimensional harmonic coefficients so evaluation at `θ` equals evaluation
-of the original coefficients at `θ + angle`. -/
+/-- Convert two-dimensional Euclidean STF data back to the legacy trigonometric coordinates. -/
+def EuclideanHarmonicCoefficients.toAngular2D
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    (coefficients : EuclideanHarmonicCoefficients 2 E) : AngularHarmonicCoefficients E where
+  constant := coefficients.constant
+  firstCosine := coefficients.first 0
+  firstSine := coefficients.first 1
+  secondCosine := coefficients.second 0 0
+  secondMixed := (2 : ℂ) • coefficients.second 0 1
+
+/-- The Euclidean-to-trigonometric bridge preserves evaluation on the polar unit direction. -/
+theorem EuclideanHarmonicCoefficients.toAngular2D_eval
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
+    (coefficients : EuclideanHarmonicCoefficients 2 E) (angle : ℝ) :
+    coefficients.toAngular2D.eval angle =
+      coefficients.eval (polarDirection2D angle) := by
+  have hdiag : coefficients.second 1 1 = -coefficients.second 0 0 := by
+    have h := coefficients.second_trace
+    simp [Matrix.trace, Fin.sum_univ_two] at h
+    abel
+  have hoff : coefficients.second 1 0 = coefficients.second 0 1 := by
+    have h := congrFun (congrFun coefficients.second_symm 0) 1
+    simpa using h
+  simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
+    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two, hdiag, hoff]
+  module
+
+/-- The ordinary planar rotation matrix is orthogonal. -/
+theorem rotationMatrix2D_mem_orthogonalGroup (angle : ℝ) :
+    rotationMatrix2D angle ∈ Matrix.orthogonalGroup (Fin 2) ℝ := by
+  rw [Matrix.mem_orthogonalGroup_iff]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [rotationMatrix2D, Matrix.mul_apply, Fin.sum_univ_two] <;>
+    nlinarith [Real.sin_sq_add_cos_sq angle]
+
+/-- Rotate two-dimensional trigonometric coefficients by specializing the generic Euclidean
+orthogonal pullback. -/
 def AngularHarmonicCoefficients.rotate2D
     (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
-    AngularHarmonicCoefficients ℂ where
-  constant := coefficients.constant
-  firstCosine :=
-    ((Real.cos angle : ℝ) : ℂ) * coefficients.firstCosine +
-      ((Real.sin angle : ℝ) : ℂ) * coefficients.firstSine
-  firstSine :=
-    -((Real.sin angle : ℝ) : ℂ) * coefficients.firstCosine +
-      ((Real.cos angle : ℝ) : ℂ) * coefficients.firstSine
-  secondCosine :=
-    (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
-        coefficients.secondCosine +
-      ((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ) *
-        coefficients.secondMixed
-  secondMixed :=
-    -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
-        coefficients.secondCosine +
-      (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) *
-        coefficients.secondMixed
+    AngularHarmonicCoefficients ℂ :=
+  ((coefficients.toEuclidean2D).orthogonalTransform
+      (rotationMatrix2D angle) (rotationMatrix2D_mem_orthogonalGroup angle)).toAngular2D
 
 /-- Rotating the coefficient data is equivalent to shifting the polar direction. -/
 theorem AngularHarmonicCoefficients.rotate2D_eval
     (coefficients : AngularHarmonicCoefficients ℂ) (angle θ : ℝ) :
     (coefficients.rotate2D angle).eval θ = coefficients.eval (θ + angle) := by
-  simp only [AngularHarmonicCoefficients.rotate2D, AngularHarmonicCoefficients.eval, smul_eq_mul]
-  rw [Real.cos_add, Real.sin_add]
-  push_cast
-  ring
+  rw [AngularHarmonicCoefficients.rotate2D,
+    EuclideanHarmonicCoefficients.toAngular2D_eval,
+    EuclideanHarmonicCoefficients.orthogonalTransform_eval,
+    ← polarDirection2D_add,
+    ← AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval]
 
 end
 
