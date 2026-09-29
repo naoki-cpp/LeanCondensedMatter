@@ -27,7 +27,7 @@ noncomputable section
 open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
 /-- Backward-compatible model-local name for the canonical two-level Pauli Hilbert space. -/
-def DiracHilbert := InternalSpace.PauliHilbert
+@[reducible] def DiracHilbert := InternalSpace.PauliHilbert
 
 /-- A `2 × 2` complex matrix as a bounded operator on the canonical two-level Hilbert space. -/
 noncomputable def matrixOperator (M : Matrix2) : DiracHilbert →L[ℂ] DiracHilbert :=
