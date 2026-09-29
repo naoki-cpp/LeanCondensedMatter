@@ -11,11 +11,12 @@ set_option linter.style.header false
 /-!
 # Finite Rashba-exchange anomalous-Hall response
 
-The physical clean finite-broadening Hall path uses the canonical traced Kubo–Bastin energy
-integral at each momentum, takes its antisymmetric measured/source projection, and then integrates
-that response over the explicit finite physical-momentum disk. The stored continuum-measure
-normalization is attached exactly once, and the common static Bastin–Středa trace prefactor is
-attached only when constructing a physical `ConductivityTensor`.
+The physical clean finite-broadening path uses the canonical traced Kubo–Bastin energy integral at
+each momentum and integrates each ordered measured/source component over the explicit finite
+physical-momentum disk. The stored continuum-measure normalization is attached exactly once, and
+the common static Bastin–Středa trace prefactor is attached only when constructing the full physical
+`ConductivityTensor`. Its Hall response is then the canonical antisymmetric
+`ConductivityTensor.hallComponent` projection of that completed tensor.
 
 A separate supplied-Green Středa surface primitive `RA - (RR + AA)/2` is retained as the
 response/vertex seam for future disorder dressing and as a diagnostic object; it is not promoted to
@@ -36,8 +37,10 @@ open scoped Interval
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
   params.momentumMeasureNormalization = momentumMeasurePrefactor params.hbar
 
-/-- Supplied-Green response seam. Disorder code may replace either Green operator and the source
-vertex without reconstructing the Rashba Hamiltonian or measured charge-current vertex. -/
+/-- Supplied-Green Středa-surface response seam. Disorder code may replace either Green operator
+and the source vertex without reconstructing the Rashba Hamiltonian or measured charge-current
+vertex. This seam covers the surface channel only; no full disorder-dressed Bastin energy integral
+is asserted here. -/
 noncomputable def suppliedSurfaceHallPointKernel
     (params : Parameters) (measured : Fin 2) (px py : ℝ)
     (retardedGreen sourceVertex advancedGreen :
@@ -255,42 +258,72 @@ theorem finiteCutoffSurfaceHallResponseComponent_swap
   rw [houter]
   ring
 
-/-- Restrict the antisymmetric full Bastin point response to the explicit finite
-circular momentum domain. -/
-noncomputable def finiteDiskBastinHallIntegrand
+/-- Restrict one ordered full Bastin point response to the explicit finite circular momentum
+domain. No Hall projection is taken at this stage. -/
+noncomputable def finiteDiskBastinIntegrand
     (params : Parameters) (measured source : Fin 2) (px py : ℝ)
     (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ := by
   classical
   exact if inMomentumDomain params px py then
-    antisymmetricCleanBastinPointResponse params measured source px py
+    cleanBastinPointResponse params measured source px py
       lowerEnergy upperEnergy occupation
   else 0
 
-theorem finiteDiskBastinHallIntegrand_swap
+/-- At zero Rashba coupling the ordered finite-disk Bastin integrand is symmetric under exchange of
+the measured and source directions. -/
+theorem finiteDiskBastinIntegrand_rashba_zero_swap
     (params : Parameters) (measured source : Fin 2) (px py : ℝ)
-    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
-    finiteDiskBastinHallIntegrand params source measured px py
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    finiteDiskBastinIntegrand params source measured px py
         lowerEnergy upperEnergy occupation =
-      -finiteDiskBastinHallIntegrand params measured source px py
+      finiteDiskBastinIntegrand params measured source px py
         lowerEnergy upperEnergy occupation := by
   classical
-  unfold finiteDiskBastinHallIntegrand
+  unfold finiteDiskBastinIntegrand
   split
-  · exact antisymmetricCleanBastinPointResponse_swap
-      params measured source px py lowerEnergy upperEnergy occupation
-  · simp
+  · exact cleanBastinPointResponse_rashba_zero_swap
+      params source measured px py lowerEnergy upperEnergy occupation hAlpha
+  · rfl
 
-/-- Complete finite-cutoff, finite-broadening clean Hall response. The energy integral is the
-canonical traced Bastin response; the outer momentum integral is restricted to the finite disk and
-receives the explicit physical-momentum measure normalization exactly once. -/
-noncomputable def finiteCutoffBastinHallResponseComponent
+/-- Finite-cutoff ordered Bastin response component before physical conductivity normalization. -/
+noncomputable def finiteCutoffBastinResponseComponent
     (params : Parameters) (measured source : Fin 2)
     (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
   ((params.momentumMeasureNormalization : ℝ) : ℂ) *
     ∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
       ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-        finiteDiskBastinHallIntegrand params measured source px py
+        finiteDiskBastinIntegrand params measured source px py
           lowerEnergy upperEnergy occupation
+
+/-- Zero Rashba coupling makes the complete finite-cutoff ordered Bastin response symmetric. -/
+theorem finiteCutoffBastinResponseComponent_rashba_zero_swap
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    finiteCutoffBastinResponseComponent params source measured
+        lowerEnergy upperEnergy occupation =
+      finiteCutoffBastinResponseComponent params measured source
+        lowerEnergy upperEnergy occupation := by
+  unfold finiteCutoffBastinResponseComponent
+  apply congrArg (fun z : ℂ => ((params.momentumMeasureNormalization : ℝ) : ℂ) * z)
+  apply intervalIntegral.integral_congr
+  intro px _
+  apply intervalIntegral.integral_congr
+  intro py _
+  exact finiteDiskBastinIntegrand_rashba_zero_swap
+    params measured source px py lowerEnergy upperEnergy occupation hAlpha
+
+/-- Derived finite-cutoff Hall response, defined only after the ordered response components have
+been assembled. -/
+noncomputable def finiteCutoffBastinHallResponseComponent
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
+  (1 / 2 : ℂ) *
+    (finiteCutoffBastinResponseComponent params measured source
+        lowerEnergy upperEnergy occupation -
+      finiteCutoffBastinResponseComponent params source measured
+        lowerEnergy upperEnergy occupation)
 
 theorem finiteCutoffBastinHallResponseComponent_swap
     (params : Parameters) (measured source : Fin 2)
@@ -300,62 +333,70 @@ theorem finiteCutoffBastinHallResponseComponent_swap
       -finiteCutoffBastinHallResponseComponent params measured source
         lowerEnergy upperEnergy occupation := by
   unfold finiteCutoffBastinHallResponseComponent
-  have hinner (px : ℝ) :
-      (∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-        finiteDiskBastinHallIntegrand params source measured px py
-          lowerEnergy upperEnergy occupation) =
-        -(∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-          finiteDiskBastinHallIntegrand params measured source px py
-            lowerEnergy upperEnergy occupation) := by
-    rw [← intervalIntegral.integral_neg]
-    apply intervalIntegral.integral_congr
-    intro py _
-    exact finiteDiskBastinHallIntegrand_swap params measured source px py
-      lowerEnergy upperEnergy occupation
-  have houter :
-      (∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-        ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-          finiteDiskBastinHallIntegrand params source measured px py
-            lowerEnergy upperEnergy occupation) =
-        -(∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-          ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
-            finiteDiskBastinHallIntegrand params measured source px py
-              lowerEnergy upperEnergy occupation) := by
-    rw [← intervalIntegral.integral_neg]
-    apply intervalIntegral.integral_congr
-    intro px _
-    exact hinner px
-  rw [houter]
   ring
 
-/-- Physical finite-cutoff Hall conductivity obtained only after the full Bastin energy response
-and finite momentum integral have both been assembled. -/
-noncomputable def finiteCutoffBastinHallConductivityComponent
+/-- The finite-cutoff Hall response vanishes when the Rashba coupling is zero. -/
+@[simp] theorem finiteCutoffBastinHallResponseComponent_rashba_zero
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    finiteCutoffBastinHallResponseComponent params measured source
+        lowerEnergy upperEnergy occupation = 0 := by
+  unfold finiteCutoffBastinHallResponseComponent
+  rw [finiteCutoffBastinResponseComponent_rashba_zero_swap
+    params measured source lowerEnergy upperEnergy occupation hAlpha]
+  ring
+
+/-- Physical finite-cutoff ordered conductivity component obtained only after the full Bastin
+energy response and finite momentum integral have both been assembled. -/
+noncomputable def finiteCutoffBastinConductivityComponent
     (params : Parameters) (measured source : Fin 2)
     (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) : ℂ :=
   ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
-    finiteCutoffBastinHallResponseComponent params measured source
+    finiteCutoffBastinResponseComponent params measured source
       lowerEnergy upperEnergy occupation
 
-/-- Full finite-cutoff, finite-broadening anomalous-Hall conductivity tensor. -/
-noncomputable def finiteCutoffBastinHallConductivityTensor
+/-- Full finite-cutoff, finite-broadening conductivity tensor. Hall projection remains downstream
+through `ConductivityTensor.hallComponent`. -/
+noncomputable def finiteCutoffBastinConductivityTensor
     (params : Parameters) (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
     ConductivityTensor (Fin 2) where
   component := fun measured source =>
-    finiteCutoffBastinHallConductivityComponent params measured source
+    finiteCutoffBastinConductivityComponent params measured source
       lowerEnergy upperEnergy occupation
 
-theorem finiteCutoffBastinHallConductivityComponent_swap
+@[simp] theorem finiteCutoffBastinConductivityTensor_component
     (params : Parameters) (measured source : Fin 2)
     (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
-    finiteCutoffBastinHallConductivityComponent params source measured
-        lowerEnergy upperEnergy occupation =
-      -finiteCutoffBastinHallConductivityComponent params measured source
-        lowerEnergy upperEnergy occupation := by
-  rw [finiteCutoffBastinHallConductivityComponent,
-    finiteCutoffBastinHallConductivityComponent,
-    finiteCutoffBastinHallResponseComponent_swap]
+    (finiteCutoffBastinConductivityTensor params lowerEnergy upperEnergy occupation).component
+        measured source =
+      finiteCutoffBastinConductivityComponent params measured source
+        lowerEnergy upperEnergy occupation := rfl
+
+/-- The Hall projection of the completed conductivity tensor is exactly the conductivity prefactor
+times the derived finite-cutoff Hall response. -/
+theorem finiteCutoffBastinConductivityTensor_hallComponent_eq
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ) :
+    (finiteCutoffBastinConductivityTensor params lowerEnergy upperEnergy occupation).hallComponent
+        measured source =
+      ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
+        finiteCutoffBastinHallResponseComponent params measured source
+          lowerEnergy upperEnergy occupation := by
+  unfold ConductivityTensor.hallComponent finiteCutoffBastinConductivityTensor
+    finiteCutoffBastinConductivityComponent finiteCutoffBastinHallResponseComponent
   ring
+
+/-- The physical Hall conductivity vanishes at zero Rashba coupling. -/
+@[simp] theorem finiteCutoffBastinConductivityTensor_hallComponent_rashba_zero
+    (params : Parameters) (measured source : Fin 2)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    (finiteCutoffBastinConductivityTensor params lowerEnergy upperEnergy occupation).hallComponent
+        measured source = 0 := by
+  rw [finiteCutoffBastinConductivityTensor_hallComponent_eq]
+  simp [finiteCutoffBastinHallResponseComponent_rashba_zero
+    params measured source lowerEnergy upperEnergy occupation hAlpha]
 
 /-- Surface-projected normalized diagnostic. The common trace prefactor is useful for comparison,
 but this object deliberately remains outside `ConductivityTensor`: the Středa surface primitive
