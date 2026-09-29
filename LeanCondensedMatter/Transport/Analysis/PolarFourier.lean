@@ -446,11 +446,10 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
             -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
               (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
       have hrotate (θ : ℝ) : source.eval (θ + angle) = coefficients.eval θ := by
-        rw [source.eval_add_eq_toEuclidean2D_eval, polarDirection2D_add]
-        simp [source, coefficients, AngularHarmonicCoefficients.toEuclidean2D,
-          EuclideanHarmonicCoefficients.eval, rotationMatrix2D, polarDirection2D,
-          Matrix.mulVec, Fin.sum_univ_two]
-        module
+        simp only [source, coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul]
+        rw [Real.cos_add, Real.sin_add]
+        push_cast
+        ring
       simp_rw [f, ← hrotate]
       simpa [source, AngularHarmonicCoefficients.eval, smul_eq_mul] using
         coefficients.integral_polarFourierRadialPhase z p
