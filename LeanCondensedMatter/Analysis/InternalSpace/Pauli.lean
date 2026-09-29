@@ -1,3 +1,4 @@
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.CrossProduct
@@ -16,6 +17,9 @@ or pseudospin belong to downstream models.
 -/
 
 namespace InternalSpace
+
+/-- Canonical Hilbert space for a two-dimensional complex internal degree of freedom. -/
+abbrev PauliHilbert := EuclideanSpace ℂ (Fin 2)
 
 /-- Complex `2 × 2` matrices acting on a two-dimensional internal space. -/
 abbrev PauliMatrix := Matrix (Fin 2) (Fin 2) ℂ
