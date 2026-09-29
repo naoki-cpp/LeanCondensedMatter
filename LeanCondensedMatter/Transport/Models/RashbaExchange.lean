@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Model
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband
+import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Response
 
