@@ -14,6 +14,18 @@ Evidence: [dependency configuration](../../lakefile.toml), [pinned dependencies]
 
 ## Historical evidence
 
+[Issue #2188](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2188) records a focused gap in the pinned Mathlib algebra: ordinary associative commutator support does not supply the general fixed-scalar bracket `[A,B]ζ = AB − ζ BA`. Keep this small reusable extension in the project’s Analysis layer and reuse its proved identities across endomorphism and exchange-algebra consumers instead of copying the bracket into each domain. [PR #2714](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2714) generalizes its owner to arbitrary associative complex algebras at [Analysis/ScalarExchange](../../LeanCondensedMatter/Analysis/ScalarExchange.lean). The semantic endomorphism commutator remains in `ConservationLaw`; the public `ζ = 1` bridge that existed after #2714 was removed as unconsumed by [PR #2756](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2756).
+
+[PR #2758](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2758) uses Mathlib's `ContinuousLinearMap.ofTendstoOfBoundedRange` to bundle the pointwise strong Stone limit from a uniformly bounded family of continuous linear maps. This replaces project-owned additivity/scalar-linearity and `mkContinuous` staging with the pinned library's general construction.
+
+[PR #2764](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2764) uses Mathlib's `Unitary.conjStarAlgAut` for multiplicative and subtractive Heisenberg evolution laws after bundling the free propagator as a unitary. The generic star-algebra automorphism carries the algebraic structure instead of duplicating its proofs in a response module.
+
+[PR #2771](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2771) replaces a Stone-specific dense-domain epsilon/4 continuity extension with Mathlib's `continuous_prod_of_dense_continuous_lipschitzWith`, using isometry of each time slice to obtain joint continuity.
+
+[Issue #2794](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2794), implemented by [PR #2794](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2794), uses Mathlib's `sub_sub_sub_cancel_right` and `inv_mul_cancel₀` in the private Stone slope estimate instead of a local `abel` equality and `field_simp`. The quantitative bound and public API stay unchanged.
+
+[Issue #2801](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2801), implemented by [PR #2801](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2801), reuses Mathlib's `continuousAt_of_locally_lipschitz` for Stone evolution continuity on the generator domain, deriving the result from the existing displacement bound instead of maintaining a parallel epsilon-delta proof.
+
 [Issue #885](https://github.com/naoki-cpp/LeanCondensedMatter/issues/885) standardized public nonzero-position hypotheses to `j ≠ 0`, matching Mathlib's finite-deletion APIs. Align the authoritative interface with the library's predicate orientation instead of accumulating `Ne.symm` adapters at call sites or retaining a compatibility wrapper for the old orientation.
 
 [Issue #882](https://github.com/naoki-cpp/LeanCondensedMatter/issues/882) removed the `FinCast` shim after its only theorem became a direct use of `Fin.castOrderIso`'s `StrictMono` property. Do not keep a project module or forwarding import solely to re-export a library fact; import the modules that own the APIs actually used.
