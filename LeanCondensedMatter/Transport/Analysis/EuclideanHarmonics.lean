@@ -93,7 +93,8 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
   simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
-    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two]
+    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two,
+    -Complex.ofReal_cos, -Complex.ofReal_sin]
   module
 
 /-- Shifting the polar angle is evaluation of the same Euclidean harmonic data on the shifted
