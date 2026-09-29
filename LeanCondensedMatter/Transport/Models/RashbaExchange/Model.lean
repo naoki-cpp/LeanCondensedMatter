@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Transport.Analysis.BandOccupation
+import LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -76,16 +77,16 @@ def radialMomentumSq (px py : ℝ) : ℝ := px ^ 2 + py ^ 2
 
 /-- Membership in the finite closed momentum disk. -/
 def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
-  radialMomentumSq px py ≤ params.momentumCutoff ^ 2
+  Parabolic2DEG.momentumSq px py ≤ params.momentumCutoff ^ 2
 
 
 /-- Scalar parabolic kinetic energy. -/
 def kineticEnergy (params : Parameters) (px py : ℝ) : ℝ :=
-  radialMomentumSq px py / (2 * params.effectiveMass)
+  Parabolic2DEG.momentumSq px py / (2 * params.effectiveMass)
 
 /-- Squared magnitude of the Rashba-exchange Pauli vector. -/
 def spinOrbitEnergySq (params : Parameters) (px py : ℝ) : ℝ :=
-  params.rashbaVelocity ^ 2 * radialMomentumSq px py + params.exchangeSplitting ^ 2
+  params.rashbaVelocity ^ 2 * Parabolic2DEG.momentumSq px py + params.exchangeSplitting ^ 2
 
 /-- Magnitude of the Rashba-exchange Pauli vector. -/
 def spinOrbitEnergy (params : Parameters) (px py : ℝ) : ℝ :=
