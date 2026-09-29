@@ -25,7 +25,7 @@ noncomputable section
 open scoped BigOperators
 
 /-- Constant, vector, and symmetric-traceless quadratic angular data in `n` dimensions. -/
-structure EuclideanHarmonicCoefficients (n : ℕ) (E : Type*) [AddCommMonoid E] where
+structure EuclideanHarmonicCoefficients (n : ℕ) (E : Type*) [AddCommGroup E] where
   /-- Degree-zero harmonic. -/
   constant : E
   /-- Degree-one harmonic coefficients. -/
@@ -40,7 +40,7 @@ structure EuclideanHarmonicCoefficients (n : ℕ) (E : Type*) [AddCommMonoid E] 
 namespace EuclideanHarmonicCoefficients
 
 /-- Evaluate the constant, vector, and symmetric-traceless quadratic harmonics on a real direction. -/
-def eval {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+def eval {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E) (direction : Fin n → ℝ) : E :=
   coefficients.constant +
     ∑ i, ((direction i : ℝ) : ℂ) • coefficients.first i +
@@ -64,15 +64,15 @@ theorem polarDirection2D_add (θ angle : ℝ) :
       rotationMatrix2D angle *ᵥ polarDirection2D θ := by
   funext i
   fin_cases i <;>
-    simp [polarDirection2D, rotationMatrix2D, Matrix.mulVec, Fin.sum_univ_two,
-      Real.cos_add, Real.sin_add] <;>
+    simp [polarDirection2D, rotationMatrix2D, Matrix.mulVec, dotProduct,
+      Fin.sum_univ_two, Real.cos_add, Real.sin_add] <;>
     ring
 
 /-- Interpret the existing two-dimensional trigonometric coefficients as vector and
 symmetric-traceless quadratic Euclidean harmonic data. The mixed coefficient is split equally
 between the two off-diagonal matrix entries because both contribute to the quadratic contraction. -/
 def AngularHarmonicCoefficients.toEuclidean2D
-    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : AngularHarmonicCoefficients E) : EuclideanHarmonicCoefficients 2 E where
   constant := coefficients.constant
   first := ![coefficients.firstCosine, coefficients.firstSine]
@@ -88,7 +88,7 @@ def AngularHarmonicCoefficients.toEuclidean2D
 /-- The legacy two-dimensional trigonometric evaluation is exactly the Euclidean vector/STF
 quadratic evaluation on the polar unit direction. -/
 theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
-    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
@@ -100,7 +100,7 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
 unit direction. This is the coordinate-free replacement for expanding every first- and
 second-harmonic trigonometric coefficient under angle addition. -/
 theorem AngularHarmonicCoefficients.eval_add_eq_toEuclidean2D_eval
-    {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : AngularHarmonicCoefficients E) (angle θ : ℝ) :
     coefficients.eval (θ + angle) =
       coefficients.toEuclidean2D.eval (polarDirection2D (θ + angle)) :=
