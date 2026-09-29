@@ -90,9 +90,10 @@ theorem contract_pullbackVector {n : ℕ} {E : Type*} [AddCommMonoid E] [Module 
   intro j hj
   simp only [Matrix.mulVec, dotProduct]
   rw [← Finset.sum_smul]
+  congr 1
   apply Finset.sum_congr rfl
   intro i hi
-  simp [smul_smul, mul_comm]
+  simp [smul_eq_mul, mul_comm]
 
 /-- Contracting each row commutes with pullback of the row index. -/
 theorem contract_pullbackRows {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
