@@ -395,6 +395,7 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
     (d.restrictComponent B.2) g (orders B)]
   ring
 
+omit [Finite Mode] in
 /-- The physical bosonic quartic Dyson diagram amplitude factors over the connected components of
 the diagram. The proof reindexes global vertex orders into component-local orders and shuffles, then
 uses the finite-family ordered-simplex shuffle identity for the time integrals. -/
