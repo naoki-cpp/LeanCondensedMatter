@@ -60,18 +60,31 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
             (dysonPartitionSeries ε β (quarticInteraction g))) = 1 :=
     PowerSeries.constantCoeff_normalizeByConstantCoeff
       (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
+  have hSeriesMoment :
+      Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
+          (PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
+        dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
+    apply Combinatorics.NormalizedSetFunction.ext
+    intro T
+    simp only [Combinatorics.powerSeriesMomentSetFunction,
+      Combinatorics.powerSeriesMomentCoeff, dysonVertexMomentSetFunction_apply,
+      dysonVertexMoment]
+    rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+  have hDiagramMoment :
+      dysonVertexMomentSetFunction ε β (quarticInteraction g) =
+        W.normalizedObjectMoment := by
+    apply Combinatorics.NormalizedSetFunction.ext
+    intro T
+    simp only [dysonVertexMomentSetFunction_apply,
+      Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply]
+    exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
   have hMoment :
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
-        W.normalizedObjectMoment := by
-    apply Combinatorics.NormalizedSetFunction.ext
-    intro T
-    simp only [Combinatorics.powerSeriesMomentSetFunction,
-      Combinatorics.powerSeriesMomentCoeff,
-      Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply]
-    rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-    exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
+        W.normalizedObjectMoment :=
+    hSeriesMoment.trans hDiagramMoment
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
