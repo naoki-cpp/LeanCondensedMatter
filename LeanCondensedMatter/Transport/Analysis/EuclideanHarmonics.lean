@@ -53,6 +53,21 @@ end EuclideanHarmonicCoefficients
 def polarDirection2D (angle : ℝ) : Fin 2 → ℝ :=
   ![Real.cos angle, Real.sin angle]
 
+/-- Counterclockwise rotation matrix in the two-dimensional polar plane. -/
+def rotationMatrix2D (angle : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  !![Real.cos angle, -Real.sin angle;
+     Real.sin angle, Real.cos angle]
+
+/-- Polar unit directions transform by the ordinary two-dimensional rotation matrix. -/
+theorem polarDirection2D_add (θ angle : ℝ) :
+    polarDirection2D (θ + angle) =
+      rotationMatrix2D angle *ᵥ polarDirection2D θ := by
+  funext i
+  fin_cases i <;>
+    simp [polarDirection2D, rotationMatrix2D, Matrix.mulVec, Fin.sum_univ_two,
+      Real.cos_add, Real.sin_add] <;>
+    ring
+
 /-- Interpret the existing two-dimensional trigonometric coefficients as vector and
 symmetric-traceless quadratic Euclidean harmonic data. The mixed coefficient is split equally
 between the two off-diagonal matrix entries because both contribute to the quadratic contraction. -/
