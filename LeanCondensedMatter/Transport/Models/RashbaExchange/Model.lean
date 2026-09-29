@@ -73,7 +73,6 @@ def bandSign : Band → ℝ
   | .upper => 1
 
 /-- Squared physical radial momentum p_x² + p_y². -/
-def radialMomentumSq (px py : ℝ) : ℝ := px ^ 2 + py ^ 2
 
 /-- Membership in the finite closed momentum disk. -/
 def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
