@@ -74,6 +74,10 @@ theorem eval_eq_dotProduct {n : ℕ}
         complexDirection direction ⬝ᵥ
           Matrix.mulVec coefficients.second (complexDirection direction) := by
   simp [eval, complexDirection, Matrix.mulVec, dotProduct, Finset.mul_sum, smul_eq_mul]
+  apply Finset.sum_congr rfl
+  intro i hi
+  apply Finset.sum_congr rfl
+  intro j hj
   ring
 
 /-- Pull back complex Euclidean harmonic coefficients along a real orthogonal transformation.
@@ -84,22 +88,22 @@ def orthogonalTransform {n : ℕ}
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
     EuclideanHarmonicCoefficients n ℂ := by
   let matrixC := complexifyMatrix matrix
-  have hmatrixC : matrixC * matrixCᵀ = 1 := by
+  have hmatrixC : matrixC * matrixC.transpose = 1 := by
     have hmatrix :=
       (Matrix.mem_orthogonalGroup_iff (Fin n) ℝ).mp horthogonal
     simpa [matrixC, complexifyMatrix] using
       congrArg (fun m : Matrix (Fin n) (Fin n) ℝ => m.map Complex.ofRealHom) hmatrix
   refine
     { constant := coefficients.constant
-      first := Matrix.mulVec matrixCᵀ coefficients.first
-      second := matrixCᵀ * coefficients.second * matrixC
+      first := Matrix.mulVec matrixC.transpose coefficients.first
+      second := matrixC.transpose * coefficients.second * matrixC
       second_symm := ?_
       second_trace := ?_ }
   · rw [Matrix.IsSymm]
     simp [Matrix.transpose_mul, coefficients.second_symm, Matrix.mul_assoc]
   · calc
-      Matrix.trace (matrixCᵀ * coefficients.second * matrixC) =
-          Matrix.trace (matrixC * matrixCᵀ * coefficients.second) := by
+      Matrix.trace (matrixC.transpose * coefficients.second * matrixC) =
+          Matrix.trace (matrixC * matrixC.transpose * coefficients.second) := by
             exact Matrix.trace_mul_cycle _ _ _
       _ = Matrix.trace coefficients.second := by rw [hmatrixC, Matrix.one_mul]
       _ = 0 := coefficients.second_trace
@@ -186,12 +190,14 @@ theorem EuclideanHarmonicCoefficients.toAngular2D_eval
   have hdiag : coefficients.second 1 1 = -coefficients.second 0 0 := by
     have h := coefficients.second_trace
     simp [Matrix.trace, Fin.sum_univ_two] at h
+    change coefficients.second 1 1 = -(coefficients.second 0 0)
     abel
   have hoff : coefficients.second 1 0 = coefficients.second 0 1 := by
     have h := congrFun (congrFun coefficients.second_symm 0) 1
     simpa using h
   simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
-    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two, hdiag, hoff]
+    EuclideanHarmonicCoefficients.eval, polarDirection2D, Fin.sum_univ_two, hdiag, hoff,
+    -Complex.ofReal_cos, -Complex.ofReal_sin]
   module
 
 /-- The ordinary planar rotation matrix is orthogonal. -/
@@ -216,7 +222,8 @@ def AngularHarmonicCoefficients.rotate2D
 theorem AngularHarmonicCoefficients.rotate2D_constant
     (coefficients : AngularHarmonicCoefficients ℂ) (angle : ℝ) :
     (coefficients.rotate2D angle).constant = coefficients.constant := by
-  rfl
+  simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
+    EuclideanHarmonicCoefficients.orthogonalTransform]
 
 @[simp]
 theorem AngularHarmonicCoefficients.rotate2D_firstCosine
