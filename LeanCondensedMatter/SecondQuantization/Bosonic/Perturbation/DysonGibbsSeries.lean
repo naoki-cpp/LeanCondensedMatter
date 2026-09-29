@@ -34,10 +34,10 @@ theorem coeff_freeGibbsDysonSeries
       freeGibbsDysonCoeff ε β V n β := by
   simp [freeGibbsDysonSeries]
 
+set_option linter.unusedFintypeInType false in
 /-- Under the positive free-Gibbs hypothesis, the physical bosonic Dyson series has unit constant
 coefficient. The finite mode instance enters through the Gibbs summability theorem used at zeroth
 order. -/
-set_option linter.unusedFintypeInType false in
 theorem constantCoeff_freeGibbsDysonSeries
     [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
