@@ -66,8 +66,10 @@ theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
     EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
     -Complex.ofReal_cos, -Complex.ofReal_sin]
-  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-  module
+  match_scalars <;>
+    (try rw [← Complex.ofReal_cos]) <;>
+    (try rw [← Complex.ofReal_sin]) <;>
+    ring
 
 /-- Convert two-dimensional Euclidean STF data back to the legacy trigonometric coordinates. -/
 def EuclideanHarmonicCoefficients.toAngular2D
@@ -96,8 +98,10 @@ theorem EuclideanHarmonicCoefficients.toAngular2D_eval
     EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
     EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two, hdiag, hoff,
     -Complex.ofReal_cos, -Complex.ofReal_sin]
-  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-  module
+  match_scalars <;>
+    (try rw [← Complex.ofReal_cos]) <;>
+    (try rw [← Complex.ofReal_sin]) <;>
+    ring
 
 /-- The ordinary planar rotation matrix is orthogonal. -/
 theorem rotationMatrix2D_mem_orthogonalGroup (angle : ℝ) :
