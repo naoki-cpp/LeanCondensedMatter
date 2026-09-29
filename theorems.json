@@ -3815,10 +3815,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
@@ -3828,6 +3828,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
     "dependencies": [
@@ -3838,9 +3839,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82834,6 +82836,43 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ}\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S) (t : ℝ),\n  SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g d t =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponent ⋯) t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "The physical bosonic quartic Dyson diagram amplitude factors over the connected components of\nthe diagram. The proof reindexes global vertex orders into component-local orders and shuffles, then\nuses the finite-family ordered-simplex shuffle identity for the time integrals. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} {N : ℕ} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ {S : Finset (Fin N)}\n      (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n      (order : SecondQuantization.Common.QuarticVertexOrder S),\n      SecondQuantization.Bosonic.freeGibbsExpectation ε β\n          (SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct fun i => d.vertexLabel (order i)) =\n        SecondQuantization.Bosonic.QuarticDiagram.orderedThermalWickSum ε β d order",
     "standardAxioms": [
       "Classical.choice",
@@ -83004,7 +83043,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83016,7 +83055,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.QuarticDiagram.freeThermalPairValue_componentOrderedLeg",
@@ -83025,9 +83065,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91292,7 +91333,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
-      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components"
+      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [
       "Finpartition.pow_card_eq_prod_parts",
@@ -91303,9 +91345,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
-      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components"
+      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92158,6 +92201,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentPairValue.0.SecondQuantization.Fermionic.orderedQuarticLegOperator_componentOrderedLeg"
     ],
     "dependencies": [
@@ -92167,9 +92211,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentPairValue.0.SecondQuantization.Fermionic.orderedQuarticLegOperator_componentOrderedLeg"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92457,16 +92502,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
-      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
-      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99296,7 +99343,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -99308,15 +99355,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff"
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff"
+      "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146761,6 +146810,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (τ : Fin S.card → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceTimeFactor ε\n      (fun i => d.vertexLabel ((d.assembleVertexOrder orders shuffle) i)) τ =\n    Combinatorics.FamilySlotShuffleTo.ambientIntegrand shuffle\n      (fun B =>\n        SecondQuantization.Common.quarticVertexSequenceTimeFactor ε fun i =>\n          (d.restrictComponent ⋯).vertexLabel ((orders B) i))\n      τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "The scalar quartic imaginary-time factor of an assembled global order is the family-shuffle\nintegrand of the corresponding component-local time factors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ}\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (t : ℝ),\n  ∑ shuffle,\n      SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g d\n        (d.assembleVertexOrder orders shuffle) t =\n    ∏ B,\n      SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g (d.restrictComponent ⋯) (orders B) t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+    "externalAxioms": [],
+    "docString": "For fixed component-local vertex orders, summing the physical ordered Dyson amplitude over all\norder-preserving component shuffles gives the product of the corresponding component-local ordered\nDyson amplitudes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components"
+    ],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue_eq_prod_components",
+      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order",
+      "SecondQuantization.Common.continuous_quarticVertexSequenceTimeFactor",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
+      "intervalIntegral.Continuous.measurableLocallyBounded"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.freeGibbsDysonCoeff ε β (SecondQuantization.Bosonic.quarticInteraction g) n t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue ε β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q b)",
     "standardAxioms": [
       "Classical.choice",
@@ -165583,6 +165720,7 @@
     "dependents": [
       "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components",
       "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
     ],
@@ -165594,10 +165732,11 @@
     "compiledConsumers": [
       "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components",
       "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
