@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Tactic
@@ -82,9 +83,9 @@ abbrev BandHilbert := ℂ
 def momentumComponent (direction : Fin 2) (px py : ℝ) : ℝ :=
   if direction = 0 then px else py
 
-/-- Squared in-plane momentum `|p|² = p_x² + p_y²`. -/
+/-- Backward-compatible model-local name for the common two-dimensional momentum square. -/
 def momentumSq (px py : ℝ) : ℝ :=
-  px ^ 2 + py ^ 2
+  momentumSq2D px py
 
 /-- Finite radial momentum domain encoded by the cutoff stored in `params`. -/
 def MomentumInDomain (params : Parameters) (px py : ℝ) : Prop :=
