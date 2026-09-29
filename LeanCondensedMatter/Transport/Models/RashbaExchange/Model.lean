@@ -93,7 +93,7 @@ def relativeBandEnergy (params : Parameters) (band : Band) (px py : ℝ) : ℝ :
 def occupation
     (occupationLaw : ℝ → ℝ) (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
   bandStateOccupation occupationLaw
-    (fun b p : ℝ × ℝ => relativeBandEnergy params b p.1 p.2)
+    (fun b (p : ℝ × ℝ) => relativeBandEnergy params b p.1 p.2)
     band (px, py)
 
 def velocityOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : Matrix2 :=
