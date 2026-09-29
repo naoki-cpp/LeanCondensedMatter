@@ -59,8 +59,7 @@ theorem cleanHallPointKernel_eq_regularized
         (currentBoundedOperator params source px py)
         params.chemicalPotential params.broadening := by
   symm
-  simpa [cleanHallPointKernel, suppliedHallPointKernel, greenOperator,
-    spectralResolvent] using
+  simpa [cleanHallPointKernel, suppliedHallPointKernel, greenOperator] using
     (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
       (hamiltonianOperator params px py)
       (currentBoundedOperator params measured px py)
