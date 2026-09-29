@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
+import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Tactic
