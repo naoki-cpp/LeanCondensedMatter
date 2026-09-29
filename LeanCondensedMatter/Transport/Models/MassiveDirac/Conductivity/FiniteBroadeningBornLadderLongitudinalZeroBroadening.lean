@@ -33,33 +33,28 @@ def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceCond
 `xx` component of the Born-Dyson Středa conductivity tensor converges to its zero-broadening
 boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivity_broadening_zero
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (e : ℝ) (regime : FixedCutoffMetallicBornRegime)
     (hrenorm : finiteCutoffContinuumBornBoundaryRealRenormalization
-      v m probeEnergy disorderStrength hbar pMax < 1)
+      regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1)
     (hdet : finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
-      v m probeEnergy disorderStrength hbar pMax ≠ 0) :
+      regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-          e v m probeEnergy broadening disorderStrength hbar pMax).component 0 0)
+          e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+            regime.pMax).component 0 0)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax)) := by
+          e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
   have h :=
     tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero
-      e
-      (FixedCutoffMetallicBornRegime.ofScalarBoundaryData v m probeEnergy disorderStrength hbar pMax
-        hpMax hvelocity hhbar hdisorder hmetal hcutoff)
+      e regime
       hrenorm hdet
   simpa [
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary,
-    FixedCutoffMetallicBornRegime.ofScalarBoundaryData] using
-    h.const_mul (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ))
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
+    h.const_mul (((bastinStredaPhysicalMomentumConductivityNormalization regime.hbar : ℝ) : ℂ))
 
 end
 
