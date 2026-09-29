@@ -170,6 +170,7 @@ theorem AngularHarmonicCoefficients.rotate2D_secondCosine
   letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
+  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
   module
 
 @[simp]
@@ -184,6 +185,7 @@ theorem AngularHarmonicCoefficients.rotate2D_secondMixed
   letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
+  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
   module
 
 /-- Rotating the coefficient data is equivalent to shifting the polar direction. -/
