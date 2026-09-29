@@ -72,8 +72,6 @@ def bandSign : Band → ℝ
   | .lower => -1
   | .upper => 1
 
-/-- Squared physical radial momentum p_x² + p_y². -/
-
 /-- Membership in the finite closed momentum disk. -/
 def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
   Parabolic2DEG.momentumSq px py ≤ params.momentumCutoff ^ 2
