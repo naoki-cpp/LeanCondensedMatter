@@ -255,6 +255,7 @@ theorem factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermal
 
 /-- The scalar quartic imaginary-time factor of an assembled global order is the family-shuffle
 integrand of the corresponding component-local time factors. -/
+omit [Finite Mode] in
 private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder
     (ε : Mode → ℝ) {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
