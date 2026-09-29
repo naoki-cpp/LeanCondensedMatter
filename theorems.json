@@ -101706,46 +101706,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.finiteGibbsExpectation energy β A =\n    (SecondQuantization.Common.normalizedWeightedDiagonal (SecondQuantization.Common.boltzmannWeight energy β)) A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
-    "externalAxioms": [],
-    "docString": "The canonical finite Gibbs expectation agrees with the normalized Boltzmann-weighted diagonal\ncoordinate formula. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.finiteGibbsExpectation energy β A =\n    ∑ n, ↑(QuantumTheory.purePointGibbsProbability energy β n) * SecondQuantization.Common.matrixCoeff A n n",
     "standardAxioms": [
@@ -101817,7 +101777,6 @@
     "dependents": [
       "SecondQuantization.Common.finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_peel",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment.0.SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation"
     ],
@@ -101836,11 +101795,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_peel",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment.0.SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106808,200 +106766,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w a : Config → ℂ),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w) (SecondQuantization.Common.diagonalOperator a) =\n    (∑ n, w n * a n) / SecondQuantization.Common.weightSum w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional",
-    "externalAxioms": [],
-    "docString": "Coordinate formula for the normalized weighted diagonal of a diagonal operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
-      "SecondQuantization.Common.weightedTrace_diagonalOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w : Config → ℂ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w) A =\n    (SecondQuantization.Common.weightedTrace w) A / SecondQuantization.Common.weightSum w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional",
-    "externalAxioms": [],
-    "docString": "Coordinate formula underlying the normalized weighted diagonal functional. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_id"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_id"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w : Config → ℂ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (n : Config), SecondQuantization.Common.matrixCoeff A n n = 0) →\n    (SecondQuantization.Common.normalizedWeightedDiagonal w) A = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional",
-    "externalAxioms": [],
-    "docString": "A normalized weighted diagonal vanishes when every diagonal matrix coefficient vanishes. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
-      "SecondQuantization.Common.weightedTrace_eq_sum_matrixCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w : Config → ℂ),\n  SecondQuantization.Common.weightSum w ≠ 0 → (SecondQuantization.Common.normalizedWeightedDiagonal w) LinearMap.id = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.normalizedWeightedDiagonal_id",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional",
-    "externalAxioms": [],
-    "docString": "The normalized weighted diagonal of the identity is one when the total weight is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
-      "SecondQuantization.Common.weightedTrace_id"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (s : SecondQuantization.Common.Statistics) (w : Config → ℂ)\n  (A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (τA τB : ℝ),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w) (A ∘ₗ B) = 0 →\n    (SecondQuantization.Common.normalizedWeightedDiagonal w) (B ∘ₗ A) = 0 →\n      (SecondQuantization.Common.normalizedWeightedDiagonal w)\n          (SecondQuantization.Common.timeOrderedProduct s A B τA τB) =\n        0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional",
-    "externalAxioms": [],
-    "docString": "Time ordering preserves vanishing when both operator orders have zero weighted diagonal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F G : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (a b : ℝ),\n  (∀ (m n : Config),\n      IntervalIntegrable (fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) MeasureTheory.volume a b) →\n    (∀ (m n : Config),\n        IntervalIntegrable (fun τ => SecondQuantization.Common.matrixCoeff (G τ) m n) MeasureTheory.volume a b) →\n      SecondQuantization.Common.operatorIntervalIntegral (fun τ => F τ + G τ) a b =\n        SecondQuantization.Common.operatorIntervalIntegral F a b +\n          SecondQuantization.Common.operatorIntervalIntegral G a b",
     "standardAxioms": [
       "Classical.choice",
@@ -109932,7 +109696,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.dysonTraceCoeff_eq_weightedTrace",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div"
     ],
     "dependencies": [
@@ -109945,10 +109708,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.dysonTraceCoeff_eq_weightedTrace",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110110,7 +109872,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.dysonTraceCoeff_zero",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment.0.SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation"
@@ -110123,12 +109884,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.dysonTraceCoeff_zero",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment.0.SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112190,7 +111950,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w a : Config → ℂ),\n  (SecondQuantization.Common.weightedTrace w) (SecondQuantization.Common.diagonalOperator a) = ∑ n, w n * a n",
     "standardAxioms": [
       "Classical.choice",
@@ -112198,7 +111958,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112209,19 +111969,15 @@
     "docString": "The weighted trace of a diagonal operator is the weighted sum of its eigenvalues. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Common.weightedTrace_eq_sum_matrixCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112253,7 +112009,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Common.weightedTrace_diagonalOperator",
       "SecondQuantization.Common.weightedTrace_id"
@@ -112263,12 +112018,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Common.weightedTrace_diagonalOperator",
       "SecondQuantization.Common.weightedTrace_id"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112279,7 +112033,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w : Config → ℂ),\n  (SecondQuantization.Common.weightedTrace w) LinearMap.id = SecondQuantization.Common.weightSum w",
     "standardAxioms": [
       "Classical.choice",
@@ -112287,7 +112041,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112298,19 +112052,15 @@
     "docString": "The weighted trace of the identity is the total weight. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_id"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
       "SecondQuantization.Common.weightedTrace_eq_sum_matrixCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_id"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125919,7 +125669,7 @@
     "name": "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
     "externalAxioms": [],
-    "docString": "**Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of `(interactionPicture ε V\nσ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of\n`Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via\n`Common.matrixCoeff_comp`), the integrability the inductive step's\n`Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`\nneed. ",
+    "docString": "**Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of `(interactionPicture ε V\nσ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of\n`Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via\n`Common.matrixCoeff_comp`), the integrability the inductive step's\n`Common.comp_operatorIntervalIntegral`/`Common.finiteGibbsExpectation_operatorIntervalIntegral`\nneed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
