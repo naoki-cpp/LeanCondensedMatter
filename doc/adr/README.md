@@ -2,13 +2,12 @@
 
 These records state the architectural decisions embodied in the current repository and the trade-offs that constrain its extension. They were reconstructed from the implementation and existing design documentation; they do not claim to reproduce historical discussions, decision dates, or the order in which decisions were made. Numbering is for reference.
 
-All records in this initial set have status **accepted**, meaning implemented in the current design. Alternatives mentioned explain the present trade-off, not an undocumented historical evaluation.
+All records in this set have status **accepted**, meaning implemented in the current design. Alternatives mentioned explain the present trade-off, not an undocumented historical evaluation.
 
 ## Foundations and module ownership
 
 - [0001 — Use Lean and Mathlib as the mathematical foundation](0001-lean-and-mathlib.md)
 - [0002 — Assign modules by semantic responsibility](0002-semantic-ownership.md)
-- [0010 — Use Lean for semantic guarantees and source audits for architecture](0010-verification-boundaries.md)
 
 ## States, measurements, and thermal structure
 
@@ -31,6 +30,12 @@ All records in this initial set have status **accepted**, meaning implemented in
 - [0013 — Construct discrete heat operators from summable spectral weights](0013-diagonal-heat-operator.md)
 - [0014 — Keep operator ideals and determinants within proved domains](0014-operator-ideals-and-fredholm-determinants.md)
 - [0018 — Keep finite-band Berry geometry upstream of physical models](0018-finite-band-berry-geometry.md)
+
+## Verification and Lean API policy
+
+- [0010 — Use Lean for semantic guarantees and source audits for architecture](0010-verification-boundaries.md)
+- [0019 — Treat global simp rules as canonical normal-form commitments](0019-simp-normal-forms.md)
+- [0020 — Keep theorem-catalog findings advisory](0020-theorem-catalog-advisory.md)
 
 ## Response and crystal structure
 

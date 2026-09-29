@@ -224,13 +224,13 @@ Issue #482 is a pull request, so it is skipped in this issue-focused pass.
 
 Issues #484–#512 are pull requests, so they are skipped in this issue-focused pass.
 
-| 513 | [chore: make lake lint pass repository-wide](https://github.com/naoki-cpp/LeanCondensedMatter/issues/513) | Extended ADR 0010: enable the repository-wide lint gate only after clearing the baseline; inspect simp-normal-form changes semantically and justify any narrow unused-argument suppression. |
+| 513 | [chore: make lake lint pass repository-wide](https://github.com/naoki-cpp/LeanCondensedMatter/issues/513) | Extended ADRs 0010 and 0019: enable the repository-wide lint gate only after clearing the baseline; inspect simp-normal-form changes semantically and justify any narrow unused-argument suppression. |
 
 Issues #514–#523 are pull requests, so they are skipped in this issue-focused pass.
 
 | 524 | [feat(second-quantization): construct fermionic fields and derive conserved current](https://github.com/naoki-cpp/LeanCondensedMatter/issues/524) | Extended ADRs 0005 and 0009: build smeared fields and `dΓ` basis-independently, derive current from continuity before lattice/Peierls specialization, and use only an explicit bounded bridge into Kubo response. |
 
-| 525 | [refactor: organize remaining targeted lint and API cleanup](https://github.com/naoki-cpp/LeanCondensedMatter/issues/525) | Extended ADR 0010: lint exceptions can encode erased domain/integrability witnesses, and simp-normal-form changes can alter proof behavior; review these API signals deliberately. |
+| 525 | [refactor: organize remaining targeted lint and API cleanup](https://github.com/naoki-cpp/LeanCondensedMatter/issues/525) | Extended ADRs 0010 and 0019: lint exceptions can encode erased domain/integrability witnesses, and simp-normal-form changes can alter proof behavior; review these API signals deliberately. |
 
 Issues #526–#531 are pull requests, so they are skipped in this issue-focused pass.
 
@@ -534,7 +534,7 @@ Issues #1528–#1530 are pull requests, so they are skipped in this issue-focuse
 
 Issues #1532–#1554 are pull requests, so they are skipped in this issue-focused pass.
 
-| 1555 | [refactor(thermal): clarify representation and thermal ownership](https://github.com/naoki-cpp/LeanCondensedMatter/issues/1555) | Extended ADR 0006: separate CompletedSpace representation from Fermionic.Thermal state/KMS recursion and retain QuantumTheory.Gibbs.PurePoint as the unique generic owner. |
+| 1555 | [refactor(thermal): clarify representation and thermal ownership](https://github.com/naoki-cpp/LeanCondensedMatter/issues/1555) | Extended ADRs 0005, 0006, and 0016: separate CompletedSpace representation from Fermionic.Thermal state/KMS recursion and retain QuantumTheory.Gibbs.PurePoint as the unique generic owner. |
 
 Issues #1556–#1578 are pull requests, so they are skipped in this issue-focused pass.
 
@@ -618,7 +618,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 | 2067 | [feat(transport): expose zero-broadening dressed source-current boundary](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2067) | Extended ADR 0009: propagate the indexed ladder limit through the source-indexed current operator for all in-plane directions, without restoring direction-specific wrappers or yet passing through Středa integration. |
 | 2091 | [feat(transport): expose longitudinal Streda denominator form](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2091) | Extended ADR 0009: retain the full longitudinal RA/RR/AA denominator expression and prefer this multi-consumer form over a one-consumer public pointwise-limit wrapper. |
 | 2096 | [feat(transport): take longitudinal Streda radial integral zero-broadening limit](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2096) | Extended ADR 0009: pass fixed-disorder `η → 0⁺` through longitudinal Středa momentum response using integrated RA rung limits and exact RR/AA endpoint primitives, without adding a second DCT layer or conductivity normalization. |
-| 2099 | [refactor(transport): review MassiveDirac terminal leaf wrappers](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2099) | Extended ADRs 0002 and 0010: treat theorem-proof terminality as a candidate signal only; inspect source consumers and semantic value before cleanup, preserve independent mathematical endpoints, and retain the canonical vector-first specialization without compatibility wrappers. |
+| 2099 | [refactor(transport): review MassiveDirac terminal leaf wrappers](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2099) | Extended ADRs 0002 and 0020: treat theorem-proof terminality as a candidate signal only; inspect source consumers and semantic value before cleanup, preserve independent mathematical endpoints, and retain the canonical vector-first specialization without compatibility wrappers. |
 | 2102 | [refactor(streda): remove proof-only ladder regularity from values](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2102) | Extended ADR 0009: keep Středa/response values algebraic and proof-independent; require ladder regularity only where the theorem interprets solved coefficients as the physical fixed-point solution, allowing limits to target the canonical value API. |
 | 2108 | [Refactor MassiveDirac transport around direction-indexed vector algebra](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2108) | Extended ADRs 0002 and 0009: reuse generic Pauli algebra from `Analysis/InternalSpace` and keep MassiveDirac ladder/current/Středa APIs on one complete indexed in-plane vector, with scalar coordinates only as projections and no type-level wrappers without a concrete consumer. |
 | 2110 | [feat(transport): attach longitudinal Streda conductivity zero-broadening boundary](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2110) | Extended ADR 0009: compose the established fixed-disorder Středa momentum-integral boundary with the existing physical normalization downstream, reusing upstream convergence and adding no parallel normalization or extra limit. |
@@ -631,9 +631,9 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2232 | [research(crystal): formalize Bravais and reciprocal lattices](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2232) | Extended ADR 0017: use Mathlib's full `Submodule ℤ V` lattice substrate, encode the `2π` convention once in the physical reciprocal pairing, and keep `BrillouinTorus` a thin quotient alias owned by Crystal. The issue remains open for downstream integration. |
 
-| 2235 | [Extend Lean metaprogramming audits beyond structural theorem cataloging](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2235) | Extended ADR 0010: keep theorem replacement, proof-region, unused-hypothesis, and retained re-audit findings advisory; retain hard CI for unambiguous correctness checks and require semantic review before changing APIs. The broader catalog/provenance issue remains open. |
+| 2235 | [Extend Lean metaprogramming audits beyond structural theorem cataloging](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2235) | Extended ADR 0020: keep theorem replacement, proof-region, unused-hypothesis, and retained re-audit findings advisory; retain hard CI for unambiguous correctness checks and require semantic review before changing APIs. The broader catalog/provenance issue remains open. |
 
-| 2237 | [Replace doc-gen4 site with an interactive declaration graph explorer](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2237) | Extended ADR 0010: make the explorer a static view over Lean-generated catalog JSON, keep dependency extraction and semantic review data canonical in Lean, and leave audit findings advisory. Current frontend consumes the published catalog rather than reimplementing its relations. |
+| 2237 | [Replace doc-gen4 site with an interactive declaration graph explorer](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2237) | Extended ADRs 0010 and 0020: make the explorer a static view over Lean-generated catalog JSON, keep dependency extraction and semantic review data canonical in Lean, and leave audit findings advisory. Current frontend consumes the published catalog rather than reimplementing its relations. |
 
 | 2245 | [Improve declaration graph navigation and readability](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2245) | No ADR change: this is a UX refinement of the static catalog frontend established by #2237; it preserves the catalog-as-source-of-truth boundary and adds no Lean/API architecture decision. |
 
@@ -647,7 +647,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2274 | [feat(crystal): represent point group on translation lattice](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2274) | Extended ADR 0017: use the existing translation `ℤ`-lattice for a faithful point-group representation only under full periodicity, leaving basis matrices and `GL(n, ℤ)` coordinates downstream. |
 
-| 2377 | [refactor(thermal): own finite Gibbs partition normalization](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2377) | Extended ADR 0006: centralize finite-Gibbs partition nonvanishing and derive it inside normalized expectation/peeling APIs; keep exchange-denominator hypotheses explicit and retain the Statistics-facing adapter. |
+| 2377 | [refactor(thermal): own finite Gibbs partition normalization](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2377) | Extended ADRs 0003 and 0006: centralize finite-Gibbs partition nonvanishing and derive it inside normalized expectation/peeling APIs; keep exchange-denominator hypotheses explicit and retain the Statistics-facing adapter. |
 
 | 2378 | [refactor(second-quantization): use finite operator equivalences directly](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2378) | Extended ADR 0005: consume the canonical analytic/Fock and Hilbert/Fock equivalences directly, removing only semantically empty forwarders while preserving representation-specific norm, adjoint, basis, and integral bridges. |
 
@@ -769,13 +769,13 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2474 | [refactor(quartic): derive fixed-order pairs from component equivalence](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2474) | Reuses the canonical component pair equivalence instead of duplicating normalized-pair transport; already covered by ADR 0008's canonical pair-membership and transport decisions. |
 
-| PR 2475 | [refactor(thermal): consolidate completed fermionic thermal modules](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2475) | Extended ADR 0006: organize completed thermal proofs by Gibbs, pairing/KMS, and mode-truncation responsibilities rather than proof order; retain generic pairing induction in Common and preserve theorem statements. |
+| PR 2475 | [refactor(thermal): consolidate completed fermionic thermal modules](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2475) | Extended ADRs 0002, 0005, and 0006: organize completed thermal proofs by Gibbs, pairing/KMS, and mode-truncation responsibilities rather than proof order; retain generic pairing induction in Common and preserve theorem statements. |
 
 | PR 2476 | [refactor(thermal): remove redundant fermionic BDD specializations](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2476) | Refined ADR 0006: retain the generic BDD theorem in Common and remove a thin Fermionic forwarder and arbitrary-weight example from the thermal umbrella; only meaningful thermal semantics stay there. |
 
 | PR 2477 | [refactor(thermal): simplify Fin sum reindexing](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2477) | Replaces local finite-sum cast equivalences with Mathlib's `Equiv.sum_comp`; preserves recursion APIs and adds no domain-level decision beyond the canonical-general-owner policy. |
 
-| PR 2478 | [refactor(thermal): lift finite Gibbs coordinates above BDD](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2478) | Extended ADR 0006: own finite Gibbs weights and trace-ratio facts upstream of BDD so perturbation/thermal consumers can reuse them without depending on pairing-specific implementation. |
+| PR 2478 | [refactor(thermal): lift finite Gibbs coordinates above BDD](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2478) | Extended ADRs 0002 and 0003: own finite Gibbs weights and trace-ratio facts upstream of BDD so perturbation/thermal consumers can reuse them without depending on pairing-specific implementation. |
 
 | PR 2479 | [refactor(pairing): generalize ordered transport](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2479) | Extended ADR 0008: transport ordered pairings and quartic diagrams along the consumer's `Fin k ≃ S` directly, retaining relabeling as a specialization and avoiding cardinality round trips and shuffle casts. |
 
@@ -783,17 +783,17 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2481 | [refactor(two-point): index mixed component pair endpoints](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2481) | Closed in favor of #2480; its useful endpoint indexing was carried into the generic `Fin 2` API already recorded in ADR 0008, so it adds no separate implementation or decision. |
 
-| PR 2482 | [refactor(thermal): separate fermionic Gibbs representation layers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2482) | Extended ADR 0006: separate finite-coordinate Boltzmann/perturbation data from pure-point spectral summability and completed Fock Gibbs state, which specializes the generic Gibbs owner. |
+| PR 2482 | [refactor(thermal): separate fermionic Gibbs representation layers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2482) | Extended ADRs 0005 and 0016: separate finite-coordinate Boltzmann/perturbation data from pure-point spectral summability and completed Fock Gibbs state, which specializes the generic Gibbs owner. |
 
 | PR 2483 | [refactor(shuffle): canonicalize vacuum coordinates](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2483) | Applies ADR 0008's generalized-order transport at the shuffle boundary: standardizes vacuum coordinates directly on the known `Fin k`, removing cast/HEq helpers except for one value-level bridge. |
 
-| PR 2484 | [refactor(thermal): internalize weighted Green-function helpers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2484) | Refined ADR 0006: keep one-consumer arbitrary-weight coordinate machinery private inside the physical free-Gibbs Green-function owner, while generic normalized coordinates remain in Common. |
+| PR 2484 | [refactor(thermal): internalize weighted Green-function helpers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2484) | Refined ADRs 0002 and 0006: keep one-consumer arbitrary-weight coordinate machinery private inside the physical free-Gibbs Green-function owner, while generic normalized coordinates remain in Common. |
 
 | PR 2485 | [refactor(thermal): remove unused occupation cumulant module](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2485) | Extended ADR 0006: keep arbitrary complex-weight occupation combinatorics out of the Fermionic thermal API unless it has a real Gibbs/KMS consumer or thermal contract. |
 
 | PR 2486 | [refactor(external-piece): preserve shuffle slot coordinates](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2486) | Applies ADR 0008's direct-order transport rule to external pieces, preserving the shuffle's native `Fin m` coordinates and eliminating downstream cast/HEq plumbing; no separate decision was needed. |
 
-| PR 2487 | [refactor(thermal): specialize completed unbounded expectation](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2487) | Extended ADR 0006: derive an integrability-aware thermal API for the actual completed total-number operator, not an arbitrary diagonal operator; retain generic unbounded energy expectation in QuantumTheory. |
+| PR 2487 | [refactor(thermal): specialize completed unbounded expectation](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2487) | Extended ADRs 0005 and 0016: derive an integrability-aware thermal API for the actual completed total-number operator, not an arbitrary diagonal operator; retain generic unbounded energy expectation in QuantumTheory. |
 
 | PR 2488 | [refactor(berry): specialize generic curvature to MassiveDirac](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2488) | Closed as an early work-in-progress slice of #2455; its `Fin 2` spectral-index boundary is retained in the final #2530 adapter and added to ADR 0018, so no separate ADR entry was created. |
 
@@ -847,9 +847,9 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2516 | [refactor(linear-response): route finite frequency response through channel](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2516) | Implements #2472's representation-independent finite-time response channel and Fermionic current/contact adapter; already reflected in ADR 0009. |
 
-| PR 2517 | [docs(operator): fix Gibbs heat boundary](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2517) | Added the heat-operator-first boundary for infinite-dimensional Gibbs states, the upstream Hamiltonian-to-heat obligation, and pure-point compatibility by basis action; integrated into ADR 0006. |
+| PR 2517 | [docs(operator): fix Gibbs heat boundary](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2517) | Added the heat-operator-first boundary for infinite-dimensional Gibbs states, the upstream Hamiltonian-to-heat obligation, and pure-point compatibility by basis action; integrated into ADRs 0011, 0013, and 0016. |
 
-| PR 2518 | [refactor(density): centralize positive normalization](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2518) | Made positive spectral-trace-class normalization generic in `DensityOperator`; bounded Gibbs construction derives nonzero trace from compactness and a nontrivial space instead of passing `hZ` through consumers. Integrated into ADR 0006. |
+| PR 2518 | [refactor(density): centralize positive normalization](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2518) | Made positive spectral-trace-class normalization generic in `DensityOperator`; bounded Gibbs construction derives nonzero trace from compactness and a nontrivial space instead of passing `hZ` through consumers. Integrated into ADRs 0003 and 0016. |
 
 | PR 2519 | [refactor(diagrammatics): trim mixed proof routing](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2519) | Removes one-consumer proof-routing declarations in favor of private helpers and the canonical component/leg theorems; ADR 0008 already states this public-API rule, so no new decision was needed. |
 
@@ -859,7 +859,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2522 | [refactor(diagrammatics): remove unused two-point ordering layer](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2522) | Deletes an ordering chain with no consumer, its umbrella routing, and an unused wrapper; this applies ADR 0008's rule against semantic-free proof-stage subsystems and compatibility routes. |
 
-| PR 2523 | [feat(gibbs): bridge heat data to pure-point states](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2523) | Uses heat basis action plus spectral-trace-class data to derive pure-point Boltzmann summability, partition equality, and normalized-state equality without a duplicate summability premise or heat-state wrapper; integrated into ADR 0006. |
+| PR 2523 | [feat(gibbs): bridge heat data to pure-point states](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2523) | Uses heat basis action plus spectral-trace-class data to derive pure-point Boltzmann summability, partition equality, and normalized-state equality without a duplicate summability premise or heat-state wrapper; integrated into ADRs 0013 and 0016. |
 
 | PR 2524 | [refactor(diagrammatics): trim two-point component APIs](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2524) | Keeps semantic connectivity/decomposition endpoints while inlining one-use proof routes and deleting unused convenience theorems, applying ADR 0008's existing API boundary. |
 
@@ -893,23 +893,23 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2539 | [refactor(unbounded): add public Stone evolution route](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2539) | Implements #2527 with `Analysis.Operator.Unbounded.StoneEvolution` as the public route and moves the continuum consumer off the proof-stage chain; ADR 0002 links the route. |
 
-| PR 2540 | [feat(gibbs): prove pure-point entropy identity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2540) | Derives finite pure-point entropy and Helmholtz identity from diagonal Gibbs data plus explicit energy integrability; avoids bounded-observable coercion or a parallel state abstraction. Integrated into ADR 0006. |
+| PR 2540 | [feat(gibbs): prove pure-point entropy identity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2540) | Derives finite pure-point entropy and Helmholtz identity from diagonal Gibbs data plus explicit energy integrability; avoids bounded-observable coercion or a parallel state abstraction. Integrated into ADR 0016. |
 
 | PR 2541 | [refactor(operator): move finite-dimensional trace out of QuantumTheory.Transport](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2541) | Implements #2526 by moving the generic trace laws to `Analysis.Operator.FiniteTrace` without compatibility aliases; ADR 0002 links the implementation. |
 
 | PR 2542 | [refactor(transport): split pure-point spectral bridge](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2542) | Implements #2536 with generic signed-regulator spectral action and a shared `Transport.Spectral.PurePoint` adapter; ADR 0009 now links the closure PR. |
 
-| PR 2543 | [docs(operator): characterize Gibbs variational boundary](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2543) | Separates bounded noncommuting variational/uniqueness proofs from countable diagonal competitors with explicit energy integrability; a full unbounded quantum extension still needs domain/relative-entropy foundations. Integrated into ADR 0006. |
+| PR 2543 | [docs(operator): characterize Gibbs variational boundary](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2543) | Separates bounded noncommuting variational/uniqueness proofs from countable diagonal competitors with explicit energy integrability; a full unbounded quantum extension still needs domain/relative-entropy foundations. Integrated into ADR 0016. |
 
-| PR 2544 | [feat(gibbs): add pure-point variational principle](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2544) | Implements the diagonal/classical slice from #2543 with each countable competitor carrying normalization, entropy, and absolute energy integrability; no unbounded noncommuting principle is implied. ADR 0006 links it. |
+| PR 2544 | [feat(gibbs): add pure-point variational principle](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2544) | Implements the diagonal/classical slice from #2543 with each countable competitor carrying normalization, entropy, and absolute energy integrability; no unbounded noncommuting principle is implied. ADR 0016 links it. |
 
 | PR 2545 | [refactor(transport): move 2D momentum measure out of Core](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2545) | Implements #2534: removes the fixed 2D measure from `Transport.Core` and leaves the formula at the opt-in continuum owner; ADR 0009 links the PR. |
 
-| PR 2546 | [refactor(gibbs): centralize countable entropy bound](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2546) | Shares scalar Gibbs comparison below bounded operator equality, moves generic summation order to Analysis, and derives pure-point entropy without a redundant field. Integrated into ADR 0006. |
+| PR 2546 | [refactor(gibbs): centralize countable entropy bound](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2546) | Shares scalar Gibbs comparison below bounded operator equality, moves generic summation order to Analysis, and derives pure-point entropy without a redundant field. Integrated into ADR 0016. |
 
 | PR 2547 | [refactor(massive-dirac): trim redundant Berry wrappers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2547) | Removes single-use upper/lower and reversed-curvature wrappers, leaving specializations derived from the canonical generic-to-model bridge; ADR 0018 now records this refinement. |
 
-| PR 2548 | [feat(gibbs): characterize pure-point minimizer](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2548) | Completes the diagonal/classical variational slice: the admissible normalized Gibbs probabilities attain the lower bound and are its unique equality case; the noncommuting unbounded problem remains separate. ADR 0006 links it. |
+| PR 2548 | [feat(gibbs): characterize pure-point minimizer](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2548) | Completes the diagonal/classical variational slice: the admissible normalized Gibbs probabilities attain the lower bound and are its unique equality case; the noncommuting unbounded problem remains separate. ADR 0016 links it. |
 
 | PR 2549 | [refactor(massive-dirac): remove unused ladder forwarder](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2549) | Removes a one-consumer Pauli-operator equality wrapper while retaining the generic coefficient theorem and Středa endpoint; ADR 0009 now records the public API boundary. |
 
@@ -917,17 +917,17 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2551 | [refactor(massive-dirac): inline ladder resummation specialization](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2551) | Removes a one-consumer solved-vector forwarder and keeps Středa on the canonical coefficient-space theorem; ADR 0009 captures the API boundary. |
 
-| Issue 2552 | [research(analysis): design unbounded self-adjoint functional calculus for heat evolution](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2552) | Keeps `exp (-β H)` behind justified bounded functional calculus/heat-semigroup construction with explicit domain and lower-bound data; no formal unbounded power series or trace-class claim. Open research, recorded in ADR 0006. |
+| Issue 2552 | [research(analysis): design unbounded self-adjoint functional calculus for heat evolution](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2552) | Keeps `exp (-β H)` behind justified bounded functional calculus/heat-semigroup construction with explicit domain and lower-bound data; no formal unbounded power series or trace-class claim. Open research, recorded in ADR 0011. |
 
-| Issue 2553 | [feat(analysis): construct heat operators from semibounded self-adjoint Hamiltonians](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2553) | Places the future Hamiltonian-to-heat producer in domain-aware Analysis, feeding the existing positive heat-state normalization; remains blocked by #2552 and excludes trace-class claims. Recorded in ADR 0006. |
+| Issue 2553 | [feat(analysis): construct heat operators from semibounded self-adjoint Hamiltonians](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2553) | Places the future Hamiltonian-to-heat producer in domain-aware Analysis, feeding the existing positive heat-state normalization; remains blocked by #2552 and excludes trace-class claims. Recorded in ADRs 0011 and 0016. |
 
-| Issue 2554 | [research(analysis): derive trace-class heat criteria from compact resolvent](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2554) | Requires proving heat compactness and Boltzmann eigenvalue summability before the existing `SpectralTraceClass` Gibbs boundary; blocked by #2552/#2553 and does not imply a general trace-class ideal. Recorded in ADR 0006. |
+| Issue 2554 | [research(analysis): derive trace-class heat criteria from compact resolvent](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2554) | Requires proving heat compactness and Boltzmann eigenvalue summability before the existing `SpectralTraceClass` Gibbs boundary; blocked by #2552/#2553 and does not imply a general trace-class ideal. Recorded in ADRs 0013 and 0016. |
 
 | Issue 2555 | [Architecture: consolidate statistics-independent second-quantization concepts](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2555) | Coordination umbrella for #2556 and #2557; it assigns implementation decisions to the child issues and preserves statistics-specific boundaries, so no separate ADR change. |
 
 | Issue 2556 | [SecondQuantization.Common: own the statistics-independent total particle-number grade](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2556) | Gives finite-support occupation bases one arbitrary-mode total grade in Common, with fermionic cardinality and bosonic sum adapters; concrete configs and transition laws stay separate. Recorded in ADR 0005. |
 
-| Issue 2557 | [Share the formal free grand-partition series backend between Bose and Fermi layers](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2557) | Gives Bose/Fermi free product, log, and connected-cycle identities one formal Gibbs owner restricted to `ζ = ±1`; determinant and analytic convergence remain statistics-specific, and no `t = 1` evaluation is implied. Recorded in ADR 0006. |
+| Issue 2557 | [Share the formal free grand-partition series backend between Bose and Fermi layers](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2557) | Gives Bose/Fermi free product, log, and connected-cycle identities one formal Gibbs owner restricted to `ζ = ±1`; determinant and analytic convergence remain statistics-specific, and no `t = 1` evaluation is implied. Recorded in ADR 0008. |
 
 | Issue 2558 | [refactor(operator): narrow the generic Analysis.Operator route](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2558) | Keeps the public umbrella generic and makes real-line/1D realizations explicit opt-in imports at their current owners. Recorded in ADR 0002. |
 
@@ -935,7 +935,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2560 | [refactor: centralize particle-number grade](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2560) | Implements #2556: Common owns the arbitrary-mode total grade; Bose/Fermi adapters retain native configuration forms and stat-specific transitions. ADR 0005 links the implementation. |
 
-| PR 2561 | [refactor(thermal): share free grand-series backend](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2561) | Implements #2557 with a `ζ = ±1` Gibbs backend, retaining Bose/Fermi endpoints and removing unused intermediate log wrappers; no `t = 1` or convergence claim. ADR 0006 links it. |
+| PR 2561 | [refactor(thermal): share free grand-series backend](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2561) | Implements #2557 with a `ζ = ±1` Gibbs backend, retaining Bose/Fermi endpoints and removing unused intermediate log wrappers; no `t = 1` or convergence claim. ADR 0008 links it. |
 
 | PR 2562 | [refactor(transport): separate finite conductivity adapter](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2562) | Implements #2535 by moving the contact/positive-volume evaluator from Core to `Transport.FiniteConductivityTable`; formula, theorem values, and names stay unchanged. ADR 0009 links it. |
 
@@ -943,7 +943,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2564 | [feat(diagrammatics): restrict generic vacuum components](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2564) | Adds a first higher-point restriction slice: vacuum components become quartic diagrams via generic partner-invariant pairing restriction; external-bearing components and crossing-sign transport remain unproved. Recorded in ADR 0008. |
 
-| PR 2565 | [chore(ci): streamline audited workflows](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2565) | Separates source-topology and compiled-build triggers, keeps theorem-catalog work advisory on PRs, and makes routine source/umbrella boundaries declarative; recorded in ADR 0010. |
+| PR 2565 | [chore(ci): streamline audited workflows](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2565) | Separates source-topology and compiled-build triggers, keeps theorem-catalog work advisory on PRs, and makes routine source/umbrella boundaries declarative; recorded in ADRs 0010 and 0020. |
 
 | PR 2566 | [refactor(pairing): generalize fixed-point-free involutions](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2566) | Makes arbitrary-type pairing and invariant-subtype restriction generic in `PairingOn`; finite ordering, normalized pairs, and crossings remain on `Pairing n`. Recorded in ADR 0008. |
 
@@ -1009,7 +1009,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2597 | [feat(cumulant): expand replica polynomial in falling factorials](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2597) | Converts the finite-set replica polynomial into the falling-factorial basis used by the power-series replica polynomial, keeping basis-conversion helpers private. Detail for issue #2580, already recorded in ADR 0008. |
 
-| PR 2598 | [refactor(quartic): remove evolution specialization chain](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2598) | Deletes single-consumer evolution wrappers and performs the finite interaction specialization locally, while retaining an independently meaningful vertex-level eigenoperator theorem with a recorded rationale. Recorded in ADR 0010. |
+| PR 2598 | [refactor(quartic): remove evolution specialization chain](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2598) | Deletes single-consumer evolution wrappers and performs the finite interaction specialization locally, while retaining an independently meaningful vertex-level eigenoperator theorem with a recorded rationale. Recorded in ADR 0020. |
 
 | PR 2599 | [refactor(diagrammatics): canonicalize interaction sector](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2599) | Moves the shared interaction-sector extraction to Common/Diagrammatics and removes duplicated TwoPoint/ExternalInsertion APIs while preserving the filtered ambient-vertex form. Records the landed replacement for stacked #2595 in ADR 0008. |
 
@@ -1035,7 +1035,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2610 | [feat(set-partition): count blocks by Stirling numbers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2610) | Supersedes unmerged #2607: adds the pure set-partition block-count theorem, hides the convolution proof, and exports the result through `Combinatorics.SetPartition`. Recorded in ADR 0008. |
 
-| PR 2611 | [refactor(perfect-pairing): narrow decomposition imports](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2611) | Uses leaf imports inside the pairing package, re-exports decomposition modules from the public umbrella, and keeps higher-level recursion explicit. Recorded in ADR 0010. |
+| PR 2611 | [refactor(perfect-pairing): narrow decomposition imports](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2611) | Uses leaf imports inside the pairing package, re-exports decomposition modules from the public umbrella, and keeps higher-level recursion explicit. Recorded in ADRs 0002 and 0010. |
 
 | PR 2612 | [feat(combinatorics): transport family shuffle parity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2612) | Adds a generic theorem transporting pointwise off-diagonal inversion congruences to the total ordered parity for a supplied block order, with no equal-size or diagrammatics dependency. Recorded in ADR 0008. |
 
@@ -1069,7 +1069,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2627 | [feat(diagrammatics): decompose external interaction orders](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2627) | Equates global interaction-vertex orders with local component orders plus a shuffle, retaining zero-vertex components as empty orders and zero-size blocks. Recorded in ADR 0008. |
 
-| PR 2628 | [chore(replica): audit linked-cluster proof independence](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2628) | Adds an architecture source-topology rule forbidding the generic replica bridge and Fermionic specialization from depending on inversion/cumulant endpoints; updates proof-route status documentation. Recorded in ADR 0010 and the replica boundary in ADR 0008. |
+| PR 2628 | [chore(replica): audit linked-cluster proof independence](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2628) | Adds an architecture source-topology rule forbidding the generic replica bridge and Fermionic specialization from depending on inversion/cumulant endpoints; updates proof-route status documentation. Recorded in ADRs 0008, 0010, and 0020. |
 
 | PR 2629 | [refactor(operator): separate Berry geometry route](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2629) | Moves finite-dimensional pointwise Berry connection/curvature to a dedicated public route, keeps spectral eigenvector/resolvent infrastructure independent, and preserves declarations through the umbrella. Recorded in ADR 0018. |
 
@@ -1095,11 +1095,11 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2640 | [feat(diagrammatics): factor external insertion vertex weights](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2640) | Adds a generic interaction-vertex weight over a commutative monoid and factors it together with the Dyson sign over components, preserving empty interaction sectors as neutral factors. Recorded in ADR 0008. |
 
-| PR 2641 | [refactor(perfect-pairing): remove unused evaluation lemmas](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2641) | Removes two unconsumed evaluation corollaries while retaining `Pairing.evaluation`; this is a reviewed API cleanup, consistent with ADR 0010's rule that terminality triggers review rather than automatic deletion. No new decision. |
+| PR 2641 | [refactor(perfect-pairing): remove unused evaluation lemmas](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2641) | Removes two unconsumed evaluation corollaries while retaining `Pairing.evaluation`; this is a reviewed API cleanup, consistent with ADR 0020's rule that terminality triggers review rather than automatic deletion. No new decision. |
 
 | Issue 2642 | [keep one-dimensional weak conservation out of the generic calculus route](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2642) | Open proposal to make concrete 1D weak-conservation imports opt-in while retaining their Analysis ownership. No implementation or accepted outcome yet, so no ADR change. |
 
-| PR 2643 | [docs(combinatorics): retain right split closure theorem](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2643) | Records why `Pairing.isSplit_inr` remains public: it captures the involution-derived right-closure fact independently of its current constructor consumer. Recorded in ADR 0010. |
+| PR 2643 | [docs(combinatorics): retain right split closure theorem](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2643) | Records why `Pairing.isSplit_inr` remains public: it captures the involution-derived right-closure fact independently of its current constructor consumer. Recorded in ADR 0020. |
 
 | PR 2644 | [refactor(perfect-pairing): inline embedding projection](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2644) | Inlines a definitional `rfl` projection used once inside the module while retaining the canonical embedding and independent membership/crossing APIs. Covered by the pairing API-surface principle in ADR 0008; no separate decision. |
 
@@ -1107,7 +1107,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2646 | [Factor interaction-sector component decomposition](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2646) | Adds the generic ambient-to-component interaction-sector equivalence, removes TwoPoint and ExternalInsertion duplicates, and reuses it for shuffles, orders, and vertex products. Recorded in ADR 0008. |
 
-| PR 2647 | [refactor(perfect-pairing): remove unused core helpers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2647) | Removes unconsumed helpers that only restated structure fields, trivial universe membership, or an existing theorem, while keeping canonical pairing and endpoint APIs. Recorded in ADR 0010 with the retain/delete distinction. |
+| PR 2647 | [refactor(perfect-pairing): remove unused core helpers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2647) | Removes unconsumed helpers that only restated structure fields, trivial universe membership, or an existing theorem, while keeping canonical pairing and endpoint APIs. Recorded in ADR 0020 with the retain/delete distinction. |
 
 | PR 2648 | [Privatize external-insertion partner-invariance helper](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2648) | Makes a same-module-only helper private while retaining TwoPoint/Quartic analogues that have downstream consumers. Recorded in ADR 0008. |
 
@@ -1123,7 +1123,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2654 | [refactor(perfect-pairing): use generic crossing transport](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2654) | Replaces a same-module erase-zero crossing wrapper with `crosses_map_iff` and its strict-order embedding, keeping the recursive crossing-count API unchanged. Covered by ADR 0008's generic crossing boundary. |
 
-| PR 2655 | [docs(combinatorics): retain pairing audit endpoints](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2655) | Records pairing cardinality, permutation-sign, and erase/insert round-trip declarations as intentionally retained because each is a canonical mathematical/API endpoint despite low consumer counts. Recorded in ADR 0010. |
+| PR 2655 | [docs(combinatorics): retain pairing audit endpoints](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2655) | Records pairing cardinality, permutation-sign, and erase/insert round-trip declarations as intentionally retained because each is a canonical mathematical/API endpoint despite low consumer counts. Recorded in ADR 0020. |
 
 | PR 2656 | [refactor(perfect-pairing): remove unused transport equivalence](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2656) | Removes a zero-consumer equivalence wrapper around `PairingOn.transport`, preserving the canonical operation and its round-trip/composition laws. Recorded in ADR 0008. |
 
@@ -1169,11 +1169,11 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2677 | [refactor(transport): remove unused common-energy integrability theorem](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2677) | Removes an unconsumed standalone integrability theorem because the actual integral endpoint already proves the needed finite-sum integrability locally; the integral theorem remains unchanged. No new ADR decision. |
 
-| PR 2678 | [refactor: trim unused simp lemmas](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2678) | Deletes genuinely unused private simp lemmas, removes unnecessary global `[simp]` attributes while retaining ordinary theorem statements, and restores indirectly consumed Schwartz simp lemmas after compilation exposed their use. Recorded in ADR 0010. |
+| PR 2678 | [refactor: trim unused simp lemmas](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2678) | Deletes genuinely unused private simp lemmas, removes unnecessary global `[simp]` attributes while retaining ordinary theorem statements, and restores indirectly consumed Schwartz simp lemmas after compilation exposed their use. Recorded in ADR 0019. |
 
 | PR 2679 | [refactor(pairing): share component pair product factorization](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2679) | Extracts the normalized-pair product factorization into generic `Combinatorics.PerfectPairing.ComponentDecomposition` for any commutative multiplicative target; Quartic and ExternalInsertion retain distinct residual exchange/crossing factorization. Recorded in ADRs 0002 and 0008. |
 
-| PR 2680 | [refactor: audit private simp attributes](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2680) | Removes global `[simp]` registration from private helper theorems and names required rewrite dependencies explicitly at use sites. Recorded in ADR 0010. |
+| PR 2680 | [refactor: audit private simp attributes](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2680) | Removes global `[simp]` registration from private helper theorems and names required rewrite dependencies explicitly at use sites. Recorded in ADR 0019. |
 
 | PR 2681 | [refactor(massive-dirac): inline radial dominated-convergence helpers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2681) | Calls the generic dominated-convergence theorem directly from the MassiveDirac radial endpoint and discharges model-specific hypotheses locally, removing single-consumer wrappers without changing assumptions or the result. Recorded in ADR 0009. |
 
@@ -1187,11 +1187,11 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2686 | [refactor(dyson): remove unused cardinality amplitude theorem](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2686) | Removes an unused convenience theorem equating total Wick amplitudes by vertex-set cardinality; the canonical Dyson-to-Wick endpoint remains. Covered by ADR 0008's API policy; no separate decision. |
 
-| PR 2687 | [refactor: make private simp dependencies explicit](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2687) | Removes private `[simp]` registrations and names required rewrites explicitly, deletes a zero-consumer length lemma, and preserves genuinely shared Schwartz simplification boundaries. Recorded in ADR 0010. |
+| PR 2687 | [refactor: make private simp dependencies explicit](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2687) | Removes private `[simp]` registrations and names required rewrites explicitly, deletes a zero-consumer length lemma, and preserves genuinely shared Schwartz simplification boundaries. Recorded in ADR 0019. |
 
 | PR 2688 | [refactor(theory): reuse general downstream APIs](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2688) | Removes duplicated MassiveDirac, Fermionic vacuum, and Fermionic completed-space wrappers in favor of the existing generic band-filling and Common APIs. Recorded in ADR 0002. |
 
-| PR 2689 | [refactor: clean audit wrappers and stale retention entries](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2689) | Replaces one-use external-label and Pauli wrappers with existing general theorems and re-audits catalog exceptions: one theorem entry is gone with its declaration, while three entries are no longer required although their declarations remain. Recorded in ADRs 0002 and 0010. |
+| PR 2689 | [refactor: clean audit wrappers and stale retention entries](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2689) | Replaces one-use external-label and Pauli wrappers with existing general theorems and re-audits catalog exceptions: one theorem entry is gone with its declaration, while three entries are no longer required although their declarations remain. Recorded in ADRs 0002 and 0020. |
 
 | PR 2690 | [refactor(validation): use generic Lehmann denominator theorem](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2690) | Moves fixed-rate denominator nonvanishing beside its scalar definition, removes the duplicate unit-hbar dimer theorem, and preserves the limit-layer and physical response contracts. Recorded in ADR 0009. |
 
@@ -1199,13 +1199,13 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2692 | [refactor(fermionic): use common completed-space facts](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2692) | Removes Fermionic basis-state and dense-range wrappers for the completed-space map; consumers specialize the statistics-independent Common facts directly while retaining Fermionic operators and compatibility endpoints. Recorded in ADR 0002. |
 
-| PR 2693 | [refactor: trim remaining local private simp rules](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2693) | Removes unnecessary private `[simp]` registrations, makes a coefficient rewrite explicit at its consumer, and inlines a one-use helper while preserving public declarations. Recorded in ADR 0010. |
+| PR 2693 | [refactor: trim remaining local private simp rules](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2693) | Removes unnecessary private `[simp]` registrations, makes a coefficient rewrite explicit at its consumer, and inlines a one-use helper while preserving public declarations. Recorded in ADR 0019. |
 
-| PR 2694 | [refactor(dyson): remove unused thermal import](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2694) | Removes a direct `FreeBoltzmannCore` import unused by Dyson pairing while leaving declarations and proofs unchanged; the leaf keeps only its actual thermal dependencies. Covered by ADRs 0006 and 0010; no new decision. |
+| PR 2694 | [refactor(dyson): remove unused thermal import](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2694) | Removes a direct `FreeBoltzmannCore` import unused by Dyson pairing while leaving declarations and proofs unchanged; the leaf keeps only its actual thermal dependencies. Covered by ADRs 0002 and 0010; no new decision. |
 
-| PR 2695 | [refactor: trim remaining private simp boundaries](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2695) | Reuses the existing Schwartz real/imaginary-part owner and localizes private derivative/conjugation/time-transport rewrite dependencies instead of globally registering them. Recorded in ADRs 0002 and 0010. |
+| PR 2695 | [refactor: trim remaining private simp boundaries](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2695) | Reuses the existing Schwartz real/imaginary-part owner and localizes private derivative/conjugation/time-transport rewrite dependencies instead of globally registering them. Recorded in ADRs 0002 and 0019. |
 
-| PR 2696 | [refactor: narrow public simp normalization rules](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2696) | Removes `[simp]` from public whole-equivalence/inverse identities while keeping their theorem statements for explicit `rw`; pointwise evaluation rules remain the canonical simplifier boundary. Recorded in ADR 0010. |
+| PR 2696 | [refactor: narrow public simp normalization rules](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2696) | Removes `[simp]` from public whole-equivalence/inverse identities while keeping their theorem statements for explicit `rw`; pointwise evaluation rules remain the canonical simplifier boundary. Recorded in ADR 0019. |
 
 | PR 2697 | [refactor(diagrammatics): inline component crossing wrappers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2697) | Removes Quartic and ExternalInsertion one-use diagonal crossing wrappers and applies generic `Pairing.componentCrossingCount_self_eq` directly at both endpoints. Recorded in ADR 0008. |
 
@@ -1313,11 +1313,11 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2749 | [refactor: simplify combinatorics with Mathlib APIs](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2749) | Uses `Equiv.Set.sumDiffSubset`, `Finset.card_filter`, and `Finset.sum_product` for generic construction/counting while retaining project-facing domain API names. Recorded in ADR 0002. |
 
-| 2750 | [docs(conventions): define simp lemma policy](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2750) | Defines global `[simp]` as a canonical-normal-form/API-boundary choice; keeps ambiguous or substantive rewrites explicit and distinguishes `simp`, `simp only`, and `rw`. Updated ADR 0010. The PR is documentation-only. |
+| 2750 | [docs(conventions): define simp lemma policy](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2750) | Defines global `[simp]` as a canonical-normal-form/API-boundary choice; keeps ambiguous or substantive rewrites explicit and distinguishes `simp`, `simp only`, and `rw`. Updated ADR 0019. The PR is documentation-only. |
 
 | 2751 | [refactor(two-point): remove direct theorem wrappers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2751) | Removes two `rfl` specialization wrappers and migrates private consumers to the canonical cardinality-transport theorems. Recorded in ADRs 0002 and 0008. |
 
-| 2752 | [refactor(simp): audit canonical simplification boundaries](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2752) | Adds a reviewed global simp registry, removes eight noncanonical global simp tags while retaining the theorems for explicit use, and marks unlisted entries as pending review. Recorded in ADR 0010. |
+| 2752 | [refactor(simp): audit canonical simplification boundaries](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2752) | Adds a reviewed global simp registry, removes eight noncanonical global simp tags while retaining the theorems for explicit use, and marks unlisted entries as pending review. Recorded in ADR 0019. |
 
 | 2753 | [refactor: reuse sigma product helper for finpartitions](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2753) | Reuses `Fintype.prod_equiv_sigma` for the finpartition product decomposition, preserving the public theorem while removing duplicate reindexing proof code. Recorded in ADR 0002. |
 
@@ -1347,7 +1347,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2766 | [refactor: make Stone Cauchy extension filter-native](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2766) | Exposes domain convergence as `CauchySeq` and factors dense-set extension for isometry families into a reusable metric-space theorem, preserving the quantitative estimate. Recorded in ADR 0002. |
 
-| 2767 | [fix(ci): reduce theorem catalog false positives](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2767) | Keeps generated extension declarations in the full catalog but excludes them from unresolved queues, recognizes unambiguous short retained names, and reruns the advisory catalog job when disposition documents change. Recorded in ADR 0010. |
+| 2767 | [fix(ci): reduce theorem catalog false positives](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2767) | Keeps generated extension declarations in the full catalog but excludes them from unresolved queues, recognizes unambiguous short retained names, and reruns the advisory catalog job when disposition documents change. Recorded in ADR 0020. |
 
 | 2768 | [refactor(spin-hall): route spin response through ResponseChannel](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2768) | Adds the finite spin-z current/electric bond-source channel and routes the old retarded susceptibility through its kernel without changing observable/source roles or expanding spin-Hall claims. Recorded in ADR 0009. |
 
@@ -1367,7 +1367,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2776 | [refactor: inline Stone unitarity proof helpers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2776) | Removes one-use negative-time inverse theorems and inlines inner-product preservation in the adjoint proof, preserving public group/adjoint/unitary laws and consumed strong-limit facts. Recorded in ADR 0002. |
 
-| 2777 | [refactor(thermal): reuse pure-point entropy identity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2777) | Uses the generic pure-point Gibbs entropy theorem in the free-fermion specialization, removing five proof-routing results while retaining physical marginal, mean-energy, and binary-entropy endpoints. Recorded in ADR 0006. |
+| 2777 | [refactor(thermal): reuse pure-point entropy identity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2777) | Uses the generic pure-point Gibbs entropy theorem in the free-fermion specialization, removing five proof-routing results while retaining physical marginal, mean-energy, and binary-entropy endpoints. Recorded in ADR 0016. |
 
 | 2778 | [refactor: hide Stone domain resolvent machinery](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2778) | Makes resolvent-approximation commutation stages and the vectorwise limit proof private, removes an unused operator wrapper, and retains semantic domain-preservation APIs. Recorded in ADR 0002. |
 
@@ -1395,7 +1395,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2790 | [docs: clarify umbrella module descriptions](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2790) | Rewrites umbrella descriptions in terms of their collected mathematical or physical APIs, retaining dependency-boundary rationale only where it constrains current architecture; documentation-only. Recorded in ADR 0002. |
 
-| 2791 | [docs: describe current semantic responsibilities](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2791) | Rewrites non-umbrella module documentation around present mathematical/physical responsibility, refreshes the generic/specialized fermionic transport description, and states the simp registry as standing policy rather than dated audit history; documentation-only. Recorded in ADRs 0002 and 0010. |
+| 2791 | [docs: describe current semantic responsibilities](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2791) | Rewrites non-umbrella module documentation around present mathematical/physical responsibility, refreshes the generic/specialized fermionic transport description, and states the simp registry as standing policy rather than dated audit history; documentation-only. Recorded in ADRs 0002 and 0019. |
 
 | 2792 | [refactor: use zero-time simp API in Stone generator](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2792) | Reuses the existing zero-time simp laws in the generator derivative proof, removing local evaluation rewrites while preserving the quantitative estimate and public API. Recorded in ADR 0002. |
 
@@ -1403,7 +1403,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | 2794 | [refactor: simplify Stone slope estimate algebra](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2794) | Replaces a private common-basepoint algebra proof and `field_simp` cancellation with Mathlib's `sub_sub_sub_cancel_right` and `inv_mul_cancel₀`; the quantitative estimate is unchanged. Recorded in ADR 0001. |
 
-| 2795 | [refactor(spin): expose spin-current linearity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2795) | Makes the symmetrized product explicitly bilinear, derives fixed-slot linear maps, and composes them to expose real-linearity from spin-space input to the measured current density; reviews the corresponding simp boundaries. Recorded in ADRs 0002, 0009, and 0010. |
+| 2795 | [refactor(spin): expose spin-current linearity](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2795) | Makes the symmetrized product explicitly bilinear, derives fixed-slot linear maps, and composes them to expose real-linearity from spin-space input to the measured current density; reviews the corresponding simp boundaries. Recorded in ADRs 0002, 0009, and 0019. |
 
 | 2796 | [feat(external-insertion): add pair-kernel locality](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2796) | Embeds component-local mixed-time positions through canonical ambient legs and exposes free-Gibbs pair-kernel locality; keeps field-family transport private and adds no broader mixed-order framework or component-amplitude factorization. Recorded in ADR 0008. |
 
