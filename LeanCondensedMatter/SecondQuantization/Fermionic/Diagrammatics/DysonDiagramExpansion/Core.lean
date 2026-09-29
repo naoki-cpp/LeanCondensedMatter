@@ -39,7 +39,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of
 `Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via
 `Common.matrixCoeff_comp`), the integrability the inductive step's
-`Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
+`Common.comp_operatorIntervalIntegral`/`Common.finiteGibbsExpectation_operatorIntervalIntegral`
 need. -/
 theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff [Finite Mode] (ε : Mode → ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ)

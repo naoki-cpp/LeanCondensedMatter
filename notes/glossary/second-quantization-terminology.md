@@ -20,7 +20,6 @@ and mention an identifier only when the implementation matters.
 | Density-state expectation | The canonical normalized expectation of a bounded operator in a density state. | `QuantumTheory.DensityOperator.expectation` |
 | Finite Gibbs expectation | Density-state expectation of the generic finite pure-point Gibbs state after transporting an algebraic Fock operator to the finite Hilbert realization. | `SecondQuantization.Common.finiteGibbsExpectation` |
 | Weighted trace | An unnormalized finite coordinate sum with an arbitrary weight. It is proof infrastructure, not a physical state by itself. | `SecondQuantization/Common/Thermal/FiniteWeightedTrace.lean` |
-| Normalized weighted diagonal | A normalized coordinate functional for an arbitrary finite complex weight. Call it Gibbs only after the Boltzmann specialization and density-state comparison. | `SecondQuantization/Common/Thermal/WeightedDiagonalFunctional.lean` |
 | Thermal contraction | The c-number expectation of an imaginary-time-ordered operator pair in a specified thermal state. It is not the operator identity used to exchange two factors. | finite Gibbs two-point and contraction modules |
 | Perfect pairing | A complete matching of a finite set of operator positions. It is combinatorial and contains no expectation value. | `Combinatorics/PerfectPairing.lean` |
 | Pair deletion and reindexing | The induction operation that removes one matched pair and transports the remaining pairing to a smaller index type. It is not a physical process. | `eraseZeroPair` |

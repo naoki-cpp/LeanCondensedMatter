@@ -7,8 +7,7 @@ set_option linter.style.header false
 # Finite traces and weighted coordinate sums
 
 Coordinate formulas on a finite occupation-state type `Config`. This module owns ordinary finite
-traces, weighted traces, and total weights. Normalized weighted diagonal formulas live separately
-in `WeightedDiagonalFunctional.lean`.
+traces, weighted traces, and total weights.
 
 The weight `w : Config → ℂ` is arbitrary, so `weightedTrace` and `weightSum` are raw coordinate
 quantities. A physical Gibbs interpretation only appears after specialization to positive
