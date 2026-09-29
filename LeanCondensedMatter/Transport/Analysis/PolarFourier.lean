@@ -450,11 +450,12 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
         rw [Real.cos_add, Real.sin_add]
         push_cast
         ring
-      simp only [f]
-      rw [show (fun θ => source.eval (θ + angle)) = (fun θ => coefficients.eval θ) by
-        funext θ
-        exact hrotate θ]
-      simpa [source, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+      change
+        (∫ α : ℝ in (0 : ℝ)..(2 * Real.pi),
+          ((p : ℂ) * polarFourierRadialPhase z α) * source.eval (α + angle)) =
+          _
+      simp_rw [hrotate]
+      simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
         coefficients.integral_polarFourierRadialPhase z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
