@@ -17,7 +17,7 @@ namespace Bosonic
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*}
 
 /-- Formal series whose coefficients are the convergence-aware normalized free-Gibbs Dyson
 coefficients evaluated at imaginary time `β`. -/
@@ -35,8 +35,11 @@ theorem coeff_freeGibbsDysonSeries
   simp [freeGibbsDysonSeries]
 
 /-- Under the positive free-Gibbs hypothesis, the physical bosonic Dyson series has unit constant
-coefficient. -/
+coefficient. The finite mode instance enters through the Gibbs summability theorem used at zeroth
+order. -/
+set_option linter.unusedFintypeInType false in
 theorem constantCoeff_freeGibbsDysonSeries
+    [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     PowerSeries.constantCoeff (freeGibbsDysonSeries ε β V) = 1 := by
