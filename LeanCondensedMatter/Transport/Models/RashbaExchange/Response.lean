@@ -88,8 +88,9 @@ theorem antisymmetricCleanHallPointKernel_swap
 
 /-- Restrict a point kernel to the explicit finite circular momentum domain. -/
 noncomputable def finiteDiskHallIntegrand
-    (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
-  if inMomentumDomain params px py then
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ := by
+  classical
+  exact if inMomentumDomain params px py then
     antisymmetricCleanHallPointKernel params measured source px py
   else 0
 
