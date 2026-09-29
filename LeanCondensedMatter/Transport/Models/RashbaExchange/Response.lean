@@ -11,13 +11,16 @@ set_option linter.style.header false
 /-!
 # Finite Rashba-exchange anomalous-Hall response
 
-The clean finite-broadening response is routed through the canonical supplied-Green Středa surface
-primitive `RA - (RR + AA)/2`. No phenomenological broadening factor is attached to the Berry
-curvature. The latter remains independent clean-band data in `Model`.
+The physical clean finite-broadening Hall path uses the canonical traced Kubo–Bastin energy
+integral at each momentum, takes its antisymmetric measured/source projection, and then integrates
+that response over the explicit finite physical-momentum disk. The stored continuum-measure
+normalization is attached exactly once, and the common static Bastin–Středa trace prefactor is
+attached only when constructing a physical `ConductivityTensor`.
 
-The raw response integrates the point kernel over the explicit finite physical-momentum disk and
-attaches the stored continuum-measure normalization exactly once. Only the subsequent conductivity
-boundary attaches the common static Bastin–Středa trace prefactor. No cutoff-removal,
+A separate supplied-Green Středa surface primitive `RA - (RR + AA)/2` is retained as the
+response/vertex seam for future disorder dressing and as a diagnostic object; it is not promoted to
+the physical Hall tensor by itself. No phenomenological broadening factor is attached to the Berry
+curvature, which remains independent clean-band data in `Model`. No cutoff-removal,
 zero-broadening, weak-disorder, or universal-Hall-value statement is made here.
 -/
 
@@ -35,44 +38,44 @@ def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
 
 /-- Supplied-Green response seam. Disorder code may replace either Green operator and the source
 vertex without reconstructing the Rashba Hamiltonian or measured charge-current vertex. -/
-noncomputable def suppliedHallPointKernel
+noncomputable def suppliedSurfaceHallPointKernel
     (params : Parameters) (measured : Fin 2) (px py : ℝ)
     (retardedGreen sourceVertex advancedGreen :
-      InternalSpace.PauliHilbert →L[ℂ] InternalSpace.PauliHilbert) : ℂ :=
+      EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) : ℂ :=
   suppliedGreenStredaSurfacePrimitiveTraceKernel
     (currentBoundedOperator params measured px py)
     retardedGreen sourceVertex advancedGreen
 
 /-- Exact clean finite-broadening Středa point kernel. -/
-noncomputable def cleanHallPointKernel
+noncomputable def cleanSurfaceHallPointKernel
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
-  suppliedHallPointKernel params measured px py
+  suppliedSurfaceHallPointKernel params measured px py
     (greenOperator .retarded params px py)
     (currentBoundedOperator params source px py)
     (greenOperator .advanced params px py)
 
 /-- The disorder/vertex seam specialized to clean resolvents and the bare charge-current source
 vertex is definitionally the clean surface kernel. -/
-theorem suppliedHallPointKernel_bare_eq_clean
+theorem suppliedSurfaceHallPointKernel_bare_eq_clean
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
-    suppliedHallPointKernel params measured px py
+    suppliedSurfaceHallPointKernel params measured px py
         (greenOperator .retarded params px py)
         (currentBoundedOperator params source px py)
         (greenOperator .advanced params px py) =
-      cleanHallPointKernel params measured source px py := by
+      cleanSurfaceHallPointKernel params measured source px py := by
   rfl
 
 /-- The clean point kernel is exactly the generic regularized Středa surface primitive. -/
-theorem cleanHallPointKernel_eq_regularized
+theorem cleanSurfaceHallPointKernel_eq_regularized
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
-    cleanHallPointKernel params measured source px py =
+    cleanSurfaceHallPointKernel params measured source px py =
       regularizedStredaSurfacePrimitiveTrace
         (hamiltonianOperator params px py)
         (currentBoundedOperator params measured px py)
         (currentBoundedOperator params source px py)
         params.chemicalPotential params.broadening := by
   symm
-  simpa [cleanHallPointKernel, suppliedHallPointKernel, greenOperator] using
+  simpa [cleanSurfaceHallPointKernel, suppliedSurfaceHallPointKernel, greenOperator] using
     (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
       (hamiltonianOperator params px py)
       (currentBoundedOperator params measured px py)
@@ -111,30 +114,30 @@ theorem antisymmetricCleanBastinPointResponse_swap
 
 /-- Ordered Hall projection of the clean point response. Antisymmetry is algebraic and therefore
 does not assume a rotational symmetry or a limiting procedure. -/
-noncomputable def antisymmetricCleanHallPointKernel
+noncomputable def antisymmetricCleanSurfaceHallPointKernel
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
   (1 / 2 : ℂ) *
-    (cleanHallPointKernel params measured source px py -
-      cleanHallPointKernel params source measured px py)
+    (cleanSurfaceHallPointKernel params measured source px py -
+      cleanSurfaceHallPointKernel params source measured px py)
 
-theorem antisymmetricCleanHallPointKernel_swap
+theorem antisymmetricCleanSurfaceHallPointKernel_swap
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
-    antisymmetricCleanHallPointKernel params source measured px py =
-      -antisymmetricCleanHallPointKernel params measured source px py := by
-  unfold antisymmetricCleanHallPointKernel
+    antisymmetricCleanSurfaceHallPointKernel params source measured px py =
+      -antisymmetricCleanSurfaceHallPointKernel params measured source px py := by
+  unfold antisymmetricCleanSurfaceHallPointKernel
   ring
 
-@[simp] theorem antisymmetricCleanHallPointKernel_self
+@[simp] theorem antisymmetricCleanSurfaceHallPointKernel_self
     (params : Parameters) (direction : Fin 2) (px py : ℝ) :
-    antisymmetricCleanHallPointKernel params direction direction px py = 0 := by
-  simp [antisymmetricCleanHallPointKernel]
+    antisymmetricCleanSurfaceHallPointKernel params direction direction px py = 0 := by
+  simp [antisymmetricCleanSurfaceHallPointKernel]
 
 /-- Restrict a point kernel to the explicit finite circular momentum domain. -/
 noncomputable def finiteDiskSurfaceHallIntegrand
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ := by
   classical
   exact if inMomentumDomain params px py then
-    antisymmetricCleanHallPointKernel params measured source px py
+    antisymmetricCleanSurfaceHallPointKernel params measured source px py
   else 0
 
 /-- Finite-cutoff raw Hall response over the bounding square, with the disk restriction enforced
@@ -153,7 +156,7 @@ theorem finiteDiskSurfaceHallIntegrand_swap
   classical
   unfold finiteDiskSurfaceHallIntegrand
   split
-  · exact antisymmetricCleanHallPointKernel_swap params measured source px py
+  · exact antisymmetricCleanSurfaceHallPointKernel_swap params measured source px py
   · simp
 
 theorem finiteCutoffSurfaceHallResponseComponent_swap
