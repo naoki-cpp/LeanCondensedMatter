@@ -21,7 +21,6 @@ noncomputable section
 open QuantumTheory.Transport
 
 /-- Two-component Hilbert space used by the Rashba-exchange benchmark. -/
-abbrev MassiveDirac.DiracHilbert := EuclideanSpace ℂ (Fin 2)
 
 /-- Canonical bounded-operator realization of a two-by-two Pauli matrix. -/
 noncomputable def matrixOperator (M : InternalSpace.PauliMatrix) :
