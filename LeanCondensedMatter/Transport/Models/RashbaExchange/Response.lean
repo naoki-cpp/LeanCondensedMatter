@@ -96,7 +96,7 @@ private theorem regularizedBastinOperatorIntegrand_scalarCurrent_swap
         (a • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
         energy broadening := by
   unfold regularizedBastinOperatorIntegrand
-  simp [smul_mul_assoc, mul_smul_comm, smul_smul, mul_comm]
+  simp [smul_smul, mul_comm]
 
 private theorem regularizedBastinTraceIntegrand_scalarCurrent_swap
     (hamiltonian : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))
@@ -159,7 +159,14 @@ theorem cleanBastinPointResponse_rashba_zero_swap
     currentBoundedOperator_rashba_zero params source px py hAlpha]
   apply intervalIntegral.integral_congr
   intro energy _
-  rw [regularizedBastinTraceIntegrand_scalarCurrent_swap]
+  apply congrArg (fun z : ℂ => occupation energy * z)
+  exact regularizedBastinTraceIntegrand_scalarCurrent_swap
+    (hamiltonianOperator params px py)
+    (((params.signedCharge *
+      (if measured = 0 then px / params.effectiveMass else py / params.effectiveMass) : ℝ) : ℂ))
+    (((params.signedCharge *
+      (if source = 0 then px / params.effectiveMass else py / params.effectiveMass) : ℝ) : ℂ))
+    energy params.broadening
 
 /-- The full finite-broadening Hall projection vanishes pointwise when the Rashba coupling is zero. -/
 @[simp] theorem antisymmetricCleanBastinPointResponse_rashba_zero
