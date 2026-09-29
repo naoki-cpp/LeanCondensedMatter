@@ -103,13 +103,33 @@ noncomputable def finiteCutoffHallResponseComponent
       ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
         finiteDiskHallIntegrand params measured source px py
 
+theorem finiteDiskHallIntegrand_swap
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
+    finiteDiskHallIntegrand params source measured px py =
+      -finiteDiskHallIntegrand params measured source px py := by
+  classical
+  unfold finiteDiskHallIntegrand
+  split <;> simp only [neg_zero]
+  · exact antisymmetricCleanHallPointKernel_swap params measured source px py
+  · rfl
+
 theorem finiteCutoffHallResponseComponent_swap
     (params : Parameters) (measured source : Fin 2) :
     finiteCutoffHallResponseComponent params source measured =
       -finiteCutoffHallResponseComponent params measured source := by
-  unfold finiteCutoffHallResponseComponent finiteDiskHallIntegrand
-  simp_rw [antisymmetricCleanHallPointKernel_swap]
-  simp only [ite_neg, intervalIntegral.integral_neg]
+  unfold finiteCutoffHallResponseComponent
+  rw [show
+    (∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+      ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        finiteDiskHallIntegrand params source measured px py) =
+      -(∫ px : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+        ∫ py : ℝ in (-params.momentumCutoff)..params.momentumCutoff,
+          finiteDiskHallIntegrand params measured source px py) by
+    simp_rw [finiteDiskHallIntegrand_swap]
+    rw [intervalIntegral.integral_neg]
+    congr 1
+    funext px
+    rw [intervalIntegral.integral_neg]]
   ring
 
 /-- Physical conductivity component: the finite raw response receives the common static
