@@ -28,6 +28,7 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
+/-- The explicit momentum normalization equals the canonical physical-momentum measure. -/
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
   params.momentumMeasureNormalization = momentumMeasurePrefactor params.hbar
 
@@ -148,6 +149,7 @@ noncomputable def finiteCutoffHallConductivityComponent
   ((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ) *
     finiteCutoffHallResponseComponent params measured source
 
+/-- Antisymmetric finite-cutoff Hall conductivity packaged as a physical conductivity tensor. -/
 noncomputable def finiteCutoffHallConductivityTensor
     (params : Parameters) : ConductivityTensor (Fin 2) where
   component := finiteCutoffHallConductivityComponent params
