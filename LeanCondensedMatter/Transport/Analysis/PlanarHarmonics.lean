@@ -167,6 +167,7 @@ theorem AngularHarmonicCoefficients.rotate2D_secondCosine
           coefficients.secondCosine) +
         (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) •
           coefficients.secondMixed := by
+  letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
   module
@@ -180,6 +181,7 @@ theorem AngularHarmonicCoefficients.rotate2D_secondMixed
           coefficients.secondCosine +
         ((((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) •
           coefficients.secondMixed) := by
+  letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
   simp [AngularHarmonicCoefficients.rotate2D, EuclideanHarmonicCoefficients.toAngular2D,
     AngularHarmonicCoefficients.toEuclidean2D, rotationMatrix2D, Fin.sum_univ_two]
   module
