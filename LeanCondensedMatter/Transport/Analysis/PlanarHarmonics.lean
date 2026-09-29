@@ -57,16 +57,16 @@ def AngularHarmonicCoefficients.toEuclidean2D
 
 /-- The legacy two-dimensional trigonometric evaluation is exactly the Euclidean vector/STF
 quadratic evaluation on the polar unit direction. -/
-set_option linter.flexible false in
 theorem AngularHarmonicCoefficients.eval_eq_toEuclidean2D_eval
     {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : AngularHarmonicCoefficients E) (angle : ℝ) :
     coefficients.eval angle =
       coefficients.toEuclidean2D.eval (polarDirection2D angle) := by
-  simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
-    EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
-    EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
-    -Complex.ofReal_cos, -Complex.ofReal_sin]
+  set_option linter.flexible false in
+    simp [AngularHarmonicCoefficients.eval, AngularHarmonicCoefficients.toEuclidean2D,
+      EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
+      EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
+      -Complex.ofReal_cos, -Complex.ofReal_sin]
   match_scalars <;>
     (try rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]) <;>
     simp only [Complex.coe_algebraMap] <;>
@@ -83,7 +83,6 @@ def EuclideanHarmonicCoefficients.toAngular2D
   secondMixed := (2 : ℂ) • coefficients.second 0 1
 
 /-- The Euclidean-to-trigonometric bridge preserves evaluation on the polar unit direction. -/
-set_option linter.flexible false in
 theorem EuclideanHarmonicCoefficients.toAngular2D_eval
     {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients 2 E) (angle : ℝ) :
@@ -96,10 +95,11 @@ theorem EuclideanHarmonicCoefficients.toAngular2D_eval
   have hoff : coefficients.second 1 0 = coefficients.second 0 1 := by
     have h := congrFun (congrFun coefficients.second_symm 0) 1
     simpa using h
-  simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
-    EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
-    EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two, hdiag, hoff,
-    -Complex.ofReal_cos, -Complex.ofReal_sin]
+  set_option linter.flexible false in
+    simp [EuclideanHarmonicCoefficients.toAngular2D, AngularHarmonicCoefficients.eval,
+      EuclideanHarmonicCoefficients.eval, EuclideanHarmonicCoefficients.contract,
+      EuclideanHarmonicCoefficients.complexDirection, polarDirection2D, Fin.sum_univ_two,
+      hdiag, hoff, -Complex.ofReal_cos, -Complex.ofReal_sin]
   match_scalars <;>
     (try rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]) <;>
     simp only [Complex.coe_algebraMap] <;>
