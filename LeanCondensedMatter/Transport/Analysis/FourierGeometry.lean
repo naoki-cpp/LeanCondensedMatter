@@ -20,6 +20,9 @@ namespace Transport
 
 noncomputable section
 
+/-- Squared Euclidean norm of a two-dimensional Cartesian momentum coordinate. -/
+def momentumSq2D (px py : ℝ) : ℝ := px ^ 2 + py ^ 2
+
 /-- Radial scaling of an arbitrary finite-dimensional direction. No unit-norm condition is bundled
 here; a spherical-coordinate layer may supply one when it needs an actual point on a sphere. -/
 def radialPoint {n : ℕ} (radius : ℝ) (direction : Fin n → ℝ) : Fin n → ℝ :=
