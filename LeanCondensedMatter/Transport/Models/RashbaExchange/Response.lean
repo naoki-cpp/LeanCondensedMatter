@@ -82,6 +82,38 @@ theorem cleanSurfaceHallPointKernel_eq_regularized
       (currentBoundedOperator params source px py)
       params.chemicalPotential params.broadening)
 
+private theorem regularizedBastinOperatorIntegrand_scalarCurrent_swap
+    (hamiltonian : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))
+    (a b : ℂ) (energy broadening : ℝ) :
+    regularizedBastinOperatorIntegrand
+        hamiltonian
+        (a • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        (b • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        energy broadening =
+      regularizedBastinOperatorIntegrand
+        hamiltonian
+        (b • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        (a • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        energy broadening := by
+  unfold regularizedBastinOperatorIntegrand
+  simp [smul_mul_assoc, mul_smul_comm, smul_smul, mul_comm]
+
+private theorem regularizedBastinTraceIntegrand_scalarCurrent_swap
+    (hamiltonian : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))
+    (a b : ℂ) (energy broadening : ℝ) :
+    regularizedBastinTraceIntegrand
+        hamiltonian
+        (a • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        (b • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        energy broadening =
+      regularizedBastinTraceIntegrand
+        hamiltonian
+        (b • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        (a • (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)))
+        energy broadening := by
+  unfold regularizedBastinTraceIntegrand
+  rw [regularizedBastinOperatorIntegrand_scalarCurrent_swap]
+
 /-- Full finite-broadening Bastin response at one momentum point over an explicit finite energy
 window. Unlike the surface primitive above, this is the complete canonical traced Bastin energy
 integral and therefore retains both the surface-derivative and residual-sea contributions. -/
@@ -110,6 +142,35 @@ theorem antisymmetricCleanBastinPointResponse_swap
       -antisymmetricCleanBastinPointResponse params measured source px py
         lowerEnergy upperEnergy occupation := by
   unfold antisymmetricCleanBastinPointResponse
+  ring
+
+/-- With zero Rashba coupling the two current vertices are scalar identity operators, so exchanging
+the measured and source directions leaves the full finite-broadening Bastin response unchanged. -/
+theorem cleanBastinPointResponse_rashba_zero_swap
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    cleanBastinPointResponse params measured source px py
+        lowerEnergy upperEnergy occupation =
+      cleanBastinPointResponse params source measured px py
+        lowerEnergy upperEnergy occupation := by
+  unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
+  rw [currentBoundedOperator_rashba_zero params measured px py hAlpha,
+    currentBoundedOperator_rashba_zero params source px py hAlpha]
+  apply intervalIntegral.integral_congr
+  intro energy _
+  rw [regularizedBastinTraceIntegrand_scalarCurrent_swap]
+
+/-- The full finite-broadening Hall projection vanishes pointwise when the Rashba coupling is zero. -/
+@[simp] theorem antisymmetricCleanBastinPointResponse_rashba_zero
+    (params : Parameters) (measured source : Fin 2) (px py : ℝ)
+    (lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hAlpha : params.rashbaVelocity = 0) :
+    antisymmetricCleanBastinPointResponse params measured source px py
+        lowerEnergy upperEnergy occupation = 0 := by
+  unfold antisymmetricCleanBastinPointResponse
+  rw [cleanBastinPointResponse_rashba_zero_swap
+    params measured source px py lowerEnergy upperEnergy occupation hAlpha]
   ring
 
 /-- Ordered Hall projection of the clean point response. Antisymmetry is algebraic and therefore
