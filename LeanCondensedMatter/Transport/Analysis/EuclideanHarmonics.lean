@@ -70,7 +70,7 @@ theorem complexDirection_mulVec {n : ℕ}
   simp [complexDirection, complexifyMatrix, Matrix.Module.smul_apply, Matrix.mulVec, dotProduct]
 
 /-- Contraction is contravariant with respect to the matrix-module action. -/
-theorem contract_transpose_smul {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+theorem contract_transpose_smul {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     (matrix : Matrix (Fin n) (Fin n) ℂ) (weights : Fin n → ℂ) (values : Fin n → E) :
     contract weights (matrix.transpose • values) =
       contract (matrix • weights) values := by
@@ -86,7 +86,7 @@ theorem contract_transpose_smul {n : ℕ} {E : Type*} [AddCommMonoid E] [Module 
   rw [mul_comm]
 
 /-- Contracting each row commutes with the matrix-module action on the row index. -/
-theorem contract_matrix_smul_rows {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+theorem contract_matrix_smul_rows {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     (weights : Fin n → ℂ) (matrix : Matrix (Fin n) (Fin n) ℂ)
     (rows : Fin n → Fin n → E) :
     (fun i => contract weights ((matrix • rows) i)) =
@@ -106,7 +106,7 @@ theorem contract_matrix_smul_rows {n : ℕ} {E : Type*} [AddCommMonoid E] [Modul
 /-- Pull back Euclidean harmonic coefficients along a real orthogonal transformation.
 The linear coefficient transforms as `Rᵀ b` and the quadratic coefficient as `Rᵀ Q R`.
 The construction is coefficient-generic: only the complex module structure on `E` is used. -/
-def orthogonalTransform {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+def orthogonalTransform {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
@@ -173,7 +173,7 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
       _ = 0 := coefficients.second_trace
 
 @[simp]
-theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) :
@@ -182,7 +182,7 @@ theorem orthogonalTransform_constant {n : ℕ} {E : Type*} [AddCommMonoid E] [Mo
 
 @[simp]
 theorem orthogonalTransform_first_apply {n : ℕ} {E : Type*}
-    [AddCommMonoid E] [Module ℂ E]
+    [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) (i : Fin n) :
@@ -192,7 +192,7 @@ theorem orthogonalTransform_first_apply {n : ℕ} {E : Type*}
 
 @[simp]
 theorem orthogonalTransform_second_apply {n : ℕ} {E : Type*}
-    [AddCommMonoid E] [Module ℂ E]
+    [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ) (i j : Fin n) :
@@ -203,7 +203,7 @@ theorem orthogonalTransform_second_apply {n : ℕ} {E : Type*}
 
 /-- Orthogonal pullback of the coefficient data is equivalent to evaluating the original
 harmonics on the transformed direction. -/
-theorem orthogonalTransform_eval {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
+theorem orthogonalTransform_eval {n : ℕ} {E : Type*} [AddCommGroup E] [Module ℂ E]
     (coefficients : EuclideanHarmonicCoefficients n E)
     (matrix : Matrix (Fin n) (Fin n) ℝ)
     (horthogonal : matrix ∈ Matrix.orthogonalGroup (Fin n) ℝ)
