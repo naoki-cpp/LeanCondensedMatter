@@ -161,7 +161,7 @@ def orthogonalTransform {n : ℕ} {E : Type*} [AddCommMonoid E] [Module ℂ E]
             intro k hk
             apply Finset.sum_congr rfl
             intro l hl
-            rw [Finset.sum_smul]
+            rw [← Finset.sum_smul]
       _ = ∑ k, ∑ l, (if k = l then 1 else 0) • coefficients.second k l := by
             apply Finset.sum_congr rfl
             intro k hk
