@@ -149,26 +149,13 @@ theorem continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
     exact (hparameter.sub continuousAt_const).inv₀ hden
   have hret := hside .retarded
   have hadv := hside .advanced
-  have hforward := (hret.mul hret).mul
+  have hforward := (hret.pow 2).mul
     (continuousAt_const : ContinuousAt (fun _ : ℝ × ℝ => forward) p)
-  have hreverse := (hadv.mul hadv).mul
+  have hreverse := (hadv.pow 2).mul
     (continuousAt_const : ContinuousAt (fun _ : ℝ × ℝ => reverse) p)
-  have hsub := hforward.sub hreverse
   unfold interbandPoleRegularFactor
   dsimp
-  change ContinuousAt
-    ((((fun q : ℝ × ℝ =>
-          targetCenteredSourceCoefficient .retarded gap q.1 q.2) *
-        (fun q : ℝ × ℝ =>
-          targetCenteredSourceCoefficient .retarded gap q.1 q.2)) *
-        (fun _ : ℝ × ℝ => forward)) -
-      (((fun q : ℝ × ℝ =>
-          targetCenteredSourceCoefficient .advanced gap q.1 q.2) *
-        (fun q : ℝ × ℝ =>
-          targetCenteredSourceCoefficient .advanced gap q.1 q.2)) *
-        (fun _ : ℝ × ℝ => reverse)))
-    p
-  exact hsub
+  exact hforward.sub hreverse
 
 /-- Lorentzian-weighted fixed-window integral of the regular interband factor. -/
 noncomputable def interbandPoleRegularFactorIntegral
