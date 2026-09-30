@@ -63,10 +63,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
   have hDiagramMoment :
       dysonVertexMomentSetFunction ε β (quarticInteraction g) =
         W.normalizedObjectMoment := by
-    apply Combinatorics.NormalizedSetFunction.ext
-    intro T
-    change dysonVertexMoment ε β (quarticInteraction g) T =
-      ∑ d : QuarticWickDiagram Mode n T, quarticWickDiagramAmplitude ε β g d
+    ext T
     exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
   have hMoment :=
     (Combinatorics.powerSeriesMomentSetFunction_eq_iff
