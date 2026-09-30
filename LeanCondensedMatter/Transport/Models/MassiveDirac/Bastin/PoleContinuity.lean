@@ -41,6 +41,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFac
   unfold targetCenteredInterbandSpectatorCurrentFactor
     interbandSpectatorCurrentFactor interbandPoleRegularFactor
   dsimp
+  simp only [retardedSpectralParameter, advancedSpectralParameter]
   rw [projectorResolventCoefficient_targetOffset_oppositeBand
       .retarded band v m px py p.1 p.2,
     projectorResolventCoefficient_targetOffset_oppositeBand
