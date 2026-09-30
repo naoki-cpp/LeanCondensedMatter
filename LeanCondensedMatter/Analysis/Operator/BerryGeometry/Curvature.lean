@@ -215,10 +215,10 @@ theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq �
   intro m _
   by_cases hmn : m = n
   · subst m
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     rw [data.diagonal_innerProduct_im_eq_zero]
     ring
-  · rw [if_neg hmn]
+  · rw [ite_eq_right hmn]
     exact data.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
       μ ν (hself μ) (hself ν) hmn (hnondegenerate m hmn)
 

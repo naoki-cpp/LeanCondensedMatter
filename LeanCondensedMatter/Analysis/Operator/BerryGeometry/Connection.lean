@@ -180,7 +180,7 @@ noncomputable def ofSimpleSpectrum
     · have henergy : energy k ≠ energy n := fun h => hkn (energy_injective h)
       have hgap : ((energy n : ℂ) - (energy k : ℂ)) ≠ 0 := by
         exact_mod_cast sub_ne_zero.mpr henergy.symm
-      simp only [if_neg hkn, eigenbasis.inner_eq_zero hkn]
+      simp only [ite_eq_right hkn, eigenbasis.inner_eq_zero hkn]
       push_cast
       field_simp [hgap]
       ring
@@ -212,7 +212,7 @@ noncomputable def ofSimpleSpectrum
           _ = inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) := by
             exact (hamiltonianDerivative_selfAdjoint μ).isSymmetric.apply_clm _ _
       have hnm : n ≠ m := fun h => hmn h.symm
-      simp only [if_neg hnm, if_neg hmn]
+      simp only [ite_eq_right hnm, ite_eq_right hmn]
       have hstarDiv :
           (starRingEnd ℂ)
               (inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m)) /

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 
 set_option linter.style.header false
 
@@ -177,7 +177,7 @@ theorem cumulantFromMoment_eq_zero_of_straddles {m : Finset α → ℂ} {A B : F
     (hTB : ¬T ≤ B) : cumulantFromMoment m T = 0 := by
   have hT0 : T ≠ ⊥ := fun h => hTA (h ▸ bot_le)
   rw [cumulantFromMoment_eq_splitCumulant_of_le hind hT hT0, splitCumulant,
-    if_neg (not_or.2 ⟨hTA, hTB⟩)]
+    ite_eq_right (not_or.2 ⟨hTA, hTB⟩)]
 
 /-- The cumulant of a union of two nonempty independent regions vanishes. -/
 theorem cumulantFromMoment_eq_zero_of_isIndependentAcross {m : Finset α → ℂ} {A B : Finset α}
