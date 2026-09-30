@@ -116,8 +116,9 @@ private noncomputable def familyGlobalSlotEquiv {total : ℕ}
   (Equiv.ofInjective
       (fun x : F i => order.symm (ambientEquiv.symm ⟨i, x⟩))
       (familyGlobalSlot_injective F ambientEquiv order i)).trans
-    (Equiv.setCongr (by
-      ext x
+    (Equiv.subtypeEquivProp (by
+      funext x
+      apply propext
       simp [familyGlobalSlots]))
 
 /-- Canonical increasing-slot order on one fiber induced by a global order. -/
@@ -155,7 +156,7 @@ private theorem familyOrderOfOrder_slot {total : ℕ} (size : ι → ℕ)
       ((familyGlobalSlotEquiv F ambientEquiv order i).apply_symm_apply
       ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
         ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j))
-  exact h
+  simpa [familyGlobalSlotEquiv] using h
 
 /-- Extract the order-preserving family shuffle induced by a global order. -/
 private noncomputable def familyShuffleOfOrder {total : ℕ} (size : ι → ℕ)
