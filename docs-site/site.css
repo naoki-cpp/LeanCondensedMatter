@@ -95,7 +95,7 @@ button, select { cursor: pointer; }
   border-left: 1px solid var(--line);
 }
 
-.eyebrow, .detail-eyebrow {
+.detail-eyebrow {
   margin: 0 0 8px;
   font-size: 10px;
   font-weight: 800;
@@ -231,13 +231,15 @@ select:disabled {
 }
 .legend-node.root { width: 12px; height: 12px; border-color: #d9fffb; background: var(--cyan); }
 .legend-node.branch { background: var(--accent-strong); }
-.legend-edge { width: 18px; height: 0; flex: 0 0 auto; border-top: 2px solid var(--accent); }
+.legend-edge { position: relative; width: 18px; height: 0; flex: 0 0 auto; border-top: 2px solid var(--accent); }
+.legend-edge::after { content: ""; position: absolute; top: -3px; right: 0; width: 0; height: 0; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 5px solid var(--accent); }
 .legend-edge.cross { border-top: 1px dashed #94a3b8; opacity: 0.55; }
+.legend-edge.cross::after { border-left-color: #94a3b8; }
 .legend-edge.wrapper { border-top: 2px dashed var(--accent-strong); }
+.legend-edge.wrapper::after { border-left-color: var(--accent-strong); }
 .legend-dependency { grid-column: 1 / -1; color: var(--text); }
-.legend-dependency strong { color: var(--cyan); font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
-.hint, .muted { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
+.muted { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
 
 .graph-panel { min-width: 0; background: rgba(8, 12, 24, 0.48); }
 .graph-toolbar {
@@ -285,17 +287,7 @@ select:disabled {
 .overview-section { margin-top: 28px; }
 .overview-section-head { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .overview-section h3 { margin: 0; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.09em; }
-.overview-back {
-  padding: 6px 9px;
-  color: var(--muted);
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.overview-back:hover { color: var(--text); border-color: var(--line-strong); }
-
-.domain-grid, .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
-.domain-card, .module-card, .declaration-card {
+.declaration-card {
   width: 100%;
   padding: 15px;
   color: var(--text);
@@ -304,12 +296,12 @@ select:disabled {
   border: 1px solid var(--line);
   border-radius: 13px;
 }
-.domain-card:hover, .module-card:hover, .declaration-card:hover {
+.declaration-card:hover {
   border-color: var(--line-strong);
   background: rgba(145, 169, 255, 0.08);
 }
-.domain-card strong, .module-card strong, .declaration-card strong { display: block; overflow-wrap: anywhere; font-size: 13px; }
-.domain-card small, .module-card small, .declaration-card small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.declaration-card strong { display: block; overflow-wrap: anywhere; font-size: 13px; }
+.declaration-card small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .declaration-list { display: grid; gap: 8px; }
 
 .graph-scroll {
@@ -415,16 +407,14 @@ select:disabled {
 @media (max-width: 760px) {
   .site-header { min-height: 62px; padding: 0 14px; }
   .brand > span:last-child { display: none; }
-  .site-header nav { gap: 12px; font-size: 12px; }
+  .site-header nav { flex-wrap: wrap; justify-content: flex-end; gap: 8px 12px; font-size: 12px; }
   .app-shell { display: block; min-height: calc(100vh - 62px); }
   .controls { gap: 16px; padding: 16px; border-right: 0; border-bottom: 1px solid var(--line); }
-  .controls > div:first-child { display: none; }
-  .highlight-controls, .hint { display: none; }
+  .highlight-controls { display: none; }
   .control-grid { grid-template-columns: minmax(0, 1fr) 76px; }
   .graph-toolbar { min-height: 48px; padding: 7px 10px; }
   .overview-panel { min-height: 0; height: auto; padding: 22px 16px 30px; }
   .graph-scroll { min-height: 0; height: 58vh; }
-  .domain-grid, .module-grid { grid-template-columns: 1fr; }
   .detail-panel { min-height: 0; padding: 18px 16px 28px; border-top: 1px solid var(--line); }
   .search-results { position: fixed; top: 118px; right: 12px; left: 12px; max-height: 55vh; }
 }

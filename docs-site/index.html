@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Interactive theorem dependency graph for LeanCondensedMatter.">
+  <meta name="description" content="Explore theorem dependencies and Lean module imports in LeanCondensedMatter.">
   <meta name="theme-color" content="#080c18">
   <title>LeanCondensedMatter Explorer</title>
   <link rel="stylesheet" href="./site.css">
@@ -22,15 +22,16 @@
   </svg>
 
   <header class="site-header">
-    <a class="brand" href="./" aria-label="LeanCondensedMatter declaration explorer home">
+    <a class="brand" href="./" aria-label="LeanCondensedMatter explorer home">
       <span class="brand-mark" aria-hidden="true">LCM</span>
       <span>
         <strong>LeanCondensedMatter</strong>
-        <small>Declaration Explorer</small>
+        <small>Theorem and Module Explorer</small>
       </span>
     </a>
     <nav aria-label="Project links">
-      <button id="overview-link" class="nav-button" type="button">Overview</button>
+      <button id="overview-link" class="nav-button" type="button">Theorem Graph</button>
+      <button id="module-imports-link" class="nav-button" type="button">Module imports</button>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter">GitHub</a>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/notes/roadmap.md">Roadmap</a>
     </nav>
@@ -84,17 +85,16 @@
       </fieldset>
 
       <div class="legend" aria-label="Graph legend">
-        <span><i class="legend-node root"></i> focused theorem</span>
-        <span><i class="legend-node branch"></i> color: first-hop branch</span>
-        <span class="legend-dependency"><i class="legend-edge"></i> dependency · <strong>A → B</strong>: A depends on B</span>
+        <span><i class="legend-node root"></i> selected theorem</span>
+        <span><i class="legend-node branch"></i> color groups by first connection</span>
+        <span class="legend-dependency"><i class="legend-edge"></i> dependency</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
       </div>
 
-      <p class="hint">Click to inspect · double-click to re-center · drag to pan · pinch or scroll to zoom · hover/focus to isolate a branch.</p>
     </aside>
 
-    <section class="graph-panel" aria-label="Declaration dependency graph">
+    <section class="graph-panel" aria-label="Declaration and module exploration panel">
       <div class="graph-toolbar">
         <span id="graph-status">Loading theorem catalog…</span>
         <div class="graph-actions" aria-label="Graph view controls">
@@ -110,9 +110,7 @@
       </div>
     </section>
 
-    <aside id="detail" class="detail-panel" aria-live="polite">
-      <p class="muted">Select a declaration.</p>
-    </aside>
+    <aside id="detail" class="detail-panel" aria-live="polite"></aside>
   </main>
 
   <script type="module" src="./graph.js"></script>
