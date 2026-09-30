@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -35,13 +36,10 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
       (-2 * Complex.I) *
         (lorentzianSpectralKernel
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) := by
-  unfold spectralDifferenceCoefficient projectorResolventCoefficient
-    retardedSpectralParameter advancedSpectralParameter
-  rw [spectralParameter_retarded_ofRegulator, spectralParameter_advanced_ofRegulator]
-  unfold spectralParameterOfRegulator
-  simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
-    inv_add_I_sub_inv_sub_I_eq_lorentzian
-      (probeEnergy - bandEnergy band v m px py) broadening hbroadening
+  simpa [spectralDifferenceCoefficient, projectorResolventCoefficient,
+    scalarSpectralDifferenceCoefficient, scalarResolventCoefficient] using
+    scalarSpectralDifferenceCoefficient_eq_lorentzian
+      (bandEnergy band v m px py) probeEnergy broadening hbroadening
 
 /-- The regular current factor multiplying the target-band Lorentzian pole in an interband Bastin
 pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
