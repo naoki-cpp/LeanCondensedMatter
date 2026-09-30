@@ -104,7 +104,6 @@ private theorem boundedUnitaryEvolution_mem_unitary
     simpa only [isSelfAdjoint_iff] using hB
   have hcoefficient : unitaryTimeCoefficient (-t) = -unitaryTimeCoefficient t := by
     simp [unitaryTimeCoefficient]
-    ring
   rw [star_smul, star_unitaryTimeCoefficient, hBstar, ← neg_smul]
   exact congrArg (fun c : ℂ => c • B) hcoefficient
 
