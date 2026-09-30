@@ -185,7 +185,7 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
       ring
     rw [hnegExpectation,
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i i]
-    simp only [if_true]
+    simp only [ite_true]
     have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
     have harg : (-(ε i) * β : ℝ) = -(ε i * β) := by ring
     rw [harg] at hden
