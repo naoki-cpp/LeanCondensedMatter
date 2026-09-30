@@ -97,8 +97,11 @@ The project-local resolvent/Cayley/Stone line constructs strongly continuous uni
 a self-adjoint `LinearPMap` without such a functional calculus; it does not define
 `exp (-β H)`.
 Its consumer-facing endpoint is routed through
-`Analysis/Operator/Unbounded.lean`; resolvent approximation, convergence, domain transport, and
-generator proofs remain implementation-stage machinery behind that public route.
+`Analysis/Operator/Unbounded.lean`; the Stone approximation, convergence, domain transport, and
+generator proofs are consolidated in
+`Analysis/Operator/Unbounded/ResolventEvolution.lean`, where stage-specific declarations remain
+private. Generic resolvent and Cayley theorems remain available through their independent
+modules.
 
 For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
 **heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed
