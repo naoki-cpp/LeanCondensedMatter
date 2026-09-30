@@ -25023,53 +25023,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain),\n  Filter.Tendsto (fun r => (A.boundedSelfAdjointApproximationAtScale hA r) ↑x) Filter.atTop (nhds (↑A x))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
-    "externalAxioms": [],
-    "docString": "On the original domain, the totalized bounded approximations converge strongly to the\nself-adjoint operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_apply",
-      "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
-      "LinearPMap.nonrealResolvent_apply",
-      "LinearPMap.nonrealShiftInverseDomain_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.imaginaryParameter_im_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.star_imaginaryParameter_im_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (y : H),\n  (A.boundedSelfAdjointApproximation hA r hr) y =\n    LinearPMap.approximationCoefficient✝ r •\n      ((A.nonrealResolvent hA (LinearPMap.imaginaryParameter✝ r) ⋯) y +\n        (A.nonrealResolvent hA (star (LinearPMap.imaginaryParameter✝ r)) ⋯) y)",
     "standardAxioms": [
       "Classical.choice",
@@ -25089,17 +25042,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -25133,7 +25086,7 @@
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain"
     ],
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_apply",
@@ -25146,7 +25099,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -25166,7 +25119,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -25179,7 +25132,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
     ],
     "dependencies": [
       "LinearPMap.nonrealResolvent_commute",
@@ -25189,7 +25142,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -25222,10 +25175,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
     ],
     "dependencies": [
       "LinearPMap.nonrealResolvent_adjoint",
@@ -25237,10 +25190,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -25273,9 +25226,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
     ],
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
@@ -25284,9 +25237,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -25347,7 +25300,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -25360,13 +25313,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -25443,9 +25396,9 @@
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
@@ -25454,9 +25407,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -26436,7 +26389,6 @@
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.apply_nonrealResolvent_sub_smul",
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.nonrealResolvent_mul_comm",
       "LinearPMap.nonrealResolvent_shift_apply",
       "LinearPMap.nonrealResolvent_sub_nonrealResolvent_apply",
@@ -26445,14 +26397,14 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_imaginaryParameter_le",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_star_imaginaryParameter_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.apply_nonrealResolvent_sub_smul",
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.nonrealResolvent_mul_comm",
       "LinearPMap.nonrealResolvent_shift_apply",
       "LinearPMap.nonrealResolvent_sub_nonrealResolvent_apply",
@@ -26461,7 +26413,8 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_imaginaryParameter_le",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_star_imaginaryParameter_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -26544,7 +26497,7 @@
     "directWrapperOf": "LinearPMap.nonrealResolvent_mul_comm",
     "dependents": [
       "LinearPMap.boundedSelfAdjointApproximation_commute",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
     ],
     "dependencies": [
       "LinearPMap.nonrealResolvent_mul_comm"
@@ -26553,7 +26506,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.boundedSelfAdjointApproximation_commute",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -26764,7 +26717,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.nonrealResolvent_mul_comm",
       "LinearPMap.nonrealResolvent_shift_apply",
       "LinearPMap.nonrealResolvent_sub_nonrealResolvent_apply",
@@ -26774,13 +26726,13 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_imaginaryParameter_le",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_star_imaginaryParameter_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.nonrealResolvent_mul_comm",
       "LinearPMap.nonrealResolvent_shift_apply",
       "LinearPMap.nonrealResolvent_sub_nonrealResolvent_apply",
@@ -26790,7 +26742,8 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_imaginaryParameter_le",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.norm_resolvent_star_imaginaryParameter_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -26862,8 +26815,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
@@ -26873,8 +26826,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -26973,140 +26926,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x : ↥A.domain),\n  ‖(A.resolventApproximationEvolutionAtScale hA r t) ↑x - ↑x‖ ≤ ‖↑A x‖ * |t|",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
-    "externalAxioms": [],
-    "docString": "On the original generator domain, every totalized bounded approximant has displacement bounded\nuniformly in the approximation scale by the original generator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
-      "LinearPMap.norm_resolventRegularizer_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (s t : ℝ) (x : H),\n  ‖(A.resolventApproximationEvolution hA r hr t) x - (A.resolventApproximationEvolutionAtScale hA s t) x‖ ≤\n    ‖(A.boundedSelfAdjointApproximation hA r hr) x - (A.boundedSelfAdjointApproximationAtScale hA s) x‖ * |t|",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
-    "externalAxioms": [],
-    "docString": "The totalized evolution and generator approximations use the same regularization scale. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
-    ],
-    "dependencies": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r s : ℝ) (hr : 0 < r) (hs : 0 < s) (t : ℝ) (x : H),\n  ‖(A.resolventApproximationEvolution hA r hr t) x - (A.resolventApproximationEvolution hA s hs t) x‖ ≤\n    ‖(A.boundedSelfAdjointApproximation hA r hr - A.boundedSelfAdjointApproximation hA s hs) x‖ * |t|",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
-    "externalAxioms": [],
-    "docString": "Difference estimate for the bounded resolvent-approximation evolutions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_commute",
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.boundedUnitaryEvolution_add_generator_of_commute",
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (y : H), ‖(A.resolventRegularizer hA r hr) y‖ ≤ ‖y‖",
     "standardAxioms": [
       "Classical.choice",
@@ -27126,8 +26945,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.resolventRegularizer_strong_convergence"
+      "LinearPMap.resolventRegularizer_strong_convergence",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence.0.LinearPMap.imaginaryParameter_im_ne_zero",
@@ -27138,8 +26957,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.resolventRegularizer_strong_convergence"
+      "LinearPMap.resolventRegularizer_strong_convergence",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -27211,7 +27030,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting Stone evolution inherits the domain displacement estimate\n`‖U(t)x - x‖ ≤ ‖A x‖ |t|`. ",
     "directWrapperTargetModule": null,
@@ -27220,227 +27039,14 @@
       "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain"
     ],
     "dependencies": [
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
       "LinearPMap.stoneEvolution_apply",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : ↥A.domain),\n  ‖(A.stoneEvolution hA t) ↑x - (A.resolventApproximationEvolution hA r hr t) ↑x‖ ≤\n    ‖(A.boundedSelfAdjointApproximation hA r hr) ↑x - ↑A x‖ * |t|",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
-    "externalAxioms": [],
-    "docString": "A fixed bounded approximating evolution differs from the limiting evolution by at most its\ngenerator error times `|t|`, on the original generator domain. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : ↥A.domain),\n  CauchySeq fun r => (A.resolventApproximationEvolutionAtScale hA r t) ↑x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
-    "externalAxioms": [],
-    "docString": "On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at\npositive infinity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x : H), ‖(A.resolventApproximationEvolutionAtScale hA r t) x‖ = ‖x‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator",
-    "externalAxioms": [],
-    "docString": "The totalized bounded approximating evolution preserves vector norms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
-      "LinearPMap.resolventEvolutionStrongLimit_apply_norm"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
-      "LinearPMap.resolventEvolutionStrongLimit_apply_norm"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x y : H),\n  dist ((A.resolventApproximationEvolutionAtScale hA r t) x) ((A.resolventApproximationEvolutionAtScale hA r t) y) =\n    dist x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-    "externalAxioms": [],
-    "docString": "The totalized bounded approximants preserve distances. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ), A.resolventApproximationEvolutionAtScale hA r 0 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-    "externalAxioms": [],
-    "docString": "The totalized bounded approximants retain the zero-time identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolution_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -27460,7 +27066,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
@@ -27473,7 +27079,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_add",
     "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_add"
@@ -27481,7 +27087,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -27536,49 +27142,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain) (t ε : ℝ),\n  0 < ε →\n    ∃ R,\n      0 < R ∧\n        ∀ (r s : ℝ),\n          R ≤ r →\n            R ≤ s →\n              ∀ (hr : 0 < r) (hs : 0 < s),\n                ‖(A.resolventApproximationEvolution hA r hr t) ↑x - (A.resolventApproximationEvolution hA s hs t) ↑x‖ <\n                  ε",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_domain_cauchy",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
-    "externalAxioms": [],
-    "docString": "On the original domain, the bounded resolvent evolutions are strongly Cauchy at each fixed\nreal time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_le",
-      "LinearPMap.resolventApproximationEvolution_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r), A.resolventApproximationEvolution hA r hr 0 = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -27598,9 +27161,9 @@
     "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_zero",
     "dependents": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_zero"
@@ -27608,147 +27171,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.resolventApproximationEvolution_domain_cauchy",
-      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
+      "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H),\n  A.resolventEvolutionStrongLimit hA (t + s) x = (A.stoneEvolution hA t) ((A.stoneEvolution hA s) x)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-    "externalAxioms": [],
-    "docString": "The additive one-parameter group law passes to the vectorwise strong limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.stoneEvolution_add",
-      "LinearPMap.stoneEvolution_star",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolution_add",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.stoneEvolution_add",
-      "LinearPMap.stoneEvolution_star",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H), ‖A.resolventEvolutionStrongLimit hA t x‖ = ‖x‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventEvolutionStrongLimit_apply_norm",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator",
-    "externalAxioms": [],
-    "docString": "The strong-limit Stone evolution preserves vector norms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.stoneEvolution_dist_eq",
-      "LinearPMap.stoneEvolution_star"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.stoneEvolution_dist_eq",
-      "LinearPMap.stoneEvolution_star"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H), A.resolventEvolutionStrongLimit hA 0 x = x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventEvolutionStrongLimit_zero_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-    "externalAxioms": [],
-    "docString": "The strong-limit evolution is the identity at time zero, pointwise. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.stoneEvolution_star",
-      "LinearPMap.stoneEvolution_zero"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.stoneEvolution_star",
-      "LinearPMap.stoneEvolution_zero"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28034,7 +27461,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The bundled strong-limit operators form an additive one-parameter group. ",
     "directWrapperTargetModule": null,
@@ -28042,18 +27469,18 @@
     "dependents": [
       "LinearPMap.stoneEvolution_mul_star",
       "LinearPMap.stoneEvolution_star_mul",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
     ],
     "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.stoneEvolution_apply"
+      "LinearPMap.stoneEvolution_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.stoneEvolution_mul_star",
       "LinearPMap.stoneEvolution_star_mul",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -28067,7 +27494,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  (A.stoneEvolution hA t) x = A.resolventEvolutionStrongLimit hA t x",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  (A.stoneEvolution hA t) x = LinearPMap.resolventEvolutionStrongLimit✝ A hA t x",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28080,7 +27507,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -28089,12 +27516,12 @@
       "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
       "LinearPMap.stoneEvolution_add",
       "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
       "LinearPMap.stoneEvolution_dist_eq",
       "LinearPMap.stoneEvolution_star",
       "LinearPMap.stoneEvolution_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -28103,12 +27530,12 @@
       "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
       "LinearPMap.stoneEvolution_add",
       "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
       "LinearPMap.stoneEvolution_dist_eq",
       "LinearPMap.stoneEvolution_star",
       "LinearPMap.stoneEvolution_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -28135,7 +27562,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply_continuous",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. ",
     "directWrapperTargetModule": null,
@@ -28165,20 +27592,20 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "For a vector in the generator domain, the limiting evolution is continuous at time zero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
+      "LinearPMap.stoneEvolution_apply_continuous_domain"
     ],
     "dependencies": [
       "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
@@ -28188,7 +27615,50 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
+      "LinearPMap.stoneEvolution_apply_continuous_domain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain), Continuous fun t => (A.stoneEvolution hA t) ↑x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.stoneEvolution_apply_continuous_domain",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "On the generator domain, the limiting Stone evolution is continuous at every time. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_joint_continuous"
+    ],
+    "dependencies": [
+      "LinearPMap.stoneEvolution_apply",
+      "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_joint_continuous"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -28215,7 +27685,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply_domain",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "On its original domain, the unbounded self-adjoint generator intertwines with the limiting\nStone evolution. ",
     "directWrapperTargetModule": null,
@@ -28230,7 +27700,7 @@
       "LinearPMap.nonrealResolvent_mem_domain",
       "LinearPMap.nonrealShiftInverseDomain_apply",
       "LinearPMap.stoneEvolution_mem_domain",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28262,7 +27732,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "Strong Stone derivative on the preserved generator domain. ",
     "directWrapperTargetModule": null,
@@ -28271,7 +27741,7 @@
     "dependencies": [
       "LinearPMap.stoneEvolution_apply_domain",
       "LinearPMap.stoneEvolution_mem_domain",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28301,13 +27771,13 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "At zero time, the strong Stone evolution has infinitesimal generator `-i A` on `A.domain`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
     ],
     "dependencies": [
       "LinearPMap.boundedSelfAdjointApproximation_apply",
@@ -28319,12 +27789,12 @@
       "LinearPMap.stoneEvolution_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.imaginaryParameter_im_ne_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.star_imaginaryParameter_im_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -28351,7 +27821,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_dist_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The bundled limiting evolution is an isometry. ",
     "directWrapperTargetModule": null,
@@ -28360,8 +27830,8 @@
       "LinearPMap.stoneEvolution_joint_continuous"
     ],
     "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimit_apply_norm",
-      "LinearPMap.stoneEvolution_apply"
+      "LinearPMap.stoneEvolution_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28393,7 +27863,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_joint_continuous",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting Stone evolution is jointly continuous in the vector and time variables.\nContinuity on the dense generator domain extends to the whole Hilbert space because every time\nslice is an isometry. ",
     "directWrapperTargetModule": null,
@@ -28402,8 +27872,8 @@
       "LinearPMap.stoneEvolution_apply_continuous"
     ],
     "dependencies": [
-      "LinearPMap.stoneEvolution_dist_eq",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain"
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
+      "LinearPMap.stoneEvolution_dist_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28435,7 +27905,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_mem_domain",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting Stone evolution preserves the original self-adjoint operator domain. ",
     "directWrapperTargetModule": null,
@@ -28447,7 +27917,7 @@
     "dependencies": [
       "LinearPMap.nonrealResolvent_apply_operator",
       "LinearPMap.nonrealResolvent_mem_domain",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28480,7 +27950,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_mul_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting evolution is unitary, right-inverse form. ",
     "directWrapperTargetModule": null,
@@ -28519,7 +27989,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "Star/adjoint reverses time for the limiting evolution. ",
     "directWrapperTargetModule": null,
@@ -28529,10 +27999,10 @@
       "LinearPMap.stoneEvolution_star_mul"
     ],
     "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.resolventEvolutionStrongLimit_apply_norm",
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply",
-      "LinearPMap.stoneEvolution_apply"
+      "LinearPMap.stoneEvolution_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28565,7 +28035,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_star_mul",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting evolution is unitary, left-inverse form. ",
     "directWrapperTargetModule": null,
@@ -28604,7 +28074,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.stoneEvolution_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The bundled strong-limit evolution is the identity at time zero. ",
     "directWrapperTargetModule": null,
@@ -28616,8 +28086,8 @@
       "LinearPMap.stoneEvolution_star_mul"
     ],
     "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply",
-      "LinearPMap.stoneEvolution_apply"
+      "LinearPMap.stoneEvolution_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28628,59 +28098,6 @@
       "LinearPMap.stoneEvolution_star_mul"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  Filter.Tendsto (fun r => (A.resolventApproximationEvolutionAtScale hA r t) x) Filter.atTop\n    (nhds (A.resolventEvolutionStrongLimit hA t x))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
-    "externalAxioms": [],
-    "docString": "The totalized resolvent approximations converge strongly to `resolventEvolutionStrongLimit`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.resolventEvolutionStrongLimit_apply_norm",
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.resolventEvolutionStrongLimit_apply_norm",
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
-    ],
-    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136728,13 +136145,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
       "LinearPMap.boundedSelfAdjointApproximation_commute",
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
       "LinearPMap.resolventRegularizer_isSelfAdjoint",
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.imaginaryParameter_im"
@@ -136743,14 +136160,14 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.boundedSelfAdjointApproximation",
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
       "LinearPMap.boundedSelfAdjointApproximation_commute",
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
       "LinearPMap.resolventRegularizer",
       "LinearPMap.resolventRegularizer_isSelfAdjoint",
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -136822,27 +136239,27 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
       "LinearPMap.boundedSelfAdjointApproximation_commute",
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
       "LinearPMap.resolventRegularizer_isSelfAdjoint",
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.boundedSelfAdjointApproximation",
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
       "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
       "LinearPMap.boundedSelfAdjointApproximation_commute",
       "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
       "LinearPMap.resolventRegularizer",
       "LinearPMap.resolventRegularizer_isSelfAdjoint",
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -137077,52 +136494,42 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (r : ℝ), 0 < LinearPMap.positiveApproximationScale✝ r",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain),\n  Filter.Tendsto (fun r => (LinearPMap.boundedSelfAdjointApproximationAtScale✝ A hA r) ↑x) Filter.atTop (nhds (↑A x))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "On the original domain, the totalized bounded approximations converge strongly to the\nself-adjoint operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "LinearPMap.boundedSelfAdjointApproximation_apply",
+      "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
+      "LinearPMap.nonrealResolvent_apply",
+      "LinearPMap.nonrealShiftInverseDomain_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.imaginaryParameter_im_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation.0.LinearPMap.star_imaginaryParameter_im_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedSelfAdjointApproximationAtScale",
-      "LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
-      "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
-      "LinearPMap.resolventApproximationEvolutionAtScale",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137146,14 +136553,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The bounded self-adjoint approximant commutes with every nonreal resolvent. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "dependencies": [
       "LinearPMap.nonrealResolvent_commute",
@@ -137163,7 +136570,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -137177,7 +136584,133 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) (y : H),\n  (A.stoneEvolution hA t) ((A.nonrealResolvent hA z hz) y) = (A.nonrealResolvent hA z hz) ((A.stoneEvolution hA t) y)",
+    "statement": "∀ {ι : Type u_2} {X : Type u_3} {Y : Type u_4} [Nonempty ι] [inst : SemilatticeSup ι] [inst_1 : PseudoMetricSpace X]\n  [inst_2 : PseudoMetricSpace Y] (F : ι → X → Y) {s : Set X},\n  Dense s → (∀ (i : ι), Isometry (F i)) → (∀ x ∈ s, CauchySeq fun i => F i x) → ∀ (x : X), CauchySeq fun i => F i x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.cauchySeq_apply_of_isometry_of_dense",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "A family of isometries that is pointwise Cauchy on a dense set is pointwise Cauchy\neverywhere. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x : ↥A.domain),\n  ‖(LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) ↑x - ↑x‖ ≤ ‖↑A x‖ * |t|",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "On the original generator domain, every totalized bounded approximant has displacement bounded\nuniformly in the approximation scale by the original generator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain"
+    ],
+    "dependencies": [
+      "LinearPMap.boundedSelfAdjointApproximation_apply_domain",
+      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
+      "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
+      "LinearPMap.norm_resolventRegularizer_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (s t : ℝ) (x : H),\n  ‖(A.resolventApproximationEvolution hA r hr t) x - (LinearPMap.resolventApproximationEvolutionAtScale✝ A hA s t) x‖ ≤\n    ‖(A.boundedSelfAdjointApproximation hA r hr) x - (LinearPMap.boundedSelfAdjointApproximationAtScale✝ A hA s) x‖ *\n      |t|",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The totalized evolution and generator approximations use the same regularization scale. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r s : ℝ) (hr : 0 < r) (hs : 0 < s) (t : ℝ) (x : H),\n  ‖(A.resolventApproximationEvolution hA r hr t) x - (A.resolventApproximationEvolution hA s hs t) x‖ ≤\n    ‖(A.boundedSelfAdjointApproximation hA r hr - A.boundedSelfAdjointApproximation hA s hs) x‖ * |t|",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137189,28 +136722,28 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
-    "docString": "Nonreal resolvent commutation passes through the vectorwise strong limit. ",
+    "docString": "Difference estimate for the bounded resolvent-approximation evolutions. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.stoneEvolution_apply_domain",
-      "LinearPMap.stoneEvolution_mem_domain"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
     ],
     "dependencies": [
-      "LinearPMap.nonrealResolvent_apply",
-      "LinearPMap.nonrealShiftInverseDomain_apply",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute"
+      "LinearPMap.boundedSelfAdjointApproximation_commute",
+      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
+      "LinearPMap.boundedUnitaryEvolution_add_generator_of_commute",
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.stoneEvolution_apply_domain",
-      "LinearPMap.stoneEvolution_mem_domain"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -137236,8 +136769,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -137246,7 +136779,7 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
     ],
     "dependencies": [
-      "LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -137254,6 +136787,500 @@
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : ↥A.domain),\n  ‖(A.stoneEvolution hA t) ↑x - (A.resolventApproximationEvolution hA r hr t) ↑x‖ ≤\n    ‖(A.boundedSelfAdjointApproximation hA r hr) ↑x - ↑A x‖ * |t|",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "A fixed bounded approximating evolution differs from the limiting evolution by at most its\ngenerator error times `|t|`, on the original generator domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_slope_sub_resolventApproximationEvolution_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ), 0 < LinearPMap.positiveApproximationScale✝ r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximationAtScale_apply_tendsto",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_atScale_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply"
+    ],
+    "compiledConsumerCount": 11,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  CauchySeq fun r => (LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence\nas the real scale tends to positive infinity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+    ],
+    "dependencies": [
+      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.cauchySeq_apply_of_isometry_of_dense",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : ↥A.domain),\n  CauchySeq fun r => (LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) ↑x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at\npositive infinity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x : H),\n  ‖(LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) x‖ = ‖x‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The totalized bounded approximating evolution preserves vector norms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm"
+    ],
+    "dependencies": [
+      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x y : H),\n  dist ((LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) x)\n      ((LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) y) =\n    dist x y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The totalized bounded approximants preserve distances. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ), LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r 0 = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The totalized bounded approximants retain the zero-time identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply"
+    ],
+    "dependencies": [
+      "LinearPMap.resolventApproximationEvolution_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain) (t ε : ℝ),\n  0 < ε →\n    ∃ R,\n      0 < R ∧\n        ∀ (r s : ℝ),\n          R ≤ r →\n            R ≤ s →\n              ∀ (hr : 0 < r) (hs : 0 < s),\n                ‖(A.resolventApproximationEvolution hA r hr t) ↑x - (A.resolventApproximationEvolution hA s hs t) ↑x‖ <\n                  ε",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolution_domain_cauchy",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "On the original domain, the bounded resolvent evolutions are strongly Cauchy at each fixed\nreal time. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
+    ],
+    "dependencies": [
+      "LinearPMap.boundedSelfAdjointApproximation_strong_convergence",
+      "LinearPMap.resolventApproximationEvolution_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_resolventApproximationEvolution_sub_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H),\n  LinearPMap.resolventEvolutionStrongLimit✝ A hA (t + s) x = (A.stoneEvolution hA t) ((A.stoneEvolution hA s) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The additive one-parameter group law passes to the vectorwise strong limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_add",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
+      "LinearPMap.stoneEvolution_star"
+    ],
+    "dependencies": [
+      "LinearPMap.resolventApproximationEvolution_add",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_add",
+      "LinearPMap.stoneEvolution_apply_continuous_domain",
+      "LinearPMap.stoneEvolution_star"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H), ‖LinearPMap.resolventEvolutionStrongLimit✝ A hA t x‖ = ‖x‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The strong-limit Stone evolution preserves vector norms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_dist_eq",
+      "LinearPMap.stoneEvolution_star"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_dist_eq",
+      "LinearPMap.stoneEvolution_star"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H), LinearPMap.resolventEvolutionStrongLimit✝ A hA 0 x = x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The strong-limit evolution is the identity at time zero, pointwise. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.stoneEvolution_star",
+      "LinearPMap.stoneEvolution_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.stoneEvolution_star",
+      "LinearPMap.stoneEvolution_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137277,8 +137304,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_apply_hasDerivAt_intertwined",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The limiting evolution satisfies its strong generator equation at arbitrary time, with the\nright-hand side written as the evolved generator. ",
     "directWrapperTargetModule": null,
@@ -137308,38 +137335,42 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain), Continuous fun t => (A.stoneEvolution hA t) ↑x",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) (y : H),\n  (A.stoneEvolution hA t) ((A.nonrealResolvent hA z hz) y) = (A.nonrealResolvent hA z hz) ((A.stoneEvolution hA t) y)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity.0.LinearPMap.stoneEvolution_apply_continuous_domain",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
-    "docString": "On the generator domain, the limiting Stone evolution is continuous at every time. ",
+    "docString": "Nonreal resolvent commutation passes through the vectorwise strong limit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.stoneEvolution_joint_continuous"
+      "LinearPMap.stoneEvolution_apply_domain",
+      "LinearPMap.stoneEvolution_mem_domain"
     ],
     "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.stoneEvolution_apply",
-      "LinearPMap.stoneEvolution_apply_continuousAt_zero_domain"
+      "LinearPMap.nonrealResolvent_apply",
+      "LinearPMap.nonrealShiftInverseDomain_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.boundedSelfAdjointApproximation_nonrealResolvent_commute",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.positiveApproximationScale_pos",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.stoneEvolution_joint_continuous"
+      "LinearPMap.stoneEvolution_apply_domain",
+      "LinearPMap.stoneEvolution_mem_domain"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137351,7 +137382,60 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_2} {X : Type u_3} {Y : Type u_4} [Nonempty ι] [inst : SemilatticeSup ι] [inst_1 : PseudoMetricSpace X]\n  [inst_2 : PseudoMetricSpace Y] (F : ι → X → Y) {s : Set X},\n  Dense s → (∀ (i : ι), Isometry (F i)) → (∀ x ∈ s, CauchySeq fun i => F i x) → ∀ (x : X), CauchySeq fun i => F i x",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  Filter.Tendsto (fun r => (LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t) x) Filter.atTop\n    (nhds (LinearPMap.resolventEvolutionStrongLimit✝ A hA t x))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": "The totalized resolvent approximations converge strongly to `resolventEvolutionStrongLimit`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.norm_stoneEvolution_apply_sub_le_domain",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_apply_norm",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_zero_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.stoneEvolution_nonrealResolvent_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
+    ],
+    "compiledConsumerCount": 7,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H),\n  Filter.Tendsto\n    (fun r =>\n      (LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r t)\n        ((LinearPMap.resolventApproximationEvolutionAtScale✝ A hA r s) x))\n    Filter.atTop (nhds ((A.stoneEvolution hA t) ((A.stoneEvolution hA s) x)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137363,108 +137447,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.cauchySeq_apply_of_isometry_of_dense",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
-    "externalAxioms": [],
-    "docString": "A family of isometries that is pointwise Cauchy on a dense set is pointwise Cauchy\neverywhere. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  CauchySeq fun r => (A.resolventApproximationEvolutionAtScale hA r t) x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
-    "externalAxioms": [],
-    "docString": "For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence\nas the real scale tends to positive infinity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy.0.LinearPMap.positiveApproximationScale_pos",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.cauchySeq_apply_of_isometry_of_dense"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ) (x : H),\n  Filter.Tendsto\n    (fun r => (A.resolventApproximationEvolutionAtScale hA r t) ((A.resolventApproximationEvolutionAtScale hA r s) x))\n    Filter.atTop (nhds ((A.stoneEvolution hA t) ((A.stoneEvolution hA s) x)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "Applying the same varying isometry to a convergent varying vector preserves convergence.  This\nis the only extra analytic input needed to pass the approximating group law to the strong limit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "dependencies": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
       "LinearPMap.stoneEvolution_apply",
-      "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_dist_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

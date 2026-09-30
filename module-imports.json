@@ -559,63 +559,14 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionCauchy.lean",
+      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolution.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence"
       ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionDomain.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionGenerator.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionOperator.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionStrongContinuity.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionStrongLimit.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolutionUnitaryGroup.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator"
-      ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
@@ -633,7 +584,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator"
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution"
       ],
       "externalImportCount": 0
     },
