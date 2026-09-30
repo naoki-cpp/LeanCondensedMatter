@@ -68,20 +68,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
     change dysonVertexMoment ε β (quarticInteraction g) T =
       ∑ d : QuarticWickDiagram Mode n T, quarticWickDiagramAmplitude ε β g d
     exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
-  have hMoment : ∀ T : Finset (Fin n),
-      (T.card.factorial : ℂ) *
-          PowerSeries.coeff T.card
-            (PowerSeries.normalizeByConstantCoeff
-              (dysonPartitionSeries ε β (quarticInteraction g))) =
-        W.objectMoment T := by
-    simpa only [Combinatorics.powerSeriesMomentCoeff,
-      Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply] using
-      (Combinatorics.powerSeriesMomentSetFunction_eq_iff
-        (α := Fin n)
-        (PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)))
-        hZ W.normalizedObjectMoment).mp
-        (hSeriesMoment.trans hDiagramMoment)
+  have hMoment :=
+    (Combinatorics.powerSeriesMomentSetFunction_eq_iff
+      (α := Fin n) _ hZ _).mp (hSeriesMoment.trans hDiagramMoment)
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
@@ -91,7 +80,10 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica
           (Z := PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g)))
-          hZ (W := W) hMoment huniv)
+          hZ (W := W) (fun T => by
+            simpa only [Combinatorics.powerSeriesMomentCoeff,
+              Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply] using hMoment T)
+          huniv)
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 := by
       rfl
