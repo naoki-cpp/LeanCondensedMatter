@@ -25249,9 +25249,6 @@
       "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
       "LinearPMap.norm_resolventApproximationEvolution_sub_le",
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.resolventApproximationEvolution_mul_star",
-      "LinearPMap.resolventApproximationEvolution_star",
-      "LinearPMap.resolventApproximationEvolution_star_mul",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
     ],
     "dependencies": [
@@ -25267,12 +25264,9 @@
       "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
       "LinearPMap.norm_resolventApproximationEvolution_sub_le",
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
-      "LinearPMap.resolventApproximationEvolution_mul_star",
-      "LinearPMap.resolventApproximationEvolution_star",
-      "LinearPMap.resolventApproximationEvolution_star_mul",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25337,7 +25331,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -25349,22 +25343,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul",
       "LinearPMap.resolventApproximationEvolution_add"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.exp_argument_mem_ball",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_add"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul",
       "LinearPMap.resolventApproximationEvolution_add"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25483,7 +25472,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq"
     ],
     "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_star_mul"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -25504,7 +25493,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (B : H →L[ℂ] H),\n  Continuous (LinearPMap.boundedUnitaryEvolution B)",
     "standardAxioms": [
       "Classical.choice",
@@ -25512,7 +25501,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -25523,16 +25512,12 @@
     "docString": "The bounded exponential group is continuous in operator norm, hence in particular strongly\ncontinuous on every vector. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventApproximationEvolution_continuous"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolution_continuous"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25551,7 +25536,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -25563,58 +25548,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
-      "LinearPMap.resolventApproximationEvolution_hasDerivAt"
+      "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
-      "LinearPMap.resolventApproximationEvolution_hasDerivAt"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H),\n  IsSelfAdjoint B →\n    ∀ (t : ℝ), LinearPMap.boundedUnitaryEvolution B t * star (LinearPMap.boundedUnitaryEvolution B t) = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.boundedUnitaryEvolution_mul_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "A bounded self-adjoint exponential has its adjoint as a right inverse. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventApproximationEvolution_mul_star"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_add",
-      "LinearPMap.boundedUnitaryEvolution_star",
-      "LinearPMap.boundedUnitaryEvolution_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolution_mul_star"
+      "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -25627,7 +25567,44 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H),\n  IsSelfAdjoint B →\n    ∀ (t : ℝ), LinearPMap.boundedUnitaryEvolution B t * star (LinearPMap.boundedUnitaryEvolution B t) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.boundedUnitaryEvolution_mul_star",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "externalAxioms": [],
+    "docString": "A bounded self-adjoint exponential has its adjoint as a right inverse. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H),\n  IsSelfAdjoint B → ∀ (t : ℝ), star (LinearPMap.boundedUnitaryEvolution B t) = LinearPMap.boundedUnitaryEvolution B (-t)",
     "standardAxioms": [
       "Classical.choice",
@@ -25646,22 +25623,14 @@
     "docString": "For self-adjoint `B`, the adjoint evolution is evolution at negative time. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul",
-      "LinearPMap.resolventApproximationEvolution_star"
-    ],
+    "dependents": [],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul",
-      "LinearPMap.resolventApproximationEvolution_star"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25672,7 +25641,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H),\n  IsSelfAdjoint B →\n    ∀ (t : ℝ), star (LinearPMap.boundedUnitaryEvolution B t) * LinearPMap.boundedUnitaryEvolution B t = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -25691,22 +25660,14 @@
     "docString": "A bounded self-adjoint exponential has its adjoint as a left inverse. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "LinearPMap.resolventApproximationEvolution_star_mul"
-    ],
+    "dependents": [],
     "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_add",
-      "LinearPMap.boundedUnitaryEvolution_star",
-      "LinearPMap.boundedUnitaryEvolution_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "LinearPMap.resolventApproximationEvolution_star_mul"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25737,8 +25698,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul",
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
       "LinearPMap.resolventApproximationEvolution_zero"
     ],
@@ -25748,12 +25707,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul",
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
       "LinearPMap.resolventApproximationEvolution_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -27602,43 +27559,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r), Continuous (A.resolventApproximationEvolution hA r hr)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_continuous",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "Each approximating unitary group is continuous in operator norm. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_continuous",
-    "dependents": [],
-    "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_continuous"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : ↥A.domain) (t ε : ℝ),\n  0 < ε →\n    ∃ R,\n      0 < R ∧\n        ∀ (r s : ℝ),\n          R ≤ r →\n            R ≤ s →\n              ∀ (hr : 0 < r) (hs : 0 < s),\n                ‖(A.resolventApproximationEvolution hA r hr t) ↑x - (A.resolventApproximationEvolution hA s hs t) ↑x‖ <\n                  ε",
     "standardAxioms": [
@@ -27672,157 +27592,6 @@
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_domain_cauchySeq"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ),\n  HasDerivAt (fun τ => A.resolventApproximationEvolution hA r hr τ)\n    (A.resolventApproximationEvolution hA r hr t * -Complex.I • A.boundedSelfAdjointApproximation hA r hr) t",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "The bounded approximating evolution satisfies its bounded-generator differential equation in\noperator norm. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_hasDerivAt",
-    "dependents": [],
-    "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_hasDerivAt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ),\n  A.resolventApproximationEvolution hA r hr t * star (A.resolventApproximationEvolution hA r hr t) = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_mul_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "The approximating evolution is unitary, right-inverse form. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.boundedUnitaryEvolution_mul_star"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ),\n  star (A.resolventApproximationEvolution hA r hr t) = A.resolventApproximationEvolution hA r hr (-t)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "The adjoint of an approximating evolution reverses time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.boundedUnitaryEvolution_star"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ),\n  star (A.resolventApproximationEvolution hA r hr t) * A.resolventApproximationEvolution hA r hr t = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolution_star_mul",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "The approximating evolution is unitary, left-inverse form. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LinearPMap.boundedSelfAdjointApproximation_isSelfAdjoint",
-      "LinearPMap.boundedUnitaryEvolution_star_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137099,34 +136868,40 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (B : H →L[ℂ] H) (t : ℝ),\n  LinearPMap.unitaryTimeCoefficient✝ t • B ∈ Metric.eball 0 (NormedSpace.expSeries ℂ (H →L[ℂ] H)).radius",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H), IsSelfAdjoint B → ∀ (t : ℝ), LinearPMap.boundedUnitaryEvolution B t ∈ unitary (H →L[ℂ] H)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.exp_argument_mem_ball",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary",
     "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "A bounded self-adjoint exponential is unitary. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_add"
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "LinearPMap.boundedUnitaryEvolution_mul_star",
+      "LinearPMap.boundedUnitaryEvolution_star_mul"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_add"
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "LinearPMap.boundedUnitaryEvolution_mul_star",
+      "LinearPMap.boundedUnitaryEvolution_star_mul"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137145,7 +136920,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -137157,15 +136932,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_star"
+      "LinearPMap.boundedUnitaryEvolution_star",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_star"
+      "LinearPMap.boundedUnitaryEvolution_star",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
