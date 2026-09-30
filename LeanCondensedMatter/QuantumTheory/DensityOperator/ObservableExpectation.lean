@@ -31,8 +31,9 @@ expectation. -/
 theorem DensityOperator.expectation_observable
     (ρ : DensityOperator H) (A : Observable H) :
     ρ.expectation A.1 = (ρ.observableExpectation A : ℂ) := by
-  simpa [DensityOperator.observableExpectation] using
-    (ρ.coe_toState_onObservables_apply A).symm
+  simpa [DensityOperator.observableExpectation, DensityOperator.toState_apply] using
+    (UnitalPositiveLinearMap.coe_onObservables_apply
+      (ω := ρ.toState) (a := A)).symm
 
 /-- The complex expectation in the rank-one density operator of a pure state agrees with the
 canonical vector-state expectation. -/
