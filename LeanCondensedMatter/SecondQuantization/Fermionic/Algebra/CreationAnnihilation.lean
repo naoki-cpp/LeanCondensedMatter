@@ -41,7 +41,7 @@ theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : Occupation Mode}
     (hk : k ∉ n) (h : k < i) :
     fermionSign i (insertOccupation k n) = -fermionSign i n := by
   have hfilter : (insertOccupation k n).filter (· < i) = insert k (n.filter (· < i)) := by
-    rw [insertOccupation, Finset.filter_insert, if_pos h]
+    rw [insertOccupation, Finset.filter_insert, ite_eq_left h]
   have hknotmem : k ∉ n.filter (· < i) := fun hmem => hk (Finset.mem_of_mem_filter k hmem)
   rw [fermionSign, fermionSign, hfilter, Finset.card_insert_of_notMem hknotmem, pow_succ']
   ring
@@ -51,7 +51,7 @@ theorem fermionSign_insertOccupation_of_not_lt {i k : Mode} {n : Occupation Mode
     (h : ¬k < i) :
     fermionSign i (insertOccupation k n) = fermionSign i n := by
   have hfilter : (insertOccupation k n).filter (· < i) = n.filter (· < i) := by
-    rw [insertOccupation, Finset.filter_insert, if_neg h]
+    rw [insertOccupation, Finset.filter_insert, ite_eq_right h]
   rw [fermionSign, fermionSign, hfilter]
 
 /-- Removing an occupied mode before `i` flips the fermionic sign at `i`. -/
@@ -82,12 +82,12 @@ theorem fermionSign_toggleOccupation (i k : Mode) (n : Occupation Mode) :
   by_cases hk : k ∈ n
   · rw [toggleOccupation_of_mem hk]
     by_cases hki : k < i
-    · rw [if_pos hki, fermionSign_removeOccupation_of_lt hk hki]
-    · rw [if_neg hki, fermionSign_removeOccupation_of_not_lt hki]
+    · rw [ite_eq_left hki, fermionSign_removeOccupation_of_lt hk hki]
+    · rw [ite_eq_right hki, fermionSign_removeOccupation_of_not_lt hki]
   · rw [toggleOccupation_of_not_mem hk]
     by_cases hki : k < i
-    · rw [if_pos hki, fermionSign_insertOccupation_of_lt hk hki]
-    · rw [if_neg hki, fermionSign_insertOccupation_of_not_lt hki]
+    · rw [ite_eq_left hki, fermionSign_insertOccupation_of_lt hk hki]
+    · rw [ite_eq_right hki, fermionSign_insertOccupation_of_not_lt hki]
 
 theorem fermionSign_sq (i : Mode) (n : Occupation Mode) :
     fermionSign i n * fermionSign i n = 1 := by
@@ -132,27 +132,27 @@ theorem annihilate_basisState (i : Mode) (n : Occupation Mode) :
 @[simp]
 theorem create_basisState_of_mem {i : Mode} {n : Occupation Mode} (h : i ∈ n) :
     create i (basisState n) = 0 := by
-  rw [create_basisState, createBasis, if_pos h]
+  rw [create_basisState, createBasis, ite_eq_left h]
 
 /-- **Creation raises the occupation.** Creating a particle in an unoccupied mode `i` produces
 (up to the sign `fermionSign i n`) the basis state of `n` with `i` newly occupied — one more
 particle than `n` (`particleNumber_insertOccupation_of_not_mem`). -/
 theorem create_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (h : i ∉ n) :
     create i (basisState n) = (fermionSign i n : ℂ) • basisState (insertOccupation i n) := by
-  rw [create_basisState, createBasis, if_neg h]
+  rw [create_basisState, createBasis, ite_eq_right h]
 
 /-- **The empty mode cannot be annihilated.** -/
 @[simp]
 theorem annihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (h : i ∉ n) :
     annihilate i (basisState n) = 0 := by
-  rw [annihilate_basisState, annihilateBasis, if_neg h]
+  rw [annihilate_basisState, annihilateBasis, ite_eq_right h]
 
 /-- **Annihilation lowers the occupation.** Annihilating a particle in an occupied mode `i`
 produces (up to the sign `fermionSign i n`) the basis state of `n` with `i` newly vacated — one
 fewer particle than `n` (`particleNumber_removeOccupation_of_mem`). -/
 theorem annihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (h : i ∈ n) :
     annihilate i (basisState n) = (fermionSign i n : ℂ) • basisState (removeOccupation i n) := by
-  rw [annihilate_basisState, annihilateBasis, if_pos h]
+  rw [annihilate_basisState, annihilateBasis, ite_eq_left h]
 
 /-- **The vacuum cannot be annihilated at any mode.** -/
 @[simp]

@@ -94,24 +94,24 @@ private theorem create_exteriorBasis
       rw [← hbase]
       by_cases hia : i = a
       · subst i
-        rw [if_pos (Finset.mem_insert_self a s)]
+        rw [ite_eq_left (Finset.mem_insert_self a s)]
         change
           ((create 𝓗₁ (b a)).comp (create 𝓗₁ (b a)))
               (b.ExteriorAlgebra s) = 0
         rw [create_comp_self, LinearMap.zero_apply]
       by_cases his : i ∈ s
-      · rw [if_pos (Finset.mem_insert_of_mem his)]
+      · rw [ite_eq_left (Finset.mem_insert_of_mem his)]
         have hcar := LinearMap.congr_fun
           (create_comp_add_swap 𝓗₁ (b i) (b a)) (b.ExteriorAlgebra s)
         have hiZero := ih i
-        rw [if_pos his] at hiZero
+        rw [ite_eq_left his] at hiZero
         simp only [LinearMap.add_apply, LinearMap.comp_apply,
           LinearMap.zero_apply] at hcar
         rw [hiZero, map_zero, add_zero] at hcar
         exact hcar
       · have hiInsert : i ∉ insert a s := by
           simp [hia, his]
-        rw [if_neg hiInsert]
+        rw [ite_eq_right hiInsert]
         rcases lt_or_gt_of_ne hia with hlt | hgt
         · rw [hbase]
           have hmin' : ∀ x ∈ insert a s, i < x := by
@@ -146,7 +146,7 @@ private theorem create_exteriorBasis
             exact eq_neg_of_add_eq_zero_left hcar
           rw [hswap]
           have hiStep := ih i
-          rw [if_neg his] at hiStep
+          rw [ite_eq_right his] at hiStep
           rw [hiStep, map_smul]
           have hamin : ∀ x ∈ insert i s, a < x := by
             intro x hx

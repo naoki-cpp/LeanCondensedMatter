@@ -41,9 +41,9 @@ theorem matrixCoeff_diagonalEvolution (energy : Config → ℝ) (β : ℝ) (m n 
       if m = n then boltzmannWeight energy β m else 0 := by
   rw [matrixCoeff, diagonalEvolution_basisState, boltzmannWeight]
   by_cases h : m = n
-  · simp only [if_pos h]
+  · simp only [ite_eq_left h]
     rw [h, smul_basisState_apply_self]
-  · simp only [if_neg h]
+  · simp only [ite_eq_right h]
     exact smul_basisState_apply_of_ne _ (Ne.symm h)
 
 /-- `Tr[e^{-βH₀}A]` is the Boltzmann-weighted diagonal trace of `A`. -/

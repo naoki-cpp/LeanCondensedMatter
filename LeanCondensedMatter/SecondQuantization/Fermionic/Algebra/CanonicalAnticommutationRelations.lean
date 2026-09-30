@@ -39,9 +39,9 @@ private theorem fermionSign_toggleOccupation_exchange {i j : Mode} (hij : i ≠ 
       fermionSign i n * fermionSign j (toggleOccupation i n) = 0 := by
   rw [fermionSign_toggleOccupation, fermionSign_toggleOccupation]
   rcases lt_or_lt_iff_ne.mpr hij with h | h
-  · rw [if_neg (not_lt.mpr h.le), if_pos h]
+  · rw [ite_eq_right (not_lt.mpr h.le), ite_eq_left h]
     ring
-  · rw [if_pos h, if_neg (not_lt.mpr h.le)]
+  · rw [ite_eq_left h, ite_eq_right (not_lt.mpr h.le)]
     ring
 
 /-! ## Uniform signed-toggle form of the ladder operators -/
@@ -154,7 +154,7 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
     create_basisState_toggle, map_smul, annihilate_basisState_toggle,
     annihilate_basisState_toggle, map_smul, create_basisState_toggle]
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl, toggleOccupation_involutive i n]
+  · rw [ite_eq_left rfl, toggleOccupation_involutive i n]
     have hsame :
         createCoeff i n * annihilateCoeff i (toggleOccupation i n) +
           annihilateCoeff i n * createCoeff i (toggleOccupation i n) = 1 := by
@@ -169,7 +169,7 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
           fermionSign_insertOccupation_of_not_lt (lt_irrefl i), fermionSign_sq]
     rw [smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul, ← add_smul, ← Int.cast_add,
       hsame, Int.cast_one, one_smul]
-  · rw [if_neg hij, toggleOccupation_comm i j n]
+  · rw [ite_eq_right hij, toggleOccupation_comm i j n]
     apply cancel_cast_smul_smul
     by_cases hi : i ∈ n
     · by_cases hj : j ∈ n
@@ -186,16 +186,16 @@ theorem anticomm_annihilate_create (i j : Mode) :
     ScalarExchange.zetaCommutator (-1) (annihilate i) (create j) =
       if i = j then LinearMap.id else 0 := by
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl]
+  · rw [ite_eq_left rfl]
     exact Common.linearMap_ext_basisState fun n => by
       change ScalarExchange.zetaCommutator (-1) (annihilate i) (create i) (basisState n) =
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
-      rw [anticomm_annihilate_create_basisState, if_pos rfl, LinearMap.id_apply]
-  · rw [if_neg hij]
+      rw [anticomm_annihilate_create_basisState, ite_eq_left rfl, LinearMap.id_apply]
+  · rw [ite_eq_right hij]
     exact Common.linearMap_ext_basisState fun n => by
       change ScalarExchange.zetaCommutator (-1) (annihilate i) (create j) (basisState n) =
         (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
-      rw [anticomm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
+      rw [anticomm_annihilate_create_basisState, ite_eq_right hij, LinearMap.zero_apply]
 
 /-- **`{cᵢ†, cⱼ} = δᵢⱼ`**: the creation-first mirror of `anticomm_annihilate_create`, obtained
 from the generic `ζ = -1` swap rule. -/
