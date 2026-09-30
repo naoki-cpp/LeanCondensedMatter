@@ -160,10 +160,8 @@ private theorem familyOrderOfOrder_slot {total : ℕ} (size : ι → ℕ)
       ((familyGlobalSlotEquiv F ambientEquiv order i x :
         ↥(familyGlobalSlots F ambientEquiv order i)) : Fin total) =
         order.symm (ambientEquiv.symm ⟨i, x⟩) := by
-    change
-      ↑((Set.equivOfEq _) ⟨order.symm (ambientEquiv.symm ⟨i, x⟩), _⟩) =
-        order.symm (ambientEquiv.symm ⟨i, x⟩)
-    exact congrArg Subtype.val (Set.equivOfEq_apply _ _)
+    simp only [familyGlobalSlotEquiv, Equiv.trans_apply, Equiv.ofInjective_apply]
+    rw [Set.equivOfEq_apply]
   rw [hval] at h
   exact h
 
