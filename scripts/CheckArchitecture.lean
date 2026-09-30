@@ -351,9 +351,7 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
   let freeEntropyModule := `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy
   let recursionModule := `LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
   #[
-    { declaration := `QuantumTheory.expValueSelfAdjoint, moduleName := postulatesModule },
     { declaration := `QuantumTheory.coe_observableExpValue, moduleName := postulatesModule },
-    { declaration := `QuantumTheory.DensityOperator.observableExpectationSelfAdjoint, moduleName := observableExpectationModule },
     { declaration := `QuantumTheory.DensityOperator.expectation_observable, moduleName := observableExpectationModule },
     { declaration := `QuantumTheory.DensityOperator.observableExpectation_pure, moduleName := observableExpectationModule },
     { declaration := `QuantumTheory.probSelfAdjoint, moduleName := bornModule },
