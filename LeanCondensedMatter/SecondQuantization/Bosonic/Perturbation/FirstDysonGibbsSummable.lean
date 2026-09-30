@@ -26,7 +26,7 @@ variable {Mode : Type*} [Fintype Mode]
 omit [Fintype Mode] in
 /-- The diagonal matrix coefficient of the first arbitrary-configuration Dyson coefficient is the
 bare diagonal coefficient multiplied by the signed interval length. -/
-theorem matrixCoeff_dysonCoeff_one_self
+private theorem matrixCoeff_dysonCoeff_one_self
     (ε : Mode → ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (t : ℝ) (n : Occupation Mode) :
     Common.matrixCoeff (Common.dysonCoeff (freeEigenvalue ε) V 1 t) n n =
@@ -51,7 +51,7 @@ theorem matrixCoeff_dysonCoeff_one_self
 omit [Fintype Mode] in
 /-- The first Dyson coefficient's full free-Gibbs numerator is a fixed scalar multiple of the bare
 interaction numerator, pointwise in occupation number. -/
-theorem matrixCoeff_freeGibbs_dysonCoeff_one_self
+private theorem matrixCoeff_freeGibbs_dysonCoeff_one_self
     (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (t : ℝ) (n : Occupation Mode) :
@@ -68,7 +68,7 @@ theorem matrixCoeff_freeGibbs_dysonCoeff_one_self
 omit [Fintype Mode] in
 /-- Free-Gibbs summability of an interaction implies free-Gibbs summability of its first Dyson
 coefficient. No expectation/integral interchange is used. -/
-theorem freeGibbsSummable_dysonCoeff_one
+private theorem freeGibbsSummable_dysonCoeff_one
     (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (t : ℝ) (hV : freeGibbsSummable ε β V) :
