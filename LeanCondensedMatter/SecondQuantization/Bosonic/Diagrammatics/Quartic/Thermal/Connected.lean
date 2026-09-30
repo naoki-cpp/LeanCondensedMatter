@@ -128,14 +128,11 @@ variable [Fintype Mode]
 noncomputable def quarticThermalDiagramMultiplicativeWeight
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.MultiplicativeWeight
-      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
-  objectWeight d := QuarticDiagram.thermalAmplitude ε β g d
-  connectedWeight d := QuarticDiagram.thermalAmplitude ε β g d.1
-  weight_decompose d := by
-    change QuarticDiagram.thermalAmplitude ε β g d =
-      ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1
-    exact QuarticDiagram.thermalAmplitude_eq_prod_components ε β g d
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ :=
+  Common.QuarticDiagram.multiplicativeWeight
+    (N := N)
+    (fun d => QuarticDiagram.thermalAmplitude ε β g d)
+    (fun d => QuarticDiagram.thermalAmplitude_eq_prod_components ε β g d)
 
 /-- Total coefficientwise bosonic thermal diagram weight on a finite vertex set, bundled with its
 canonical empty-set normalization. -/
