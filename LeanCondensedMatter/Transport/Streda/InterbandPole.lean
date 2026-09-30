@@ -191,7 +191,16 @@ theorem tendsto_interbandPoleRegularFactorIntegral
         gap forward reverse (offset, broadening) hshift
     have hpair : ContinuousAt (fun x : ℝ => (x, broadening)) offset := by
       fun_prop
-    exact (hfactor.comp_of_eq offset hpair rfl).continuousWithinAt
+    have hcomp : ContinuousAt
+        (fun x : ℝ => factor (x, broadening)) offset := by
+      change Filter.Tendsto
+        (fun x : ℝ => interbandPoleRegularFactor
+          gap forward reverse (x, broadening))
+        (Filter.nhds offset)
+        (Filter.nhds
+          (interbandPoleRegularFactor gap forward reverse (offset, broadening)))
+      exact Filter.Tendsto.comp hfactor hpair
+    exact hcomp.continuousWithinAt
   have hbound : ∃ C : ℝ, 0 ≤ C ∧
       ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
         ‖factor p - factor (0, 0)‖ ≤ C := by
