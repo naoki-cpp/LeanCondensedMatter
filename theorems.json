@@ -125239,7 +125239,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_apply",
@@ -125250,7 +125250,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -125762,7 +125762,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
       "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_apply",
@@ -125773,7 +125773,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
       "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -126220,54 +126220,12 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode)\n  (ψ : ↥(SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε)),\n  (SecondQuantization.Fermionic.completedFreeHamiltonianAfterAnnihilate ε i) ψ -\n      (SecondQuantization.Fermionic.completedAnnihilateAfterFreeHamiltonian ε i) ψ =\n    -↑(ε i) • (SecondQuantization.Fermionic.completedAnnihilateFromFreeHamiltonianDomain ε i) ψ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder",
-    "externalAxioms": [],
-    "docString": "Pointwise free-Hamiltonian commutator relation for fermionic annihilation on `Dom(H)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedAnnihilate_apply",
-      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126299,54 +126257,12 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode)\n  (ψ : ↥(SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε)),\n  (SecondQuantization.Fermionic.completedFreeHamiltonianAfterCreate ε i) ψ -\n      (SecondQuantization.Fermionic.completedCreateAfterFreeHamiltonian ε i) ψ =\n    ↑(ε i) • (SecondQuantization.Fermionic.completedCreateFromFreeHamiltonianDomain ε i) ψ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder",
-    "externalAxioms": [],
-    "docString": "Pointwise free-Hamiltonian commutator relation for fermionic creation on `Dom(H)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedCreate_apply",
-      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129853,7 +129769,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
@@ -129863,7 +129779,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -129897,7 +129813,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
@@ -129907,7 +129823,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -157201,6 +157117,90 @@
       "SecondQuantization.Fermionic.completedAnticomm_create_create"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode)\n  (ψ : ↥(SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε)),\n  (SecondQuantization.Fermionic.completedFreeHamiltonianAfterAnnihilate ε i) ψ -\n      (SecondQuantization.Fermionic.completedAnnihilateAfterFreeHamiltonian ε i) ψ =\n    -↑(ε i) • (SecondQuantization.Fermionic.completedAnnihilateFromFreeHamiltonianDomain ε i) ψ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder",
+    "externalAxioms": [],
+    "docString": "Pointwise free-Hamiltonian commutator relation for fermionic annihilation on `Dom(H)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedAnnihilate_apply",
+      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode)\n  (ψ : ↥(SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε)),\n  (SecondQuantization.Fermionic.completedFreeHamiltonianAfterCreate ε i) ψ -\n      (SecondQuantization.Fermionic.completedCreateAfterFreeHamiltonian ε i) ψ =\n    ↑(ε i) • (SecondQuantization.Fermionic.completedCreateFromFreeHamiltonianDomain ε i) ψ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder.0.SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder",
+    "externalAxioms": [],
+    "docString": "Pointwise free-Hamiltonian commutator relation for fermionic creation on `Dom(H)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedCreate_apply",
+      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
