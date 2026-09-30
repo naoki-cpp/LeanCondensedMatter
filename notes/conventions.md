@@ -88,8 +88,8 @@ General cautions distilled from past sessions; detailed incident records live in
 
 ## Dependencies
 
-- **Mathlib only.** No other external Lean libraries; the toolchain and Mathlib revision are pinned (`lean-toolchain`, `lake-manifest.json`) and upgraded deliberately, not as a side effect of other work.
-- **Survey Mathlib before building new theory.** Record the current survey outcome and the resulting design constraint in the relevant architecture note or active roadmap so it can be re-checked after upgrades; do not preserve a chronological search log.
+- **Mathlib and Physlib are the direct external Lean dependencies.** Physlib is pinned to a specific commit and supplies reusable `Physlib`/`PhyslibAlpha` infrastructure; the toolchain and dependency revisions are pinned (`lean-toolchain`, `lake-manifest.json`) and upgraded deliberately.
+- **Survey Mathlib and Physlib before building new theory.** Record the current survey outcome and the resulting design constraint in the relevant architecture note or active roadmap so it can be re-checked after upgrades; do not preserve a chronological search log.
 - **Prefer Mathlib's general machinery over bespoke constructions** when both can close a goal, even if the bespoke route is locally shorter.
 
 ## Branch and PR workflow
