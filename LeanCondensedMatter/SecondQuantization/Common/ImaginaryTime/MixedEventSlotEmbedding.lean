@@ -41,7 +41,8 @@ theorem twoPointTimedEventTime_map (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fi
       twoPointTimedEventTime τ τ' (σ ∘ f) a := by
   cases a <;> rfl
 
-theorem twoPointTimedEventRank_map_le_iff (hf : StrictMono f) (a b : TwoPointTimedEvent m) :
+private theorem twoPointTimedEventRank_map_le_iff
+    (hf : StrictMono f) (a b : TwoPointTimedEvent m) :
     twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
         twoPointTimedEventRank (twoPointTimedEventMap f b) ↔
       twoPointTimedEventRank a ≤ twoPointTimedEventRank b := by
@@ -68,7 +69,8 @@ theorem twoPointTimedEventRank_map_le_iff (hf : StrictMono f) (a b : TwoPointTim
           simp only [twoPointTimedEventMap_inr]
           simp [twoPointTimedEventRank]; omega
 
-theorem twoPointTimedEventBeforeOrEqual_map_iff (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
+private theorem twoPointTimedEventBeforeOrEqual_map_iff
+    (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent m) :
     twoPointTimedEventBeforeOrEqual τ τ' σ
         (twoPointTimedEventMap f a) (twoPointTimedEventMap f b) ↔
