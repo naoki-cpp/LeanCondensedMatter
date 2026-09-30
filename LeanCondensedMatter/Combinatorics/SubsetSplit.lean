@@ -20,8 +20,9 @@ variable {α : Type*} [DecidableEq α]
 
 /-- A finite set is its subset together with the relative complement. -/
 def subsetSumSdiffEquiv {S T : Finset α} (h : T ⊆ S) : ↥T ⊕ ↥(S \ T) ≃ ↥S :=
-  (Equiv.sumCongr (Equiv.refl ↥T) (Equiv.setCongr (by
-    ext x
+  (Equiv.sumCongr (Equiv.refl ↥T) (Equiv.subtypeEquivProp (by
+    funext x
+    apply propext
     simp))).trans
     (Equiv.Set.sumDiffSubset (s := (T : Set α)) (t := (S : Set α)) (by
       simpa using h))
