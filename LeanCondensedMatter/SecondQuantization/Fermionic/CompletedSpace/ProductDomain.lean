@@ -64,12 +64,12 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ))).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
-    (completedToggle i
+    (Common.completedReindex (toggleOccupationEquiv i)
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
-    · rw [completedCreate_apply, ite_eq_left h, completedToggle_apply,
+    · rw [completedCreate_apply, ite_eq_left h, Common.completedReindex_apply, toggleOccupationEquiv_apply,
         Common.completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
       simpa [x, norm_fermionPhase]
     · simp only [completedCreate_apply, ite_eq_right h, mul_zero, norm_zero]
@@ -92,50 +92,26 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ)))).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
-    (completedToggle i
+    (Common.completedReindex (toggleOccupationEquiv i)
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
     · simp only [completedAnnihilate_apply, ite_eq_left h, mul_zero, norm_zero]
       exact norm_nonneg _
-    · rw [completedAnnihilate_apply, ite_eq_right h, completedToggle_apply,
+    · rw [completedAnnihilate_apply, ite_eq_right h, Common.completedReindex_apply, toggleOccupationEquiv_apply,
         Common.completedDiagonalOperator_apply]
       have hE := freeHamiltonianWeight_toggle_of_not_mem ε h
       rw [hE]
       simpa [x, norm_fermionPhase]
 
-/-- Creation restricted to the free-Hamiltonian domain.  This is the domain-preserving map needed
-to form `H a†` without pretending that `H` is bounded. -/
-noncomputable def completedCreateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
-    completedFreeHamiltonianDomain ε →ₗ[ℂ] completedFreeHamiltonianDomain ε where
-  toFun ψ :=
-    ⟨completedCreate i (ψ : CompletedFockSpace Mode),
-      completedCreate_mem_completedFreeHamiltonianDomain ε i ψ.2⟩
-  map_add' ψ φ := by
-    apply Subtype.ext
-    simp
-  map_smul' c ψ := by
-    apply Subtype.ext
-    simp
-
-/-- Annihilation restricted to the free-Hamiltonian domain. -/
-noncomputable def completedAnnihilateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
-    completedFreeHamiltonianDomain ε →ₗ[ℂ] completedFreeHamiltonianDomain ε where
-  toFun ψ :=
-    ⟨completedAnnihilate i (ψ : CompletedFockSpace Mode),
-      completedAnnihilate_mem_completedFreeHamiltonianDomain ε i ψ.2⟩
-  map_add' ψ φ := by
-    apply Subtype.ext
-    simp
-  map_smul' c ψ := by
-    apply Subtype.ext
-    simp
-
 /-- The product `H a†` as an honest linear map on `Dom(H)`. -/
 noncomputable def completedFreeHamiltonianAfterCreate (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianDomain ε →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedFreeHamiltonian ε).toFun.comp (completedCreateOnFreeHamiltonianDomain ε i)
+  (completedFreeHamiltonian ε).toFun.comp <|
+    (completedCreate i).toLinearMap.restrict
+      (p := completedFreeHamiltonianDomain ε) (q := completedFreeHamiltonianDomain ε)
+      (fun _ hψ => completedCreate_mem_completedFreeHamiltonianDomain ε i hψ)
 
 /-- The product `a† H` as an honest linear map on `Dom(H)`. -/
 noncomputable def completedCreateAfterFreeHamiltonian (ε : Mode → ℝ) (i : Mode) :
@@ -145,7 +121,10 @@ noncomputable def completedCreateAfterFreeHamiltonian (ε : Mode → ℝ) (i : M
 /-- The product `H a` as an honest linear map on `Dom(H)`. -/
 noncomputable def completedFreeHamiltonianAfterAnnihilate (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianDomain ε →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedFreeHamiltonian ε).toFun.comp (completedAnnihilateOnFreeHamiltonianDomain ε i)
+  (completedFreeHamiltonian ε).toFun.comp <|
+    (completedAnnihilate i).toLinearMap.restrict
+      (p := completedFreeHamiltonianDomain ε) (q := completedFreeHamiltonianDomain ε)
+      (fun _ hψ => completedAnnihilate_mem_completedFreeHamiltonianDomain ε i hψ)
 
 /-- The product `a H` as an honest linear map on `Dom(H)`. -/
 noncomputable def completedAnnihilateAfterFreeHamiltonian (ε : Mode → ℝ) (i : Mode) :
