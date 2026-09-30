@@ -53,8 +53,8 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
         band e v m px py hE
 
 /-- The real part of the extracted interband Bastin pair converges pointwise to
-`-2π e² Ω_n(p)`, providing the local clean-limit response density used by the radial momentum
-integration and comparison with the occupied-state Berry integral. -/
+`-2π e² Ω_n(p)`. The analytic real-part pole limit is generic; this specialization supplies only
+the massive-Dirac Berry-curvature identification. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
     (band : Band) (e v m px py radius : ℝ)
     (hE : energy v m px py ≠ 0)
@@ -66,34 +66,37 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
           band e v m px py radius broadening).re)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-2 * Real.pi * (e ^ 2 * berryCurvature band v m px py))) := by
-  have hpair :=
-    tendsto_targetCenteredInterbandBastinPairIntegral
-      band e v m px py radius hE hradiusPos hradius
-  have hre :
-      Tendsto
-        (fun broadening : ℝ =>
-          (targetCenteredInterbandBastinPairIntegral
-            band e v m px py radius broadening).re)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (((-2 * Complex.I) *
-            (Real.pi •
-              targetCenteredInterbandSpectatorCurrentFactor
-                band e v m px py (0, 0))).re)) := by
-    simpa [Function.comp_def] using
-      Complex.continuous_re.continuousAt.tendsto.comp hpair
-  have hlimit :
-      (((-2 * Complex.I) *
-        (Real.pi •
-          targetCenteredInterbandSpectatorCurrentFactor
-            band e v m px py (0, 0))).re) =
-        -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py) := by
-    rw [Complex.mul_re]
-    simp [targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature
-      band e v m px py hE]
-    ring
-  rw [hlimit] at hre
-  exact hre
+  have hgeneric :=
+    tendsto_interbandBastinPoleIntegral_re
+      (interbandEnergyGap band v m px py)
+      (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+      (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+      radius hradiusPos hradius
+  have him :
+      (interbandPoleRegularFactor
+        (interbandEnergyGap band v m px py)
+        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        (0, 0)).im =
+      -(e ^ 2 * berryCurvature band v m px py) := by
+    rw [← targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
+    exact targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature
+      band e v m px py hE
+  have hgeneric' : Tendsto
+      (fun broadening : ℝ =>
+        (interbandBastinPoleIntegral
+          (interbandEnergyGap band v m px py)
+          (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+          (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+          radius broadening).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (-2 * Real.pi * (e ^ 2 * berryCurvature band v m px py))) := by
+    simpa [him] using hgeneric
+  refine hgeneric'.congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+  exact congrArg Complex.re
+    (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
+      band e v m px py radius broadening hbroadening.ne').symm
 
 end
 

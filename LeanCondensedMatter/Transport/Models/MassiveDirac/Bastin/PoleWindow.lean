@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -43,20 +44,9 @@ theorem abs_interbandEnergyGap_add_offset_ge_sub_radius
     (band : Band) (v m px py offset radius : ℝ)
     (hoffset : |offset| ≤ radius) :
     |interbandEnergyGap band v m px py| - radius ≤
-      |interbandEnergyGap band v m px py + offset| := by
-  have htri :
-      |interbandEnergyGap band v m px py| ≤
-        |interbandEnergyGap band v m px py + offset| + |offset| := by
-    calc
-      |interbandEnergyGap band v m px py| =
-          |(interbandEnergyGap band v m px py + offset) + (-offset)| := by
-            congr 1
-            ring
-      _ ≤ |interbandEnergyGap band v m px py + offset| + |-offset| :=
-        abs_add_le _ _
-      _ = |interbandEnergyGap band v m px py + offset| + |offset| := by
-        rw [abs_neg]
-  linarith
+      |interbandEnergyGap band v m px py + offset| :=
+  abs_gap_sub_radius_le_abs_gap_add_offset
+    (interbandEnergyGap band v m px py) offset radius hoffset
 
 /-- A target-centered window narrower than the interband gap cannot contain the opposite-band
 source pole. -/
@@ -64,14 +54,9 @@ theorem interbandEnergyGap_add_offset_ne_zero_on_targetWindow
     (band : Band) (v m px py offset radius : ℝ)
     (hradius : radius < |interbandEnergyGap band v m px py|)
     (hoffset : |offset| ≤ radius) :
-    interbandEnergyGap band v m px py + offset ≠ 0 := by
-  have hlower := abs_interbandEnergyGap_add_offset_ge_sub_radius
-    band v m px py offset radius hoffset
-  have hshiftAbs : 0 < |interbandEnergyGap band v m px py + offset| := by
-    have hpositive : 0 < |interbandEnergyGap band v m px py| - radius :=
-      sub_pos.mpr hradius
-    exact lt_of_lt_of_le hpositive hlower
-  exact abs_pos.mp hshiftAbs
+    interbandEnergyGap band v m px py + offset ≠ 0 :=
+  gap_add_offset_ne_zero_on_targetWindow
+    (interbandEnergyGap band v m px py) offset radius hradius hoffset
 
 end
 
