@@ -107,7 +107,7 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
 
 /-- Creation restricted to the free-Hamiltonian domain.  This is the domain-preserving map needed
 to form `H a†` without pretending that `H` is bounded. -/
-noncomputable def completedCreateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
+private noncomputable def completedCreateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianDomain ε →ₗ[ℂ] completedFreeHamiltonianDomain ε where
   toFun ψ :=
     ⟨completedCreate i (ψ : CompletedFockSpace Mode),
@@ -120,7 +120,7 @@ noncomputable def completedCreateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i 
     simp
 
 /-- Annihilation restricted to the free-Hamiltonian domain. -/
-noncomputable def completedAnnihilateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
+private noncomputable def completedAnnihilateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianDomain ε →ₗ[ℂ] completedFreeHamiltonianDomain ε where
   toFun ψ :=
     ⟨completedAnnihilate i (ψ : CompletedFockSpace Mode),
