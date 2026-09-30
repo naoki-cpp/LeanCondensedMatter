@@ -62,8 +62,8 @@ through `Complex.ofRealCLM` when a complex equality is the natural target.
 The optional local architecture audit inspects selected typed bridges rather than the text of their
 implementation. It can check canonical ownership and semantic relationships for endpoints including:
 
-- `QuantumTheory.expValueSelfAdjoint` and `QuantumTheory.coe_observableExpValue`;
-- `DensityOperator.observableExpectationSelfAdjoint` and `DensityOperator.expectation_observable`;
+- `QuantumTheory.coe_observableExpValue` for vector states;
+- `DensityOperator.expectation_observable` for density states;
 - `QuantumTheory.probSelfAdjoint`, `DensityOperator.expectation_effect_eq_probNNReal`, and
   `QuantumTheory.hasSum_probNNReal`;
 - `QuantumTheory.bornPMF_apply` as the typed probability bridge.
