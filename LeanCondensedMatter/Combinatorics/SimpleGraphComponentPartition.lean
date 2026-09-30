@@ -89,7 +89,7 @@ private noncomputable def componentSetoidOn (G : SimpleGraph ↥s) : Setoid α :
 private theorem componentSetoidOn_rel_iff_reachable (G : SimpleGraph ↥s) (v w : ↥s) :
     G.componentSetoidOn (v : α) (w : α) ↔ G.Reachable v w := by
   rw [componentSetoidOn, Setoid.ker_def]
-  simp only [componentClassOn, dif_pos v.2, dif_pos w.2, Sum.inr.injEq]
+  simp only [componentClassOn, dite_eq_left v.2, dite_eq_left w.2, Sum.inr.injEq]
   exact ConnectedComponent.eq
 
 open Classical in

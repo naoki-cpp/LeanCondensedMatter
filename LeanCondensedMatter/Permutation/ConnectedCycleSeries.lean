@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Permutation.AssignmentCycleTrace
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.Tactic.FieldSimp
 
@@ -50,7 +50,7 @@ private theorem connectedCycleCoeff_eq_pow_mul_trace_div
     [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hm : 0 < m) :
     connectedCycleCoeff ζ K m =
       ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
-  rw [connectedCycleCoeff, if_neg (Nat.ne_of_gt hm)]
+  rw [connectedCycleCoeff, ite_eq_right (Nat.ne_of_gt hm)]
   rw [sum_singleCycleContribution_assignments_eq_factorial_mul_trace ζ K m hm]
   calc
     ζ ^ (m - 1) * ((Nat.factorial (m - 1) : ℂ) * Matrix.trace (K ^ m)) /

@@ -152,7 +152,7 @@ theorem mu_bot_top_eq_factorial_ite (S : Finset α) :
   · subst S
     have hbotTop : (⊥ : Finpartition (⊥ : Finset α)) = ⊤ := Subsingleton.elim _ _
     simp [hbotTop]
-  · rw [if_neg hS, mu_bot_top_eq_factorial hS]
+  · rw [ite_eq_right hS, mu_bot_top_eq_factorial hS]
 
 /-- The Möbius coefficient from a partition to the top is determined by its number of blocks. -/
 theorem mu_to_top_eq_factorial {S : Finset α} (π : Finpartition S) (hS : S ≠ ∅) :

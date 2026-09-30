@@ -86,7 +86,7 @@ theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCo
   intro ij hij
   simp only [Finset.mem_offDiag] at hij
   by_cases hlt : blockOrder ij.1 < blockOrder ij.2
-  · simp only [hlt, if_pos]
+  · simp only [hlt, ite_eq_left]
     exact h ij.1 ij.2 hij.2.2
   · simp only [hlt, if_false]
     exact Nat.ModEq.refl 0

@@ -69,7 +69,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
   have hFterm : (S.filter (fun q => Crosses F q)).card = pairing.crossingsWithFirstPair := rfl
   have hAterm : ∀ p ∈ A, S.filter (fun q => Crosses p q) = A.filter (fun q => Crosses p q) := by
     intro p _
-    rw [hsplit, Finset.filter_insert, if_neg (not_crosses_firstPair pairing p)]
+    rw [hsplit, Finset.filter_insert, ite_eq_right (not_crosses_firstPair pairing p)]
   have hsum' : pairing.crossingCount =
       pairing.crossingsWithFirstPair + ∑ p ∈ A, (A.filter (fun q => Crosses p q)).card := by
     rw [hsum, hFterm]
