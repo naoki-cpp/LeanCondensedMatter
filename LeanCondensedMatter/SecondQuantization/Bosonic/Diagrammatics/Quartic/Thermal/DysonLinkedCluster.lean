@@ -44,7 +44,9 @@ theorem factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermal
         W.normalizedObjectMoment := by
     rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
     intro S
-    simpa only [Combinatorics.powerSeriesMomentCoeff, coeff_freeGibbsDysonSeries] using
+    simpa only [Combinatorics.powerSeriesMomentCoeff,
+      Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply,
+      coeff_freeGibbsDysonSeries] using
       (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
         ε β hpos g β S).symm
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
