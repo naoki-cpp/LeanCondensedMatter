@@ -125,7 +125,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
       (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
-  simp only [if_true]
+  simp only [ite_true]
   field_simp
   ring
 
