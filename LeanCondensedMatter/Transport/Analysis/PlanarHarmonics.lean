@@ -53,10 +53,8 @@ def AngularHarmonicCoefficients.toEuclidean2D
     ext i j
     fin_cases i <;> fin_cases j <;> simp
   second_trace := by
-    simp only [Matrix.trace, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons, Matrix.tail_cons, Matrix.of_apply, Matrix.cons_val_fin_one]
-    rw [← one_smul ℂ coefficients.secondCosine, ← add_smul]
-    norm_num
+    letI := Module.addCommMonoidToAddCommGroup ℂ (M := E)
+    simp [Matrix.trace, Fin.sum_univ_two]
 
 -- The bridge proof intentionally uses `simp` to normalize finite vector/matrix notation before
 -- coefficient comparison.
