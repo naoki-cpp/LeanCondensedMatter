@@ -131,9 +131,18 @@ theorem partGlobalSlot_partGlobalSlotEquiv_symm (π : Finpartition s)
     (order : Fin s.card ≃ ↥s) (B : π.parts)
     (slot : ↥(π.partGlobalSlots order B)) :
     π.partGlobalSlot order B ((π.partGlobalSlotEquiv order B).symm slot) = slot := by
-  have h := congrArg Subtype.val ((π.partGlobalSlotEquiv order B).apply_symm_apply slot)
-  simpa only [Finpartition.partGlobalSlotEquiv, Equiv.trans_apply,
-    Equiv.ofInjective_apply, Set.equivOfEq_apply] using h
+  let hslots : Set.range (π.partGlobalSlot order B) =
+      ↑(π.partGlobalSlots order B) := by
+    ext x
+    simp [Finpartition.partGlobalSlots]
+  change
+    π.partGlobalSlot order B
+        ((Equiv.ofInjective (π.partGlobalSlot order B)
+          (π.partGlobalSlot_injective order B)).symm
+          ((Set.equivOfEq hslots).symm slot)) =
+      (slot : Fin s.card)
+  rw [Equiv.apply_ofInjective_symm]
+  exact congrArg Subtype.val (Set.equivOfEq_symm_apply hslots slot)
 
 /-- The canonical order on one part induced by its increasing ambient slots. -/
 noncomputable def partOrderOfOrder (π : Finpartition s) (order : Fin s.card ≃ ↥s)
