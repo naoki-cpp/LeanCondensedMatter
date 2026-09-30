@@ -28,6 +28,28 @@ noncomputable def targetCenteredInterbandSpectatorCurrentFactor
   interbandSpectatorCurrentFactor 0 1 band e v m px py
     (bandEnergy band v m px py + offsetBroadening.1) offsetBroadening.2
 
+/-- The model-specific target-centered spectator is exactly the generic isolated interband-pole
+regular factor with the massive-Dirac gap and ordered Hall current blocks supplied. -/
+theorem targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
+    (band : Band) (e v m px py : ℝ) (p : ℝ × ℝ) :
+    targetCenteredInterbandSpectatorCurrentFactor band e v m px py p =
+      interbandPoleRegularFactor
+        (interbandEnergyGap band v m px py)
+        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        p := by
+  unfold targetCenteredInterbandSpectatorCurrentFactor
+    interbandSpectatorCurrentFactor interbandPoleRegularFactor
+  dsimp
+  rw [projectorResolventCoefficient_targetOffset_oppositeBand
+      .retarded band v m px py p.1 p.2,
+    projectorResolventCoefficient_targetOffset_oppositeBand
+      .advanced band v m px py p.1 p.2,
+    targetCenteredSourceCoefficient_eq
+      .retarded (interbandEnergyGap band v m px py) p.1 p.2,
+    targetCenteredSourceCoefficient_eq
+      .advanced (interbandEnergyGap band v m px py) p.1 p.2]
+
 /-- At zero offset and zero broadening, the regular factor is exactly the inverse-gap-squared
 canonical antisymmetric Hall current block. -/
 theorem targetCenteredInterbandSpectatorCurrentFactor_zero
@@ -35,10 +57,9 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =
       (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
         bastinInterbandBlockDifference 0 1 band e v m px py) := by
-  unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
-  simp [retardedSpectralParameter, advancedSpectralParameter, spectralParameterOfRegulator,
-    projectorResolventCoefficient_oppositeBand_at_bandEnergy,
-    bastinInterbandBlockDifference, mul_sub]
+  rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor,
+    interbandPoleRegularFactor_zero]
+  simp [bastinInterbandBlockDifference]
 
 /-- If the real shifted interband gap is nonzero at an offset, then the target-centered regular
 spectator/current factor is jointly continuous there for arbitrary real broadening. -/
@@ -48,79 +69,21 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
     ContinuousAt
       (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
       p := by
-  have hside : ∀ side : SpectralSide, ContinuousAt
-      (fun q : ℝ × ℝ =>
-        projectorResolventCoefficient
-          (spectralParameter side (bandEnergy band v m px py + q.1) q.2)
-          (oppositeBand band) v m px py)
-      p := by
-    intro side
-    have hparameter : ContinuousAt
-        (fun q : ℝ × ℝ =>
-          spectralParameter side (bandEnergy band v m px py + q.1) q.2)
-        p := by
-      unfold spectralParameter spectralParameterOfRegulator SpectralSide.regulator
-      fun_prop
-    have hden :
-        spectralParameter side (bandEnergy band v m px py + p.1) p.2 -
-            ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
-      intro hzero
-      have hre :
-          bandEnergy band v m px py + p.1 -
-            bandEnergy (oppositeBand band) v m px py = 0 := by
-        simpa [spectralParameter, spectralParameterOfRegulator] using congrArg Complex.re hzero
-      apply hshift
-      unfold interbandEnergyGap
-      linarith
-    change ContinuousAt
-      (fun q : ℝ × ℝ =>
-        (spectralParameter side (bandEnergy band v m px py + q.1) q.2 -
-          ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹)
-      p
-    exact (hparameter.sub continuousAt_const).inv₀ hden
-  have hret : ContinuousAt
-      (fun q : ℝ × ℝ =>
-        projectorResolventCoefficient
-          (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
-          (oppositeBand band) v m px py)
-      p := by
-    simpa only [retardedSpectralParameter] using hside .retarded
-  have hadv : ContinuousAt
-      (fun q : ℝ × ℝ =>
-        projectorResolventCoefficient
-          (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
-          (oppositeBand band) v m px py)
-      p := by
-    simpa only [advancedSpectralParameter] using hside .advanced
-  have hxy := (hret.mul hret).mul
-    (continuousAt_const : ContinuousAt
-      (fun _ : ℝ × ℝ =>
-        bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py) p)
-  have hyx := (hadv.mul hadv).mul
-    (continuousAt_const : ContinuousAt
-      (fun _ : ℝ × ℝ =>
-        bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py) p)
-  have hsub := hxy.sub hyx
-  change ContinuousAt
-      (fun q : ℝ × ℝ =>
-        projectorResolventCoefficient
-              (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
-              (oppositeBand band) v m px py *
-            projectorResolventCoefficient
-              (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
-              (oppositeBand band) v m px py *
-          bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py -
-        projectorResolventCoefficient
-              (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
-              (oppositeBand band) v m px py *
-            projectorResolventCoefficient
-              (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
-              (oppositeBand band) v m px py *
-          bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
-      p at hsub
-  unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
-  dsimp
-  simpa [pow_two] using hsub
+  have hfun :
+      targetCenteredInterbandSpectatorCurrentFactor band e v m px py =
+        interbandPoleRegularFactor
+          (interbandEnergyGap band v m px py)
+          (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+          (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py) := by
+    funext q
+    exact targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
+      band e v m px py q
+  rw [hfun]
+  exact continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
+    (interbandEnergyGap band v m px py)
+    (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+    (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+    p hshift
 
 end
 
