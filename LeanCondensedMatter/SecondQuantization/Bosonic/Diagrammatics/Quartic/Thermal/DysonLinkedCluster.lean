@@ -44,11 +44,9 @@ theorem factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermal
         W.normalizedObjectMoment := by
     rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
     intro S
-    simp only [Combinatorics.powerSeriesMomentCoeff,
-      Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply]
-    rw [coeff_freeGibbsDysonSeries]
-    exact (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
-      ε β hpos g β S).symm
+    simpa only [Combinatorics.powerSeriesMomentCoeff, coeff_freeGibbsDysonSeries] using
+      (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
+        ε β hpos g β S).symm
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
   calc
