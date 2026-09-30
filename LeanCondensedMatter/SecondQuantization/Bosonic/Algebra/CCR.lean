@@ -97,11 +97,11 @@ private theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation M
       if i = j then basisState n else 0 := by
   rw [ScalarExchange.zetaCommutator_apply, one_smul]
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl, annihilate_create_basisState_same, create_annihilate_basisState_same,
+  · rw [ite_eq_left rfl, annihilate_create_basisState_same, create_annihilate_basisState_same,
       ← sub_smul]
     have harith : ((n i : ℂ) + 1) - (n i : ℂ) = 1 := by ring
     rw [harith, one_smul]
-  · rw [if_neg hij, create_basisState_eq, map_smul, annihilate_basisState_eq,
+  · rw [ite_eq_right hij, create_basisState_eq, map_smul, annihilate_basisState_eq,
       createOccupation_apply_ne hij, annihilate_basisState_eq, map_smul, create_basisState_eq,
       removeOccupation_apply_ne hij.symm, removeOccupation_createOccupation_of_ne hij n,
       smul_smul, smul_smul, mul_comm, sub_self]
@@ -112,14 +112,14 @@ theorem comm_annihilate_create (i j : Mode) :
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
       else 0 := by
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl]
+  · rw [ite_eq_left rfl]
     exact Common.linearMap_ext_basisState fun n => by
       change ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create i) (basisState n) = basisState n
-      rw [comm_annihilate_create_basisState, if_pos rfl]
-  · rw [if_neg hij]
+      rw [comm_annihilate_create_basisState, ite_eq_left rfl]
+  · rw [ite_eq_right hij]
     exact Common.linearMap_ext_basisState fun n => by
       change ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create j) (basisState n) = 0
-      rw [comm_annihilate_create_basisState, if_neg hij]
+      rw [comm_annihilate_create_basisState, ite_eq_right hij]
 
 /-- The reverse mixed CCR, `[aᵢ†, aⱼ] = -δᵢⱼ`. -/
 theorem comm_create_annihilate (i j : Mode) :

@@ -60,7 +60,7 @@ theorem constantCoeff_formalTraceLogOneSubSeries
 private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
     PowerSeries.coeff m (PowerSeries.log ℂ) =
       (-1 : ℂ) ^ (m + 1) / (m : ℂ) := by
-  rw [PowerSeries.coeff_log, if_neg (Nat.ne_of_gt hm)]
+  rw [PowerSeries.coeff_log, ite_eq_right (Nat.ne_of_gt hm)]
   change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
     (-1 : ℂ) ^ (m + 1) / (m : ℂ)
   push_cast

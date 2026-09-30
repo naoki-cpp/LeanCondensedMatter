@@ -30,12 +30,12 @@ theorem matrixCoeff_annihilate_comp_create_self
       if i = j then (n i : ℂ) + 1 else 0 := by
   by_cases hij : i = j
   · subst j
-    rw [if_pos rfl, Common.matrixCoeff, LinearMap.comp_apply]
+    rw [ite_eq_left rfl, Common.matrixCoeff, LinearMap.comp_apply]
     change (annihilate i (create i (basisState n))) n = (n i : ℂ) + 1
     rw [annihilate_create_basisState_same]
     change (((n i : ℂ) + 1) • Common.basisState n) n = (n i : ℂ) + 1
     exact Common.smul_basisState_apply_self ((n i : ℂ) + 1) n
-  · rw [if_neg hij, Common.matrixCoeff, LinearMap.comp_apply]
+  · rw [ite_eq_right hij, Common.matrixCoeff, LinearMap.comp_apply]
     change (annihilate i (create j (basisState n))) n = 0
     rw [create_basisState_eq, map_smul]
     by_cases hi : n i = 0
@@ -172,7 +172,7 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
           (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
       apply (eq_sub_iff_add_eq).2
       simpa [add_comm] using hreorder.symm
-    rw [if_pos rfl, hop, sub_eq_add_neg]
+    rw [ite_eq_left rfl, hop, sub_eq_add_neg]
     have hnegId : -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) ∈
         freeGibbsDomain ε β := (freeGibbsDomain ε β).neg_mem hId
     rw [freeGibbsExpectation_add ε β hA hnegId]
@@ -193,7 +193,7 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
     ring
   · have hop : (create i).comp (annihilate j) = (annihilate j).comp (create i) := by
       simpa [Ne.symm hij] using hreorder.symm
-    rw [if_neg hij, hop,
+    rw [ite_eq_right hij, hop,
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos j i]
     simp [Ne.symm hij]
 
