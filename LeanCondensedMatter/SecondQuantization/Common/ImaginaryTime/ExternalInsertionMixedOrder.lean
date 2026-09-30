@@ -155,7 +155,8 @@ private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
         (Sum.map fExternal fInteraction b) ↔
       externalInsertionTimedEventBeforeOrEqual
         (externalTime ∘ fExternal) (σ ∘ fInteraction) a b := by
-  simp only [externalInsertionTimedEventBeforeOrEqual, externalInsertionTimedEventTime_map]
+  simp only [externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
+    externalInsertionTimedEventTime_map]
   rw [externalInsertionTimedEventRank_map_le_iff hExternal hInteraction]
 
 /-- Increasing external/interaction slot reindexings embed the locally ordered mixed events as a

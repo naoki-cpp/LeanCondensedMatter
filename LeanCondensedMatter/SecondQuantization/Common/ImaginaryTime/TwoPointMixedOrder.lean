@@ -66,7 +66,7 @@ theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
     (hb : twoPointTimedEventTime τ τ' σ b = twoPointTimedEventTime τ τ' υ b) :
     twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
       twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  simp only [twoPointTimedEventBeforeOrEqual]
+  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual]
   rw [ha, hb]
 
 /-- Interaction events in their canonical supplied slot order. -/
