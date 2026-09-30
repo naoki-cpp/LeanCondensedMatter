@@ -38,7 +38,6 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
       (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i := by
   apply LinearMap.ext
   intro ψ
-
   apply lp.ext
   funext n
   change
@@ -76,7 +75,6 @@ theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : 
       (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i := by
   apply LinearMap.ext
   intro ψ
-
   apply lp.ext
   funext n
   change
