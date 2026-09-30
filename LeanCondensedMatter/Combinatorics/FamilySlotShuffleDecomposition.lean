@@ -244,7 +244,9 @@ theorem FamilySlotShuffle.outerSlotEquiv_apply_inr {size : Fin (k + 1) → ℕ}
       finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
         ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
           ↥shuffle.tailSlots) : Fin (∑ i, size i)) := by
-  simp [FamilySlotShuffle.outerSlotEquiv, Set.equivOfEq_apply]
+  simp only [FamilySlotShuffle.outerSlotEquiv, Equiv.trans_apply,
+    Equiv.sumCongr_apply, Sum.map_inr, Equiv.Set.sumCompl_apply_inr]
+  exact Set.equivOfEq_apply _ _
 
 /-- Extract the binary shuffle of the head block against all tail slots. -/
 noncomputable def FamilySlotShuffle.outerShuffle {size : Fin (k + 1) → ℕ}
