@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 
 set_option linter.style.header false
 
@@ -35,6 +36,25 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
       fermionPhase, hbasis]
+
+
+/-- The completed single-mode number operator agrees with the algebraic number operator on every
+finite-support vector. -/
+theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
+    (completedNumberOperator i).toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (numberOperator i) := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  change completedNumberOperator i (algebraicToCompleted (basisState n)) =
+    algebraicToCompleted (numberOperator i (basisState n))
+  have hbasis (m : Occupation Mode) :
+      algebraicToCompleted (basisState m) = completedBasisState m := by
+    simpa [algebraicToCompleted, basisState, completedBasisState] using
+      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
+  rw [hbasis n, completedNumberOperator_basisState, numberOperator_basisState]
+  by_cases hi : i ∈ n
+  · simp [hi, hbasis]
+  · simp [hi]
 
 /-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
 theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
