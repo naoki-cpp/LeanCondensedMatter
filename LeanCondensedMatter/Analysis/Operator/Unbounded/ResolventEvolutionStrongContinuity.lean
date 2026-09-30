@@ -103,7 +103,7 @@ theorem stoneEvolution_joint_continuous
   · intro x hx
     exact stoneEvolution_apply_continuous_domain A hA ⟨x, hx⟩
   · intro t
-    exact (isometry_iff_dist_eq.mpr fun x y => stoneEvolution_dist_eq A hA t x y).lipschitz
+    exact (isometry_iff_dist_eq.mpr fun x y => stoneEvolution_dist_eq A hA t x y).lipschitzWith
 
 /-- The limiting unitary group is strongly continuous: every orbit `t ↦ U(t)x` is continuous. -/
 theorem stoneEvolution_apply_continuous
