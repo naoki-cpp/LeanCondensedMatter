@@ -52616,7 +52616,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52625,20 +52625,20 @@
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
     "externalAxioms": [],
     "docString": "If `|offset| ≤ radius`, the shifted interband denominator stays at least\n`|gap| - radius` away from zero on the real axis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "directWrapperOf": "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset",
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
       "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
     ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
+    "dependencies": [
+      "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset"
+    ],
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
       "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54128,7 +54128,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient_eq_scalarResolventCoefficient",
+      "QuantumTheory.Transport.continuousAt_scalarResolventCoefficient"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -54143,7 +54146,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ) (p : ℝ × ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py + p.1 ≠ 0 →\n    ContinuousAt\n      (QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py) p",
     "standardAxioms": [
       "Classical.choice",
@@ -54151,7 +54154,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -54162,16 +54165,15 @@
     "docString": "If the real shifted interband gap is nonzero at an offset, then the target-centered regular\nspectator/current factor is jointly continuous there for arbitrary real broadening. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
+      "QuantumTheory.Transport.continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero"
     ],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61841,7 +61843,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py offset radius : ℝ),\n  radius < |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py| →\n    |offset| ≤ radius → QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py + offset ≠ 0",
     "standardAxioms": [
       "Classical.choice",
@@ -61849,7 +61851,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -61858,20 +61860,16 @@
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
     "externalAxioms": [],
     "docString": "A target-centered window narrower than the interband gap cannot contain the opposite-band\nsource pole. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
-    ],
+    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "directWrapperOf": "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow",
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius"
+      "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61950,8 +61948,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_eq"
@@ -61962,10 +61959,9 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64283,7 +64279,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py))\n      (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) v m px py =\n    (↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹",
+    "statement": "∀ (z : ℂ) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient z band v m px py =\n    QuantumTheory.Transport.scalarResolventCoefficient z\n      (QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64295,22 +64291,57 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient_eq_scalarResolventCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "The model-local projector coefficient is the generic scalar spectral resolvent coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_projectorResolventCoefficient"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_projectorResolventCoefficient"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py))\n      (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) v m px py =\n    (↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient_oppositeBand_at_bandEnergy",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator",
     "externalAxioms": [],
     "docString": "Evaluating the opposite-band scalar resolvent at the selected band pole gives the inverse\ninterband energy gap exactly. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64329,7 +64360,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -64341,15 +64372,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64928,9 +64961,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.inv_add_I_sub_inv_sub_I_eq_lorentzian",
-      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
-      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65303,6 +65334,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py radius broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m px py radius\n        broadening =\n      QuantumTheory.Transport.interbandBastinPoleIntegral\n        (QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py)\n        (QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 0 1\n          (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py)\n        (QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 1 0\n          (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py)\n        radius broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairIntegral",
+    "externalAxioms": [],
+    "docString": "At nonzero broadening, the concrete massive-Dirac pair integral is the generic isolated\ninterband Bastin pole integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py radius broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m px py radius\n        broadening =\n      -2 * Complex.I *\n        QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral band e v m px py\n          radius broadening",
     "standardAxioms": [
       "Classical.choice",
@@ -65323,7 +65398,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
     ],
     "dependencies": [
@@ -65333,10 +65408,62 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ) (p : ℝ × ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py p =\n    QuantumTheory.Transport.interbandPoleRegularFactor\n      (QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py)\n      (QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 0 1\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py)\n      (QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 1 0\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py)\n      p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity",
+    "externalAxioms": [],
+    "docString": "The model-specific target-centered spectator is exactly the generic isolated interband-pole\nregular factor with the massive-Dirac gap and ordered Hall current blocks supplied. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient_targetOffset_oppositeBand",
+      "QuantumTheory.Transport.targetCenteredSourceCoefficient_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+    ],
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65419,9 +65546,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient_oppositeBand_at_bandEnergy",
-      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
-      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
+      "QuantumTheory.Transport.interbandPoleRegularFactor_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65472,6 +65598,49 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py radius broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral band e v m px py\n      radius broadening =\n    QuantumTheory.Transport.interbandPoleRegularFactorIntegral\n      (QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py)\n      (QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 0 1\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py)\n      (QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 1 0\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py)\n      radius broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction",
+    "externalAxioms": [],
+    "docString": "The model-specific pole integral is the generic isolated-interband regular-factor integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68309,7 +68478,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit.0.QuantumTheory.Transport.Models.MassiveDirac.complex_spectral_offset_ne_zero"
+      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68372,7 +68541,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    0 < radius →\n      radius < |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py| →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m px py\n              radius broadening)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (-2 * Complex.I *\n              Real.pi •\n                QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px\n                  py (0, 0)))",
     "standardAxioms": [
       "Classical.choice",
@@ -68380,7 +68549,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -68391,19 +68560,16 @@
     "docString": "On a fixed positive target-centered window narrower than the interband gap, the integrated\nopposite-source Bastin pair converges to `-2 i π` times the regular factor at the target pole. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68430,15 +68596,17 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry",
     "externalAxioms": [],
-    "docString": "The real part of the extracted interband Bastin pair converges pointwise to\n`-2π e² Ω_n(p)`, providing the local clean-limit response density used by the radial momentum\nintegration and comparison with the occupied-state Berry integral. ",
+    "docString": "The real part of the extracted interband Bastin pair converges pointwise to\n`-2π e² Ω_n(p)`. The analytic real-part pole limit is generic; this specialization supplies only\nthe massive-Dirac Berry-curvature identification. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral"
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68497,7 +68665,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    0 < radius →\n      radius < |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py| →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral band e v m\n              px py radius broadening)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (Real.pi •\n              QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py\n                (0, 0)))",
     "standardAxioms": [
       "Classical.choice",
@@ -68505,7 +68673,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -68516,21 +68684,16 @@
     "docString": "On a fixed positive target-centered window narrower than the interband gap, the Lorentzian-\nweighted regular spectator/current factor converges to `π` times its target-pole value. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
-      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
-      "QuantumTheory.Transport.tendsto_lorentzianRegularFactorIntegral"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral",
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71227,7 +71390,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolventCoefficient_eq_scalarResolventCoefficient",
+      "QuantumTheory.Transport.continuousAt_scalarResolventCoefficient"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -72243,6 +72409,45 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.projectorResolventCoefficient z params band px py =\n    QuantumTheory.Transport.scalarResolventCoefficient z\n      (QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.projectorResolventCoefficient_eq_scalarResolventCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "The model-local projector coefficient is the generic scalar spectral resolvent coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.continuousAt_projectorResolventCoefficient"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.continuousAt_projectorResolventCoefficient"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0
@@ -74531,6 +74736,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (gap offset radius : ℝ), |offset| ≤ radius → |gap| - radius ≤ |gap + offset|",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "If `|offset| ≤ radius`, a real shifted gap stays at least `|gap| - radius` away from zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
+      "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
+      "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) channel.measured channel.source omega\n        eta heta +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        channel.observableVariation =\n    QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -74917,6 +75163,88 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (gap : ℝ) (forward reverse : ℂ) (p : ℝ × ℝ),\n  gap + p.1 ≠ 0 → ContinuousAt (QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse) p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "The regular interband factor is jointly continuous wherever the shifted real source denominator\ndoes not vanish. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (eigenvalue : ℝ),\n  z - ↑eigenvalue ≠ 0 → ContinuousAt (fun w => QuantumTheory.Transport.scalarResolventCoefficient w eigenvalue) z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.continuousAt_scalarResolventCoefficient",
+    "module": "LeanCondensedMatter.Transport.Resolvent.Spectral",
+    "externalAxioms": [],
+    "docString": "The scalar resolvent coefficient is continuous wherever its spectral denominator is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_projectorResolventCoefficient",
+      "QuantumTheory.Transport.Models.RashbaExchange.continuousAt_projectorResolventCoefficient"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuousAt_projectorResolventCoefficient",
+      "QuantumTheory.Transport.Models.RashbaExchange.continuousAt_projectorResolventCoefficient"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75751,6 +76079,49 @@
       "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (gap offset radius : ℝ), radius < |gap| → |offset| ≤ radius → gap + offset ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "A symmetric target-centered window narrower than the interband gap excludes the source pole. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76669,6 +77040,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (gap : ℝ) (forward reverse : ℂ),\n  QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse (0, 0) = (↑gap)⁻¹ ^ 2 * (forward - reverse)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.interbandPoleRegularFactor_zero",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "At the target pole the regular factor is the inverse-gap-squared antisymmetric current block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (lower upper broadening : ℝ),\n  broadening ≠ 0 →\n    IntervalIntegrable (fun offset => QuantumTheory.Transport.lorentzianSpectralKernel offset broadening)\n      MeasureTheory.volume lower upper",
     "standardAxioms": [
       "Classical.choice",
@@ -76737,7 +77147,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Kernel.0.QuantumTheory.Transport.complex_offset_add_I_ne_zero",
@@ -76746,7 +77156,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -78154,6 +78564,49 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (targetEnergy probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening =\n      -2 * Complex.I * ↑(QuantumTheory.Transport.lorentzianSpectralKernel (probeEnergy - targetEnergy) broadening)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "The scalar retarded-minus-advanced coefficient is exactly the Lorentzian spectral pole. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.inv_add_I_sub_inv_sub_I_eq_lorentzian",
+      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (energy regulator : ℝ), (QuantumTheory.Transport.spectralParameterOfRegulator energy regulator).im = regulator",
     "standardAxioms": [
       "Classical.choice",
@@ -78324,12 +78777,11 @@
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
@@ -78342,17 +78794,16 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78467,14 +78918,13 @@
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.lehmannDenominator_eq_retardedSpectralShift",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
@@ -78487,19 +78937,18 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.lehmannDenominator_eq_retardedSpectralShift",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78904,6 +79353,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (gap offset broadening : ℝ),\n  QuantumTheory.Transport.targetCenteredSourceCoefficient side gap offset broadening =\n    (↑(gap + offset) + ↑(side.regulator broadening) * Complex.I)⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.targetCenteredSourceCoefficient_eq",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "Target-centered source denominator in the explicit `gap + offset + iγ` form. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {l : Filter ι} {f g width : ι → ℝ} {a b : ℝ},\n  Filter.Tendsto f l (nhds a) →\n    0 < a →\n      Filter.Tendsto g l (nhds b) →\n        b < 0 →\n          Filter.Tendsto width l (nhdsWithin 0 (Set.Ioi 0)) →\n            Filter.Tendsto (fun x => Real.arctan (f x / width x) - Real.arctan (g x / width x)) l (nhds Real.pi)",
     "standardAxioms": [
       "Classical.choice",
@@ -79110,6 +79598,135 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (gap : ℝ) (forward reverse : ℂ) (radius : ℝ),\n  0 < radius →\n    radius < |gap| →\n      Filter.Tendsto\n        (fun broadening => QuantumTheory.Transport.interbandBastinPoleIntegral gap forward reverse radius broadening)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          (-2 * Complex.I * Real.pi • QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse (0, 0)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "The isolated interband Bastin pole converges to `-2 i π` times its regular target-pole factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (gap : ℝ) (forward reverse : ℂ) (radius : ℝ),\n  0 < radius →\n    radius < |gap| →\n      Filter.Tendsto\n        (fun broadening =>\n          (QuantumTheory.Transport.interbandBastinPoleIntegral gap forward reverse radius broadening).re)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds (2 * Real.pi * (QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse (0, 0)).im))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "The real part of the isolated Bastin pole limit is `2π` times the imaginary part of the\nregular target-pole factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (gap : ℝ) (forward reverse : ℂ) (radius : ℝ),\n  0 < radius →\n    radius < |gap| →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Transport.interbandPoleRegularFactorIntegral gap forward reverse radius broadening)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds (Real.pi • QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse (0, 0)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "On a positive fixed window narrower than `|gap|`, the regular interband factor is extracted at\nthe target pole by the Lorentzian approximate identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral",
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero",
+      "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow",
+      "QuantumTheory.Transport.tendsto_lorentzianRegularFactorIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral",
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    ContinuousAt factor (0, 0) →\n      (∀ (broadening : ℝ),\n          broadening ≠ 0 → ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n        (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 1, ‖factor p - factor (0, 0)‖ ≤ C) →\n          Filter.Tendsto\n            (fun broadening => QuantumTheory.Transport.lorentzianRegularFactorIntegral factor radius broadening)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
     "standardAxioms": [
       "Classical.choice",
@@ -79129,7 +79746,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
     "dependencies": [
       "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric",
@@ -79139,7 +79756,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -79181,6 +79798,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.QuantumTheory.Transport.tendsto_lorentzianRegularFactorErrorIntegral_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (probeEnergy eigenvalue : ℝ),\n  probeEnergy ≠ eigenvalue →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.scalarResolventCoefficient\n          (QuantumTheory.Transport.spectralParameter side probeEnergy broadening) eigenvalue)\n      (nhds 0) (nhds (QuantumTheory.Transport.scalarResolventCoefficient (↑probeEnergy) eigenvalue))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero",
+    "module": "LeanCondensedMatter.Transport.Resolvent.Spectral",
+    "externalAxioms": [],
+    "docString": "Away from a real spectral pole, the side-indexed regulated scalar coefficient converges to the\nordinary real-energy scalar resolvent as the broadening tends to zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_projectorResolventCoefficient_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Resolvent.Spectral.0.QuantumTheory.Transport.complex_spectral_offset_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_projectorResolventCoefficient_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -161197,45 +161855,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py probeEnergy : ℝ),\n  probeEnergy ≠ QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py →\n    ↑(probeEnergy - QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit.0.QuantumTheory.Transport.Models.MassiveDirac.complex_spectral_offset_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_projectorResolventCoefficient_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_projectorResolventCoefficient_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius pMax p broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        p ∈ Set.Icc 0 pMax →\n          0 < broadening →\n            ‖QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p\n                  broadening‖ ≤\n              QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant e v m radius pMax",
     "standardAxioms": [
       "Classical.choice",
@@ -166594,6 +167213,45 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (probeEnergy eigenvalue : ℝ), probeEnergy ≠ eigenvalue → ↑(probeEnergy - eigenvalue) ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Resolvent.Spectral.0.QuantumTheory.Transport.complex_spectral_offset_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Resolvent.Spectral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "definitionallyEquivalentTo": [],
