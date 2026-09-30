@@ -56,7 +56,7 @@ private theorem hasDerivAt_radialQuadraticLorentzianPrimitive
       ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A).div_const B
   have hmain := hu.arctan.const_mul ((2 * v ^ 2 * B)⁻¹)
   unfold radialQuadraticLorentzianPrimitive
-  convert hmain using 1 <;> try rfl
+  convert hmain using 1 ; try rfl
   field_simp [hvelocity, hB]
   ring
 
