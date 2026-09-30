@@ -99860,8 +99860,7 @@
     "dependents": [
       "SecondQuantization.Common.completedBoundedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Common.completedReindex_basisState",
-      "SecondQuantization.Fermionic.completedBasisState_apply_of_ne"
+      "SecondQuantization.Common.completedReindex_basisState"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -99869,10 +99868,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.completedBoundedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Common.completedReindex_basisState",
-      "SecondQuantization.Fermionic.completedBasisState_apply_of_ne"
+      "SecondQuantization.Common.completedReindex_basisState"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99905,8 +99903,7 @@
     "dependents": [
       "SecondQuantization.Common.completedBoundedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Common.completedReindex_basisState",
-      "SecondQuantization.Fermionic.completedBasisState_apply_self"
+      "SecondQuantization.Common.completedReindex_basisState"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -99914,10 +99911,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.completedBoundedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Common.completedReindex_basisState",
-      "SecondQuantization.Fermionic.completedBasisState_apply_self"
+      "SecondQuantization.Common.completedReindex_basisState"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125613,80 +125609,6 @@
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {m n : SecondQuantization.Fermionic.Occupation Mode},\n  m ≠ n → ↑(SecondQuantization.Fermionic.completedBasisState n) m = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedBasisState_apply_of_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedBasisState_apply_of_ne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑(SecondQuantization.Fermionic.completedBasisState n) n = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedBasisState_apply_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedBasisState_apply_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
