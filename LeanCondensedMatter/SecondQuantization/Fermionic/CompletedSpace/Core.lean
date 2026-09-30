@@ -36,7 +36,23 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
       fermionPhase, hbasis]
-
+/-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
+theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
+    (completedAnnihilate i).toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (annihilate i) := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  change completedAnnihilate i (algebraicToCompleted (basisState n)) =
+    algebraicToCompleted (annihilate i (basisState n))
+  have hbasis (m : Occupation Mode) :
+      algebraicToCompleted (basisState m) = completedBasisState m := by
+    simpa [algebraicToCompleted, basisState, completedBasisState] using
+      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
+  rw [hbasis n]
+  by_cases hi : i ∈ n
+  · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
+      fermionPhase, hbasis]
+  · simp [annihilate_basisState_of_not_mem hi, completedAnnihilate_basisState_of_not_mem hi]
 
 /-- The completed single-mode number operator agrees with the algebraic number operator on every
 finite-support vector. -/
@@ -67,24 +83,6 @@ theorem completedNumberOperator_eq_create_comp_annihilate (i : Mode) :
   simp only [LinearMap.comp_apply] at hN ha hc
   rw [hN, ContinuousLinearMap.comp_apply, ha, hc]
   rfl
-
-/-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
-theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
-    (completedAnnihilate i).toLinearMap.comp algebraicToCompleted =
-      algebraicToCompleted.comp (annihilate i) := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change completedAnnihilate i (algebraicToCompleted (basisState n)) =
-    algebraicToCompleted (annihilate i (basisState n))
-  have hbasis (m : Occupation Mode) :
-      algebraicToCompleted (basisState m) = completedBasisState m := by
-    simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
-  rw [hbasis n]
-  by_cases hi : i ∈ n
-  · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
-      fermionPhase, hbasis]
-  · simp [annihilate_basisState_of_not_mem hi, completedAnnihilate_basisState_of_not_mem hi]
 
 end
 end Fermionic
