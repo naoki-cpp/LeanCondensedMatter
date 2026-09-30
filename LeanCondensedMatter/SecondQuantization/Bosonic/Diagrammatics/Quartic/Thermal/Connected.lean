@@ -70,8 +70,8 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order := by
   classical
-  exact Finpartition.sum_order_eq_mul_prod_sum_partOrders
-    d.vertexGraph.componentPartitionOn
+  exact Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
+    d
     (fun order : Common.QuarticVertexOrder S =>
       QuarticDiagram.orderedThermalAmplitude ε β g d order)
     (fun B order =>
