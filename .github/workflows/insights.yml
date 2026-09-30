@@ -113,6 +113,9 @@ jobs:
           set -o pipefail
           lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
 
+      - name: Generate module import graph
+        run: python3 scripts/export_module_import_graph.py
+
       - name: Audit proof-guided theorem replacements
         shell: bash
         run: |
@@ -129,7 +132,7 @@ jobs:
           echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
           grep -E '^(Theorems|Retained audit declarations|Retained re-audit queue|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
+          echo "The complete theorem catalog and module import graph are attached as workflow artifacts." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload theorem catalog
         if: success()
@@ -139,6 +142,7 @@ jobs:
           path: |
             docs/generated/theorems.md
             docs/generated/theorems.json
+            docs/generated/module-imports.json
           if-no-files-found: error
           retention-days: 30
 
@@ -153,7 +157,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-      - name: Publish declaration graph data
+      - name: Publish declaration and module graph data
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -172,15 +176,16 @@ jobs:
           git fetch origin graph-data
           git worktree add "$graph_data_dir" origin/graph-data
           cp docs/generated/theorems.json "$graph_data_dir/theorems.json"
+          cp docs/generated/module-imports.json "$graph_data_dir/module-imports.json"
 
           git -C "$graph_data_dir" config user.name "github-actions[bot]"
           git -C "$graph_data_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C "$graph_data_dir" add theorems.json
+          git -C "$graph_data_dir" add theorems.json module-imports.json
 
           if git -C "$graph_data_dir" diff --cached --quiet; then
-            echo "Declaration graph data is unchanged."
+            echo "Graph data is unchanged."
             exit 0
           fi
 
-          git -C "$graph_data_dir" commit -m "chore(graph-data): update theorem catalog"
+          git -C "$graph_data_dir" commit -m "chore(graph-data): update theorem and module graphs"
           git -C "$graph_data_dir" push origin HEAD:graph-data

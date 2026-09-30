@@ -1,5 +1,7 @@
-const SOURCE_ROOT_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/LeanCondensedMatter";
+const REPOSITORY_ROOT_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main";
+const PROJECT_NAME = "LeanCondensedMatter";
 const PROJECT_PREFIX = "LeanCondensedMatter.";
+const SOURCE_ROOT_URL = `${REPOSITORY_ROOT_URL}/${PROJECT_NAME}`;
 
 function element(tag, className = "", text = "") {
   const node = document.createElement(tag);
@@ -17,6 +19,7 @@ function moduleParts(moduleName) {
 }
 
 function moduleSourceUrl(moduleName) {
+  if (moduleName === PROJECT_NAME) return `${REPOSITORY_ROOT_URL}/${PROJECT_NAME}.lean`;
   return `${SOURCE_ROOT_URL}/${moduleParts(moduleName).join("/")}.lean`;
 }
 
@@ -43,34 +46,38 @@ function declarationBaseName(name) {
   return name.split(".").at(-1) ?? name;
 }
 
-function makeTree(domain, entries) {
-  const root = {
-    name: domain,
-    fullName: domain,
+function makeNode(name, fullName) {
+  return {
+    name,
+    fullName,
     children: new Map(),
     declarations: [],
     declarationCount: 0,
     moduleCount: 1,
   };
+}
 
-  for (const entry of entries) {
-    const parts = moduleParts(entry.module);
-    if (parts[0] !== domain) continue;
+function relativeModuleParts(moduleName) {
+  return moduleName === PROJECT_NAME ? [] : moduleParts(moduleName);
+}
+
+function makeTree(entries, modules) {
+  const root = makeNode(PROJECT_NAME, PROJECT_NAME);
+
+  function ensureModule(moduleName) {
     let node = root;
-    for (const part of parts.slice(1)) {
+    for (const part of relativeModuleParts(moduleName)) {
       if (!node.children.has(part)) {
-        node.children.set(part, {
-          name: part,
-          fullName: `${node.fullName}.${part}`,
-          children: new Map(),
-          declarations: [],
-          declarationCount: 0,
-          moduleCount: 1,
-        });
+        node.children.set(part, makeNode(part, `${node.fullName}.${part}`));
       }
       node = node.children.get(part);
     }
-    node.declarations.push(entry);
+    return node;
+  }
+
+  for (const moduleName of modules) ensureModule(moduleName);
+  for (const entry of entries) {
+    ensureModule(entry.module).declarations.push(entry);
   }
 
   function summarize(node) {
@@ -103,17 +110,11 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclaration }) {
+export function createModuleOverview({ catalog, modules = [], overview, onBrowse, onOpenDeclaration }) {
   const moduleDescriptionPromises = new Map();
   let hierarchyRenderVersion = 0;
 
-  const moduleNames = new Set();
-  for (const entry of catalog) {
-    const parts = moduleParts(entry.module);
-    for (let length = 1; length <= parts.length; length += 1) {
-      moduleNames.add(parts.slice(0, length).join("."));
-    }
-  }
+  const tree = makeTree(catalog, [PROJECT_NAME, ...modules]);
 
   function loadModuleDescription(moduleName) {
     const canonicalName = shortModule(moduleName);
@@ -127,22 +128,22 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     return moduleDescriptionPromises.get(canonicalName);
   }
 
-  function renderBreadcrumb(domain, path) {
+  function renderBreadcrumb(path) {
     const breadcrumb = element("nav", "module-breadcrumb");
     breadcrumb.setAttribute("aria-label", "Module hierarchy");
 
-    const allAreas = element("button", "module-crumb", "All areas");
-    allAreas.type = "button";
-    allAreas.addEventListener("click", () => onBrowse(null));
-    breadcrumb.append(allAreas);
+    const project = element("button", "module-crumb", PROJECT_NAME);
+    project.type = "button";
+    project.disabled = path.length === 0;
+    project.addEventListener("click", () => onBrowse(PROJECT_NAME));
+    breadcrumb.append(project);
 
-    const segments = [domain, ...path];
-    segments.forEach((segment, index) => {
+    path.forEach((segment, index) => {
       breadcrumb.append(element("span", "module-crumb-separator", "/"));
       const crumb = element("button", "module-crumb", segment);
       crumb.type = "button";
-      crumb.disabled = index === segments.length - 1;
-      const target = segments.slice(0, index + 1).join(".");
+      crumb.disabled = index === path.length - 1;
+      const target = path.slice(0, index + 1).join(".");
       crumb.addEventListener("click", () => onBrowse(target));
       breadcrumb.append(crumb);
     });
@@ -179,14 +180,9 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
 
   async function render(moduleName) {
     const canonicalName = shortModule(moduleName);
-    const parts = moduleParts(canonicalName);
-    if (parts.length === 0 || !moduleNames.has(canonicalName)) return false;
-
+    const parts = relativeModuleParts(canonicalName);
     const renderVersion = ++hierarchyRenderVersion;
-    const [domain, ...path] = parts;
-    const entries = catalog.filter((entry) => moduleParts(entry.module)[0] === domain);
-    const tree = makeTree(domain, entries);
-    const node = resolveNode(tree, path);
+    const node = resolveNode(tree, parts);
     if (!node) return false;
     // A superseded valid request is handled by the newer render, so it must not
     // trigger the owner's invalid-target fallback even when the browse value is unchanged.
@@ -199,7 +195,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     if (renderVersion !== hierarchyRenderVersion) return true;
 
     overview.replaceChildren();
-    overview.append(renderBreadcrumb(domain, path));
+    overview.append(renderBreadcrumb(parts));
 
     const header = element("div", "overview-header module-overview-header");
     header.append(element("p", "module-overview-eyebrow", "Module hierarchy"));
@@ -235,16 +231,14 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     return true;
   }
 
-  async function hydrateDomainDescriptions() {}
-
   return {
     cancel() {
       hierarchyRenderVersion += 1;
     },
     hasModule(moduleName) {
-      return moduleNames.has(shortModule(moduleName));
+      const parts = relativeModuleParts(shortModule(moduleName));
+      return resolveNode(tree, parts) !== null;
     },
     render,
-    hydrateDomainDescriptions,
   };
 }

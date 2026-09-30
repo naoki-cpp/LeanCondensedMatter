@@ -30,7 +30,7 @@
       </span>
     </a>
     <nav aria-label="Project links">
-      <button id="overview-link" class="nav-button" type="button">Overview</button>
+      <button id="overview-link" class="nav-button" type="button">Theorem Graph</button>
       <button id="module-imports-link" class="nav-button" type="button">Module imports</button>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter">GitHub</a>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/notes/roadmap.md">Roadmap</a>
@@ -85,14 +85,13 @@
       </fieldset>
 
       <div class="legend" aria-label="Graph legend">
-        <span><i class="legend-node root"></i> focused theorem</span>
-        <span><i class="legend-node branch"></i> color: first-hop branch</span>
-        <span class="legend-dependency"><i class="legend-edge"></i> dependency · <strong>A → B</strong>: A depends on B</span>
+        <span><i class="legend-node root"></i> selected theorem</span>
+        <span><i class="legend-node branch"></i> color groups by first connection</span>
+        <span class="legend-dependency"><i class="legend-edge"></i> dependency</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
       </div>
 
-      <p class="hint">Click to inspect · double-click to re-center · drag to pan · pinch or scroll to zoom · hover/focus to isolate a branch.</p>
     </aside>
 
     <section class="graph-panel" aria-label="Declaration and module exploration panel">
@@ -111,9 +110,7 @@
       </div>
     </section>
 
-    <aside id="detail" class="detail-panel" aria-live="polite">
-      <p class="muted">Select a declaration.</p>
-    </aside>
+    <aside id="detail" class="detail-panel" aria-live="polite"></aside>
   </main>
 
   <script type="module" src="./graph.js"></script>

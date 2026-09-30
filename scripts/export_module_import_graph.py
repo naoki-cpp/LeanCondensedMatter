@@ -11,7 +11,7 @@ from architecture_audit_common import lean_files, lean_imports, module_name_from
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = ROOT / "LeanCondensedMatter"
 PROJECT_PREFIX = "LeanCondensedMatter."
-OUTPUT = ROOT / "docs-site" / "module-imports.json"
+OUTPUT = ROOT / "docs" / "generated" / "module-imports.json"
 
 
 def is_project_module(name: str) -> bool:
