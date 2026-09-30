@@ -4407,7 +4407,7 @@
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude",
+      "Combinatorics.powerSeriesMomentSetFunction_eq_iff",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [],
@@ -4417,7 +4417,7 @@
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude",
+      "Combinatorics.powerSeriesMomentSetFunction_eq_iff",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 5,
@@ -8734,7 +8734,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [inst_2 : CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R),\n      (∀ (T : Finset α), ↑T.card.factorial * (PowerSeries.coeff T.card) Z = W.objectMoment T) →\n        ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [inst_2 : CharZero R] {Z : PowerSeries R}\n  (hZ : PowerSeries.constantCoeff Z = 1) {D : Combinatorics.ConnectedDecomposition α}\n  (W : Combinatorics.MultiplicativeWeight D R),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment →\n    ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8757,6 +8757,7 @@
     ],
     "dependencies": [
       "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant",
+      "Combinatorics.powerSeriesMomentSetFunction_eq_iff",
       "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial",
       "Finpartition.replicaPolynomial_coeff_one",
       "PowerSeries.replicaCoeffPolynomial_coeff_one"
@@ -9930,6 +9931,51 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : Semiring R] (Z : PowerSeries R) (hZ : PowerSeries.constantCoeff Z = 1)\n  (M : Combinatorics.NormalizedSetFunction α R),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = M ↔\n    ∀ (S : Finset α), Combinatorics.powerSeriesMomentCoeff Z S.card = M.toFun S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.powerSeriesMomentSetFunction_eq_iff",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Moment",
+    "externalAxioms": [],
+    "docString": "Equality of the bundled power-series moment function with normalized finite-set moment data is\nequivalent to equality of the factorial-normalized coefficients on every finite set. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
+      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+    ],
+    "dependencies": [
+      "Combinatorics.NormalizedSetFunction.ext"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
+      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86992,9 +87038,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one",
       "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
-      "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87031,9 +87077,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one",
       "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
-      "SecondQuantization.Bosonic.quarticInteraction_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteraction_mem_freeGibbsDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87193,12 +87239,11 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.NormalizedSetFunction.ext",
       "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
+      "Combinatorics.powerSeriesMomentSetFunction_eq_iff",
       "SecondQuantization.Bosonic.coeff_freeGibbsDysonSeries",
       "SecondQuantization.Bosonic.constantCoeff_freeGibbsDysonSeries",
-      "SecondQuantization.Bosonic.quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonLinkedCluster.0.SecondQuantization.Bosonic.fin_univ_ne_empty"
+      "SecondQuantization.Bosonic.quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87965,48 +88010,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ),\n  SecondQuantization.Bosonic.freeGibbsExpectation ε β\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t) =\n    -↑t * SecondQuantization.Bosonic.freeGibbsExpectation ε β V",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation",
-    "externalAxioms": [],
-    "docString": "The normalized free-Gibbs expectation of the first Dyson coefficient is the bare interaction\nexpectation multiplied by the signed interval length. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one_eq_intervalIntegral"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
-      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one_eq_intervalIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ),\n  SecondQuantization.Bosonic.freeGibbsExpectation ε β\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t) =\n    -∫ (σ : ℝ) in 0..t,\n        SecondQuantization.Bosonic.freeGibbsExpectation ε β\n          (SecondQuantization.Bosonic.interactionPicture ε V σ ∘ₗ\n            SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 0 σ)",
     "standardAxioms": [
@@ -88028,9 +88031,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
       "SecondQuantization.Bosonic.freeGibbsExpectation_interactionPicture",
-      "SecondQuantization.Common.dysonCoeff_zero"
+      "SecondQuantization.Common.dysonCoeff_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation.0.SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88328,8 +88331,8 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation.0.SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
     ],
     "dependencies": [
       "SecondQuantization.Common.tsumTrace_smul"
@@ -88340,8 +88343,8 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation.0.SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -88610,49 +88613,6 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ),\n  SecondQuantization.Bosonic.freeGibbsSummable ε β V →\n    SecondQuantization.Bosonic.freeGibbsSummable ε β\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable",
-    "externalAxioms": [],
-    "docString": "Free-Gibbs summability of an interaction implies free-Gibbs summability of its first Dyson\ncoefficient. No expectation/integral interchange is used. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89730,49 +89690,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t) n n =\n    -↑t * SecondQuantization.Common.matrixCoeff V n n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable",
-    "externalAxioms": [],
-    "docString": "The diagonal matrix coefficient of the first arbitrary-configuration Dyson coefficient is the\nbare diagonal coefficient multiplied by the signed interval length. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
-      "SecondQuantization.Common.dysonCoeff_zero",
-      "SecondQuantization.Common.matrixCoeff_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε (-β) ∘ₗ\n        SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t)\n      n n =\n    -↑t * SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε (-β) ∘ₗ V) n n",
     "standardAxioms": [
       "Classical.choice",
@@ -89792,18 +89709,18 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
-      "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation.0.SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp"
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
-      "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation.0.SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -103046,10 +102963,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonCoeff_succ",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "dependencies": [
@@ -103059,10 +102976,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonCoeff_succ",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "compiledConsumerCount": 5,
@@ -103099,7 +103016,6 @@
       "SecondQuantization.Bosonic.firstDysonIntegrand_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_zero",
       "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one_eq_intervalIntegral",
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Common.continuousDysonCoeff_zero",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
@@ -103107,6 +103023,7 @@
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "dependencies": [
@@ -103119,7 +103036,6 @@
       "SecondQuantization.Bosonic.firstDysonIntegrand_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_zero",
       "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one_eq_intervalIntegral",
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Common.continuousDysonCoeff_zero",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
@@ -103127,6 +103043,7 @@
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "compiledConsumerCount": 12,
@@ -107254,11 +107171,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset"
+      "SecondQuantization.Common.support_interactionPicture_basisState_subset",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve"
@@ -107266,11 +107183,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset"
+      "SecondQuantization.Common.support_interactionPicture_basisState_subset",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -128202,11 +128119,11 @@
     "dependencies": [
       "Combinatorics.NormalizedSetFunction.ext",
       "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
+      "Combinatorics.powerSeriesMomentSetFunction_eq_iff",
       "PowerSeries.constantCoeff_normalizeByConstantCoeff",
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.fin_univ_ne_empty"
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -148558,7 +148475,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ}, n ≠ 0 → Finset.univ ≠ ∅",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ),\n  SecondQuantization.Bosonic.freeGibbsExpectation ε β\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t) =\n    -↑t * SecondQuantization.Bosonic.freeGibbsExpectation ε β V",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148570,20 +148487,109 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonLinkedCluster.0.SecondQuantization.Bosonic.fin_univ_ne_empty",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonLinkedCluster",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation.0.SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The normalized free-Gibbs expectation of the first Dyson coefficient is the bare interaction\nexpectation multiplied by the signed interval length. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one_eq_intervalIntegral"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_dysonCoeff_one_eq_intervalIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ),\n  SecondQuantization.Bosonic.freeGibbsSummable ε β V →\n    SecondQuantization.Bosonic.freeGibbsSummable ε β\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable",
+    "externalAxioms": [],
+    "docString": "Free-Gibbs summability of an interaction implies free-Gibbs summability of its first Dyson\ncoefficient. No expectation/integral interchange is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ)\n  (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode) (t : ℝ)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε) V 1 t) n n =\n    -↑t * SecondQuantization.Common.matrixCoeff V n n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable",
+    "externalAxioms": [],
+    "docString": "The diagonal matrix coefficient of the first arbitrary-configuration Dyson coefficient is the\nbare diagonal coefficient multiplied by the signed interval length. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
+      "SecondQuantization.Common.dysonCoeff_zero",
+      "SecondQuantization.Common.matrixCoeff_interactionPicture"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -157189,45 +157195,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ}, n ≠ 0 → Finset.univ ≠ ∅",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.fin_univ_ne_empty",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
