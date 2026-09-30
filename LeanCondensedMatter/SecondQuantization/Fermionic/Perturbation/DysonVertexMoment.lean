@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
+import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 
 set_option linter.style.header false
 
@@ -36,6 +37,21 @@ private theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expect
 noncomputable def dysonVertexMoment {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
   (S.card.factorial : ℂ) * normalizedDysonPartitionCoeff ε β V S.card
+
+/-- Factorial-normalized fermionic Dyson coefficients bundled as normalized finite-set moment data. -/
+noncomputable def dysonVertexMomentSetFunction {α : Type*} (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    Combinatorics.NormalizedSetFunction α ℂ where
+  toFun := dysonVertexMoment ε β V
+  map_empty := by
+    simp [dysonVertexMoment]
+
+omit [LinearOrder Mode] in
+@[simp]
+theorem dysonVertexMomentSetFunction_apply {α : Type*} (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
+    dysonVertexMomentSetFunction ε β V S = dysonVertexMoment ε β V S :=
+  rfl
 
 omit [LinearOrder Mode] in
 /-- The Dyson vertex moment is the factorial times the canonical free Gibbs density-state

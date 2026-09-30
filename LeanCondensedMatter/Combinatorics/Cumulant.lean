@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.Cumulant.Replica
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Independence
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
@@ -11,6 +12,6 @@ set_option linter.style.header false
 /-!
 # Cumulants
 
-Moment–cumulant theory, including replica formulas, inversion, normalized cumulants, independence,
-and connected-decomposition identities.
+Moment–cumulant theory, including the lightweight normalized finite-set interface, replica formulas,
+inversion, normalized cumulants, independence, and connected-decomposition identities.
 -/

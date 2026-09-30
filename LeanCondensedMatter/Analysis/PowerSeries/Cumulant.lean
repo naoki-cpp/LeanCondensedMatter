@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
@@ -19,20 +20,6 @@ open scoped BigOperators
 namespace Combinatorics
 
 open PowerSeries
-
-/-- The exponential-generating-function normalization of a power-series coefficient. -/
-noncomputable def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
-  (n.factorial : ℂ) * PowerSeries.coeff n Z
-
-/-- Factorial-normalized coefficients of a unit-constant power series, bundled as normalized
-finite-set moment data. -/
-noncomputable def powerSeriesMomentSetFunction
-    {α : Type*} (Z : PowerSeries ℂ)
-    (hZ : PowerSeries.constantCoeff Z = 1) :
-    NormalizedSetFunction α ℂ where
-  toFun := fun S => powerSeriesMomentCoeff Z S.card
-  map_empty := by
-    simp [powerSeriesMomentCoeff, PowerSeries.coeff_zero_eq_constantCoeff, hZ]
 
 /-- The exponential-generating-function normalization of a formal-log coefficient. -/
 noncomputable def powerSeriesCumulantCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=

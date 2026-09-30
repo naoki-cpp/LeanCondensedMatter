@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
+import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
 
@@ -80,6 +81,19 @@ theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
     (fun B c => W.connectedWeight c)
   rw [Fintype.piFinset_univ] at hdist
   exact hdist.symm
+
+/-- The total object moment, bundled with its canonical empty-set normalization.
+This construction uses only the forward connected-decomposition moment theorem. -/
+noncomputable def normalizedObjectMoment : NormalizedSetFunction α R where
+  toFun := W.objectMoment
+  map_empty := by
+    rw [W.objectMoment_eq_momentFromCumulant]
+    exact Finpartition.momentFromCumulant_empty W.connectedContribution
+
+@[simp]
+theorem normalizedObjectMoment_apply (S : Finset α) :
+    W.normalizedObjectMoment S = W.objectMoment S :=
+  rfl
 
 end MultiplicativeWeight
 end Combinatorics

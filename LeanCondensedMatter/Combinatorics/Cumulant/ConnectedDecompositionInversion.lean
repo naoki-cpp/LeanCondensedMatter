@@ -18,19 +18,6 @@ namespace MultiplicativeWeight
 variable {α R : Type*} [DecidableEq α] [CommRing R]
 variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
 
-/-- The total object moment of a multiplicative connected decomposition, bundled with its canonical
-empty-set normalization. -/
-noncomputable def normalizedObjectMoment : NormalizedSetFunction α R where
-  toFun := W.objectMoment
-  map_empty := by
-    rw [W.objectMoment_eq_momentFromCumulant]
-    exact Finpartition.momentFromCumulant_empty W.connectedContribution
-
-@[simp]
-theorem normalizedObjectMoment_apply (S : Finset α) :
-    W.normalizedObjectMoment S = W.objectMoment S :=
-  rfl
-
 /-- The cumulant of the total object weight is the connected-object contribution. -/
 theorem cumulantFromMoment_objectMoment {S : Finset α} (hS : S ≠ ∅) :
     Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S := by
