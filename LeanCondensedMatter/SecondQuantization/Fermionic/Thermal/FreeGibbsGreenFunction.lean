@@ -62,7 +62,7 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
     (fermionEnergy ε) β (-ε i) Common.Statistics.fermion
     (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC hcomm hne
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl] at h ⊢
+  · rw [ite_eq_left rfl] at h ⊢
     rw [h]
     have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0 := Complex.exp_ne_zero _
     rw [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_mul,
@@ -70,7 +70,7 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
         push_cast
         ring, Complex.exp_neg]
     field_simp
-  · rw [if_neg hij] at h ⊢
+  · rw [ite_eq_right hij] at h ⊢
     simpa [hij] using h
 /-! ## Closed forms of the free thermal Green function -/
 
@@ -84,7 +84,7 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, map_smul, smul_eq_mul,
-    freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd, if_pos rfl]
+    freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd, ite_eq_left rfl]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -155,9 +155,9 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     (fermionEnergy ε) β (ε j) Common.Statistics.fermion
     (if i = j then (1 : ℂ) else 0) (create j) (annihilate i) hC hcomm hne
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl] at h ⊢
+  · rw [ite_eq_left rfl] at h ⊢
     simpa [Common.Statistics.zetaInt_fermion, mul_comm, add_comm] using h
-  · rw [if_neg hij] at h ⊢
+  · rw [ite_eq_right hij] at h ⊢
     simpa [hij] using h
 
 /-- `⟨c_i c_j†⟩₀,β = δᵢⱼ (1 - f_i)`. -/
@@ -179,11 +179,11 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
   split_ifs with hτ hτ'
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
     rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
-      if_neg hij]
+      ite_eq_right hij]
     simp
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
     rw [freeGibbsDensityOperator_expectation_create_comp_annihilate,
-      if_neg hij]
+      ite_eq_right hij]
     simp
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul, map_add]
     rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,

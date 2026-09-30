@@ -69,10 +69,10 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
-    · rw [completedCreate_apply, if_pos h, completedToggle_apply,
+    · rw [completedCreate_apply, ite_eq_left h, completedToggle_apply,
         Common.completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
       simpa [x, norm_fermionPhase]
-    · simp only [completedCreate_apply, if_neg h, mul_zero, norm_zero]
+    · simp only [completedCreate_apply, ite_eq_right h, mul_zero, norm_zero]
       exact norm_nonneg _
 
 /-- Bounded fermionic annihilation preserves the maximal domain of the completed free Hamiltonian. -/
@@ -97,9 +97,9 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
-    · simp only [completedAnnihilate_apply, if_pos h, mul_zero, norm_zero]
+    · simp only [completedAnnihilate_apply, ite_eq_left h, mul_zero, norm_zero]
       exact norm_nonneg _
-    · rw [completedAnnihilate_apply, if_neg h, completedToggle_apply,
+    · rw [completedAnnihilate_apply, ite_eq_right h, completedToggle_apply,
         Common.completedDiagonalOperator_apply]
       have hE := freeHamiltonianWeight_toggle_of_not_mem ε h
       rw [hE]
