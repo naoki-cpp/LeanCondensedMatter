@@ -122,7 +122,7 @@ noncomputable def partGlobalSlotEquiv (π : Finpartition s) (order : Fin s.card 
     (B : π.parts) : ↥(B : Finset α) ≃ ↥(π.partGlobalSlots order B) :=
   (Equiv.ofInjective (π.partGlobalSlot order B)
       (π.partGlobalSlot_injective order B)).trans
-    (Equiv.setCongr (by
+    (Set.equivOfEq (by
       ext x
       simp [Finpartition.partGlobalSlots]))
 
@@ -132,7 +132,8 @@ theorem partGlobalSlot_partGlobalSlotEquiv_symm (π : Finpartition s)
     (slot : ↥(π.partGlobalSlots order B)) :
     π.partGlobalSlot order B ((π.partGlobalSlotEquiv order B).symm slot) = slot := by
   have h := congrArg Subtype.val ((π.partGlobalSlotEquiv order B).apply_symm_apply slot)
-  exact h
+  simpa only [Finpartition.partGlobalSlotEquiv, Equiv.trans_apply,
+    Equiv.ofInjective_apply, Set.equivOfEq_apply] using h
 
 /-- The canonical order on one part induced by its increasing ambient slots. -/
 noncomputable def partOrderOfOrder (π : Finpartition s) (order : Fin s.card ≃ ↥s)
