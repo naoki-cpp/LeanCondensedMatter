@@ -21,32 +21,34 @@ namespace Combinatorics
 
 open PowerSeries
 
+variable {R : Type*} [CommRing R] [Algebra ℚ R]
+
 /-- The exponential-generating-function normalization of a formal-log coefficient. -/
-noncomputable def powerSeriesCumulantCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
-  (n.factorial : ℂ) * PowerSeries.coeff n (PowerSeries.logOf Z)
+noncomputable def powerSeriesCumulantCoeff (Z : PowerSeries R) (n : ℕ) : R :=
+  (n.factorial : R) * PowerSeries.coeff n (PowerSeries.logOf Z)
 
 /-- The factorial-normalized moment and formal-log coefficients satisfy the triangular
 moment-cumulant recurrence. -/
-theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
+theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries R}
     (hZ : PowerSeries.constantCoeff Z = 1) (n : ℕ) :
     powerSeriesMomentCoeff Z (n + 1) =
       ∑ k ∈ Finset.range (n + 1),
-        (Nat.choose n k : ℂ) * powerSeriesCumulantCoeff Z (k + 1) *
+        (Nat.choose n k : R) * powerSeriesCumulantCoeff Z (k + 1) *
           powerSeriesMomentCoeff Z (n - k) := by
   have hcoeff := congrArg (PowerSeries.coeff n) (PowerSeries.derivative_logOf_mul hZ)
   rw [PowerSeries.coeff_mul] at hcoeff
   simp_rw [PowerSeries.coeff_derivative] at hcoeff
   calc
     powerSeriesMomentCoeff Z (n + 1) =
-        (n.factorial : ℂ) * (PowerSeries.coeff (n + 1) Z * (n + 1 : ℂ)) := by
+        (n.factorial : R) * (PowerSeries.coeff (n + 1) Z * (n + 1 : R)) := by
           simp [powerSeriesMomentCoeff, Nat.factorial_succ]
           ring
-    _ = (n.factorial : ℂ) *
+    _ = (n.factorial : R) *
         (∑ p ∈ Finset.antidiagonal n,
-          PowerSeries.coeff (p.1 + 1) (PowerSeries.logOf Z) * (p.1 + 1 : ℂ) *
+          PowerSeries.coeff (p.1 + 1) (PowerSeries.logOf Z) * (p.1 + 1 : R) *
             PowerSeries.coeff p.2 Z) := by rw [hcoeff]
     _ = ∑ k ∈ Finset.range (n + 1),
-        (Nat.choose n k : ℂ) * powerSeriesCumulantCoeff Z (k + 1) *
+        (Nat.choose n k : R) * powerSeriesCumulantCoeff Z (k + 1) *
           powerSeriesMomentCoeff Z (n - k) := by
       rw [Finset.mul_sum, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
       apply Finset.sum_congr rfl
@@ -54,9 +56,9 @@ theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
       have hkn : k ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
       have hnat := Nat.choose_mul_factorial_mul_factorial hkn
       have hfac :
-          (n.factorial : ℂ) * (k + 1 : ℂ) =
-            (Nat.choose n k : ℂ) * ((k + 1).factorial : ℂ) *
-              ((n - k).factorial : ℂ) := by
+          (n.factorial : R) * (k + 1 : R) =
+            (Nat.choose n k : R) * ((k + 1).factorial : R) *
+              ((n - k).factorial : R) := by
         norm_cast
         calc
           n.factorial * (k + 1) = (k + 1) * n.factorial := by ac_rfl
@@ -67,23 +69,23 @@ theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
             ac_rfl
       simp only [powerSeriesMomentCoeff, powerSeriesCumulantCoeff]
       calc
-        (n.factorial : ℂ) *
-            (PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) * (k + 1 : ℂ) *
+        (n.factorial : R) *
+            (PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) * (k + 1 : R) *
               PowerSeries.coeff (n - k) Z) =
-            ((n.factorial : ℂ) * (k + 1 : ℂ)) *
+            ((n.factorial : R) * (k + 1 : R)) *
               PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) *
                 PowerSeries.coeff (n - k) Z := by ring
-        _ = ((Nat.choose n k : ℂ) * ((k + 1).factorial : ℂ) *
-              ((n - k).factorial : ℂ)) *
+        _ = ((Nat.choose n k : R) * ((k + 1).factorial : R) *
+              ((n - k).factorial : R)) *
               PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) *
                 PowerSeries.coeff (n - k) Z := by rw [hfac]
-        _ = (Nat.choose n k : ℂ) *
-              (((k + 1).factorial : ℂ) *
+        _ = (Nat.choose n k : R) *
+              (((k + 1).factorial : R) *
                 PowerSeries.coeff (k + 1) (PowerSeries.logOf Z)) *
-              (((n - k).factorial : ℂ) * PowerSeries.coeff (n - k) Z) := by ring
+              (((n - k).factorial : R) * PowerSeries.coeff (n - k) Z) := by ring
 
 private theorem momentFromCumulant_powerSeriesCumulantCoeff
-    {α : Type*} [DecidableEq α] {Z : PowerSeries ℂ}
+    {α : Type*} [DecidableEq α] {Z : PowerSeries R}
     (hZ : PowerSeries.constantCoeff Z = 1) (s : Finset α) :
     Finpartition.momentFromCumulant
         (fun T : Finset α => powerSeriesCumulantCoeff Z T.card) s =
@@ -123,7 +125,7 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
         intro B
         rw [Finset.card_sdiff, Finset.inter_eq_left.mpr B.2.1]
       _ = ∑ k ∈ Finset.range s.card,
-          (Nat.choose (s.card - 1) k : ℂ) *
+          (Nat.choose (s.card - 1) k : R) *
             (powerSeriesCumulantCoeff Z (k + 1) *
               powerSeriesMomentCoeff Z (s.card - (k + 1))) := by
         exact Finpartition.sum_blockContaining_card s a ha
@@ -137,13 +139,13 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
 /-- Factorial-normalized coefficients of `logOf Z` are the finite-set cumulants of the
 factorial-normalized coefficients of `Z`. -/
 theorem factorial_mul_coeff_logOf_eq_cumulantFromMoment
-    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1)
+    {Z : PowerSeries R} (hZ : PowerSeries.constantCoeff Z = 1)
     {α : Type*} [DecidableEq α] {s : Finset α} (hs : s ≠ ∅) :
-    (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+    (s.card.factorial : R) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
       Finpartition.cumulantFromMoment
         (fun T : Finset α =>
-          (T.card.factorial : ℂ) * PowerSeries.coeff T.card Z) s := by
-  let κ : Finset α → ℂ := fun T => powerSeriesCumulantCoeff Z T.card
+          (T.card.factorial : R) * PowerSeries.coeff T.card Z) s := by
+  let κ : Finset α → R := fun T => powerSeriesCumulantCoeff Z T.card
   have hm :
       (fun T : Finset α => powerSeriesMomentCoeff Z T.card) =
         Finpartition.momentFromCumulant κ := by
@@ -159,18 +161,18 @@ theorem factorial_mul_coeff_logOf_eq_cumulantFromMoment
 object moments of a multiplicative connected decomposition, its formal-log coefficients are exactly
 the connected-object contributions. -/
 theorem factorial_mul_coeff_logOf_eq_connectedContribution
-    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1)
+    {Z : PowerSeries R} (hZ : PowerSeries.constantCoeff Z = 1)
     {α : Type*} [DecidableEq α]
-    {D : ConnectedDecomposition α} (W : MultiplicativeWeight D ℂ)
+    {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
     (hMoment :
       powerSeriesMomentSetFunction (α := α) Z hZ = W.normalizedObjectMoment)
     {s : Finset α} (hs : s ≠ ∅) :
-    (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+    (s.card.factorial : R) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
       W.connectedContribution s := by
   calc
-    (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+    (s.card.factorial : R) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
         (powerSeriesMomentSetFunction (α := α) Z hZ).cumulant s := by
-      change (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+      change (s.card.factorial : R) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
         Finpartition.cumulantFromMoment
           (fun T : Finset α => powerSeriesMomentCoeff Z T.card) s
       exact factorial_mul_coeff_logOf_eq_cumulantFromMoment hZ hs
