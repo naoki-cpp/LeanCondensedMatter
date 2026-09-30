@@ -3421,129 +3421,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (size : ι → ℕ) (β : ℝ) (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-    "externalAxioms": [],
-    "docString": "Finite-family ordered-simplex shuffle product identity for an arbitrary finite block-index type,\nunder measurable local boundedness. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod"
-    ],
-    "dependencies": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.sum_size_comp_equiv",
-      "intervalIntegral.orderedSimplexIntegral_cast",
-      "intervalIntegral.orderedSimplexIntegral_congr"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ) (localIntegrand : (i : Fin k) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : Fin k), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-    "externalAxioms": [],
-    "docString": "Finite-family ordered-simplex shuffle product identity under measurable local boundedness. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ) (localIntegrand : (i : Fin k) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : Fin k), Continuous (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-    "externalAxioms": [],
-    "docString": "Finite-family ordered-simplex shuffle product identity for continuous local integrands. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin",
-      "intervalIntegral.Continuous.measurableLocallyBounded"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {k : ℕ} {size : Fin (k + 1) → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size)\n  (y : (i : Fin k) × Fin (size i.succ)),\n  ↑(shuffle.tailSlotSubtypeEquiv y) =\n    shuffle.slotEquiv ((Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr y))",
     "standardAxioms": [
       "Classical.choice",
@@ -3876,7 +3753,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
     "dependencies": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "intervalIntegral.orderedSimplexIntegral_cast",
       "intervalIntegral.orderedSimplexIntegral_congr"
     ],
@@ -20545,6 +20422,45 @@
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.momentFromAtomCumulant_eq_atomMoment"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} {R : Type u_2} [inst_1 : CommSemiring R] (π : Finpartition s)\n  (globalWeight : Fin s.card ≃ ↥s → R) (localWeight : (B : ↥π.parts) → Fin (↑B).card ≃ ↥↑B → R) (c : R),\n  (∀ (orders : π.PartOrders),\n      ∑ shuffle, globalWeight (π.assembleOrder orders shuffle) = c * ∏ B, localWeight B (orders B)) →\n    ∑ order, globalWeight order = c * ∏ B, ∑ order, localWeight B order",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.sum_order_eq_mul_prod_sum_partOrders",
+    "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
+    "externalAxioms": [],
+    "docString": "Summing a weight over all global orders factors through component-local order sums whenever,\nfor each fixed family of local orders, the shuffle sum is a common scalar times the product of\nthe corresponding local weights. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83932,6 +83848,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
     ],
     "crossModuleDirectWrapper": false,
@@ -93602,6 +93519,51 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {R : Type u_2} [inst : CommSemiring R] {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (globalWeight : SecondQuantization.Common.QuarticVertexOrder S → R)\n  (localWeight : (B : ↥d.vertexGraph.componentPartitionOn.parts) → SecondQuantization.Common.QuarticVertexOrder ↑B → R)\n  (c : R),\n  (∀ (orders : d.ComponentVertexOrders),\n      ∑ shuffle, globalWeight (d.assembleVertexOrder orders shuffle) = c * ∏ B, localWeight B (orders B)) →\n    ∑ order, globalWeight order = c * ∏ B, ∑ order, localWeight B order",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
+    "externalAxioms": [],
+    "docString": "Diagram-facing specialization of the generic finite-partition order/shuffle sum theorem.\nA global vertex-order sum factors into component-local order sums once the fixed-local-orders\nshuffle fiber is known to be a common scalar times the product of local weights. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
+    "directWrapperOf": "Finpartition.sum_order_eq_mul_prod_sum_partOrders",
+    "dependents": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected.0.SecondQuantization.Bosonic.QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
+    ],
+    "dependencies": [
+      "Finpartition.sum_order_eq_mul_prod_sum_partOrders"
+    ],
+    "crossModuleDirectWrapper": true,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected.0.SecondQuantization.Bosonic.QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137793,6 +137755,89 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (size : ι → ℕ) (β : ℝ) (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+    "externalAxioms": [],
+    "docString": "Finite-family ordered-simplex shuffle product identity for an arbitrary finite block-index type,\nunder measurable local boundedness. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.sum_size_comp_equiv",
+      "intervalIntegral.orderedSimplexIntegral_cast",
+      "intervalIntegral.orderedSimplexIntegral_congr"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ) (localIntegrand : (i : Fin k) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : Fin k), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+    "externalAxioms": [],
+    "docString": "Finite-family ordered-simplex shuffle product identity under measurable local boundedness. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ] (e : ι ≃ κ) (size : κ → ℕ),\n  ∑ i, size (e i) = ∑ j, size j",
     "standardAxioms": [
       "Classical.choice",
@@ -137812,13 +137857,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.reindexEquiv"
     ],
     "compiledConsumerCount": 2,
@@ -147885,7 +147930,8 @@
       "SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude_eq_prod_components"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
+      "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -156828,6 +156874,7 @@
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
+      "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders",
       "SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_components",
       "SecondQuantization.Fermionic.continuous_contractionIntegrand",
       "intervalIntegral.Continuous.measurableLocallyBounded"
@@ -166806,7 +166853,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components",
@@ -166818,13 +166864,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components",
       "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -167490,18 +167535,18 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
-      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_empty"
+      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_empty",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
-      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_empty"
+      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_empty",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -167535,7 +167580,6 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
@@ -167543,7 +167587,8 @@
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consLeft_boundary",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary"
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
     ],
     "dependencies": [
       "intervalIntegral.orderedSimplexIntegral_succ"
@@ -167552,7 +167597,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
@@ -167560,7 +167604,8 @@
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consLeft_boundary",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary"
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
     ],
     "compiledConsumerCount": 10,
     "axioms": [
