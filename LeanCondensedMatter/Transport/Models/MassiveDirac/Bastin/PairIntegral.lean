@@ -78,7 +78,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
 opposite-source Bastin pair converges to `-2 i π` times the regular factor at the target pole. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral
     (band : Band) (e v m px py radius : ℝ)
-    (hE : energy v m px py ≠ 0)
+    (_hE : energy v m px py ≠ 0)
     (hradiusPos : 0 < radius)
     (hradius : radius < |interbandEnergyGap band v m px py|) :
     Tendsto
