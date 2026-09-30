@@ -34,10 +34,13 @@ QuantumTheory.observableExpValue
 DensityOperator.observableExpectation
 ```
 
-For a proved-real scalar `z`, package `z` as `selfAdjoint ℂ`, use `Complex.selfAdjointEquiv` to obtain
-the corresponding `ℝ`, and use `Complex.coe_selfAdjointEquiv` when the original complex scalar is
-needed again. Equality of real scalars can often be proved by coercing them to `ℂ` and applying
-`Complex.ofReal_injective` rather than by projecting both sides with `.re`.
+For an isolated proved-real scalar `z`, package `z` as `selfAdjoint ℂ`, use `Complex.selfAdjointEquiv`
+to obtain the corresponding `ℝ`, and use `Complex.coe_selfAdjointEquiv` when the original complex
+scalar is needed again. For a positive normalized state on a starred algebra, reuse PhyslibAlpha's
+`UnitalPositiveLinearMap.onObservables`; its coercion theorem records that restricting the state to
+self-adjoint observables loses no complex information. Equality of real scalars can often be proved
+by coercing them to `ℂ` and applying `Complex.ofReal_injective` rather than by projecting both sides
+with `.re`.
 
 Nonnegativity should likewise be represented in the codomain when available, as in
 `diagonalExpectationNNReal` and `probNNReal : NNReal`. A compatibility `ℝ` API may be a direct
