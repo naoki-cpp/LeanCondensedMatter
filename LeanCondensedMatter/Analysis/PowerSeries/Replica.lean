@@ -131,6 +131,8 @@ private theorem inv_factorial_mul_coeff_one_descPochhammer [CharZero R] (k : ℕ
       have hkfac : (k.factorial : R) ≠ 0 :=
         Nat.cast_ne_zero.mpr k.factorial_ne_zero
       field_simp [hkfac]
+      simpa only [map_pow, map_neg, map_one] using
+        (map_pow (algebraMap ℚ R) (-1 : ℚ) k).symm
 
 /-- The coefficient linear in the formal replica count is the factorial-normalized coefficient
 of the formal logarithm. This is the algebraic replica identity, with no analytic continuation in
