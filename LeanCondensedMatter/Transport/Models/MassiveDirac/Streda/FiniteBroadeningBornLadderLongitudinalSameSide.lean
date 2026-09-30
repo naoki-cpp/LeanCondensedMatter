@@ -52,7 +52,6 @@ private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
     dsimp [g, c] at hgp ⊢
     simp only [Complex.ofReal_mul, Complex.ofReal_pow]
     field_simp [hgp, hvC]
-    ring
   have hinv : Continuous (fun p : ℝ =>
       (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹) :=
     (show Continuous (fun p : ℝ => A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) by fun_prop).inv₀ hden
