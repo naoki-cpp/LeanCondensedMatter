@@ -55,11 +55,9 @@ theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries R}
       intro k hk
       have hkn : k ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hk)
       have hnat := Nat.choose_mul_factorial_mul_factorial hkn
-      have hfac :
-          (n.factorial : R) * (k + 1 : R) =
-            (Nat.choose n k : R) * ((k + 1).factorial : R) *
-              ((n - k).factorial : R) := by
-        norm_cast
+      have hfacNat :
+          n.factorial * (k + 1) =
+            Nat.choose n k * (k + 1).factorial * (n - k).factorial := by
         calc
           n.factorial * (k + 1) = (k + 1) * n.factorial := by ac_rfl
           _ = (k + 1) * (Nat.choose n k * k.factorial * (n - k).factorial) := by
@@ -67,6 +65,12 @@ theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries R}
           _ = Nat.choose n k * (k + 1).factorial * (n - k).factorial := by
             rw [Nat.factorial_succ]
             ac_rfl
+      have hfac :
+          (n.factorial : R) * (k + 1 : R) =
+            (Nat.choose n k : R) * ((k + 1).factorial : R) *
+              ((n - k).factorial : R) := by
+        simpa only [Nat.cast_mul, Nat.cast_add, Nat.cast_one] using
+          congrArg (fun m : ℕ => (m : R)) hfacNat
       simp only [powerSeriesMomentCoeff, powerSeriesCumulantCoeff]
       calc
         (n.factorial : R) *
