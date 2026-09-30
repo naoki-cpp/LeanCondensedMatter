@@ -382,8 +382,8 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
   classical
   unfold QuarticDiagram.dysonThermalAmplitude
   simpa only [one_mul] using
-    (Finpartition.sum_order_eq_mul_prod_sum_partOrders
-      d.vertexGraph.componentPartitionOn
+    (Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
+      d
       (fun order : Common.QuarticVertexOrder S =>
         QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t)
       (fun B order =>
