@@ -248,7 +248,7 @@ theorem FamilySlotShuffle.outerSlotEquiv_apply_inr {size : Fin (k + 1) → ℕ}
     shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r
   simp only [FamilySlotShuffle.outerSlotEquiv, Equiv.trans_apply,
     Equiv.sumCongr_apply, Sum.map_inr]
-  apply (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)).injective
+  refine congrArg (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)) ?_
   change
     (Equiv.Set.sumCompl (↑shuffle.headSlots : Set (Fin (∑ i, size i))))
         (Sum.inr ((Set.equivOfEq shuffle.tailSlots_set_eq_compl_headSlots) y)) =
