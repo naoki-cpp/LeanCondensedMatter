@@ -23,7 +23,7 @@ variable {Mode : Type*} [Fintype Mode]
 omit [Fintype Mode] in
 /-- The normalized free-Gibbs expectation of the first Dyson coefficient is the bare interaction
 expectation multiplied by the signed interval length. -/
-theorem freeGibbsExpectation_dysonCoeff_one
+private theorem freeGibbsExpectation_dysonCoeff_one
     (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (t : ℝ) :
     freeGibbsExpectation ε β (Common.dysonCoeff (freeEigenvalue ε) V 1 t) =
