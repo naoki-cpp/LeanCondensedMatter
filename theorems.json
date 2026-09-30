@@ -83875,7 +83875,8 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
       "SecondQuantization.Common.annihilate_comp_create_self",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_mul_operator_eq_exchange"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -83886,9 +83887,10 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
       "SecondQuantization.Common.annihilate_comp_create_self",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_mul_operator_eq_exchange"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84276,7 +84278,8 @@
     "dependents": [
       "SecondQuantization.Bosonic.comm_create_annihilate",
       "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-      "SecondQuantization.Fermionic.anticomm_create_annihilate"
+      "SecondQuantization.Fermionic.anticomm_create_annihilate",
+      "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -84284,9 +84287,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.comm_create_annihilate",
       "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-      "SecondQuantization.Fermionic.anticomm_create_annihilate"
+      "SecondQuantization.Fermionic.anticomm_create_annihilate",
+      "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115488,7 +115492,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.completedAnticomm C.operator D.operator =\n    C.anticommutatorValue D • ContinuousLinearMap.id ℂ ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  ScalarExchange.zetaCommutator (-1) C.operator D.operator =\n    C.anticommutatorValue D • ContinuousLinearMap.id ℂ ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125443,7 +125447,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  SecondQuantization.Fermionic.completedAnticomm (SecondQuantization.Fermionic.completedAnnihilate i)\n      (SecondQuantization.Fermionic.completedAnnihilate j) =\n    0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.completedAnnihilate i)\n      (SecondQuantization.Fermionic.completedAnnihilate j) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125468,7 +125472,6 @@
       "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.completedAnticomm_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedAnnihilate_algebraicToCompleted"
     ],
     "crossModuleDirectWrapper": false,
@@ -125488,7 +125491,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  SecondQuantization.Fermionic.completedAnticomm (SecondQuantization.Fermionic.completedAnnihilate i)\n      (SecondQuantization.Fermionic.completedCreate j) =\n    if i = j then ContinuousLinearMap.id ℂ ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) else 0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.completedAnnihilate i)\n      (SecondQuantization.Fermionic.completedCreate j) =\n    if i = j then ContinuousLinearMap.id ℂ ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125514,7 +125517,6 @@
       "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
-      "SecondQuantization.Fermionic.completedAnticomm_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedAnnihilate_algebraicToCompleted",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedCreate_algebraicToCompleted"
     ],
@@ -125536,89 +125538,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1}\n  (A B :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedAnticomm A B) ψ = A (B ψ) + B (A ψ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedAnticomm_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
-      "SecondQuantization.Fermionic.completedAnticomm_create_create"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
-      "SecondQuantization.Fermionic.completedAnticomm_create_create"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1}\n  (A B :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  SecondQuantization.Fermionic.completedAnticomm A B = SecondQuantization.Fermionic.completedAnticomm B A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedAnticomm_comm",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": "The completed anticommutator is symmetric. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  SecondQuantization.Fermionic.completedAnticomm (SecondQuantization.Fermionic.completedCreate i)\n      (SecondQuantization.Fermionic.completedAnnihilate j) =\n    if i = j then ContinuousLinearMap.id ℂ ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) else 0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.completedCreate i)\n      (SecondQuantization.Fermionic.completedAnnihilate j) =\n    if i = j then ContinuousLinearMap.id ℂ ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125640,8 +125560,8 @@
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
-      "SecondQuantization.Fermionic.completedAnticomm_comm"
+      "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
+      "SecondQuantization.Fermionic.completedAnticomm_annihilate_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125660,7 +125580,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  SecondQuantization.Fermionic.completedAnticomm (SecondQuantization.Fermionic.completedCreate i)\n      (SecondQuantization.Fermionic.completedCreate j) =\n    0",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode),\n  ScalarExchange.zetaCommutator (-1) (SecondQuantization.Fermionic.completedCreate i)\n      (SecondQuantization.Fermionic.completedCreate j) =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125685,7 +125605,6 @@
       "ScalarExchange.zetaCommutator_apply",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "SecondQuantization.Fermionic.anticomm_create_create",
-      "SecondQuantization.Fermionic.completedAnticomm_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedCreate_algebraicToCompleted"
     ],
     "crossModuleDirectWrapper": false,
@@ -159506,6 +159425,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
     ],
     "dependencies": [
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
     ],
     "crossModuleDirectWrapper": false,
