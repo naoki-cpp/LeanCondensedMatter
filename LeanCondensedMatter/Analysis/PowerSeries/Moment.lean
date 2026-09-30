@@ -29,4 +29,18 @@ noncomputable def powerSeriesMomentSetFunction
   map_empty := by
     simp [powerSeriesMomentCoeff, PowerSeries.coeff_zero_eq_constantCoeff, hZ]
 
+/-- Equality of the bundled power-series moment function with normalized finite-set moment data is
+equivalent to equality of the factorial-normalized coefficients on every finite set. -/
+theorem powerSeriesMomentSetFunction_eq_iff
+    {α : Type*} (Z : PowerSeries ℂ)
+    (hZ : PowerSeries.constantCoeff Z = 1)
+    (M : NormalizedSetFunction α ℂ) :
+    powerSeriesMomentSetFunction Z hZ = M ↔
+      ∀ S : Finset α, powerSeriesMomentCoeff Z S.card = M S := by
+  constructor
+  · rintro rfl S
+    rfl
+  · intro h
+    exact NormalizedSetFunction.ext h
+
 end Combinatorics
