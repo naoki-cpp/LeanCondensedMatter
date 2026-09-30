@@ -8692,7 +8692,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1) {α : Type u_1} [inst : DecidableEq α]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D ℂ),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment →\n    ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R} (hZ : PowerSeries.constantCoeff Z = 1)\n  {α : Type u_2} [inst_2 : DecidableEq α] {D : Combinatorics.ConnectedDecomposition α}\n  (W : Combinatorics.MultiplicativeWeight D R),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment →\n    ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8779,7 +8779,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α},\n      s ≠ ∅ →\n        ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf =\n          Finpartition.cumulantFromMoment (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z) s",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {α : Type u_2} [inst_2 : DecidableEq α] {s : Finset α},\n      s ≠ ∅ →\n        ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf =\n          Finpartition.cumulantFromMoment (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z) s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8823,7 +8823,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z ≠ 0 →\n    ∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α},\n      s ≠ ∅ →\n        ↑s.card.factorial * (PowerSeries.coeff s.card) Z.normalizeByConstantCoeff.logOf =\n          Finpartition.cumulantFromMoment\n            (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z.normalizeByConstantCoeff) s",
+    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z ≠ 0 →\n    ∀ {α : Type u_2} [inst : DecidableEq α] {s : Finset α},\n      s ≠ ∅ →\n        ↑s.card.factorial * (PowerSeries.coeff s.card) Z.normalizeByConstantCoeff.logOf =\n          Finpartition.cumulantFromMoment\n            (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z.normalizeByConstantCoeff) s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9893,7 +9893,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (n : ℕ),\n      Combinatorics.powerSeriesMomentCoeff Z (n + 1) =\n        ∑ k ∈ Finset.range (n + 1),\n          ↑(n.choose k) * Combinatorics.powerSeriesCumulantCoeff Z (k + 1) *\n            Combinatorics.powerSeriesMomentCoeff Z (n - k)",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (n : ℕ),\n      Combinatorics.powerSeriesMomentCoeff Z (n + 1) =\n        ∑ k ∈ Finset.range (n + 1),\n          ↑(n.choose k) * Combinatorics.powerSeriesCumulantCoeff Z (k + 1) *\n            Combinatorics.powerSeriesMomentCoeff Z (n - k)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29388,7 +29388,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 → (PowerSeries.derivative ℂ) Z.logOf * Z = (PowerSeries.derivative ℂ) Z",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 → (PowerSeries.derivative R) Z.logOf * Z = (PowerSeries.derivative R) Z",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29403,7 +29403,7 @@
     "name": "PowerSeries.derivative_logOf_mul",
     "module": "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
     "externalAxioms": [],
-    "docString": "Logarithmic derivative identity for a normalized complex power series. ",
+    "docString": "Logarithmic derivative identity for a normalized power series over a rational algebra. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -29433,7 +29433,7 @@
   },
   {
     "terminal": false,
-    "statement": "(PowerSeries.derivative ℂ) (PowerSeries.log ℂ) * (1 + PowerSeries.X) = 1",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R],\n  (PowerSeries.derivative R) (PowerSeries.log R) * (1 + PowerSeries.X) = 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29472,7 +29472,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} (s : Finset ι) (F : ι → PowerSeries ℂ),\n  (∀ (i : ι), PowerSeries.constantCoeff (F i) = 1) → (∏ i ∈ s, F i).logOf = ∑ i ∈ s, (F i).logOf",
+    "statement": "∀ {ι : Type u_2} (s : Finset ι) (F : ι → PowerSeries ℂ),\n  (∀ (i : ι), PowerSeries.constantCoeff (F i) = 1) → (∏ i ∈ s, F i).logOf = ∑ i ∈ s, (F i).logOf",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113106,48 +113106,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ\n          (SecondQuantization.Common.twoPointTimedEventMap f a) (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventRank_map_le_iff",
-      "SecondQuantization.Common.twoPointTimedEventTime_map"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' υ a b",
     "standardAxioms": [
       "Classical.choice",
@@ -113211,8 +113169,8 @@
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
     ],
     "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff",
-      "SecondQuantization.Common.twoPointTimedEventMap_injective"
+      "SecondQuantization.Common.twoPointTimedEventMap_injective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113322,52 +113280,13 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventRank (SecondQuantization.Common.twoPointTimedEventMap f a) ≤\n          SecondQuantization.Common.twoPointTimedEventRank (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventRank a ≤ SecondQuantization.Common.twoPointTimedEventRank b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventRank_map_le_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fin n → ℝ) (a : SecondQuantization.Common.TwoPointTimedEvent m),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.twoPointTimedEventMap f a) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' (σ ∘ f) a",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
@@ -113380,13 +113299,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -139164,7 +139083,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (s : Finset α),\n      Finpartition.momentFromCumulant (fun T => Combinatorics.powerSeriesCumulantCoeff Z T.card) s =\n        Combinatorics.powerSeriesMomentCoeff Z s.card",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {α : Type u_2} [inst_2 : DecidableEq α] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (s : Finset α),\n      Finpartition.momentFromCumulant (fun T => Combinatorics.powerSeriesCumulantCoeff Z T.card) s =\n        Combinatorics.powerSeriesMomentCoeff Z s.card",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155703,6 +155622,87 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ\n          (SecondQuantization.Common.twoPointTimedEventMap f a) (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.twoPointTimedEventTime_map",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventRank_map_le_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventRank (SecondQuantization.Common.twoPointTimedEventMap f a) ≤\n          SecondQuantization.Common.twoPointTimedEventRank (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventRank a ≤ SecondQuantization.Common.twoPointTimedEventRank b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventRank_map_le_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
