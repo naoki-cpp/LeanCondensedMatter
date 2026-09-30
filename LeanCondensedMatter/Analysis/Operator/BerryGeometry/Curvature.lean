@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 
 set_option linter.style.header false
 
