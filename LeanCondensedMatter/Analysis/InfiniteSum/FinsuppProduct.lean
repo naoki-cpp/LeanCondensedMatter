@@ -1,3 +1,4 @@
+import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Analysis.SpecificLimits.Normed
