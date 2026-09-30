@@ -120,13 +120,17 @@ private noncomputable def familyGlobalSlotEquiv {total : ℕ}
       ext x
       simp [familyGlobalSlots]))
 
+omit [Fintype ι] [Fintype α] in
 private theorem familyGlobalSlotEquiv_val {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) (x : F i) :
     ((familyGlobalSlotEquiv F ambientEquiv order i x :
       ↥(familyGlobalSlots F ambientEquiv order i)) : Fin total) =
       order.symm (ambientEquiv.symm ⟨i, x⟩) := by
-  simp [familyGlobalSlotEquiv]
+  change
+    ↑((Set.equivOfEq _) ⟨order.symm (ambientEquiv.symm ⟨i, x⟩), _⟩) =
+      order.symm (ambientEquiv.symm ⟨i, x⟩)
+  exact Set.equivOfEq_apply _ _
 
 /-- Canonical increasing-slot order on one fiber induced by a global order. -/
 private noncomputable def familyOrderOfOrder {total : ℕ} (size : ι → ℕ)
