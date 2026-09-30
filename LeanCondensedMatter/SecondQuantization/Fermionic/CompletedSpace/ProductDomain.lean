@@ -64,12 +64,12 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ))).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
-    (completedToggle i
+    (Common.completedReindex (toggleOccupationEquiv i)
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
-    · rw [completedCreate_apply, if_pos h, completedToggle_apply,
+    · rw [completedCreate_apply, if_pos h, Common.completedReindex_apply, toggleOccupationEquiv_apply,
         Common.completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
       simpa [x, norm_fermionPhase]
     · simp only [completedCreate_apply, if_neg h, mul_zero, norm_zero]
@@ -92,14 +92,14 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ)))).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
-    (completedToggle i
+    (Common.completedReindex (toggleOccupationEquiv i)
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
     · simp only [completedAnnihilate_apply, if_pos h, mul_zero, norm_zero]
       exact norm_nonneg _
-    · rw [completedAnnihilate_apply, if_neg h, completedToggle_apply,
+    · rw [completedAnnihilate_apply, if_neg h, Common.completedReindex_apply, toggleOccupationEquiv_apply,
         Common.completedDiagonalOperator_apply]
       have hE := freeHamiltonianWeight_toggle_of_not_mem ε h
       rw [hE]
