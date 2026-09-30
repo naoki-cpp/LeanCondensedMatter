@@ -33,7 +33,7 @@ noncomputable def completedAnnihilateFromFreeHamiltonianDomain (ε : Mode → �
   (completedAnnihilate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype
 
 /-- Pointwise free-Hamiltonian commutator relation for fermionic creation on `Dom(H)`. -/
-theorem completedFreeHamiltonian_create_commutator_apply
+private theorem completedFreeHamiltonian_create_commutator_apply
     (ε : Mode → ℝ) (i : Mode) (ψ : completedFreeHamiltonianDomain ε) :
     completedFreeHamiltonianAfterCreate ε i ψ -
         completedCreateAfterFreeHamiltonian ε i ψ =
@@ -77,7 +77,7 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
   exact completedFreeHamiltonian_create_commutator_apply ε i ψ
 
 /-- Pointwise free-Hamiltonian commutator relation for fermionic annihilation on `Dom(H)`. -/
-theorem completedFreeHamiltonian_annihilate_commutator_apply
+private theorem completedFreeHamiltonian_annihilate_commutator_apply
     (ε : Mode → ℝ) (i : Mode) (ψ : completedFreeHamiltonianDomain ε) :
     completedFreeHamiltonianAfterAnnihilate ε i ψ -
         completedAnnihilateAfterFreeHamiltonian ε i ψ =
