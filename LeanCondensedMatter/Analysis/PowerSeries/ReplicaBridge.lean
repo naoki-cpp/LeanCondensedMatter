@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Analysis.PowerSeries.Replica
 import LeanCondensedMatter.Combinatorics.Cumulant.Replica
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
@@ -310,15 +311,20 @@ polynomials, not through cumulant inversion. -/
 theorem factorial_mul_coeff_logOf_eq_connectedContribution_replica
     {Z : PowerSeries R} (hZ : constantCoeff Z = 1)
     {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
-    (hMoment : ∀ T : Finset α,
-      (T.card.factorial : R) * coeff T.card Z = W.objectMoment T)
+    (hMoment :
+      powerSeriesMomentSetFunction (α := α) Z hZ = W.normalizedObjectMoment)
     {s : Finset α} (hs : s ≠ ∅) :
     (s.card.factorial : R) * coeff s.card (logOf Z) =
       W.connectedContribution s := by
+  have hMomentCoeff :
+      ∀ T : Finset α, powerSeriesMomentCoeff Z T.card = W.normalizedObjectMoment T :=
+    (powerSeriesMomentSetFunction_eq_iff Z hZ W.normalizedObjectMoment).mp hMoment
   have hpoly := congrArg (fun p : Polynomial R => p.coeff 1)
     (replicaCoeffPolynomial_eq_replicaPolynomial hZ W.connectedContribution s (fun T => by
       calc
-        (T.card.factorial : R) * coeff T.card Z = W.objectMoment T := hMoment T
+        (T.card.factorial : R) * coeff T.card Z = W.objectMoment T := by
+          simpa only [powerSeriesMomentCoeff,
+            MultiplicativeWeight.normalizedObjectMoment_apply] using hMomentCoeff T
         _ = Finpartition.momentFromCumulant W.connectedContribution T :=
           W.objectMoment_eq_momentFromCumulant T))
   rw [PowerSeries.replicaCoeffPolynomial_coeff_one hZ s.card,
