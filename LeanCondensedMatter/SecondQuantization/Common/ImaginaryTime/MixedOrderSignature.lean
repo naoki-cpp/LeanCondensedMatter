@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 
 set_option linter.style.header false
