@@ -97,7 +97,22 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral
       (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
       (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
       radius hradiusPos hradius
-  refine hgeneric.congr' ?_
+  have hgeneric' : Tendsto
+      (fun broadening : ℝ =>
+        interbandBastinPoleIntegral
+          (interbandEnergyGap band v m px py)
+          (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+          (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+          radius broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        ((-2 * Complex.I) *
+          (Real.pi •
+            targetCenteredInterbandSpectatorCurrentFactor
+              band e v m px py (0, 0)))) := by
+    simpa only [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor] using
+      hgeneric
+  refine hgeneric'.congr' ?_
   filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
   exact
     (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
