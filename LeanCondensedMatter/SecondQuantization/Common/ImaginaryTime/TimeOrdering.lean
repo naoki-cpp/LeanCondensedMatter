@@ -54,19 +54,19 @@ noncomputable def timeOrderedProduct {Config : Type*} (s : Statistics)
 theorem timeOrderedProduct_of_gt {Config : Type*} (s : Statistics)
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {τA τB : ℝ} (h : τB < τA) :
     timeOrderedProduct s A B τA τB = A.comp B := by
-  rw [timeOrderedProduct, if_pos h]
+  rw [timeOrderedProduct, ite_eq_left h]
 
 theorem timeOrderedProduct_of_lt {Config : Type*} (s : Statistics)
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {τA τB : ℝ} (h : τA < τB) :
     timeOrderedProduct s A B τA τB = (s.zetaInt : ℂ) • (B.comp A) := by
-  rw [timeOrderedProduct, if_neg (not_lt.2 h.le), if_pos h]
+  rw [timeOrderedProduct, ite_eq_right (not_lt.2 h.le), ite_eq_left h]
 
 @[simp]
 theorem timeOrderedProduct_self_time {Config : Type*} (s : Statistics)
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
     timeOrderedProduct s A B τ τ =
       (2⁻¹ : ℂ) • (A.comp B + (s.zetaInt : ℂ) • (B.comp A)) := by
-  rw [timeOrderedProduct, if_neg (lt_irrefl τ), if_neg (lt_irrefl τ)]
+  rw [timeOrderedProduct, ite_eq_right (lt_irrefl τ), ite_eq_right (lt_irrefl τ)]
 
 /-- **Swapping the pair of operators (with their times) and multiplying by the exchange sign
 returns the same time-ordered product**:

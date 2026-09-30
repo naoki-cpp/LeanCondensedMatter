@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 
 set_option linter.style.header false
 
