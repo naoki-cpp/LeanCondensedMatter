@@ -19,21 +19,6 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-omit [LinearOrder Mode] in
-/-- The anticommutator of two bounded operators on completed fermionic Fock space. -/
-noncomputable def completedAnticomm
-    (A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  A.comp B + B.comp A
-
-omit [LinearOrder Mode] in
-@[simp]
-theorem completedAnticomm_apply
-    (A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
-    (ψ : CompletedFockSpace Mode) :
-    completedAnticomm A B ψ = A (B ψ) + B (A ψ) :=
-  rfl
-
 private theorem completedCreate_algebraicToCompleted (i : Mode) (x : OccupationFock Mode) :
     completedCreate i (Common.algebraicToCompleted x) =
       Common.algebraicToCompleted (create i x) := by
@@ -54,10 +39,11 @@ private theorem completedAnnihilate_algebraicToCompleted (i : Mode) (x : Occupat
 
 /-- Completed creation operators anticommute. -/
 theorem completedAnticomm_create_create (i j : Mode) :
-    completedAnticomm (completedCreate i) (completedCreate j) = 0 := by
+    ScalarExchange.zetaCommutator (-1 : ℂ) (completedCreate i) (completedCreate j) = 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
-  rw [completedAnticomm_apply]
+  simp only [ScalarExchange.zetaCommutator, sub_apply, smul_apply, mul_apply_eq_comp,
+    neg_one_smul, sub_neg_eq_add]
   rw [completedCreate_algebraicToCompleted j x,
     completedCreate_algebraicToCompleted i (create j x),
     completedCreate_algebraicToCompleted i x,
@@ -71,10 +57,11 @@ theorem completedAnticomm_create_create (i j : Mode) :
 
 /-- Completed annihilation operators anticommute. -/
 theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
-    completedAnticomm (completedAnnihilate i) (completedAnnihilate j) = 0 := by
+    ScalarExchange.zetaCommutator (-1 : ℂ) (completedAnnihilate i) (completedAnnihilate j) = 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
-  rw [completedAnticomm_apply]
+  simp only [ScalarExchange.zetaCommutator, sub_apply, smul_apply, mul_apply_eq_comp,
+    neg_one_smul, sub_neg_eq_add]
   rw [completedAnnihilate_algebraicToCompleted j x,
     completedAnnihilate_algebraicToCompleted i (annihilate j x),
     completedAnnihilate_algebraicToCompleted i x,
@@ -88,11 +75,12 @@ theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
 
 /-- The mixed completed CAR: `{aᵢ, aⱼ†} = δᵢⱼ I`. -/
 theorem completedAnticomm_annihilate_create (i j : Mode) :
-    completedAnticomm (completedAnnihilate i) (completedCreate j) =
+    ScalarExchange.zetaCommutator (-1 : ℂ) (completedAnnihilate i) (completedCreate j) =
       if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
-  rw [completedAnticomm_apply]
+  simp only [ScalarExchange.zetaCommutator, sub_apply, smul_apply, mul_apply_eq_comp,
+    neg_one_smul, sub_neg_eq_add]
   rw [completedCreate_algebraicToCompleted j x,
     completedAnnihilate_algebraicToCompleted i (create j x),
     completedAnnihilate_algebraicToCompleted i x,
@@ -107,19 +95,14 @@ theorem completedAnticomm_annihilate_create (i j : Mode) :
   rw [hcar]
   by_cases hij : i = j <;> simp [hij]
 
-omit [LinearOrder Mode] in
-/-- The completed anticommutator is symmetric. -/
-theorem completedAnticomm_comm
-    (A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    completedAnticomm A B = completedAnticomm B A := by
-  rw [completedAnticomm, completedAnticomm, add_comm]
-
 /-- Creation-first form of the mixed completed CAR. -/
 theorem completedAnticomm_create_annihilate (i j : Mode) :
-    completedAnticomm (completedCreate i) (completedAnnihilate j) =
+    ScalarExchange.zetaCommutator (-1 : ℂ) (completedCreate i) (completedAnnihilate j) =
       if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0 := by
-  rw [completedAnticomm_comm, completedAnticomm_annihilate_create]
-  simp only [eq_comm]
+  rw [ScalarExchange.zetaCommutator_swap_of_sq_eq_one
+      (-1 : ℂ) (by norm_num) (completedAnnihilate j) (completedCreate i),
+    completedAnticomm_annihilate_create]
+  simp only [neg_neg, one_smul, eq_comm]
 
 end
 end Fermionic
