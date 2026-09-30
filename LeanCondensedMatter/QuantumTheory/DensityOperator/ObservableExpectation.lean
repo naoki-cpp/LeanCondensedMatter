@@ -19,13 +19,7 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The complex density-state expectation of an observable, bundled with its self-adjointness. -/
-noncomputable def DensityOperator.observableExpectationSelfAdjoint
-    (ρ : DensityOperator H) (A : Observable H) : selfAdjoint ℂ :=
-  ⟨ρ.expectation A.1,
-    ρ.expectation_isSelfAdjoint_of_isSymmetric A.2.isSymmetric⟩
-
-/- The real expectation value of an observable in a density state, obtained by restricting the
+/-- The real expectation value of an observable in a density state, obtained by restricting the
 PhyslibAlpha state to self-adjoint observables. -/
 noncomputable def DensityOperator.observableExpectation
     (ρ : DensityOperator H) (A : Observable H) : ℝ :=
