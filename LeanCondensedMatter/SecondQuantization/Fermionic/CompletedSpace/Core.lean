@@ -56,6 +56,18 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
   · simp [hi, hbasis]
   · simp [hi]
 
+/-- The completed single-mode number operator is the completed product `aᵢ† aᵢ`. -/
+theorem completedNumberOperator_eq_create_comp_annihilate (i : Mode) :
+    completedNumberOperator i = (completedCreate i).comp (completedAnnihilate i) := by
+  apply Common.continuousLinearMap_ext_algebraicCore
+  intro x
+  have hN := DFunLike.congr_fun (completedNumberOperator_comp_algebraicToCompleted i) x
+  have ha := DFunLike.congr_fun (completedAnnihilate_comp_algebraicToCompleted i) x
+  have hc := DFunLike.congr_fun (completedCreate_comp_algebraicToCompleted i) (annihilate i x)
+  simp only [LinearMap.comp_apply] at hN ha hc
+  rw [hN, ContinuousLinearMap.comp_apply, ha, hc]
+  rfl
+
 /-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
 theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
     (completedAnnihilate i).toLinearMap.comp algebraicToCompleted =
