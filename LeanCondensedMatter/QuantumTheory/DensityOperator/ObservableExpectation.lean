@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
+import LeanCondensedMatter.QuantumTheory.DensityOperator.State
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import Mathlib.LinearAlgebra.Complex.Module
 
@@ -25,11 +25,11 @@ noncomputable def DensityOperator.observableExpectationSelfAdjoint
   ⟨ρ.expectation A.1,
     ρ.expectation_isSelfAdjoint_of_isSymmetric A.2.isSymmetric⟩
 
-/-- The real expectation value of an observable in a density state, obtained losslessly from the
-proved-self-adjoint complex expectation rather than by projecting an arbitrary scalar with `.re`. -/
+/- The real expectation value of an observable in a density state, obtained by restricting the
+PhyslibAlpha state to self-adjoint observables. -/
 noncomputable def DensityOperator.observableExpectation
     (ρ : DensityOperator H) (A : Observable H) : ℝ :=
-  Complex.selfAdjointEquiv (ρ.observableExpectationSelfAdjoint A)
+  ρ.toState.onObservables A
 
 /-- The canonical complex expectation is exactly the complex embedding of the real observable
 expectation. -/
@@ -37,11 +37,8 @@ expectation. -/
 theorem DensityOperator.expectation_observable
     (ρ : DensityOperator H) (A : Observable H) :
     ρ.expectation A.1 = (ρ.observableExpectation A : ℂ) := by
-  apply Complex.ext
-  · rfl
-  · simpa [DensityOperator.observableExpectation,
-      DensityOperator.observableExpectationSelfAdjoint, Complex.selfAdjointEquiv] using
-      ρ.expectation_im_eq_zero_of_isSymmetric A.2.isSymmetric
+  simpa [DensityOperator.observableExpectation] using
+    (ρ.coe_toState_onObservables_apply A).symm
 
 /-- The complex expectation in the rank-one density operator of a pure state agrees with the
 canonical vector-state expectation. -/
