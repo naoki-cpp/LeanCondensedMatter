@@ -37,7 +37,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
   exact FamilySlotShuffle.cons_integrand size outer tail localIntegrand τ
 
 /-- Finite-family ordered-simplex shuffle product identity under measurable local boundedness. -/
-theorem FamilySlotShuffle.sum_integral_eq_prod_fin :
+private theorem FamilySlotShuffle.sum_integral_eq_prod_fin :
     ∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ)
       (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ),
       (∀ i, MeasurableLocallyBounded (localIntegrand i)) →
@@ -126,17 +126,6 @@ theorem FamilySlotShuffle.sum_integral_eq_prod_fin :
               orderedSimplexIntegral (size i) β (localIntegrand i) := by
                 rw [Fin.prod_univ_succ]
 
-/-- Finite-family ordered-simplex shuffle product identity for continuous local integrands. -/
-theorem FamilySlotShuffle.sum_integral_eq_prod_fin_of_continuous
-    (k : ℕ) (size : Fin k → ℕ) (β : ℝ)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (hlocal : ∀ i, Continuous (localIntegrand i)) :
-    (∑ shuffle : FamilySlotShuffle size,
-      orderedSimplexIntegral (∑ i, size i) β
-        (shuffle.integrand localIntegrand)) =
-      ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
-  FamilySlotShuffle.sum_integral_eq_prod_fin
-    k size β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
 
 end Combinatorics
 
@@ -222,7 +211,7 @@ private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
 
 /-- Finite-family ordered-simplex shuffle product identity for an arbitrary finite block-index type,
 under measurable local boundedness. -/
-theorem FamilySlotShuffle.sum_integral_eq_prod
+private theorem FamilySlotShuffle.sum_integral_eq_prod
     (size : ι → ℕ) (β : ℝ)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, MeasurableLocallyBounded (localIntegrand i)) :
