@@ -5,6 +5,7 @@ import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Purity
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
+import LeanCondensedMatter.QuantumTheory.DensityOperator.State
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
@@ -16,6 +17,6 @@ import LeanCondensedMatter.QuantumTheory.POVM.Born
 # Canonical density-state API
 
 This umbrella module exposes the dimension-independent density-operator, physical pure-state,
-purity, positive trace-class normalization, complex expectation, real observable-expectation,
-countable diagonal-expectation, and discrete-POVM APIs. Finite-dimensional results are specializations of the same density-state type.
+purity, positive trace-class normalization, complex expectation, probabilistic-theory state bridge,
+real observable-expectation, countable diagonal-expectation, and discrete-POVM APIs. Finite-dimensional results are specializations of the same density-state type.
 -/
