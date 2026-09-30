@@ -102,7 +102,6 @@ theorem forceMatrixTraceNumerator_xy_eq
   have hnorm : dotProduct u u = 1 := by
     rw [InternalSpace.dotProduct_pauliAxis]
     simp [u, rashbaPauliCoefficients]
-    push_cast
     have hsq := spinOrbitEnergy_sq params px py
     unfold spinOrbitEnergySq momentumSq2D at hsq
     field_simp [hEc]
@@ -154,8 +153,7 @@ theorem forceMatrixTraceNumerator_xy_eq
     (((params.rashbaVelocity : ℝ) : ℂ)) hnorm]
   cases band <;>
     simp [u, rashbaPauliCoefficients, bandSign] <;>
-    field_simp [hEc] <;>
-    ring
+    field_simp [hEc]
 
 /-- The force-matrix expression for the x-y Berry curvature. -/
 def forceMatrixBerryCurvature
