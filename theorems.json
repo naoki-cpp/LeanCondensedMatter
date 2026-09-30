@@ -2703,6 +2703,47 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size))\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ)\n  (τ : Fin (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) → ℝ),\n  ((Combinatorics.FamilySlotShuffle.cons size outer tail).integrand localIntegrand fun j => τ (Fin.cast ⋯ j)) =\n    outer.integrand (localIntegrand 0) (tail.integrand fun i => localIntegrand i.succ) τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffle.cons_integrand",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "externalAxioms": [],
+    "docString": "The integrand of a family shuffle assembled from an outer head/tail shuffle is the binary\nintegrand of the head block and its shuffled tail. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
+    ],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {k : ℕ} {size : Fin (k + 1) → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size),\n  Combinatorics.FamilySlotShuffle.cons size shuffle.outerShuffle shuffle.tailShuffle = shuffle",
     "standardAxioms": [
@@ -3236,6 +3277,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "Combinatorics.FamilySlotShuffle.cons_integrand",
       "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail",
       "intervalIntegral.orderedSimplexIntegral_cast",
       "intervalIntegral.orderedSimplexIntegral_congr"
@@ -3353,6 +3395,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.FamilySlotShuffle.cons_injective",
+      "Combinatorics.FamilySlotShuffle.cons_integrand",
       "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
     ],
@@ -3361,11 +3404,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.FamilySlotShuffle.cons_injective",
+      "Combinatorics.FamilySlotShuffle.cons_integrand",
       "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
       "Combinatorics.FamilySlotShuffle.outerSlotEquiv"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -4227,7 +4271,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R) (S : Finset α),\n  W.normalizedObjectMoment.toFun S = W.objectMoment S",
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R) (S : Finset α),\n  W.normalizedObjectMoment.toFun S = W.objectMoment S",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -4240,7 +4284,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -4477,7 +4521,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.NormalizedSetFunction.ext",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -4486,7 +4530,8 @@
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude"
+      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -4495,9 +4540,10 @@
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude"
+      "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -4520,7 +4566,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.NormalizedSetFunction.ext_iff",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -4555,7 +4601,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.NormalizedSetFunction.map_empty",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -127249,6 +127295,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {α : Type u_2} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n  (S : Finset α),\n  (SecondQuantization.Fermionic.dysonVertexMomentSetFunction ε β V).toFun S =\n    SecondQuantization.Fermionic.dysonVertexMoment ε β V S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.dysonVertexMomentSetFunction_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {α : Type u_2} (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n  (S : Finset α),\n  SecondQuantization.Fermionic.dysonVertexMoment ε β V S =\n    ↑S.card.factorial *\n      (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n          (SecondQuantization.Common.dysonCoeff (SecondQuantization.Fermionic.fermionEnergy ε) V S.card β))",
     "standardAxioms": [
@@ -127686,6 +127767,7 @@
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
+      "Combinatorics.NormalizedSetFunction.ext",
       "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
       "PowerSeries.constantCoeff_normalizeByConstantCoeff",
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
