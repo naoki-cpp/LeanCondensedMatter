@@ -1,9 +1,11 @@
 import { createModuleOverview } from "./module-overview.js";
+import { createModuleImportExplorer } from "./module-import-map.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/theorems.json";
+const MODULES_URL = "./module-imports.json";
 const BRANCH_COLORS = [
   "#ff5f6d", "#ff9f43", "#2ed573", "#3b82f6", "#8b5cf6", "#ec4899",
   "#06b6d4", "#84cc16", "#f97316", "#a855f7", "#14b8a6", "#eab308",
@@ -17,6 +19,8 @@ const state = {
   root: null,
   selected: null,
   browse: null,
+  page: "overview",
+  importModule: null,
   direction: "both",
   depth: 2,
   module: "*",
@@ -30,6 +34,7 @@ const state = {
 
 const ui = {
   overviewLink: document.querySelector("#overview-link"),
+  moduleImportsLink: document.querySelector("#module-imports-link"),
   searchForm: document.querySelector("#search-form"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
@@ -39,6 +44,7 @@ const ui = {
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
+  appShell: document.querySelector(".app-shell"),
   graphStatus: document.querySelector("#graph-status"),
   detail: document.querySelector("#detail"),
   zoomOut: document.querySelector("#zoom-out"),
@@ -48,6 +54,7 @@ const ui = {
 };
 
 let moduleOverview = null;
+let moduleImportExplorer = null;
 
 function svg(tag, attributes = {}) {
   const node = document.createElementNS(SVG_NS, tag);
@@ -670,15 +677,27 @@ function setGraphActionsEnabled(enabled) {
 
 function writeLocation(push) {
   const url = new URL(window.location.href);
-  if (state.direction === "both") url.searchParams.delete("direction");
-  else url.searchParams.set("direction", state.direction);
-  if (state.depth === 2) url.searchParams.delete("depth");
-  else url.searchParams.set("depth", String(state.depth));
-  if (state.module === "*") url.searchParams.delete("module");
-  else url.searchParams.set("module", state.module);
-  if (!state.root && state.browse) url.searchParams.set("browse", state.browse);
-  else url.searchParams.delete("browse");
-  url.hash = state.root ?? "";
+  if (state.page === "imports") {
+    url.searchParams.delete("direction");
+    url.searchParams.delete("depth");
+    url.searchParams.delete("module");
+    url.searchParams.delete("browse");
+    url.searchParams.set("view", "imports");
+    url.searchParams.set("import-module", state.importModule);
+    url.hash = "";
+  } else {
+    url.searchParams.delete("view");
+    url.searchParams.delete("import-module");
+    if (state.direction === "both") url.searchParams.delete("direction");
+    else url.searchParams.set("direction", state.direction);
+    if (state.depth === 2) url.searchParams.delete("depth");
+    else url.searchParams.set("depth", String(state.depth));
+    if (state.module === "*") url.searchParams.delete("module");
+    else url.searchParams.set("module", state.module);
+    if (!state.root && state.browse) url.searchParams.set("browse", state.browse);
+    else url.searchParams.delete("browse");
+    url.hash = state.root ?? "";
+  }
   const next = `${url.pathname}${url.search}${url.hash}`;
   if (push) history.pushState(null, "", next);
   else history.replaceState(null, "", next);
@@ -687,6 +706,9 @@ function writeLocation(push) {
 function focusRoot(name, { historyEntry = true } = {}) {
   if (!state.byName.has(name)) return;
   moduleOverview?.cancel();
+  state.page = "theorem";
+  state.importModule = null;
+  ui.appShell.classList.remove("module-imports-open");
   state.root = name;
   state.selected = name;
   state.browse = null;
@@ -766,6 +788,9 @@ function renderOverviewContent() {
 }
 
 function showOverview({ historyEntry = true, browse = null } = {}) {
+  state.page = "overview";
+  state.importModule = null;
+  ui.appShell.classList.remove("module-imports-open");
   state.root = null;
   state.selected = null;
   state.viewBox = null;
@@ -783,6 +808,35 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   ui.graphStatus.textContent = `${state.catalog.length} theorems · ${moduleCount} modules`;
   ui.detail.replaceChildren(element("p", "muted", "Choose a declaration from the overview or search to inspect its statement and relationships."));
   renderOverviewContent();
+  if (historyEntry) writeLocation(true);
+}
+
+function showModuleImports({ historyEntry = true, moduleName = null } = {}) {
+  if (!moduleImportExplorer) return;
+  moduleOverview?.cancel();
+  const selectedModule = moduleName && moduleImportExplorer.hasModule(moduleName)
+    ? moduleName
+    : moduleImportExplorer.defaultModule;
+  state.page = "imports";
+  state.importModule = selectedModule;
+  state.root = null;
+  state.selected = null;
+  state.browse = null;
+  state.module = "*";
+  state.viewBox = null;
+  state.graphBounds = null;
+  ui.module.value = "*";
+  ui.search.value = "";
+  hideSearchResults();
+  ui.appShell.classList.add("module-imports-open");
+  ui.viewport.hidden = true;
+  ui.overview.hidden = false;
+  setGraphActionsEnabled(false);
+  setModuleFilterEnabled(false);
+  ui.graphStatus.textContent = moduleImportExplorer.summary.moduleCount + " source modules; "
+    + moduleImportExplorer.summary.importCount + " internal imports";
+  ui.detail.replaceChildren(element("p", "muted", "Select a neighboring module to follow its direct import relationships."));
+  moduleImportExplorer.render(selectedModule);
   if (historyEntry) writeLocation(true);
 }
 
@@ -898,6 +952,13 @@ function restoreLocation() {
     return;
   }
 
+  if (params.get("view") === "imports" && moduleImportExplorer) {
+    const importModule = params.get("import-module");
+    showModuleImports({ historyEntry: false, moduleName: importModule });
+    if (!moduleImportExplorer.hasModule(importModule)) writeLocation(false);
+    return;
+  }
+
   const requestedBrowse = params.get("browse");
   const browse = requestedBrowse && moduleOverview?.hasModule(requestedBrowse)
     ? shortModule(requestedBrowse)
@@ -943,6 +1004,7 @@ function bindGraphNavigation() {
 
 function bindEvents() {
   ui.overviewLink.addEventListener("click", () => showOverview());
+  ui.moduleImportsLink.addEventListener("click", () => showModuleImports());
   ui.search.addEventListener("input", renderSearchResults);
   ui.search.addEventListener("focus", () => { if (ui.search.value.trim()) renderSearchResults(); });
   ui.search.addEventListener("keydown", (event) => {
@@ -1008,6 +1070,20 @@ async function main() {
     onBrowse: (moduleName) => showOverview({ browse: moduleName }),
     onOpenDeclaration: (name) => focusRoot(name),
   });
+  try {
+    const modulesResponse = await fetch(MODULES_URL, { cache: "no-store" });
+    if (!modulesResponse.ok) throw new Error("failed to load module imports: " + modulesResponse.status);
+    const moduleData = await modulesResponse.json();
+    moduleImportExplorer = createModuleImportExplorer({
+      overview: ui.overview,
+      modules: moduleData.modules,
+      onSelect: (moduleName) => showModuleImports({ moduleName }),
+    });
+  } catch (error) {
+    console.error(error);
+    ui.moduleImportsLink.disabled = true;
+    ui.moduleImportsLink.title = "Module import data is unavailable.";
+  }
   populateControls();
   bindEvents();
   restoreLocation();

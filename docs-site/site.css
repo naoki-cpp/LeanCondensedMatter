@@ -415,7 +415,7 @@ select:disabled {
 @media (max-width: 760px) {
   .site-header { min-height: 62px; padding: 0 14px; }
   .brand > span:last-child { display: none; }
-  .site-header nav { gap: 12px; font-size: 12px; }
+  .site-header nav { flex-wrap: wrap; justify-content: flex-end; gap: 8px 12px; font-size: 12px; }
   .app-shell { display: block; min-height: calc(100vh - 62px); }
   .controls { gap: 16px; padding: 16px; border-right: 0; border-bottom: 1px solid var(--line); }
   .controls > div:first-child { display: none; }
