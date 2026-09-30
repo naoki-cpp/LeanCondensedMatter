@@ -9,7 +9,9 @@ proof text.
 
 `QuantumTheory.StateVector H` is the canonical normalized state-vector representative type.
 Representatives are useful for wavefunction calculations and are not identified by equality under
-global phase.
+global phase. `QuantumTheory.Observable H` specializes PhyslibAlpha's general self-adjoint
+`Observable` to bounded operators on `H`, and vector-state expectations reuse
+`UnitalPositiveLinearMap.ofVec` and its restriction to observables.
 
 `QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
 positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
@@ -47,15 +49,16 @@ parallel finite-dimensional state hierarchy.
 
 ## Pure-state expectations and dynamics
 
-The Lean API defines the canonical complex vector-representative expectation
+The Lean API defines the canonical complex vector-representative expectation through
+PhyslibAlpha's vector state,
 
 ```lean
-expValue A ψ = inner ℂ ψ (A ψ)
+expValue A ψ = (UnitalPositiveLinearMap.ofVec ψ.2) A
 ```
 
-and proves that for a self-adjoint observable it agrees with the reversed inner-product orientation.
-The real observable value is obtained losslessly from a proved self-adjoint complex scalar through
-`Complex.selfAdjointEquiv`:
+which computes to `inner ℂ ψ (A ψ)`. For a self-adjoint observable it also agrees with the reversed
+inner-product orientation. The real observable value is the restriction of that state to the
+self-adjoint observable space:
 
 ```lean
 observableExpValue A ψ : ℝ
