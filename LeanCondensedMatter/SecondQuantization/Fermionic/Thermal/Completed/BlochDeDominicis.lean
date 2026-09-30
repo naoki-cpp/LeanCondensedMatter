@@ -93,7 +93,7 @@ theorem completedFreeGibbsDensityOperator_comp_operator
 coefficient times the identity. -/
 theorem completedAnticomm_operator_operator
     (C D : CompletedThermalLadder Mode) :
-    completedAnticomm C.operator D.operator =
+    ScalarExchange.zetaCommutator (-1 : ℂ) C.operator D.operator =
       C.anticommutatorValue D •
         ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
   cases C with
@@ -171,13 +171,12 @@ private theorem operator_mul_operator_eq_exchange
       C.anticommutatorValue D •
           (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) +
         (-1 : ℂ) • (D.operator * C.operator) := by
-  apply ContinuousLinearMap.ext
-  intro ψ
-  have hcar := DFunLike.congr_fun (completedAnticomm_operator_operator C D) ψ
-  simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
-  change C.operator (D.operator ψ) =
-    C.anticommutatorValue D • ψ + (-1 : ℂ) • D.operator (C.operator ψ)
-  simpa [sub_eq_add_neg] using (eq_sub_of_add_eq hcar)
+  have hone :
+      (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) =
+        ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := rfl
+  rw [hone]
+  exact ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq
+    (-1 : ℂ) (completedAnticomm_operator_operator C D)
 
 private theorem operator_comp_operatorProduct_eq_peelSum
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
