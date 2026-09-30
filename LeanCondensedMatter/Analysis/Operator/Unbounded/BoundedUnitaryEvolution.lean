@@ -63,9 +63,11 @@ theorem boundedUnitaryEvolution_add (B : H →L[ℂ] H) (t s : ℝ) :
     boundedUnitaryEvolution B (t + s) =
       boundedUnitaryEvolution B t * boundedUnitaryEvolution B s := by
   change NormedSpace.exp (unitaryTimeCoefficient (t + s) • B) =
-    NormedSpace.exp (unitaryTimeCoefficient t • B) *
+      NormedSpace.exp (unitaryTimeCoefficient t • B) *
       NormedSpace.exp (unitaryTimeCoefficient s • B)
   rw [unitaryTimeCoefficient_add, add_smul]
+  let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    .restrictScalars ℚ ℂ (H →L[ℂ] H)
   exact NormedSpace.exp_add_of_commute (𝔸 := H →L[ℂ] H)
     (((Commute.refl B).smul_left (unitaryTimeCoefficient t)).smul_right
       (unitaryTimeCoefficient s))
@@ -77,6 +79,8 @@ theorem boundedUnitaryEvolution_add_generator_of_commute
       boundedUnitaryEvolution B t * boundedUnitaryEvolution C t := by
   unfold boundedUnitaryEvolution
   rw [smul_add]
+  let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    .restrictScalars ℚ ℂ (H →L[ℂ] H)
   exact NormedSpace.exp_add_of_commute (𝔸 := H →L[ℂ] H)
     ((hBC.smul_left _).smul_right _)
 
@@ -88,40 +92,42 @@ theorem boundedUnitaryEvolution_star
     simpa only [isSelfAdjoint_iff] using hB
   simp [boundedUnitaryEvolution, NormedSpace.star_exp, hBstar, star_unitaryTimeCoefficient]
 
+/-- A bounded self-adjoint exponential is unitary. -/
+private theorem boundedUnitaryEvolution_mem_unitary
+    (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) :
+    boundedUnitaryEvolution B t ∈ unitary (H →L[ℂ] H) := by
+  let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    .restrictScalars ℚ ℂ (H →L[ℂ] H)
+  apply NormedSpace.exp_mem_unitary_of_mem_skewAdjoint
+  rw [skewAdjoint.mem_iff]
+  have hBstar : star B = B := by
+    simpa only [isSelfAdjoint_iff] using hB
+  have hcoefficient : unitaryTimeCoefficient (-t) = -unitaryTimeCoefficient t := by
+    simp [unitaryTimeCoefficient]
+    ring
+  rw [star_smul, star_unitaryTimeCoefficient, hBstar, ← neg_smul]
+  exact congrArg (fun c : ℂ => c • B) hcoefficient
+
 /-- A bounded self-adjoint exponential has its adjoint as a left inverse. -/
 theorem boundedUnitaryEvolution_star_mul
     (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) :
     star (boundedUnitaryEvolution B t) * boundedUnitaryEvolution B t = 1 := by
-  rw [boundedUnitaryEvolution_star B hB t]
-  rw [← boundedUnitaryEvolution_add]
-  simp
+  exact (Unitary.mem_iff.mp (boundedUnitaryEvolution_mem_unitary B hB t)).1
 
 /-- A bounded self-adjoint exponential has its adjoint as a right inverse. -/
 theorem boundedUnitaryEvolution_mul_star
     (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) :
     boundedUnitaryEvolution B t * star (boundedUnitaryEvolution B t) = 1 := by
-  rw [boundedUnitaryEvolution_star B hB t]
-  rw [← boundedUnitaryEvolution_add]
-  simp
-
-/-- A bounded self-adjoint exponential is unitary. -/
-private theorem boundedUnitaryEvolution_mem_unitary
-    (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) :
-    boundedUnitaryEvolution B t ∈ unitary (H →L[ℂ] H) := by
-  exact Unitary.mem_iff.mpr
-    ⟨boundedUnitaryEvolution_star_mul B hB t, boundedUnitaryEvolution_mul_star B hB t⟩
+  exact (Unitary.mem_iff.mp (boundedUnitaryEvolution_mem_unitary B hB t)).2
 
 /-- The bounded exponential group is continuous in operator norm, hence in particular strongly
 continuous on every vector. -/
 theorem boundedUnitaryEvolution_continuous (B : H →L[ℂ] H) :
     Continuous (boundedUnitaryEvolution B) := by
-  have hexp : Continuous
-      (NormedSpace.exp : (H →L[ℂ] H) → (H →L[ℂ] H)) := by
-    rw [← continuousOn_univ, ← Metric.eball_top_eq_univ (0 : H →L[ℂ] H),
-      ← NormedSpace.expSeries_radius_eq_top ℂ (H →L[ℂ] H)]
-    exact NormedSpace.continuousOn_exp (𝕂 := ℂ)
+  let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    .restrictScalars ℚ ℂ (H →L[ℂ] H)
   unfold boundedUnitaryEvolution unitaryTimeCoefficient
-  exact hexp.comp (by fun_prop)
+  exact NormedSpace.exp_continuous.comp (by fun_prop)
 
 /-- The operator-norm derivative of the bounded unitary evolution. -/
 theorem boundedUnitaryEvolution_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) :
