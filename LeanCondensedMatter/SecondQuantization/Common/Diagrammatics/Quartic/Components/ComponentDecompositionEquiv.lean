@@ -91,5 +91,24 @@ noncomputable def quarticDiagramConnectedDecomposition
   fintypeConnectedObject _ := inferInstance
   decompose _ := QuarticDiagram.componentDecompositionEquiv
 
+/-- Build a multiplicative weight on labelled quartic diagrams from an amplitude that factors over
+connected components. This is the shared adapter used by statistics-specific quartic amplitudes. -/
+noncomputable def QuarticDiagram.multiplicativeWeight
+    [Fintype Label] {R : Type*} [CommSemiring R]
+    (weight : ∀ {S : Finset (Fin N)}, QuarticDiagram Label N S → R)
+    (hfactor : ∀ {S : Finset (Fin N)} (d : QuarticDiagram Label N S),
+      weight d =
+        ∏ B : d.vertexGraph.componentPartitionOn.parts,
+          weight (d.restrictComponentConnected B.2).1) :
+    Combinatorics.MultiplicativeWeight
+      (quarticDiagramConnectedDecomposition Label N) R where
+  objectWeight d := weight d
+  connectedWeight d := weight d.1
+  weight_decompose d := by
+    change weight d =
+      ∏ B : d.vertexGraph.componentPartitionOn.parts,
+        weight (d.restrictComponentConnected B.2).1
+    exact hfactor d
+
 end Common
 end SecondQuantization
