@@ -144,31 +144,5 @@ theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
   · simpa [hps] using
       (measurableSet_twoPointEventStrictComparisonSet τ τ' p.1 p.2).compl
 
-/-- Chosen interaction-time assignment realizing a signature when it is realizable, with the zero
-assignment as a fallback for unrealized signatures. -/
-noncomputable def twoPointOrderSignatureBase {n : ℕ} (τ τ' : ℝ)
-    (s : TwoPointOrderSignature n) : Fin n → ℝ := by
-  classical
-  exact if h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s then
-    Classical.choose h
-  else
-    0
-
-theorem twoPointOrderSignature_twoPointOrderSignatureBase_eq {n : ℕ} (τ τ' : ℝ)
-    (s : TwoPointOrderSignature n)
-    (h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s) :
-    twoPointOrderSignature τ τ' (twoPointOrderSignatureBase τ τ' s) = s := by
-  classical
-  simp only [twoPointOrderSignatureBase, dif_pos h]
-  exact Classical.choose_spec h
-
-theorem sameTwoPointOrderChamber_signatureBase {n : ℕ} (τ τ' : ℝ)
-    (σ : Fin n → ℝ) :
-    SameTwoPointOrderChamber τ τ'
-      (twoPointOrderSignatureBase τ τ' (twoPointOrderSignature τ τ' σ)) σ := by
-  rw [sameTwoPointOrderChamber_iff_orderSignature_eq]
-  exact twoPointOrderSignature_twoPointOrderSignatureBase_eq τ τ'
-    (twoPointOrderSignature τ τ' σ) ⟨σ, rfl⟩
-
 end Common
 end SecondQuantization
