@@ -35,14 +35,11 @@ private theorem fin_univ_ne_empty {n : ℕ} (hn : n ≠ 0) :
 private noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.MultiplicativeWeight
-      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
-  objectWeight d := quarticWickDiagramAmplitude ε β g d
-  connectedWeight d := quarticWickDiagramAmplitude ε β g d.1
-  weight_decompose d := by
-    change quarticWickDiagramAmplitude ε β g d =
-      ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1
-    exact quarticWickDiagramAmplitude_eq_prod_components ε β g d
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ :=
+  Common.QuarticDiagram.multiplicativeWeight
+    (N := N)
+    (fun d => quarticWickDiagramAmplitude ε β g d)
+    (fun d => quarticWickDiagramAmplitude_eq_prod_components ε β g d)
 
 /-- Fermionic Dyson Linked Cluster Theorem. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
