@@ -16,15 +16,16 @@ namespace Combinatorics
 open PowerSeries
 
 /-- The exponential-generating-function normalization of a power-series coefficient. -/
-noncomputable def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
-  (n.factorial : ℂ) * PowerSeries.coeff n Z
+noncomputable def powerSeriesMomentCoeff
+    {R : Type*} [Semiring R] (Z : PowerSeries R) (n : ℕ) : R :=
+  (n.factorial : R) * PowerSeries.coeff n Z
 
 /-- Factorial-normalized coefficients of a unit-constant power series, bundled as normalized
 finite-set moment data. -/
 noncomputable def powerSeriesMomentSetFunction
-    {α : Type*} (Z : PowerSeries ℂ)
+    {α R : Type*} [Semiring R] (Z : PowerSeries R)
     (hZ : PowerSeries.constantCoeff Z = 1) :
-    NormalizedSetFunction α ℂ where
+    NormalizedSetFunction α R where
   toFun := fun S => powerSeriesMomentCoeff Z S.card
   map_empty := by
     simp [powerSeriesMomentCoeff, PowerSeries.coeff_zero_eq_constantCoeff, hZ]
@@ -32,9 +33,9 @@ noncomputable def powerSeriesMomentSetFunction
 /-- Equality of the bundled power-series moment function with normalized finite-set moment data is
 equivalent to equality of the factorial-normalized coefficients on every finite set. -/
 theorem powerSeriesMomentSetFunction_eq_iff
-    {α : Type*} (Z : PowerSeries ℂ)
+    {α R : Type*} [Semiring R] (Z : PowerSeries R)
     (hZ : PowerSeries.constantCoeff Z = 1)
-    (M : NormalizedSetFunction α ℂ) :
+    (M : NormalizedSetFunction α R) :
     powerSeriesMomentSetFunction Z hZ = M ↔
       ∀ S : Finset α, powerSeriesMomentCoeff Z S.card = M S := by
   constructor
