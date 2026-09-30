@@ -19,8 +19,13 @@ maxSynthPendingDepth = 3
 
 [[require]]
 name = "mathlib"
-scope = "leanprover-community"
-rev = "v4.33.1"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.34.1"
+
+[[require]]
+name = "Physlib"
+git = "https://github.com/leanprover-community/physlib.git"
+rev = "f6e446ca99fd83b3a60743a61900cb2acb98f531"
 
 [[lean_lib]]
 name = "LeanCondensedMatter"
