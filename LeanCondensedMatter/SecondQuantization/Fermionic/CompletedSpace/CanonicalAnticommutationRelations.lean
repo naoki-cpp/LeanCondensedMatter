@@ -42,8 +42,8 @@ theorem completedAnticomm_create_create (i j : Mode) :
     ScalarExchange.zetaCommutator (-1 : ℂ) (completedCreate i) (completedCreate j) = 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
-  simp only [ScalarExchange.zetaCommutator, sub_apply, smul_apply, mul_apply_eq_comp,
-    neg_one_smul, sub_neg_eq_add]
+  simp only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add, add_apply,
+    mul_apply_eq_comp]
   rw [completedCreate_algebraicToCompleted j x,
     completedCreate_algebraicToCompleted i (create j x),
     completedCreate_algebraicToCompleted i x,
@@ -60,8 +60,8 @@ theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
     ScalarExchange.zetaCommutator (-1 : ℂ) (completedAnnihilate i) (completedAnnihilate j) = 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
-  simp only [ScalarExchange.zetaCommutator, sub_apply, smul_apply, mul_apply_eq_comp,
-    neg_one_smul, sub_neg_eq_add]
+  simp only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add, add_apply,
+    mul_apply_eq_comp]
   rw [completedAnnihilate_algebraicToCompleted j x,
     completedAnnihilate_algebraicToCompleted i (annihilate j x),
     completedAnnihilate_algebraicToCompleted i x,
@@ -79,8 +79,8 @@ theorem completedAnticomm_annihilate_create (i j : Mode) :
       if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
-  simp only [ScalarExchange.zetaCommutator, sub_apply, smul_apply, mul_apply_eq_comp,
-    neg_one_smul, sub_neg_eq_add]
+  simp only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add, add_apply,
+    mul_apply_eq_comp]
   rw [completedCreate_algebraicToCompleted j x,
     completedAnnihilate_algebraicToCompleted i (create j x),
     completedAnnihilate_algebraicToCompleted i x,
