@@ -72,6 +72,31 @@ def bandSign : Band → ℝ
   | .lower => -1
   | .upper => 1
 
+/-- A finite sum over the two Rashba-exchange bands. -/
+theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
+    ∑ band : Band, f band = f .lower + f .upper := by
+  change ∑ band ∈ ({.lower, .upper} : Finset Band), f band = _
+  simp
+
+/-- The opposite branch of the two-band spectrum. -/
+def oppositeBand : Band → Band
+  | .lower => .upper
+  | .upper => .lower
+
+@[simp] theorem oppositeBand_lower : oppositeBand .lower = .upper := rfl
+@[simp] theorem oppositeBand_upper : oppositeBand .upper = .lower := rfl
+
+@[simp] theorem oppositeBand_oppositeBand (band : Band) :
+    oppositeBand (oppositeBand band) = band := by
+  cases band <;> rfl
+
+@[simp] theorem bandSign_oppositeBand (band : Band) :
+    bandSign (oppositeBand band) = -bandSign band := by
+  cases band <;> simp [oppositeBand, bandSign]
+
+@[simp] theorem bandSign_sq (band : Band) : bandSign band ^ 2 = 1 := by
+  cases band <;> simp [bandSign]
+
 /-- Membership in the finite closed momentum disk. -/
 def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
   momentumSq2D px py ≤ params.momentumCutoff ^ 2
@@ -145,6 +170,14 @@ def berryCurvature (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
     (hAlpha : params.rashbaVelocity = 0) :
     berryCurvature params band px py = 0 := by
   simp [berryCurvature, hAlpha]
+
+/-- Opposite bands carry opposite Berry curvature wherever the totalized closed formula is used. -/
+@[simp] theorem berryCurvature_oppositeBand
+    (params : Parameters) (band : Band) (px py : ℝ) :
+    berryCurvature params (oppositeBand band) px py =
+      -berryCurvature params band px py := by
+  simp [berryCurvature, bandSign_oppositeBand]
+  ring
 
 end
 end QuantumTheory.Transport.Models.RashbaExchange
