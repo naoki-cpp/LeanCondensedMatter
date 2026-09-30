@@ -63,7 +63,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
           (PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
         dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
-    apply Combinatorics.NormalizedSetFunction.ext
+    rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
     intro T
     change
       (T.card.factorial : ℂ) *
