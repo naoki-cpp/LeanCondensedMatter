@@ -41,9 +41,9 @@ theorem matrixCoeff_diagonalEvolution (energy : Config → ℝ) (β : ℝ) (m n 
       if m = n then boltzmannWeight energy β m else 0 := by
   rw [matrixCoeff, diagonalEvolution_basisState, boltzmannWeight]
   by_cases h : m = n
-  · simp only [if_pos h]
+  · simp only [ite_eq_left h]
     rw [h, smul_basisState_apply_self]
-  · simp only [if_neg h]
+  · simp only [ite_eq_right h]
     exact smul_basisState_apply_of_ne _ (Ne.symm h)
 
 /-- `Tr[e^{-βH₀}A]` is the Boltzmann-weighted diagonal trace of `A`. -/
@@ -53,7 +53,7 @@ theorem traceFock_diagonalEvolution_comp_eq_weightedTrace (energy : Config → �
     := by
   rw [traceFock_eq_sum_matrixCoeff, weightedTrace_eq_sum_matrixCoeff]
   simp only [matrixCoeff_comp, matrixCoeff_diagonalEvolution, ite_mul, zero_mul,
-    Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    Finset.sum_ite_eq, Finset.mem_univ, ite_true]
 
 /-- The trace of the free diagonal evolution is the complex Boltzmann weight sum. -/
 theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β : ℝ) :

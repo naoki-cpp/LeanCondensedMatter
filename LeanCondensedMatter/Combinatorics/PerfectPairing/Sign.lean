@@ -99,9 +99,9 @@ private theorem pairSlotIndexEquiv_symm_lt_iff (n : ℕ) (x y : Fin n × Fin 2) 
 private theorem ite_lt_eq_neg_one_pow {m : ℕ} (a b : Fin m) (hab : a ≠ b) :
     (if a < b then (1 : ℤˣ) else -1) = (-1) ^ (if b < a then 1 else 0) := by
   rcases lt_trichotomy a b with h | h | h
-  · rw [if_pos h, if_neg (asymm h), pow_zero]
+  · rw [ite_eq_left h, ite_eq_right (asymm h), pow_zero]
   · exact absurd h hab
-  · rw [if_neg (asymm h), if_pos h, pow_one]
+  · rw [ite_eq_right (asymm h), ite_eq_left h, pow_one]
 
 private def blockPos (τ : Equiv.Perm (Fin (2 * n))) (x : Fin n × Fin 2) : Fin (2 * n) :=
   τ ((pairSlotIndexEquiv n).symm x)
@@ -149,7 +149,7 @@ private theorem blockFactor_of_gt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} 
     blockFactor τ k l = 1 := by
   refine Finset.prod_eq_one fun s _ => Finset.prod_eq_one fun t _ => ?_
   rw [slotFactor]
-  apply if_neg
+  apply ite_eq_right
   rw [pairSlotIndexEquiv_symm_lt_iff]
   rintro (hlt | ⟨heq, -⟩)
   · exact absurd hlt (asymm h)
@@ -174,8 +174,8 @@ private theorem blockFactor_self (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
     exact absurd hslot (by decide)
   rw [blockFactor]
   simp only [Fin.prod_univ_two, slotFactor]
-  rw [if_neg (hnotlt 0 0 (by decide)), if_pos hlt01,
-    if_neg (hnotlt 1 0 (by decide)), if_neg (hnotlt 1 1 (by decide)),
+  rw [ite_eq_right (hnotlt 0 0 (by decide)), ite_eq_left hlt01,
+    ite_eq_right (hnotlt 1 0 (by decide)), ite_eq_right (hnotlt 1 1 (by decide)),
     ite_lt_eq_neg_one_pow _ _ hne]
   simp only [one_mul, mul_one, blockPair]
   rfl
@@ -193,7 +193,7 @@ private theorem blockFactor_of_lt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} 
     exact absurd (congrArg Prod.fst hxy) (ne_of_lt h)
   rw [blockFactor]
   simp only [Fin.prod_univ_two, slotFactor]
-  rw [if_pos (hpos 0 0), if_pos (hpos 0 1), if_pos (hpos 1 0), if_pos (hpos 1 1),
+  rw [ite_eq_left (hpos 0 0), ite_eq_left (hpos 0 1), ite_eq_left (hpos 1 0), ite_eq_left (hpos 1 1),
     ite_lt_eq_neg_one_pow _ _ (hne 0 0),
     ite_lt_eq_neg_one_pow _ _ (hne 0 1),
     ite_lt_eq_neg_one_pow _ _ (hne 1 0),
@@ -285,7 +285,7 @@ private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : Pairing n)
         (crossIndicator pairing e k l + crossIndicator pairing e l k) := by
   classical
   have hdiag : ∀ k : Fin n, crossIndicator pairing e k k = 0 :=
-    fun k => if_neg (not_crosses_self _)
+    fun k => ite_eq_right (not_crosses_self _)
   have hswap :
       (∑ k : Fin n, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) =
         ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k :=
@@ -401,10 +401,10 @@ theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
         pairing.pairs := by
     intro k
     rcases lt_trichotomy (blockPair τ k).1 (blockPair τ k).2 with hlt | heq | hgt
-    · rw [if_pos hlt]
+    · rw [ite_eq_left hlt]
       exact (pairing.mem_pairs_iff _ _).2 ⟨hlt, h k⟩
     · exact absurd heq (hne k)
-    · rw [if_neg (asymm hgt)]
+    · rw [ite_eq_right (asymm hgt)]
       refine (pairing.mem_pairs_iff _ _).2 ⟨hgt, ?_⟩
       rw [← h k, pairing.partner_partner]
   set f : Fin n → pairing.NormalizedPair := fun k => ⟨_, hmem k⟩ with hf
@@ -447,7 +447,7 @@ theorem Pairing.sign_pairPerm (pairing : Pairing n) :
     Equiv.Perm.sign pairing.pairPerm = (-1) ^ pairing.crossingCount := by
   have hzero : (∑ k : Fin n,
       if (blockPair pairing.pairPerm k).2 < (blockPair pairing.pairPerm k).1 then 1 else 0) = 0 :=
-    Finset.sum_eq_zero fun k _ => if_neg (by
+    Finset.sum_eq_zero fun k _ => ite_eq_right (by
       rw [blockPair_pairPerm]
       exact asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
   rw [pairing.sign_eq_of_presentsPairs pairing.pairPerm pairing.pairPerm_presentsPairs, hzero,

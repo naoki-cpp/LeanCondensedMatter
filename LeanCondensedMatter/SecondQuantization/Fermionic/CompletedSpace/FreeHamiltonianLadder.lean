@@ -63,7 +63,7 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
     rfl
   rw [hHa, haH, hrestrict, completedCreate_apply, completedCreate_apply]
   by_cases h : i ∈ n
-  · simp only [if_pos h]
+  · simp only [ite_eq_left h]
     rw [hH, freeHamiltonianWeight_toggle_of_mem ε h]
     ring
   · simp [h]
@@ -101,7 +101,7 @@ theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : 
   rw [hHa, haH, hrestrict, completedAnnihilate_apply, completedAnnihilate_apply]
   by_cases h : i ∈ n
   · simp [h]
-  · simp only [if_neg h]
+  · simp only [ite_eq_right h]
     rw [hH, freeHamiltonianWeight_toggle_of_not_mem ε h]
     ring
 

@@ -43,7 +43,7 @@ private theorem shiftedOccupation_le_orderedProductMajorant
       (fun j => ((n j + K + 1 : ℕ) : ℝ)) (Finset.mem_univ i)]
   have hfactor : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
   have hrest : 1 ≤ ∏ j ∈ Finset.univ.erase i, ((n j + K + 1 : ℕ) : ℝ) := by
-    apply Finset.one_le_prod
+    apply Finset.one_le_prod₀
     intro j hj
     exact_mod_cast (show 1 ≤ n j + K + 1 by omega)
   nlinarith

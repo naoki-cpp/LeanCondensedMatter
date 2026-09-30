@@ -88,7 +88,7 @@ theorem logOf_freeExchangeGrandPartitionSeries_eq_sum_log
         simp
   · subst ζ
     have hne : (-1 : ℂ) ≠ 1 := by norm_num
-    simp only [freeExchangeGrandPartitionSeries, if_neg hne]
+    simp only [freeExchangeGrandPartitionSeries, ite_eq_right hne]
     rw [PowerSeries.logOf_finset_prod (Finset.univ : Finset Mode)
       (fun i =>
         1 + (-(-1 : ℂ) * Complex.exp (-(β : ℂ) * (ε i : ℂ))) • PowerSeries.X)

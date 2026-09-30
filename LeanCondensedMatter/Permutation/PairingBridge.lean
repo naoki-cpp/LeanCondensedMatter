@@ -141,20 +141,20 @@ private noncomputable def sidePair (e : SideSplitting m) (σ : Equiv.Perm (Fin m
 private theorem sidePair_of_lt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
     (h : e (Sum.inl i) < e (Sum.inr (σ i))) :
     sidePair e σ i = (e (Sum.inl i), e (Sum.inr (σ i))) :=
-  if_pos h
+  ite_eq_left h
 
 private theorem sidePair_of_gt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
     (h : e (Sum.inr (σ i)) < e (Sum.inl i)) :
     sidePair e σ i = (e (Sum.inr (σ i)), e (Sum.inl i)) :=
-  if_neg (asymm h)
+  ite_eq_right (asymm h)
 
 private theorem sidePair_mem_pairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     sidePair e σ i ∈ (sidePairing e σ).pairs := by
   rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inr (σ i))) with h | h | h
-  · rw [sidePair, if_pos h]
+  · rw [sidePair, ite_eq_left h]
     exact (Pairing.mem_pairs_iff _ _ _).2 ⟨h, by simp [sidePairing_partner, sidePartner_inl]⟩
   · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
-  · rw [sidePair, if_neg (asymm h)]
+  · rw [sidePair, ite_eq_right (asymm h)]
     refine (Pairing.mem_pairs_iff _ _ _).2 ⟨h, ?_⟩
     rw [sidePairing_partner, sidePartner_inr, Equiv.symm_apply_apply]
 
@@ -384,9 +384,9 @@ private theorem pow_sideReversedCount_mul_prod_sidePair {R : Type*} [CommSemirin
   rw [← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ => ?_
   rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inr (σ i))) with h | h | h
-  · rw [sidePair_of_lt h, exchangeMatrix, if_neg (asymm h), if_pos h, pow_zero, one_mul]
+  · rw [sidePair_of_lt h, exchangeMatrix, ite_eq_right (asymm h), ite_eq_left h, pow_zero, one_mul]
   · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
-  · rw [sidePair_of_gt h, exchangeMatrix, if_pos h, if_neg (asymm h), pow_one]
+  · rw [sidePair_of_gt h, exchangeMatrix, ite_eq_left h, ite_eq_right (asymm h), pow_one]
 
 /-- **Generic exchange-statistics reduction.** If the pair value vanishes on two left-side
 positions, the crossing-weighted pairing sum reduces to the cycle-weighted permutation sum of the

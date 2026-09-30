@@ -225,7 +225,7 @@ noncomputable def FamilySlotShuffle.outerSlotEquiv {size : Fin (k + 1) → ℕ}
       Fin (size 0 + FamilySlotShuffle.tailTotal size) :=
   (Equiv.sumCongr shuffle.headSlotSubtypeEquiv
       ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots).toEquiv.trans
-        (Equiv.setCongr shuffle.tailSlots_set_eq_compl_headSlots))).trans
+        (Set.equivOfEq shuffle.tailSlots_set_eq_compl_headSlots))).trans
     ((Equiv.Set.sumCompl (↑shuffle.headSlots : Set (Fin (∑ i, size i)))).trans
       (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)))
 
@@ -244,7 +244,18 @@ theorem FamilySlotShuffle.outerSlotEquiv_apply_inr {size : Fin (k + 1) → ℕ}
       finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
         ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
           ↥shuffle.tailSlots) : Fin (∑ i, size i)) := by
-  rfl
+  let y : ↥shuffle.tailSlots :=
+    shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r
+  simp only [FamilySlotShuffle.outerSlotEquiv, Equiv.trans_apply,
+    Equiv.sumCongr_apply, Sum.map_inr]
+  refine congrArg (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)) ?_
+  change
+    (Equiv.Set.sumCompl (↑shuffle.headSlots : Set (Fin (∑ i, size i))))
+        (Sum.inr ((Set.equivOfEq shuffle.tailSlots_set_eq_compl_headSlots) y)) =
+      (y : Fin (∑ i, size i))
+  rw [Equiv.Set.sumCompl_apply_inr]
+  exact congrArg Subtype.val
+    (Set.equivOfEq_apply shuffle.tailSlots_set_eq_compl_headSlots y)
 
 /-- Extract the binary shuffle of the head block against all tail slots. -/
 noncomputable def FamilySlotShuffle.outerShuffle {size : Fin (k + 1) → ℕ}

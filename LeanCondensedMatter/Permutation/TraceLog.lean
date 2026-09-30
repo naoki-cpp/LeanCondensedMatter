@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Permutation.ConnectedCycleSeries
+import Mathlib.Data.Rat.Cast.Lemmas
 import Mathlib.RingTheory.PowerSeries.Log
 import Mathlib.Tactic.FieldSimp
 
@@ -60,11 +61,10 @@ theorem constantCoeff_formalTraceLogOneSubSeries
 private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
     PowerSeries.coeff m (PowerSeries.log ℂ) =
       (-1 : ℂ) ^ (m + 1) / (m : ℂ) := by
-  rw [PowerSeries.coeff_log, if_neg (Nat.ne_of_gt hm)]
+  rw [PowerSeries.coeff_log, ite_eq_right (Nat.ne_of_gt hm)]
   change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
     (-1 : ℂ) ^ (m + 1) / (m : ℂ)
-  push_cast
-  rfl
+  rw [Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast]
 
 private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
     (-ζ) ^ m * (-1 : ℂ) ^ (m + 1) = -ζ ^ m := by

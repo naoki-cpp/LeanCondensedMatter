@@ -370,7 +370,7 @@ theorem completedFreeGibbsExpectation_operator_comp
             have hrestore : insertOccupation i (removeOccupation i n) = n := by
               simpa [insertOccupation, removeOccupation] using Finset.insert_erase hi
             dsimp [f]
-            rw [inner_completedBasisState_left, completedCreate_apply, if_pos hi,
+            rw [inner_completedBasisState_left, completedCreate_apply, ite_eq_left hi,
               toggleOccupation_of_mem hi,
               coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β hi,
               completedCreate_basisState_of_not_mem hremove, map_smul, inner_smul_right,
@@ -395,7 +395,7 @@ theorem completedFreeGibbsExpectation_operator_comp
           · have hit : i ∈ toggleOccupation i n :=
               (mem_toggleOccupation i n).mpr hi
             dsimp [f]
-            rw [inner_completedBasisState_left, completedCreate_apply, if_neg hi,
+            rw [inner_completedBasisState_left, completedCreate_apply, ite_eq_right hi,
               completedCreate_basisState_of_mem hit, map_zero, inner_zero_right]
             ring
         _ = ∑' n : Occupation Mode, f n := by
@@ -427,7 +427,7 @@ theorem completedFreeGibbsExpectation_operator_comp
               intro hit
               exact ((mem_toggleOccupation i n).mp hit) hi
             dsimp [f]
-            rw [inner_completedBasisState_left, completedAnnihilate_apply, if_pos hi,
+            rw [inner_completedBasisState_left, completedAnnihilate_apply, ite_eq_left hi,
               completedAnnihilate_basisState_of_not_mem hit, map_zero, inner_zero_right]
             ring
           · have hinsert : i ∈ insertOccupation i n := by
@@ -435,7 +435,7 @@ theorem completedFreeGibbsExpectation_operator_comp
             have hrestore : removeOccupation i (insertOccupation i n) = n := by
               simp [removeOccupation, insertOccupation, hi]
             dsimp [f]
-            rw [inner_completedBasisState_left, completedAnnihilate_apply, if_neg hi,
+            rw [inner_completedBasisState_left, completedAnnihilate_apply, ite_eq_right hi,
               toggleOccupation_of_not_mem hi,
               coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi,
               completedAnnihilate_basisState_of_mem hinsert, map_smul, inner_smul_right,
