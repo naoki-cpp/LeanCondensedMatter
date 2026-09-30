@@ -23,15 +23,6 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
-private theorem fin_univ_ne_empty {n : ℕ} (hn : n ≠ 0) :
-    (Finset.univ : Finset (Fin n)) ≠ ∅ := by
-  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
-  intro h
-  have hx : (⟨0, hnpos⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) :=
-    Finset.mem_univ _
-  rw [h] at hx
-  simpa using hx
-
 /-- Bosonic quartic Dyson Linked Cluster Theorem for the physical convergence-aware Gibbs
 coefficients. -/
 theorem factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude
@@ -53,12 +44,15 @@ theorem factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermal
         W.normalizedObjectMoment := by
     rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
     intro S
-    simp only [Combinatorics.powerSeriesMomentCoeff,
-      Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply]
-    rw [coeff_freeGibbsDysonSeries]
-    exact (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
-      ε β hpos g β S).symm
-  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ := fin_univ_ne_empty hn
+    change
+      Combinatorics.powerSeriesMomentCoeff
+          (freeGibbsDysonSeries ε β (quarticInteraction g)) S.card =
+        quarticDysonThermalMoment ε β g β S
+    simpa only [Combinatorics.powerSeriesMomentCoeff, coeff_freeGibbsDysonSeries] using
+      (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
+        ε β hpos g β S).symm
+  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
+    (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
