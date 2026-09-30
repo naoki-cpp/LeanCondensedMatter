@@ -73,7 +73,7 @@ theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
     (a b : TwoPointTimedEvent n) :
     twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
       twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  unfold twoPointTimedEventBeforeOrEqual
+  unfold twoPointTimedEventBeforeOrEqual stableTimedEventBeforeOrEqual
   rw [h b a, twoPointTimedEventTime_eq_iff_of_sameOrderChamber h a b]
 
 theorem twoPointTimedEventBefore_iff_of_sameOrderChamber
