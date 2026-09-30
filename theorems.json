@@ -14603,6 +14603,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "QuantumTheory.Transport.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -14614,9 +14615,10 @@
       "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "QuantumTheory.Transport.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22018,6 +22020,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients_dot_self",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
@@ -22034,10 +22038,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients_dot_self",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22287,6 +22293,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -22301,9 +22308,10 @@
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22382,7 +22390,8 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.pauliShift_mul_companion",
-      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_mul_self"
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self"
     ],
     "dependencies": [
       "InternalSpace.pauliCombination_mul_pauliCombination"
@@ -22391,9 +22400,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.pauliShift_mul_companion",
-      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_mul_self"
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22472,7 +22482,8 @@
     "dependents": [
       "InternalSpace.pauliAffine_mul_pauliAffine",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_pauliCombination"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
@@ -22482,9 +22493,10 @@
     "compiledConsumers": [
       "InternalSpace.pauliAffine_mul_pauliAffine",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_pauliCombination"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22981,6 +22993,7 @@
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
+      "QuantumTheory.Transport.Models.RashbaExchange.trace_bandProjector",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
@@ -22993,9 +23006,10 @@
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
+      "QuantumTheory.Transport.Models.RashbaExchange.trace_bandProjector",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28945,8 +28959,7 @@
     "dependents": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
-      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt"
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -28954,10 +28967,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
-      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt"
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70549,6 +70561,418 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    Function.Injective fun band => QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandEnergy_injective",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Away from the degeneracy, the two band energies are distinct. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py ≠\n      QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params\n        (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params\n          (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py =\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "Opposite-band operator projectors are orthogonal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_oppositeBand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py =\n      QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_self",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "Operator projectors remain idempotent. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py +\n      QuantumTheory.Transport.Models.RashbaExchange.bandProjector params\n        (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py =\n    1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Either projector plus its opposite-band partner resolves the identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_band",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py =\n    (1 / 2) •\n      (1 +\n        InternalSpace.pauliCombination\n          (↑(QuantumTheory.Transport.Models.RashbaExchange.bandSign band /\n                QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py) •\n            QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients params px py))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_pauliCombination",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Pauli/Bloch form of the band projector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.trace_bandProjector"
+    ],
+    "dependencies": [
+      "InternalSpace.pauliCombination_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.trace_bandProjector"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjector params\n          (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py =\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Away from the degeneracy, opposite-band projectors are orthogonal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py =\n      QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Away from the degeneracy, each band projector is idempotent. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_oppositeBand"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandSign_sq",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_normalized",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_oppositeBand"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.RashbaExchange.Band),\n  QuantumTheory.Transport.Models.RashbaExchange.bandSign\n      (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) =\n    -QuantumTheory.Transport.Models.RashbaExchange.bandSign band",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandSign_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.berryCurvature_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.berryCurvature_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.RashbaExchange.Band),\n  QuantumTheory.Transport.Models.RashbaExchange.bandSign band ^ 2 = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.bandSign_sq",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  params.exchangeSplitting = 0 → QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params band px py = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -70569,6 +70993,43 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params\n      (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py =\n    -QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.berryCurvature_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": "Opposite bands carry opposite Berry curvature wherever the totalized closed formula is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandSign_oppositeBand"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -70690,6 +71151,82 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  z - ↑(QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py) ≠ 0 →\n    ContinuousAt\n      (fun w => QuantumTheory.Transport.Models.RashbaExchange.projectorResolventCoefficient w params band px py) z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.continuousAt_projectorResolventCoefficient",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "The scalar projector-resolvent coefficient is continuous away from its pole. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (μ ν : Fin 2)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.currentBandBlockTrace params μ ν band\n      (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py =\n    ↑(params.signedCharge ^ 2) *\n      QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator params μ ν band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Bastin.Berry",
+    "externalAxioms": [],
+    "docString": "An opposite-band ordered current block is `q²` times the gauge-independent velocity\nforce-matrix numerator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71167,7 +71704,95 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature params band px py =\n      QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": "The gauge-independent force-matrix curvature equals the model's closed Berry-curvature formula\naway from the band degeneracy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator params 0 1 band px py =\n      -↑(params.rashbaVelocity ^ 4 * px * py /\n              QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ^ 2) -\n        ↑(QuantumTheory.Transport.Models.RashbaExchange.bandSign band * params.exchangeSplitting *\n                params.rashbaVelocity ^ 2 /\n              QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py) *\n          Complex.I",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": "Exact x-y interband velocity trace.  The terms proportional to `p_i/m_eff I` cancel once the\nprojectors are nondegenerate, leaving only the Rashba/exchange Pauli geometry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.pauliCombination_eq_components",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_pauliCombination",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandSign_sq",
+      "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py)",
     "standardAxioms": [
       "Classical.choice",
@@ -71175,7 +71800,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -71186,14 +71811,98 @@
     "docString": "The bounded Rashba-exchange Hamiltonian is self-adjoint, providing the analytic provenance\nrequired by the generic finite-broadening Středa/Bastin layer. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_isHermitian"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py =\n      ↑(QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py) •\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "The Hamiltonian acts on each projector with its shifted band energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_bandProjectorOperator"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_bandProjectorOperator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.hamiltonian params px py =\n    ↑(QuantumTheory.Transport.Models.RashbaExchange.kineticEnergy params px py) • 1 +\n      QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian params px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_eq_kinetic_add_spinHamiltonian",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "The model Hamiltonian is a scalar kinetic shift plus the traceless spin Hamiltonian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71245,6 +71954,673 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.hamiltonian params px py *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py =\n      ↑(QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py) •\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Away from the degeneracy, the Hamiltonian acts on `P_s` with the corresponding shifted band\nenergy `ε₀+sE`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandSign_sq",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_eq_kinetic_add_spinHamiltonian",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_normalized",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_eq_energy_smul_normalized"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap params band px py =\n    2 * QuantumTheory.Transport.Models.RashbaExchange.bandSign band *\n      QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_eq",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": "The scalar kinetic shift cancels from the interband gap. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap params band px py ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap params\n      (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py =\n    -QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandSign_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "QuantumTheory.Transport.Models.RashbaExchange.oppositeBand QuantumTheory.Transport.Models.RashbaExchange.Band.lower =\n  QuantumTheory.Transport.Models.RashbaExchange.Band.upper",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.oppositeBand_lower",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.RashbaExchange.Band),\n  QuantumTheory.Transport.Models.RashbaExchange.oppositeBand\n      (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) =\n    band",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.oppositeBand_oppositeBand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "QuantumTheory.Transport.Models.RashbaExchange.oppositeBand QuantumTheory.Transport.Models.RashbaExchange.Band.upper =\n  QuantumTheory.Transport.Models.RashbaExchange.Band.lower",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.oppositeBand_upper",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent z params px py ^ 2 =\n      ∑ band,\n        QuantumTheory.Transport.Models.RashbaExchange.projectorResolventCoefficient z params band px py ^ 2 •\n          QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "Squaring the projector resolvent squares only the scalar coefficients. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_band"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients params px py ⬝ᵥ\n      QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients params px py =\n    ↑(QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergySq params px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients_dot_self",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "The Pauli-vector quadratic invariant is exactly the squared spin-orbit energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py)\n          (QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params 0 px py)\n          (QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params 1 px py) probeEnergy broadening =\n        QuantumTheory.Transport.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Bastin.Berry",
+    "externalAxioms": [],
+    "docString": "At nonzero broadening and away from the band degeneracy, the generic Bastin trace is exactly the\nprojector-expanded Rashba-exchange expression. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
+      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator",
+      "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py probeEnergy regulator : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    regulator ≠ 0 →\n      resolvent (QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py)\n          (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) =\n        QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent\n          (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) params px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "At nonzero signed regulator, the canonical resolvent equals the gauge-free projector expansion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint",
+      "QuantumTheory.Transport.resolvent_eq_of_spectralShift_mul_eq_one",
+      "QuantumTheory.Transport.spectralParameterOfRegulator_sub_real_ne_zero",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian params px py *\n      QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian params px py =\n    ↑(QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergySq params px py) • 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "The traceless spin Hamiltonian squares to `E² I`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "dependencies": [
+      "InternalSpace.pauliCombination_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.rashbaPauliCoefficients_dot_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  0 ≤ QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergySq params px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergySq_nonneg",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "The squared spin-orbit energy is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy_sq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy_sq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ^ 2 =\n    QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergySq params px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy_sq",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Squaring the positive spin-orbit energy recovers its defining polynomial. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergySq_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : QuantumTheory.Transport.Models.RashbaExchange.Band → M),\n  ∑ band, f band =\n    f QuantumTheory.Transport.Models.RashbaExchange.Band.lower +\n      f QuantumTheory.Transport.Models.RashbaExchange.Band.upper",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.sum_band",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
+    "externalAxioms": [],
+    "docString": "A finite sum over the two Rashba-exchange bands. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent_sq",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  ∑ band, QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjectorOperator_eq_one",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "The operator band projectors resolve the identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  ∑ band, QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "The two band projectors resolve the identity, including at the totalized `E = 0` value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjectorOperator_eq_one"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_band",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_normalized"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjectorOperator_eq_one"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.suppliedSurfaceHallPointKernel params measured px py\n      (QuantumTheory.Transport.Models.RashbaExchange.greenOperator QuantumTheory.Transport.SpectralSide.retarded params\n        px py)\n      (QuantumTheory.Transport.Models.RashbaExchange.currentBoundedOperator params source px py)\n      (QuantumTheory.Transport.Models.RashbaExchange.greenOperator QuantumTheory.Transport.SpectralSide.advanced params\n        px py) =\n    QuantumTheory.Transport.Models.RashbaExchange.cleanSurfaceHallPointKernel params measured source px py",
     "standardAxioms": [
@@ -71266,6 +72642,82 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  Matrix.trace (QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.trace_bandProjector",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Every band projector has trace one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.trace_pauliCombination",
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_pauliCombination"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    2 *\n          (QuantumTheory.Transport.Models.RashbaExchange.currentBandBlockTrace params 0 1 band\n              (QuantumTheory.Transport.Models.RashbaExchange.oppositeBand band) px py).im /\n        QuantumTheory.Transport.Models.RashbaExchange.interbandEnergyGap params band px py ^ 2 =\n      params.signedCharge ^ 2 * QuantumTheory.Transport.Models.RashbaExchange.berryCurvature params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Bastin.Berry",
+    "externalAxioms": [],
+    "docString": "Normalizing the interband current block by the squared energy gap reproduces `q²` times the\nclosed Rashba-exchange Berry curvature. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Transport.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -76365,7 +77817,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator",
-      "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+      "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
     ],
     "dependencies": [
       "QuantumTheory.Transport.spectralParameterOfRegulator_im",
@@ -76376,9 +77829,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator",
-      "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+      "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76776,6 +78230,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
       "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_eigenvector"
     ],
@@ -76786,10 +78241,11 @@
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
       "QuantumTheory.Transport.Models.Parabolic2DEG.greenDenominator_ne_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_eigenvector"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76826,6 +78282,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
@@ -76843,12 +78300,13 @@
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76967,6 +78425,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.lehmannDenominator_eq_retardedSpectralShift",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
@@ -76986,6 +78445,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.lehmannDenominator_eq_retardedSpectralShift",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
@@ -76993,7 +78453,7 @@
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77028,6 +78488,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.continuous_retardedAdvancedResolventDifferenceDerivative_energy",
@@ -77046,6 +78507,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.continuous_retardedAdvancedResolventDifferenceDerivative_energy",
@@ -77054,7 +78516,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_retardedAdvancedResolventDifference",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_smrckaStredaSurfaceFactor"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77131,6 +78593,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
@@ -77150,6 +78613,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfaceGreenWeight_eq_regularized",
       "QuantumTheory.Transport.Models.Parabolic2DEG.stredaSurfacePointKernel_eq_regularized",
+      "QuantumTheory.Transport.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.continuous_regularizedBastinOperatorIntegrand_energy",
       "QuantumTheory.Transport.purePointLehmannVertexTerm_eq_bastinSpectral",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
@@ -77159,7 +78623,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_retardedAdvancedResolventDifference",
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.hasDerivAt_smrckaStredaSurfaceFactor"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84080,7 +85544,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84098,8 +85562,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.quarticThermalDiagramMultiplicativeWeight"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104909,517 +106375,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (e : Fin 2),\n  (SecondQuantization.Common.interactionVertexEventRelabel π) (Sum.inl e) = Sum.inl e",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexEventRelabel_external",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (v : Fin n),\n  (SecondQuantization.Common.interactionVertexEventRelabel π) (Sum.inr v) = Sum.inr (π v)",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexEventRelabel_interaction",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (e : Fin 2),\n  (SecondQuantization.Common.interactionVertexLegRelabel π) (Sum.inl e) = Sum.inl e",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexLegRelabel_external",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (v : Fin n) (l : Fin 4),\n  (SecondQuantization.Common.interactionVertexLegRelabel π) (Sum.inr (⟨v, ⋯⟩, l)) = Sum.inr (⟨π v, ⋯⟩, l)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexLegRelabel_interaction",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)),\n  SecondQuantization.Common.interactionVertexLegRelabel (Equiv.symm π) =\n    (SecondQuantization.Common.interactionVertexLegRelabel π).symm",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexLegRelabel_symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabel",
-    "externalAxioms": [],
-    "docString": "Relabeling standard two-point legs by the inverse slot permutation is the inverse leg\nrelabeling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexPositionRelabel_symm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexPositionRelabel_symm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))),\n  (SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p =\n    SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' (fun v => σ ((Equiv.symm π) v))\n      ((SecondQuantization.Common.interactionVertexLegRelabel π)\n        ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "The transported mixed position is exactly the old mixed position of the relabeled standard\nleg. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p : Fin (2 * (2 * n + 1))), (SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p = p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply_eq_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "A strictly monotone self-permutation of the finite mixed-position order is the identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_strictMono_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ = Equiv.refl (Fin (2 * (2 * n + 1)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "On injective interaction-time assignments the induced mixed-position permutation is exactly the\nidentity permutation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply_eq_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (p q : Fin (2 * (2 * n + 1))),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ\n        (SecondQuantization.Common.orderedTwoPointLegEvent\n          ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p)) ≠\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ\n        (SecondQuantization.Common.orderedTwoPointLegEvent\n          ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) q)) →\n    ((SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p <\n        (SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) q ↔\n      p < q)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "For two positions supported on events at distinct physical times, interaction-slot relabeling\npreserves their mixed-order comparison. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexLegRelabel",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_time_ne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p q : Fin (2 * (2 * n + 1))),\n      (SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p <\n          (SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) q ↔\n        p < q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "With injective interaction times, the mixed atomic position relabeling preserves the full strict\norder, including pairs of legs inside the same quartic interaction block. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_strictMono_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexLegRelabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_strictMono_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p q : Fin (2 * (2 * n + 1))),\n      SecondQuantization.Common.orderedTwoPointLegEvent\n            ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p) ≠\n          SecondQuantization.Common.orderedTwoPointLegEvent\n            ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) q) →\n        ((SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p <\n            (SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) q ↔\n          p < q)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "With injective interaction times, transported mixed positions preserve order whenever their\nsupporting events are distinct. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexLegRelabel",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ → StrictMono ⇑(SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexMixedPositionRelabel_strictMono_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "The mixed atomic position relabeling is strictly monotone away from interaction-time diagonals. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply_eq_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply_eq_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)),\n  SecondQuantization.Common.interactionVertexPositionRelabel (Equiv.symm π) =\n    Equiv.symm (SecondQuantization.Common.interactionVertexPositionRelabel π)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.interactionVertexPositionRelabel_symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabel",
-    "externalAxioms": [],
-    "docString": "The flattened position relabeling induced by the inverse slot permutation is the inverse\nflattened position relabeling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexLegRelabel_symm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (order : ℕ)\n  (m n : Config) (a b : ℝ),\n  IntervalIntegrable\n    (fun τ => SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.dysonCoeff energy V order τ) m n)\n    MeasureTheory.volume a b",
     "standardAxioms": [
       "Classical.choice",
@@ -106873,47 +107828,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))),\n  (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' fun v => σ ((Equiv.symm π) v))\n      ((SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p) =\n    (SecondQuantization.Common.interactionVertexLegRelabel π)\n      ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_interactionVertexMixedPositionRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "Reading the old standard leg at a transported mixed position gives the relabeling of the new\nstandard leg. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedTwoPointLeg n),\n  (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ)\n      (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =\n    leg",
     "standardAxioms": [
       "Classical.choice",
@@ -106937,8 +107851,6 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
@@ -106951,13 +107863,11 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106988,8 +107898,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
@@ -107000,13 +107908,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107218,9 +108124,6 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
@@ -107231,14 +108134,11 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107363,7 +108263,6 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_length",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
     "dependencies": [
@@ -107380,10 +108279,9 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_length",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108146,95 +109044,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (leg : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.orderedTwoPointLegEvent ((SecondQuantization.Common.interactionVertexLegRelabel π) leg) =\n    (SecondQuantization.Common.interactionVertexEventRelabel π) (SecondQuantization.Common.orderedTwoPointLegEvent leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexLegRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "Relabeling a standard two-point leg transports its supporting mixed event by the same slot\npermutation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective",
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))),\n  SecondQuantization.Common.orderedTwoPointLegEvent\n      ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' fun v => σ ((Equiv.symm π) v))\n        ((SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p)) =\n    (SecondQuantization.Common.interactionVertexEventRelabel π)\n      (SecondQuantization.Common.orderedTwoPointLegEvent\n        ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "The supporting old event of a transported mixed position is the relabeling of the supporting\nnew event. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexMixedPositionRelabel"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexLegRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexMixedPositionRelabel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (leg : SecondQuantization.Common.OrderedTwoPointLeg m),\n  SecondQuantization.Common.orderedTwoPointLegEvent (SecondQuantization.Common.orderedTwoPointLegMap f leg) =\n    SecondQuantization.Common.twoPointTimedEventMap f (SecondQuantization.Common.orderedTwoPointLegEvent leg)",
     "standardAxioms": [
       "Classical.choice",
@@ -108405,7 +109214,6 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
     "dependencies": [
@@ -108417,10 +109225,9 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108467,48 +109274,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' (fun v => σ ((Equiv.symm π) v))\n            ((SecondQuantization.Common.interactionVertexEventRelabel π) a) <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' (fun v => σ ((Equiv.symm π) v))\n            ((SecondQuantization.Common.interactionVertexEventRelabel π) b) ↔\n        SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "Under an injective interaction-time assignment, the time-ordered event positions are transported\norder-equivariantly by interaction-slot relabeling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b ↔\n    SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b",
     "standardAxioms": [
       "Classical.choice",
@@ -108528,9 +109293,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
@@ -108542,14 +109305,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108710,7 +109471,6 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_all_mem",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
     ],
@@ -108726,11 +109486,10 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_all_mem",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
       "SecondQuantization.Common.orderedTwoPointTimedEventEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111855,91 +112614,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (fun v => σ ((Equiv.symm π) v))\n          ((SecondQuantization.Common.interactionVertexEventRelabel π) a)\n          ((SecondQuantization.Common.interactionVertexEventRelabel π) b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "If the interaction-time assignment is injective, relabeling preserves stable precedence for\nall events. Equal-time external/interaction pairs keep the same external-before-interaction rank,\nwhile two distinct interaction events cannot tie. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_time_ne",
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexEventRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a ≠\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b →\n    (SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (fun v => σ ((Equiv.symm π) v))\n        ((SecondQuantization.Common.interactionVertexEventRelabel π) a)\n        ((SecondQuantization.Common.interactionVertexEventRelabel π) b) ↔\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_time_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "If two event times are distinct, stable tie-breaking is irrelevant and mixed-event precedence\nis equivariant under interaction-slot relabeling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective",
-      "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_time_ne"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexEventRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective",
-      "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_time_ne"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ\n          (SecondQuantization.Common.twoPointTimedEventMap f a) (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b",
     "standardAxioms": [
       "Classical.choice",
@@ -112010,88 +112684,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' (fun v => σ ((Equiv.symm π) v))\n          ((SecondQuantization.Common.interactionVertexEventRelabel π) a)\n          ((SecondQuantization.Common.interactionVertexEventRelabel π) b) ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "Under an injective interaction-time assignment, strict event precedence is fully equivariant\nunder interaction-slot relabeling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a ≠\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b →\n    (SecondQuantization.Common.twoPointTimedEventBefore τ τ' (fun v => σ ((Equiv.symm π) v))\n        ((SecondQuantization.Common.interactionVertexEventRelabel π) a)\n        ((SecondQuantization.Common.interactionVertexEventRelabel π) b) ↔\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_time_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "Strict mixed-event precedence is likewise equivariant for distinct event times. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_time_ne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112277,89 +112869,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (event : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' (fun v => σ ((Equiv.symm π) v))\n      ((SecondQuantization.Common.interactionVertexEventRelabel π) event) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ event",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexEventRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "Corresponding events have the same physical imaginary time when the old time assignment is\nprecomposed by the inverse interaction-slot permutation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective",
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_time_ne",
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective",
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_time_ne",
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' (fun v => σ ((Equiv.symm π) v))\n      (SecondQuantization.Common.orderedTwoPointLegEvent\n        ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' fun v => σ ((Equiv.symm π) v))\n          ((SecondQuantization.Common.interactionVertexMixedPositionRelabel π τ τ' σ) p))) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ\n      (SecondQuantization.Common.orderedTwoPointLegEvent\n        ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexMixedPositionRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": "Transporting a mixed atomic position preserves the physical time of its supporting event. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexEventRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fin n → ℝ) (a : SecondQuantization.Common.TwoPointTimedEvent m),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.twoPointTimedEventMap f a) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' (σ ∘ f) a",
     "standardAxioms": [
       "Classical.choice",
@@ -112388,44 +112897,6 @@
       "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' (fun v => σ ((Equiv.symm π) v))\n      (SecondQuantization.Common.orderedTwoPointLegEvent\n        ((SecondQuantization.Common.interactionVertexLegRelabel π) leg)) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.orderedTwoPointLegEvent leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime",
-    "externalAxioms": [],
-    "docString": "The same time-covariance statement expressed on the event supporting a standard two-point leg. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexLegRelabel",
-      "SecondQuantization.Common.twoPointTimedEventTime_interactionVertexEventRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131813,8 +132284,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -131832,8 +132303,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": true,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.quarticWickDiagramMultiplicativeWeight"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154859,89 +155332,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.orderedTwoPointLegEvent x = SecondQuantization.Common.orderedTwoPointLegEvent y →\n    (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ y ↔\n      List.idxOf x\n          (SecondQuantization.Common.twoPointTimedEventAtomicLegs\n            (SecondQuantization.Common.orderedTwoPointLegEvent x)) <\n        List.idxOf y\n          (SecondQuantization.Common.twoPointTimedEventAtomicLegs\n            (SecondQuantization.Common.orderedTwoPointLegEvent x)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "dependencies": [
-      "List.idxOf_flatMap_block_lt_iff",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
-      "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (leg : SecondQuantization.Common.OrderedTwoPointLeg n),\n  List.idxOf ((SecondQuantization.Common.interactionVertexLegRelabel π) leg)\n      (SecondQuantization.Common.twoPointTimedEventAtomicLegs\n        (SecondQuantization.Common.orderedTwoPointLegEvent\n          ((SecondQuantization.Common.interactionVertexLegRelabel π) leg))) =\n    List.idxOf leg\n      (SecondQuantization.Common.twoPointTimedEventAtomicLegs (SecondQuantization.Common.orderedTwoPointLegEvent leg))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_lt_iff_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ\n        (SecondQuantization.Common.orderedTwoPointLegEvent x) <\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ\n        (SecondQuantization.Common.orderedTwoPointLegEvent y) →\n    SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ x <\n      SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ y",
     "standardAxioms": [
       "Classical.choice",
@@ -165905,6 +166295,216 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    ((algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) z -\n          QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py) *\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py =\n      (z - ↑(QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params band px py)) •\n        QuantumTheory.Transport.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_bandProjectorOperator",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    z -\n          ↑(QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params\n              QuantumTheory.Transport.Models.RashbaExchange.Band.lower px py) ≠\n        0 →\n      z -\n            ↑(QuantumTheory.Transport.Models.RashbaExchange.bandEnergy params\n                QuantumTheory.Transport.Models.RashbaExchange.Band.upper px py) ≠\n          0 →\n        ((algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) z -\n              QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator params px py) *\n            QuantumTheory.Transport.Models.RashbaExchange.projectorResolvent z params px py =\n          1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_band",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjectorOperator_eq_one",
+      "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.RashbaExchange.shiftedHamiltonian_mul_bandProjectorOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Transport.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.bandProjector params band px py =\n    (1 / 2) •\n      (1 +\n        ↑(QuantumTheory.Transport.Models.RashbaExchange.bandSign band) •\n          QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.bandProjector_eq_normalized",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector",
+      "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjector_eq_one"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py *\n        QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py =\n      1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian params px py =\n      ↑(QuantumTheory.Transport.Models.RashbaExchange.spinOrbitEnergy params px py) •\n        QuantumTheory.Transport.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_eq_energy_smul_normalized",
+    "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
