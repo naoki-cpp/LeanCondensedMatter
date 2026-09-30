@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Basic.Real.Basic
@@ -40,44 +41,8 @@ private def externalInsertionTimedEventRank {E n : ℕ}
 private def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E n) : Prop :=
-  externalInsertionTimedEventTime externalTime σ b <
-      externalInsertionTimedEventTime externalTime σ a ∨
-    (externalInsertionTimedEventTime externalTime σ a =
-        externalInsertionTimedEventTime externalTime σ b ∧
-      externalInsertionTimedEventRank a ≤ externalInsertionTimedEventRank b)
-
-private theorem externalInsertionTimedEventBeforeOrEqual_total {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (a b : ExternalInsertionTimedEvent E n) :
-    externalInsertionTimedEventBeforeOrEqual externalTime σ a b ∨
-      externalInsertionTimedEventBeforeOrEqual externalTime σ b a := by
-  rcases lt_trichotomy
-      (externalInsertionTimedEventTime externalTime σ a)
-      (externalInsertionTimedEventTime externalTime σ b) with hab | hab | hab
-  · right
-    exact Or.inl hab
-  · rcases le_total (externalInsertionTimedEventRank a)
-      (externalInsertionTimedEventRank b) with hr | hr
-    · left
-      exact Or.inr ⟨hab, hr⟩
-    · right
-      exact Or.inr ⟨hab.symm, hr⟩
-  · left
-    exact Or.inl hab
-
-private theorem externalInsertionTimedEventBeforeOrEqual_trans {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    {a b c : ExternalInsertionTimedEvent E n}
-    (hab : externalInsertionTimedEventBeforeOrEqual externalTime σ a b)
-    (hbc : externalInsertionTimedEventBeforeOrEqual externalTime σ b c) :
-    externalInsertionTimedEventBeforeOrEqual externalTime σ a c := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hbc with hbc | ⟨hbcTime, _⟩
-    · exact Or.inl (lt_trans hbc hab)
-    · exact Or.inl (hbcTime ▸ hab)
-  · rcases hbc with hbc | ⟨hbcTime, hbcRank⟩
-    · exact Or.inl (habTime ▸ hbc)
-    · exact Or.inr ⟨habTime.trans hbcTime, habRank.trans hbcRank⟩
+  stableTimedEventBeforeOrEqual
+    (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank a b
 
 private def canonicalExternalInsertionTimedEvents (E n : ℕ) :
     List (ExternalInsertionTimedEvent E n) :=
@@ -132,24 +97,6 @@ private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
   intro event
   exact (orderedExternalInsertionTimedEvents_perm externalTime σ).symm.subset
     (canonicalExternalInsertionTimedEvents_all_mem E n event)
-
-private theorem externalInsertionTimedEventBeforeOrEqual_antisymm {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    {a b : ExternalInsertionTimedEvent E n}
-    (hab : externalInsertionTimedEventBeforeOrEqual externalTime σ a b)
-    (hba : externalInsertionTimedEventBeforeOrEqual externalTime σ b a) :
-    a = b := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hba with hba | ⟨hbaTime, _⟩
-    · exact (lt_asymm hab hba).elim
-    · rw [hbaTime] at hab
-      exact (lt_irrefl _ hab).elim
-  · rcases hba with hba | ⟨_, hbaRank⟩
-    · rw [habTime] at hba
-      exact (lt_irrefl _ hba).elim
-    · apply (finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).injective
-      apply Fin.ext
-      exact habRank.antisymm hbaRank
 
 variable {E₁ E₂ m n : ℕ}
 
@@ -232,12 +179,17 @@ theorem orderedExternalInsertionTimedEvents_map_sublist
       (orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).Pairwise localRel := by
     letI : Std.Total localRel :=
-      ⟨externalInsertionTimedEventBeforeOrEqual_total
-        (externalTime ∘ fExternal) (σ ∘ fInteraction)⟩
+      ⟨fun a b =>
+        stableTimedEventBeforeOrEqual_total
+          (externalInsertionTimedEventTime
+            (externalTime ∘ fExternal) (σ ∘ fInteraction))
+          externalInsertionTimedEventRank a b⟩
     letI : IsTrans (ExternalInsertionTimedEvent E₁ m) localRel :=
-      ⟨fun _ _ _ =>
-        externalInsertionTimedEventBeforeOrEqual_trans
-          (externalTime ∘ fExternal) (σ ∘ fInteraction)⟩
+      ⟨fun a b c hab hbc =>
+        stableTimedEventBeforeOrEqual_trans
+          (externalInsertionTimedEventTime
+            (externalTime ∘ fExternal) (σ ∘ fInteraction))
+          externalInsertionTimedEventRank hab hbc⟩
     exact List.pairwise_insertionSort _ _
   have hMappedPairwise :
       ((orderedExternalInsertionTimedEvents
@@ -267,11 +219,22 @@ theorem orderedExternalInsertionTimedEvents_map_sublist
       canonicalExternalInsertionTimedEvents_all_mem E₂ n event
   letI : Std.Antisymm ambientRel :=
     ⟨fun _ _ hab hba =>
-      externalInsertionTimedEventBeforeOrEqual_antisymm externalTime σ hab hba⟩
+      stableTimedEventBeforeOrEqual_antisymm
+        (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank
+        (by
+          intro a b h
+          apply (finSumFinEquiv : ExternalInsertionTimedEvent E₂ n ≃ Fin (2 * E₂ + n)).injective
+          apply Fin.ext
+          exact h)
+        hab hba⟩
   letI : Std.Total ambientRel :=
-    ⟨externalInsertionTimedEventBeforeOrEqual_total externalTime σ⟩
+    ⟨fun a b =>
+      stableTimedEventBeforeOrEqual_total
+        (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank a b⟩
   letI : IsTrans (ExternalInsertionTimedEvent E₂ n) ambientRel :=
-    ⟨fun _ _ _ => externalInsertionTimedEventBeforeOrEqual_trans externalTime σ⟩
+    ⟨fun a b c hab hbc =>
+      stableTimedEventBeforeOrEqual_trans
+        (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank hab hbc⟩
   simpa [orderedExternalInsertionTimedEvents, ambientRel] using
     (List.sublist_insertionSort' (r := ambientRel) hMappedPairwise hSubperm)
 
