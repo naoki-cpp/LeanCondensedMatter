@@ -23,9 +23,10 @@ with the sum of connected `n`-vertex quartic Wick-diagram amplitudes.
 The statistics-independent formal core has two kernel-checked routes. The inversion route is
 `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`; the independent replica route is
 `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica`. The replica theorem
-takes a unit-constant formal power series, a multiplicative connected decomposition, and direct
-equality between factorial-normalized coefficients and object moments, then identifies the
-formal-log coefficient with the connected contribution using only the forward moment decomposition.
+takes a unit-constant formal power series, a multiplicative connected decomposition, and equality
+of the bundled factorial-normalized moment function with the normalized object moment, then
+identifies the formal-log coefficient with the connected contribution using only the forward moment
+decomposition.
 The canonical fermionic theorem consumes this replica route; its model-specific obligation is the
 Dyson-moment/Wick-diagram identification. No source-functional wrapper is required for this formal
 partition-function endpoint.
@@ -78,11 +79,12 @@ from full source connectedness for higher-point external insertions.
 
 ## Statistics-independent moment boundary
 
-The inversion route packages factorial-normalized coefficients with
-`Combinatorics.powerSeriesMomentSetFunction` and compares that normalized finite-set function with
-`MultiplicativeWeight.normalizedObjectMoment`. The replica route instead consumes the direct
-coefficient identity against `MultiplicativeWeight.objectMoment`, avoiding cumulant inversion.
-Both routes identify the same formal-log coefficient with the connected-object contribution.
+Both generic endpoints consume the same normalized finite-set boundary:
+`Combinatorics.powerSeriesMomentSetFunction` is compared with
+`MultiplicativeWeight.normalizedObjectMoment`. The inversion route extracts connected data by
+finite-set cumulant inversion, while the replica route converts that bundled equality internally to
+the forward coefficient identity needed by the replica polynomial proof. Both routes identify the
+same formal-log coefficient with the connected-object contribution.
 
 The bosonic coefficientwise connected theorem uses the same normalized finite-set and
 `MultiplicativeWeight` machinery directly. Statistics enter only in concrete moment realizations,

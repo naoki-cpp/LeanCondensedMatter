@@ -62,14 +62,15 @@ The general higher-point/source-insertion connected expansion remains open.
 ## Normalized moment / connected-decomposition boundary
 
 The statistics-independent formal boundary has two independent proof routes over the same
-`Combinatorics.MultiplicativeWeight` connected-decomposition data. The inversion route uses
-`Combinatorics.NormalizedSetFunction`, `Combinatorics.powerSeriesMomentSetFunction`, and
-`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`. The replica route uses
+`Combinatorics.MultiplicativeWeight` connected-decomposition data and the same bundled normalized
+moment equality
+`Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment`. The inversion route
+uses `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`. The replica route uses
 `PowerSeries.replicaCoeffPolynomial`,
 `Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial`, and
-`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica`; it depends only on the
-forward moment decomposition. The canonical finite-mode fermionic formal linked-cluster endpoint
-consumes the replica route.
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica`; it converts the bundled
+boundary internally to the forward moment relation and does not use cumulant inversion. The
+canonical finite-mode fermionic formal linked-cluster endpoint consumes the replica route.
 
 There is currently no separate source-functional wrapper. Vacuum normalization of unnormalized
 external-insertion moments, Grassmann variables, and arbitrary higher-point/source diagram
