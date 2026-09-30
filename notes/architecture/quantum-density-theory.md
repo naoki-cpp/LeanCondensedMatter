@@ -80,7 +80,9 @@ density-backed theory rather than a second pure-state implementation.
 ## Mixed-state expectations
 
 `DensityOperator.expectation` is the canonical complex-linear expectation functional on bounded
-operators. For `Observable H`,
+operators. `DensityOperator.toState` bundles its positivity and normalization as PhyslibAlpha's
+`𝓢[ℂ, H →L[ℂ] H]`, so generic probabilistic-theory consumers do not depend on the spectral
+implementation of the expectation. For `Observable H`,
 
 ```lean
 DensityOperator.observableExpectation : ℝ
