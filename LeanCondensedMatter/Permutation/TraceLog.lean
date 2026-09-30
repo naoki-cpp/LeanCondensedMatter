@@ -64,7 +64,7 @@ private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
   change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
     (-1 : ℂ) ^ (m + 1) / (m : ℂ)
   push_cast
-  rfl
+  norm_num
 
 private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
     (-ζ) ^ m * (-1 : ℂ) ^ (m + 1) = -ζ ^ m := by
