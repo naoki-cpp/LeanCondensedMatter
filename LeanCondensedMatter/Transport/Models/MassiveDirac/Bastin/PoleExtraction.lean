@@ -48,7 +48,7 @@ theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegu
 weighted regular spectator/current factor converges to `π` times its target-pole value. -/
 theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
     (band : Band) (e v m px py radius : ℝ)
-    (hE : energy v m px py ≠ 0)
+    (_hE : energy v m px py ≠ 0)
     (hradiusPos : 0 < radius)
     (hradius : radius < |interbandEnergyGap band v m px py|) :
     Tendsto
