@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
+import LeanCondensedMatter.Transport.Resolvent.Spectral
 
 set_option linter.style.header false
 
@@ -100,6 +101,13 @@ noncomputable def projectorResolventCoefficient
     (z : ℂ) (band : Band) (v m px py : ℝ) : ℂ :=
   (z - ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹
 
+/-- The model-local projector coefficient is the generic scalar spectral resolvent coefficient. -/
+theorem projectorResolventCoefficient_eq_scalarResolventCoefficient
+    (z : ℂ) (band : Band) (v m px py : ℝ) :
+    projectorResolventCoefficient z band v m px py =
+      scalarResolventCoefficient z (bandEnergy band v m px py) := by
+  rfl
+
 /-- The scalar projector-resolvent coefficient is continuous wherever its spectral denominator is
 nonzero. -/
 theorem continuousAt_projectorResolventCoefficient
@@ -108,8 +116,9 @@ theorem continuousAt_projectorResolventCoefficient
     ContinuousAt
       (fun w : ℂ => projectorResolventCoefficient w band v m px py)
       z := by
-  unfold projectorResolventCoefficient
-  exact (continuousAt_id.sub continuousAt_const).inv₀ hden
+  simpa only [projectorResolventCoefficient_eq_scalarResolventCoefficient] using
+    continuousAt_scalarResolventCoefficient
+      z (bandEnergy band v m px py) hden
 
 /-- Gauge-free finite-band spectral candidate for the resolvent of the massive-Dirac Hamiltonian. -/
 noncomputable def projectorResolvent
