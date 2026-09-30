@@ -37,60 +37,41 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
         Common.QuarticVertexOrder (B : Finset (Fin N)) → ℂ :=
     fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
       (d.restrictComponentConnected B.2).1 order
-  calc
-    (∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
-        ∑ x : d.ComponentVertexOrders × d.ComponentShuffle,
-          d.orderedSimplexContribution ε β (d.assembleVertexOrder x.1 x.2) := by
-      rw [← Equiv.sum_comp (Common.QuarticDiagram.componentOrderDecompositionEquiv d).symm]
-      rfl
-    _ = ∑ orders : d.ComponentVertexOrders,
-          ∑ shuffle : d.ComponentShuffle,
-            d.orderedSimplexContribution ε β
-              (d.assembleVertexOrder orders shuffle) := by
-      rw [Fintype.sum_prod_type]
-    _ = ∑ orders : d.ComponentVertexOrders,
-          ∏ B : d.vertexGraph.componentPartitionOn.parts, localContribution B (orders B) := by
-      apply Fintype.sum_congr
-      intro orders
-      simp only [QuarticWickDiagram.orderedSimplexContribution]
-      let componentIntegrand :
-          ∀ B : d.vertexGraph.componentPartitionOn.parts,
-            (Fin (B : Finset (Fin N)).card → ℝ) → ℂ :=
-        fun B => QuarticWickDiagram.contractionIntegrand ε β
-          (d.restrictComponentConnected B.2).1 (orders B)
-      have hglobal (shuffle : d.ComponentShuffle) :
-          d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) =
-            shuffle.ambientIntegrand componentIntegrand := by
-        funext τ
-        exact d.contractionIntegrand_assembleVertexOrder_eq_prod_components
-          ε β orders shuffle τ
-      simp_rw [hglobal]
-      have hcard :
-          (∑ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card) = S.card := by
-        rw [Finset.sum_coe_sort]
-        exact d.vertexGraph.componentPartitionOn.sum_card_parts
-      simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
-        componentIntegrand] using
-        Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
-          (ι := d.vertexGraph.componentPartitionOn.parts)
-          (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
-          S.card hcard β componentIntegrand
-          (fun B => intervalIntegral.Continuous.measurableLocallyBounded
-            (continuous_contractionIntegrand ε β
-              (d.restrictComponentConnected B.2).1 (orders B)))
-    _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
-            localContribution B order := by
-      simpa using
-        (Finset.prod_univ_sum
-          (fun B : d.vertexGraph.componentPartitionOn.parts =>
-            (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
-          localContribution).symm
-    _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
-            QuarticWickDiagram.orderedSimplexContribution ε β
-              (d.restrictComponentConnected B.2).1 order := by
-      rfl
+  simpa only [one_mul] using
+    (Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
+      d
+      (fun order : Common.QuarticVertexOrder S =>
+        d.orderedSimplexContribution ε β order)
+      localContribution (1 : ℂ) (fun orders => by
+        simp only [one_mul, QuarticWickDiagram.orderedSimplexContribution]
+        let componentIntegrand :
+            ∀ B : d.vertexGraph.componentPartitionOn.parts,
+              (Fin (B : Finset (Fin N)).card → ℝ) → ℂ :=
+          fun B => QuarticWickDiagram.contractionIntegrand ε β
+            (d.restrictComponentConnected B.2).1 (orders B)
+        have hglobal (shuffle : d.ComponentShuffle) :
+            d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) =
+              shuffle.ambientIntegrand componentIntegrand := by
+          funext τ
+          exact d.contractionIntegrand_assembleVertexOrder_eq_prod_components
+            ε β orders shuffle τ
+        simp_rw [hglobal]
+        have hcard :
+            (∑ B : d.vertexGraph.componentPartitionOn.parts,
+              (B : Finset (Fin N)).card) = S.card := by
+          rw [Finset.sum_coe_sort]
+          exact d.vertexGraph.componentPartitionOn.sum_card_parts
+        simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
+          componentIntegrand] using
+          Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
+            (ι := d.vertexGraph.componentPartitionOn.parts)
+            (fun B : d.vertexGraph.componentPartitionOn.parts =>
+              (B : Finset (Fin N)).card)
+            S.card hcard β componentIntegrand
+            (fun B => intervalIntegral.Continuous.measurableLocallyBounded
+              (continuous_contractionIntegrand ε β
+                (d.restrictComponentConnected B.2).1 (orders B)))))
+
 
 /-- A quartic Wick-diagram amplitude is the product of the amplitudes of its connected components. -/
 theorem quarticWickDiagramAmplitude_eq_prod_components

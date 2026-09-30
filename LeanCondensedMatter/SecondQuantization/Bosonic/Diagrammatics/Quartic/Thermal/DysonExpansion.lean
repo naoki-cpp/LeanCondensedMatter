@@ -381,40 +381,19 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
         QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponent B.2) t := by
   classical
   unfold QuarticDiagram.dysonThermalAmplitude
-  calc
-    (∑ order : Common.QuarticVertexOrder S,
-        QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t) =
-      ∑ x : d.ComponentVertexOrders × d.ComponentShuffle,
-        QuarticDiagram.orderedDysonThermalAmplitude ε β g d
-          (d.assembleVertexOrder x.1 x.2) t := by
-        rw [← Equiv.sum_comp d.componentOrderDecompositionEquiv.symm]
-        rfl
-    _ = ∑ orders : d.ComponentVertexOrders,
-        ∑ shuffle : d.ComponentShuffle,
-          QuarticDiagram.orderedDysonThermalAmplitude ε β g d
-            (d.assembleVertexOrder orders shuffle) t := by
-      rw [Fintype.sum_prod_type]
-    _ = ∑ orders : d.ComponentVertexOrders,
-        ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          QuarticDiagram.orderedDysonThermalAmplitude ε β g
-            (d.restrictComponent B.2) (orders B) t := by
-      apply Fintype.sum_congr
-      intro orders
-      exact QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components
-        ε β g d orders t
-    _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
-          QuarticDiagram.orderedDysonThermalAmplitude ε β g
-            (d.restrictComponent B.2) order t := by
-      simpa using
-        (Finset.prod_univ_sum
-          (fun B : d.vertexGraph.componentPartitionOn.parts =>
-            (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
-          (fun B order =>
-            QuarticDiagram.orderedDysonThermalAmplitude ε β g
-              (d.restrictComponent B.2) order t)).symm
-    _ = ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponent B.2) t := rfl
+  simpa only [one_mul] using
+    (Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
+      d
+      (fun order : Common.QuarticVertexOrder S =>
+        QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t)
+      (fun B order =>
+        QuarticDiagram.orderedDysonThermalAmplitude ε β g
+          (d.restrictComponent B.2) order t)
+      (1 : ℂ) (fun orders => by
+        simpa only [one_mul] using
+          QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components
+            ε β g d orders t))
+
 
 variable [Fintype Mode]
 

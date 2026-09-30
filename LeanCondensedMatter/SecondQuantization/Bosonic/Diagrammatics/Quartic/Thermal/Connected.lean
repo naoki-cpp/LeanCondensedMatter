@@ -70,50 +70,16 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order := by
   classical
-  let F : d.ComponentVertexOrders × d.ComponentShuffle → ℂ := fun x =>
-    QuarticDiagram.orderedThermalAmplitude ε β g d (d.assembleVertexOrder x.1 x.2)
-  have hreindex := Equiv.sum_comp d.componentOrderDecompositionEquiv F
-  have hleft :
-      (∑ order : Common.QuarticVertexOrder S,
-        QuarticDiagram.orderedThermalAmplitude ε β g d order) =
-        ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x := by
-    calc
-      (∑ order : Common.QuarticVertexOrder S,
-        QuarticDiagram.orderedThermalAmplitude ε β g d order) =
-          ∑ order : Common.QuarticVertexOrder S,
-            F (d.componentOrderDecompositionEquiv order) := by
-        apply Finset.sum_congr rfl
-        intro order _
-        change QuarticDiagram.orderedThermalAmplitude ε β g d order =
-          QuarticDiagram.orderedThermalAmplitude ε β g d
-            ((d.componentOrderDecompositionEquiv).symm
-              (d.componentOrderDecompositionEquiv order))
-        exact congrArg (QuarticDiagram.orderedThermalAmplitude ε β g d)
-          ((d.componentOrderDecompositionEquiv).symm_apply_apply order).symm
-      _ = ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x := hreindex
-  rw [hleft, Fintype.sum_prod_type]
-  simp only [F]
-  have hfactor : ∀ orders : d.ComponentVertexOrders,
-      (∑ shuffle : d.ComponentShuffle,
-        QuarticDiagram.orderedThermalAmplitude ε β g d
-          (d.assembleVertexOrder orders shuffle)) =
-        (Fintype.card d.ComponentShuffle : ℂ) *
-          ∏ B : d.vertexGraph.componentPartitionOn.parts,
-            QuarticDiagram.orderedThermalAmplitude ε β g
-              (d.restrictComponent B.2) (orders B) := by
-    intro orders
-    simp_rw [QuarticDiagram.orderedThermalAmplitude_eq_prod_components ε β g d orders]
-    simp
-  simp_rw [hfactor]
-  rw [← Finset.mul_sum]
-  congr 1
-  have hdist := Finset.prod_univ_sum
-    (fun B : d.vertexGraph.componentPartitionOn.parts =>
-      (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
+  exact Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
+    d
+    (fun order : Common.QuarticVertexOrder S =>
+      QuarticDiagram.orderedThermalAmplitude ε β g d order)
     (fun B order =>
       QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order)
-  rw [Fintype.piFinset_univ] at hdist
-  simpa using hdist.symm
+    (Fintype.card d.ComponentShuffle : ℂ) (fun orders => by
+      simp_rw [QuarticDiagram.orderedThermalAmplitude_eq_prod_components ε β g d orders]
+      simp)
+
 
 /-- Averaging over global vertex orders removes the shuffle multiplicity, so the coefficientwise
 thermal amplitude factors exactly over connected components. -/
