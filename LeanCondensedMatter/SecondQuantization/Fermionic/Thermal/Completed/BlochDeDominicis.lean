@@ -171,9 +171,12 @@ private theorem operator_mul_operator_eq_exchange
       C.anticommutatorValue D •
           (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) +
         (-1 : ℂ) • (D.operator * C.operator) := by
-  simpa using
-    (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq
-      (-1 : ℂ) (completedAnticomm_operator_operator C D))
+  have hone :
+      (1 : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) =
+        ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := rfl
+  rw [hone]
+  exact ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq
+    (-1 : ℂ) (completedAnticomm_operator_operator C D)
 
 private theorem operator_comp_operatorProduct_eq_peelSum
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
