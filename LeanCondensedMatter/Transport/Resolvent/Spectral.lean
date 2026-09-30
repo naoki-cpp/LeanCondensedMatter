@@ -51,8 +51,8 @@ theorem tendsto_scalarResolventCoefficient_spectralParameter_zero
       (fun broadening : ℝ =>
         scalarResolventCoefficient
           (spectralParameter side probeEnergy broadening) eigenvalue)
-      (Filter.nhds 0)
-      (Filter.nhds (scalarResolventCoefficient (probeEnergy : ℂ) eigenvalue)) := by
+      (nhds 0)
+      (nhds (scalarResolventCoefficient (probeEnergy : ℂ) eigenvalue)) := by
   have hden :
       spectralParameter side probeEnergy 0 - (eigenvalue : ℂ) ≠ 0 := by
     simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using
@@ -65,8 +65,8 @@ theorem tendsto_scalarResolventCoefficient_spectralParameter_zero
   have hinv : Filter.Tendsto
       (fun broadening : ℝ =>
         (spectralParameter side probeEnergy broadening - (eigenvalue : ℂ))⁻¹)
-      (Filter.nhds 0)
-      (Filter.nhds
+      (nhds 0)
+      (nhds
         ((spectralParameter side probeEnergy 0 - (eigenvalue : ℂ))⁻¹)) :=
     (hcontinuous.inv₀ hden).tendsto
   simpa [scalarResolventCoefficient, spectralParameter, spectralParameterOfRegulator,
