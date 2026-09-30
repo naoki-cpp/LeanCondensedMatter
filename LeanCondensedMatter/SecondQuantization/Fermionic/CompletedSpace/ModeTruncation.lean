@@ -57,7 +57,7 @@ noncomputable def algebraicModeSupport (x : OccupationFock Mode) : Finset Mode :
 
 /-- Every occupation configuration carrying a nonzero algebraic coefficient is contained in the
 finite ambient-mode support. -/
-theorem occupation_subset_algebraicModeSupport (x : OccupationFock Mode) (n : Occupation Mode)
+private theorem occupation_subset_algebraicModeSupport (x : OccupationFock Mode) (n : Occupation Mode)
     (hn : x n ≠ 0) :
     n ⊆ algebraicModeSupport x := by
   classical
