@@ -38,13 +38,9 @@ theorem powerSeriesMomentSetFunction_eq_iff
     powerSeriesMomentSetFunction Z hZ = M ↔
       ∀ S : Finset α, powerSeriesMomentCoeff Z S.card = M S := by
   constructor
-  · intro h S
-    change powerSeriesMomentSetFunction (α := α) Z hZ S = M S
-    rw [h]
+  · rintro rfl S
+    rfl
   · intro h
-    apply NormalizedSetFunction.ext
-    intro S
-    change powerSeriesMomentCoeff Z S.card = M S
-    exact h S
+    exact NormalizedSetFunction.ext h
 
 end Combinatorics
