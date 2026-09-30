@@ -192,7 +192,7 @@ theorem dysonCoeff_at_zero (energy : Config → ℝ)
   cases n with
   | zero => simp [dysonCoeff_zero]
   | succ k =>
-      simp only [Nat.succ_ne_zero, if_false]
+      simp only [Nat.succ_ne_zero, ite_false]
       apply matrixCoeff_ext
       intro m n'
       change dysonCoeff energy V (k + 1) 0 (basisState n') m = matrixCoeff 0 m n'
