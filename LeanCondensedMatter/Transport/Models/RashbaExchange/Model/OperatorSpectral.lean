@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
+import LeanCondensedMatter.Transport.Resolvent.Spectral
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 
 set_option linter.style.header false
@@ -89,6 +90,13 @@ noncomputable def projectorResolventCoefficient
     (z : ℂ) (params : Parameters) (band : Band) (px py : ℝ) : ℂ :=
   (z - ((bandEnergy params band px py : ℝ) : ℂ))⁻¹
 
+/-- The model-local projector coefficient is the generic scalar spectral resolvent coefficient. -/
+theorem projectorResolventCoefficient_eq_scalarResolventCoefficient
+    (z : ℂ) (params : Parameters) (band : Band) (px py : ℝ) :
+    projectorResolventCoefficient z params band px py =
+      scalarResolventCoefficient z (bandEnergy params band px py) := by
+  rfl
+
 /-- The scalar projector-resolvent coefficient is continuous away from its pole. -/
 theorem continuousAt_projectorResolventCoefficient
     (z : ℂ) (params : Parameters) (band : Band) (px py : ℝ)
@@ -96,8 +104,9 @@ theorem continuousAt_projectorResolventCoefficient
     ContinuousAt
       (fun w : ℂ => projectorResolventCoefficient w params band px py)
       z := by
-  unfold projectorResolventCoefficient
-  exact (continuousAt_id.sub continuousAt_const).inv₀ hden
+  simpa only [projectorResolventCoefficient_eq_scalarResolventCoefficient] using
+    continuousAt_scalarResolventCoefficient
+      z (bandEnergy params band px py) hden
 
 /-- Gauge-free finite-band spectral candidate for the resolvent. -/
 noncomputable def projectorResolvent
