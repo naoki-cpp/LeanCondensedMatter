@@ -50,18 +50,6 @@ theorem inner_completedBasisState_left (n : Occupation Mode) (ψ : CompletedFock
   simpa [completedBasisState] using
     (Common.inner_completedBasisState_left (Config := Occupation Mode) n ψ)
 
-@[simp]
-theorem completedBasisState_apply_self (n : Occupation Mode) :
-    completedBasisState n n = 1 := by
-  simpa [completedBasisState] using
-    (Common.completedBasisState_apply_self (Config := Occupation Mode) n)
-
-@[simp]
-theorem completedBasisState_apply_of_ne {m n : Occupation Mode} (h : m ≠ n) :
-    completedBasisState n m = 0 := by
-  simpa [completedBasisState] using
-    (Common.completedBasisState_apply_of_ne (Config := Occupation Mode) h)
-
 /-- The coordinate-preserving inclusion of algebraic fermionic Fock space into its `ℓ²` completion. -/
 noncomputable def algebraicToCompleted :
     OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode :=

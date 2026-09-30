@@ -1,5 +1,5 @@
 import Mathlib.Analysis.Matrix.Hermitian
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas

@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Algebra.Pi
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.LinearAlgebra.Finsupp.LSum
 import Mathlib.LinearAlgebra.Finsupp.VectorSpace

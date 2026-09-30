@@ -208,7 +208,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
             (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
         exact hltVal
-      rw [if_pos hleg, if_pos hlt]
+      rw [ite_eq_left hleg, ite_eq_left hlt]
     · have hltVal :
           ¬ (d.externalSectorOrderIso C f).1.val <
             (d.externalSectorOrderIso B e).1.val := by
@@ -224,7 +224,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
             (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val at h
         exact h
-      rw [if_neg hleg, if_neg hlt]
+      rw [ite_eq_right hleg, ite_eq_right hlt]
   have hzero :
       (∑ q : ↥(interactionSector
           (C : Finset (ExternalInsertionVertex E S))) × Fin 4,
@@ -232,7 +232,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
           d.componentLegPosition B (Sum.inl e) then 1 else 0) = 0 := by
     apply Finset.sum_eq_zero
     intro q _
-    rw [if_neg (d.componentInteraction_not_lt_external B C q.1 q.2 e)]
+    rw [ite_eq_right (d.componentInteraction_not_lt_external B C q.1 q.2 e)]
   rw [hext, hzero, add_zero]
 
 private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_mod_two
@@ -256,7 +256,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
         _ = ∑ _e : Fin (2 * d.externalPairCount C), 1 := by
           apply Finset.sum_congr rfl
           intro e _
-          rw [if_pos (d.componentExternal_lt_interaction B C e v l)]
+          rw [ite_eq_left (d.componentExternal_lt_interaction B C e v l)]
         _ = 2 * d.externalPairCount C := by simp
     rw [hext]
     exact ⟨d.externalPairCount C, by omega⟩
@@ -278,13 +278,13 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
               d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
           · have hfull :=
               (d.componentInteractionLeg_lt_iff B C hBC v l w k).2 hlt
-            rw [if_pos hfull, if_pos hlt]
+            rw [ite_eq_left hfull, ite_eq_left hlt]
           · have hfull :
                 ¬ d.componentLegPosition C (Sum.inr (w, k)) <
                   d.componentLegPosition B (Sum.inr (v, l)) := by
               intro h
               exact hlt ((d.componentInteractionLeg_lt_iff B C hBC v l w k).1 h)
-            rw [if_neg hfull, if_neg hlt]
+            rw [ite_eq_right hfull, ite_eq_right hlt]
         _ = 4 * (if d.ambientInteractionVertex C w <
               d.ambientInteractionVertex B v then 1 else 0) := by
           simp

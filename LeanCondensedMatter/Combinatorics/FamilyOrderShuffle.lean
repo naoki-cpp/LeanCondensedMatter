@@ -116,7 +116,7 @@ private noncomputable def familyGlobalSlotEquiv {total : ℕ}
   (Equiv.ofInjective
       (fun x : F i => order.symm (ambientEquiv.symm ⟨i, x⟩))
       (familyGlobalSlot_injective F ambientEquiv order i)).trans
-    (Equiv.setCongr (by
+    (Set.equivOfEq (by
       ext x
       simp [familyGlobalSlots]))
 
@@ -151,10 +151,18 @@ private theorem familyOrderOfOrder_slot {total : ℕ} (size : ι → ℕ)
           ⟨i, (familyGlobalSlotEquiv F ambientEquiv order i).symm
             ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
               ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j)⟩) = _
+  let y :=
+    (familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
+      ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j
   have h := congrArg Subtype.val
-      ((familyGlobalSlotEquiv F ambientEquiv order i).apply_symm_apply
-      ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-        ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j))
+      ((familyGlobalSlotEquiv F ambientEquiv order i).apply_symm_apply y)
+  have hval (x : F i) :
+      ((familyGlobalSlotEquiv F ambientEquiv order i x :
+        ↥(familyGlobalSlots F ambientEquiv order i)) : Fin total) =
+        order.symm (ambientEquiv.symm ⟨i, x⟩) := by
+    simp only [familyGlobalSlotEquiv, Equiv.trans_apply, Equiv.ofInjective_apply]
+    rw [Set.equivOfEq_apply]
+  rw [hval] at h
   exact h
 
 /-- Extract the order-preserving family shuffle induced by a global order. -/

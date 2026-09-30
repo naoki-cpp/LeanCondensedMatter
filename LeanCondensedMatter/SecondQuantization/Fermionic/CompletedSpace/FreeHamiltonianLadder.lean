@@ -32,12 +32,12 @@ noncomputable def completedAnnihilateFromFreeHamiltonianDomain (ε : Mode → �
     completedFreeHamiltonianDomain ε →ₗ[ℂ] CompletedFockSpace Mode :=
   (completedAnnihilate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype
 
-/-- Pointwise free-Hamiltonian commutator relation for fermionic creation on `Dom(H)`. -/
-private theorem completedFreeHamiltonian_create_commutator_apply
-    (ε : Mode → ℝ) (i : Mode) (ψ : completedFreeHamiltonianDomain ε) :
-    completedFreeHamiltonianAfterCreate ε i ψ -
-        completedCreateAfterFreeHamiltonian ε i ψ =
-      (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i ψ := by
+/-- The completed free-Hamiltonian creation commutator as an identity of linear maps on `Dom(H)`. -/
+theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode) :
+    completedFreeHamiltonianAfterCreate ε i - completedCreateAfterFreeHamiltonian ε i =
+      (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i := by
+  apply LinearMap.ext
+  intro ψ
   apply lp.ext
   funext n
   change
@@ -63,25 +63,18 @@ private theorem completedFreeHamiltonian_create_commutator_apply
     rfl
   rw [hHa, haH, hrestrict, completedCreate_apply, completedCreate_apply]
   by_cases h : i ∈ n
-  · simp only [if_pos h]
+  · simp only [ite_eq_left h]
     rw [hH, freeHamiltonianWeight_toggle_of_mem ε h]
     ring
   · simp [h]
 
-/-- The completed free-Hamiltonian creation commutator as an identity of linear maps on `Dom(H)`. -/
-theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode) :
-    completedFreeHamiltonianAfterCreate ε i - completedCreateAfterFreeHamiltonian ε i =
-      (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i := by
+/-- The completed free-Hamiltonian annihilation commutator as an identity of linear maps on
+`Dom(H)`. -/
+theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : Mode) :
+    completedFreeHamiltonianAfterAnnihilate ε i - completedAnnihilateAfterFreeHamiltonian ε i =
+      (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i := by
   apply LinearMap.ext
   intro ψ
-  exact completedFreeHamiltonian_create_commutator_apply ε i ψ
-
-/-- Pointwise free-Hamiltonian commutator relation for fermionic annihilation on `Dom(H)`. -/
-private theorem completedFreeHamiltonian_annihilate_commutator_apply
-    (ε : Mode → ℝ) (i : Mode) (ψ : completedFreeHamiltonianDomain ε) :
-    completedFreeHamiltonianAfterAnnihilate ε i ψ -
-        completedAnnihilateAfterFreeHamiltonian ε i ψ =
-      (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i ψ := by
   apply lp.ext
   funext n
   change
@@ -108,18 +101,9 @@ private theorem completedFreeHamiltonian_annihilate_commutator_apply
   rw [hHa, haH, hrestrict, completedAnnihilate_apply, completedAnnihilate_apply]
   by_cases h : i ∈ n
   · simp [h]
-  · simp only [if_neg h]
+  · simp only [ite_eq_right h]
     rw [hH, freeHamiltonianWeight_toggle_of_not_mem ε h]
     ring
-
-/-- The completed free-Hamiltonian annihilation commutator as an identity of linear maps on
-`Dom(H)`. -/
-theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : Mode) :
-    completedFreeHamiltonianAfterAnnihilate ε i - completedAnnihilateAfterFreeHamiltonian ε i =
-      (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i := by
-  apply LinearMap.ext
-  intro ψ
-  exact completedFreeHamiltonian_annihilate_commutator_apply ε i ψ
 
 end
 end Fermionic

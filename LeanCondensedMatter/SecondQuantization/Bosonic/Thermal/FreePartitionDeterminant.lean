@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 set_option linter.style.header false

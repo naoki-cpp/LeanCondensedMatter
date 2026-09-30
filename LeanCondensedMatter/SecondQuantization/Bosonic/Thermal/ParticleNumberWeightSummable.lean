@@ -58,12 +58,12 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
       b' i = (1 - Real.exp (-β * ε i))⁻¹ := fun i hi => by
     rw [hb'def]; simp [Finset.ne_of_mem_erase hi]
   rw [← Finset.mul_prod_erase Finset.univ b' (Finset.mem_univ j), hb'def] at H
-  simp only [if_true] at H
+  simp only [ite_true] at H
   rw [Finset.prod_congr rfl hprod] at H
   exact HasSum.congr_fun H fun n => by
     symm
     rw [← Finset.mul_prod_erase Finset.univ (fun i => g' i (n i)) (Finset.mem_univ j), hg'def]
-    simp only [if_true]
+    simp only [ite_true]
     have hrest : ∀ i, i ∈ Finset.univ.erase j →
         g' i (n i) = oneModeBoltzmannWeight β (ε i) (n i) := fun i hi => by
       rw [hg'def]; simp [Finset.ne_of_mem_erase hi]

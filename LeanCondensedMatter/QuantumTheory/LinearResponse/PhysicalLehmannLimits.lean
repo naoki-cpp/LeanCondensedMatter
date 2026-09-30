@@ -56,7 +56,7 @@ private theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
           (data.energy mn.1 - data.energy mn.2)
           (purePointTransitionWeight system data A B mn) := by
   by_cases hη : 0 < eta
-  · simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
+  · simp only [finitePurePointPhysicalSusceptibilityExtension, dite_eq_left hη]
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data A B omega eta hη
   · simp [finitePurePointPhysicalSusceptibilityExtension, hη,
@@ -127,7 +127,7 @@ theorem finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_li
         (𝓝 (finitePurePointPhysicalSusceptibilityExtension
           system data A B omega eta)) := by
     intro omega eta hη
-    simp only [finitePurePointPhysicalSusceptibilityExtension, dif_pos hη]
+    simp only [finitePurePointPhysicalSusceptibilityExtension, dite_eq_left hη]
     exact tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate
       system (purePointNormalizedExpectation system data) A B omega eta hη
   exact ⟨⟨_, hlong, hlimits.1⟩, ⟨_, hlong, hlimits.2⟩⟩

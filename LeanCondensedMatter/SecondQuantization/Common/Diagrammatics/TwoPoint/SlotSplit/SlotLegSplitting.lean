@@ -102,14 +102,14 @@ theorem TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem {S T : Finset (Fin N)} (h
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
     (vac : QuarticDiagram InternalLabel N (S \ T)) (v : ↥S) (hv : (v : Fin N) ∈ T) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel v = ext.vertexLabel ⟨v, hv⟩ :=
-  dif_pos hv
+  dite_eq_left hv
 
 theorem TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem {S T : Finset (Fin N)} (h : T ⊆ S)
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
     (vac : QuarticDiagram InternalLabel N (S \ T)) (v : ↥S) (hv : (v : Fin N) ∉ T) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel v =
       vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ :=
-  dif_neg hv
+  dite_eq_right hv
 
 section Decompose
 

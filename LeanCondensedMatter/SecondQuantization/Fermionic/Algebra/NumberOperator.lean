@@ -37,14 +37,14 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     numberOperator i (basisState n) = if i ∈ n then basisState n else 0 := by
   rw [numberOperator_apply]
   by_cases hi : i ∈ n
-  · rw [if_pos hi]
+  · rw [ite_eq_left hi]
     have hnotmem : i ∉ removeOccupation i n := Finset.notMem_erase i n
     have heq : insertOccupation i (removeOccupation i n) = n := by
       rw [insertOccupation, removeOccupation, Finset.insert_erase hi]
     rw [annihilate_basisState_of_mem hi, map_smul, create_basisState_of_not_mem hnotmem,
       fermionSign_removeOccupation_of_not_lt (lt_irrefl i), heq, smul_smul,
       fermionSign_sq_complex, one_smul]
-  · rw [if_neg hi, annihilate_basisState_of_not_mem hi, map_zero]
+  · rw [ite_eq_right hi, annihilate_basisState_of_not_mem hi, map_zero]
 
 /-- The single-mode number operator is the basis-diagonal projector onto occupations containing
 mode `i`. This is the canonical bridge from the CAR definition `aᵢ† aᵢ` to the common

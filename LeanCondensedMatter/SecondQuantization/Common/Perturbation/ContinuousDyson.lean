@@ -147,8 +147,8 @@ theorem continuousDysonCoeff_at_zero (energy : Config → ℝ)
     continuousDysonCoeff energy V n 0 = if n = 0 then 1 else 0 := by
   rw [continuousDysonCoeff, dysonCoeff_at_zero]
   by_cases h : n = 0
-  · rw [if_pos h, if_pos h, ← Module.End.one_eq_id, map_one]
-  · rw [if_neg h, if_neg h, map_zero]
+  · rw [ite_eq_left h, ite_eq_left h, ← Module.End.one_eq_id, map_one]
+  · rw [ite_eq_right h, ite_eq_right h, map_zero]
 
 /-- The algebraic Dyson recursion transported to Mathlib's Bochner interval integral. -/
 theorem continuousDysonCoeff_succ (energy : Config → ℝ)

@@ -258,7 +258,7 @@ theorem bandProjectorOperator_eq_rankOne_pointwiseEigenbasis
     rw [bandProjectorOperator_apply_pointwiseEigenbasis]
     simp [data]
   · rw [bandProjectorOperator_apply_pointwiseEigenbasis]
-    simp only [if_neg hsource, smul_zero]
+    simp only [ite_eq_right hsource, smul_zero]
     have horth :
         inner ℂ (data.eigenbasis band) (data.eigenbasis source) = 0 :=
       data.eigenbasis.inner_eq_zero (Ne.symm hsource)

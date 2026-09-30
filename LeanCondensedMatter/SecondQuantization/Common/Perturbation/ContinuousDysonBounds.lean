@@ -77,7 +77,7 @@ noncomputable def interactionPictureNormBound (energy : Config → ℝ)
 theorem interactionPictureNormBound_nonneg (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β : ℝ} (hβ : 0 ≤ β) :
     0 ≤ interactionPictureNormBound energy V β := by
-  rw [interactionPictureNormBound, dif_pos hβ]
+  rw [interactionPictureNormBound, dite_eq_left hβ]
   exact (Classical.choose_spec (exists_interactionPictureNormBound energy V hβ)).1
 
 /-- Uniform interaction-picture norm control on `[0, β]`. -/
@@ -85,7 +85,7 @@ theorem norm_continuousInteractionPicture_le (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖continuousInteractionPicture energy V τ‖ ≤ interactionPictureNormBound energy V β := by
-  rw [interactionPictureNormBound, dif_pos hβ]
+  rw [interactionPictureNormBound, dite_eq_left hβ]
   exact (Classical.choose_spec (exists_interactionPictureNormBound energy V hβ)).2 τ hτ
 
 /-- The finite interaction-picture family supplies the canonical generic bounded-Dyson hypotheses

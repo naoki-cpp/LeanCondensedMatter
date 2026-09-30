@@ -29,36 +29,18 @@ theorem norm_fermionPhase (i : Mode) (n : Occupation Mode) :
     ‖fermionPhase i n‖ = 1 := by
   simp [fermionPhase, fermionSign]
 
-/-- Reindex completed occupation amplitudes by toggling mode `i`. -/
-noncomputable def completedToggle (i : Mode) :
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  (Common.completedReindex (toggleOccupationEquiv i)).toContinuousLinearMap
-
-@[simp]
-theorem completedToggle_apply (i : Mode) (ψ : CompletedFockSpace Mode)
-    (n : Occupation Mode) :
-    completedToggle i ψ n = ψ (toggleOccupation i n) := by
-  simpa [completedToggle, toggleOccupationEquiv_apply] using
-    (Common.completedReindex_apply (toggleOccupationEquiv i) ψ n)
-
-@[simp]
-theorem completedToggle_completedToggle (i : Mode) (ψ : CompletedFockSpace Mode) :
-    completedToggle i (completedToggle i ψ) = ψ := by
-  ext n
-  rw [completedToggle_apply, completedToggle_apply, toggleOccupation_involutive i n]
-
 private noncomputable def completedSignedToggle (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
   (Common.completedPhaseMultiplier
       (fun n : Occupation Mode => fermionPhase i (toggleOccupation i n))
       (fun n => norm_fermionPhase i (toggleOccupation i n))).toContinuousLinearMap.comp
-    (completedToggle i)
+    (Common.completedReindex (toggleOccupationEquiv i)).toContinuousLinearMap
 
 private theorem completedSignedToggle_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
     completedSignedToggle i ψ n =
       fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) := by
-  simp [completedSignedToggle, completedToggle, toggleOccupationEquiv_apply]
+  simp [completedSignedToggle, toggleOccupationEquiv_apply]
 
 private noncomputable def completedCreateMap (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=

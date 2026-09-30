@@ -50,7 +50,7 @@ noncomputable instance occupationBasis : Common.OccupationBasis Mode (Occupation
   · intro n
     exact (Finset.finite_toSet n).subset fun i hi => by
       by_contra hin
-      exact hi (if_neg hin)
+      exact hi (ite_eq_right hin)
   · intro m n h
     exact Finset.ext fun i => by
       have hi := h i

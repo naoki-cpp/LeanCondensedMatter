@@ -74,17 +74,6 @@ theorem restrict_bind_eq (σ : Finpartition a) (Q : ∀ B ∈ σ.parts, Finparti
     exact ⟨(Q B hB).ne_bot hd, d, mem_bind.2 ⟨B, hB, hd⟩,
       inf_eq_left.2 ((Q B hB).le hd)⟩
 
-/-- Restriction is monotone with respect to refinement. -/
-theorem restrict_mono {P P' : Finpartition a} (h : P ≤ P') {b : Finset α} (hb : b ≤ a) :
-    P.restrict hb ≤ P'.restrict hb := by
-  intro d hd
-  rw [mem_restrict_iff] at hd
-  obtain ⟨hd0, A, hA, rfl⟩ := hd
-  obtain ⟨C, hC, hAC⟩ := h hA
-  refine ⟨C ⊓ b, ?_, inf_le_inf_right b hAC⟩
-  rw [mem_restrict_iff]
-  exact ⟨ne_bot_of_le_ne_bot hd0 (inf_le_inf_right b hAC), C, hC, rfl⟩
-
 /-- Refinements of `σ` are independent choices of a partition on every block of `σ`. -/
 def refinementsEquivFiberPartitions (σ : Finpartition a) :
     {π : Finpartition a // π ≤ σ} ≃ (∀ B : σ.parts, Finpartition (B : Finset α)) where
@@ -99,7 +88,7 @@ def refinementsOrderIsoFiberPartitions (σ : Finpartition a) :
   toEquiv := refinementsEquivFiberPartitions σ
   map_rel_iff' := by
     intro π π'
-    refine ⟨fun h A hA => ?_, fun h B => restrict_mono h (σ.le B.2)⟩
+    refine ⟨fun h A hA => ?_, fun h B => restrict_mono (σ.le B.2) h⟩
     obtain ⟨B, hB, hAB⟩ := π.2 hA
     have hAmem : A ∈ (π.1.restrict (σ.le hB)).parts := by
       rw [mem_restrict_iff]

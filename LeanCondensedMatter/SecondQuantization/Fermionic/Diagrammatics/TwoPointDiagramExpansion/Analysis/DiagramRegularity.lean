@@ -40,7 +40,7 @@ private theorem twoPointOrderSignature_twoPointOrderSignatureBase_eq {n : ℕ} (
     (h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s) :
     twoPointOrderSignature τ τ' (twoPointOrderSignatureBase τ τ' s) = s := by
   classical
-  simp only [twoPointOrderSignatureBase, dif_pos h]
+  simp only [twoPointOrderSignatureBase, dite_eq_left h]
   exact Classical.choose_spec h
 
 private theorem sameTwoPointOrderChamber_signatureBase {n : ℕ} (τ τ' : ℝ)

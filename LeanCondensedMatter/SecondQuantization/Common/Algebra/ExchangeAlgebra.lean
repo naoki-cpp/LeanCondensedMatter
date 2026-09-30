@@ -35,7 +35,7 @@ theorem exchangeCommutator_annihilate_create_self (i : Mode) :
       (ExchangeAlgebra.create (s := s) (Config := Config) i) =
       (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
   have h := ExchangeAlgebra.annihilate_create (s := s) (Config := Config) i i
-  rwa [if_pos rfl] at h
+  rwa [ite_eq_left rfl] at h
 
 /-- Reverse mixed exchange relation `[a_i†,a_j]_ζ = -ζ δᵢⱼ`. -/
 theorem exchangeCommutator_create_annihilate (i j : Mode) :

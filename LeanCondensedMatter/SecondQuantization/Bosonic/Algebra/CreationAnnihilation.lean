@@ -61,13 +61,13 @@ theorem create_basisState_eq (i : Mode) (n : Occupation Mode) :
 @[simp]
 theorem annihilate_basisState_of_zero {i : Mode} {n : Occupation Mode} (h : n i = 0) :
     annihilate i (basisState n) = 0 := by
-  rw [annihilate_basisState, annihilateBasis, if_pos h]
+  rw [annihilate_basisState, annihilateBasis, ite_eq_left h]
 
 /-- Annihilation lowers a nonzero occupation at mode `i`. -/
 theorem annihilate_basisState_of_pos {i : Mode} {n : Occupation Mode} (h : n i ≠ 0) :
     annihilate i (basisState n) =
       (Real.sqrt (n i : ℝ) : ℂ) • basisState (removeOccupation i n) := by
-  rw [annihilate_basisState, annihilateBasis, if_neg h]
+  rw [annihilate_basisState, annihilateBasis, ite_eq_right h]
 
 /-- Uniform basis-state action of annihilation. The zero-occupation case is absorbed by `√0 = 0`,
 so downstream proofs do not need to branch on whether mode `i` is occupied. -/

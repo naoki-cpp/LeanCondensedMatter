@@ -49,10 +49,9 @@ private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
     have hgp : g (p : ℂ) ≠ 0 := by simpa [g, c] using hden p
     have hreal := (((hg p).inv hgp).const_mul (((2 : ℂ) * c)⁻¹ * A)).comp_ofReal
     convert hreal using 1
-    · rfl
-    · dsimp [g, c] at hgp ⊢
-      simp only [Complex.ofReal_mul, Complex.ofReal_pow]
-      field_simp [hgp, hvC]
+    dsimp [g, c] at hgp ⊢
+    simp only [Complex.ofReal_mul, Complex.ofReal_pow]
+    field_simp [hgp, hvC]
   have hinv : Continuous (fun p : ℝ =>
       (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹) :=
     (show Continuous (fun p : ℝ => A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) by fun_prop).inv₀ hden

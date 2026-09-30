@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 
 set_option linter.style.header false
 
