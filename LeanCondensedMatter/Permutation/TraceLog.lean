@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Permutation.ConnectedCycleSeries
+import Mathlib.Data.Rat.Cast.Lemmas
 import Mathlib.RingTheory.PowerSeries.Log
 import Mathlib.Tactic.FieldSimp
 
