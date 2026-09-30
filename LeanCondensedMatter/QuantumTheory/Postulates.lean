@@ -28,7 +28,7 @@ def StateVector (H : Type*) [NormedAddCommGroup H] :=
 /-- A bounded observable is a self-adjoint bounded linear operator on the state space.
 
 This is the Hilbert-space specialization of PhyslibAlpha's general observable type. -/
-abbrev Observable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] :=
+abbrev Observable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] :=
   _root_.Observable (H →L[ℂ] H)
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
