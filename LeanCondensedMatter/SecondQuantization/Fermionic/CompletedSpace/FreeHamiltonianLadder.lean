@@ -38,36 +38,36 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
       (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i := by
   apply LinearMap.ext
   intro ψ
-  
-    apply lp.ext
-    funext n
-    change
-      completedFreeHamiltonianAfterCreate ε i ψ n -
-          completedCreateAfterFreeHamiltonian ε i ψ n =
-        (ε i : ℂ) * completedCreateFromFreeHamiltonianDomain ε i ψ n
-    have hHa :
-        completedFreeHamiltonianAfterCreate ε i ψ n =
-          freeHamiltonianWeight ε n *
-            completedCreate i (ψ : CompletedFockSpace Mode) n := by
-      rfl
-    have haH :
+
+  apply lp.ext
+  funext n
+  change
+    completedFreeHamiltonianAfterCreate ε i ψ n -
         completedCreateAfterFreeHamiltonian ε i ψ n =
-          completedCreate i ((completedFreeHamiltonian ε).toFun ψ) n := by
-      rfl
-    have hrestrict :
-        completedCreateFromFreeHamiltonianDomain ε i ψ n =
+      (ε i : ℂ) * completedCreateFromFreeHamiltonianDomain ε i ψ n
+  have hHa :
+      completedFreeHamiltonianAfterCreate ε i ψ n =
+        freeHamiltonianWeight ε n *
           completedCreate i (ψ : CompletedFockSpace Mode) n := by
-      rfl
-    have hH (m : Occupation Mode) :
-        (completedFreeHamiltonian ε).toFun ψ m =
-          freeHamiltonianWeight ε m * (ψ : CompletedFockSpace Mode) m := by
-      rfl
-    rw [hHa, haH, hrestrict, completedCreate_apply, completedCreate_apply]
-    by_cases h : i ∈ n
-    · simp only [if_pos h]
-      rw [hH, freeHamiltonianWeight_toggle_of_mem ε h]
-      ring
-    · simp [h]
+    rfl
+  have haH :
+      completedCreateAfterFreeHamiltonian ε i ψ n =
+        completedCreate i ((completedFreeHamiltonian ε).toFun ψ) n := by
+    rfl
+  have hrestrict :
+      completedCreateFromFreeHamiltonianDomain ε i ψ n =
+        completedCreate i (ψ : CompletedFockSpace Mode) n := by
+    rfl
+  have hH (m : Occupation Mode) :
+      (completedFreeHamiltonian ε).toFun ψ m =
+        freeHamiltonianWeight ε m * (ψ : CompletedFockSpace Mode) m := by
+    rfl
+  rw [hHa, haH, hrestrict, completedCreate_apply, completedCreate_apply]
+  by_cases h : i ∈ n
+  · simp only [if_pos h]
+    rw [hH, freeHamiltonianWeight_toggle_of_mem ε h]
+    ring
+  · simp [h]
 
 /-- The completed free-Hamiltonian annihilation commutator as an identity of linear maps on
 `Dom(H)`. -/
@@ -76,36 +76,36 @@ theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : 
       (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i := by
   apply LinearMap.ext
   intro ψ
-  
-    apply lp.ext
-    funext n
-    change
-      completedFreeHamiltonianAfterAnnihilate ε i ψ n -
-          completedAnnihilateAfterFreeHamiltonian ε i ψ n =
-        (-(ε i : ℂ)) * completedAnnihilateFromFreeHamiltonianDomain ε i ψ n
-    have hHa :
-        completedFreeHamiltonianAfterAnnihilate ε i ψ n =
-          freeHamiltonianWeight ε n *
-            completedAnnihilate i (ψ : CompletedFockSpace Mode) n := by
-      rfl
-    have haH :
+
+  apply lp.ext
+  funext n
+  change
+    completedFreeHamiltonianAfterAnnihilate ε i ψ n -
         completedAnnihilateAfterFreeHamiltonian ε i ψ n =
-          completedAnnihilate i ((completedFreeHamiltonian ε).toFun ψ) n := by
-      rfl
-    have hrestrict :
-        completedAnnihilateFromFreeHamiltonianDomain ε i ψ n =
+      (-(ε i : ℂ)) * completedAnnihilateFromFreeHamiltonianDomain ε i ψ n
+  have hHa :
+      completedFreeHamiltonianAfterAnnihilate ε i ψ n =
+        freeHamiltonianWeight ε n *
           completedAnnihilate i (ψ : CompletedFockSpace Mode) n := by
-      rfl
-    have hH (m : Occupation Mode) :
-        (completedFreeHamiltonian ε).toFun ψ m =
-          freeHamiltonianWeight ε m * (ψ : CompletedFockSpace Mode) m := by
-      rfl
-    rw [hHa, haH, hrestrict, completedAnnihilate_apply, completedAnnihilate_apply]
-    by_cases h : i ∈ n
-    · simp [h]
-    · simp only [if_neg h]
-      rw [hH, freeHamiltonianWeight_toggle_of_not_mem ε h]
-      ring
+    rfl
+  have haH :
+      completedAnnihilateAfterFreeHamiltonian ε i ψ n =
+        completedAnnihilate i ((completedFreeHamiltonian ε).toFun ψ) n := by
+    rfl
+  have hrestrict :
+      completedAnnihilateFromFreeHamiltonianDomain ε i ψ n =
+        completedAnnihilate i (ψ : CompletedFockSpace Mode) n := by
+    rfl
+  have hH (m : Occupation Mode) :
+      (completedFreeHamiltonian ε).toFun ψ m =
+        freeHamiltonianWeight ε m * (ψ : CompletedFockSpace Mode) m := by
+    rfl
+  rw [hHa, haH, hrestrict, completedAnnihilate_apply, completedAnnihilate_apply]
+  by_cases h : i ∈ n
+  · simp [h]
+  · simp only [if_neg h]
+    rw [hH, freeHamiltonianWeight_toggle_of_not_mem ε h]
+    ring
 
 end
 end Fermionic
