@@ -51,7 +51,7 @@ private theorem matrixCoeff_dysonCoeff_one_self
 omit [Fintype Mode] in
 /-- The first Dyson coefficient's full free-Gibbs numerator is a fixed scalar multiple of the bare
 interaction numerator, pointwise in occupation number. -/
-private theorem matrixCoeff_freeGibbs_dysonCoeff_one_self
+theorem matrixCoeff_freeGibbs_dysonCoeff_one_self
     (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (t : ℝ) (n : Occupation Mode) :
