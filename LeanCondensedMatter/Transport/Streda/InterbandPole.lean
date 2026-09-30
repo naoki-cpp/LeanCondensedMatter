@@ -140,7 +140,7 @@ theorem continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
         spectralParameter side p.1 p.2 - ((-gap : ℝ) : ℂ) ≠ 0 := by
       intro hzero
       have hre : gap + p.1 = 0 := by
-        simpa [spectralParameter, spectralParameterOfRegulator] using
+        simpa [spectralParameter, spectralParameterOfRegulator, add_comm] using
           congrArg Complex.re hzero
       exact hshift hre
     change ContinuousAt
@@ -149,9 +149,14 @@ theorem continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
     exact (hparameter.sub continuousAt_const).inv₀ hden
   have hret := hside .retarded
   have hadv := hside .advanced
+  have hforward := (hret.mul hret).mul
+    (continuousAt_const : ContinuousAt (fun _ : ℝ × ℝ => forward) p)
+  have hreverse := (hadv.mul hadv).mul
+    (continuousAt_const : ContinuousAt (fun _ : ℝ × ℝ => reverse) p)
+  have hsub := hforward.sub hreverse
   unfold interbandPoleRegularFactor
-  exact ((hret.mul hret).mul continuousAt_const).sub
-    ((hadv.mul hadv).mul continuousAt_const)
+  dsimp
+  simpa [pow_two] using hsub
 
 /-- Lorentzian-weighted fixed-window integral of the regular interband factor. -/
 noncomputable def interbandPoleRegularFactorIntegral
@@ -196,8 +201,8 @@ theorem tendsto_interbandPoleRegularFactorIntegral
       change Filter.Tendsto
         (fun x : ℝ => interbandPoleRegularFactor
           gap forward reverse (x, broadening))
-        (Filter.nhds offset)
-        (Filter.nhds
+        (nhds offset)
+        (nhds
           (interbandPoleRegularFactor gap forward reverse (offset, broadening)))
       exact Filter.Tendsto.comp hfactor hpair
     exact hcomp.continuousWithinAt
