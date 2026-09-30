@@ -38,8 +38,8 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
     fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
       (d.restrictComponentConnected B.2).1 order
   simpa only [one_mul] using
-    (Finpartition.sum_order_eq_mul_prod_sum_partOrders
-      d.vertexGraph.componentPartitionOn
+    (Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
+      d
       (fun order : Common.QuarticVertexOrder S =>
         d.orderedSimplexContribution ε β order)
       localContribution (1 : ℂ) (fun orders => by
