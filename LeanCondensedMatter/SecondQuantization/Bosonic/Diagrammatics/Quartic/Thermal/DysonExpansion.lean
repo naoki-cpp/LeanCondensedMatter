@@ -403,15 +403,13 @@ than the static order-averaged thermal weight. -/
 noncomputable def quarticDysonThermalDiagramMultiplicativeWeight
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) {N : ℕ} :
     Combinatorics.MultiplicativeWeight
-      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
-  objectWeight d := QuarticDiagram.dysonThermalAmplitude ε β g d t
-  connectedWeight d := QuarticDiagram.dysonThermalAmplitude ε β g d.1 t
-  weight_decompose d := by
-    change QuarticDiagram.dysonThermalAmplitude ε β g d t =
-      ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponentConnected B.2).1 t
-    simpa only [Common.QuarticDiagram.restrictComponentConnected] using
-      QuarticDiagram.dysonThermalAmplitude_eq_prod_components ε β g d t
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ :=
+  Common.QuarticDiagram.multiplicativeWeight
+    (N := N)
+    (fun d => QuarticDiagram.dysonThermalAmplitude ε β g d t)
+    (fun d => by
+      simpa only [Common.QuarticDiagram.restrictComponentConnected] using
+        QuarticDiagram.dysonThermalAmplitude_eq_prod_components ε β g d t)
 
 /-- The normalized finite-set moment carried by the physical time-integrated bosonic quartic Dyson
 diagrams. -/
