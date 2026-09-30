@@ -2640,7 +2640,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle"
+      "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
     ],
     "dependencies": [
       "Combinatorics.SumEquiv.card_rightImage"
@@ -2650,9 +2651,10 @@
     "compiledConsumers": [
       "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
       "Combinatorics.FamilySlotShuffle.outerSlotEquiv",
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr",
       "Combinatorics.FamilySlotShuffle.tailShuffle"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3357,7 +3359,11 @@
     "dependents": [
       "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffle.card_tailSlots",
+      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail",
+      "Combinatorics.FamilySlotShuffle.tailSlots_set_eq_compl_headSlots"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -3397,7 +3403,8 @@
       "Combinatorics.FamilySlotShuffle.cons_injective",
       "Combinatorics.FamilySlotShuffle.cons_integrand",
       "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
-      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
+      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -3407,9 +3414,10 @@
       "Combinatorics.FamilySlotShuffle.cons_integrand",
       "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.outerSlotEquiv"
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv",
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3459,7 +3467,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {k : ℕ} {size : Fin (k + 1) → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size),\n  ↑shuffle.tailSlots = (↑shuffle.headSlots)ᶜ",
     "standardAxioms": [
       "Classical.choice",
@@ -3467,7 +3475,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -3478,16 +3486,19 @@
     "docString": "The ambient tail-slot subtype is the set-theoretic complement of the ambient head-slot subtype. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
+    ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.outerSlotEquiv"
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv",
+      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19010,7 +19021,6 @@
       "Finpartition.bind_restrict_eq_of_le",
       "Finpartition.partitionProduct_restrict_eq_prod_inf",
       "Finpartition.restrict_bind_eq",
-      "Finpartition.restrict_mono",
       "Finpartition.restrict_self_part_eq_top"
     ],
     "dependencies": [],
@@ -19020,10 +19030,9 @@
       "Finpartition.bind_restrict_eq_of_le",
       "Finpartition.partitionProduct_restrict_eq_prod_inf",
       "Finpartition.restrict_bind_eq",
-      "Finpartition.restrict_mono",
       "Finpartition.restrict_self_part_eq_top"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19433,6 +19442,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Finpartition.card_partGlobalSlots",
+      "Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm",
       "Finpartition.partOrder_eq_of_strictMono"
     ],
     "dependencies": [],
@@ -19441,9 +19451,10 @@
     "compiledConsumers": [
       "Finpartition.card_partGlobalSlots",
       "Finpartition.partGlobalSlotEquiv",
+      "Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm",
       "Finpartition.partOrder_eq_of_strictMono"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19515,7 +19526,9 @@
     "dependents": [
       "Finpartition.partGlobalSlot_partOrderOfOrder"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Finpartition.partGlobalSlot_injective"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -20258,43 +20271,6 @@
       "Finpartition.sum_Iic_mu_partitionProduct_eq"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {a : Finset α} {P P' : Finpartition a},\n  P ≤ P' → ∀ {b : Finset α} (hb : b ⊆ a), P.restrict hb ≤ P'.restrict hb",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Finpartition.restrict_mono",
-    "module": "LeanCondensedMatter.Combinatorics.SetPartition.Refinement",
-    "externalAxioms": [],
-    "docString": "Restriction is monotone with respect to refinement. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Finpartition.mem_restrict_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29157,7 +29133,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 → (PowerSeries.derivative R) Z.logOf * Z = (PowerSeries.derivative R) Z",
+    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 → PowerSeries.derivative Z.logOf * Z = PowerSeries.derivative Z",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29180,9 +29156,7 @@
       "PowerSeries.logOf_mul",
       "PowerSeries.logOf_one"
     ],
-    "dependencies": [
-      "PowerSeries.derivative_log_mul_one_add_X"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -29191,45 +29165,6 @@
       "PowerSeries.logOf_one"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R],\n  (PowerSeries.derivative R) (PowerSeries.log R) * (1 + PowerSeries.X) = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "PowerSeries.derivative_log_mul_one_add_X",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-    "externalAxioms": [],
-    "docString": "The derivative of `log(1 + X)` multiplied by `1 + X` is one. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "PowerSeries.derivative_logOf_mul"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "PowerSeries.derivative_logOf_mul"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139256,16 +139191,18 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots"
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots",
-      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyGlobalSlotEquiv"
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyGlobalSlotEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -139298,7 +139235,8 @@
       "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots"
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyGlobalSlot_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,

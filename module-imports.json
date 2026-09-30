@@ -219,7 +219,7 @@
       "name": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
       "sourceFile": "LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean",
       "imports": [],
-      "externalImportCount": 7
+      "externalImportCount": 8
     },
     {
       "name": "LeanCondensedMatter.Analysis.InfiniteSum.Order",
@@ -1559,7 +1559,7 @@
       "imports": [
         "LeanCondensedMatter.Permutation.ConnectedCycleSeries"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Permutation",
