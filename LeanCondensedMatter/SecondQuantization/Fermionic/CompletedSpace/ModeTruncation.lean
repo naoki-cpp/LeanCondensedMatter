@@ -55,17 +55,6 @@ noncomputable def algebraicModeSupport (x : OccupationFock Mode) : Finset Mode :
   classical
   exact x.support.biUnion id
 
-/-- Every occupation configuration carrying a nonzero algebraic coefficient is contained in the
-finite ambient-mode support. -/
-theorem occupation_subset_algebraicModeSupport (x : OccupationFock Mode) (n : Occupation Mode)
-    (hn : x n ≠ 0) :
-    n ⊆ algebraicModeSupport x := by
-  classical
-  intro i hi
-  have hnsupp : n ∈ x.support := Finsupp.mem_support_iff.mpr hn
-  simp only [algebraicModeSupport, Finset.mem_biUnion]
-  exact ⟨n, hnsupp, hi⟩
-
 /-- Once `S` contains every mode appearing in an algebraic vector, finite-mode truncation fixes its
 completed image exactly. -/
 theorem completedModeTruncation_algebraicToCompleted_of_subset
@@ -77,7 +66,11 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
   rw [completedModeTruncation_apply]
   by_cases hn : x n = 0
   · simp [algebraicToCompleted, Common.algebraicToCompleted_apply, hn]
-  · have hnsub : n ⊆ S := (occupation_subset_algebraicModeSupport x n hn).trans hS
+  · have hnsub : n ⊆ S := by
+      intro i hi
+      apply hS
+      simp only [algebraicModeSupport, Finset.mem_biUnion]
+      exact ⟨n, Finsupp.mem_support_iff.mpr hn, hi⟩
     simp [algebraicToCompleted, Common.algebraicToCompleted_apply, hnsub]
 
 /-- A contraction that fixes `φ` moves `ψ` by at most twice the distance from `ψ` to `φ`. -/
