@@ -64,11 +64,6 @@ theorem expValue_im_eq_zero : (expValue A ψ).im = 0 := by
   rw [← coe_observableExpValue A ψ]
   simp
 
-/-- The complex vector-state expectation bundled with the proof that it is self-adjoint. -/
-noncomputable def expValueSelfAdjoint : selfAdjoint ℂ :=
-  ⟨expValue A ψ,
-    (Complex.im_eq_zero_iff_isSelfAdjoint _).mp (expValue_im_eq_zero A ψ)⟩
-
 /-- **Phase indeterminacy.** Multiplying a representative by a unit-modulus complex number (a global
 phase) does not change the expectation value of any observable. -/
 theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c • ψ.1‖ = 1) :
