@@ -15,39 +15,41 @@ open scoped BigOperators
 
 namespace PowerSeries
 
+variable {R : Type*} [CommRing R] [Algebra ℚ R]
+
 /-- The derivative of `log(1 + X)` multiplied by `1 + X` is one. -/
 theorem derivative_log_mul_one_add_X :
-    d⁄dX ℂ (PowerSeries.log ℂ) * (1 + PowerSeries.X) = 1 := by
+    d⁄dX R (PowerSeries.log R) * (1 + PowerSeries.X) = 1 := by
   rw [PowerSeries.deriv_log, mul_add, mul_one]
   ext n
   cases n with
   | zero => simp
   | succ n => simp [PowerSeries.coeff_mk, pow_succ]
 
-/-- Logarithmic derivative identity for a normalized complex power series. -/
-theorem derivative_logOf_mul {Z : PowerSeries ℂ}
+/-- Logarithmic derivative identity for a normalized power series over a rational algebra. -/
+theorem derivative_logOf_mul {Z : PowerSeries R}
     (hZ : PowerSeries.constantCoeff Z = 1) :
-    d⁄dX ℂ (PowerSeries.logOf Z) * Z = d⁄dX ℂ Z := by
+    d⁄dX R (PowerSeries.logOf Z) * Z = d⁄dX R Z := by
   have hsub : PowerSeries.HasSubst (Z - 1) :=
     PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hZ])
-  have hgeom := congrArg (fun f : PowerSeries ℂ => f.subst (Z - 1))
+  have hgeom := congrArg (fun f : PowerSeries R => f.subst (Z - 1))
     derivative_log_mul_one_add_X
-  have hone : (1 : PowerSeries ℂ).subst (Z - 1) = 1 := by
-    rw [show (1 : PowerSeries ℂ) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
+  have hone : (1 : PowerSeries R).subst (Z - 1) = 1 := by
+    rw [show (1 : PowerSeries R) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
     rfl
   have hgeom' :
-      (d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * Z = 1 := by
+      (d⁄dX R (PowerSeries.log R)).subst (Z - 1) * Z = 1 := by
     rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
       PowerSeries.subst_X hsub, hone] at hgeom
     simpa using hgeom
   rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst hsub]
-  have hderiv : d⁄dX ℂ (Z - 1) = d⁄dX ℂ Z := by simp
+  have hderiv : d⁄dX R (Z - 1) = d⁄dX R Z := by simp
   rw [hderiv]
   calc
-    ((d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * d⁄dX ℂ Z) * Z =
-        ((d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * Z) * d⁄dX ℂ Z := by
+    ((d⁄dX R (PowerSeries.log R)).subst (Z - 1) * d⁄dX R Z) * Z =
+        ((d⁄dX R (PowerSeries.log R)).subst (Z - 1) * Z) * d⁄dX R Z := by
           ring
-    _ = d⁄dX ℂ Z := by rw [hgeom']; simp
+    _ = d⁄dX R Z := by rw [hgeom']; simp
 
 /-- The formal logarithm turns products of normalized complex power series into sums. -/
 theorem logOf_mul {F G : PowerSeries ℂ}
