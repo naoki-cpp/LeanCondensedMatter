@@ -6,10 +6,9 @@ set_option linter.style.header false
 /-!
 # Fixed-window interband Bastin-pair extraction in the massive Dirac model
 
-The opposite-source interband Bastin Hall pair factors exactly into `-2 i`, the target-band
-Lorentzian spectral kernel, and the regular spectator/current factor. The previous pole-extraction
-theorem therefore lifts immediately to the actual interband Bastin pair integrated over the same
-fixed target-centered energy window.
+The model-specific ordered band pair is identified with the generic isolated interband Bastin pole.
+The fixed-window zero-broadening limit is then inherited from
+`Transport.Streda.InterbandPole`.
 
 The result remains pointwise in momentum. No momentum integration or momentum-limit interchange is
 performed here.
@@ -19,7 +18,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
-open Filter
+open Filter QuantumTheory.Transport
 
 /-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
 the opposite band and whose target is `band`. -/
@@ -58,6 +57,23 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring
 
+/-- At nonzero broadening, the concrete massive-Dirac pair integral is the generic isolated
+interband Bastin pole integral. -/
+theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
+    (band : Band) (e v m px py radius broadening : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    targetCenteredInterbandBastinPairIntegral
+        band e v m px py radius broadening =
+      interbandBastinPoleIntegral
+        (interbandEnergyGap band v m px py)
+        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        radius broadening := by
+  rw [targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
+    band e v m px py radius broadening hbroadening]
+  unfold interbandBastinPoleIntegral
+  rw [targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral]
+
 /-- On a fixed positive target-centered window narrower than the interband gap, the integrated
 opposite-source Bastin pair converges to `-2 i π` times the regular factor at the target pole. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral
@@ -75,17 +91,17 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral
           (Real.pi •
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m px py (0, 0)))) := by
-  have hpole :=
-    tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
-      band e v m px py radius hE hradiusPos hradius
-  have hconst : Tendsto
-      (fun _ : ℝ => (-2 * Complex.I : ℂ))
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (-2 * Complex.I)) := tendsto_const_nhds
-  refine (hconst.mul hpole).congr' ?_
+  have hgeneric :=
+    tendsto_interbandBastinPoleIntegral
+      (interbandEnergyGap band v m px py)
+      (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+      (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+      radius hradiusPos hradius
+  refine hgeneric.congr' ?_
   filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  exact (targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
-    band e v m px py radius broadening hbroadening.ne').symm
+  exact
+    (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
+      band e v m px py radius broadening hbroadening.ne').symm
 
 end
 
