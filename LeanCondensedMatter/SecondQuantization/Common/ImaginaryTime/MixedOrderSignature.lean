@@ -32,6 +32,8 @@ theorem mem_twoPointOrderSignature_iff {n : ℕ} (τ τ' : ℝ) (σ : Fin n → 
   classical
   simp [twoPointOrderSignature]
 
+/-- Two interaction-time assignments lie in the same mixed-order chamber exactly when
+they determine the same finite strict-comparison signature. -/
 theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
     SameTwoPointOrderChamber τ τ' σ υ ↔
