@@ -41,12 +41,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
-        dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
-    rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
-    intro T
-    simp only [Combinatorics.powerSeriesMomentCoeff, dysonVertexMomentSetFunction_apply,
-      dysonVertexMoment,
-      coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+        dysonVertexMomentSetFunction ε β (quarticInteraction g) :=
+    powerSeriesMomentSetFunction_normalizedDysonPartitionSeries_eq_dysonVertexMomentSetFunction
+      ε β (quarticInteraction g) hZ
   have hDiagramMoment :
       dysonVertexMomentSetFunction ε β (quarticInteraction g) =
         W.normalizedObjectMoment := by
