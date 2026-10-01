@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 
 /-!
 # Reconciling `innerHS` with `spectralTrace`
