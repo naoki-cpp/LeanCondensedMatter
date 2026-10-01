@@ -13733,6 +13733,90 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), ContinuousLinearMap.IsTraceClassWrt d T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "A basis-independent trace-class witness supplies summability in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} {d : HilbertBasis ι ℂ H} {T : H →L[ℂ] H}, ContinuousLinearMap.IsTraceClassWrt d T → T.IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.of_isTraceClassWrt",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "Evidence of trace-class membership in one Hilbert basis packages into the basis-independent\npredicate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H},\n  T.SpectralTraceClass → IsCompactOperator ⇑T",
     "standardAxioms": [
       "Classical.choice",
@@ -14913,6 +14997,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.coe_coe_diagonalExpectationNNReal",
+      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
       "ContinuousLinearMap.diagonalExpectationValue_add",
       "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
@@ -14942,6 +15027,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.coe_coe_diagonalExpectationNNReal",
+      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
       "ContinuousLinearMap.diagonalExpectationValue_add",
       "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
@@ -14964,7 +15050,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 22,
+    "compiledConsumerCount": 23,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15005,6 +15091,52 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (T : H →L[ℂ] H) (x : H), (CFC.abs T).diagonalExpectationValue ⋯ x = ‖(CFC.sqrt (CFC.abs T)) x‖ ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "A diagonal matrix element of `|T|` is the squared norm of\n`sqrt(|T|)` applied to the same vector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16102,7 +16234,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -16114,7 +16246,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isTraceClassWrt_iff"
     ],
     "dependencies": [
       "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq"
@@ -16122,9 +16255,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isTraceClassWrt_iff"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16292,7 +16426,8 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt"
+      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "dependencies": [
       "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
@@ -16301,9 +16436,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt"
+      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16346,6 +16482,142 @@
       "HilbertBasis.diagonalOp_isPositive"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.IsTraceClassWrt d T ↔ ContinuousLinearMap.IsTraceClassWrt f T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isTraceClassWrt_iff",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "`IsTraceClassWrt` is independent of the chosen Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.IsTraceClassWrt d T ↔ ContinuousLinearMap.IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "Trace-class membership with respect to a basis is equivalent to the Hilbert--Schmidt property\nof `sqrt(|T|)` with respect to that basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isTraceClassWrt_iff",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isTraceClassWrt_iff",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H), T.IsTraceClass ↔ ContinuousLinearMap.IsTraceClassWrt d T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "Trace-class membership is equivalent to summability of the diagonal of `|T|` in any chosen\nHilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+      "ContinuousLinearMap.IsTraceClass.of_isTraceClassWrt"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+      "ContinuousLinearMap.IsTraceClass.of_isTraceClassWrt"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17213,7 +17485,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -17225,7 +17497,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
     ],
     "dependencies": [
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq"
@@ -17233,7 +17506,95 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  T.IsTraceClass → ContinuousLinearMap.traceNormSeriesWrt d T = ContinuousLinearMap.traceNormSeriesWrt f T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.traceNormSeriesWrt_eq",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "For a trace-class operator, the trace-norm series has the same value in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
+      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.traceNormSeriesWrt d T = ∑' (i : ι), ‖(CFC.sqrt (CFC.abs T)) (d i)‖ ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "The basis-relative totalized series is the squared Hilbert--Schmidt norm series of\n`sqrt(|T|)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

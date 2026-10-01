@@ -481,6 +481,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/General.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Ops.lean",
       "imports": [
@@ -515,6 +524,7 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Equality",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary"
