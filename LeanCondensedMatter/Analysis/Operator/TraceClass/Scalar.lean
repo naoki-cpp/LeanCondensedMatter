@@ -178,12 +178,16 @@ namespace SpectralTraceClass
 omit [CompleteSpace H] in
 /-- Spectral trace class is preserved under multiplication by any real scalar. -/
 theorem smul (h : SpectralTraceClass T) (c : ℝ) :
-    SpectralTraceClass (c • T) where
-  compact := h.compact.smul c
-  symmetric := by
+    SpectralTraceClass (c • T) := by
+  have hsym : (c • T).IsSymmetric := by
     rw [ContinuousLinearMap.toLinearMap_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)]
     exact h.symmetric.smul (c := (c : ℂ)) (by simp)
-  summable := hasSummableRealEigenvalues_smul c h.summable
+  exact
+    { compact := h.compact.smul c
+      symmetric := hsym
+      complexSummable :=
+        (hasSummableComplexEigenvalues_iff_hasSummableRealEigenvalues hsym).mpr
+          (hasSummableRealEigenvalues_smul c h.summable) }
 
 omit [CompleteSpace H] in
 /-- The bundled spectral trace is homogeneous under multiplication by any real scalar. -/
