@@ -215,10 +215,12 @@ private def auditTarget
 
 private def collectAuditEntries
     (prepared : Array PreparedCandidate) (projectTheorems : NameSet) :
-    CommandElabM (Array AuditEntry × Nat) := do
+    CommandElabM (Array AuditEntry × Nat × Nat) := do
+  let env ← getEnv
   let byName := candidateMap prepared
   let mut entries := #[]
-  let mut totalProbed := 0
+  let mut totalProjectProbed := 0
+  let mut totalMathlibProbed := 0
   for target in prepared do
     let dependencyNames := directProjectTheoremDependencyNames
       projectTheorems target.candidate.name target.candidate.theoremInfo.value
@@ -232,12 +234,31 @@ private def collectAuditEntries
             sources
           else
             sources.push source
-    totalProbed := totalProbed + sources.size
+    let mathlibDependencyNames := directMathlibTheoremDependencyNames
+      env target.candidate.name target.candidate.theoremInfo.value
+    let mathlibSources := mathlibDependencyNames.foldl (init := #[]) fun sources dependency =>
+      match theoremCandidate? env dependency with
+      | none => sources
+      | some source =>
+          let preparedSource := prepareCandidate source
+          if privateDeclarationName? source.name ||
+              extensionTheoremName? source.name ||
+              !compatibleResultShape preparedSource target then
+            sources
+          else
+            sources.push preparedSource
+    totalProjectProbed := totalProjectProbed + sources.size
+    totalMathlibProbed := totalMathlibProbed + mathlibSources.size
     let (defEq, replacements) ←
       if sources.isEmpty then
         pure (#[], #[])
       else
         liftTermElabM <| liftMetaM <| auditTarget target sources
+    let (mathlibDefEq, mathlibReplacements) ←
+      if mathlibSources.isEmpty then
+        pure (#[], #[])
+      else
+        liftTermElabM <| liftMetaM <| auditTarget target mathlibSources
     entries := entries.push {
       target := target.candidate.name.toString
       moduleName := target.candidate.moduleName.toString
@@ -245,10 +266,16 @@ private def collectAuditEntries
       probedCandidateCount := sources.size
       definitionallyEquivalentTo := defEq
       replacementCandidates := replacements
+      mathlibProofDependencies :=
+        (mathlibDependencyNames.map Name.toString).qsort fun left right => left < right
+      mathlibProbedCandidateCount := mathlibSources.size
+      mathlibDefinitionallyEquivalentTo := mathlibDefEq
+      mathlibReplacementCandidates := mathlibReplacements
     }
   return (
     entries.qsort fun left right => left.target < right.target,
-    totalProbed)
+    totalProjectProbed,
+    totalMathlibProbed)
 
 private def jsonReplacement (candidate : ReplacementCandidate) : Json :=
   .mkObj [
