@@ -782,7 +782,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
         "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-        "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
         "LeanCondensedMatter.Analysis.PowerSeries.Replica",

@@ -8871,243 +8871,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z ≠ 0 →\n    ↑(Nat.factorial 1) * (PowerSeries.coeff 1) Z.normalizeByConstantCoeff.logOf =\n      (PowerSeries.coeff 1) Z.normalizeByConstantCoeff",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "First low-order logarithm formula after normalization by a nonzero constant coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.factorial_mul_coeff_logOf_one_eq",
-      "PowerSeries.constantCoeff_normalizeByConstantCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z ≠ 0 →\n    ↑(Nat.factorial 3) * (PowerSeries.coeff 3) Z.normalizeByConstantCoeff.logOf =\n      6 * (PowerSeries.coeff 3) Z.normalizeByConstantCoeff -\n          6 * (PowerSeries.coeff 1) Z.normalizeByConstantCoeff * (PowerSeries.coeff 2) Z.normalizeByConstantCoeff +\n        2 * (PowerSeries.coeff 1) Z.normalizeByConstantCoeff ^ 3",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "Third low-order logarithm formula after normalization by a nonzero constant coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.factorial_mul_coeff_logOf_three_eq",
-      "PowerSeries.constantCoeff_normalizeByConstantCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z ≠ 0 →\n    ↑(Nat.factorial 2) * (PowerSeries.coeff 2) Z.normalizeByConstantCoeff.logOf =\n      2 * (PowerSeries.coeff 2) Z.normalizeByConstantCoeff - (PowerSeries.coeff 1) Z.normalizeByConstantCoeff ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "Second low-order logarithm formula after normalization by a nonzero constant coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.factorial_mul_coeff_logOf_two_eq",
-      "PowerSeries.constantCoeff_normalizeByConstantCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 → ↑(Nat.factorial 1) * (PowerSeries.coeff 1) Z.logOf = (PowerSeries.coeff 1) Z",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_one_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "First factorial-normalized coefficient of `logOf Z`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ↑(Nat.factorial 3) * (PowerSeries.coeff 3) Z.logOf =\n      6 * (PowerSeries.coeff 3) Z - 6 * (PowerSeries.coeff 1) Z * (PowerSeries.coeff 2) Z +\n        2 * (PowerSeries.coeff 1) Z ^ 3",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_three_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "Third factorial-normalized coefficient of `logOf Z`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ↑(Nat.factorial 2) * (PowerSeries.coeff 2) Z.logOf = 2 * (PowerSeries.coeff 2) Z - (PowerSeries.coeff 1) Z ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_two_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "Second factorial-normalized coefficient of `logOf Z`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} (n : ℕ) (s : Finset α) (f g : α → α → ℕ),\n  (∀ a ∈ s, ∀ b ∈ s, a ≠ b → f a b + f b a ≡ g a b + g b a [MOD n]) →\n    ∑ p ∈ s.offDiag, f p.1 p.2 ≡ ∑ p ∈ s.offDiag, g p.1 p.2 [MOD n]",
     "standardAxioms": [
@@ -9769,141 +9532,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    Combinatorics.powerSeriesCumulantCoeff Z 1 = Combinatorics.powerSeriesMomentCoeff Z 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "The first cumulant coefficient equals the first moment coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.factorial_mul_coeff_logOf_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
-      "_private.LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog.0.Combinatorics.powerSeriesMomentCoeff_zero_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.factorial_mul_coeff_logOf_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    Combinatorics.powerSeriesCumulantCoeff Z 3 =\n      Combinatorics.powerSeriesMomentCoeff Z 3 -\n          3 * Combinatorics.powerSeriesMomentCoeff Z 1 * Combinatorics.powerSeriesMomentCoeff Z 2 +\n        2 * Combinatorics.powerSeriesMomentCoeff Z 1 ^ 3",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "The third cumulant coefficient removes all one-plus-two and three-singleton decompositions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.factorial_mul_coeff_logOf_three_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq",
-      "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
-      "_private.LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog.0.Combinatorics.powerSeriesMomentCoeff_zero_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.factorial_mul_coeff_logOf_three_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    Combinatorics.powerSeriesCumulantCoeff Z 2 =\n      Combinatorics.powerSeriesMomentCoeff Z 2 - Combinatorics.powerSeriesMomentCoeff Z 1 ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.powerSeriesCumulantCoeff_two_eq",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": "The second cumulant coefficient subtracts the disconnected product of two first moments. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.factorial_mul_coeff_logOf_two_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-      "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
-      "_private.LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog.0.Combinatorics.powerSeriesMomentCoeff_zero_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.factorial_mul_coeff_logOf_two_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : Algebra ℚ R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (n : ℕ),\n      Combinatorics.powerSeriesMomentCoeff Z (n + 1) =\n        ∑ k ∈ Finset.range (n + 1),\n          ↑(n.choose k) * Combinatorics.powerSeriesCumulantCoeff Z (k + 1) *\n            Combinatorics.powerSeriesMomentCoeff Z (n - k)",
     "standardAxioms": [
       "Classical.choice",
@@ -9923,9 +9551,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq",
       "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
@@ -9935,13 +9560,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq",
       "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28519,9 +28141,6 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment",
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq",
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq",
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
@@ -28531,14 +28150,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment",
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq",
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq",
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138600,49 +138216,6 @@
       "Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ}, PowerSeries.constantCoeff Z = 1 → Combinatorics.powerSeriesMomentCoeff Z 0 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog.0.Combinatorics.powerSeriesMomentCoeff_zero_eq_one",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.powerSeriesCumulantCoeff_one_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_three_eq",
-      "Combinatorics.powerSeriesCumulantCoeff_two_eq"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
