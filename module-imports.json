@@ -4058,7 +4058,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/StableTimedEventOrder.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",

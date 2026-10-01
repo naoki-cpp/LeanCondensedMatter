@@ -103101,6 +103101,47 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {m₁ m₂ n₁ n₂ : ℕ} {f : Fin m₁ → Fin m₂} {g : Fin n₁ → Fin n₂},\n  StrictMono f →\n    StrictMono g →\n      ∀ (a b : Fin m₁ ⊕ Fin n₁),\n        ↑(finSumFinEquiv (Sum.map f g a)) ≤ ↑(finSumFinEquiv (Sum.map f g b)) ↔\n          ↑(finSumFinEquiv a) ≤ ↑(finSumFinEquiv b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.finSumFinEquiv_map_val_le_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
+    "externalAxioms": [],
+    "docString": "The rank order induced by `finSumFinEquiv` is preserved and reflected by componentwise\nstrictly monotone reindexings of a finite sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (m : Config) (x : SecondQuantization.Common.FiniteAnalyticFock Config),\n  (SecondQuantization.Common.finiteAnalyticCoordinate m) x = x m",
     "standardAxioms": [
@@ -154352,52 +154393,13 @@
       "SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventRank_map_le_iff",
+      "SecondQuantization.Common.finSumFinEquiv_map_val_le_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventTime_map"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E₁ E₂ m n : ℕ} {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n},\n  StrictMono fExternal →\n    StrictMono fInteraction →\n      ∀ (a b : SecondQuantization.Common.ExternalInsertionTimedEvent E₁ m),\n        SecondQuantization.Common.externalInsertionTimedEventRank✝ (Sum.map fExternal fInteraction a) ≤\n            SecondQuantization.Common.externalInsertionTimedEventRank✝ (Sum.map fExternal fInteraction b) ↔\n          SecondQuantization.Common.externalInsertionTimedEventRank✝ a ≤\n            SecondQuantization.Common.externalInsertionTimedEventRank✝ b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventRank_map_le_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154599,52 +154601,13 @@
       "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
     ],
     "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventTime_map",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventRank_map_le_iff"
+      "SecondQuantization.Common.finSumFinEquiv_map_val_le_iff",
+      "SecondQuantization.Common.twoPointTimedEventTime_map"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventRank (SecondQuantization.Common.twoPointTimedEventMap f a) ≤\n          SecondQuantization.Common.twoPointTimedEventRank (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventRank a ≤ SecondQuantization.Common.twoPointTimedEventRank b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventRank_map_le_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
