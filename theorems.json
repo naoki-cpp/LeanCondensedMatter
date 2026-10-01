@@ -12786,41 +12786,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsPositive → ∀ (U : H →L[ℂ] H), (U.unitaryConjugate T).IsPositive",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsPositive.unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unitary",
-    "externalAxioms": [],
-    "docString": "Positivity is preserved under conjugation by any bounded operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H},\n  T.SpectralTraceClass → IsCompactOperator ⇑T",
     "standardAxioms": [
@@ -13003,7 +12968,6 @@
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
-      "QuantumTheory.DensityOperator.isSelfAdjoint",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
@@ -13021,7 +12985,6 @@
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
-      "QuantumTheory.DensityOperator.isSelfAdjoint",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
@@ -13029,7 +12992,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13321,8 +13284,7 @@
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
-      "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate",
-      "QuantumTheory.DensityOperator.isSymmetric"
+      "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -13333,10 +13295,9 @@
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
-      "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate",
-      "QuantumTheory.DensityOperator.isSymmetric"
+      "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13683,8 +13644,7 @@
       "ContinuousLinearMap.SpectralTraceClass.compact",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.symmetric",
-      "ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate",
-      "ContinuousLinearMap.isCompactOperator_unitaryConjugate"
+      "ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14123,47 +14083,6 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → ∀ (μ : ℂ), Module.End.eigenspace (↑(c • T)) (↑c * μ) = Module.End.eigenspace (↑T) μ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.eigenspace_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
-    "externalAxioms": [],
-    "docString": "Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the\neigenspaces unchanged. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14961,45 +14880,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H), IsCompactOperator ⇑T → IsCompactOperator ⇑(U.unitaryConjugate T)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.isCompactOperator_unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unitary",
-    "externalAxioms": [],
-    "docString": "Compactness is preserved under bounded unitary conjugation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28072,45 +27952,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {v : H} {c : ℝ},\n  ↑T v = ↑c • v → ∀ (q : Polynomial ℝ), ((Polynomial.aeval T) q) v = ↑(Polynomial.eval c q) • v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Polynomial.aeval_apply_eigenvector",
-    "module": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
-    "externalAxioms": [],
-    "docString": "An operator's polynomial functional calculus acts on an eigenvector by evaluating the\npolynomial at the eigenvalue. No self-adjointness hypothesis is needed here — this is a\npurely algebraic fact about `Polynomial.aeval`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "cfc_apply_eigenvector"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "cfc_apply_eigenvector"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T → ∀ (p : Polynomial ℝ), p.coeff 0 = 0 → IsCompactOperator ⇑((Polynomial.aeval T) p)",
     "standardAxioms": [
       "Classical.choice",
@@ -37294,8 +37135,7 @@
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "QuantumTheory.DensityOperator.spectralTraceClass"
+      "QuantumTheory.DensityOperator.pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -37344,8 +37184,7 @@
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.symmetric",
-      "QuantumTheory.DensityOperator.spectralTraceClass"
+      "QuantumTheory.DensityOperator.pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -37710,6 +37549,8 @@
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
+      "QuantumTheory.DensityOperator.isSelfAdjoint",
+      "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.sqrtOp_apply_eigenvector",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
@@ -37728,6 +37569,8 @@
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
+      "QuantumTheory.DensityOperator.isSelfAdjoint",
+      "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.sqrtOp_apply_eigenvector",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
@@ -37737,7 +37580,7 @@
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37781,8 +37624,6 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
-      "QuantumTheory.DensityOperator.isSelfAdjoint",
-      "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
@@ -37823,8 +37664,6 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
-      "QuantumTheory.DensityOperator.isSelfAdjoint",
-      "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
@@ -37848,7 +37687,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 37,
+    "compiledConsumerCount": 35,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102933,8 +102772,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102946,15 +102785,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103000,7 +102841,50 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
+    "statement": "∀ {E₁ E₂ m n : ℕ} {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n},\n  StrictMono fExternal →\n    StrictMono fInteraction →\n      ∀ (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ),\n        StrictMono fun p =>\n          SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n            (SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction\n              ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv (externalTime ∘ fExternal)\n                  (σ ∘ fInteraction))\n                p))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": "Increasing reindexings of the external and interaction slots embed the local mixed atomic\npositions strictly monotonically into the ambient mixed atomic order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPosition_strictMono"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_map_sublist",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPosition_strictMono"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {E₁ E₂ m n : ℕ} {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n},\n  StrictMono fExternal →\n    StrictMono fInteraction →\n      ∀ (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ),\n        (List.map (SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction)\n              (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs (externalTime ∘ fExternal)\n                (σ ∘ fInteraction))).Sublist\n          (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime σ)",
     "standardAxioms": [
       "Classical.choice",
@@ -103008,7 +102892,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -103019,15 +102903,19 @@
     "docString": "Increasing external/interaction slot reindexings embed the local mixed atomic-leg\norder as a sublist of the ambient mixed atomic-leg order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
+    ],
     "dependencies": [
       "SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventAtomicLegs_map"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115173,6 +115061,43 @@
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  StrictMono (d.componentMixedPosition externalTime σ B)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPosition_strictMono",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": "The canonical embedding of one component's mixed positions preserves their mixed-time order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135603,6 +135528,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → ∀ (μ : ℂ), Module.End.eigenspace (↑(c • T)) (↑c * μ) = Module.End.eigenspace (↑T) μ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenspace_smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {c : ℝ} (hc : c ≠ 0) (a : { μ // μ ≠ 0 }), ↑((ContinuousLinearMap.eigenvalueScaleEquiv✝ hc) a) = c * ↑a",
     "standardAxioms": [
       "Classical.choice",
@@ -135708,7 +135674,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [
-      "ContinuousLinearMap.eigenspace_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenspace_smul",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -135792,9 +135758,9 @@
       "ContinuousLinearMap.spectralTrace_smul"
     ],
     "dependencies": [
-      "ContinuousLinearMap.eigenspace_smul",
       "ContinuousLinearMap.summable_eigenvectorIndex",
       "ContinuousLinearMap.tsum_eigenvectorIndex_eq_tsum_mul_finrank",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenspace_smul",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero"
     ],
@@ -154420,7 +154386,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).length = 2 * (2 * n + E)",
     "standardAxioms": [
       "Classical.choice",
@@ -154428,7 +154394,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -154439,15 +154405,19 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166738,7 +166708,7 @@
     "name": "cfc_apply_eigenvector",
     "module": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
     "externalAxioms": [],
-    "docString": "**The continuous functional calculus acts on eigenvectors by evaluation.** For a\nself-adjoint `T` and an eigenvector `v` of `T` with (real) eigenvalue `c`, `cfc f T` acts on\n`v` by scaling it by `f c`, for any continuous `f : ℝ → ℝ`. Proved by approximating `f`\nuniformly by polynomials on `[-‖T‖, ‖T‖]` (a compact interval containing `spectrum ℝ T`,\nvia the classical Weierstrass approximation theorem) and passing to the limit using the\nisometry of `cfcHom` together with `Polynomial.aeval_apply_eigenvector`. ",
+    "docString": "**The continuous functional calculus acts on eigenvectors by evaluation.** For a\nself-adjoint `T` and an eigenvector `v` of `T` with (real) eigenvalue `c`, `cfc f T` acts on\n`v` by scaling it by `f c`, for any continuous `f : ℝ → ℝ`. Proved by approximating `f`\nuniformly by polynomials on `[-‖T‖, ‖T‖]` (a compact interval containing `spectrum ℝ T`,\nvia the classical Weierstrass approximation theorem) and passing to the limit using the\nisometry of `cfcHom` together with Mathlib's eigenvector evaluation law for `Polynomial.aeval`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -166747,9 +166717,7 @@
       "QuantumTheory.gibbsOp_apply_eigenvector",
       "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
     ],
-    "dependencies": [
-      "Polynomial.aeval_apply_eigenvector"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
