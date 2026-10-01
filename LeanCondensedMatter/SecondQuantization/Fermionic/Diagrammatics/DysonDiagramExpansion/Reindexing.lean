@@ -67,7 +67,7 @@ theorem sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
         (∏ i, g (x.1 i)) *
           intervalIntegral.orderedSimplexIntegral S.card β
             (fun τ => flatVertexLegPairingEvaluation ε β x.1 τ x.2) :=
-        Common.sum_quarticDiagram_eq_sum_orderedData order
+        Equiv.sum_comp (Common.quarticDiagramEquivOrderedData order)
           (fun x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card =>
             (∏ i, g (x.1 i)) *
               intervalIntegral.orderedSimplexIntegral S.card β
