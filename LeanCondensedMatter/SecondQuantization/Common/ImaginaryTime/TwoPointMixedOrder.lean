@@ -1,4 +1,5 @@
 import Mathlib
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
 
 set_option linter.style.header false
 
@@ -50,62 +51,13 @@ def twoPointTimedEventRank {n : ℕ} (event : TwoPointTimedEvent n) : ℕ :=
 breaking equal-time ties. -/
 def twoPointTimedEventBeforeOrEqual {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
-  twoPointTimedEventTime τ τ' σ b < twoPointTimedEventTime τ τ' σ a ∨
-    (twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' σ b ∧
-      twoPointTimedEventRank a ≤ twoPointTimedEventRank b)
+  stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b
 
 /-- Strict stable event precedence, obtained by excluding equality from
 `twoPointTimedEventBeforeOrEqual`. -/
 def twoPointTimedEventBefore {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
   twoPointTimedEventBeforeOrEqual τ τ' σ a b ∧ a ≠ b
-
-private theorem twoPointTimedEventBeforeOrEqual_total {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : TwoPointTimedEvent n) :
-    twoPointTimedEventBeforeOrEqual τ τ' σ a b ∨
-      twoPointTimedEventBeforeOrEqual τ τ' σ b a := by
-  rcases lt_trichotomy
-      (twoPointTimedEventTime τ τ' σ a)
-      (twoPointTimedEventTime τ τ' σ b) with hab | hab | hab
-  · right
-    exact Or.inl hab
-  · rcases le_total (twoPointTimedEventRank a) (twoPointTimedEventRank b) with hr | hr
-    · left
-      exact Or.inr ⟨hab, hr⟩
-    · right
-      exact Or.inr ⟨hab.symm, hr⟩
-  · left
-    exact Or.inl hab
-
-private theorem twoPointTimedEventBeforeOrEqual_trans {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) {a b c : TwoPointTimedEvent n}
-    (hab : twoPointTimedEventBeforeOrEqual τ τ' σ a b)
-    (hbc : twoPointTimedEventBeforeOrEqual τ τ' σ b c) :
-    twoPointTimedEventBeforeOrEqual τ τ' σ a c := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hbc with hbc | ⟨hbcTime, _⟩
-    · exact Or.inl (lt_trans hbc hab)
-    · exact Or.inl (hbcTime ▸ hab)
-  · rcases hbc with hbc | ⟨hbcTime, hbcRank⟩
-    · exact Or.inl (habTime ▸ hbc)
-    · exact Or.inr ⟨habTime.trans hbcTime, habRank.trans hbcRank⟩
-
-private theorem twoPointTimedEventBeforeOrEqual_antisymm {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) {a b : TwoPointTimedEvent n}
-    (hab : twoPointTimedEventBeforeOrEqual τ τ' σ a b)
-    (hba : twoPointTimedEventBeforeOrEqual τ τ' σ b a) :
-    a = b := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hba with hba | ⟨hbaTime, _⟩
-    · exact (lt_asymm hab hba).elim
-    · rw [hbaTime] at hab
-      exact (lt_irrefl _ hab).elim
-  · rcases hba with hba | ⟨_, hbaRank⟩
-    · rw [habTime] at hba
-      exact (lt_irrefl _ hba).elim
-    · apply (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective
-      apply Fin.ext
-      exact habRank.antisymm hbaRank
 
 /-- Stable comparison of two fixed events is unchanged when their two event times are unchanged. -/
 theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
@@ -114,7 +66,7 @@ theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
     (hb : twoPointTimedEventTime τ τ' σ b = twoPointTimedEventTime τ τ' υ b) :
     twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
       twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  simp only [twoPointTimedEventBeforeOrEqual]
+  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual]
   rw [ha, hb]
 
 /-- Interaction events in their canonical supplied slot order. -/
@@ -168,9 +120,13 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
       (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
   classical
   letI : Std.Total (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-    ⟨twoPointTimedEventBeforeOrEqual_total τ τ' σ⟩
+    ⟨fun a b =>
+      stableTimedEventBeforeOrEqual_total
+        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b⟩
   letI : IsTrans (TwoPointTimedEvent n) (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-    ⟨fun _ _ _ => twoPointTimedEventBeforeOrEqual_trans τ τ' σ⟩
+    ⟨fun a b c hab hbc =>
+      stableTimedEventBeforeOrEqual_trans
+        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank hab hbc⟩
   exact List.pairwise_insertionSort _ _
 
 /-- The fully ordered mixed-event list contains no duplicate events. -/
@@ -260,7 +216,15 @@ theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
     · exact h
     · exact (hne ((orderedTwoPointTimedEventEquiv τ τ' σ).symm.injective h)).elim
     · have hba := twoPointTimedEventBeforeOrEqual_of_position_lt τ τ' σ h
-      exact (hne (twoPointTimedEventBeforeOrEqual_antisymm τ τ' σ hab hba)).elim
+      exact (hne
+        (stableTimedEventBeforeOrEqual_antisymm
+          (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
+          (by
+            intro a b h
+            apply (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective
+            apply Fin.ext
+            exact h)
+          hab hba)).elim
 
 /-- Relative ordered positions of two events depend only on the times of those two events. -/
 theorem orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq {n : ℕ}

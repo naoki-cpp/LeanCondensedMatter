@@ -75,7 +75,8 @@ private theorem twoPointTimedEventBeforeOrEqual_map_iff
     twoPointTimedEventBeforeOrEqual τ τ' σ
         (twoPointTimedEventMap f a) (twoPointTimedEventMap f b) ↔
       twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime_map]
+  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
+    twoPointTimedEventTime_map]
   rw [twoPointTimedEventRank_map_le_iff hf]
 
 theorem twoPointTimedEventBefore_map_iff (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
