@@ -432,7 +432,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
       (localLegs.map legMap).get ((Fin.castOrderIso hLocalLength.symm) p) =
         legMap (externalInsertionMixedTimeOrderedAtomicLegEquiv
           (externalTime ∘ fExternal) (σ ∘ fInteraction) p) := by
-    simp only [List.get_map]
+    simp only [List.get_eq_getElem, List.getElem_map]
     apply congrArg legMap
     change localLegs.get _ = localLegs.get _
     congr
@@ -451,8 +451,9 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
     apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).injective
     rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position, hAmbientGet]
     rw [← hget]
-    exact hLocalGet p
+    exact (hLocalGet p).symm
   intro p q hpq
+  dsimp only [legMap] at hPosition ⊢
   rw [hPosition p, hPosition q]
   exact (Fin.castOrderIso hAmbientLength).strictMono
     (positionEmbedding.strictMono
