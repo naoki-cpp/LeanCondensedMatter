@@ -4209,7 +4209,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/ContinuousDyson.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge"
       ],
       "externalImportCount": 0
@@ -4227,8 +4227,16 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonExpansion.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonOperatorIntegral.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
       ],
       "externalImportCount": 0
     },
@@ -4236,7 +4244,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonTimeIndependent.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness"
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral"
       ],
       "externalImportCount": 1
     },
@@ -4303,6 +4312,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
@@ -6462,8 +6472,7 @@
       "name": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
       "sourceFile": "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin/PoleWindow.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor",
-        "LeanCondensedMatter.Transport.Streda.InterbandPole"
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor"
       ],
       "externalImportCount": 1
     },

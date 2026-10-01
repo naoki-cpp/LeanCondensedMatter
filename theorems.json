@@ -21232,56 +21232,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} {M : Type u_2} [inst : DecidableEq α] [inst_1 : CommMonoid M] {s : Finset α} (π : Finpartition s)\n  (f : ↥s → M), ∏ x, f x = ∏ B, ∏ x, f (π.equivSigmaParts.symm ⟨B, x⟩)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Finpartition.prod_eq_prod_parts",
-    "module": "LeanCondensedMatter.Combinatorics.FinpartitionProduct",
-    "externalAxioms": [],
-    "docString": "A product over `s` is the iterated product over the parts of a finite partition of `s`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
-      "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
-    ],
-    "dependencies": [
-      "Fintype.prod_equiv_sigma"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
-      "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [
-      "Fintype.prod_equiv_sigma"
-    ],
-    "replacementCandidateCount": 1,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) {S : Finset α},\n  S ≠ ∅ → (Finpartition.replicaPolynomial κ S).coeff 1 = κ S",
     "standardAxioms": [
       "Classical.choice",
@@ -21971,18 +21921,22 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.prod_pairs_eq_prod_components",
-      "Finpartition.prod_eq_prod_parts",
-      "SecondQuantization.Common.prod_eq_prod_interactionSectors"
+      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
+      "SecondQuantization.Common.prod_eq_prod_interactionSectors",
+      "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.prod_pairs_eq_prod_components",
-      "Finpartition.prod_eq_prod_parts",
-      "SecondQuantization.Common.prod_eq_prod_interactionSectors"
+      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
+      "SecondQuantization.Common.prod_eq_prod_interactionSectors",
+      "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36197,8 +36151,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D",
@@ -55142,50 +55096,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py offset radius : ℝ),\n  |offset| ≤ radius →\n    |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py| - radius ≤\n      |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py + offset|",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
-    "externalAxioms": [],
-    "docString": "If `|offset| ≤ radius`, the shifted interband denominator stays at least\n`|gap| - radius` away from zero on the real axis. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Streda.InterbandPole",
-    "directWrapperOf": "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset",
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m px py : ℝ), |m| ≤ QuantumTheory.Transport.Models.MassiveDirac.energy v m px py",
     "standardAxioms": [
       "Classical.choice",
@@ -65033,46 +64943,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py offset radius : ℝ),\n  radius < |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py| →\n    |offset| ≤ radius → QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py + offset ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
-    "externalAxioms": [],
-    "docString": "A target-centered window narrower than the interband gap cannot contain the opposite-band\nsource pole. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Streda.InterbandPole",
-    "directWrapperOf": "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow",
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py =\n    2 * QuantumTheory.Transport.Models.MassiveDirac.bandSign band *\n      QuantumTheory.Transport.Models.MassiveDirac.energy v m px py",
     "standardAxioms": [
@@ -67838,8 +67708,8 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
-      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_abs_mass_le_abs_interbandEnergyGap"
+      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_abs_mass_le_abs_interbandEnergyGap",
+      "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -78890,14 +78760,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
+      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset",
       "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
+      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset",
       "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
     ],
     "compiledConsumerCount": 2,
@@ -80331,7 +80201,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -80343,7 +80213,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
       "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
     "dependencies": [
@@ -80352,10 +80221,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_add_offset_ne_zero_on_targetWindow",
       "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100159,7 +100027,7 @@
     ],
     "dependencies": [
       "Finpartition.pow_card_eq_prod_parts",
-      "Finpartition.prod_eq_prod_parts",
+      "Fintype.prod_equiv_sigma",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts"
     ],
     "crossModuleDirectWrapper": false,
@@ -101299,8 +101167,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
@@ -104145,7 +104013,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight"
     ],
     "dependencies": [
-      "Finpartition.prod_eq_prod_parts",
+      "Fintype.prod_equiv_sigma",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts",
       "SecondQuantization.Common.interactionSector_subset",
       "SecondQuantization.Common.slotSplitVacuumComponentEquiv_apply",
@@ -104181,7 +104049,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct",
@@ -109520,7 +109388,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.dysonCoeff_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
     "externalAxioms": [],
     "docString": "The first-order coefficient is the negative interval integral of the interaction-picture\noperator. ",
     "directWrapperTargetModule": null,
@@ -109661,7 +109529,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.dysonCoeff_succ",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
     "externalAxioms": [],
     "docString": "On a finite configuration type, the canonical reachable-support coefficient satisfies the\noperator-valued Dyson recursion reconstructed by `operatorIntervalIntegral`. ",
     "directWrapperTargetModule": null,
@@ -114016,7 +113884,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.matrixCoeff_dysonCoeff_succ",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
     "externalAxioms": [],
     "docString": "Matrix-coefficient form of the finite Dyson successor recursion. ",
     "directWrapperTargetModule": null,
@@ -153897,7 +153765,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Finpartition.prod_eq_prod_parts",
+      "Fintype.prod_equiv_sigma",
       "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.restrictOrbitBlockConnected_apply"
     ],
     "crossModuleDirectWrapper": false,
