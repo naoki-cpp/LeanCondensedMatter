@@ -116,6 +116,9 @@ def main() -> None:
         f"{len(mathlib_defeq_rows)} Mathlib defeq targets; "
         f"{len(mathlib_replacement_rows)} Mathlib replacement targets"
     )
+    for target, replacements in mathlib_replacement_rows:
+        rendered = ", ".join(f"{name} ({module})" for name, module in replacements)
+        print(f"Mathlib replacement: {target} -> {rendered}")
 
 
 if __name__ == "__main__":
