@@ -12,8 +12,9 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 nonzero complex eigenvalues. Bundled declarations are the public operator API; the unbundled theorems
 in `Basic` and `Ops` are implementation infrastructure.
 
-The diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after proving that
-they are real. Both the public API and its trace-series implementation use this lossless path.
+Symmetry identifies the complex spectral data with the existing real spectral API. The
+diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after proving that
+they are real.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -71,7 +72,6 @@ noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
   (ContinuousLinearMap.complexSpectralSum T).re
 
 omit [CompleteSpace H] in
-@[simp]
 theorem trace_eq_complexSpectralSum_re (h : SpectralTraceClass T) :
     h.trace = (ContinuousLinearMap.complexSpectralSum T).re :=
   rfl
