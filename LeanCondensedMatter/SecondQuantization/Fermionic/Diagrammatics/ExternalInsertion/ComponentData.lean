@@ -12,7 +12,8 @@ slots. This module supplies the canonical increasing reindexing needed to apply 
 one connected component, together with the induced local external and interaction times. It also
 identifies each local canonical atomic leg with its ambient canonical leg and proves that the
 attached timed field is preserved by this embedding. The same semantic embedding is then lifted to
-mixed-time positions, where the free-Gibbs pair kernel agrees with the standalone component kernel.
+mixed-time positions, where it intertwines pairing partners and the free-Gibbs pair kernel agrees
+with the standalone component kernel.
 -/
 
 namespace SecondQuantization
@@ -240,7 +241,7 @@ private theorem ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition {
       rfl
 
 /-- The diagram partner map on canonical legs commutes with the canonical component-leg embedding. -/
-theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg {E n : ℕ}
+private theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (B : d.vertexGraph.componentPartition.parts)
     (leg : OrderedExternalInsertionLeg (d.externalPairCount B)
