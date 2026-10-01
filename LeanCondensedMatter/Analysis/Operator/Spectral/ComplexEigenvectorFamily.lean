@@ -19,14 +19,14 @@ variable {T : H →L[ℂ] H}
 /-- The index type formed from every nonzero complex eigenvalue of `T` and a basis index in its
 finite-dimensional eigenspace. -/
 def ComplexEigenvectorIndex (T : H →L[ℂ] H) : Type :=
-  Σ λ : { λ : ℂ // λ ≠ 0 },
-    Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1))
+  Σ z : { z : ℂ // z ≠ 0 },
+    Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1))
 
 /-- Every nonzero complex eigenspace of a compact operator is finite-dimensional. -/
 theorem finiteDimensional_complexEigenspace_ne_zero (hT : IsCompactOperator T)
-    (λ : { λ : ℂ // λ ≠ 0 }) :
-    FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1) :=
-  finite_dimensional_eigenspace hT λ.1 λ.2
+    (z : { z : ℂ // z ≠ 0 }) :
+    FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1) :=
+  finite_dimensional_eigenspace hT z.1 z.2
 
 /-- A chosen basis vector from each nonzero complex eigenspace of a compact operator. -/
 noncomputable def complexEigenvectorFamily (hT : IsCompactOperator T) :
@@ -48,8 +48,8 @@ theorem apply_complexEigenvectorFamily (hT : IsCompactOperator T) (a : ComplexEi
 /-- The span of `complexEigenvectorFamily` is the sum of all nonzero complex eigenspaces. -/
 theorem span_complexEigenvectorFamily (hT : IsCompactOperator T) :
     Submodule.span ℂ (Set.range (complexEigenvectorFamily hT)) =
-      ⨆ λ : { λ : ℂ // λ ≠ 0 },
-        Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1 := by
+      ⨆ z : { z : ℂ // z ≠ 0 },
+        Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1 := by
   apply le_antisymm
   · rw [Submodule.span_le]
     rintro x ⟨a, rfl⟩
@@ -57,24 +57,24 @@ theorem span_complexEigenvectorFamily (hT : IsCompactOperator T) :
       haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
       exact Submodule.coe_mem _)
   · apply iSup_le
-    intro λ
-    haveI := finiteDimensional_complexEigenspace_ne_zero hT λ
+    intro z
+    haveI := finiteDimensional_complexEigenspace_ne_zero hT z
     have hbasis : Submodule.span ℂ
         (Set.range (Module.finBasis ℂ
-          (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1))) =
-        (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)) :=
+          (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1))) =
+        (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)) :=
       (Module.finBasis ℂ
-        (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)).span_eq
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)).span_eq
     have hmap : Submodule.map
-        (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1).subtype
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1).subtype
         (Submodule.span ℂ
           (Set.range (Module.finBasis ℂ
-            (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)))) =
-        Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1 := by
+            (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)))) =
+        Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1 := by
       rw [hbasis, Submodule.map_top, Submodule.range_subtype]
     rw [← hmap, Submodule.map_span]
     apply Submodule.span_mono
     rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
-    exact ⟨⟨λ, y⟩, rfl⟩
+    exact ⟨⟨z, y⟩, rfl⟩
 
 end ContinuousLinearMap
