@@ -346,6 +346,7 @@ or consumer structure changes.
   commutes.
 - `SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff` — The
   fixed-order component-pair embedding preserves and reflects crossings.
+- `SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts` — canonical TwoPoint-diagram specialization of the generic interaction-sector product factorization; it exposes the named `vertexLabel` product used by both the Dyson-sign decomposition and downstream fermionic fixed-time factorization.
 - `SecondQuantization.Common.TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum` — The Dyson sign
   factors into the external component sign and all vacuum-component signs.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —

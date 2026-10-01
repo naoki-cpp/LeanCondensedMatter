@@ -49,7 +49,8 @@ theorem QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components
           ((d.restrictComponentConnected B.2).1).vertexWeight w := by
     simpa only [QuarticDiagram.vertexWeight, QuarticDiagram.restrictComponentConnected,
       QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts] using
-      (Finpartition.prod_eq_prod_parts d.vertexGraph.componentPartitionOn (fun v => w (d.vertexLabel v)))
+      (Fintype.prod_equiv_sigma d.vertexGraph.componentPartitionOn.equivSigmaParts
+        (fun v => w (d.vertexLabel v)))
   rw [hsign, hweight, Finset.prod_mul_distrib]
 
 end Common

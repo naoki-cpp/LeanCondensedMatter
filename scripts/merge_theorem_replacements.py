@@ -69,13 +69,14 @@ def main() -> None:
         entry["mathlibReplacementCandidates"] = [name for name, _ in mathlib_replacements]
         entry["mathlibReplacementCandidateCount"] = len(mathlib_replacements)
 
-        if defeq:
+        retained = bool(entry.get("retainedMention"))
+        if defeq and not retained:
             defeq_rows.append((target, defeq))
-        if replacements:
+        if replacements and not retained:
             replacement_rows.append((target, replacements))
-        if mathlib_defeq:
+        if mathlib_defeq and not retained:
             mathlib_defeq_rows.append((target, mathlib_defeq))
-        if mathlib_replacements:
+        if mathlib_replacements and not retained:
             mathlib_replacement_rows.append((target, mathlib_replacements))
 
     missing_findings = sorted(set(by_name) - finding_targets)
@@ -93,7 +94,7 @@ def main() -> None:
         handle.write(
             "This advisory queue contains source-declared project theorems whose compiled proof "
             "already depends on another project or Mathlib theorem that Lean can replay as a direct "
-            "specialization. Existing project direct-wrapper relations are omitted here.\n\n"
+            "specialization. Existing project direct-wrapper relations and semantically retained declarations are omitted here.\n\n"
         )
         handle.write(f"Definitionally equivalent proof-dependency targets: {len(defeq_rows)}\n\n")
         handle.write(f"Replacement-candidate targets: {len(replacement_rows)}\n\n")
@@ -116,6 +117,9 @@ def main() -> None:
         f"{len(mathlib_defeq_rows)} Mathlib defeq targets; "
         f"{len(mathlib_replacement_rows)} Mathlib replacement targets"
     )
+    for target, replacements in replacement_rows:
+        rendered = ", ".join(replacements)
+        print(f"Project replacement: {target} -> {rendered}")
     for target, replacements in mathlib_replacement_rows:
         rendered = ", ".join(f"{name} ({module})" for name, module in replacements)
         print(f"Mathlib replacement: {target} -> {rendered}")
