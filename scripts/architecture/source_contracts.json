@@ -88,7 +88,7 @@
       "paths": [
         "LeanCondensedMatter/QuantumTheory/LinearResponse/PictureEquivalence.lean",
         "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
-        "LeanCondensedMatter/Analysis/Operator/TraceClass/Unitary.lean",
+        "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Unitary.lean",
         "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean"
       ]
     },
