@@ -1,8 +1,5 @@
-import Mathlib.Analysis.InnerProductSpace.Spectrum
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.InnerProductSpace.l2Space
+import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
 import Mathlib.Analysis.InnerProductSpace.Positive
-import Mathlib.LinearAlgebra.Complex.Module
 
 set_option linter.style.header false
 
@@ -34,21 +31,21 @@ nonzero real eigenvalue `μ`, together with an index into a chosen orthonormal b
 def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ μ : { μ : ℝ // μ ≠ 0 }, Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))
 
-/-- A nonzero eigenspace of a compact operator is finite-dimensional — packaged as a named
-lemma (rather than repeating `finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)`
-at each use site) since it recurs throughout this file. -/
+/-- Embed the real spectral index into the complex spectral index. -/
+def eigenvectorIndexToComplex (a : EigenvectorIndex T) : ComplexEigenvectorIndex T :=
+  ⟨⟨(a.1.1 : ℂ), by exact_mod_cast a.1.2⟩, a.2⟩
+
+/-- A nonzero real eigenspace of a compact operator is finite-dimensional. -/
 theorem finiteDimensional_eigenspace_ne_zero (hT : IsCompactOperator T)
     (μ : { μ : ℝ // μ ≠ 0 }) :
     FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) :=
-  finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+  finiteDimensional_complexEigenspace_ne_zero hT
+    ⟨(μ.1 : ℂ), by exact_mod_cast μ.2⟩
 
-/-- The orthonormal family of eigenvectors of `T`, glued from an orthonormal basis of each
-nonzero eigenspace. -/
+/-- The real-spectrum eigenvector family, obtained by restricting the complex-spectrum family. -/
 noncomputable def eigenvectorFamily (hT : IsCompactOperator T) :
     EigenvectorIndex T → H :=
-  fun a =>
-    haveI := finiteDimensional_eigenspace_ne_zero hT a.1
-    ((stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ))) a.2 : H)
+  fun a => complexEigenvectorFamily hT (eigenvectorIndexToComplex a)
 
 theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
     Orthonormal ℂ (eigenvectorFamily hT) := by
@@ -69,13 +66,12 @@ theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymm
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).orthonormal)
   exact this
 
-/-- Each vector of `eigenvectorFamily` really is an eigenvector of `T`, with the eigenvalue
-recorded in its index. -/
+/-- Each vector of `eigenvectorFamily` is an eigenvector with the eigenvalue stored in its
+index. -/
 theorem apply_eigenvectorFamily (hT : IsCompactOperator T) (a : EigenvectorIndex T) :
     (T : H →ₗ[ℂ] H) (eigenvectorFamily hT a) = (a.1.1 : ℂ) • eigenvectorFamily hT a := by
-  apply Module.End.mem_eigenspace_iff.mp
-  haveI := finiteDimensional_eigenspace_ne_zero hT a.1
-  exact Submodule.coe_mem _
+  simpa [eigenvectorFamily, eigenvectorIndexToComplex] using
+    apply_complexEigenvectorFamily hT (eigenvectorIndexToComplex a)
 
 /-- **Only finitely many eigenvalues of a compact self-adjoint operator can exceed any fixed
 positive threshold.** Key finiteness step towards countability of `EigenvectorIndex T`: if
