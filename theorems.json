@@ -2892,8 +2892,7 @@
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-      "Combinatorics.FamilySlotShuffle.ext",
-      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail"
+      "Combinatorics.FamilySlotShuffle.ext"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -2934,9 +2933,7 @@
     "dependents": [
       "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
     ],
-    "dependencies": [
-      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -2981,7 +2978,6 @@
       "Combinatorics.FamilySlotShuffle.ext",
       "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inl",
       "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr",
-      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail",
       "Combinatorics.FamilySlotShuffle.tailSlotSubtypeEquiv_val"
     ],
     "crossModuleDirectWrapper": false,
@@ -3532,7 +3528,6 @@
     "dependents": [],
     "dependencies": [
       "Combinatorics.FamilySlotShuffle.cons_integrand",
-      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail",
       "intervalIntegral.orderedSimplexIntegral_cast",
       "intervalIntegral.orderedSimplexIntegral_congr"
     ],
@@ -3619,7 +3614,6 @@
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffle.card_tailSlots",
-      "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail",
       "Combinatorics.FamilySlotShuffle.tailSlots_set_eq_compl_headSlots"
     ],
     "crossModuleDirectWrapper": false,
@@ -3639,59 +3633,6 @@
     "mathlibDefinitionallyEquivalentTo": [],
     "mathlibReplacementCandidates": [],
     "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ), ∑ i, size i = size 0 + ∑ i, size i.succ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.sum_eq_head_add_tail",
-    "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
-    "externalAxioms": [],
-    "docString": "Split the total size into the head block and the tail family. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.FamilySlotShuffle.cons_injective",
-      "Combinatorics.FamilySlotShuffle.cons_integrand",
-      "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
-      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.cons_injective",
-      "Combinatorics.FamilySlotShuffle.cons_integrand",
-      "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
-      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
-      "Combinatorics.FamilySlotShuffle.outerSlotEquiv",
-      "Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr"
-    ],
-    "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "Fin.sum_univ_succ"
-    ],
-    "mathlibReplacementCandidateCount": 1
   },
   {
     "terminal": false,
@@ -22262,46 +22203,6 @@
     "mathlibDefinitionallyEquivalentTo": [],
     "mathlibReplacementCandidates": [],
     "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} (coeff : ι → ℂ), (Summable fun i => ‖coeff i‖) → Multipliable fun i => 1 + coeff i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Fredholm.diagonalDet_multipliable",
-    "module": "LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal",
-    "externalAxioms": [],
-    "docString": "Absolute summability of diagonal coefficients guarantees convergence of the defining product. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "multipliable_one_add_of_summable"
-    ],
-    "mathlibReplacementCandidateCount": 1
   },
   {
     "terminal": false,
@@ -93524,7 +93425,6 @@
       "SecondQuantization.Bosonic.factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
     ],
     "dependencies": [
-      "SecondQuantization.Common.sum_quarticDiagram_eq_sum_orderedData",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "crossModuleDirectWrapper": false,
@@ -118307,52 +118207,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} [inst : Fintype Label] {S : Finset (Fin N)} {k : ℕ} (order : Fin k ≃ ↥S)\n  (F : SecondQuantization.Common.OrderedQuarticDiagramData Label k → ℂ),\n  ∑ d, F ((SecondQuantization.Common.quarticDiagramEquivOrderedData order) d) = ∑ x, F x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.sum_quarticDiagram_eq_sum_orderedData",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
-    "externalAxioms": [],
-    "docString": "Reindex a finite sum over labelled diagrams as a sum over ordered data. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
-      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude",
-      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "Equiv.sum_comp"
-    ],
-    "mathlibReplacementCandidateCount": 1
-  },
-  {
     "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β → τ ∈ Set.Icc 0 β → ∀ (lam : ℂ), Summable (SecondQuantization.Common.analyticDysonTerm energy V τ lam)",
     "standardAxioms": [
@@ -121585,9 +121439,7 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
     ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.oneParticle_mul_add_swap"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -121802,8 +121654,7 @@
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul",
-      "SecondQuantization.Fermionic.AlgebraicFock.oneParticle_mul_add_swap"
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -122488,56 +122339,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (f g : 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f *\n        (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) g +\n      (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) g *\n        (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.oneParticle_mul_add_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Creation",
-    "externalAxioms": [],
-    "docString": "Degree-one one-particle vectors anticommute inside the exterior algebra. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.create_comp_add_swap",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_square",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.create_comp_add_swap",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_square",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "ExteriorAlgebra.ι_add_mul_swap"
-    ],
-    "mathlibReplacementCandidateCount": 1
-  },
-  {
     "terminal": true,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)\n  (x dx : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  ((SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep 𝓗₁ T) f) (x, dx) =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) (T f) * x +\n      (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) f * dx",
     "standardAxioms": [
@@ -122649,9 +122450,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
     ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.oneParticle_mul_add_swap"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -141463,7 +141262,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order",
-      "SecondQuantization.Common.sum_quarticDiagram_eq_sum_orderedData",
       "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "crossModuleDirectWrapper": false,
@@ -148289,7 +148087,6 @@
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod_fin",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.sum_size_comp_equiv",
       "intervalIntegral.orderedSimplexIntegral_cast",
       "intervalIntegral.orderedSimplexIntegral_congr"
     ],
@@ -148352,51 +148149,6 @@
     "mathlibDefinitionallyEquivalentTo": [],
     "mathlibReplacementCandidates": [],
     "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ] (e : ι ≃ κ) (size : κ → ℕ),\n  ∑ i, size (e i) = ∑ j, size j",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.sum_size_comp_equiv",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.reindexEquiv"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "Equiv.sum_comp"
-    ],
-    "mathlibReplacementCandidateCount": 1
   },
   {
     "terminal": false,
@@ -167292,7 +167044,6 @@
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.create_comp_add_swap",
       "SecondQuantization.Fermionic.AlgebraicFock.create_comp_self",
-      "SecondQuantization.Fermionic.AlgebraicFock.oneParticle_mul_add_swap",
       "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis_of_lt"
     ],
