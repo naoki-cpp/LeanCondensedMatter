@@ -168,13 +168,17 @@ theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : �
       (T.orderIsoOfFin rfl v).1) := by
     intro a b hab
     exact (T.orderIsoOfFin rfl).strictMono hab
-  simpa only [ExternalInsertionWickDiagram.componentMixedPosition,
-    ExternalInsertionWickDiagram.componentOrderedLeg,
-    ExternalInsertionWickDiagram.componentExternalTime,
-    ExternalInsertionWickDiagram.componentInteractionTime,
-    T, Function.comp_apply] using
-    (externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
-      hExternal hInteraction externalTime σ)
+  change StrictMono (fun p =>
+    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+      (orderedExternalInsertionLegMap
+        (fun e => (d.externalSectorOrderIso B e).1)
+        (fun v => (T.orderIsoOfFin rfl v).1)
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          (fun e => externalTime (d.externalSectorOrderIso B e).1)
+          (fun v => σ (T.orderIsoOfFin rfl v).1) p)))
+  exact
+    externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+      hExternal hInteraction externalTime σ
 
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
