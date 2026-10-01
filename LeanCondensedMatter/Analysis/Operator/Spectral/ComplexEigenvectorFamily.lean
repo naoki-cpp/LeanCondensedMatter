@@ -1,6 +1,4 @@
 import Mathlib.Analysis.InnerProductSpace.Spectrum
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.Complex.Module
 
 set_option linter.style.header false
 
@@ -30,12 +28,12 @@ theorem finiteDimensional_complexEigenspace_ne_zero (hT : IsCompactOperator T)
     FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1) :=
   finite_dimensional_eigenspace hT λ.1 λ.2
 
-/-- A chosen orthonormal basis vector from each nonzero complex eigenspace of a compact operator. -/
+/-- A chosen basis vector from each nonzero complex eigenspace of a compact operator. -/
 noncomputable def complexEigenvectorFamily (hT : IsCompactOperator T) :
     ComplexEigenvectorIndex T → H :=
   fun a =>
     haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
-    ((stdOrthonormalBasis ℂ
+    ((Module.finBasis ℂ
       (Module.End.eigenspace (T : H →ₗ[ℂ] H) a.1.1)) a.2 : H)
 
 /-- Each vector in `complexEigenvectorFamily` is an eigenvector with the eigenvalue stored in its
@@ -62,15 +60,15 @@ theorem span_complexEigenvectorFamily (hT : IsCompactOperator T) :
     intro λ
     haveI := finiteDimensional_complexEigenspace_ne_zero hT λ
     have hbasis : Submodule.span ℂ
-        (Set.range (stdOrthonormalBasis ℂ
+        (Set.range (Module.finBasis ℂ
           (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1))) =
         (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)) :=
-      (stdOrthonormalBasis ℂ
-        (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)).toBasis.span_eq
+      (Module.finBasis ℂ
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)).span_eq
     have hmap : Submodule.map
         (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1).subtype
         (Submodule.span ℂ
-          (Set.range (stdOrthonormalBasis ℂ
+          (Set.range (Module.finBasis ℂ
             (Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1)))) =
         Module.End.eigenspace (T : H →ₗ[ℂ] H) λ.1 := by
       rw [hbasis, Submodule.map_top, Submodule.range_subtype]
