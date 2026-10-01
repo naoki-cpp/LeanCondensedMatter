@@ -29,11 +29,6 @@ abbrev FamilySlotShuffle.tailSize (size : Fin (k + 1) → ℕ) : Fin k → ℕ :
 abbrev FamilySlotShuffle.tailTotal (size : Fin (k + 1) → ℕ) : ℕ :=
   ∑ i : Fin k, size i.succ
 
-/-- Split the total size into the head block and the tail family. -/
-theorem FamilySlotShuffle.sum_eq_head_add_tail (size : Fin (k + 1) → ℕ) :
-    (∑ i, size i) = size 0 + ∑ i : Fin k, size i.succ := by
-  exact Fin.sum_univ_succ size
-
 /-- Separate the head local-slot fiber from the sigma type of tail fibers. -/
 def FamilySlotShuffle.headTailLocalSlotEquiv (size : Fin (k + 1) → ℕ) :
     (Σ i : Fin (k + 1), Fin (size i)) ≃
@@ -89,20 +84,20 @@ noncomputable def FamilySlotShuffle.cons (size : Fin (k + 1) → ℕ)
     (FamilySlotShuffle.headTailLocalSlotEquiv size).trans
       ((Equiv.sumCongr (Equiv.refl _) tail.slotEquiv).trans
         (outer.slotEquiv.trans
-          (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm)))
+          (finCongr (Fin.sum_univ_succ size).symm)))
   strictMono := by
     intro i
     refine Fin.cases ?_ (fun r => ?_) i
     · intro a b hab
-      change (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm)
+      change (finCongr (Fin.sum_univ_succ size).symm)
           (outer.slotEquiv (Sum.inl a)) <
-        (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm)
+        (finCongr (Fin.sum_univ_succ size).symm)
           (outer.slotEquiv (Sum.inl b))
       simpa using outer.strictMonoLeft hab
     · intro a b hab
-      change (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm)
+      change (finCongr (Fin.sum_univ_succ size).symm)
           (outer.slotEquiv (Sum.inr (tail.slotEquiv ⟨r, a⟩))) <
-        (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm)
+        (finCongr (Fin.sum_univ_succ size).symm)
           (outer.slotEquiv (Sum.inr (tail.slotEquiv ⟨r, b⟩)))
       simpa using outer.strictMonoRight (tail.strictMono r hab)
 
@@ -112,7 +107,7 @@ theorem FamilySlotShuffle.cons_slotEquiv_zero (size : Fin (k + 1) → ℕ)
     (tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size))
     (j : Fin (size 0)) :
     (FamilySlotShuffle.cons size outer tail).slotEquiv ⟨0, j⟩ =
-      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm
+      finCongr (Fin.sum_univ_succ size).symm
         (outer.slotEquiv (Sum.inl j)) :=
   rfl
 
@@ -122,7 +117,7 @@ theorem FamilySlotShuffle.cons_slotEquiv_succ (size : Fin (k + 1) → ℕ)
     (tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size))
     (i : Fin k) (j : Fin (size i.succ)) :
     (FamilySlotShuffle.cons size outer tail).slotEquiv ⟨i.succ, j⟩ =
-      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm
+      finCongr (Fin.sum_univ_succ size).symm
         (outer.slotEquiv (Sum.inr (tail.slotEquiv ⟨i, j⟩))) :=
   rfl
 
@@ -227,13 +222,13 @@ noncomputable def FamilySlotShuffle.outerSlotEquiv {size : Fin (k + 1) → ℕ}
       ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots).toEquiv.trans
         (Set.equivOfEq shuffle.tailSlots_set_eq_compl_headSlots))).trans
     ((Equiv.Set.sumCompl (↑shuffle.headSlots : Set (Fin (∑ i, size i)))).trans
-      (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)))
+      (finCongr (Fin.sum_univ_succ size)))
 
 @[simp]
 theorem FamilySlotShuffle.outerSlotEquiv_apply_inl {size : Fin (k + 1) → ℕ}
     (shuffle : FamilySlotShuffle size) (j : Fin (size 0)) :
     shuffle.outerSlotEquiv (Sum.inl j) =
-      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
+      finCongr (Fin.sum_univ_succ size)
         (shuffle.slotEquiv ⟨0, j⟩) := by
   rfl
 
@@ -241,14 +236,14 @@ theorem FamilySlotShuffle.outerSlotEquiv_apply_inl {size : Fin (k + 1) → ℕ}
 theorem FamilySlotShuffle.outerSlotEquiv_apply_inr {size : Fin (k + 1) → ℕ}
     (shuffle : FamilySlotShuffle size) (r : Fin (FamilySlotShuffle.tailTotal size)) :
     shuffle.outerSlotEquiv (Sum.inr r) =
-      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
+      finCongr (Fin.sum_univ_succ size)
         ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
           ↥shuffle.tailSlots) : Fin (∑ i, size i)) := by
   let y : ↥shuffle.tailSlots :=
     shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r
   simp only [FamilySlotShuffle.outerSlotEquiv, Equiv.trans_apply,
     Equiv.sumCongr_apply, Sum.map_inr]
-  refine congrArg (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)) ?_
+  refine congrArg (finCongr (Fin.sum_univ_succ size)) ?_
   change
     (Equiv.Set.sumCompl (↑shuffle.headSlots : Set (Fin (∑ i, size i))))
         (Sum.inr ((Set.equivOfEq shuffle.tailSlots_set_eq_compl_headSlots) y)) =
@@ -300,7 +295,7 @@ theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
       (fun shuffle : FamilySlotShuffle size =>
         shuffle.slotEquiv
           (⟨(0 : Fin (k + 1)), j⟩ : Σ i : Fin (k + 1), Fin (size i))) h
-    exact (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm).injective hj
+    exact (finCongr (Fin.sum_univ_succ size).symm).injective hj
   have houter : outer₁ = outer₂ := by
     apply SlotShuffle.eq_of_leftSlots_eq
     ext x
@@ -320,7 +315,7 @@ theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
       (fun shuffle : FamilySlotShuffle size =>
         shuffle.slotEquiv
           ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr x))) h
-    have hx' := (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm).injective hx
+    have hx' := (finCongr (Fin.sum_univ_succ size).symm).injective hx
     have hx'' := outer₁.slotEquiv.injective hx'
     exact Sum.inr.inj hx''
   exact Prod.ext rfl htail
