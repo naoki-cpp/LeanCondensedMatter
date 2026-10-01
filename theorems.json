@@ -13662,6 +13662,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T) (a : T.ComplexEigenvectorIndex),\n  ↑T (ContinuousLinearMap.complexEigenvectorFamily hT a) = ↑a.fst • ContinuousLinearMap.complexEigenvectorFamily hT a",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.apply_complexEigenvectorFamily",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily",
+    "externalAxioms": [],
+    "docString": "Each vector in `complexEigenvectorFamily` is an eigenvector with the eigenvalue stored in its\nindex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T) (a : T.EigenvectorIndex),\n  ↑T (ContinuousLinearMap.eigenvectorFamily hT a) = ↑↑a.fst • ContinuousLinearMap.eigenvectorFamily hT a",
     "standardAxioms": [
@@ -13678,7 +13713,7 @@
     "name": "ContinuousLinearMap.apply_eigenvectorFamily",
     "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
     "externalAxioms": [],
-    "docString": "Each vector of `eigenvectorFamily` really is an eigenvector of `T`, with the eigenvalue\nrecorded in its index. ",
+    "docString": "Each vector of `eigenvectorFamily` is an eigenvector with the eigenvalue stored in its\nindex. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -14325,6 +14360,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T → ∀ (z : { z // z ≠ 0 }), FiniteDimensional ℂ ↥(Module.End.eigenspace ↑T ↑z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.finiteDimensional_complexEigenspace_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily",
+    "externalAxioms": [],
+    "docString": "Every nonzero complex eigenspace of a compact operator is finite-dimensional. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero",
+      "ContinuousLinearMap.span_complexEigenvectorFamily"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero",
+      "ContinuousLinearMap.span_complexEigenvectorFamily"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T → ∀ (μ : { μ // μ ≠ 0 }), FiniteDimensional ℂ ↥(Module.End.eigenspace ↑T ↑↑μ)",
     "standardAxioms": [
       "Classical.choice",
@@ -14340,14 +14416,16 @@
     "name": "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero",
     "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
     "externalAxioms": [],
-    "docString": "A nonzero eigenspace of a compact operator is finite-dimensional — packaged as a named\nlemma (rather than repeating `finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)`\nat each use site) since it recurs throughout this file. ",
+    "docString": "A nonzero real eigenspace of a compact operator is finite-dimensional. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.orthonormal_eigenvectorFamily",
       "ContinuousLinearMap.span_eigenvectorFamily"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensional_complexEigenspace_ne_zero"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -15199,7 +15277,8 @@
       "ContinuousLinearMap.orthogonal_closure_span_eigenvectorFamily"
     ],
     "dependencies": [
-      "ContinuousLinearMap.span_eigenvectorFamily"
+      "ContinuousLinearMap.span_complexEigenvectorFamily",
+      "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15374,6 +15453,91 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T),\n  Submodule.span ℂ (Set.range (ContinuousLinearMap.complexEigenvectorFamily hT)) = ⨆ z, Module.End.eigenspace ↑T ↑z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.span_complexEigenvectorFamily",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily",
+    "externalAxioms": [],
+    "docString": "The span of `complexEigenvectorFamily` is the sum of all nonzero complex eigenspaces. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.kernel_sup_span_eigenvectorFamily_dense",
+      "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensional_complexEigenspace_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.kernel_sup_span_eigenvectorFamily_dense",
+      "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T),\n  (↑T).IsSymmetric →\n    Submodule.span ℂ (Set.range (ContinuousLinearMap.complexEigenvectorFamily hT)) =\n      Submodule.span ℂ (Set.range (ContinuousLinearMap.eigenvectorFamily hT))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
+    "externalAxioms": [],
+    "docString": "For a symmetric operator, the nonzero complex spectral span equals the nonzero real\nspectral span. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.kernel_sup_span_eigenvectorFamily_dense"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.span_complexEigenvectorFamily",
+      "ContinuousLinearMap.span_eigenvectorFamily"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.kernel_sup_span_eigenvectorFamily_dense"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T),\n  Submodule.span ℂ (Set.range (ContinuousLinearMap.eigenvectorFamily hT)) = ⨆ μ, Module.End.eigenspace ↑T ↑↑μ",
     "standardAxioms": [
       "Classical.choice",
@@ -15393,7 +15557,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.kernel_sup_span_eigenvectorFamily_dense"
+      "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
     ],
     "dependencies": [
       "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero"
@@ -15401,7 +15565,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.kernel_sup_span_eigenvectorFamily_dense"
+      "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

@@ -410,10 +410,18 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral/ComplexEigenvectorFamily.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral/EigenvectorFamily.lean",
-      "imports": [],
-      "externalImportCount": 5
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily"
+      ],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent",
@@ -425,6 +433,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily",
         "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
         "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent"
       ],
