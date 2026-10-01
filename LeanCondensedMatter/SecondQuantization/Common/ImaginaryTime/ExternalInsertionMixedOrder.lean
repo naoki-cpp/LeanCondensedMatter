@@ -435,7 +435,9 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
     simp only [List.get_eq_getElem, List.getElem_map]
     apply congrArg legMap
     change localLegs.get _ = localLegs.get _
-    congr
+    apply congrArg localLegs.get
+    apply Fin.ext
+    rfl
   have hAmbientGet (p : Fin ambientLegs.length) :
       externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ
           ((Fin.castOrderIso hAmbientLength) p) =
