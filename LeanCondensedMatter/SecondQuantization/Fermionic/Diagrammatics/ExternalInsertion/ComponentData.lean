@@ -251,9 +251,6 @@ theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg {E n :
   let T :=
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let localEquiv :=
-    externalInsertionLegEquiv (d.externalPairCount B)
-      (Finset.univ : Finset (Fin T.card))
   let r := d.restrictComponent B
   let h : 2 * T.card + d.externalPairCount B =
       2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by
@@ -309,16 +306,10 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     have hPartner :=
       (d.componentWickDiagram B).pairingInMixedOrder_partner_legPosition
         localExternalTime localInteractionTime localLeg
-    have hPosition :
-        externalInsertionMixedTimeOrderedAtomicLegPosition
-            localExternalTime localInteractionTime localLeg = p := by
-      exact externalInsertionMixedTimeOrderedAtomicLegPosition_equiv
-        localExternalTime localInteractionTime p
-    rw [hPosition] at hPartner
     have h := congrArg
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
         localExternalTime localInteractionTime) hPartner
-    simpa using h.symm
+    simpa [localLeg] using h.symm
   unfold ExternalInsertionWickDiagram.componentMixedPosition
   rw [d.pairingInMixedOrder_partner_legPosition,
     d.atomicLegPartner_componentOrderedLeg B localLeg,
