@@ -170,7 +170,7 @@ theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitu
       rw [Fintype.sum_prod_type]
     _ = ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
         F (Common.quarticDiagramEquivOrderedData order d) :=
-      (Common.sum_quarticDiagram_eq_sum_orderedData order F).symm
+      (Equiv.sum_comp (Common.quarticDiagramEquivOrderedData order) F).symm
     _ = ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
         QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t := by
       apply Finset.sum_congr rfl
