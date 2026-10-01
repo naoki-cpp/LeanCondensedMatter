@@ -58,11 +58,12 @@ general trace class.
 ## Hilbert--Schmidt operators
 
 `Analysis/Operator/HilbertSchmidt/` provides basis-independent Hilbert--Schmidt membership, adjoint
-invariance, closure under bounded composition, the pairing `innerHS`, and comparison with spectral
-trace on the compact self-adjoint overlap.
+invariance, closure under bounded composition, the basis-relative totalized norm-square series, the
+pairing `innerHS`, and comparison with spectral trace on the compact self-adjoint overlap.
 
-A general non-self-adjoint trace-class product ideal with trace norm, completeness, and general trace
-remains open.
+General non-self-adjoint trace-class membership is now defined from Hilbert--Schmidt membership of
+`sqrt(|T|)`. Closure as an operator ideal, the canonical trace norm, the general complex trace, and
+completeness remain open.
 
 ## Fredholm determinant
 
@@ -155,7 +156,7 @@ bounded `Observable` layer until such infrastructure exists.
 
 The following remain open or only partially covered:
 
-- a general non-self-adjoint trace-class/Schatten ideal and trace;
+- general trace-class closure, canonical trace norm, complex trace, and the broader Schatten hierarchy;
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;
