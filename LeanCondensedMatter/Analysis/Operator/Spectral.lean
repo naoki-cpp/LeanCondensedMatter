@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
 
