@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
@@ -6,18 +6,17 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Compo
 set_option linter.style.header false
 
 /-!
-# Coefficientwise connected theorem for bosonic quartic thermal diagrams
+# Connected bosonic quartic thermal diagrams
 
 The ordered thermal amplitude factors over connected components once a global vertex order is
-written as component-local orders plus a shuffle. A raw sum over global vertex orders therefore
-contains a shuffle multiplicity. Dividing by the number of vertex orders removes exactly that
-multiplicity, so the resulting diagram-level amplitude is multiplicative under connected-component
-decomposition.
+written as component-local orders plus a shuffle. Averaging over all global vertex orders removes
+the resulting shuffle multiplicity, so the coefficientwise thermal amplitude is multiplicative
+under connected-component decomposition.
 
-This gives a direct input to the generic normalized cumulant/connected-decomposition theorem.
-Everything in this file is finite and coefficientwise: no ordered-simplex integration, infinite
-Dyson-series convergence, or completed-Fock-space assertion is made. The decomposition adapter
-itself is statistics-independent and owned by `Common`.
+This file stops at the forward connected-decomposition boundary: the multiplicative weight and its
+normalized object moment. Möbius inversion and cumulants live in the separate `Cumulant` layer.
+Everything here is finite and coefficientwise; no ordered-simplex integration, infinite Dyson-series
+convergence, or completed-Fock-space assertion is made.
 -/
 
 namespace SecondQuantization
@@ -140,31 +139,6 @@ noncomputable def quarticThermalMoment
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.NormalizedSetFunction (Fin N) ℂ :=
   (quarticThermalDiagramMultiplicativeWeight (N := N) ε β g).normalizedObjectMoment
-
-/-- Coefficientwise bosonic thermal cumulant in normalized finite-set coordinates. -/
-noncomputable def quarticThermalCumulant
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
-    Combinatorics.NormalizedSetFunction (Fin N) ℂ :=
-  (quarticThermalMoment (N := N) ε β g).cumulant
-
-/-- The coefficientwise bosonic thermal cumulant is exactly the sum of order-averaged amplitudes of
-connected quartic diagrams. -/
-theorem quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (hS : S ≠ ∅) :
-    quarticThermalCumulant (N := N) ε β g S =
-      ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
-        QuarticDiagram.thermalAmplitude ε β g d.1 := by
-  let W := quarticThermalDiagramMultiplicativeWeight (N := N) ε β g
-  change W.normalizedObjectMoment.cumulant S =
-    ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
-      QuarticDiagram.thermalAmplitude ε β g d.1
-  calc
-    W.normalizedObjectMoment.cumulant S = W.connectedContribution S :=
-      W.normalizedObjectMoment_cumulant_eq_connectedContribution hS
-    _ = ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
-        QuarticDiagram.thermalAmplitude ε β g d.1 := rfl
-
 end
 end Bosonic
 end SecondQuantization
