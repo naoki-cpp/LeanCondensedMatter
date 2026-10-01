@@ -12842,6 +12842,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
@@ -12880,6 +12881,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
@@ -12913,7 +12915,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 33,
+    "compiledConsumerCount": 34,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13122,6 +13124,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H},\n  T.SpectralTraceClass → ∀ (c : ℝ), (c • T).SpectralTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.SpectralTraceClass.smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": "Spectral trace class is preserved under multiplication by any real scalar. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.SpectralTraceClass.summable",
+      "ContinuousLinearMap.SpectralTraceClass.symmetric",
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul",
+      "QuantumTheory.DensityOperator.normalizePositive"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (h : T.SpectralTraceClass),\n  T.IsPositive →\n    ∀ {ι : Type u_2} {d : ι → H},\n      Orthonormal ℂ d →\n        (Summable fun i => T.diagonalExpectationValue ⋯ (d i)) ∧\n          ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) ≤ h.trace",
     "standardAxioms": [
       "Classical.choice",
@@ -13191,10 +13239,12 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul",
       "ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate",
       "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate",
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
@@ -13215,10 +13265,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul",
       "ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate",
       "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate",
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
@@ -13234,7 +13286,7 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.purity_le_one"
     ],
-    "compiledConsumerCount": 19,
+    "compiledConsumerCount": 21,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13266,6 +13318,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
+      "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
@@ -13277,13 +13330,14 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
+      "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
       "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate",
       "QuantumTheory.DensityOperator.isSymmetric"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13402,10 +13456,10 @@
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_nonneg",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul",
       "ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.gibbsState_op",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.spectralTrace_gibbsOp_pos"
@@ -13420,10 +13474,10 @@
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_nonneg",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul",
       "ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.gibbsState_op",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.spectralTrace_gibbsOp_pos"
@@ -13514,6 +13568,47 @@
       "QuantumTheory.spectralTrace_gibbsOp_pos"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H}\n  (h : T.SpectralTraceClass) (c : ℝ), ⋯.trace = c * h.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.SpectralTraceClass.trace_smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": "The bundled spectral trace is homogeneous under multiplication by any real scalar. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.smul",
+      "ContinuousLinearMap.SpectralTraceClass.summable",
+      "ContinuousLinearMap.SpectralTraceClass.trace_eq_spectralTrace",
+      "ContinuousLinearMap.spectralTrace_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14666,7 +14761,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → T.HasSummableRealEigenvalues → (c • T).HasSummableRealEigenvalues",
     "standardAxioms": [
       "Classical.choice",
@@ -14685,15 +14780,21 @@
     "docString": "Spectral summability is preserved under multiplication by a nonzero real scalar. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.smul",
+      "ContinuousLinearMap.spectralTrace_smul"
+    ],
     "dependencies": [
       "ContinuousLinearMap.eigenspace_smul",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.smul",
+      "ContinuousLinearMap.spectralTrace_smul"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15561,15 +15662,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 →\n    T.HasSummableRealEigenvalues → (c • T).HasSummableRealEigenvalues → (c • T).spectralTrace = c * T.spectralTrace",
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → T.HasSummableRealEigenvalues → (c • T).spectralTrace = c * T.spectralTrace",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15580,17 +15681,22 @@
     "docString": "`spectralTrace` is homogeneous under multiplication by a nonzero real scalar. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+    ],
     "dependencies": [
       "ContinuousLinearMap.eigenspace_smul",
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
       "ContinuousLinearMap.summable_eigenvectorIndex",
       "ContinuousLinearMap.tsum_eigenvectorIndex_eq_tsum_mul_finrank",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80287,7 +80393,6 @@
       "ContinuousLinearMap.SpectralTraceClass.compact",
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
       "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "ContinuousLinearMap.SpectralTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.apply_eigenvectorFamily",
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range",
@@ -82906,6 +83011,80 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Semiring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (C : A) (l : List (A × ℂ)),\n  (∀ p ∈ l, C * p.1 = p.2 • 1 + ζ • (p.1 * C)) →\n    C * (List.map Prod.fst l).prod =\n      ScalarExchange.peelSumWithCoefficients ζ l + ζ ^ l.length • ((List.map Prod.fst l).prod * C)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.mul_prod_eq_peelSumWithCoefficients",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
+    "externalAxioms": [],
+    "docString": "Repeatedly apply a scalar exchange relation between one fixed element and the factors of a\ncoefficient-paired list. This form is useful when the exchange coefficients depend on the fixed\nelement, so no relations between the factors themselves are required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {A : Type u_1} [inst : Semiring A] [inst_1 : Algebra ℂ A] (ζ : ℂ), ScalarExchange.peelSumWithCoefficients ζ [] = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.peelSumWithCoefficients_nil",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90100,7 +90279,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    (SecondQuantization.Bosonic.quarticThermalCumulant ε β g).toFun S =\n      ∑ d, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑d",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {N : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    (SecondQuantization.Bosonic.quarticThermalCumulant ε β g).toFun S =\n      ∑ d, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90113,7 +90292,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Cumulant",
     "externalAxioms": [],
     "docString": "The coefficientwise bosonic thermal cumulant is exactly the sum of order-averaged amplitudes of\nconnected quartic diagrams. ",
     "directWrapperTargetModule": null,
@@ -98835,7 +99014,9 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_peel",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -135809,6 +135990,129 @@
       "ContinuousLinearMap.spectralTrace_smul"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  (a : ContinuousLinearMap.EigenvectorIndex 0), False",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H],\n  ContinuousLinearMap.HasSummableRealEigenvalues 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.smul"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.smul"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H], ContinuousLinearMap.spectralTrace 0 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

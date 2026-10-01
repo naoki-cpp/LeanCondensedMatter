@@ -485,7 +485,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Scalar.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Basic"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled"
       ],
       "externalImportCount": 1
     },
@@ -2799,10 +2799,19 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/Connected.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Cumulant",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/Cumulant.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected"
       ],
       "externalImportCount": 0
     },
@@ -2850,7 +2859,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Cumulant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonLinkedCluster",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField"
@@ -4387,7 +4396,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirst.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
+        "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
       ],
       "externalImportCount": 1
