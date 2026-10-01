@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import Mathlib.Algebra.GroupWithZero.Units.Equiv
 
 set_option linter.style.header false
@@ -92,9 +92,10 @@ theorem hasSummableRealEigenvalues_smul {c : ℝ} (hc : c ≠ 0)
 
 omit [CompleteSpace H] in
 /-- `spectralTrace` is homogeneous under multiplication by a nonzero real scalar. -/
-theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenvalues T)
-    (hcT : HasSummableRealEigenvalues (c • T)) :
+theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenvalues T) :
     spectralTrace (c • T) = c * spectralTrace T := by
+  have hcT : HasSummableRealEigenvalues (c • T) :=
+    hasSummableRealEigenvalues_smul hc h
   change (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
   rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex hcT),
     tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex h),
@@ -111,5 +112,26 @@ theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenval
     rw [show ((c * μ.1 : ℝ) : ℂ) = (c : ℂ) * (μ.1 : ℂ) from by push_cast; ring]
     exact congrArg (fun S' : Submodule ℂ H => Module.finrank ℂ S') (eigenspace_smul hc μ.1)]
   ring
+
+namespace SpectralTraceClass
+
+omit [CompleteSpace H] in
+/-- Spectral trace class is preserved under multiplication by a nonzero real scalar. -/
+theorem smul (h : SpectralTraceClass T) {c : ℝ} (hc : c ≠ 0) :
+    SpectralTraceClass (c • T) where
+  compact := h.compact.smul c
+  symmetric := by
+    rw [ContinuousLinearMap.toLinearMap_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)]
+    exact h.symmetric.smul (c := (c : ℂ)) (by simp)
+  summable := hasSummableRealEigenvalues_smul hc h.summable
+
+omit [CompleteSpace H] in
+/-- The bundled spectral trace is homogeneous under multiplication by a nonzero real scalar. -/
+theorem trace_smul (h : SpectralTraceClass T) {c : ℝ} (hc : c ≠ 0) :
+    (h.smul hc).trace = c * h.trace := by
+  rw [(h.smul hc).trace_eq_spectralTrace, h.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.spectralTrace_smul hc h.summable
+
+end SpectralTraceClass
 
 end ContinuousLinearMap
