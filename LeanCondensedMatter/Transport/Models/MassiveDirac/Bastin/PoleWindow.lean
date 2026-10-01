@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor
-import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -37,26 +36,6 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
   congr 1
   push_cast
   ring
-
-/-- If `|offset| ≤ radius`, the shifted interband denominator stays at least
-`|gap| - radius` away from zero on the real axis. -/
-theorem abs_interbandEnergyGap_add_offset_ge_sub_radius
-    (band : Band) (v m px py offset radius : ℝ)
-    (hoffset : |offset| ≤ radius) :
-    |interbandEnergyGap band v m px py| - radius ≤
-      |interbandEnergyGap band v m px py + offset| :=
-  abs_gap_sub_radius_le_abs_gap_add_offset
-    (interbandEnergyGap band v m px py) offset radius hoffset
-
-/-- A target-centered window narrower than the interband gap cannot contain the opposite-band
-source pole. -/
-theorem interbandEnergyGap_add_offset_ne_zero_on_targetWindow
-    (band : Band) (v m px py offset radius : ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|)
-    (hoffset : |offset| ≤ radius) :
-    interbandEnergyGap band v m px py + offset ≠ 0 :=
-  gap_add_offset_ne_zero_on_targetWindow
-    (interbandEnergyGap band v m px py) offset radius hradius hoffset
 
 end
 
