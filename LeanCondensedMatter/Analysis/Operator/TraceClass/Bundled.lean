@@ -55,15 +55,13 @@ theorem isSelfAdjoint (h : SpectralTraceClass T) : IsSelfAdjoint T :=
   ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr h.symmetric
 
 /-- The spectral trace associated with the bundled hypotheses. -/
-noncomputable def trace (h : SpectralTraceClass T) : ℝ :=
-  match h with
-  | ⟨_, _, _⟩ => ContinuousLinearMap.spectralTrace T
+noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
+  ContinuousLinearMap.spectralTrace T
 
 omit [CompleteSpace H] in
 @[simp]
 theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
-    h.trace = ContinuousLinearMap.spectralTrace T := by
-  cases h
+    h.trace = ContinuousLinearMap.spectralTrace T :=
   rfl
 
 omit [CompleteSpace H] in
