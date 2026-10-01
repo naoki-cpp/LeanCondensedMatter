@@ -98,17 +98,6 @@ noncomputable def ExternalInsertionWickDiagram.pairingInMixedOrder {E n : ℕ}
   (externalInsertionPairingCastEquiv E n d.pairing).transport
     (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm
 
-/-- Casting the number of pairs transports the partner permutation through the corresponding cast
-of flattened positions. -/
-private theorem pairingCast_partner {m n : ℕ} (h : m = n)
-    (pairing : Pairing m) (p : Fin (2 * n)) :
-    (finCongr (congrArg (fun k : ℕ => 2 * k) h.symm))
-        ((Equiv.cast (congrArg Pairing h) pairing).partner p) =
-      pairing.partner
-        ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) := by
-  subst n
-  rfl
-
 private theorem externalInsertionPairingCastEquiv_partner {E n : ℕ}
     (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + E))
     (p : Fin (2 * (2 * n + E))) :
@@ -126,7 +115,7 @@ private theorem externalInsertionPairingCastEquiv_partner {E n : ℕ}
       finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
     congr
   rw [hcast, hfin]
-  exact pairingCast_partner h pairing p
+  exact pairing.cast_partner h p
 
 /-- Transporting a mixed-order partner back to the fixed flattened enumeration recovers the
 original diagram partner. -/
