@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.General
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
