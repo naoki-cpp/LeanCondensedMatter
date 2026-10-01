@@ -60,6 +60,7 @@ def Snapshot.declarationType? (snapshot : Snapshot) (declName : Name) : Option E
 private def boundedDimensionIndependentModules : Array Name := #[
   `LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics,
   `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence,
+  `LeanCondensedMatter.Analysis.Operator.Unitary,
   `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary,
   `LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion,
   `LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws,
