@@ -133,7 +133,7 @@ private theorem create_exteriorBasis
           simp [fermionSign, hfilter, insertOccupation]
         · have hcar := congrArg
             (fun z => z * b.ExteriorAlgebra s)
-            (oneParticle_mul_add_swap 𝓗₁ (b i) (b a))
+            (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) (b i) (b a))
           have hswap :
               create 𝓗₁ (b i) (create 𝓗₁ (b a) (b.ExteriorAlgebra s)) =
                 -create 𝓗₁ (b a) (create 𝓗₁ (b i) (b.ExteriorAlgebra s)) := by

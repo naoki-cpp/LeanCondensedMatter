@@ -68,13 +68,6 @@ noncomputable def quarticDiagramEquivOrderedData {S : Finset (Fin N)} {k : ℕ}
       simp
     · simp [QuarticDiagram.pairingInOrder]
 
-/-- Reindex a finite sum over labelled diagrams as a sum over ordered data. -/
-theorem sum_quarticDiagram_eq_sum_orderedData [Fintype Label] {S : Finset (Fin N)} {k : ℕ}
-    (order : Fin k ≃ ↥S) (F : OrderedQuarticDiagramData Label k → ℂ) :
-    ∑ d : QuarticDiagram Label N S, F (quarticDiagramEquivOrderedData order d) =
-      ∑ x : OrderedQuarticDiagramData Label k, F x :=
-  Equiv.sum_comp (quarticDiagramEquivOrderedData order) F
-
 /-- A vertex order exists for every finite vertex set. -/
 noncomputable def someVertexOrder (S : Finset (Fin N)) : QuarticVertexOrder S :=
   ((Fintype.equivFin (↥S)).trans (finCongr (Fintype.card_coe S))).symm

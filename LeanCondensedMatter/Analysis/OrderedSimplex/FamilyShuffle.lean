@@ -31,7 +31,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
         (outer.integrand (localIntegrand 0)
           (tail.integrand (fun i => localIntegrand i.succ))) := by
   rw [intervalIntegral.orderedSimplexIntegral_cast
-    (FamilySlotShuffle.sum_eq_head_add_tail size)]
+    (Fin.sum_univ_succ size)]
   apply orderedSimplexIntegral_congr
   intro τ
   exact FamilySlotShuffle.cons_integrand size outer tail localIntegrand τ
@@ -145,14 +145,10 @@ variable {ι κ : Type*} [Fintype ι] [Fintype κ]
 
 noncomputable section
 
-private theorem sum_size_comp_equiv (e : ι ≃ κ) (size : κ → ℕ) :
-    (∑ i : ι, size (e i)) = ∑ j : κ, size j :=
-  Equiv.sum_comp e size
-
 /-- Reindex family slot shuffles along an equivalence of their finite block-index types. -/
 private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
     FamilySlotShuffle size ≃ FamilySlotShuffle (fun i => size (e i)) := by
-  let hsum : (∑ i : ι, size (e i)) = ∑ j : κ, size j := sum_size_comp_equiv e size
+  let hsum : (∑ i : ι, size (e i)) = ∑ j : κ, size j := Equiv.sum_comp e size
   let localEquiv : (Σ i : ι, Fin (size (e i))) ≃ (Σ j : κ, Fin (size j)) :=
     e.sigmaCongrLeft (β := fun j : κ => Fin (size j))
   exact
@@ -232,7 +228,7 @@ private theorem FamilySlotShuffle.sum_integral_eq_prod
             symm
             dsimp [sizeFin, localFin]
             let hsum : (∑ i : Fin (Fintype.card ι), size (e i)) = ∑ j : ι, size j :=
-              sum_size_comp_equiv e size
+              Equiv.sum_comp e size
             rw [intervalIntegral.orderedSimplexIntegral_cast hsum]
             apply orderedSimplexIntegral_congr
             intro τ
