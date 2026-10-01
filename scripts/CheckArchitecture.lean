@@ -245,7 +245,8 @@ private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #
 
 private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
-  let unitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+  let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
+  let traceClassUnitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
   #[
     { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
@@ -255,15 +256,21 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.LinearResponse.evolveHilbertBasis, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.observableExpectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
+    { declaration := `ContinuousLinearMap.unitaryOfAdjointInverse, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.unitaryConjugate_rankOne, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.eigenspace_unitaryConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.spectralTrace_unitaryConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.isCompactOperator_unitaryConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.IsPositive.unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate,
+      moduleName := traceClassUnitaryModule },
+    { declaration := `ContinuousLinearMap.spectralTrace_unitaryConjugate,
+      moduleName := traceClassUnitaryModule },
+    { declaration := `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate,
+      moduleName := traceClassUnitaryModule },
+    { declaration := `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate,
+      moduleName := traceClassUnitaryModule },
     { declaration := `QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis,
       moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal },
   ]
