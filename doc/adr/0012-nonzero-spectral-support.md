@@ -8,7 +8,7 @@ Index eigenvectors over the nonzero eigenspaces and use a Hilbert basis of their
 
 The kernel contributes zero to the operator's action and spectral trace but may have infinite, even nonseparable, dimension. Excluding it avoids an irrelevant requirement to enumerate a basis there. The cost is explicit projection and reconstruction proofs: the supported eigenvector family is not a basis of the whole space when the kernel is nontrivial. A vectorwise convergent spectral reconstruction also does not by itself assert trace-classness or absolute summability of eigenvalues.
 
-Evidence: [current spectral family and index](../../LeanCondensedMatter/Analysis/Operator/Spectral/EigenvectorFamily.lean) and [spectral-trace-class bundle](../../LeanCondensedMatter/Analysis/Operator/TraceClass/Bundled.lean).
+Evidence: [current spectral family and index](../../LeanCondensedMatter/Analysis/Operator/Spectral/EigenvectorFamily.lean) and [spectral-trace-class bundle](../../LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Bundled.lean).
 
 ## Historical evidence
 
