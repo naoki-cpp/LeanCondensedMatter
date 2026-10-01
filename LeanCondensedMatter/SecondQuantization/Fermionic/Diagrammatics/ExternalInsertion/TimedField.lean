@@ -149,6 +149,7 @@ noncomputable def ExternalInsertionWickDiagram.atomicLegPartner {E n : ℕ}
     (d.pairing.partner
       ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg))
 
+omit [LinearOrder Mode] in
 /-- The mixed-order partner of the position selected by a canonical leg is the mixed position of
 that leg's diagram partner. -/
 theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition {E n : ℕ}
