@@ -44,7 +44,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
       powerSeriesMomentSetFunction (α := Fin n) Z hZ =
         dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
     simpa only [Z] using
-      (powerSeriesMomentSetFunction_normalizedDysonPartitionSeries_eq_dysonVertexMomentSetFunction
+      (powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
         (α := Fin n) ε β (quarticInteraction g) hZ)
   have hDiagramMoment :
       dysonVertexMomentSetFunction ε β (quarticInteraction g) =
