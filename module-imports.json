@@ -3992,7 +3992,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/ExternalInsertionMixedOrder.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder"
       ],
       "externalImportCount": 3
     },
@@ -4055,6 +4056,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/StableTimedEventOrder.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/TimeOrdering.lean",
       "imports": [
@@ -4076,7 +4083,9 @@
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/TwoPointMixedOrder.lean",
-      "imports": [],
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder"
+      ],
       "externalImportCount": 1
     },
     {
@@ -4093,6 +4102,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder"
