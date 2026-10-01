@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Fermionic Dyson linked-cluster theorem via cumulant inversion
 
-Provides an independent Möbius-inversion proof of the finite-mode fermionic Dyson linked-cluster
-identity. The canonical theorem remains replica-based; this theorem factors through the bundled
-Dyson moment, Wick-diagram moment, and Wick-diagram cumulant APIs.
+Provides the Möbius-inversion route from the fermionic Dyson formal logarithm to the bundled Wick
+diagram cumulant. The canonical connected-diagram theorem remains replica-based; this module also
+kernel-checks the full inversion route to the same connected-diagram sum as a private cross-check.
 -/
 
 open scoped BigOperators
@@ -21,16 +21,16 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- Fermionic Dyson Linked Cluster Theorem proved through finite-set cumulant inversion rather than
-the replica bridge. -/
-theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude_inversion
+/-- The factorial-normalized fermionic Dyson formal-log coefficient is the corresponding Wick
+diagram cumulant, proved through finite-set cumulant inversion rather than the replica bridge. -/
+theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_quarticWickDiagramCumulant
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n
           (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
-      ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
+      quarticWickDiagramCumulant (N := n) ε β g
+        (Finset.univ : Finset (Fin n)) := by
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
   let Z :=
@@ -70,6 +70,25 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
           (Finset.univ : Finset (Fin n)) := by
       rw [hMoment]
       rfl
+
+private theorem inversionLinkedClusterCrossCheck
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (n : ℕ) (hn : n ≠ 0) :
+    (n.factorial : ℂ) *
+        PowerSeries.coeff n
+          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+      ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
+        quarticWickDiagramAmplitude ε β g d.1 := by
+  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
+    (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
+  calc
+    (n.factorial : ℂ) *
+        PowerSeries.coeff n
+          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+        quarticWickDiagramCumulant (N := n) ε β g
+          (Finset.univ : Finset (Fin n)) :=
+      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_quarticWickDiagramCumulant
+        ε β g n hn
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
       quarticWickDiagramCumulant_eq_sum_connectedQuarticWickDiagramAmplitude
