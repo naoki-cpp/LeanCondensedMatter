@@ -4170,20 +4170,13 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDysonExponentialIdentity.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential"
-      ],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDysonExponentialUniqueness.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity"
+        "LeanCondensedMatter.Analysis.Dyson.Uniqueness",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
@@ -4295,7 +4288,6 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonVolterra",

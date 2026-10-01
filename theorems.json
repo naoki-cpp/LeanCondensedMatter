@@ -16824,7 +16824,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -16836,7 +16836,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Dyson.evolution_const_eq_exp_of_nonneg"
+      "Dyson.evolution_const_eq_exp_of_nonneg",
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
     ],
     "dependencies": [
       "Dyson.BoundedInteraction.interaction_norm_le",
@@ -16849,9 +16850,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Dyson.evolution_const_eq_exp_of_nonneg"
+      "Dyson.evolution_const_eq_exp_of_nonneg",
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98178,6 +98180,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
       "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.analyticDysonEvolution_zero",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
@@ -98189,12 +98192,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
       "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.analyticDysonEvolution_zero",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98266,13 +98270,11 @@
       "SecondQuantization.Common.analyticDysonEvolution_eq_ordered_exp"
     ],
     "dependencies": [
-      "SecondQuantization.Common.analyticDysonEvolution_zero",
-      "SecondQuantization.Common.analyticDysonExponentialCandidate_zero",
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution",
-      "SecondQuantization.Common.continuous_analyticDysonExponentialCandidate",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_vectorField",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField",
-      "SecondQuantization.Common.lipschitzWith_analyticDysonVectorField"
+      "Dyson.eqOn_evolution_of_volterra_of_bound",
+      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
+      "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
+      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98290,7 +98292,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β →\n    τ ∈ Set.Icc 0 β →\n      ∀ (lam : ℂ),\n        SecondQuantization.Common.analyticDysonEvolution energy V τ lam =\n          1 -\n            lam •\n              ∫ (σ : ℝ) in 0..τ,\n                SecondQuantization.Common.continuousInteractionPicture energy V σ ∘SL\n                  SecondQuantization.Common.analyticDysonEvolution energy V σ lam",
     "standardAxioms": [
       "Classical.choice",
@@ -98298,7 +98300,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -98309,9 +98311,7 @@
     "docString": "The finite analytic Dyson evolution solves the Volterra equation by specialization of the\ngeneric bounded-algebra theorem. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
-    ],
+    "dependents": [],
     "dependencies": [
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
@@ -98319,10 +98319,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98374,7 +98372,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (lam : ℂ),\n  SecondQuantization.Common.analyticDysonEvolution energy V 0 lam = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -98382,7 +98380,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -98393,19 +98391,15 @@
     "docString": "At zero imaginary time only the zeroth Dyson coefficient survives. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
+    "dependents": [],
     "dependencies": [
       "Dyson.evolution_zero",
       "SecondQuantization.Common.analyticDysonEvolution_eq_evolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98464,7 +98458,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
@@ -98477,13 +98471,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98578,47 +98572,6 @@
       "SecondQuantization.Common.summable_analyticDysonTerm"
     ],
     "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (β : ℝ)\n  (hβ : 0 ≤ β) (lam : ℂ) {τ : ℝ},\n  τ ∈ Set.Icc 0 β →\n    ∀ (U : SecondQuantization.Common.FiniteContinuousOperator Config),\n      SecondQuantization.Common.analyticDysonVectorField energy V β hβ lam τ U =\n        -(lam • SecondQuantization.Common.continuousInteractionPicture energy V τ ∘SL U)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonVectorField_of_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
-    "externalAxioms": [],
-    "docString": "On `[0, β]`, the projected vector field is the original interaction-picture field. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_vectorField",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_vectorField",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100749,6 +100702,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
       "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution",
@@ -100763,13 +100717,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
       "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution",
       "SecondQuantization.Common.norm_analyticDysonTerm_le",
       "SecondQuantization.Common.summable_analyticDysonTerm"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100998,90 +100953,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β : ℝ},\n  0 ≤ β →\n    ∀ (lam : ℂ), ContinuousOn (fun τ => SecondQuantization.Common.analyticDysonEvolution energy V τ lam) (Set.Icc 0 β)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousOn_analyticDysonEvolution",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity",
-    "externalAxioms": [],
-    "docString": "The analytic Dyson evolution is continuous on every compact nonnegative time interval. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.continuousOn_interactionPicture_mul_analyticDysonEvolution",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuous_analyticDysonTerm",
-      "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.continuousOn_interactionPicture_mul_analyticDysonEvolution",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β : ℝ},\n  0 ≤ β →\n    ∀ (lam : ℂ),\n      ContinuousOn\n        (fun τ =>\n          SecondQuantization.Common.continuousInteractionPicture energy V τ *\n            SecondQuantization.Common.analyticDysonEvolution energy V τ lam)\n        (Set.Icc 0 β)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousOn_interactionPicture_mul_analyticDysonEvolution",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity",
-    "externalAxioms": [],
-    "docString": "The interaction-picture product with the analytic Dyson evolution is continuous on every\ncompact nonnegative time interval. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    ∀ (a b : ℝ) (n : Config),\n      (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv\n            (SecondQuantization.Common.operatorIntervalIntegral F a b))\n          (SecondQuantization.Common.finiteAnalyticBasis n) =\n        (∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ))\n          (SecondQuantization.Common.finiteAnalyticBasis n)",
     "standardAxioms": [
       "Classical.choice",
@@ -101166,48 +101037,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (lam : ℂ),\n  Continuous fun τ => SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuous_analyticDysonExponentialCandidate",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity",
-    "externalAxioms": [],
-    "docString": "The exact operator-exponential candidate is continuous in imaginary time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (lam : ℂ)\n  (n : ℕ), Continuous fun τ => SecondQuantization.Common.analyticDysonTerm energy V τ lam n",
     "standardAxioms": [
       "Classical.choice",
@@ -101215,7 +101045,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -101226,9 +101056,7 @@
     "docString": "Every finite weighted Dyson coefficient is continuous in imaginary time, by specialization of\nthe generic continuity theorem. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution"
-    ],
+    "dependents": [],
     "dependencies": [
       "Dyson.continuous_term",
       "SecondQuantization.Common.analyticDysonTerm_eq_term",
@@ -101236,10 +101064,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101309,10 +101135,9 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
-      "SecondQuantization.Common.continuousOn_interactionPicture_mul_analyticDysonEvolution",
       "SecondQuantization.Common.continuous_analyticDysonTerm",
       "SecondQuantization.Common.exists_interactionPictureNormBound",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
     "dependencies": [
       "SecondQuantization.Common.continuous_finiteContinuousOperator",
@@ -101322,12 +101147,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
-      "SecondQuantization.Common.continuousOn_interactionPicture_mul_analyticDysonEvolution",
       "SecondQuantization.Common.continuous_analyticDysonTerm",
       "SecondQuantization.Common.exists_interactionPictureNormBound",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104789,8 +104613,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuous_analyticDysonExponentialCandidate",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField"
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
     "dependencies": [
       "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
@@ -104800,137 +104624,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuous_analyticDysonExponentialCandidate",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField"
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β →\n    τ ∈ Set.Ico 0 β →\n      ∀ (lam : ℂ),\n        HasDerivWithinAt (fun σ => SecondQuantization.Common.analyticDysonEvolution energy V σ lam)\n          (-(lam •\n              SecondQuantization.Common.continuousInteractionPicture energy V τ ∘SL\n                SecondQuantization.Common.analyticDysonEvolution energy V τ lam))\n          (Set.Ici τ) τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity",
-    "externalAxioms": [],
-    "docString": "On the half-open interval `[0, β)`, the analytic Dyson evolution solves the\ninteraction-picture differential equation as a right derivative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_vectorField"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_vectorField"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ}\n  (hβ : 0 ≤ β),\n  τ ∈ Set.Ico 0 β →\n    ∀ (lam : ℂ),\n      HasDerivWithinAt (fun σ => SecondQuantization.Common.analyticDysonEvolution energy V σ lam)\n        (SecondQuantization.Common.analyticDysonVectorField energy V β hβ lam τ\n          (SecondQuantization.Common.analyticDysonEvolution energy V τ lam))\n        (Set.Ici τ) τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_vectorField",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
-    "externalAxioms": [],
-    "docString": "The analytic Dyson sum solves the projected vector field on `[0, β)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.analyticDysonVectorField_of_mem",
-      "SecondQuantization.Common.hasDerivWithinAt_analyticDysonEvolution_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ}\n  (hβ : 0 ≤ β),\n  τ ∈ Set.Ico 0 β →\n    ∀ (lam : ℂ),\n      HasDerivWithinAt (fun σ => SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam)\n        (SecondQuantization.Common.analyticDysonVectorField energy V β hβ lam τ\n          (SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam))\n        (Set.Ici τ) τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
-    "externalAxioms": [],
-    "docString": "The ordered exponential candidate solves the projected vector field on `[0, β)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.analyticDysonVectorField_of_mem",
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105057,7 +104754,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β : ℝ},\n  0 ≤ β →\n    ∀ (lam : ℂ),\n      HasSumUniformlyOn (fun n τ => SecondQuantization.Common.analyticDysonTerm energy V τ lam n)\n        (fun τ => SecondQuantization.Common.analyticDysonEvolution energy V τ lam) (Set.Icc 0 β)",
     "standardAxioms": [
       "Classical.choice",
@@ -105065,7 +104762,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -105076,9 +104773,7 @@
     "docString": "The analytic Dyson series converges uniformly in operator norm on every compact interval\n`[0, β]`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution"
-    ],
+    "dependents": [],
     "dependencies": [
       "Dyson.ContinuousBoundedInteraction.toBoundedInteraction",
       "Dyson.hasSumUniformlyOn_evolution_of_bound",
@@ -105088,10 +104783,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousOn_analyticDysonEvolution"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106184,47 +105877,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
     "compiledConsumerCount": 21,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (β : ℝ)\n  (hβ : 0 ≤ β) (lam : ℂ) (τ : ℝ),\n  LipschitzWith (‖lam‖ * SecondQuantization.Common.interactionPictureNormBound energy V β).toNNReal\n    (SecondQuantization.Common.analyticDysonVectorField energy V β hβ lam τ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.lipschitzWith_analyticDysonVectorField",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
-    "externalAxioms": [],
-    "docString": "The projected Dyson vector field is uniformly Lipschitz in the operator variable. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.norm_continuousInteractionPicture_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108172,7 +107824,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108184,8 +107836,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
-      "SecondQuantization.Common.lipschitzWith_analyticDysonVectorField"
+      "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction"
     ],
     "dependencies": [
       "SecondQuantization.Common.exists_interactionPictureNormBound"
@@ -108193,10 +107844,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
-      "SecondQuantization.Common.lipschitzWith_analyticDysonVectorField"
+      "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155690,6 +155340,49 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam =\n    1 -\n      lam •\n        ∫ (σ : ℝ) in 0..τ,\n          SecondQuantization.Common.continuousInteractionPicture energy V σ *\n            SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
+    "externalAxioms": [],
+    "docString": "The exact operator-exponential candidate satisfies its interaction-picture Volterra equation,\nby the fundamental theorem of calculus. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.analyticDysonExponentialCandidate_zero",
+      "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
