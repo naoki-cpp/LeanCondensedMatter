@@ -66,21 +66,19 @@ theorem isTraceClassWrt_iff {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs]
   exact isHilbertSchmidtWrt_iff d f (CFC.sqrt (CFC.abs T))
 
-/-- A bounded operator is trace class if the diagonal series of `|T|` is summable in one
-Hilbert basis. -/
+/-- A bounded operator is trace class when `sqrt(|T|)` is Hilbert--Schmidt. The equivalent
+Hilbert-basis diagonal criterion is `isTraceClass_iff_isTraceClassWrt`. -/
 def IsTraceClass (T : H →L[ℂ] H) : Prop :=
-  ∃ (w : Set H) (d : HilbertBasis w ℂ H), IsTraceClassWrt d T
+  IsHilbertSchmidt (CFC.sqrt (CFC.abs T))
 
-/-- Trace-class membership can be checked in any chosen Hilbert basis. -/
+/-- Trace-class membership is equivalent to summability of the diagonal of `|T|` in any chosen
+Hilbert basis. -/
 theorem isTraceClass_iff_isTraceClassWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) :
     IsTraceClass T ↔ IsTraceClassWrt d T := by
-  constructor
-  · rintro ⟨w, b, hb⟩
-    exact (isTraceClassWrt_iff b d T).mp hb
-  · intro hd
-    obtain ⟨w, b, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-    exact ⟨w, b, (isTraceClassWrt_iff d b T).mp hd⟩
+  unfold IsTraceClass
+  rw [isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs]
+  exact isHilbertSchmidt_iff_isHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T))
 
 /-- A basis-independent trace-class witness supplies summability in every Hilbert basis. -/
 theorem IsTraceClass.isTraceClassWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
@@ -95,32 +93,32 @@ theorem IsTraceClass.of_isTraceClassWrt {ι : Type*} {d : HilbertBasis ι ℂ H}
     IsTraceClass T :=
   (isTraceClass_iff_isTraceClassWrt d T).mpr hT
 
-/-- The trace-norm series evaluated in a chosen Hilbert basis. Basis independence is proved below
-under trace-class membership. -/
-noncomputable def traceNormWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
+/-- The totalized trace-norm series evaluated in a chosen Hilbert basis. Outside trace-class
+membership, this is only the totalized `tsum` value and is not the trace norm. -/
+noncomputable def traceNormSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) : ℝ :=
   ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i)
 
-/-- The basis-relative trace-norm series is the squared Hilbert--Schmidt norm series of
+/-- The basis-relative totalized series is the squared Hilbert--Schmidt norm series of
 `sqrt(|T|)`. -/
-theorem traceNormWrt_eq_tsum_norm_sq_sqrt_abs {ι : Type*}
+theorem traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs {ι : Type*}
     (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
-    traceNormWrt d T = ∑' i, ‖CFC.sqrt (CFC.abs T) (d i)‖ ^ 2 := by
-  unfold traceNormWrt
+    traceNormSeriesWrt d T = ∑' i, ‖CFC.sqrt (CFC.abs T) (d i)‖ ^ 2 := by
+  unfold traceNormSeriesWrt
   apply tsum_congr
   intro i
   exact diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs T (d i)
 
-/-- The trace-norm series has the same value in every Hilbert basis for a trace-class operator. -/
-theorem traceNormWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+/-- For a trace-class operator, the trace-norm series has the same value in every Hilbert basis. -/
+theorem traceNormSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
-    traceNormWrt d T = traceNormWrt f T := by
+    traceNormSeriesWrt d T = traceNormSeriesWrt f T := by
   have hd : IsTraceClassWrt d T := hT.isTraceClassWrt d
   have hHS :
       IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)) :=
     (isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs d T).mp hd
-  rw [traceNormWrt_eq_tsum_norm_sq_sqrt_abs,
-    traceNormWrt_eq_tsum_norm_sq_sqrt_abs]
+  rw [traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs,
+    traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs]
   exact (summable_norm_sq_apply_and_tsum_eq d f (CFC.sqrt (CFC.abs T)) hHS).2.symm
 
 end ContinuousLinearMap
