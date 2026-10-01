@@ -58,7 +58,9 @@ theorem SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
     (hleft : star U * U = 1) (hright : U * star U = 1) :
     SpectralTraceClass (ContinuousLinearMap.unitaryConjugate U T) := by
   exact
-    { compact := isCompactOperator_unitaryConjugate U T hT.compact
+    { compact := by
+        change IsCompactOperator (⇑U ∘ ⇑T ∘ ⇑(star U))
+        exact (hT.compact.comp_clm (star U)).clm_comp U
       symmetric := by
         have hself : IsSelfAdjoint T := hT.symmetric.isSelfAdjoint
         change (U ∘SL T ∘SL ContinuousLinearMap.adjoint U).IsSymmetric
