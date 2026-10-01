@@ -17,7 +17,7 @@ open scoped BigOperators
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Fermionic Dyson Linked Cluster Theorem. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
