@@ -261,8 +261,6 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
     { declaration := `ContinuousLinearMap.unitaryConjugate_rankOne, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.eigenspace_unitaryConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.isCompactOperator_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.IsPositive.unitaryConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate,
       moduleName := traceClassUnitaryModule },
     { declaration := `ContinuousLinearMap.spectralTrace_unitaryConjugate,
