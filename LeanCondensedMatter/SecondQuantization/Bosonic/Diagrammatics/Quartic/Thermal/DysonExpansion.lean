@@ -441,6 +441,7 @@ theorem quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
       ε β hpos g S t).symm
 
 
+omit [Finite Mode] in
 /-- The factorial-normalized coefficients of the physical bosonic Dyson series are exactly the
 normalized moments of the time-integrated quartic Dyson diagrams. -/
 theorem powerSeriesMomentSetFunction_freeGibbsDysonSeries_eq_quarticDysonThermalMoment
