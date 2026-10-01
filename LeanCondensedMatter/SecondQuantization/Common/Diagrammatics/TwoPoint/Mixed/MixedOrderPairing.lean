@@ -29,17 +29,6 @@ noncomputable def TwoPointDiagram.pairingInMixedOrder
   (orderedTwoPointPairingCastEquiv n d.pairing).transport
     (standardToMixedAtomicPositionEquiv τ τ' σ).symm
 
-/-- Casting the number of pairs transports the partner permutation through the corresponding cast
-of flattened positions. -/
-private theorem pairingCast_partner {m n : ℕ} (h : m = n)
-    (pairing : Pairing m) (p : Fin (2 * n)) :
-    (finCongr (congrArg (fun k : ℕ => 2 * k) h.symm))
-        ((Equiv.cast (congrArg Pairing h) pairing).partner p) =
-      pairing.partner
-        ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) := by
-  subst n
-  rfl
-
 private theorem orderedTwoPointPairingCastEquiv_partner {n : ℕ}
     (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + 1))
     (p : Fin (2 * (2 * n + 1))) :
@@ -57,7 +46,7 @@ private theorem orderedTwoPointPairingCastEquiv_partner {n : ℕ}
       finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
     congr
   rw [hcast, hfin]
-  exact pairingCast_partner h pairing p
+  exact pairing.cast_partner h p
 
 /-- Transporting a mixed-order partner back to the standard diagram enumeration recovers the
 original generic diagram partner. -/
