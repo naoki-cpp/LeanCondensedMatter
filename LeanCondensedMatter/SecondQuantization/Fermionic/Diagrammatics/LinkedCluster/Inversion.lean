@@ -40,17 +40,16 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
     dsimp [Z]
     exact PowerSeries.constantCoeff_normalizeByConstantCoeff
       (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
-  have hSeriesMoment :
+  have hMoment :
       powerSeriesMomentSetFunction (α := Fin n) Z hZ =
-        dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
-    simpa only [Z] using
-      (powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
-        (α := Fin n) ε β (quarticInteraction g) hZ)
-  have hDiagramMoment :
-      dysonVertexMomentSetFunction ε β (quarticInteraction g) =
-        quarticWickDiagramMoment (N := n) ε β g :=
-    dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
-      (N := n) ε β g
+        quarticWickDiagramMoment (N := n) ε β g := by
+    exact
+      (by
+        simpa only [Z] using
+          (powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
+            (α := Fin n) ε β (quarticInteraction g) hZ)).trans
+        (dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
+          (N := n) ε β g)
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
@@ -63,12 +62,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
             (fun T : Finset (Fin n) => powerSeriesMomentCoeff Z T.card)
             (Finset.univ : Finset (Fin n))
       exact factorial_mul_coeff_logOf_eq_cumulantFromMoment hZ huniv
-    _ = (dysonVertexMomentSetFunction ε β (quarticInteraction g)).cumulant
-          (Finset.univ : Finset (Fin n)) := by
-      rw [hSeriesMoment]
     _ = quarticWickDiagramCumulant (N := n) ε β g
           (Finset.univ : Finset (Fin n)) := by
-      rw [hDiagramMoment]
+      rw [hMoment]
       rfl
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
