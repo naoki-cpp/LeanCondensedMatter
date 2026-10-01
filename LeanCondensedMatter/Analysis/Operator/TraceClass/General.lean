@@ -42,7 +42,6 @@ theorem diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs
     exact CFC.sqrt_mul_sqrt_self (CFC.abs T) (CFC.abs_nonneg T)
   have hinner : inner ℂ x ((CFC.abs T) x) = inner ℂ (S x) (S x) := by
     rw [← hsq, mul_apply_eq_comp]
-    change inner ℂ x (S (S x)) = inner ℂ (S x) (S x)
     calc
       inner ℂ x (S (S x)) =
           inner ℂ x ((ContinuousLinearMap.adjoint S) (S x)) := by rw [hS.adjoint_eq]
