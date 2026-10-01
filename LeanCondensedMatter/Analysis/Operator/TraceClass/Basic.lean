@@ -37,19 +37,18 @@ def HasSummableRealEigenvalues (T : H →L[ℂ] H) : Prop :=
 
 omit [CompleteSpace H] in
 /-- For a symmetric operator, complex spectral summability is exactly real spectral summability. -/
-theorem hasSummableComplexEigenvalues_iff_isSymmetric (hT : T.IsSymmetric) :
+theorem hasSummableComplexEigenvalues_iff_hasSummableRealEigenvalues (hT : T.IsSymmetric) :
     HasSummableComplexEigenvalues T ↔ HasSummableRealEigenvalues T := by
-  let e := complexEigenvectorIndexEquiv hT
+  let e := realEigenvectorIndexEquiv hT
   change Summable (fun a : ComplexEigenvectorIndex T => ‖a.1.1‖) ↔
     Summable (fun a : EigenvectorIndex T => |a.1.1|)
   have hfun :
-      (fun a : ComplexEigenvectorIndex T => ‖a.1.1‖) =
-        (fun a : EigenvectorIndex T => |a.1.1|) ∘ e := by
+      (fun a : EigenvectorIndex T => ‖(e a).1.1‖) =
+        (fun a : EigenvectorIndex T => |a.1.1|) := by
     funext a
-    rw [Function.comp_apply, ← complexEigenvectorIndexEquiv_value hT a]
-    simp only [Complex.norm_real, Real.norm_eq_abs]
-  rw [hfun]
-  exact e.summable_iff
+    simp only [realEigenvectorIndexEquiv_value, Complex.norm_real, Real.norm_eq_abs]
+  rw [← hfun]
+  exact e.summable_iff.symm
 
 /-- The (totalized) spectral sum of the indexed nonzero real eigenvalues of `T`, with
 multiplicity.  As for Mathlib's `tsum`, this definition is available for every operator; theorems
@@ -62,16 +61,15 @@ omit [CompleteSpace H] in
 `ℂ`. -/
 theorem complexSpectralSum_eq_spectralTrace (hT : T.IsSymmetric) :
     complexSpectralSum T = (spectralTrace T : ℂ) := by
-  let e := complexEigenvectorIndexEquiv hT
+  let e := realEigenvectorIndexEquiv hT
   unfold complexSpectralSum spectralTrace
   calc
     (∑' a : ComplexEigenvectorIndex T, a.1.1) =
-        ∑' a : ComplexEigenvectorIndex T, ((e a).1.1 : ℂ) := by
+        ∑' a : EigenvectorIndex T, (e a).1.1 := e.tsum_eq _
+    _ = ∑' a : EigenvectorIndex T, (a.1.1 : ℂ) := by
       apply tsum_congr
       intro a
-      exact (complexEigenvectorIndexEquiv_value hT a).symm
-    _ = ∑' a : EigenvectorIndex T, (a.1.1 : ℂ) :=
-      e.tsum_eq (fun a : EigenvectorIndex T => (a.1.1 : ℂ))
+      exact realEigenvectorIndexEquiv_value hT a
     _ = ((∑' a : EigenvectorIndex T, a.1.1 : ℝ) : ℂ) := by
       rw [Complex.ofReal_tsum]
 
