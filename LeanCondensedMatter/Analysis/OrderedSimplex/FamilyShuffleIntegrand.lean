@@ -57,7 +57,7 @@ theorem FamilySlotShuffle.cons_integrand {k : ℕ}
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (τ : Fin (size 0 + FamilySlotShuffle.tailTotal size) → ℝ) :
     (FamilySlotShuffle.cons size outer tail).integrand localIntegrand
-        (fun j => τ (Fin.cast (FamilySlotShuffle.sum_eq_head_add_tail size) j)) =
+        (fun j => τ (Fin.cast (Fin.sum_univ_succ size) j)) =
       outer.integrand (localIntegrand 0)
         (tail.integrand (fun i => localIntegrand i.succ)) τ := by
   unfold FamilySlotShuffle.integrand BinaryShuffle.SlotShuffle.integrand
