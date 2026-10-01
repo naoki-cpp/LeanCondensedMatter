@@ -25,8 +25,10 @@ private theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
   have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc
   change Module.End.eigenspace ((c : ℂ) • f) ((c : ℂ) * μ) =
     Module.End.eigenspace f μ
-  simpa [Module.End.eigenspace_def, hc'] using
-    (Module.End.eigenspace_div f ((c : ℂ) * μ) (c : ℂ) hc').symm
+  have hdiv := Module.End.eigenspace_div f ((c : ℂ) * μ) (c : ℂ) hc'
+  simp only [Algebra.algebraMap_eq_smul_one] at hdiv
+  rw [Module.End.eigenspace_def, ← hdiv]
+  simp [hc']
 
 private noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
     { μ : ℝ // μ ≠ 0 } ≃ { μ : ℝ // μ ≠ 0 } :=
