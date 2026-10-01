@@ -42,7 +42,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
           (PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
         dysonVertexMomentSetFunction ε β (quarticInteraction g) :=
-    powerSeriesMomentSetFunction_normalizedDysonPartitionSeries_eq_dysonVertexMomentSetFunction
+    powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
       ε β (quarticInteraction g) hZ
   have hDiagramMoment :
       dysonVertexMomentSetFunction ε β (quarticInteraction g) =
