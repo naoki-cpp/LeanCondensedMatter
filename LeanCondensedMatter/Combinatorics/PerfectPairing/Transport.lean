@@ -33,6 +33,17 @@ theorem PairingOn.transport_partner {α β : Type*} (P : PairingOn β)
   rw [Equiv.permCongr_apply]
   rfl
 
+/-- Casting the number of pairs transports the partner permutation through the corresponding
+cast of flattened positions. -/
+theorem Pairing.cast_partner {m n : ℕ} (h : m = n)
+    (pairing : Pairing m) (p : Fin (2 * n)) :
+    (finCongr (congrArg (fun k : ℕ => 2 * k) h.symm))
+        ((Equiv.cast (congrArg Pairing h) pairing).partner p) =
+      pairing.partner
+        ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) := by
+  subst n
+  rfl
+
 @[simp]
 theorem PairingOn.transport_symm_transport {α β : Type*} (P : PairingOn β)
     (e : α ≃ β) :
