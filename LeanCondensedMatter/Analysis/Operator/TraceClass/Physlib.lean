@@ -32,7 +32,8 @@ theorem toPhyslibIsTraceClass (h : SpectralTraceClass T) (hpos : T.IsPositive) :
   rw [CFC.abs_of_nonneg T hT_nonneg]
   calc
     diagonalExpectationValue T h.isSelfAdjoint (b i) =
-        Complex.re (diagonalExpectationValue T h.isSelfAdjoint (b i) : ℂ) := by simp
+        Complex.re (diagonalExpectationValue T h.isSelfAdjoint (b i) : ℂ) := by
+      simp only [Complex.ofReal_re]
     _ = (inner ℂ (b i) (T (b i))).re := by
       have h_re := congrArg Complex.re
         (coe_diagonalExpectationValue_right T h.isSelfAdjoint (b i))
