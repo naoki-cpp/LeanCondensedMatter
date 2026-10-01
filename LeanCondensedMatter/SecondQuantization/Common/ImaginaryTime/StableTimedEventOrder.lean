@@ -1,5 +1,5 @@
 import Mathlib.Basic.Real.Basic
-import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
 
@@ -28,7 +28,7 @@ theorem finSumFinEquiv_map_val_le_iff
     ((finSumFinEquiv (Sum.map f g a) : Fin (m₂ + n₂)).val ≤
       (finSumFinEquiv (Sum.map f g b) : Fin (m₂ + n₂)).val) ↔
     ((finSumFinEquiv a : Fin (m₁ + n₁)).val ≤
-      (finSumFinEquiv b : Fin (m₁ + n₁)).val := by
+      (finSumFinEquiv b : Fin (m₁ + n₁)).val) := by
   change finSumRank (Sum.map f g a) ≤ finSumRank (Sum.map f g b) ↔
     finSumRank a ≤ finSumRank b
   cases a with
