@@ -110,40 +110,6 @@ private theorem externalInsertionTimedEventTime_map
       externalInsertionTimedEventTime (externalTime ∘ fExternal) (σ ∘ fInteraction) event := by
   cases event <;> rfl
 
-private theorem externalInsertionTimedEventRank_map_le_iff
-    {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
-    {fInteraction : Fin m → Fin n}
-    (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
-    (a b : ExternalInsertionTimedEvent E₁ m) :
-    externalInsertionTimedEventRank
-        (Sum.map fExternal fInteraction a) ≤
-      externalInsertionTimedEventRank
-        (Sum.map fExternal fInteraction b) ↔
-    externalInsertionTimedEventRank a ≤ externalInsertionTimedEventRank b := by
-  cases a with
-  | inl a =>
-      cases b with
-      | inl b =>
-          simpa [externalInsertionTimedEventRank] using
-            hExternal.le_iff_le
-      | inr b =>
-          have ha := a.isLt
-          have hfa := (fExternal a).isLt
-          simp [externalInsertionTimedEventRank]
-          omega
-  | inr a =>
-      cases b with
-      | inl b =>
-          have hb := b.isLt
-          have hfb := (fExternal b).isLt
-          simp [externalInsertionTimedEventRank]
-          omega
-      | inr b =>
-          have h : fInteraction a ≤ fInteraction b ↔ a ≤ b :=
-            hInteraction.le_iff_le
-          simp [externalInsertionTimedEventRank] at h ⊢
-          omega
-
 private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
@@ -156,8 +122,8 @@ private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
       externalInsertionTimedEventBeforeOrEqual
         (externalTime ∘ fExternal) (σ ∘ fInteraction) a b := by
   simp only [externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
-    externalInsertionTimedEventTime_map]
-  rw [externalInsertionTimedEventRank_map_le_iff hExternal hInteraction]
+    externalInsertionTimedEventTime_map, externalInsertionTimedEventRank]
+  rw [finSumFinEquiv_map_val_le_iff hExternal hInteraction a b]
 
 /-- Increasing external/interaction slot reindexings embed the locally ordered mixed events as a
 sublist of the ambient mixed-event order. -/

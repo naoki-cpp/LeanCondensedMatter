@@ -41,34 +41,6 @@ theorem twoPointTimedEventTime_map (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fi
       twoPointTimedEventTime τ τ' (σ ∘ f) a := by
   cases a <;> rfl
 
-private theorem twoPointTimedEventRank_map_le_iff
-    (hf : StrictMono f) (a b : TwoPointTimedEvent m) :
-    twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
-        twoPointTimedEventRank (twoPointTimedEventMap f b) ↔
-      twoPointTimedEventRank a ≤ twoPointTimedEventRank b := by
-  have hfle : ∀ x y : Fin m, ((f x : ℕ) ≤ (f y : ℕ)) ↔ ((x : ℕ) ≤ (y : ℕ)) := by
-    intro x y
-    rw [← Fin.le_def, ← Fin.le_def]
-    exact hf.le_iff_le
-  cases a with
-  | inl a =>
-      cases b with
-      | inl b => exact Iff.rfl
-      | inr w =>
-          have ha := a.isLt
-          simp only [twoPointTimedEventMap_inl, twoPointTimedEventMap_inr]
-          simp [twoPointTimedEventRank]; omega
-  | inr v =>
-      cases b with
-      | inl b =>
-          have hb := b.isLt
-          simp only [twoPointTimedEventMap_inl, twoPointTimedEventMap_inr]
-          simp [twoPointTimedEventRank]; omega
-      | inr w =>
-          have h := hfle v w
-          simp only [twoPointTimedEventMap_inr]
-          simp [twoPointTimedEventRank]; omega
-
 private theorem twoPointTimedEventBeforeOrEqual_map_iff
     (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent m) :
@@ -77,7 +49,16 @@ private theorem twoPointTimedEventBeforeOrEqual_map_iff
       twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b := by
   simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
     twoPointTimedEventTime_map]
-  rw [twoPointTimedEventRank_map_le_iff hf]
+  have hrank :
+      twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
+        twoPointTimedEventRank (twoPointTimedEventMap f b) ↔
+          twoPointTimedEventRank a ≤ twoPointTimedEventRank b := by
+    simpa [twoPointTimedEventMap, twoPointTimedEventRank] using
+      (finSumFinEquiv_map_val_le_iff
+        (f := id) (g := f)
+        (show StrictMono (id : Fin 2 → Fin 2) from fun _ _ h => h)
+        hf a b)
+  rw [hrank]
 
 theorem twoPointTimedEventBefore_map_iff (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent m) :
