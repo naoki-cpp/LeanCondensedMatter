@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
+import LeanCondensedMatter.Analysis.ScalarExchange.Peel
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Tactic.Module
 
@@ -16,8 +16,9 @@ The recursively defined `peelSum` records the contribution created each time the
 operator crosses one factor. `PeelTermsIndexed` identifies this recursive expression with the
 position-indexed erase-one-factor formula used in pairing arguments.
 
-Everything in this module is pure `LinearMap` composition algebra. Trace cyclicity, KMS rotation,
-summability, and configuration finiteness enter only in the separate trace-level specialization.
+The coefficient-paired recursion is shared with `Analysis.ScalarExchange.Peel`. This module keeps
+the Common-facing name and the commutator-form adapter. Trace cyclicity, KMS rotation, summability,
+and configuration finiteness enter only in the separate trace-level specialization.
 -/
 
 namespace SecondQuantization
@@ -28,12 +29,10 @@ variable {Config : Type*}
 /-- **The recursive "peeled" sum**: mirrors the exact substitution steps of pushing `C₁`
 rightward through a list of `(operator, scalar ζ-commutator coefficient)` pairs one at a time.
 Depends only on `ζ` and the list — not on `C₁`. -/
-noncomputable def peelSum (ζ : ℂ) :
+noncomputable abbrev peelSum (ζ : ℂ) :
     List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) →
       AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
-  | [] => 0
-  | (B, c) :: t =>
-      c • (t.map Prod.fst).prod + ζ • (B.comp (peelSum ζ t))
+  := ScalarExchange.peelSumWithCoefficients ζ
 
 /-- **The individual terms `peelSum` sums**, one per position in `l`, in order: at position `j`
 (0-indexed), the term is `ζ^j·cⱼ•(remaining product with Bⱼ erased)`. Defined recursively in
@@ -63,7 +62,8 @@ theorem peelSum_eq_peelTerms_sum (ζ : ℂ)
       induction l' with
       | nil => simp
       | cons x t' ih' => simp [List.sum_cons, ih', LinearMap.comp_add, smul_add]
-    simp only [peelSum, peelTerms, List.sum_cons, hmap, ih]
+    simp only [peelSum, ScalarExchange.peelSumWithCoefficients, peelTerms,
+      Module.End.mul_eq_comp, List.sum_cons, hmap, ih]
 
 /-- **Peeling `C₁` through an arbitrary-length product**: repeatedly rewriting `C₁Bⱼ` via each
 pair's `ζ`-commutator coefficient and pushing `C₁` rightward, `C₁` lands at the very end having
@@ -75,24 +75,17 @@ theorem comp_prod_eq_of_zetaCommutator (ζ : ℂ)
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     C1.comp ((l.map Prod.fst).prod) =
       peelSum ζ l + ζ ^ l.length • ((l.map Prod.fst).prod.comp C1) := by
-  induction l with
-  | nil =>
-      simp [peelSum, Module.End.one_eq_id]
-  | cons p t ih =>
-    have hp : ∀ x, C1 (p.1 x) = p.2 • x + ζ • p.1 (C1 x) := by
-      intro x
-      have h := DFunLike.congr_fun (hcomm p (List.mem_cons_self ..)) x
-      change C1 (p.1 x) - ζ • p.1 (C1 x) = p.2 • x at h
-      exact (sub_eq_iff_eq_add).mp h
-    have ihp := ih (fun q hq => hcomm q (List.mem_cons_of_mem p hq))
-    apply LinearMap.ext
-    intro x
-    have hihp := DFunLike.congr_fun ihp x
-    simp only [List.map_cons, List.length_cons, List.prod_cons, Module.End.mul_eq_comp, peelSum,
-      LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smul_apply] at hihp ⊢
-    rw [hp ((t.map Prod.fst).prod x), hihp]
-    simp only [map_add, map_smul, smul_add, smul_smul, pow_succ]
-    module
+  have hExchange : ∀ p ∈ l,
+      C1 * p.1 = p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
+        ζ • (p.1 * C1) := by
+    intro p hp
+    have hcomm' : C1 * p.1 - ζ • (p.1 * C1) =
+        p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+      simpa only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
+        Module.End.one_eq_id] using hcomm p hp
+    exact (sub_eq_iff_eq_add).mp hcomm'
+  have h := ScalarExchange.mul_prod_eq_peelSumWithCoefficients ζ C1 l hExchange
+  simpa [peelSum, Module.End.mul_eq_comp, Module.End.one_eq_id] using h
 
 end Common
 end SecondQuantization

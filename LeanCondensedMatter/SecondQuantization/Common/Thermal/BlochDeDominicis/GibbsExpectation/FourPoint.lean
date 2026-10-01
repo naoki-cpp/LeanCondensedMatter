@@ -46,7 +46,8 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
     [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
   have hZ := traceFock_diagonalEvolution_ne_zero energy β
-  simp only [peelSum, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil,
+  simp only [peelSum, ScalarExchange.peelSumWithCoefficients, List.map_cons, List.map_nil,
+    List.prod_cons, List.prod_nil,
     Module.End.mul_eq_comp, Module.End.one_eq_id, List.length_cons, List.length_nil,
     LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
     map_add, map_smul, smul_eq_mul, hz, mul_zero] at h
