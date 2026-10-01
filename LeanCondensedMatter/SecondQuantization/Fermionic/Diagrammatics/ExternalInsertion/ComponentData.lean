@@ -228,27 +228,45 @@ private theorem ExternalInsertionWickDiagram.externalInsertionLegEquiv_component
         (finCongr (by simp) (localEquiv.symm (Sum.inl e)) :
           Fin (2 * (2 * T.card + d.externalPairCount B))) =
           externalInsertionExternalLeg (d.externalPairCount B) T e := by
+        rw [show localEquiv.symm (Sum.inl e) =
+          externalInsertionExternalLeg (d.externalPairCount B)
+            (Finset.univ : Finset (Fin T.card)) e by rfl]
         apply Fin.ext
-        change (externalInsertionExternalLeg (d.externalPairCount B)
-          (Finset.univ : Finset (Fin T.card)) e).val = e.val
         simp
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_external B]
-    simp [ExternalInsertionWickDiagram.componentOrderedLeg, externalInsertionExternalLeg]
+    change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
+        ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
+          (Sum.inl (d.externalSectorOrderIso B e).1)) =
+      Sum.inl (d.externalSectorOrderIso B e).1
+    exact (externalInsertionLegEquiv E
+      (Finset.univ : Finset (Fin n))).apply_symm_apply _
   · let vT : ↥T := T.orderIsoOfFin rfl v.1
     have hcast :
         (finCongr (by simp) (localEquiv.symm (Sum.inr (v, l))) :
           Fin (2 * (2 * T.card + d.externalPairCount B))) =
           externalInsertionInteractionLeg (E := d.externalPairCount B) vT l := by
+      rw [show localEquiv.symm (Sum.inr (v, l)) =
+        externalInsertionInteractionLeg (E := d.externalPairCount B)
+          (v : ↥(Finset.univ : Finset (Fin T.card))) l by rfl]
       apply Fin.ext
-      change (externalInsertionInteractionLeg (E := d.externalPairCount B)
-        (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
-          2 * d.externalPairCount B + l.val + 4 * v.val
-      simp [externalInsertionInteractionLeg_val]
+      simp [externalInsertionInteractionLeg_val, vT]
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_interaction B]
-    simp [ExternalInsertionWickDiagram.componentOrderedLeg, vT,
-      externalInsertionInteractionLeg]
+    change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
+        ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
+          (Sum.inr
+            (⟨((interactionSector
+              (B : Finset (ExternalInsertionVertex E
+                (Finset.univ : Finset (Fin n))))).orderIsoOfFin rfl v.1).1,
+              Finset.mem_univ _⟩, l))) =
+      Sum.inr
+        (⟨((interactionSector
+          (B : Finset (ExternalInsertionVertex E
+            (Finset.univ : Finset (Fin n))))).orderIsoOfFin rfl v.1).1,
+          Finset.mem_univ _⟩, l)
+    exact (externalInsertionLegEquiv E
+      (Finset.univ : Finset (Fin n))).apply_symm_apply _
 
 /-- The fixed-position embedding intertwines the component Wick pairing with the ambient pairing. -/
 private theorem ExternalInsertionWickDiagram.componentFixedPosition_partner {E n : ℕ}
