@@ -18,6 +18,7 @@ mixed-time positions, where the free-Gibbs pair kernel agrees with the standalon
 namespace SecondQuantization
 namespace Fermionic
 
+open Combinatorics
 open Common
 
 variable {Mode : Type*}
@@ -179,6 +180,148 @@ theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : �
   exact
     externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
       hExternal hInteraction externalTime σ
+
+/-- Embed a component Wick diagram's fixed flattened position into the ambient diagram's fixed
+flattened position. The small cast only identifies the component's consecutive interaction slots
+with the equally-sized restricted interaction sector. -/
+private noncomputable def ExternalInsertionWickDiagram.componentFixedPosition {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts) :
+    Fin (2 * (2 * (Finset.univ : Finset (Fin
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card)).card +
+      d.externalPairCount B)) →
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + E)) :=
+  fun p => d.componentDiagramLeg B ((finCongr (by simp)) p)
+
+/-- Reading an embedded component fixed position as a canonical leg agrees with the direct
+component canonical-leg embedding. -/
+private theorem ExternalInsertionWickDiagram.externalInsertionLegEquiv_componentFixedPosition
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (Finset.univ : Finset (Fin
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card)).card +
+      d.externalPairCount B))) :
+    externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+        (d.componentFixedPosition B p) =
+      d.componentOrderedLeg B
+        (externalInsertionLegEquiv (d.externalPairCount B)
+          (Finset.univ : Finset (Fin
+            (interactionSector
+              (B : Finset (ExternalInsertionVertex E
+                (Finset.univ : Finset (Fin n))))).card)) p) := by
+  let T :=
+    interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  let localEquiv :=
+    externalInsertionLegEquiv (d.externalPairCount B)
+      (Finset.univ : Finset (Fin T.card))
+  generalize hleg : localEquiv p = leg
+  have hp : p = localEquiv.symm leg := by
+    rw [← hleg]
+    exact (localEquiv.symm_apply_apply p).symm
+  rw [hp]
+  rcases leg with e | ⟨v, l⟩
+  · have hcast :
+        (finCongr (by simp) (localEquiv.symm (Sum.inl e)) :
+          Fin (2 * (2 * T.card + d.externalPairCount B))) =
+          externalInsertionExternalLeg (d.externalPairCount B) T e := by
+        apply Fin.ext
+        simp [localEquiv]
+    rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
+      d.componentDiagramLeg_external B]
+    simp [ExternalInsertionWickDiagram.componentOrderedLeg, localEquiv]
+  · let vT : ↥T := T.orderIsoOfFin rfl v.1
+    have hcast :
+        (finCongr (by simp) (localEquiv.symm (Sum.inr (v, l))) :
+          Fin (2 * (2 * T.card + d.externalPairCount B))) =
+          externalInsertionInteractionLeg (E := d.externalPairCount B) vT l := by
+      apply Fin.ext
+      simp [localEquiv, vT, externalInsertionInteractionLeg_val]
+    rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
+      d.componentDiagramLeg_interaction B]
+    simp [ExternalInsertionWickDiagram.componentOrderedLeg, localEquiv, vT]
+
+/-- The fixed-position embedding intertwines the component Wick pairing with the ambient pairing. -/
+private theorem ExternalInsertionWickDiagram.componentFixedPosition_partner {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (Finset.univ : Finset (Fin
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card)).card +
+      d.externalPairCount B))) :
+    d.componentFixedPosition B ((d.componentWickDiagram B).pairing.partner p) =
+      d.pairing.partner (d.componentFixedPosition B p) := by
+  let T :=
+    interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  let r := d.restrictComponent B
+  let h : 2 * T.card + d.externalPairCount B =
+      2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by
+    simp
+  have hpair : (d.componentWickDiagram B).pairing =
+      Equiv.cast (congrArg Pairing h) r.pairing := by
+    unfold ExternalInsertionWickDiagram.componentWickDiagram
+    dsimp [T, r]
+    congr
+  have hfin : (finCongr (by simp) :
+      Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
+        d.externalPairCount B)) ≃
+      Fin (2 * (2 * T.card + d.externalPairCount B))) =
+      finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
+    congr
+  unfold ExternalInsertionWickDiagram.componentFixedPosition
+  rw [hpair, hfin, Pairing.cast_partner h r.pairing p]
+  exact d.componentDiagramLeg_restrictComponent_pairing_partner B
+    ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p)
+
+/-- The ambient fixed position underlying an embedded component mixed position is the fixed-position
+embedding of the component's own underlying mixed position. -/
+private theorem ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_componentMixedPosition
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B))) :
+    externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+        (d.componentMixedPosition externalTime σ B p) =
+      d.componentFixedPosition B
+        (externalInsertionMixedTimeAmbientPositionEquiv
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B) p) := by
+  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).injective
+  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+    d.externalInsertionLegEquiv_componentFixedPosition B,
+    ExternalInsertionWickDiagram.componentMixedPosition,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv]
+
+/-- The ambient mixed-order pairing partner of an embedded component position is the embedding of
+the component mixed-order pairing partner. -/
+theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B))) :
+    (d.pairingInMixedOrder externalTime σ).partner
+        (d.componentMixedPosition externalTime σ B p) =
+      d.componentMixedPosition externalTime σ B
+        ((d.componentWickDiagram B).pairingInMixedOrder
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B)).partner p := by
+  apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
+  rw [d.mixedTimeAmbientPositionEquiv_partner,
+    d.mixedTimeAmbientPositionEquiv_componentMixedPosition externalTime σ B,
+    d.mixedTimeAmbientPositionEquiv_componentMixedPosition externalTime σ B,
+    (d.componentWickDiagram B).mixedTimeAmbientPositionEquiv_partner,
+    d.componentFixedPosition_partner B]
 
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
