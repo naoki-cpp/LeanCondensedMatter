@@ -15,6 +15,8 @@ Current mapping between project analysis infrastructure and the repository-pinne
 The project uses Mathlib directly for:
 
 - bounded and compact continuous linear maps;
+- compactness under bounded composition through `IsCompactOperator.comp_clm` and `IsCompactOperator.clm_comp`;
+- positivity under adjoint conjugation through `ContinuousLinearMap.IsPositive.conj_adjoint`;
 - finite-dimensional matrix trace and orthonormal-basis formulas;
 - finite-dimensional determinants through `ContinuousLinearMap.det`;
 - infinite products through `HasProd`, `Multipliable`, and `tprod`;
