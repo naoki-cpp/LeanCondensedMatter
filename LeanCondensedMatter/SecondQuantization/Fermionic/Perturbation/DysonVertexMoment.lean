@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
@@ -52,6 +53,24 @@ theorem dysonVertexMomentSetFunction_apply {α : Type*} (ε : Mode → ℝ) (β 
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
     dysonVertexMomentSetFunction ε β V S = dysonVertexMoment ε β V S :=
   rfl
+
+omit [LinearOrder Mode] in
+/-- Factorial-normalized coefficients of the normalized fermionic Dyson partition series are
+exactly the bundled Dyson vertex moments. -/
+theorem powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
+    {α : Type*} (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (hZ :
+      PowerSeries.constantCoeff
+          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1) :
+    Combinatorics.powerSeriesMomentSetFunction (α := α)
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) hZ =
+      dysonVertexMomentSetFunction ε β V := by
+  rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
+  intro S
+  simp only [Combinatorics.powerSeriesMomentCoeff, dysonVertexMomentSetFunction_apply,
+    dysonVertexMoment,
+    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
 
 omit [LinearOrder Mode] in
 /-- The Dyson vertex moment is the factorial times the canonical free Gibbs density-state
