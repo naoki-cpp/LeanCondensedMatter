@@ -8,6 +8,7 @@ import LeanCondensedMatter.Analysis.Operator.Compact
 import LeanCondensedMatter.Analysis.Operator.Diagonal
 import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
+import LeanCondensedMatter.Analysis.Operator.Unitary
 import LeanCondensedMatter.Analysis.Operator.TraceClass
 
 set_option linter.style.header false
