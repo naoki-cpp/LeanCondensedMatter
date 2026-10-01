@@ -98,6 +98,92 @@ noncomputable def ExternalInsertionWickDiagram.pairingInMixedOrder {E n : ℕ}
   (externalInsertionPairingCastEquiv E n d.pairing).transport
     (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm
 
+/-- Casting the number of pairs transports the partner permutation through the corresponding cast
+of flattened positions. -/
+private theorem pairingCast_partner {m n : ℕ} (h : m = n)
+    (pairing : Pairing m) (p : Fin (2 * n)) :
+    (finCongr (congrArg (fun k : ℕ => 2 * k) h.symm))
+        ((Equiv.cast (congrArg Pairing h) pairing).partner p) =
+      pairing.partner
+        ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) := by
+  subst n
+  rfl
+
+private theorem externalInsertionPairingCastEquiv_partner {E n : ℕ}
+    (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + E))
+    (p : Fin (2 * (2 * n + E))) :
+    (finCongr (by simp)) ((externalInsertionPairingCastEquiv E n pairing).partner p) =
+      pairing.partner ((finCongr (by simp)) p) := by
+  let h : 2 * (Finset.univ : Finset (Fin n)).card + E = 2 * n + E := by
+    simp
+  have hcast : externalInsertionPairingCastEquiv E n pairing =
+      Equiv.cast (congrArg Pairing h) pairing := by
+    unfold externalInsertionPairingCastEquiv
+    congr
+  have hfin : (finCongr (by simp) :
+      Fin (2 * (2 * n + E)) ≃
+        Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + E))) =
+      finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
+    congr
+  rw [hcast, hfin]
+  exact pairingCast_partner h pairing p
+
+/-- Transporting a mixed-order partner back to the fixed flattened enumeration recovers the
+original diagram partner. -/
+theorem ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * n + E))) :
+    externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+        ((d.pairingInMixedOrder externalTime σ).partner p) =
+      d.pairing.partner
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ p) := by
+  change (finCongr (by simp))
+      ((externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm
+        (((externalInsertionPairingCastEquiv E n d.pairing).transport
+          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm).partner p)) =
+    d.pairing.partner
+      ((finCongr (by simp))
+        ((externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm p))
+  rw [PairingOn.transport_partner]
+  simp only [Equiv.symm_symm]
+  rw [(externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm_apply_apply]
+  exact externalInsertionPairingCastEquiv_partner d.pairing
+    ((externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm p)
+
+/-- The diagram pairing as a map on canonical external/interaction leg identities. -/
+noncomputable def ExternalInsertionWickDiagram.atomicLegPartner {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (leg : OrderedExternalInsertionLeg E n) : OrderedExternalInsertionLeg E n :=
+  externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+    (d.pairing.partner
+      ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg))
+
+/-- The mixed-order partner of the position selected by a canonical leg is the mixed position of
+that leg's diagram partner. -/
+theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) :
+    (d.pairingInMixedOrder externalTime σ).partner
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (d.atomicLegPartner leg) := by
+  have hpos :
+      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
+        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg := by
+    apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).injective
+    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+      externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+      Equiv.apply_symm_apply]
+  apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).injective
+  rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    ← externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+    d.mixedTimeAmbientPositionEquiv_partner,
+    hpos,
+    ExternalInsertionWickDiagram.atomicLegPartner]
+
 variable [Fintype Mode]
 
 /-- Fermionic pairing evaluation of one external-insertion diagram in mixed-time atomic order.
