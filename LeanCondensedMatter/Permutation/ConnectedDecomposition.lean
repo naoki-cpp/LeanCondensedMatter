@@ -484,7 +484,7 @@ private theorem kernelProduct_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
         ∏ i : (B : Finset α), K i ((restrictOrbitBlockConnected σ B).1 i) := by
   classical
   simpa [Finpartition.equivSigmaParts, restrictOrbitBlockConnected_apply] using
-    (Finpartition.prod_eq_prod_parts (orbitFinpartitionOn S σ.1)
+    (Fintype.prod_equiv_sigma (orbitFinpartitionOn S σ.1).equivSigmaParts
       (fun i : S => K i (σ.1 i)))
 
 private noncomputable def permutationMultiplicativeWeight {R : Type*} [CommSemiring R]
