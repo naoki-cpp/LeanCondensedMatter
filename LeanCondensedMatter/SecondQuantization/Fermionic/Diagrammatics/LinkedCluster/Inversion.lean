@@ -63,7 +63,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
           Finpartition.cumulantFromMoment
             (fun T : Finset (Fin n) => powerSeriesMomentCoeff Z T.card)
             (Finset.univ : Finset (Fin n))
-      exact factorial_mul_coeff_logOf_eq_cumulantFromMoment hZ huniv
+      simpa only [powerSeriesMomentCoeff, Finset.card_univ, Fintype.card_fin] using
+        (factorial_mul_coeff_logOf_eq_cumulantFromMoment
+          (α := Fin n) (s := (Finset.univ : Finset (Fin n))) hZ huniv)
     _ = quarticWickDiagramCumulant (N := n) ε β g
           (Finset.univ : Finset (Fin n)) := by
       rw [hMoment]
