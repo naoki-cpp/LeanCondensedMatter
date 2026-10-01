@@ -9,7 +9,7 @@ set_option linter.style.header false
 
 Provides the Möbius-inversion route from the fermionic Dyson formal logarithm to the bundled Wick
 diagram cumulant. The canonical connected-diagram theorem remains replica-based; this module also
-kernel-checks the full inversion route to the same connected-diagram sum as a private cross-check.
+kernel-checks the full inversion route to the same connected-diagram sum as an `example`.
 -/
 
 open scoped BigOperators
@@ -71,7 +71,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_quarticWickDiagra
       rw [hMoment]
       rfl
 
-private theorem inversionLinkedClusterCrossCheck
+example
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
