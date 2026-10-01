@@ -5,7 +5,7 @@ architectural context and later infinite-dimensional or convergence-aware extens
 
 | Target | Track | Lean declaration(s) | Source |
 |---|---|---|---|
-| Continuous functional calculus acts on eigenvectors by evaluation | C | `Polynomial.aeval_apply_eigenvector`, `cfc_apply_eigenvector` | `LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean` |
+| Continuous functional calculus acts on eigenvectors by evaluation | C | `cfc_apply_eigenvector` | `LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean` |
 | Canonical density-state purity, maximal-purity characterization, and finite-dimensional `Tr(ρ²)` formula | A/C | `QuantumTheory.purity`, `QuantumTheory.purity_nonneg`, `QuantumTheory.purity_le_one`, `QuantumTheory.purity_pure`, `QuantumTheory.isPureDensity_iff_purity_eq_one`, `QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity` | `LeanCondensedMatter/QuantumTheory/DensityOperator/Purity.lean`, `LeanCondensedMatter/QuantumTheory/DensityOperator/Finite.lean` |
 | Explicit partition-lattice Möbius formula | B | `Finpartition.mu_bot_top_eq_factorial`, `Finpartition.mu_bot_top_eq_factorial_ite`, `Finpartition.mu_to_top_eq_factorial`, `Finpartition.mu_eq_prod_factorial` | `LeanCondensedMatter/Combinatorics/SetPartition/MobiusFormula.lean` |
 | Finite-set moment–cumulant inversion | B | `Finpartition.momentFromCumulant_cumulantFromMoment`, `Finpartition.cumulantFromMoment_momentFromCumulant` | `LeanCondensedMatter/Combinatorics/Cumulant/Inversion.lean` |
