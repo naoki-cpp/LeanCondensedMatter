@@ -39,8 +39,11 @@ The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`; the TraceClass diagonal modules only adapt it to positivity and
 spectral-trace-class results.
 
-This is sufficient for the current density-operator, entropy, and bounded Gibbs constructions, but it
-is not a general trace-class ideal on arbitrary non-self-adjoint maps.
+This remains the spectral interface used by the current density-operator, entropy, and bounded Gibbs
+constructions. PhyslibAlpha's [TraceClass modules](https://github.com/leanprover-community/physlib/tree/b840c857d3b5b87cd3a0e58eac7696b7bdb2fe17/PhyslibAlpha/ProbabilisticTheory/HilbertSpace/TraceClass)
+provide the general operator-ideal predicate, trace norm, and trace. Positive operators in the local
+spectral bundle convert to PhyslibAlpha's `IsTraceClass`, with the two trace values proved equal; the
+broader migration of project consumers to that API remains open.
 
 ## Hilbert--Schmidt operators
 
@@ -48,8 +51,9 @@ is not a general trace-class ideal on arbitrary non-self-adjoint maps.
 invariance, closure under bounded composition, the pairing `innerHS`, and comparison with spectral
 trace on the compact self-adjoint overlap.
 
-A general non-self-adjoint trace-class product ideal with trace norm, completeness, and general trace
-remains open.
+The general non-self-adjoint trace-class ideal is available from PhyslibAlpha. Integrating its
+product and trace APIs into the project's analysis layer, beyond the positive spectral bridge, remains
+open.
 
 ## Fredholm determinant
 

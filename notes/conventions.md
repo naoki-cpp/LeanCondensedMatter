@@ -88,7 +88,7 @@ General cautions distilled from past sessions; detailed incident records live in
 
 ## Dependencies
 
-- **Mathlib only.** No other external Lean libraries; the toolchain and Mathlib revision are pinned (`lean-toolchain`, `lake-manifest.json`) and upgraded deliberately, not as a side effect of other work.
+- **Supported external Lean libraries are Mathlib and Physlib.** Prefer Mathlib's general machinery; use Physlib's curated library for reusable physics results when it fits. `PhyslibAlpha` is available when the relevant result has no curated counterpart; keep those imports narrow because Alpha has a lighter review bar and no maintenance guarantee ([Physlib's Alpha policy](https://github.com/leanprover-community/physlib/blob/b840c857d3b5b87cd3a0e58eac7696b7bdb2fe17/README.md#physlibalpha)). Pin exact revisions in `lake-manifest.json` and upgrade dependencies deliberately with the Lean toolchain; other external libraries require an architectural decision.
 - **Survey Mathlib before building new theory.** Record the current survey outcome and the resulting design constraint in the relevant architecture note or active roadmap so it can be re-checked after upgrades; do not preserve a chronological search log.
 - **Prefer Mathlib's general machinery over bespoke constructions** when both can close a goal, even if the bespoke route is locally shorter.
 

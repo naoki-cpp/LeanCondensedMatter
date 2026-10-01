@@ -22,6 +22,11 @@ rank-one criterion is equivalent to maximal spectral purity:
 IsPureDensity ρ ↔ purity ρ = 1
 ```
 
+For positive operators, `SpectralTraceClass.toPhyslibIsTraceClass` supplies a PhyslibAlpha
+`IsTraceClass` witness, and `SpectralTraceClass.physlib_trace_eq_trace` identifies Physlib's complex
+trace with the complex embedding of the spectral trace. The spectral bundle remains the source of
+compactness and eigenvector data used by this project's spectral-expansion results.
+
 The converse is dimension-independent within the current compact self-adjoint spectral trace-class
 model: spectral positivity and trace normalization force the nonzero spectrum to a single eigenvalue
 `1`, and the existing spectral reconstruction recovers the corresponding rank-one density operator.

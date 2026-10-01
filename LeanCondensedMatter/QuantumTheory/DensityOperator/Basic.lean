@@ -45,6 +45,17 @@ theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
   rw [← ρ.spectralTraceClass.trace_eq_spectralTrace]
   exact ρ.spectralTrace_eq_one
 
+/-- A density operator is trace class in Physlib's operator-ideal API. -/
+theorem DensityOperator.isTraceClass (ρ : DensityOperator H) :
+    ProbabilisticTheory.IsTraceClass ρ.op :=
+  ρ.spectralTraceClass.toPhyslibIsTraceClass ρ.pos
+
+/-- Physlib's complex trace of a density operator is one. -/
+theorem DensityOperator.physlib_trace_eq_one (ρ : DensityOperator H) :
+    ProbabilisticTheory.trace ρ.op ρ.isTraceClass = 1 := by
+  rw [ρ.spectralTraceClass.physlib_trace_eq_trace ρ.pos]
+  exact congrArg Complex.ofReal ρ.spectralTrace_op_eq_one
+
 /-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.spectralTraceClass.symmetric
