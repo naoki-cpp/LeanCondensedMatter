@@ -18,6 +18,8 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
+- `SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders` — deliberate quartic-diagram specialization of the generic finite-partition order/shuffle factorization; it packages component orders and shuffles in the diagram vocabulary used by both bosonic and fermionic amplitude factorizations.
 - `SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator` — canonical vertex-level
   energy-shift eigenoperator law: a quartic vertex assembled from ladder eigenoperators evolves with
   the total signed energy shift of its four legs. It remains independently meaningful even without a

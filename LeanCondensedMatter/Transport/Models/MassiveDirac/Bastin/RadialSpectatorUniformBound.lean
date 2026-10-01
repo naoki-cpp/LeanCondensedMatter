@@ -39,8 +39,8 @@ theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
   have hgap : 2 * |m| ≤ |interbandEnergyGap band v m p 0| :=
     two_mul_abs_mass_le_abs_interbandEnergyGap band v m p 0
   have hshift :=
-    abs_interbandEnergyGap_add_offset_ge_sub_radius
-      band v m p 0 offset radius hoffset
+    QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset
+      (interbandEnergyGap band v m p 0) offset radius hoffset
   unfold radialBastinMassWindowMargin
   linarith
 
