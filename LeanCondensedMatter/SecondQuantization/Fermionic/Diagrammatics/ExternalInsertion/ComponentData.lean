@@ -209,6 +209,9 @@ private theorem ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition {
             Fin (2 * (2 * T.card + d.externalPairCount B))) =
             externalInsertionExternalLeg (d.externalPairCount B) T e := by
         apply Fin.ext
+        change (externalInsertionExternalLeg (d.externalPairCount B)
+          (Finset.univ : Finset (Fin T.card)) e).val =
+            (externalInsertionExternalLeg (d.externalPairCount B) T e).val
         simp
       rw [hcast, d.componentDiagramLeg_external B]
       rfl
@@ -222,11 +225,9 @@ private theorem ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition {
             Fin (2 * (2 * T.card + d.externalPairCount B))) =
             externalInsertionInteractionLeg (E := d.externalPairCount B) vT l := by
         apply Fin.ext
-        rw [show
-          (externalInsertionLegEquiv (d.externalPairCount B)
-            (Finset.univ : Finset (Fin T.card))).symm (Sum.inr (v, l)) =
-              externalInsertionInteractionLeg (E := d.externalPairCount B)
-                (v : ↥(Finset.univ : Finset (Fin T.card))) l by rfl]
+        change (externalInsertionInteractionLeg (E := d.externalPairCount B)
+          (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
+            (externalInsertionInteractionLeg (E := d.externalPairCount B) vT l).val
         rw [externalInsertionInteractionLeg_val, externalInsertionInteractionLeg_val]
         have huniv :
             (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm v).val =
@@ -269,9 +270,7 @@ theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg {E n :
     congr
   apply (externalInsertionLegEquiv E
     (Finset.univ : Finset (Fin n))).symm.injective
-  rw [ExternalInsertionWickDiagram.atomicLegPartner,
-    ExternalInsertionWickDiagram.atomicLegPartner,
-    Equiv.symm_apply_apply]
+  rw [ExternalInsertionWickDiagram.atomicLegPartner, Equiv.symm_apply_apply]
   rw [d.componentOrderedLeg_fixedPosition B leg,
     d.componentOrderedLeg_fixedPosition B
       ((d.componentWickDiagram B).atomicLegPartner leg)]
