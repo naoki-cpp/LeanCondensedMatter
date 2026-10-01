@@ -30,12 +30,6 @@ summability hypothesis that guarantees convergence. -/
 def diagonalDet (coeff : ι → ℂ) : ℂ :=
   ∏' i, (1 + coeff i)
 
-/-- Absolute summability of diagonal coefficients guarantees convergence of the defining product. -/
-theorem diagonalDet_multipliable (coeff : ι → ℂ)
-    (hcoeff : Summable fun i => ‖coeff i‖) :
-    Multipliable fun i => 1 + coeff i :=
-  multipliable_one_add_of_summable hcoeff
-
 /-- Equivalent enumerations of the same diagonal coefficients give the same determinant. -/
 theorem diagonalDet_reindex (e : κ ≃ ι) (coeff : ι → ℂ) :
     diagonalDet (coeff ∘ e) = diagonalDet coeff := by
