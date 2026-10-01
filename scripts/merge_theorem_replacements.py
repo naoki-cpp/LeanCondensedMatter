@@ -27,6 +27,8 @@ def main() -> None:
     finding_targets = set()
     replacement_rows: list[tuple[str, list[str]]] = []
     defeq_rows: list[tuple[str, list[str]]] = []
+    mathlib_replacement_rows: list[tuple[str, list[tuple[str, str]]]] = []
+    mathlib_defeq_rows: list[tuple[str, list[str]]] = []
 
     for finding in findings:
         target = finding["target"]
@@ -46,6 +48,13 @@ def main() -> None:
                 if candidate["name"] != entry.get("directWrapperOf")
             }
         )
+        mathlib_defeq = sorted(set(finding.get("mathlibDefinitionallyEquivalentTo", [])))
+        mathlib_replacements = sorted(
+            {
+                (candidate["name"], candidate["module"])
+                for candidate in finding.get("mathlibReplacementCandidates", [])
+            }
+        )
 
         unknown = [name for name in defeq + replacements if name not in by_name]
         if unknown:
@@ -56,11 +65,18 @@ def main() -> None:
         entry["definitionallyEquivalentTo"] = defeq
         entry["replacementCandidates"] = replacements
         entry["replacementCandidateCount"] = len(replacements)
+        entry["mathlibDefinitionallyEquivalentTo"] = mathlib_defeq
+        entry["mathlibReplacementCandidates"] = [name for name, _ in mathlib_replacements]
+        entry["mathlibReplacementCandidateCount"] = len(mathlib_replacements)
 
         if defeq:
             defeq_rows.append((target, defeq))
         if replacements:
             replacement_rows.append((target, replacements))
+        if mathlib_defeq:
+            mathlib_defeq_rows.append((target, mathlib_defeq))
+        if mathlib_replacements:
+            mathlib_replacement_rows.append((target, mathlib_replacements))
 
     missing_findings = sorted(set(by_name) - finding_targets)
     if missing_findings:
@@ -76,19 +92,29 @@ def main() -> None:
         handle.write("\n## Proof-guided theorem replacement review queue\n\n")
         handle.write(
             "This advisory queue contains source-declared project theorems whose compiled proof "
-            "already depends on another project theorem that Lean can replay as a direct "
-            "specialization. Existing direct-wrapper relations are omitted here.\n\n"
+            "already depends on another project or Mathlib theorem that Lean can replay as a direct "
+            "specialization. Existing project direct-wrapper relations are omitted here.\n\n"
         )
         handle.write(f"Definitionally equivalent proof-dependency targets: {len(defeq_rows)}\n\n")
         handle.write(f"Replacement-candidate targets: {len(replacement_rows)}\n\n")
         for target, replacements in replacement_rows:
             rendered = ", ".join(f"`{name}`" for name in replacements)
             handle.write(f"- `{target}` → {rendered}\n")
+        handle.write(
+            f"Mathlib definitionally equivalent proof-dependency targets: "
+            f"{len(mathlib_defeq_rows)}\n\n"
+        )
+        handle.write(f"Mathlib replacement-candidate targets: {len(mathlib_replacement_rows)}\n\n")
+        for target, replacements in mathlib_replacement_rows:
+            rendered = ", ".join(f"`{name}` ({module})" for name, module in replacements)
+            handle.write(f"- `{target}` → {rendered}\n")
 
     print(
         "Merged theorem replacement audit: "
-        f"{len(defeq_rows)} defeq targets; "
-        f"{len(replacement_rows)} replacement targets"
+        f"{len(defeq_rows)} project defeq targets; "
+        f"{len(replacement_rows)} project replacement targets; "
+        f"{len(mathlib_defeq_rows)} Mathlib defeq targets; "
+        f"{len(mathlib_replacement_rows)} Mathlib replacement targets"
     )
 
 
