@@ -34,13 +34,6 @@ theorem create_apply (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
     create 𝓗₁ f Ψ = oneParticle 𝓗₁ f * Ψ :=
   rfl
 
-/-- Degree-one one-particle vectors anticommute inside the exterior algebra. -/
-theorem oneParticle_mul_add_swap (f g : 𝓗₁) :
-    oneParticle 𝓗₁ f * oneParticle 𝓗₁ g +
-      oneParticle 𝓗₁ g * oneParticle 𝓗₁ f = 0 := by
-  simpa only [oneParticle] using
-    (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) f g)
-
 /-- Two smeared creation operators satisfy the creation-creation CAR. -/
 theorem create_comp_add_swap (f g : 𝓗₁) :
     (create 𝓗₁ f).comp (create 𝓗₁ g) +
@@ -48,8 +41,9 @@ theorem create_comp_add_swap (f g : 𝓗₁) :
   change
     (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ f)).comp (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ g)) +
       (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ g)).comp (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ f)) = 0
-  simpa only [map_add, map_mul, map_zero, Module.End.mul_eq_comp] using
-    congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁)) (oneParticle_mul_add_swap 𝓗₁ f g)
+  simpa only [oneParticle, map_add, map_mul, map_zero, Module.End.mul_eq_comp] using
+    congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁))
+      (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) f g)
 
 /-- Creating twice in the same one-particle state gives zero. -/
 @[simp]
