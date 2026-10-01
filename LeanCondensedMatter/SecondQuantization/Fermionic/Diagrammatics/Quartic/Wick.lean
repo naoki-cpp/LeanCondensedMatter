@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Cumulant
 
 set_option linter.style.header false
 
