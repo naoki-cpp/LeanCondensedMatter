@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 
 set_option linter.style.header false
@@ -42,7 +43,8 @@ theorem diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs
   rw [← hsq, mul_apply_eq_comp]
   change inner ℂ x (S (S x)) = inner ℂ (S x) (S x)
   calc
-    inner ℂ x (S (S x)) = inner ℂ x ((S†) (S x)) := by rw [hS.adjoint_eq]
+    inner ℂ x (S (S x)) =
+        inner ℂ x ((ContinuousLinearMap.adjoint S) (S x)) := by rw [hS.adjoint_eq]
     _ = inner ℂ (S x) (S x) := ContinuousLinearMap.adjoint_inner_right S x (S x)
 
 /-- Trace-class membership with respect to a basis is equivalent to the Hilbert--Schmidt property
