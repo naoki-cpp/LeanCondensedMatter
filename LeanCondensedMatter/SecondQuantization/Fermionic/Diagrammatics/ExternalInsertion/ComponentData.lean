@@ -229,20 +229,26 @@ private theorem ExternalInsertionWickDiagram.externalInsertionLegEquiv_component
           Fin (2 * (2 * T.card + d.externalPairCount B))) =
           externalInsertionExternalLeg (d.externalPairCount B) T e := by
         apply Fin.ext
-        simp [localEquiv]
+        change (externalInsertionExternalLeg (d.externalPairCount B)
+          (Finset.univ : Finset (Fin T.card)) e).val = e.val
+        simp
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_external B]
-    simp [ExternalInsertionWickDiagram.componentOrderedLeg, localEquiv]
+    simp [ExternalInsertionWickDiagram.componentOrderedLeg, externalInsertionExternalLeg]
   · let vT : ↥T := T.orderIsoOfFin rfl v.1
     have hcast :
         (finCongr (by simp) (localEquiv.symm (Sum.inr (v, l))) :
           Fin (2 * (2 * T.card + d.externalPairCount B))) =
           externalInsertionInteractionLeg (E := d.externalPairCount B) vT l := by
       apply Fin.ext
-      simp [localEquiv, vT, externalInsertionInteractionLeg_val]
+      change (externalInsertionInteractionLeg (E := d.externalPairCount B)
+        (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
+          2 * d.externalPairCount B + l.val + 4 * v.val
+      simp [externalInsertionInteractionLeg_val]
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_interaction B]
-    simp [ExternalInsertionWickDiagram.componentOrderedLeg, localEquiv, vT]
+    simp [ExternalInsertionWickDiagram.componentOrderedLeg, vT,
+      externalInsertionInteractionLeg]
 
 /-- The fixed-position embedding intertwines the component Wick pairing with the ambient pairing. -/
 private theorem ExternalInsertionWickDiagram.componentFixedPosition_partner {E n : ℕ}
@@ -265,7 +271,6 @@ private theorem ExternalInsertionWickDiagram.componentFixedPosition_partner {E n
       Equiv.cast (congrArg Pairing h) r.pairing := by
     unfold ExternalInsertionWickDiagram.componentWickDiagram
     dsimp [T, r]
-    congr
   have hfin : (finCongr (by simp) :
       Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
         d.externalPairCount B)) ≃
@@ -313,9 +318,9 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     (d.pairingInMixedOrder externalTime σ).partner
         (d.componentMixedPosition externalTime σ B p) =
       d.componentMixedPosition externalTime σ B
-        ((d.componentWickDiagram B).pairingInMixedOrder
+        (((d.componentWickDiagram B).pairingInMixedOrder
           (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).partner p := by
+          (d.componentInteractionTime σ B)).partner p) := by
   apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
   rw [d.mixedTimeAmbientPositionEquiv_partner,
     d.mixedTimeAmbientPositionEquiv_componentMixedPosition externalTime σ B,
