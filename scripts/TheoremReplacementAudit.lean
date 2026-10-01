@@ -29,11 +29,18 @@ structure AuditEntry where
   probedCandidateCount : Nat
   definitionallyEquivalentTo : Array String
   replacementCandidates : Array ReplacementCandidate
+  mathlibProofDependencies : Array String
+  mathlibProbedCandidateCount : Nat
+  mathlibDefinitionallyEquivalentTo : Array String
+  mathlibReplacementCandidates : Array ReplacementCandidate
 
 private def maxReplacementCandidatesPerTarget : Nat := 4
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
+
+private def mathlibModule? (moduleName : Name) : Bool :=
+  moduleName.toString.startsWith "Mathlib"
 
 private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
   let moduleIdx ← env.const2ModIdx.get? declName
@@ -70,6 +77,22 @@ private def directProjectTheoremDependencyNames
       dependencies.push dependency
     else
       dependencies
+
+private def directMathlibTheoremDependencyNames
+    (env : Environment) (declName : Name) (value : Expr) : Array Name :=
+  value.foldConsts #[] fun dependency dependencies =>
+    if dependency == declName || dependencies.contains dependency then
+      dependencies
+    else
+      match env.find? dependency, declarationModule? env dependency with
+      | some (.thmInfo _), some moduleName =>
+          if mathlibModule? moduleName then dependencies.push dependency else dependencies
+      | _, _ => dependencies
+
+private def theoremCandidate? (env : Environment) (declName : Name) : Option Candidate := do
+  let some (.thmInfo theoremInfo) := env.find? declName | none
+  let some moduleName := declarationModule? env declName | none
+  return { name := declName, moduleName, theoremInfo }
 
 /-- Peel the explicit theorem telescope without reduction. This is only a cheap search filter. -/
 private partial def resultShape (binderCount : Nat) : Expr → Nat × Expr
@@ -150,7 +173,7 @@ private def closeReplacementSubgoals
         loop remaining.reverse fuel
   loop goals (goals.length + 1)
 
-/-- Check whether an already-used project theorem can discharge the target merely by specialization.
+/-- Check whether an already-used theorem can discharge the target merely by specialization.
 No global theorem search is performed: the source must already occur in the target proof term. -/
 private def replacementCloses (source target : Candidate) : MetaM Bool :=
   withoutModifyingState do
@@ -192,10 +215,12 @@ private def auditTarget
 
 private def collectAuditEntries
     (prepared : Array PreparedCandidate) (projectTheorems : NameSet) :
-    CommandElabM (Array AuditEntry × Nat) := do
+    CommandElabM (Array AuditEntry × Nat × Nat) := do
+  let env ← getEnv
   let byName := candidateMap prepared
   let mut entries := #[]
-  let mut totalProbed := 0
+  let mut totalProjectProbed := 0
+  let mut totalMathlibProbed := 0
   for target in prepared do
     let dependencyNames := directProjectTheoremDependencyNames
       projectTheorems target.candidate.name target.candidate.theoremInfo.value
@@ -209,12 +234,31 @@ private def collectAuditEntries
             sources
           else
             sources.push source
-    totalProbed := totalProbed + sources.size
+    let mathlibDependencyNames := directMathlibTheoremDependencyNames
+      env target.candidate.name target.candidate.theoremInfo.value
+    let mathlibSources := mathlibDependencyNames.foldl (init := #[]) fun sources dependency =>
+      match theoremCandidate? env dependency with
+      | none => sources
+      | some source =>
+          let preparedSource := prepareCandidate source
+          if privateDeclarationName? source.name ||
+              extensionTheoremName? source.name ||
+              !compatibleResultShape preparedSource target then
+            sources
+          else
+            sources.push preparedSource
+    totalProjectProbed := totalProjectProbed + sources.size
+    totalMathlibProbed := totalMathlibProbed + mathlibSources.size
     let (defEq, replacements) ←
       if sources.isEmpty then
         pure (#[], #[])
       else
         liftTermElabM <| liftMetaM <| auditTarget target sources
+    let (mathlibDefEq, mathlibReplacements) ←
+      if mathlibSources.isEmpty then
+        pure (#[], #[])
+      else
+        liftTermElabM <| liftMetaM <| auditTarget target mathlibSources
     entries := entries.push {
       target := target.candidate.name.toString
       moduleName := target.candidate.moduleName.toString
@@ -222,10 +266,16 @@ private def collectAuditEntries
       probedCandidateCount := sources.size
       definitionallyEquivalentTo := defEq
       replacementCandidates := replacements
+      mathlibProofDependencies :=
+        (mathlibDependencyNames.map Name.toString).qsort fun left right => left < right
+      mathlibProbedCandidateCount := mathlibSources.size
+      mathlibDefinitionallyEquivalentTo := mathlibDefEq
+      mathlibReplacementCandidates := mathlibReplacements
     }
   return (
     entries.qsort fun left right => left.target < right.target,
-    totalProbed)
+    totalProjectProbed,
+    totalMathlibProbed)
 
 private def jsonReplacement (candidate : ReplacementCandidate) : Json :=
   .mkObj [
@@ -240,7 +290,13 @@ private def jsonEntry (entry : AuditEntry) : Json :=
     ("proofDependencies", .arr <| entry.proofDependencies.map Json.str),
     ("probedCandidateCount", .num entry.probedCandidateCount),
     ("definitionallyEquivalentTo", .arr <| entry.definitionallyEquivalentTo.map Json.str),
-    ("replacementCandidates", .arr <| entry.replacementCandidates.map jsonReplacement)
+    ("replacementCandidates", .arr <| entry.replacementCandidates.map jsonReplacement),
+    ("mathlibProofDependencies", .arr <| entry.mathlibProofDependencies.map Json.str),
+    ("mathlibProbedCandidateCount", .num entry.mathlibProbedCandidateCount),
+    ("mathlibDefinitionallyEquivalentTo",
+      .arr <| entry.mathlibDefinitionallyEquivalentTo.map Json.str),
+    ("mathlibReplacementCandidates",
+      .arr <| entry.mathlibReplacementCandidates.map jsonReplacement)
   ]
 
 private def json (entries : Array AuditEntry) : Json :=
@@ -249,14 +305,20 @@ private def json (entries : Array AuditEntry) : Json :=
 run_cmd do
   let (candidates, projectTheorems) ← collectCandidates
   let prepared := candidates.map prepareCandidate
-  let (entries, totalProbed) ← collectAuditEntries prepared projectTheorems
+  let (entries, totalProjectProbed, totalMathlibProbed) ←
+    collectAuditEntries prepared projectTheorems
   let defEqTargets := entries.filter fun entry => !entry.definitionallyEquivalentTo.isEmpty
   let replacementTargets := entries.filter fun entry => !entry.replacementCandidates.isEmpty
   let replacementEdges := replacementTargets.foldl (init := 0) fun count entry =>
     count + entry.replacementCandidates.size
+  let mathlibDefEqTargets :=
+    entries.filter fun entry => !entry.mathlibDefinitionallyEquivalentTo.isEmpty
+  let mathlibReplacementTargets :=
+    entries.filter fun entry => !entry.mathlibReplacementCandidates.isEmpty
+  let mathlibReplacementEdges := mathlibReplacementTargets.foldl (init := 0) fun count entry =>
+    count + entry.mathlibReplacementCandidates.size
   let outputDir : System.FilePath := "docs" / "generated"
   liftIO <| IO.FS.createDirAll outputDir
   liftIO <| IO.FS.writeFile (outputDir / "theorem-replacements.json") (json entries).pretty
-  logInfo m!"Generated proof-guided replacement audit for {entries.size} declarations; probed {totalProbed} proof-dependency pairs; {defEqTargets.size} targets have definitionally equivalent proof dependencies; {replacementTargets.size} targets have verified replacements; {replacementEdges} replacement edges"
-
+  logInfo m!"Generated proof-guided replacement audit for {entries.size} declarations; probed {totalProjectProbed} project proof-dependency pairs and {totalMathlibProbed} Mathlib proof-dependency pairs; {defEqTargets.size} targets have definitionally equivalent project proof dependencies; {replacementTargets.size} targets have verified project replacements ({replacementEdges} edges); {mathlibDefEqTargets.size} targets have definitionally equivalent Mathlib proof dependencies; {mathlibReplacementTargets.size} targets have verified Mathlib replacements ({mathlibReplacementEdges} edges)"
 end LeanCondensedMatter.TheoremReplacementAudit
