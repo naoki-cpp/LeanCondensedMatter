@@ -32,31 +32,6 @@ open Polynomial
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 omit [CompleteSpace H] in
-/-- An operator's polynomial functional calculus acts on an eigenvector by evaluating the
-polynomial at the eigenvalue. No self-adjointness hypothesis is needed here — this is a
-purely algebraic fact about `Polynomial.aeval`. -/
-theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
-    (hv : (T : H →ₗ[ℂ] H) v = (c : ℂ) • v) (q : ℝ[X]) :
-    (Polynomial.aeval T q : H →L[ℂ] H) v = ((q.eval c : ℝ) : ℂ) • v := by
-  rw [Polynomial.aeval_eq_aeval_map
-    (φ := algebraMap ℝ ℂ) (by ext r; simp [RingHom.comp_apply]) q T]
-  let p := q.map (algebraMap ℝ ℂ)
-  change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p)) v = _
-  rw [Polynomial.map_aeval_eq_aeval_map
-    (R := ℂ) (S := H →L[ℂ] H) (T := ℂ) (U := H →ₗ[ℂ] H)
-    (φ := RingHom.id ℂ)
-    (ψ := ContinuousLinearMap.toLinearMapRingHom)
-    (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T]
-  have heval : p.eval (c : ℂ) = ((q.eval c : ℝ) : ℂ) := by
-    change (q.map (algebraMap ℝ ℂ)).eval (c : ℂ) = ((q.eval c : ℝ) : ℂ)
-    rw [Polynomial.eval_map]
-    exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
-  simp only [Polynomial.map_id]
-  rw [Module.End.aeval_apply_of_mem_apply_eq_smul
-    (f := ContinuousLinearMap.toLinearMapRingHom T) (μ := (c : ℂ))
-    (x := v) (p := p) (by simpa using hv), heval]
-
-omit [CompleteSpace H] in
 /-- Evaluating a real polynomial with zero constant coefficient at a compact operator gives a
 compact operator. Algebraically, such a polynomial is divisible by `X`, so its evaluation factors
 through the original compact operator. -/
@@ -76,7 +51,7 @@ self-adjoint `T` and an eigenvector `v` of `T` with (real) eigenvalue `c`, `cfc 
 `v` by scaling it by `f c`, for any continuous `f : ℝ → ℝ`. Proved by approximating `f`
 uniformly by polynomials on `[-‖T‖, ‖T‖]` (a compact interval containing `spectrum ℝ T`,
 via the classical Weierstrass approximation theorem) and passing to the limit using the
-isometry of `cfcHom` together with `Polynomial.aeval_apply_eigenvector`. -/
+isometry of `cfcHom` together with Mathlib's eigenvector evaluation law for `Polynomial.aeval`. -/
 theorem cfc_apply_eigenvector {T : H →L[ℂ] H} (hT : IsSelfAdjoint T) {v : H} {c : ℝ}
     (hv : (T : H →ₗ[ℂ] H) v = (c : ℂ) • v) {f : ℝ → ℝ} (hf : Continuous f) :
     cfc f T v = ((f c : ℝ) : ℂ) • v := by
@@ -122,7 +97,23 @@ theorem cfc_apply_eigenvector {T : H →L[ℂ] H} (hT : IsSelfAdjoint T) {v : H}
     have heq : ∀ n, cfc (p n).eval T v = (((p n).eval c : ℝ) : ℂ) • v := by
       intro n
       rw [cfc_polynomial (p n) T]
-      exact Polynomial.aeval_apply_eigenvector hv (p n)
+      rw [Polynomial.aeval_eq_aeval_map
+        (φ := algebraMap ℝ ℂ) (by ext r; simp [RingHom.comp_apply]) (p n) T]
+      let q := (p n).map (algebraMap ℝ ℂ)
+      change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T q)) v = _
+      rw [Polynomial.map_aeval_eq_aeval_map
+        (R := ℂ) (S := H →L[ℂ] H) (T := ℂ) (U := H →ₗ[ℂ] H)
+        (φ := RingHom.id ℂ)
+        (ψ := ContinuousLinearMap.toLinearMapRingHom)
+        (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) q T]
+      have heval : q.eval (c : ℂ) = (((p n).eval c : ℝ) : ℂ) := by
+        change ((p n).map (algebraMap ℝ ℂ)).eval (c : ℂ) = (((p n).eval c : ℝ) : ℂ)
+        rw [Polynomial.eval_map]
+        exact Polynomial.eval₂_at_apply (p := p n) (algebraMap ℝ ℂ) c
+      simp only [Polynomial.map_id]
+      rw [Module.End.aeval_apply_of_mem_apply_eq_smul
+        (f := ContinuousLinearMap.toLinearMapRingHom T) (μ := (c : ℂ))
+        (x := v) (p := q) (by simpa using hv), heval]
     simp_rw [heq]
     have hp_c : Tendsto (fun n => (p n).eval c) atTop (𝓝 (f c)) := by
       rw [Metric.tendsto_atTop]
