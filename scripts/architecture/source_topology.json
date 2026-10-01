@@ -267,6 +267,17 @@
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant"
       ]
+    },
+    {
+      "id": "inversionLinkedClusterIndependence",
+      "roots": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Inversion"
+      ],
+      "forbiddenPrefixes": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Replica",
+        "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+        "LeanCondensedMatter.Combinatorics.Cumulant.Replica"
+      ]
     }
   ]
 }

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment
 
 set_option linter.style.header false
 
@@ -6,5 +6,6 @@ set_option linter.style.header false
 # Fermionic Dyson-to-diagram expansion
 
 Expansion of fermionic Dyson coefficients into Wick diagrams through flattened interaction legs,
-free-Gibbs pairing evaluation, and canonical reindexing from pairings to labelled diagrams.
+free-Gibbs pairing evaluation, canonical reindexing from pairings to labelled diagrams, and the
+bundled normalized moment boundary used by connected-diagram consumers.
 -/

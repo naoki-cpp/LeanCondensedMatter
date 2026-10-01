@@ -1,9 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 
 set_option linter.style.header false
 
@@ -20,17 +17,7 @@ open scoped BigOperators
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
-
-/-- Multiplicative quartic Wick amplitude on the shared connected decomposition. -/
-private noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    Combinatorics.MultiplicativeWeight
-      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ :=
-  Common.QuarticDiagram.multiplicativeWeight
-    (N := N)
-    (fun d => quarticWickDiagramAmplitude ε β g d)
-    (fun d => quarticWickDiagramAmplitude_eq_prod_components ε β g d)
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Fermionic Dyson Linked Cluster Theorem. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
@@ -54,17 +41,15 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
-        dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
-    rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
-    intro T
-    simp only [Combinatorics.powerSeriesMomentCoeff, dysonVertexMomentSetFunction_apply,
-      dysonVertexMoment,
-      coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+        dysonVertexMomentSetFunction ε β (quarticInteraction g) :=
+    powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
+      ε β (quarticInteraction g) hZ
   have hDiagramMoment :
       dysonVertexMomentSetFunction ε β (quarticInteraction g) =
         W.normalizedObjectMoment := by
-    ext T
-    exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
+    simpa only [W, quarticWickDiagramMoment] using
+      (dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
+        (N := n) ε β g)
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
