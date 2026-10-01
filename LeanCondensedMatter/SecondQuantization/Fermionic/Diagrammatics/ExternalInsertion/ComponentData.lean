@@ -151,6 +151,31 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPosition {E n : ℕ
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B) p))
 
+/-- The canonical embedding of one component's mixed positions preserves their mixed-time order. -/
+theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts) :
+    StrictMono (d.componentMixedPosition externalTime σ B) := by
+  let T :=
+    interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  have hExternal : StrictMono (fun e : Fin (2 * d.externalPairCount B) =>
+      (d.externalSectorOrderIso B e).1) := by
+    intro a b hab
+    exact (d.externalSectorOrderIso B).strictMono hab
+  have hInteraction : StrictMono (fun v : Fin T.card =>
+      (T.orderIsoOfFin rfl v).1) := by
+    intro a b hab
+    exact (T.orderIsoOfFin rfl).strictMono hab
+  simpa only [ExternalInsertionWickDiagram.componentMixedPosition,
+    ExternalInsertionWickDiagram.componentOrderedLeg,
+    ExternalInsertionWickDiagram.componentExternalTime,
+    ExternalInsertionWickDiagram.componentInteractionTime,
+    T, Function.comp_apply] using
+    (externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+      hExternal hInteraction externalTime σ)
+
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
     {E n : ℕ}
