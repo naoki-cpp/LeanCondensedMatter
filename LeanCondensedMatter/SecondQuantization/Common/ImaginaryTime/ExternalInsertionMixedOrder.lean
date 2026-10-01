@@ -469,5 +469,29 @@ noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ
     ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).trans
       (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm)
 
+/-- The fixed flattened diagram position underlying a mixed-time atomic position. -/
+noncomputable def externalInsertionMixedTimeAmbientPositionEquiv {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + E)) ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + E)) :=
+  (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm.trans
+    (finCongr (by simp))
+
+/-- Unflattening the fixed ambient position underlying a mixed position recovers the canonical leg
+identity stored at that mixed position. -/
+theorem externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * n + E))) :
+    externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ p) =
+      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p := by
+  unfold externalInsertionMixedTimeAmbientPositionEquiv
+    externalInsertionStandardToMixedAtomicPositionEquiv
+  rw [← (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).apply_symm_apply
+    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p)]
+  apply congrArg (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
+  apply Fin.ext
+  rfl
+
 end Common
 end SecondQuantization
