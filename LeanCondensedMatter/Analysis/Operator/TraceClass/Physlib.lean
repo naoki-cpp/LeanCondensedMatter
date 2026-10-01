@@ -33,8 +33,11 @@ theorem toPhyslibIsTraceClass (h : SpectralTraceClass T) (hpos : T.IsPositive) :
   calc
     diagonalExpectationValue T h.isSelfAdjoint (b i) =
         Complex.re (diagonalExpectationValue T h.isSelfAdjoint (b i) : ℂ) := by simp
-    _ = (inner ℂ (b i) (T (b i))).re :=
-      congrArg Complex.re (coe_diagonalExpectationValue_right T h.isSelfAdjoint (b i))
+    _ = (inner ℂ (b i) (T (b i))).re := by
+      have h_re := congrArg Complex.re
+        (coe_diagonalExpectationValue_right T h.isSelfAdjoint (b i))
+      rw [Complex.ofReal_re] at h_re
+      exact h_re
 
 /-- Physlib's complex trace of a positive spectral-trace-class operator is the complex embedding
 of its spectral trace. -/
