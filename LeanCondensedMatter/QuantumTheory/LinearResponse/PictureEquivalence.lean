@@ -81,7 +81,10 @@ theorem observableExpValue_evolveState_eq_heisenberg
 noncomputable def evolveDensityOperator (ρ : DensityOperator H) (t : ℝ) :
     DensityOperator H where
   op := unitaryConjugate (freePropagator system t) ρ.op
-  pos := ρ.pos.unitaryConjugate (freePropagator system t)
+  pos := by
+    change ((freePropagator system t) ∘SL ρ.op ∘SL
+      ContinuousLinearMap.adjoint (freePropagator system t)).IsPositive
+    exact ρ.pos.conj_adjoint (freePropagator system t)
   spectralTraceClass :=
     ρ.spectralTraceClass.unitaryConjugate
       (freePropagator system t)
