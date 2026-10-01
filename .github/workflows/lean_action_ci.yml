@@ -83,7 +83,7 @@ jobs:
 
   build:
     needs: changes
-    if: needs.changes.outputs.lean == 'true' || (github.event_name == 'push' && needs.changes.outputs.advisory == 'true')
+    if: needs.changes.outputs.lean == 'true' || needs.changes.outputs.advisory == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
 
@@ -113,6 +113,15 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
+
+      - name: Validate theorem advisory tooling
+        if: needs.changes.outputs.advisory == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean scripts/TheoremCatalog.lean
+          lake env lean scripts/TheoremReplacementAudit.lean
+          python3 scripts/merge_theorem_replacements.py
 
       - name: Save project build cache
         if: steps.lean-build.outcome == 'success' && steps.project-cache.outputs.cache-hit != 'true'
@@ -209,11 +218,9 @@ jobs:
           if [ "$LEAN_RELATED" = true ]; then
             test "$BUILD_RESULT" = success
             test "$COMPILED_CHECKS_RESULT" = success
-          elif [ "$EVENT_NAME" = push ] && [ "$ADVISORY_RELATED" = true ]; then
+          elif [ "$ADVISORY_RELATED" = true ]; then
             test "$BUILD_RESULT" = success
           fi
-          if [ "$SOURCE_RELATED" != true ] && [ "$LEAN_RELATED" != true ]; then
-            if [ "$EVENT_NAME" != push ] || [ "$ADVISORY_RELATED" != true ]; then
-              echo "No source-architecture or Lean-build checks were needed."
-            fi
+          if [ "$SOURCE_RELATED" != true ] && [ "$LEAN_RELATED" != true ] && [ "$ADVISORY_RELATED" != true ]; then
+            echo "No source-architecture, Lean-build, or advisory checks were needed."
           fi
