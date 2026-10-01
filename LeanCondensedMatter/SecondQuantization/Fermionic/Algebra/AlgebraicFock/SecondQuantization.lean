@@ -78,7 +78,12 @@ theorem secondQuantizationStep_square (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : �
     secondQuantizationStep 𝓗₁ T f
         (oneParticle 𝓗₁ f * x, secondQuantizationStep 𝓗₁ T f (x, dx)) = 0 := by
   simp only [secondQuantizationStep_apply, mul_add, ← mul_assoc]
-  rw [← add_assoc, ← add_mul, oneParticle_mul_add_swap, zero_mul]
+  have hcar :
+      oneParticle 𝓗₁ (T f) * oneParticle 𝓗₁ f +
+        oneParticle 𝓗₁ f * oneParticle 𝓗₁ (T f) = 0 := by
+    simpa only [oneParticle] using
+      (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) (T f) f)
+  rw [← add_assoc, ← add_mul, hcar, zero_mul]
   simp [oneParticle]
 
 /-- The exact compatibility condition required by `CliffordAlgebra.foldr'` at the zero quadratic
