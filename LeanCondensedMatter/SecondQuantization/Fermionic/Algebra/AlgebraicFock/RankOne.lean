@@ -40,7 +40,7 @@ theorem dGamma_dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) :
       rw [annihilateDual_create_apply, hx]
       have hcar := congrArg
         (fun z => z * annihilateDual 𝓗₁ d x)
-        (oneParticle_mul_add_swap 𝓗₁ f g)
+        (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) f g)
       have hswap :
           oneParticle 𝓗₁ g *
               (oneParticle 𝓗₁ f * annihilateDual 𝓗₁ d x) =
