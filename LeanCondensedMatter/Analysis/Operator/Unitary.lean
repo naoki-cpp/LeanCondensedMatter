@@ -84,16 +84,4 @@ theorem finrank_eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
   exact (Unitary.linearIsometryEquiv
     (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.finrank_map_eq _
 
-/-- Compactness is preserved under bounded unitary conjugation. -/
-theorem isCompactOperator_unitaryConjugate (U T : H →L[ℂ] H)
-    (hT : IsCompactOperator T) : IsCompactOperator (unitaryConjugate U T) := by
-  change IsCompactOperator (⇑U ∘ ⇑T ∘ ⇑(star U))
-  exact (hT.comp_clm (star U)).clm_comp U
-
-/-- Positivity is preserved under conjugation by any bounded operator. -/
-theorem IsPositive.unitaryConjugate {T : H →L[ℂ] H} (hT : T.IsPositive)
-    (U : H →L[ℂ] H) : (unitaryConjugate U T).IsPositive := by
-  change (U ∘SL T ∘SL ContinuousLinearMap.adjoint U).IsPositive
-  exact hT.conj_adjoint U
-
 end ContinuousLinearMap
