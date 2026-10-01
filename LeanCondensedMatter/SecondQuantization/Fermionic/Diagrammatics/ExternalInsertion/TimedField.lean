@@ -117,6 +117,7 @@ private theorem externalInsertionPairingCastEquiv_partner {E n : ℕ}
   rw [hcast, hfin]
   exact pairing.cast_partner h p
 
+omit [LinearOrder Mode] in
 /-- Transporting a mixed-order partner back to the fixed flattened enumeration recovers the
 original diagram partner. -/
 theorem ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner {E n : ℕ}
