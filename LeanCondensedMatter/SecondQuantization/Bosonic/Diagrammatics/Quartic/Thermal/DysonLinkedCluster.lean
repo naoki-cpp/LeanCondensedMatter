@@ -42,15 +42,9 @@ theorem factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermal
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (freeGibbsDysonSeries ε β (quarticInteraction g)) hZ =
         W.normalizedObjectMoment := by
-    change
-      Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
-          (freeGibbsDysonSeries ε β (quarticInteraction g)) hZ =
-        quarticDysonThermalMoment ε β g β
-    rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
-    intro S
-    simpa only [Combinatorics.powerSeriesMomentCoeff, coeff_freeGibbsDysonSeries] using
-      (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
-        ε β hpos g β S).symm
+    simpa only [W, quarticDysonThermalMoment] using
+      (powerSeriesMomentSetFunction_freeGibbsDysonSeries_eq_quarticDysonThermalMoment
+        (N := n) ε β hpos g hZ)
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
   calc
