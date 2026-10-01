@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
