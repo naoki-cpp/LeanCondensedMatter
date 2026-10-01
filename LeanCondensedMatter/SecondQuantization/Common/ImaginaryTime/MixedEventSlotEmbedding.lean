@@ -48,11 +48,17 @@ private theorem twoPointTimedEventBeforeOrEqual_map_iff
         (twoPointTimedEventMap f a) (twoPointTimedEventMap f b) ↔
       twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b := by
   simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
-    twoPointTimedEventTime_map, twoPointTimedEventRank, twoPointTimedEventMap]
-  rw [finSumFinEquiv_map_val_le_iff
-    (f := id) (g := f)
-    (show StrictMono (id : Fin 2 → Fin 2) from fun _ _ h => h)
-    hf a b]
+    twoPointTimedEventTime_map]
+  have hrank :
+      twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
+        twoPointTimedEventRank (twoPointTimedEventMap f b) ↔
+          twoPointTimedEventRank a ≤ twoPointTimedEventRank b := by
+    simpa [twoPointTimedEventMap, twoPointTimedEventRank] using
+      (finSumFinEquiv_map_val_le_iff
+        (f := id) (g := f)
+        (show StrictMono (id : Fin 2 → Fin 2) from fun _ _ h => h)
+        hf a b)
+  rw [hrank]
 
 theorem twoPointTimedEventBefore_map_iff (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent m) :
