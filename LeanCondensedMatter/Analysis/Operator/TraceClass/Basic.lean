@@ -74,6 +74,13 @@ theorem complexSpectralSum_eq_spectralTrace (hT : T.IsSymmetric) :
       rw [Complex.ofReal_tsum]
 
 omit [CompleteSpace H] in
+/-- The complex spectral sum of a symmetric operator is real. -/
+theorem complexSpectralSum_im_eq_zero (hT : T.IsSymmetric) :
+    (complexSpectralSum T).im = 0 := by
+  rw [complexSpectralSum_eq_spectralTrace hT]
+  simp
+
+omit [CompleteSpace H] in
 /-- Every eigenvalue of a positive operator is nonnegative. -/
 theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →ₗ[ℂ] H).IsPositive)
     (a : EigenvectorIndex T) : 0 ≤ a.1.1 := by
