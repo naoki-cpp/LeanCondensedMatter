@@ -232,6 +232,9 @@ private theorem ExternalInsertionWickDiagram.externalInsertionLegEquiv_component
           externalInsertionExternalLeg (d.externalPairCount B)
             (Finset.univ : Finset (Fin T.card)) e by rfl]
         apply Fin.ext
+        change (externalInsertionExternalLeg (d.externalPairCount B)
+          (Finset.univ : Finset (Fin T.card)) e).val =
+            (externalInsertionExternalLeg (d.externalPairCount B) T e).val
         simp
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_external B]
@@ -250,7 +253,11 @@ private theorem ExternalInsertionWickDiagram.externalInsertionLegEquiv_component
         externalInsertionInteractionLeg (E := d.externalPairCount B)
           (v : ↥(Finset.univ : Finset (Fin T.card))) l by rfl]
       apply Fin.ext
-      simp [externalInsertionInteractionLeg_val, vT]
+      change (externalInsertionInteractionLeg (E := d.externalPairCount B)
+        (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) vT l).val
+      rw [externalInsertionInteractionLeg_val, externalInsertionInteractionLeg_val]
+      simp [vT]
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_interaction B]
     change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
