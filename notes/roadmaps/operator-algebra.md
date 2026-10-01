@@ -38,19 +38,22 @@ wrapper. General trace-class membership is based on summability of the nonnegati
 diagonal of `CFC.abs T`.
 
 Basis independence is reduced to the existing Hilbert--Schmidt layer: the diagonal term
-`⟨eᵢ, |T| eᵢ⟩` equals `‖CFC.sqrt (CFC.abs T) eᵢ‖²`, so changing Hilbert basis is exactly the
-proved basis-independence problem for Hilbert--Schmidt square-norm sums. This is the design
-constraint for the general trace-class API; basis choices are witnesses, not mathematical data
-stored in the operator property.
+`⟨eᵢ, |T| eᵢ⟩` equals `‖CFC.sqrt (CFC.abs T) eᵢ‖²`. Accordingly,
+`ContinuousLinearMap.IsTraceClass T` is owned by Hilbert--Schmidt membership of
+`CFC.sqrt (CFC.abs T)`, while `IsTraceClassWrt d T` is the equivalent diagonal criterion in a
+chosen Hilbert basis. Basis choices remain witnesses rather than mathematical data stored in the
+operator property.
 
 The existing `ContinuousLinearMap.SpectralTraceClass` remains the compact self-adjoint spectral
 specialization, with spectral trace, positivity/additivity/scalar results, supported cyclicity, and
 Hilbert-basis formulas. The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`.
 
-The general trace norm and complex trace must be basis-independent values built on the general
-membership layer. Their comparison with `SpectralTraceClass` belongs to the compact self-adjoint
-overlap rather than to the definition of general trace class.
+`traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
+`IsTraceClass T` it is not called the trace norm. The canonical trace norm and complex trace must
+be basis-independent values built on the general membership layer. Their comparison with
+`SpectralTraceClass` belongs to the compact self-adjoint overlap rather than to the definition of
+general trace class.
 
 ## Hilbert--Schmidt operators
 
