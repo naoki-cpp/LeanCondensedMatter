@@ -122,8 +122,8 @@ private theorem eigenvectorIndex_zero_elim
   have hfin :
       Module.finrank ℂ
         (Module.End.eigenspace (((0 : H →L[ℂ] H)) : H →ₗ[ℂ] H) (a.1.1 : ℂ)) = 0 := by
-    rw [Module.End.eigenspace_def]
-    simp [hμ]
+    rw [Module.End.eigenspace_def, zero_sub, LinearMap.ker_neg,
+      LinearMap.ker_smul _ _ hμ, LinearMap.ker_id, finrank_bot]
   have hpos :
       0 < Module.finrank ℂ
         (Module.End.eigenspace (((0 : H →L[ℂ] H)) : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
