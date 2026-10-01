@@ -9,7 +9,7 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 # Bundled compact symmetric spectral-trace hypotheses
 
 `SpectralTraceClass T` bundles compactness, symmetry, and absolute summability of the indexed
-nonzero real eigenvalues. Bundled declarations are the public operator API; the unbundled theorems
+nonzero complex eigenvalues. Bundled declarations are the public operator API; the unbundled theorems
 in `Basic` and `Ops` are implementation infrastructure.
 
 The diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after proving that
@@ -20,23 +20,31 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace ContinuousLinearMap
 
-/-- A compact symmetric operator whose indexed nonzero real eigenvalues are absolutely summable. -/
+/-- A compact symmetric operator whose indexed nonzero complex eigenvalues are absolutely summable. -/
 structure SpectralTraceClass (T : H →L[ℂ] H) : Prop where
   compact : IsCompactOperator T
   symmetric : T.IsSymmetric
-  summable : HasSummableRealEigenvalues T
+  complexSummable : HasSummableComplexEigenvalues T
 
 namespace SpectralTraceClass
 
 variable {T T' : H →L[ℂ] H}
 
+omit [CompleteSpace H] in
+/-- A bundled symmetric complex spectral sum has the existing real spectral summability property. -/
+theorem summable (h : SpectralTraceClass T) : HasSummableRealEigenvalues T :=
+  (hasSummableComplexEigenvalues_iff_hasSummableRealEigenvalues h.symmetric).mp h.complexSummable
+
 /-- Build bundled spectral-trace data for a positive compact operator with summable real
 eigenvalues. Positivity supplies symmetry. -/
 theorem ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
-    (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T where
-  compact := hcompact
-  symmetric := hpos.isSelfAdjoint.isSymmetric
-  summable := hsummable
+    (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T := by
+  have hsym : T.IsSymmetric := hpos.isSelfAdjoint.isSymmetric
+  exact
+    { compact := hcompact
+      symmetric := hsym
+      complexSummable :=
+        (hasSummableComplexEigenvalues_iff_hasSummableRealEigenvalues hsym).mpr hsummable }
 
 /-- Build bundled spectral-trace data for a continuous functional calculus transform.
 Compactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;
@@ -45,24 +53,30 @@ eigenvalues remains an explicit hypothesis. -/
 theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactOperator T)
     (hf : Continuous f) (hf0 : f 0 = 0)
     (hsummable : HasSummableRealEigenvalues (cfc f T)) :
-    SpectralTraceClass (cfc f T) where
-  compact := isCompactOperator_cfc_of_zero hself hcompact hf hf0
-  symmetric := (IsSelfAdjoint.cfc (f := f) (a := T)).isSymmetric
-  summable := hsummable
+    SpectralTraceClass (cfc f T) := by
+  have hsym : (cfc f T).IsSymmetric :=
+    (IsSelfAdjoint.cfc (f := f) (a := T)).isSymmetric
+  exact
+    { compact := isCompactOperator_cfc_of_zero hself hcompact hf hf0
+      symmetric := hsym
+      complexSummable :=
+        (hasSummableComplexEigenvalues_iff_hasSummableRealEigenvalues hsym).mpr hsummable }
 
 /-- A bundled spectral-trace-class operator is self-adjoint. -/
 theorem isSelfAdjoint (h : SpectralTraceClass T) : IsSelfAdjoint T :=
   ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr h.symmetric
 
-/-- The spectral trace associated with the bundled hypotheses. -/
+/-- The real value of the bundled complex spectral sum. -/
 noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
-  ContinuousLinearMap.spectralTrace T
+  (ContinuousLinearMap.complexSpectralSum T).re
 
 omit [CompleteSpace H] in
 @[simp]
 theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
-    h.trace = ContinuousLinearMap.spectralTrace T :=
-  rfl
+    h.trace = ContinuousLinearMap.spectralTrace T := by
+  unfold trace
+  rw [ContinuousLinearMap.complexSpectralSum_eq_spectralTrace h.symmetric]
+  simp
 
 omit [CompleteSpace H] in
 /-- The spectral trace of a positive bundled operator is nonnegative. -/
