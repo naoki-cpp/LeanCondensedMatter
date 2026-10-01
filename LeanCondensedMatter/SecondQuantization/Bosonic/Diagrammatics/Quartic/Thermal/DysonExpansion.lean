@@ -1,10 +1,10 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
+import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
 
@@ -439,6 +439,24 @@ theorem quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
   exact
     (factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
       ε β hpos g S t).symm
+
+
+/-- The factorial-normalized coefficients of the physical bosonic Dyson series are exactly the
+normalized moments of the time-integrated quartic Dyson diagrams. -/
+theorem powerSeriesMomentSetFunction_freeGibbsDysonSeries_eq_quarticDysonThermalMoment
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (g : QuarticVertexLabel Mode → ℂ) {N : ℕ}
+    (hZ :
+      PowerSeries.constantCoeff
+          (freeGibbsDysonSeries ε β (quarticInteraction g)) = 1) :
+    Combinatorics.powerSeriesMomentSetFunction (α := Fin N)
+        (freeGibbsDysonSeries ε β (quarticInteraction g)) hZ =
+      quarticDysonThermalMoment ε β g β := by
+  rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
+  intro S
+  simpa only [Combinatorics.powerSeriesMomentCoeff, coeff_freeGibbsDysonSeries] using
+    (quarticDysonThermalMoment_eq_factorial_mul_freeGibbsDysonCoeff
+      ε β hpos g β S).symm
 
 end
 end Bosonic
