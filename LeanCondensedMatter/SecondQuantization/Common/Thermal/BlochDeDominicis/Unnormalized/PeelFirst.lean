@@ -76,11 +76,11 @@ theorem comp_prod_eq_of_zetaCommutator (ζ : ℂ)
     C1.comp ((l.map Prod.fst).prod) =
       peelSum ζ l + ζ ^ l.length • ((l.map Prod.fst).prod.comp C1) := by
   have hExchange : ∀ p ∈ l,
-      C1 * p.1 = p.2 • (1 : Module.End (AlgebraicFock Config)) +
+      C1 * p.1 = p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
         ζ • (p.1 * C1) := by
     intro p hp
     have hcomm' : C1 * p.1 - ζ • (p.1 * C1) =
-        p.2 • (1 : Module.End (AlgebraicFock Config)) := by
+        p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
       simpa only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
         Module.End.one_eq_id] using hcomm p hp
     exact (sub_eq_iff_eq_add).mp hcomm'
