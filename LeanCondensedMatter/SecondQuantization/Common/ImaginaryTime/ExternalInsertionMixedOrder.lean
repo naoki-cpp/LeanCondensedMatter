@@ -396,6 +396,68 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_position {E n : ℕ}
         (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) = leg :=
   (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).apply_symm_apply leg
 
+/-- Increasing reindexings of the external and interaction slots embed the local mixed atomic
+positions strictly monotonically into the ambient mixed atomic order. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+    {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
+    {fInteraction : Fin m → Fin n}
+    (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
+    (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ) :
+    StrictMono (fun p : Fin (2 * (2 * m + E₁)) =>
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (orderedExternalInsertionLegMap fExternal fInteraction
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (externalTime ∘ fExternal) (σ ∘ fInteraction) p))) := by
+  let localLegs :=
+    externalInsertionMixedTimeOrderedAtomicLegs
+      (externalTime ∘ fExternal) (σ ∘ fInteraction)
+  let ambientLegs := externalInsertionMixedTimeOrderedAtomicLegs externalTime σ
+  let legMap := orderedExternalInsertionLegMap fExternal fInteraction
+  have hSub : (localLegs.map legMap).Sublist ambientLegs := by
+    simpa [localLegs, ambientLegs, legMap] using
+      (externalInsertionMixedTimeOrderedAtomicLegs_map_sublist
+        hExternal hInteraction externalTime σ)
+  obtain ⟨positionEmbedding, hget⟩ :=
+    List.sublist_iff_exists_fin_orderEmbedding_get_eq.mp hSub
+  have hLocalLength :
+      (localLegs.map legMap).length = 2 * (2 * m + E₁) := by
+    simpa [localLegs] using
+      (externalInsertionMixedTimeOrderedAtomicLegs_length
+        (externalTime ∘ fExternal) (σ ∘ fInteraction))
+  have hAmbientLength :
+      ambientLegs.length = 2 * (2 * n + E₂) := by
+    simpa [ambientLegs] using
+      (externalInsertionMixedTimeOrderedAtomicLegs_length externalTime σ)
+  have hLocalGet (p : Fin (2 * (2 * m + E₁))) :
+      (localLegs.map legMap).get ((Fin.castOrderIso hLocalLength.symm) p) =
+        legMap (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          (externalTime ∘ fExternal) (σ ∘ fInteraction) p) := by
+    simp only [List.get_map]
+    apply congrArg legMap
+    change localLegs.get _ = localLegs.get _
+    congr
+  have hAmbientGet (p : Fin ambientLegs.length) :
+      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ
+          ((Fin.castOrderIso hAmbientLength) p) =
+        ambientLegs.get p := by
+    change ambientLegs.get _ = ambientLegs.get p
+    congr
+  have hPosition (p : Fin (2 * (2 * m + E₁))) :
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (legMap (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (externalTime ∘ fExternal) (σ ∘ fInteraction) p)) =
+        (Fin.castOrderIso hAmbientLength)
+          (positionEmbedding ((Fin.castOrderIso hLocalLength.symm) p)) := by
+    apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).injective
+    rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position, hAmbientGet]
+    rw [← hget]
+    exact hLocalGet p
+  intro p q hpq
+  rw [hPosition p, hPosition q]
+  exact (Fin.castOrderIso hAmbientLength).strictMono
+    (positionEmbedding.strictMono
+      ((Fin.castOrderIso hLocalLength.symm).strictMono hpq))
+
 /-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
 noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
