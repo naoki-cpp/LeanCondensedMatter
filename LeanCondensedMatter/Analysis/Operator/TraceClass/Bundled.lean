@@ -72,6 +72,12 @@ noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
 
 omit [CompleteSpace H] in
 @[simp]
+theorem trace_eq_complexSpectralSum_re (h : SpectralTraceClass T) :
+    h.trace = (ContinuousLinearMap.complexSpectralSum T).re :=
+  rfl
+
+omit [CompleteSpace H] in
+@[simp]
 theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
     h.trace = ContinuousLinearMap.spectralTrace T := by
   unfold trace
