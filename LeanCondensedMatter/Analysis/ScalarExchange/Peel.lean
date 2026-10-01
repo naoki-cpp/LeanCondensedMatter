@@ -49,4 +49,42 @@ theorem mul_prod_eq_peelSum
       rw [smul_add, smul_smul, pow_succ, ← mul_assoc]
       module
 
+/-- The exchange contributions generated while pushing one fixed algebra element through a list
+of factors paired with their scalar exchange coefficients. -/
+noncomputable def peelSumWithCoefficients {A : Type*} [Semiring A] [Algebra ℂ A]
+    (ζ : ℂ) : List (A × ℂ) → A
+  | [] => 0
+  | (B, c) :: t =>
+      c • (t.map Prod.fst).prod + ζ • (B * peelSumWithCoefficients ζ t)
+
+@[simp]
+theorem peelSumWithCoefficients_nil {A : Type*} [Semiring A] [Algebra ℂ A]
+    (ζ : ℂ) : peelSumWithCoefficients (A := A) ζ [] = 0 := rfl
+
+/-- Repeatedly apply a scalar exchange relation between one fixed element and the factors of a
+coefficient-paired list. This form is useful when the exchange coefficients depend on the fixed
+element, so no relations between the factors themselves are required. -/
+theorem mul_prod_eq_peelSumWithCoefficients
+    {A : Type*} [Semiring A] [Algebra ℂ A]
+    (ζ : ℂ) (C : A) (l : List (A × ℂ))
+    (hExchange : ∀ p ∈ l,
+      C * p.1 = p.2 • (1 : A) + ζ • (p.1 * C)) :
+    C * (l.map Prod.fst).prod =
+      peelSumWithCoefficients ζ l + ζ ^ l.length • ((l.map Prod.fst).prod * C) := by
+  induction l with
+  | nil => simp [peelSumWithCoefficients]
+  | cons p t ih =>
+      obtain ⟨B, c⟩ := p
+      have hhead := hExchange (B, c) (by simp)
+      have htail : ∀ q ∈ t,
+          C * q.1 = q.2 • (1 : A) + ζ • (q.1 * C) := by
+        intro q hq
+        exact hExchange q (List.mem_cons_of_mem _ hq)
+      have iht := ih htail
+      simp only [List.map_cons, List.prod_cons, List.length_cons, peelSumWithCoefficients]
+      rw [← mul_assoc, hhead, add_mul, smul_mul_assoc, one_mul, smul_mul_assoc]
+      rw [mul_assoc B C _, iht, mul_add, mul_smul_comm]
+      rw [smul_add, smul_smul, pow_succ, ← mul_assoc]
+      module
+
 end ScalarExchange
