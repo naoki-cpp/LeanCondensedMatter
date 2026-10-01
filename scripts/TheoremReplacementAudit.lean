@@ -173,7 +173,7 @@ private def closeReplacementSubgoals
         loop remaining.reverse fuel
   loop goals (goals.length + 1)
 
-/-- Check whether an already-used project theorem can discharge the target merely by specialization.
+/-- Check whether an already-used theorem can discharge the target merely by specialization.
 No global theorem search is performed: the source must already occur in the target proof term. -/
 private def replacementCloses (source target : Candidate) : MetaM Bool :=
   withoutModifyingState do
