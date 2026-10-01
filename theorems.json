@@ -13149,8 +13149,7 @@
       "ContinuousLinearMap.SpectralTraceClass.compact",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.symmetric",
-      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero"
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -13602,8 +13601,7 @@
       "ContinuousLinearMap.SpectralTraceClass.smul",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.trace_eq_spectralTrace",
-      "ContinuousLinearMap.spectralTrace_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+      "ContinuousLinearMap.spectralTrace_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14155,15 +14153,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "ContinuousLinearMap.spectralTrace_smul"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "ContinuousLinearMap.spectralTrace_smul"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -14762,14 +14760,14 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → T.HasSummableRealEigenvalues → (c • T).HasSummableRealEigenvalues",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} (c : ℝ),\n  T.HasSummableRealEigenvalues → (c • T).HasSummableRealEigenvalues",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14777,24 +14775,22 @@
     "name": "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
     "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
     "externalAxioms": [],
-    "docString": "Spectral summability is preserved under multiplication by a nonzero real scalar. ",
+    "docString": "Spectral summability is preserved under multiplication by any real scalar. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.smul",
-      "ContinuousLinearMap.spectralTrace_smul"
+      "ContinuousLinearMap.SpectralTraceClass.smul"
     ],
     "dependencies": [
-      "ContinuousLinearMap.eigenspace_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.smul",
-      "ContinuousLinearMap.spectralTrace_smul"
+      "ContinuousLinearMap.SpectralTraceClass.smul"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15663,7 +15659,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → T.HasSummableRealEigenvalues → (c • T).spectralTrace = c * T.spectralTrace",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} (c : ℝ),\n  T.HasSummableRealEigenvalues → (c • T).spectralTrace = c * T.spectralTrace",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15678,18 +15674,15 @@
     "name": "ContinuousLinearMap.spectralTrace_smul",
     "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
     "externalAxioms": [],
-    "docString": "`spectralTrace` is homogeneous under multiplication by a nonzero real scalar. ",
+    "docString": "`spectralTrace` is homogeneous under multiplication by any real scalar. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.trace_smul"
     ],
     "dependencies": [
-      "ContinuousLinearMap.eigenspace_smul",
-      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "ContinuousLinearMap.summable_eigenvectorIndex",
-      "ContinuousLinearMap.tsum_eigenvectorIndex_eq_tsum_mul_finrank",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15813,22 +15806,22 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
-      "ContinuousLinearMap.spectralTrace_smul",
       "ContinuousLinearMap.spectralTrace_unitaryConjugate",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
-      "QuantumTheory.hasSum_probNNReal"
+      "QuantumTheory.hasSum_probNNReal",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
-      "ContinuousLinearMap.spectralTrace_smul",
       "ContinuousLinearMap.spectralTrace_unitaryConjugate",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
-      "QuantumTheory.hasSum_probNNReal"
+      "QuantumTheory.hasSum_probNNReal",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -16111,15 +16104,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.spectralTrace_smul",
-      "ContinuousLinearMap.spectralTrace_unitaryConjugate"
+      "ContinuousLinearMap.spectralTrace_unitaryConjugate",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.spectralTrace_smul",
-      "ContinuousLinearMap.spectralTrace_unitaryConjugate"
+      "ContinuousLinearMap.spectralTrace_unitaryConjugate",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -135629,15 +135622,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "ContinuousLinearMap.spectralTrace_smul"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "ContinuousLinearMap.spectralTrace_smul"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -135692,6 +135685,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → T.HasSummableRealEigenvalues → (c • T).HasSummableRealEigenvalues",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": "Internal nonzero-scalar transport used by the total public scalar theorem below. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.eigenspace_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H],\n  ContinuousLinearMap.HasSummableRealEigenvalues 0",
     "standardAxioms": [
       "Classical.choice",
@@ -135711,7 +135748,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.smul"
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
@@ -135719,7 +135756,52 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.smul"
+      "ContinuousLinearMap.hasSummableRealEigenvalues_smul"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H} {c : ℝ},\n  c ≠ 0 → T.HasSummableRealEigenvalues → (c • T).spectralTrace = c * T.spectralTrace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "externalAxioms": [],
+    "docString": "Internal nonzero-scalar trace transport used by the total public scalar theorem below. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.spectralTrace_smul"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.eigenspace_smul",
+      "ContinuousLinearMap.summable_eigenvectorIndex",
+      "ContinuousLinearMap.tsum_eigenvectorIndex_eq_tsum_mul_finrank",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.spectralTrace_smul"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -135752,7 +135834,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+      "ContinuousLinearMap.spectralTrace_smul"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
@@ -135760,7 +135842,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.trace_smul"
+      "ContinuousLinearMap.spectralTrace_smul"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
