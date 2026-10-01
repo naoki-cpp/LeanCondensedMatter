@@ -16,10 +16,10 @@ applies.
   its basis action and compactness. Positivity and spectral-trace packaging are separate adapters
   under `Analysis/Operator/TraceClass/`.
 
-- **The Hilbert–Schmidt API does not yet supply a general trace-class product ideal.**
-  The project proves basis independence, adjoint invariance, bounded-composition closure, and the
-  Hilbert–Schmidt pairing. It has not yet bundled arbitrary products of two Hilbert–Schmidt
-  operators as non-self-adjoint trace-class operators carrying a general trace.
+- **General trace-class membership is not yet a complete operator-ideal API.**
+  `ContinuousLinearMap.IsTraceClass T` is implemented through Hilbert–Schmidt membership of
+  `sqrt(|T|)`. Closure under the operations needed for a full trace ideal, a canonical trace norm,
+  and a basis-independent complex trace are still missing.
 
 - **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
