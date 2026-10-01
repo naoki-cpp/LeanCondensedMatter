@@ -125,8 +125,10 @@ theorem traceNormWrt_eq {ι κ : Type*}
 /-! ### Basis-free public API -/
 
 private noncomputable def someHilbertBasis : Σ w : Set H, HilbertBasis w ℂ H := by
-  obtain ⟨w, d, _⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  exact ⟨w, d⟩
+  classical
+  exact Classical.choice <| show Nonempty (Σ w : Set H, HilbertBasis w ℂ H) from by
+    obtain ⟨w, d, _⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+    exact ⟨⟨w, d⟩⟩
 
 namespace IsTraceClass
 
