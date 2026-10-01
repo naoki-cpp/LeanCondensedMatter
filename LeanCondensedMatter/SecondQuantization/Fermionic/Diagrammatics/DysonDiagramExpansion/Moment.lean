@@ -17,6 +17,23 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- Factorial-normalized coefficients of the normalized fermionic Dyson partition series are
+exactly the bundled Dyson vertex moments. -/
+theorem powerSeriesMomentSetFunction_normalizedDysonPartitionSeries_eq_dysonVertexMomentSetFunction
+    {α : Type*} (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (hZ :
+      PowerSeries.constantCoeff
+          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1) :
+    Combinatorics.powerSeriesMomentSetFunction (α := α)
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) hZ =
+      dysonVertexMomentSetFunction ε β V := by
+  rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
+  intro S
+  simp only [Combinatorics.powerSeriesMomentCoeff, dysonVertexMomentSetFunction_apply,
+    dysonVertexMoment,
+    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+
 /-- The factorial-normalized fermionic Dyson vertex moment is exactly the normalized total
 quartic Wick-diagram moment. -/
 theorem dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
