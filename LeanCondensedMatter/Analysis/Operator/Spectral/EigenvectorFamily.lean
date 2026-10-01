@@ -176,6 +176,38 @@ theorem span_eigenvectorFamily (hT : IsCompactOperator T) :
     rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
     exact ⟨⟨μ, y⟩, rfl⟩
 
+/-- For a symmetric operator, the nonzero complex spectral span equals the nonzero real
+spectral span. -/
+theorem span_complexEigenvectorFamily_eq_span_eigenvectorFamily
+    (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
+    Submodule.span ℂ (Set.range (complexEigenvectorFamily hT)) =
+      Submodule.span ℂ (Set.range (eigenvectorFamily hT)) := by
+  rw [span_complexEigenvectorFamily hT, span_eigenvectorFamily hT]
+  apply le_antisymm
+  · apply iSup_le
+    intro z
+    rcases eq_or_ne (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1) ⊥ with hbot | hne
+    · rw [hbot]
+      exact bot_le
+    · have hreal : (starRingEnd ℂ) z.1 = z.1 := hT'.conj_eigenvalue_eq_self hne
+      let zself : selfAdjoint ℂ := ⟨z.1, hreal⟩
+      let r : ℝ := Complex.selfAdjointEquiv zself
+      have hre : (r : ℂ) = z.1 := by
+        simpa [r, zself] using Complex.coe_selfAdjointEquiv zself
+      have hr : r ≠ 0 := by
+        intro hr
+        apply z.2
+        rw [← hre, hr, Complex.ofReal_zero]
+      rw [← hre]
+      exact le_iSup
+        (fun μ : { μ : ℝ // μ ≠ 0 } =>
+          Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) ⟨r, hr⟩
+  · apply iSup_le
+    intro μ
+    exact le_iSup
+      (fun z : { z : ℂ // z ≠ 0 } => Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)
+      ⟨(μ.1 : ℂ), by exact_mod_cast μ.2⟩
+
 /-- **`eigenvectorFamily`'s span lies inside the orthogonal complement of the kernel.** Each
 eigenvector `eigenvectorFamily hT a` lies in a *nonzero*-eigenvalue eigenspace, which is
 orthogonal to the eigenvalue-`0` eigenspace `ker T` (`IsSymmetric.orthogonalFamily_eigenspaces`),
@@ -212,28 +244,27 @@ theorem kernel_sup_span_eigenvectorFamily_dense (hT : IsCompactOperator T)
     ((Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ)) ⊔
       Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure = ⊤ := by
   set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
+  set C := Submodule.span ℂ (Set.range (complexEigenvectorFamily hT)) with hC_def
   set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
-  have hsup : (⨆ μ : ℂ, Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) = G ⊔ E' := by
+  have hCE : C = E' := by
+    simpa [hC_def, hE'_def] using
+      span_complexEigenvectorFamily_eq_span_eigenvectorFamily hT hT'
+  have hsup : (⨆ z : ℂ, Module.End.eigenspace (T : H →ₗ[ℂ] H) z) = G ⊔ C := by
     apply le_antisymm
     · apply iSup_le
-      intro μ
-      rcases eq_or_ne (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) ⊥ with hbot | hne
-      · rw [hbot]; exact bot_le
-      · have hreal : (starRingEnd ℂ) μ = μ := hT'.conj_eigenvalue_eq_self hne
-        let μself : selfAdjoint ℂ := ⟨μ, hreal⟩
-        let r : ℝ := Complex.selfAdjointEquiv μself
-        have hre : (r : ℂ) = μ := by
-          simpa [r, μself] using Complex.coe_selfAdjointEquiv μself
-        rcases eq_or_ne r 0 with hz | hz
-        · rw [← hre, hz, Complex.ofReal_zero]; exact le_sup_left
-        · refine le_trans ?_ le_sup_right
-          rw [← hre, hE'_def, span_eigenvectorFamily hT]
-          exact le_iSup (fun ν : { ν : ℝ // ν ≠ 0 } =>
-            Module.End.eigenspace (T : H →ₗ[ℂ] H) (ν.1 : ℂ)) ⟨r, hz⟩
-    · refine sup_le (le_iSup (fun μ : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) 0) ?_
-      rw [hE'_def, span_eigenvectorFamily hT]
-      exact iSup_le fun ν => le_iSup
-        (fun μ : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) (ν.1 : ℂ)
+      intro z
+      rcases eq_or_ne z 0 with rfl | hz
+      · exact le_sup_left
+      · refine le_trans ?_ le_sup_right
+        rw [hC_def, span_complexEigenvectorFamily hT]
+        exact le_iSup
+          (fun w : { w : ℂ // w ≠ 0 } =>
+            Module.End.eigenspace (T : H →ₗ[ℂ] H) w.1) ⟨z, hz⟩
+    · refine sup_le (le_iSup (fun z : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) z) 0) ?_
+      rw [hC_def, span_complexEigenvectorFamily hT]
+      exact iSup_le fun z =>
+        le_iSup (fun w : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) w) z.1
+  rw [hCE] at hsup
   rw [← hsup, ← Submodule.orthogonal_orthogonal_eq_closure,
     orthogonalComplement_iSup_eigenspaces_eq_bot hT hT', Submodule.bot_orthogonal_eq_top]
 
