@@ -135,11 +135,13 @@ linked-cluster endpoint without Möbius/cumulant inversion. The finite-mode ferm
 `factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude`
 is proved through this replica endpoint while retaining its existing public API.
 
-The import boundary is enforced by the `replicaLinkedClusterIndependence` source-topology rule:
-the generic replica bridge and the fermionic specialization cannot reach
-`Combinatorics.Cumulant.Inversion`, `ConnectedDecompositionInversion`, or
-`Analysis.PowerSeries.Cumulant`. This keeps the replica route a genuine kernel-checked cross-check
-of the inversion proof.
+The import boundaries are enforced in both directions by source-topology rules.
+`replicaLinkedClusterIndependence` prevents the generic replica bridge and canonical fermionic
+specialization from reaching `Combinatorics.Cumulant.Inversion`,
+`ConnectedDecompositionInversion`, or `Analysis.PowerSeries.Cumulant`.
+`inversionLinkedClusterIndependence` prevents the concrete inversion specialization from reaching
+the power-series or finite-set replica modules. Thus neither concrete proof route can silently
+depend on the other.
 
 ## Open work
 
