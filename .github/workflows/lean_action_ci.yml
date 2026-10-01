@@ -170,10 +170,10 @@ jobs:
           use-github-cache: false
           use-mathlib-cache: auto
 
-      # The scripts below load project modules in standalone Lean processes, so build the Alpha
-      # dependency target explicitly to make its modules available on the workspace search path.
-      - name: Build PhyslibAlpha for compiled checks
-        run: lake build @Physlib/PhyslibAlpha
+      # The scripts below load project modules in standalone Lean processes. Build the one
+      # PhyslibAlpha module imported by this project so it is available on the workspace search path.
+      - name: Build PhyslibAlpha trace-class module for compiled checks
+        run: lake build @Physlib/+PhyslibAlpha.ProbabilisticTheory.HilbertSpace.TraceClass.Basic
 
       - name: Check duplicate declarations
         if: matrix.check == 'duplicates'
