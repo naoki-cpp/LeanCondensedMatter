@@ -40,6 +40,7 @@ theorem finiteDimensional_eigenspace_ne_zero (hT : IsCompactOperator T)
   finiteDimensional_complexEigenspace_ne_zero hT
     ⟨(μ.1 : ℂ), by exact_mod_cast μ.2⟩
 
+omit [CompleteSpace H] in
 private theorem complexEigenvalue_isReal_of_index (hT' : T.IsSymmetric)
     (a : ComplexEigenvectorIndex T) :
     (starRingEnd ℂ) a.1.1 = a.1.1 := by
@@ -52,72 +53,49 @@ private theorem complexEigenvalue_isReal_of_index (hT' : T.IsSymmetric)
     exact (Nat.lt_irrefl 0) hpos
   exact hT'.conj_eigenvalue_eq_self hne
 
-private noncomputable def realEigenvalueOfComplexIndex (hT' : T.IsSymmetric)
-    (a : ComplexEigenvectorIndex T) : ℝ :=
-  Complex.selfAdjointEquiv ⟨a.1.1, complexEigenvalue_isReal_of_index hT' a⟩
-
-private theorem coe_realEigenvalueOfComplexIndex (hT' : T.IsSymmetric)
-    (a : ComplexEigenvectorIndex T) :
-    (realEigenvalueOfComplexIndex hT' a : ℂ) = a.1.1 :=
-  Complex.coe_selfAdjointEquiv
-    ⟨a.1.1, complexEigenvalue_isReal_of_index hT' a⟩
-
-private theorem realEigenvalueOfComplexIndex_ne_zero (hT' : T.IsSymmetric)
-    (a : ComplexEigenvectorIndex T) :
-    realEigenvalueOfComplexIndex hT' a ≠ 0 := by
-  intro hzero
-  apply a.1.2
-  rw [← coe_realEigenvalueOfComplexIndex hT' a, hzero, Complex.ofReal_zero]
-
-private noncomputable def complexEigenvectorIndexToReal (hT' : T.IsSymmetric)
-    (a : ComplexEigenvectorIndex T) : EigenvectorIndex T := by
-  refine ⟨⟨realEigenvalueOfComplexIndex hT' a,
-    realEigenvalueOfComplexIndex_ne_zero hT' a⟩, ?_⟩
-  rw [coe_realEigenvalueOfComplexIndex hT' a]
-  exact a.2
-
 private def realEigenvectorIndexToComplex (a : EigenvectorIndex T) :
     ComplexEigenvectorIndex T :=
   ⟨⟨(a.1.1 : ℂ), by exact_mod_cast a.1.2⟩, a.2⟩
 
-/-- For a symmetric operator, indexing nonzero complex eigenspaces is equivalent to indexing the
-nonzero real eigenspaces. -/
-noncomputable def complexEigenvectorIndexEquiv (hT' : T.IsSymmetric) :
-    ComplexEigenvectorIndex T ≃ EigenvectorIndex T :=
-  Equiv.ofBijective (complexEigenvectorIndexToReal hT') ⟨by
-    intro a b hab
-    have hreal :
-        realEigenvalueOfComplexIndex hT' a =
-          realEigenvalueOfComplexIndex hT' b :=
-      congrArg (fun x : EigenvectorIndex T => x.1.1) hab
-    have hz : a.1.1 = b.1.1 := by
-      calc
-        a.1.1 = (realEigenvalueOfComplexIndex hT' a : ℂ) :=
-          (coe_realEigenvalueOfComplexIndex hT' a).symm
-        _ = (realEigenvalueOfComplexIndex hT' b : ℂ) := by exact_mod_cast hreal
-        _ = b.1.1 := coe_realEigenvalueOfComplexIndex hT' b
-    have hfirst : a.1 = b.1 := Subtype.ext hz
-    have hi : a.2.1 = b.2.1 :=
-      congrArg (fun x : EigenvectorIndex T => x.2.1) hab
-    exact Sigma.ext hfirst ((Fin.heq_ext_iff (by rw [hz])).2 hi), by
-    intro b
-    let a := realEigenvectorIndexToComplex b
-    refine ⟨a, ?_⟩
-    have hreal :
-        realEigenvalueOfComplexIndex hT' a = b.1.1 := by
-      exact_mod_cast coe_realEigenvalueOfComplexIndex hT' a
-    have hfirst :
-        (complexEigenvectorIndexToReal hT' a).1 = b.1 :=
-      Subtype.ext hreal
-    apply Sigma.ext hfirst
-    exact (Fin.heq_ext_iff (by rw [hreal])).2 rfl⟩
+omit [CompleteSpace H] in
+private theorem realEigenvectorIndexToComplex_injective :
+    Function.Injective (realEigenvectorIndexToComplex (T := T)) := by
+  rintro ⟨μ, i⟩ ⟨ν, j⟩ h
+  have hμc : (μ.1 : ℂ) = (ν.1 : ℂ) :=
+    congrArg (fun a : ComplexEigenvectorIndex T => a.1.1) h
+  have hμ : μ = ν := Subtype.ext (Complex.ofReal_injective hμc)
+  apply Sigma.ext hμ
+  exact (Sigma.ext_iff.mp h).2
 
-/-- Under the symmetric-spectrum index equivalence, the real eigenvalue maps back to the original
-complex eigenvalue. -/
-theorem complexEigenvectorIndexEquiv_value (hT' : T.IsSymmetric)
-    (a : ComplexEigenvectorIndex T) :
-    ((complexEigenvectorIndexEquiv hT' a).1.1 : ℂ) = a.1.1 :=
-  coe_realEigenvalueOfComplexIndex hT' a
+omit [CompleteSpace H] in
+private theorem realEigenvectorIndexToComplex_surjective (hT' : T.IsSymmetric) :
+    Function.Surjective (realEigenvectorIndexToComplex (T := T)) := by
+  rintro ⟨⟨z, hz⟩, i⟩
+  have hreal : (starRingEnd ℂ) z = z :=
+    complexEigenvalue_isReal_of_index hT' ⟨⟨z, hz⟩, i⟩
+  let zself : selfAdjoint ℂ := ⟨z, hreal⟩
+  let r : ℝ := Complex.selfAdjointEquiv zself
+  have hre : (r : ℂ) = z := by
+    simpa [r, zself] using Complex.coe_selfAdjointEquiv zself
+  subst z
+  have hr : r ≠ 0 := by
+    exact_mod_cast hz
+  exact ⟨⟨⟨r, hr⟩, i⟩, rfl⟩
+
+/-- For a symmetric operator, indexing nonzero real eigenspaces is equivalent to indexing the
+nonzero complex eigenspaces. -/
+noncomputable def realEigenvectorIndexEquiv (hT' : T.IsSymmetric) :
+    EigenvectorIndex T ≃ ComplexEigenvectorIndex T :=
+  Equiv.ofBijective realEigenvectorIndexToComplex
+    ⟨realEigenvectorIndexToComplex_injective,
+      realEigenvectorIndexToComplex_surjective hT'⟩
+
+/-- The symmetric-spectrum index equivalence preserves the eigenvalue. -/
+@[simp]
+theorem realEigenvectorIndexEquiv_value (hT' : T.IsSymmetric)
+    (a : EigenvectorIndex T) :
+    (realEigenvectorIndexEquiv hT' a).1.1 = (a.1.1 : ℂ) :=
+  rfl
 
 /-- The orthonormal family obtained by choosing an orthonormal basis in each nonzero real
 eigenspace. -/
