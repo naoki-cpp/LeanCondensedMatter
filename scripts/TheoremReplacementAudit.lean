@@ -29,11 +29,18 @@ structure AuditEntry where
   probedCandidateCount : Nat
   definitionallyEquivalentTo : Array String
   replacementCandidates : Array ReplacementCandidate
+  mathlibProofDependencies : Array String
+  mathlibProbedCandidateCount : Nat
+  mathlibDefinitionallyEquivalentTo : Array String
+  mathlibReplacementCandidates : Array ReplacementCandidate
 
 private def maxReplacementCandidatesPerTarget : Nat := 4
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
+
+private def mathlibModule? (moduleName : Name) : Bool :=
+  moduleName.toString.startsWith "Mathlib"
 
 private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
   let moduleIdx ← env.const2ModIdx.get? declName
@@ -70,6 +77,22 @@ private def directProjectTheoremDependencyNames
       dependencies.push dependency
     else
       dependencies
+
+private def directMathlibTheoremDependencyNames
+    (env : Environment) (declName : Name) (value : Expr) : Array Name :=
+  value.foldConsts #[] fun dependency dependencies =>
+    if dependency == declName || dependencies.contains dependency then
+      dependencies
+    else
+      match env.find? dependency, declarationModule? env dependency with
+      | some (.thmInfo _), some moduleName =>
+          if mathlibModule? moduleName then dependencies.push dependency else dependencies
+      | _, _ => dependencies
+
+private def theoremCandidate? (env : Environment) (declName : Name) : Option Candidate := do
+  let some (.thmInfo theoremInfo) := env.find? declName | none
+  let some moduleName := declarationModule? env declName | none
+  return { name := declName, moduleName, theoremInfo }
 
 /-- Peel the explicit theorem telescope without reduction. This is only a cheap search filter. -/
 private partial def resultShape (binderCount : Nat) : Expr → Nat × Expr
