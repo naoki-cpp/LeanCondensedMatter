@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Positive
 
 set_option linter.style.header false
