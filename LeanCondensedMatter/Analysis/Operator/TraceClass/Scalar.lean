@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import Mathlib.Algebra.GroupWithZero.Units.Equiv
 
 set_option linter.style.header false
@@ -6,8 +6,9 @@ set_option linter.style.header false
 /-!
 # Spectral trace under scalar multiplication
 
-This module proves that spectral summability is preserved under nonzero real scalar multiplication
-and that `spectralTrace` is homogeneous under that scaling.
+This module proves scalar transport for spectral summability and trace. The eigenvalue-reindexing
+lemmas use a nonzero scalar, while the bundled `SpectralTraceClass` API handles all real scalars,
+including zero.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -92,9 +93,10 @@ theorem hasSummableRealEigenvalues_smul {c : ℝ} (hc : c ≠ 0)
 
 omit [CompleteSpace H] in
 /-- `spectralTrace` is homogeneous under multiplication by a nonzero real scalar. -/
-theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenvalues T)
-    (hcT : HasSummableRealEigenvalues (c • T)) :
+theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenvalues T) :
     spectralTrace (c • T) = c * spectralTrace T := by
+  have hcT : HasSummableRealEigenvalues (c • T) :=
+    hasSummableRealEigenvalues_smul hc h
   change (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
   rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex hcT),
     tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex h),
@@ -111,5 +113,79 @@ theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenval
     rw [show ((c * μ.1 : ℝ) : ℂ) = (c : ℂ) * (μ.1 : ℂ) from by push_cast; ring]
     exact congrArg (fun S' : Submodule ℂ H => Module.finrank ℂ S') (eigenspace_smul hc μ.1)]
   ring
+
+omit [CompleteSpace H] in
+private theorem eigenvectorIndex_zero_elim
+    (a : EigenvectorIndex (0 : H →L[ℂ] H)) : False := by
+  have hμ : (a.1.1 : ℂ) ≠ 0 := by
+    exact_mod_cast a.1.2
+  have hfin :
+      Module.finrank ℂ
+        (Module.End.eigenspace (((0 : H →L[ℂ] H)) : H →ₗ[ℂ] H) (a.1.1 : ℂ)) = 0 := by
+    change Module.finrank ℂ
+      (Module.End.eigenspace (0 : Module.End ℂ H) (a.1.1 : ℂ)) = 0
+    rw [Module.End.eigenspace_def, zero_sub, LinearMap.ker_neg,
+      LinearMap.ker_smul _ _ hμ, Module.End.one_eq_id, LinearMap.ker_id, finrank_bot]
+  have hpos :
+      0 < Module.finrank ℂ
+        (Module.End.eigenspace (((0 : H →L[ℂ] H)) : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
+    Nat.lt_of_le_of_lt (Nat.zero_le _) a.2.isLt
+  rw [hfin] at hpos
+  exact (Nat.lt_irrefl 0) hpos
+
+omit [CompleteSpace H] in
+private theorem hasSummableRealEigenvalues_zero :
+    HasSummableRealEigenvalues (0 : H →L[ℂ] H) := by
+  change Summable (fun a : EigenvectorIndex (0 : H →L[ℂ] H) => |a.1.1|)
+  have hzero :
+      (fun a : EigenvectorIndex (0 : H →L[ℂ] H) => |a.1.1|) =
+        (fun _ => (0 : ℝ)) := by
+    funext a
+    exact (eigenvectorIndex_zero_elim a).elim
+  rw [hzero]
+  exact summable_zero
+
+omit [CompleteSpace H] in
+private theorem spectralTrace_zero :
+    spectralTrace (0 : H →L[ℂ] H) = 0 := by
+  unfold spectralTrace
+  have hzero :
+      (fun a : EigenvectorIndex (0 : H →L[ℂ] H) => a.1.1) =
+        (fun _ => (0 : ℝ)) := by
+    funext a
+    exact (eigenvectorIndex_zero_elim a).elim
+  rw [hzero, tsum_zero]
+
+namespace SpectralTraceClass
+
+omit [CompleteSpace H] in
+/-- Spectral trace class is preserved under multiplication by any real scalar. -/
+theorem smul (h : SpectralTraceClass T) (c : ℝ) :
+    SpectralTraceClass (c • T) := by
+  by_cases hc : c = 0
+  · subst c
+    simpa only [zero_smul] using
+      (show SpectralTraceClass (0 : H →L[ℂ] H) from
+        { compact := isCompactOperator_zero
+          symmetric := by simp
+          summable := hasSummableRealEigenvalues_zero })
+  · exact
+      { compact := h.compact.smul c
+        symmetric := by
+          rw [ContinuousLinearMap.toLinearMap_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)]
+          exact h.symmetric.smul (c := (c : ℂ)) (by simp)
+        summable := hasSummableRealEigenvalues_smul hc h.summable }
+
+omit [CompleteSpace H] in
+/-- The bundled spectral trace is homogeneous under multiplication by any real scalar. -/
+theorem trace_smul (h : SpectralTraceClass T) (c : ℝ) :
+    (h.smul c).trace = c * h.trace := by
+  rw [(h.smul c).trace_eq_spectralTrace, h.trace_eq_spectralTrace]
+  by_cases hc : c = 0
+  · subst c
+    simpa only [zero_smul, zero_mul] using (spectralTrace_zero (H := H))
+  · exact ContinuousLinearMap.spectralTrace_smul hc h.summable
+
+end SpectralTraceClass
 
 end ContinuousLinearMap

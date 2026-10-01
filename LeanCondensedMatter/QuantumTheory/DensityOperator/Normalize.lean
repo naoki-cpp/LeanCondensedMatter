@@ -28,22 +28,17 @@ noncomputable def normalizePositive
   let r : ℝ := Z⁻¹
   have hZpos : 0 < Z := by
     simpa [Z] using htrace.trace_pos hpos hne
-  have hrne : r ≠ 0 := inv_ne_zero (ne_of_gt hZpos)
   have hscaledPos : (r • T).IsPositive := by
     rw [show r • T = (r : ℂ) • T by ext x; simp]
     exact hpos.smul_of_nonneg (RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZpos.le))
-  have hsummableScaled : HasSummableRealEigenvalues (r • T) :=
-    hasSummableRealEigenvalues_smul hrne htrace.summable
-  let hscaledTrace : SpectralTraceClass (r • T) :=
-    SpectralTraceClass.ofPositive (htrace.compact.smul _) hscaledPos hsummableScaled
+  let hscaledTrace : SpectralTraceClass (r • T) := htrace.smul r
   exact {
     op := r • T
     pos := hscaledPos
     spectralTraceClass := hscaledTrace
     spectralTrace_eq_one := by
-      rw [hscaledTrace.trace_eq_spectralTrace]
-      rw [spectralTrace_smul hrne htrace.summable hsummableScaled]
-      rw [← htrace.trace_eq_spectralTrace]
+      change (htrace.smul r).trace = 1
+      rw [htrace.trace_smul r]
       dsimp [r, Z]
       exact inv_mul_cancel₀ (ne_of_gt hZpos)
   }
