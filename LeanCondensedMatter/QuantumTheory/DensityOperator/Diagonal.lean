@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Diagonal
-import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
