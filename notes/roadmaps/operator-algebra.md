@@ -29,18 +29,31 @@ Hilbert-basis comparison, and positivity results.
 
 These layers are physics-independent.
 
-## Spectral trace class
+## Trace class
 
-`Analysis/Operator/TraceClass/` provides `ContinuousLinearMap.SpectralTraceClass` for compact
-self-adjoint operators, spectral trace, positivity/additivity/scalar results, supported cyclicity,
-and Hilbert-basis formulas.
+On the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612`,
+`CFC.abs T` is the canonical operator absolute value
+`|T| = (T† T)^(1/2)`. The project therefore does not define a second operator-absolute-value
+wrapper. General trace-class membership is based on summability of the nonnegative Hilbert-basis
+diagonal of `CFC.abs T`.
 
-The neutral Hilbert-basis diagonal operator construction is owned by
-`Analysis/Operator/Diagonal.lean`; the TraceClass diagonal modules only adapt it to positivity and
-spectral-trace-class results.
+Basis independence is reduced to the existing Hilbert--Schmidt layer: the diagonal term
+`⟨eᵢ, |T| eᵢ⟩` equals `‖CFC.sqrt (CFC.abs T) eᵢ‖²`. Accordingly,
+`ContinuousLinearMap.IsTraceClass T` is owned by Hilbert--Schmidt membership of
+`CFC.sqrt (CFC.abs T)`, while `IsTraceClassWrt d T` is the equivalent diagonal criterion in a
+chosen Hilbert basis. Basis choices remain witnesses rather than mathematical data stored in the
+operator property.
 
-This is sufficient for the current density-operator, entropy, and bounded Gibbs constructions, but it
-is not a general trace-class ideal on arbitrary non-self-adjoint maps.
+The existing `ContinuousLinearMap.SpectralTraceClass` remains the compact self-adjoint spectral
+specialization, with spectral trace, positivity/additivity/scalar results, supported cyclicity, and
+Hilbert-basis formulas. The neutral Hilbert-basis diagonal operator construction is owned by
+`Analysis/Operator/Diagonal.lean`.
+
+`traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
+`IsTraceClass T` it is not called the trace norm. The canonical trace norm and complex trace must
+be basis-independent values built on the general membership layer. Their comparison with
+`SpectralTraceClass` belongs to the compact self-adjoint overlap rather than to the definition of
+general trace class.
 
 ## Hilbert--Schmidt operators
 
