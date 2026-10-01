@@ -67,22 +67,32 @@ theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactO
 theorem isSelfAdjoint (h : SpectralTraceClass T) : IsSelfAdjoint T :=
   ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr h.symmetric
 
-/-- The real value of the bundled complex spectral sum. -/
-noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
-  (ContinuousLinearMap.complexSpectralSum T).re
+/-- The bundled complex spectral sum. -/
+noncomputable def complexTrace (_h : SpectralTraceClass T) : ℂ :=
+  ContinuousLinearMap.complexSpectralSum T
 
 omit [CompleteSpace H] in
-theorem trace_eq_complexSpectralSum_re (h : SpectralTraceClass T) :
-    h.trace = (ContinuousLinearMap.complexSpectralSum T).re :=
+@[simp]
+theorem complexTrace_eq_complexSpectralSum (h : SpectralTraceClass T) :
+    h.complexTrace = ContinuousLinearMap.complexSpectralSum T :=
   rfl
+
+/-- The real spectral trace associated with the bundled symmetric hypotheses. -/
+noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
+  ContinuousLinearMap.spectralTrace T
 
 omit [CompleteSpace H] in
 @[simp]
 theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
-    h.trace = ContinuousLinearMap.spectralTrace T := by
-  unfold trace
-  rw [ContinuousLinearMap.complexSpectralSum_eq_spectralTrace h.symmetric]
-  simp
+    h.trace = ContinuousLinearMap.spectralTrace T :=
+  rfl
+
+omit [CompleteSpace H] in
+/-- For bundled symmetric spectral data, the complex trace is the real trace embedded in `ℂ`. -/
+theorem complexTrace_eq_trace (h : SpectralTraceClass T) :
+    h.complexTrace = (h.trace : ℂ) := by
+  rw [h.complexTrace_eq_complexSpectralSum, h.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.complexSpectralSum_eq_spectralTrace h.symmetric
 
 omit [CompleteSpace H] in
 /-- The spectral trace of a positive bundled operator is nonnegative. -/
