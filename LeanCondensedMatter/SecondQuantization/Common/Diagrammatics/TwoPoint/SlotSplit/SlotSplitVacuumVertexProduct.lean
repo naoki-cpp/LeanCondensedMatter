@@ -123,7 +123,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
         h ext vac w C
     _ = ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
       simpa only [QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts] using
-        (Finpartition.prod_eq_prod_parts vac.vertexGraph.componentPartitionOn
+        (Fintype.prod_equiv_sigma vac.vertexGraph.componentPartitionOn.equivSigmaParts
           (fun v => w (vac.vertexLabel v))).symm
 
 /-- The product of the Dyson signs carried by the ambient vacuum components is the Dyson sign of the
