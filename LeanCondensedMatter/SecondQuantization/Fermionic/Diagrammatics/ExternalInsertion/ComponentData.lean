@@ -257,7 +257,14 @@ private theorem ExternalInsertionWickDiagram.externalInsertionLegEquiv_component
         (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
           (externalInsertionInteractionLeg (E := d.externalPairCount B) vT l).val
       rw [externalInsertionInteractionLeg_val, externalInsertionInteractionLeg_val]
-      simp [vT]
+      have huniv :
+          (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm v).val =
+            v.1.val := by
+        rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+      have hT :
+          ((T.orderIsoOfFin rfl).symm vT).val = v.1.val := by
+        simp [vT]
+      rw [huniv, hT]
     rw [ExternalInsertionWickDiagram.componentFixedPosition, hcast,
       d.componentDiagramLeg_interaction B]
     change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
