@@ -31,7 +31,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
         (outer.integrand (localIntegrand 0)
           (tail.integrand (fun i => localIntegrand i.succ))) := by
   rw [intervalIntegral.orderedSimplexIntegral_cast
-    (FamilySlotShuffle.sum_eq_head_add_tail size)]
+    (Fin.sum_univ_succ size)]
   apply orderedSimplexIntegral_congr
   intro τ
   exact FamilySlotShuffle.cons_integrand size outer tail localIntegrand τ
