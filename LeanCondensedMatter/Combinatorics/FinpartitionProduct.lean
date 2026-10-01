@@ -42,12 +42,6 @@ noncomputable def equivSigmaSubfinsets {β : Type*}
         left_inv := fun _ => Subtype.ext rfl
         right_inv := fun _ => Subtype.ext rfl })
 
-/-- A product over `s` is the iterated product over the parts of a finite partition of `s`. -/
-theorem prod_eq_prod_parts (π : Finpartition s) (f : ↥s → M) :
-    (∏ x : ↥s, f x) =
-      ∏ B : π.parts, ∏ x : ↥(B : Finset α), f (π.equivSigmaParts.symm ⟨B, x⟩) :=
-  Fintype.prod_equiv_sigma π.equivSigmaParts f
-
 /-- A power indexed by `s.card` factors into powers indexed by the cardinalities of the partition
 parts. -/
 theorem pow_card_eq_prod_parts (π : Finpartition s) (a : M) :
