@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Physlib
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.InnerProductSpace.Positive
 
@@ -25,7 +25,8 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   op : H →L[ℂ] H
   pos : op.IsPositive
   spectralTraceClass : SpectralTraceClass op
-  spectralTrace_eq_one : spectralTraceClass.trace = 1
+  physlib_trace_eq_one :
+    ProbabilisticTheory.trace op (spectralTraceClass.toPhyslibIsTraceClass pos) = 1
 
 /-- Density operators are determined by their underlying bounded operators; all remaining fields
 are proof data. -/
@@ -38,6 +39,13 @@ theorem DensityOperator.ext {ρ σ : DensityOperator H} (h : ρ.op = σ.op) : ρ
       cases h
       rfl
 
+/-- The spectral trace of a density operator is one, derived from Physlib's trace normalization. -/
+theorem DensityOperator.spectralTrace_eq_one (ρ : DensityOperator H) :
+    ρ.spectralTraceClass.trace = 1 := by
+  have hcomplex := ρ.physlib_trace_eq_one
+  rw [ρ.spectralTraceClass.physlib_trace_eq_trace ρ.pos] at hcomplex
+  exact Complex.ofReal_injective hcomplex
+
 /-- The totalized spectral trace of a density operator is one. -/
 @[simp]
 theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
@@ -49,12 +57,6 @@ theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
 theorem DensityOperator.isTraceClass (ρ : DensityOperator H) :
     ProbabilisticTheory.IsTraceClass ρ.op :=
   ρ.spectralTraceClass.toPhyslibIsTraceClass ρ.pos
-
-/-- Physlib's complex trace of a density operator is one. -/
-theorem DensityOperator.physlib_trace_eq_one (ρ : DensityOperator H) :
-    ProbabilisticTheory.trace ρ.op ρ.isTraceClass = 1 := by
-  rw [ρ.spectralTraceClass.physlib_trace_eq_trace ρ.pos]
-  exact congrArg Complex.ofReal ρ.spectralTrace_op_eq_one
 
 /-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=

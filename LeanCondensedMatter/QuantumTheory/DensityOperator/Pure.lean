@@ -118,8 +118,9 @@ noncomputable def pure (ψ : StateVector H) : DensityOperator H := by
     op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
     pos := InnerProductSpace.isPositive_rankOne_self ψ.1
     spectralTraceClass := htraceClass
-    spectralTrace_eq_one := by
+    physlib_trace_eq_one := htraceClass.physlib_trace_eq_one_of_trace_eq_one
+      (InnerProductSpace.isPositive_rankOne_self ψ.1) (by
       rw [htraceClass.trace_eq_spectralTrace]
-      exact rankOne_spectralTrace_eq_one ψ.2 }
+      exact rankOne_spectralTrace_eq_one ψ.2) }
 
 end QuantumTheory

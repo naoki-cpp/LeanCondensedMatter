@@ -43,7 +43,9 @@ This remains the spectral interface used by the current density-operator, entrop
 constructions. PhyslibAlpha's [TraceClass modules](https://github.com/leanprover-community/physlib/tree/b840c857d3b5b87cd3a0e58eac7696b7bdb2fe17/PhyslibAlpha/ProbabilisticTheory/HilbertSpace/TraceClass)
 provide the general operator-ideal predicate, trace norm, and trace. Positive operators in the local
 spectral bundle convert to PhyslibAlpha's `IsTraceClass`, with the two trace values proved equal; the
-broader migration of project consumers to that API remains open.
+`DensityOperator` record uses Physlib's trace for normalization, while its spectral trace and spectral
+expansion APIs remain local. Integrating Physlib's product and trace APIs into the wider analysis layer
+remains open.
 
 ## Hilbert--Schmidt operators
 

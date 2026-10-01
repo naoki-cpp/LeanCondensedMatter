@@ -87,7 +87,12 @@ noncomputable def evolveDensityOperator (ρ : DensityOperator H) (t : ℝ) :
       (freePropagator system t)
       (star_mul_freePropagator system t)
       (freePropagator_mul_star system t)
-  spectralTrace_eq_one := by
+  physlib_trace_eq_one := by
+    apply (ρ.spectralTraceClass.unitaryConjugate
+      (freePropagator system t)
+      (star_mul_freePropagator system t)
+      (freePropagator_mul_star system t)).physlib_trace_eq_one_of_trace_eq_one
+        (ρ.pos.unitaryConjugate (freePropagator system t))
     calc
       (ρ.spectralTraceClass.unitaryConjugate
         (freePropagator system t)

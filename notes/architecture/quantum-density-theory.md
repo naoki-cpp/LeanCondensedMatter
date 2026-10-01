@@ -11,11 +11,12 @@ proof text.
 Representatives are useful for wavefunction calculations and are not identified by equality under
 global phase.
 
-`QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
-positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
-spectral trace to `1`. `QuantumTheory.PureState H` is the subtype of density operators represented by
-some normalized state vector through the rank-one constructor `pure`, so equality of physical pure
-states is ordinary equality of their density operators. For this density model, the existential
+`QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded positive
+operator, a bundled compact self-adjoint spectral trace-class witness, and Physlib trace normalization
+to `1`; normalization of the real spectral trace is derived from that condition.
+`QuantumTheory.PureState H` is the subtype of density operators represented by some normalized state
+vector through the rank-one constructor `pure`, so equality of physical pure states is ordinary
+equality of their density operators. For this density model, the existential
 rank-one criterion is equivalent to maximal spectral purity:
 
 ```lean
@@ -24,8 +25,9 @@ IsPureDensity ρ ↔ purity ρ = 1
 
 For positive operators, `SpectralTraceClass.toPhyslibIsTraceClass` supplies a PhyslibAlpha
 `IsTraceClass` witness, and `SpectralTraceClass.physlib_trace_eq_trace` identifies Physlib's complex
-trace with the complex embedding of the spectral trace. The spectral bundle remains the source of
-compactness and eigenvector data used by this project's spectral-expansion results.
+trace with the complex embedding of the spectral trace. The `DensityOperator` record uses Physlib's
+trace-one condition and derives spectral trace one through this equality. Its spectral bundle remains
+the source of compactness and eigenvector data used by this project's spectral-expansion results.
 
 The converse is dimension-independent within the current compact self-adjoint spectral trace-class
 model: spectral positivity and trace normalization force the nonzero spectrum to a single eigenvalue

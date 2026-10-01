@@ -36,11 +36,11 @@ noncomputable def normalizePositive
     op := r • T
     pos := hscaledPos
     spectralTraceClass := hscaledTrace
-    spectralTrace_eq_one := by
+    physlib_trace_eq_one := hscaledTrace.physlib_trace_eq_one_of_trace_eq_one hscaledPos (by
       change (htrace.smul r).trace = 1
       rw [htrace.trace_smul r]
       dsimp [r, Z]
-      exact inv_mul_cancel₀ (ne_of_gt hZpos)
+      exact inv_mul_cancel₀ (ne_of_gt hZpos))
   }
 
 @[simp]
