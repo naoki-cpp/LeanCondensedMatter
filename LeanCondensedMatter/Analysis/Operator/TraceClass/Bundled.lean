@@ -109,11 +109,12 @@ theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
 theorem toPhyslibIsTraceClass (h : SpectralTraceClass T) (hpos : T.IsPositive) :
     ProbabilisticTheory.IsTraceClass T := by
   classical
+  have hT_nonneg : 0 ≤ T := (ContinuousLinearMap.nonneg_iff_isPositive T).2 hpos
   obtain ⟨w, b, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   refine ⟨w, b, ?_⟩
   apply (h.hasSum_diagonalExpectationValue b).summable.congr
   intro i
-  rw [CFC.abs_of_nonneg T hpos.nonneg,
+  rw [CFC.abs_of_nonneg T hT_nonneg,
     ← coe_diagonalExpectationValue_right T h.isSelfAdjoint (b i)]
   simp
 
@@ -122,11 +123,12 @@ its spectral trace. -/
 theorem physlib_trace_eq_trace (h : SpectralTraceClass T) (hpos : T.IsPositive) :
     ProbabilisticTheory.trace T (h.toPhyslibIsTraceClass hpos) = (h.trace : ℂ) := by
   classical
+  have hT_nonneg : 0 ≤ T := (ContinuousLinearMap.nonneg_iff_isPositive T).2 hpos
   obtain ⟨w, b, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   have hsum := h.hasSum_diagonalExpectationValue b
   calc
-    _ = ∑' i : w, ⟪b i, T (b i)⟫_ℂ := by
-      rw [ProbabilisticTheory.trace_eq_of_hilbertBasis_of_nonneg hpos.nonneg
+    _ = ∑' i : w, inner ℂ (b i) (T (b i)) := by
+      rw [ProbabilisticTheory.trace_eq_of_hilbertBasis_of_nonneg hT_nonneg
         (h.toPhyslibIsTraceClass hpos) b]
     _ = ∑' i : w, (diagonalExpectationValue T h.isSelfAdjoint (b i) : ℂ) := by
       apply tsum_congr
