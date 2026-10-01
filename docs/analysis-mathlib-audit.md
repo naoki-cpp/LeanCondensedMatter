@@ -1,7 +1,7 @@
-# Analysis inventory against Mathlib 4.31
+# Analysis inventory against Mathlib 4.34
 
 Current mapping between project analysis infrastructure and the repository-pinned Mathlib revision
-`v4.31.0`. This document describes the present API, not the sequence of refactors that produced it.
+`v4.34.1`. This document describes the present API, not the sequence of refactors that produced it.
 
 ## Classification
 
@@ -24,7 +24,9 @@ The project uses Mathlib directly for:
 - continuous functional calculus on C⋆-algebras;
 - Bochner integration and interval integrals;
 - power series and elementary complex/real analysis;
-- general incidence algebras and Möbius inversion.
+- general incidence algebras and Möbius inversion;
+- polynomial evaluation on eigenvectors through `Module.End.aeval_apply_of_mem_apply_eq_smul`;
+- scalar eigenspace transport through `Module.End.eigenspace_div`.
 
 Project modules must not duplicate these APIs under compatibility names.
 
@@ -34,9 +36,7 @@ The following remain because their statements match recurring project boundaries
 
 | Project declaration | Mathlib basis | Purpose |
 |---|---|---|
-| `Polynomial.aeval_apply_eigenvector` | polynomial evaluation on eigenvectors | Connect real polynomials, complex operators, and continuous linear maps. |
 | `cfc_apply_eigenvector` | continuous functional calculus and spectral mapping | Evaluate a continuous scalar function on an eigenvector. |
-| `ContinuousLinearMap.eigenspace_smul` | `Module.End.eigenspace_div` | Express eigenspaces of scalar multiples in the bounded-operator API. |
 | `HilbertBasis.hasSum_norm_sq_inner` | Hilbert-basis Parseval identities | Provide the norm-squared form used by spectral trace proofs. |
 | `tsum_fiberwise_eq_of_summable` | product-sum rearrangement and `HasSum.prod_fiberwise` | Package an absolutely summable fiberwise exchange. |
 

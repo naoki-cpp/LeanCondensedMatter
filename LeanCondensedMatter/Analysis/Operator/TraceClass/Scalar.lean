@@ -18,9 +18,7 @@ namespace ContinuousLinearMap
 variable {T : H →L[ℂ] H}
 
 omit [CompleteSpace H] in
-/-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
-eigenspaces unchanged. -/
-theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
+private theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
     Module.End.eigenspace (((c • T : H →L[ℂ] H)) : H →ₗ[ℂ] H) ((c : ℂ) * μ) =
       Module.End.eigenspace (T : H →ₗ[ℂ] H) μ := by
   let f : Module.End ℂ H := (T : H →ₗ[ℂ] H)
