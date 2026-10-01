@@ -32,10 +32,6 @@ nonzero real eigenvalue `μ`, together with an index into a chosen orthonormal b
 def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ μ : { μ : ℝ // μ ≠ 0 }, Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))
 
-/-- Embed the real spectral index into the complex spectral index. -/
-def eigenvectorIndexToComplex (a : EigenvectorIndex T) : ComplexEigenvectorIndex T :=
-  ⟨⟨(a.1.1 : ℂ), by exact_mod_cast a.1.2⟩, a.2⟩
-
 /-- A nonzero real eigenspace of a compact operator is finite-dimensional. -/
 theorem finiteDimensional_eigenspace_ne_zero (hT : IsCompactOperator T)
     (μ : { μ : ℝ // μ ≠ 0 }) :
