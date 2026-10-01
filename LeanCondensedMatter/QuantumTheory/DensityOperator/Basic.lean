@@ -47,11 +47,11 @@ theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
 
 /-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
-  ρ.spectralTraceClass.symmetric
+  ρ.pos.isSelfAdjoint.isSymmetric
 
 /-- A density operator's underlying operator is self-adjoint. -/
 theorem DensityOperator.isSelfAdjoint (ρ : DensityOperator H) : IsSelfAdjoint ρ.op :=
-  ρ.spectralTraceClass.isSelfAdjoint
+  ρ.pos.isSelfAdjoint
 
 /-- Every nonzero spectral eigenvalue of a density operator is nonnegative. -/
 theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
