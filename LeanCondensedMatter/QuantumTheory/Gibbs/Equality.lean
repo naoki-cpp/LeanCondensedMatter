@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality
 
 /-!
 # Equality cases for Gibbs variational inequalities
