@@ -28,8 +28,11 @@ of the bundled factorial-normalized moment function with the normalized object m
 identifies the formal-log coefficient with the connected contribution using only the forward moment
 decomposition.
 The canonical fermionic theorem consumes this replica route; its model-specific obligation is the
-Dyson-moment/Wick-diagram identification. No source-functional wrapper is required for this formal
-partition-function endpoint.
+Dyson-moment/Wick-diagram identification. An independent concrete fermionic inversion proof is
+exposed as
+`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude_inversion`;
+it factors through the bundled Dyson moment, Wick-diagram moment, and Wick-diagram cumulant APIs.
+No source-functional wrapper is required for this formal partition-function endpoint.
 
 The normalized coefficients themselves,
 `normalizedDysonPartitionCoeff`, belong to `Fermionic.Perturbation.DysonPartitionSeries` together
