@@ -125,12 +125,6 @@ or consumer structure changes.
   analytic input for bundled spectral trace-class transport.
 - `ContinuousLinearMap.spectralTrace_unitaryConjugate` — canonical unbundled trace-invariance theorem
   `Tr(U T U†) = Tr(T)` for the project's spectral trace under explicit summability hypotheses.
-- `ContinuousLinearMap.isCompactOperator_unitaryConjugate` — standard operator-theory fact that
-  compactness is preserved by bounded conjugation; the current bundled trace-class consumer does not
-  make this general result proof-routing.
-- `ContinuousLinearMap.IsPositive.unitaryConjugate` — standard positivity-preservation theorem for
-  conjugation by an arbitrary bounded operator. It is independently meaningful even when no compiled
-  project declaration currently retains it.
 - `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate` — canonical closure theorem transporting
   bundled spectral trace-class data through unitary conjugation; it is the stable construction used
   by trace invariance and density-operator evolution.
