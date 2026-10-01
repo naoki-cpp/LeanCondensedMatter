@@ -493,9 +493,10 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Unitary.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+        "LeanCondensedMatter.Analysis.Operator.Unitary"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass",
@@ -506,7 +507,8 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Equality",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary"
       ],
       "externalImportCount": 0
     },
@@ -589,6 +591,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.Unitary",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator.lean",
       "imports": [
@@ -602,7 +612,8 @@
         "LeanCondensedMatter.Analysis.Operator.Spectral",
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
         "LeanCondensedMatter.Analysis.Operator.TraceClass",
-        "LeanCondensedMatter.Analysis.Operator.Unbounded"
+        "LeanCondensedMatter.Analysis.Operator.Unbounded",
+        "LeanCondensedMatter.Analysis.Operator.Unitary"
       ],
       "externalImportCount": 0
     },
@@ -2800,11 +2811,11 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv"
@@ -4811,6 +4822,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Moment.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Pairing.lean",
       "imports": [
@@ -4838,7 +4858,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment"
       ],
       "externalImportCount": 0
     },
@@ -4902,6 +4922,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Inversion",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Inversion.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Cumulant"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.LowOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean",
       "imports": [
@@ -4917,10 +4947,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion"
       ],
       "externalImportCount": 0
     },
@@ -4928,7 +4955,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Analytic"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Analytic",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Inversion"
       ],
       "externalImportCount": 0
     },
@@ -5000,6 +5028,25 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Connected.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Cumulant",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Cumulant.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Diagram.lean",
       "imports": [
@@ -5012,7 +5059,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Cumulant"
       ],
       "externalImportCount": 0
     },
@@ -5546,6 +5593,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/DysonVertexMoment.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
