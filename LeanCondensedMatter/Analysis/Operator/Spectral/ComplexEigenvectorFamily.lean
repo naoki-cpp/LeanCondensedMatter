@@ -1,6 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.LinearAlgebra.Complex.Module
 
 set_option linter.style.header false
