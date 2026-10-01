@@ -290,7 +290,13 @@ private def jsonEntry (entry : AuditEntry) : Json :=
     ("proofDependencies", .arr <| entry.proofDependencies.map Json.str),
     ("probedCandidateCount", .num entry.probedCandidateCount),
     ("definitionallyEquivalentTo", .arr <| entry.definitionallyEquivalentTo.map Json.str),
-    ("replacementCandidates", .arr <| entry.replacementCandidates.map jsonReplacement)
+    ("replacementCandidates", .arr <| entry.replacementCandidates.map jsonReplacement),
+    ("mathlibProofDependencies", .arr <| entry.mathlibProofDependencies.map Json.str),
+    ("mathlibProbedCandidateCount", .num entry.mathlibProbedCandidateCount),
+    ("mathlibDefinitionallyEquivalentTo",
+      .arr <| entry.mathlibDefinitionallyEquivalentTo.map Json.str),
+    ("mathlibReplacementCandidates",
+      .arr <| entry.mathlibReplacementCandidates.map jsonReplacement)
   ]
 
 private def json (entries : Array AuditEntry) : Json :=
@@ -299,14 +305,20 @@ private def json (entries : Array AuditEntry) : Json :=
 run_cmd do
   let (candidates, projectTheorems) ← collectCandidates
   let prepared := candidates.map prepareCandidate
-  let (entries, totalProbed) ← collectAuditEntries prepared projectTheorems
+  let (entries, totalProjectProbed, totalMathlibProbed) ←
+    collectAuditEntries prepared projectTheorems
   let defEqTargets := entries.filter fun entry => !entry.definitionallyEquivalentTo.isEmpty
   let replacementTargets := entries.filter fun entry => !entry.replacementCandidates.isEmpty
   let replacementEdges := replacementTargets.foldl (init := 0) fun count entry =>
     count + entry.replacementCandidates.size
+  let mathlibDefEqTargets :=
+    entries.filter fun entry => !entry.mathlibDefinitionallyEquivalentTo.isEmpty
+  let mathlibReplacementTargets :=
+    entries.filter fun entry => !entry.mathlibReplacementCandidates.isEmpty
+  let mathlibReplacementEdges := mathlibReplacementTargets.foldl (init := 0) fun count entry =>
+    count + entry.mathlibReplacementCandidates.size
   let outputDir : System.FilePath := "docs" / "generated"
   liftIO <| IO.FS.createDirAll outputDir
   liftIO <| IO.FS.writeFile (outputDir / "theorem-replacements.json") (json entries).pretty
-  logInfo m!"Generated proof-guided replacement audit for {entries.size} declarations; probed {totalProbed} proof-dependency pairs; {defEqTargets.size} targets have definitionally equivalent proof dependencies; {replacementTargets.size} targets have verified replacements; {replacementEdges} replacement edges"
-
+  logInfo m!"Generated proof-guided replacement audit for {entries.size} declarations; probed {totalProjectProbed} project proof-dependency pairs and {totalMathlibProbed} Mathlib proof-dependency pairs; {defEqTargets.size} targets have definitionally equivalent project proof dependencies; {replacementTargets.size} targets have verified project replacements ({replacementEdges} edges); {mathlibDefEqTargets.size} targets have definitionally equivalent Mathlib proof dependencies; {mathlibReplacementTargets.size} targets have verified Mathlib replacements ({mathlibReplacementEdges} edges)"
 end LeanCondensedMatter.TheoremReplacementAudit
