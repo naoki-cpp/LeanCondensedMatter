@@ -45,8 +45,9 @@ chosen Hilbert basis. Basis choices remain witnesses rather than mathematical da
 operator property.
 
 The existing `ContinuousLinearMap.SpectralTraceClass` remains the compact self-adjoint spectral
-specialization, with spectral trace, positivity/additivity/scalar results, supported cyclicity, and
-Hilbert-basis formulas. The neutral Hilbert-basis diagonal operator construction is owned by
+specialization. Its real-valued `spectralTrace` supplies eigenvalue-sum formulas, positivity,
+scalar transport, supported cyclicity, and Hilbert-basis formulas; it does not define a second
+bundled trace value. The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`.
 
 `traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
