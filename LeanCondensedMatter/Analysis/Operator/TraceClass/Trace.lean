@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
-import Mathlib.Analysis.InnerProductSpace.Projection.Basic
-import Mathlib.Analysis.Normed.Operator.Extend
+import LeanCondensedMatter.Analysis.Operator.Polar
 
 set_option linter.style.header false
 
@@ -26,76 +25,11 @@ noncomputable def traceSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) : ℂ :=
   ∑' i, inner ℂ (d i) (T (d i))
 
-private theorem norm_cfcAbs_apply_eq (T : H →L[ℂ] H) (x : H) :
-    ‖CFC.abs T x‖ = ‖T x‖ := by
-  rw [← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)]
-  have hinner :
-      inner ℂ (CFC.abs T x) (CFC.abs T x) = inner ℂ (T x) (T x) := by
-    calc
-      inner ℂ (CFC.abs T x) (CFC.abs T x) =
-          inner ℂ x ((ContinuousLinearMap.adjoint (CFC.abs T)) (CFC.abs T x)) :=
-        (ContinuousLinearMap.adjoint_inner_right (CFC.abs T) x (CFC.abs T x)).symm
-      _ = inner ℂ x ((CFC.abs T * CFC.abs T) x) := by
-        rw [(CFC.abs_nonneg T).isSelfAdjoint.adjoint_eq, mul_apply_eq_comp]
-      _ = inner ℂ x ((ContinuousLinearMap.adjoint T * T) x) := by
-        rw [CFC.abs_mul_abs, ContinuousLinearMap.star_eq_adjoint]
-      _ = inner ℂ x ((ContinuousLinearMap.adjoint T) (T x)) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ (T x) (T x) :=
-        ContinuousLinearMap.adjoint_inner_right T x (T x)
-  rw [@norm_sq_eq_re_inner ℂ _ _ _ _ (CFC.abs T x),
-    @norm_sq_eq_re_inner ℂ _ _ _ _ (T x)]
-  exact congrArg Complex.re hinner
-
-/-- A bounded operator admits the part of polar decomposition needed for trace-class
-factorization: a bounded `U` satisfying `U |T| = T`. -/
-private theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
-    ∃ U : H →L[ℂ] H, U * CFC.abs T = T := by
-  let A : H →L[ℂ] H := CFC.abs T
-  let R : Submodule ℂ H := LinearMap.range A.toLinearMap
-  let C : Submodule ℂ H := R.topologicalClosure
-  let j : R →ₗ[ℂ] C := Submodule.inclusion R.le_topologicalClosure
-  have hj_dense : DenseRange j := by
-    change DenseRange (Set.inclusion (show (R : Set H) ⊆ (C : Set H) from R.le_topologicalClosure))
-    rw [denseRange_inclusion_iff]
-    simpa [C, Submodule.topologicalClosure_coe]
-  have hbound : ∃ c : ℝ, ∀ x : H, ‖T x‖ ≤ c * ‖A x‖ := by
-    refine ⟨1, fun x => ?_⟩
-    rw [one_mul, norm_cfcAbs_apply_eq]
-  let f : R →L[ℂ] H := T.toLinearMap.compLeftInverse A.toLinearMap
-  have hf_norm (y : R) : ‖f y‖ = ‖j y‖ := by
-    obtain ⟨x, hx⟩ := y.2
-    have hf_apply : f y = T x := by
-      simpa [f] using
-        LinearMap.compLeftInverse_apply_of_bdd T.toLinearMap A.toLinearMap hbound x y.1 hx
-    calc
-      ‖f y‖ = ‖T x‖ := by rw [hf_apply]
-      _ = ‖A x‖ := (norm_cfcAbs_apply_eq T x).symm
-      _ = ‖(y : H)‖ := congrArg norm hx
-      _ = ‖j y‖ := rfl
-  let V : C →ₗᵢ[ℂ] H := f.toLinearMap.extendOfIsometry hj_dense hf_norm
-  letI : CompleteSpace C := R.isClosed_topologicalClosure.completeSpace_coe
-  let U : H →L[ℂ] H := V.toContinuousLinearMap.comp C.orthogonalProjectionOnto
-  refine ⟨U, ?_⟩
-  apply ContinuousLinearMap.ext
-  intro x
-  rw [mul_apply_eq_comp]
-  change V (C.orthogonalProjectionOnto (A x)) = T x
-  have hAxR : A x ∈ R := LinearMap.mem_range_self A.toLinearMap x
-  have hAxC : A x ∈ C := R.le_topologicalClosure hAxR
-  let y : R := ⟨A x, hAxR⟩
-  rw [show C.orthogonalProjectionOnto (A x) = (⟨A x, hAxC⟩ : C) by
-    exact C.orthogonalProjectionOnto_mem_subspace_eq_self ⟨A x, hAxC⟩]
-  change V (j y) = T x
-  rw [LinearMap.extendOfIsometry_eq f.toLinearMap hj_dense hf_norm y]
-  simpa [f, y] using
-    LinearMap.compLeftInverse_apply_of_bdd T.toLinearMap A.toLinearMap hbound x (A x) rfl
-
 private theorem IsTraceClass.exists_hilbertSchmidt_factorization
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     ∃ A B : H →L[ℂ] H,
       IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ ContinuousLinearMap.adjoint A * B = T := by
-  obtain ⟨U, hU⟩ := exists_leftPolarFactor T
+  obtain ⟨U, hU, -, -⟩ := exists_leftPolarFactor T
   let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
   have hS : IsHilbertSchmidt S := hT
   have hSself : IsSelfAdjoint S := (CFC.sqrt_nonneg (CFC.abs T)).isSelfAdjoint
