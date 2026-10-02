@@ -18,6 +18,16 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Finpartition.assembleOrder_shuffleOfOrder` — canonical `[simp]` reconstruction law: reassembling a global order from compatible part-local orders and its extracted partition shuffle recovers the original order.
+- `Finpartition.partOrderOfOrder_strictMono` — canonical monotonicity property of the local order induced on one partition part by increasing ambient slots.
+- `Finpartition.partOrdersCompatible_partOrdersOfOrder` — canonical compatibility theorem for the family of part-local orders induced by an ambient global order.
+- `Finpartition.partOrder_eq_of_strictMono` — uniqueness theorem identifying any strictly ambient-slot-increasing local order with the canonical induced part order.
+- `Finpartition.partOrders_eq_of_compatible` — family-level uniqueness theorem stating that compatible part-local orders are determined by the ambient global order.
+- `Finpartition.sum_order_eq_mul_prod_sum_partOrders` — general finite-partition factorization theorem reducing a sum over global orders to a common shuffle factor times products of local-order sums.
+- `Combinatorics.assembleFamilyOrderOfSize_symm_apply` — canonical `[simp]` evaluation rule for the inverse of a global order assembled from explicit family-local orders and a family slot shuffle.
+- `Combinatorics.assembleFamilyOrderOfSize_eq_order` — extensional reconstruction theorem characterizing when the explicitly assembled family order equals a given global order.
+- `Combinatorics.FiniteIndex.blockCoordinate_lt` — reusable arithmetic bound ensuring the row-major coordinate `i * k + j` lies in the flattened finite block range.
+- `Combinatorics.FiniteIndex.blockEquiv_cast_mul_add` — canonical forward computation rule for the fixed-width block equivalence, mapping a flattened row-major coordinate back to its block/local pair.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_self` — canonical `[simp]` boundary for the inter-block inversion count, recording that the diagonal block contribution is zero.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — canonical expansion of the inter-block inversion count for distinct blocks; downstream crossing/parity proofs use this explicit counting formula.
 - `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq` — reusable transport theorem lifting pairwise modular agreement of block inversion counts to the total ordered inversion count.
