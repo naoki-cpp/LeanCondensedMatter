@@ -485,8 +485,8 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Bundled.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
       "externalImportCount": 0
     },
@@ -550,12 +550,22 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Trace.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
       "externalImportCount": 0
     },
