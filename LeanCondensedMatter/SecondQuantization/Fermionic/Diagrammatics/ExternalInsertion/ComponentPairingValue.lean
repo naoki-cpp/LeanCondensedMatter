@@ -62,6 +62,7 @@ theorem ExternalInsertionWickDiagram.mixedPairContractionProduct_eq_prod_compone
 
 /-- The mixed-order crossing count is the sum of component-local mixed crossing counts and
 the residual crossings between distinct components. -/
+omit [Fintype Mode] in
 theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
@@ -73,9 +74,9 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_co
           (d.componentInteractionTime σ B)).crossingCount) +
       (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
         (d.componentMixedPairEquiv externalTime σ) := by
-  rw [(d.pairingInMixedOrder externalTime σ).
-    crossingCount_eq_sum_componentCrossingCount_diag_add_inter
-      (d.componentMixedPairEquiv externalTime σ)]
+  rw [Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter
+    (d.pairingInMixedOrder externalTime σ)
+    (d.componentMixedPairEquiv externalTime σ)]
   apply congrArg (fun k : ℕ =>
     k + (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
       (d.componentMixedPairEquiv externalTime σ))
@@ -95,6 +96,7 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_co
 
 /-- The exchange-statistics weight of the mixed-order pairing factors into a residual
 inter-component weight and the standalone mixed-order component weights. -/
+omit [Fintype Mode] in
 theorem ExternalInsertionWickDiagram.pairingInMixedOrder_weight_eq_inter_mul_prod_components
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
@@ -128,7 +130,26 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
         (d.componentWickDiagram B).mixedPairingValue ε β
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B) := by
-  unfold ExternalInsertionWickDiagram.mixedPairingValue Pairing.evaluation
+  change
+    (d.pairingInMixedOrder externalTime σ).weight Common.Statistics.fermion *
+        (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,
+          externalInsertionMixedTimeOrderedAtomicPairValue ε β
+            d.externalLabel externalTime d.vertexLabelSequence σ pr.1 pr.2) =
+      (Common.Statistics.fermion.zetaInt : ℂ) ^
+          (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+            (d.componentMixedPairEquiv externalTime σ) *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (((d.componentWickDiagram B).pairingInMixedOrder
+              (d.componentExternalTime externalTime B)
+              (d.componentInteractionTime σ B)).weight Common.Statistics.fermion *
+            ∏ pr ∈ ((d.componentWickDiagram B).pairingInMixedOrder
+              (d.componentExternalTime externalTime B)
+              (d.componentInteractionTime σ B)).pairs,
+              externalInsertionMixedTimeOrderedAtomicPairValue ε β
+                (d.componentWickDiagram B).externalLabel
+                (d.componentExternalTime externalTime B)
+                (d.componentWickDiagram B).vertexLabelSequence
+                (d.componentInteractionTime σ B) pr.1 pr.2)
   rw [d.pairingInMixedOrder_weight_eq_inter_mul_prod_components
       Common.Statistics.fermion externalTime σ,
     d.mixedPairContractionProduct_eq_prod_components ε β externalTime σ,
