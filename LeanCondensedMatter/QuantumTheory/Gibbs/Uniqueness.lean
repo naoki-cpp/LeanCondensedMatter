@@ -114,9 +114,8 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H]
     ρ.spectralTraceClass.summable.congr (fun a => abs_of_nonneg (ρ.eigenvalue_nonneg a))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
-    have hbound := hGibbs.sum_diagonalExpectationValue_le_trace
+    have hbound := hGibbs.sum_diagonalExpectationValue_le_spectralTrace
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
-    rw [hGibbs.trace_eq_spectralTrace] at hbound
     simpa [Z, hq_def] using hbound
   have hpsum := ρ.spectralTrace_op_eq_one
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
