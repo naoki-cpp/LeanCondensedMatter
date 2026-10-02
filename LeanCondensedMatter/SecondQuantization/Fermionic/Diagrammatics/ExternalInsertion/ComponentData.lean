@@ -488,6 +488,66 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
   unfold ExternalInsertionWickDiagram.componentMixedPosition
   exact hambient.symm
 
+/-- Component-local mixed-order normalized pairs, over all connected components, are equivalent to
+the ambient mixed-order normalized pairs. The position equivalence is only the fixed component
+shuffle transported through mixed/fixed position equivalences. -/
+noncomputable def ExternalInsertionWickDiagram.componentMixedPairEquiv
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    (Σ B : d.vertexGraph.componentPartition.parts,
+      ((d.componentWickDiagram B).pairingInMixedOrder
+        (d.componentExternalTime externalTime B)
+        (d.componentInteractionTime σ B)).NormalizedPair) ≃
+      (d.pairingInMixedOrder externalTime σ).NormalizedPair :=
+  (d.pairingInMixedOrder externalTime σ).normalizedPairSigmaEquiv
+    (fun B =>
+      (d.componentWickDiagram B).pairingInMixedOrder
+        (d.componentExternalTime externalTime B)
+        (d.componentInteractionTime σ B))
+    (d.componentMixedPositionEquiv externalTime σ)
+    (fun B p => by
+      simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+        d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ B p)
+
+/-- The all-component mixed pair equivalence maps a local normalized pair by applying
+`componentMixedPosition` to its two endpoints. -/
+@[simp]
+theorem ExternalInsertionWickDiagram.componentMixedPairEquiv_apply
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (pr : ((d.componentWickDiagram B).pairingInMixedOrder
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)).NormalizedPair) :
+    (d.componentMixedPairEquiv externalTime σ ⟨B, pr⟩).1 =
+      (d.componentMixedPosition externalTime σ B pr.1.1,
+        d.componentMixedPosition externalTime σ B pr.1.2) := by
+  let componentPairing := fun C : d.vertexGraph.componentPartition.parts =>
+    (d.componentWickDiagram C).pairingInMixedOrder
+      (d.componentExternalTime externalTime C)
+      (d.componentInteractionTime σ C)
+  let hpartner : ∀ C p,
+      (d.pairingInMixedOrder externalTime σ).partner
+          (d.componentMixedPositionEquiv externalTime σ ⟨C, p⟩) =
+        d.componentMixedPositionEquiv externalTime σ
+          ⟨C, (componentPairing C).partner p⟩ := by
+    intro C p
+    simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+      d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ C p
+  simpa only [ExternalInsertionWickDiagram.componentMixedPairEquiv,
+    ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+    (Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
+      (d.pairingInMixedOrder externalTime σ)
+      componentPairing
+      (d.componentMixedPositionEquiv externalTime σ)
+      hpartner
+      (fun C => by
+        simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+          d.componentMixedPosition_strictMono externalTime σ C)
+      B pr)
+
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
     {E n : ℕ}
