@@ -112,13 +112,12 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     rw [← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.star_eq_adjoint,
       ← ContinuousLinearMap.star_eq_adjoint, star_mul]
   calc
-    (isHilbertSchmidt_comp_right hT B).normSq =
-        (isHilbertSchmidt_adjoint hTB).normSq := by
-      rw [IsHilbertSchmidt.normSq_proof_irrel
-        (isHilbertSchmidt_comp_right hT B) hTB,
-        IsHilbertSchmidt.normSq_adjoint hTB]
+    (isHilbertSchmidt_comp_right hT B).normSq = hTB.normSq :=
+      IsHilbertSchmidt.normSq_proof_irrel _ _
+    _ = (isHilbertSchmidt_adjoint hTB).normSq :=
+      (IsHilbertSchmidt.normSq_adjoint hTB).symm
     _ = hleft.normSq := by
-      subst hadj_eq
+      rw [hadj_eq]
       exact IsHilbertSchmidt.normSq_proof_irrel _ _
     _ ≤ ‖ContinuousLinearMap.adjoint B‖ ^ 2 * hTadj.normSq :=
       IsHilbertSchmidt.normSq_comp_left_le hTadj (ContinuousLinearMap.adjoint B)
