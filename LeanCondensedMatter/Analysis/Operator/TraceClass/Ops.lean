@@ -46,6 +46,128 @@ theorem IsTraceClass.neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     IsTraceClass (-T) := by
   simpa only [neg_one_smul] using hT.smul (-1 : ℂ)
 
+/-- Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an
+absolutely summable complex series. -/
+theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
+    (W : H →L[ℂ] H) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => inner ℂ (W (d i)) (T (d i))) := by
+  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
+  have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
+    (hAW.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
+  exact hsum.congr fun i => by
+    calc
+      inner ℂ ((A * W) (d i)) (B (d i)) =
+          inner ℂ (W (d i)) ((ContinuousLinearMap.adjoint A) (B (d i))) :=
+        (ContinuousLinearMap.adjoint_inner_right A (W (d i)) (B (d i))).symm
+      _ = inner ℂ (W (d i)) (T (d i)) := by
+        rw [← hfactor, mul_apply_eq_comp]
+
+/-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
+by the trace norm. -/
+theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧
+      ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm := by
+  obtain ⟨V, hVleft, -, hVnorm⟩ := exists_leftPolarFactor T
+  let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
+  have hS : IsHilbertSchmidt S := hT
+  have hSself : IsSelfAdjoint S := (CFC.sqrt_nonneg (CFC.abs T)).isSelfAdjoint
+  have hSS : S * S = CFC.abs T :=
+    CFC.sqrt_mul_sqrt_self (CFC.abs T) (CFC.abs_nonneg T)
+  let Bop : H →L[ℂ] H := ContinuousLinearMap.adjoint V * W
+  have hBopNorm : ‖Bop‖ ≤ 1 := by
+    calc
+      ‖Bop‖ ≤ ‖ContinuousLinearMap.adjoint V‖ * ‖W‖ := norm_mul_le _ _
+      _ = ‖V‖ * ‖W‖ := by rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
+      _ ≤ 1 * ‖W‖ := mul_le_mul_of_nonneg_right hVnorm (norm_nonneg W)
+      _ ≤ 1 * 1 := mul_le_mul_of_nonneg_left hW zero_le_one
+      _ = 1 := one_mul 1
+  have hA : IsHilbertSchmidt (S * Bop) := isHilbertSchmidt_comp_right hS Bop
+  have hSnorm : hS.normSq = hT.traceNorm := by
+    unfold traceNorm
+    exact IsHilbertSchmidt.normSq_proof_irrel hS
+      (show IsHilbertSchmidt S from hT)
+  have hAnorm_le : hA.normSq ≤ hT.traceNorm := by
+    have hraw := IsHilbertSchmidt.normSq_comp_right_le hS Bop
+    have hraw' : hA.normSq ≤ ‖Bop‖ ^ 2 * hS.normSq := by
+      exact (IsHilbertSchmidt.normSq_proof_irrel hA
+        (isHilbertSchmidt_comp_right hS Bop)) ▸ hraw
+    calc
+      hA.normSq ≤ ‖Bop‖ ^ 2 * hS.normSq := hraw'
+      _ ≤ 1 ^ 2 * hS.normSq := by
+        exact mul_le_mul_of_nonneg_right
+          (pow_le_pow_left₀ (norm_nonneg Bop) hBopNorm 2) hS.normSq_nonneg
+      _ = hT.traceNorm := by rw [one_pow, one_mul, hSnorm]
+  have hfactor : V * (S * S) = T := by rw [hSS, hVleft]
+  have hpoint (x : H) :
+      inner ℂ (W x) (T x) = inner ℂ ((S * Bop) x) (S x) := by
+    calc
+      inner ℂ (W x) (T x) = inner ℂ (W x) ((V * (S * S)) x) := by rw [hfactor]
+      _ = inner ℂ (W x) (V (S (S x))) := by simp [mul_apply_eq_comp]
+      _ = inner ℂ ((ContinuousLinearMap.adjoint V) (W x)) (S (S x)) := by
+        simpa using
+          (ContinuousLinearMap.adjoint_inner_right (ContinuousLinearMap.adjoint V)
+            (W x) (S (S x)))
+      _ = inner ℂ (S ((ContinuousLinearMap.adjoint V) (W x))) (S x) := by
+        simpa [hSself.adjoint_eq] using
+          (ContinuousLinearMap.adjoint_inner_right S
+            ((ContinuousLinearMap.adjoint V) (W x)) (S x))
+      _ = inner ℂ ((S * Bop) x) (S x) := by
+        simp [Bop, mul_apply_eq_comp]
+  have hnormSummable :
+      Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) := by
+    have hpair := summable_inner_apply_of_isHilbertSchmidtWrt d
+      (hA.isHilbertSchmidtWrt d) (hS.isHilbertSchmidtWrt d)
+    exact (hpair.congr fun i => (hpoint (d i)).symm).norm
+  have hAhas : HasSum (fun i => ‖(S * Bop) (d i)‖ ^ 2) hA.normSq := by
+    rw [hA.normSq_eq_seriesWrt d]
+    exact (hA.isHilbertSchmidtWrt d).hasSum
+  have hShas : HasSum (fun i => ‖S (d i)‖ ^ 2) hS.normSq := by
+    rw [hS.normSq_eq_seriesWrt d]
+    exact (hS.isHilbertSchmidtWrt d).hasSum
+  have hmajorHas :
+      HasSum (fun i => (‖(S * Bop) (d i)‖ ^ 2 + ‖S (d i)‖ ^ 2) / 2)
+        ((hA.normSq + hS.normSq) / 2) :=
+    (hAhas.add hShas).div_const 2
+  have hpoint_le (i : ι) :
+      ‖inner ℂ (W (d i)) (T (d i))‖ ≤
+        (‖(S * Bop) (d i)‖ ^ 2 + ‖S (d i)‖ ^ 2) / 2 := by
+    rw [hpoint]
+    exact (norm_inner_le_norm ((S * Bop) (d i)) (S (d i))).trans (by
+      nlinarith [sq_nonneg (‖(S * Bop) (d i)‖ - ‖S (d i)‖)])
+  have hsum_le :
+      (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) ≤
+        (hA.normSq + hS.normSq) / 2 :=
+    (hnormSummable.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
+  refine ⟨hnormSummable, hsum_le.trans ?_⟩
+  rw [hSnorm]
+  linarith
+
+/-- Trace-class membership is closed under addition. -/
+theorem IsTraceClass.add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
+    IsTraceClass (T + R) := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor (T + R)
+  have hTsum := hT.summable_inner_left U d
+  have hRsum := hR.summable_inner_left U d
+  have hsum :
+      Summable (fun i => inner ℂ (U (d i)) ((T + R) (d i))) := by
+    simpa [add_apply, inner_add_right] using hTsum.add hRsum
+  have hcast :
+      Summable (fun i =>
+        (diagonalExpectationValue (CFC.abs (T + R))
+          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ)) := by
+    apply hsum.congr
+    intro i
+    symm
+    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right U (d i) ((T + R) (d i))
+  apply IsTraceClass.of_isTraceClassWrt (d := d)
+  rw [IsTraceClassWrt]
+  exact Complex.summable_ofReal.mp hcast
+
 namespace IsTraceClass
 
 /-- The zero operator has trace norm zero. -/
