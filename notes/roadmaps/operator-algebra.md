@@ -52,10 +52,11 @@ Hilbert-basis formulas. The neutral Hilbert-basis diagonal operator construction
 `traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
 `IsTraceClass T` it is not called the trace norm. For `hT : IsTraceClass T`, `hT.traceNorm` is the
 basis-independent trace norm, defined from the canonical squared Hilbert--Schmidt norm of
-`sqrt(|T|)`. The compact self-adjoint overlap identifies general trace-class membership with absolute spectral
-summability and the general trace norm with the absolute eigenvalue sum. For positive bundled
-spectral trace-class operators, that trace norm agrees with the spectral trace. The future complex
-trace and its agreement with the spectral trace remain for the next layer.
+`sqrt(|T|)`. The compact self-adjoint specialization identifies general trace-class membership with absolute
+spectral summability and the general trace norm with the absolute eigenvalue sum. For positive bundled
+spectral trace-class operators, that trace norm agrees with the spectral trace. The basis-independent
+general complex trace is the absolutely convergent Hilbert-basis diagonal sum and agrees, on compact
+self-adjoint operators, with the real spectral trace after coercion to `ℂ`.
 
 ## Hilbert--Schmidt operators
 
@@ -63,9 +64,9 @@ trace and its agreement with the spectral trace remain for the next layer.
 invariance, closure under bounded composition, the basis-relative totalized norm-square series, the
 pairing `innerHS`, and comparison with spectral trace on the compact self-adjoint overlap.
 
-General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
-Hilbert--Schmidt layer. Closure as an operator ideal, the general complex trace, and completeness
-remain open.
+General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
+complex trace are defined from the Hilbert--Schmidt layer. Closure as an operator ideal and
+completeness remain open.
 
 ## Fredholm determinant
 
@@ -158,7 +159,7 @@ bounded `Observable` layer until such infrastructure exists.
 
 The following remain open or only partially covered:
 
-- general trace-class closure, complex trace, and the broader Schatten hierarchy;
+- general trace-class closure and the broader Schatten hierarchy;
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;
