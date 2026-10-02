@@ -31,11 +31,15 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
   have hp_norm : Summable fun i => ‖p i‖ := by
     have hscaled := ha.mul_left ‖Z⁻¹‖
     simpa [p, norm_mul] using hscaled
+  let hstc :=
+    HilbertBasis.diagonalOpSpectralTraceClass b p hp_norm hp_nonneg
   refine
     { op := HilbertBasis.diagonalOp b (fun i => (p i : ℂ))
       pos := HilbertBasis.diagonalOp_isPositive b p hp_norm hp_nonneg
-      spectralTraceClass := HilbertBasis.diagonalOpSpectralTraceClass b p hp_norm hp_nonneg
-      spectralTrace_eq_one := ?_ }
+      spectralTraceClass := hstc
+      trace_eq_one := ?_ }
+  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.compact hstc.isSelfAdjoint]
+  apply Complex.ofReal_injective
   calc
     spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = ∑' i, p i :=
       HilbertBasis.spectralTrace_diagonalOp_eq_tsum b p hp_norm hp_nonneg
