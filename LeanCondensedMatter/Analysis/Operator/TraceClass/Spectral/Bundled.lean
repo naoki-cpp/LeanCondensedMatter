@@ -128,7 +128,7 @@ theorem IsTraceClass.trace_eq_spectralTrace
   simp only [Complex.ofRealCLM_apply] at hcast
   exact
     (HasSum.congr_fun hcast fun i =>
-      coe_diagonalExpectationValue_right T hself (d i)).tsum_eq
+      (coe_diagonalExpectationValue_right T hself (d i)).symm).tsum_eq
 
 /-- On compact self-adjoint operators, the canonical trace norm is the absolute eigenvalue sum
 with multiplicity. -/
