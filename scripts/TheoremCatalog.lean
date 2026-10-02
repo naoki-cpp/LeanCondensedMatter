@@ -374,9 +374,14 @@ private def retainedStructuralAuditSignal (entry : CatalogEntry) : Bool :=
   entry.terminal || entry.compiledConsumers.isEmpty || entry.singleCompiledConsumer ||
     entry.directWrapperOf.isSome
 
+private def retainedNameResolves
+    (entries : Array CatalogEntry) (name : String) : Bool :=
+  (catalogEntry? entries name).isSome ||
+    (entries.filter fun entry => declarationBaseName entry.name == name).size == 1
+
 private def missingRetainedDeclarations
     (entries : Array CatalogEntry) (retainedNames : Array String) : Array String :=
-  retainedNames.filter fun name => (catalogEntry? entries name).isNone
+  retainedNames.filter fun name => !retainedNameResolves entries name
 
 private def retainedWithoutCurrentAuditSignal
     (entries : Array CatalogEntry) : Array CatalogEntry :=
