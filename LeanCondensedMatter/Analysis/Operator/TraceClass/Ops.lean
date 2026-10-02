@@ -130,11 +130,9 @@ theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
 
 private theorem IsTraceClass.exists_controlled_hilbertSchmidt_factorization
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
-    ∃ A B : H →L[ℂ] H,
-      IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧
+    ∃ A B : H →L[ℂ] H, ∃ hA : IsHilbertSchmidt A, ∃ hB : IsHilbertSchmidt B,
       ContinuousLinearMap.adjoint A * B = T ∧
-      (show IsHilbertSchmidt A from by assumption).normSq ≤ hT.traceNorm ∧
-      (show IsHilbertSchmidt B from by assumption).normSq = hT.traceNorm := by
+      hA.normSq ≤ hT.traceNorm ∧ hB.normSq = hT.traceNorm := by
   obtain ⟨U, hUleft, -, hUnorm⟩ := exists_leftPolarFactor T
   let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
   have hS : IsHilbertSchmidt S := hT
