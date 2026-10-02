@@ -188,13 +188,6 @@ membership. -/
 theorem isTraceClass (h : SpectralTraceClass T) : IsTraceClass T :=
   (isTraceClass_iff_hasSummableRealEigenvalues h.compact h.isSelfAdjoint).2 h.summable
 
-/-- The general complex trace of bundled spectral trace-class data agrees with its real spectral
-trace after coercion to `ℂ`. -/
-theorem generalTrace_eq_trace (h : SpectralTraceClass T) :
-    h.isTraceClass.trace = (h.trace : ℂ) := by
-  rw [h.isTraceClass.trace_eq_spectralTrace h.compact h.isSelfAdjoint,
-    h.trace_eq_spectralTrace]
-
 /-- The general trace norm of bundled spectral trace-class data is the absolute eigenvalue sum. -/
 theorem traceNorm_eq_tsum_abs_eigenvalues (h : SpectralTraceClass T) :
     h.isTraceClass.traceNorm = ∑' a : EigenvectorIndex T, |a.1.1| :=
@@ -209,6 +202,13 @@ omit [CompleteSpace H] in
 theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
     h.trace = ContinuousLinearMap.spectralTrace T :=
   rfl
+
+/-- The general complex trace of bundled spectral trace-class data agrees with its real spectral
+trace after coercion to `ℂ`. -/
+theorem generalTrace_eq_trace (h : SpectralTraceClass T) :
+    h.isTraceClass.trace = (h.trace : ℂ) := by
+  rw [h.isTraceClass.trace_eq_spectralTrace h.compact h.isSelfAdjoint,
+    h.trace_eq_spectralTrace]
 
 /-- For a positive bundled spectral trace-class operator, the general trace norm agrees with the
 spectral trace. -/
