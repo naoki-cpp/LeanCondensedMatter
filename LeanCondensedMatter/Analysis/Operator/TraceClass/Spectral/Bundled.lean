@@ -203,13 +203,6 @@ theorem traceNorm_eq_spectralTrace (h : SpectralTraceClass T) (hpos : T.IsPositi
   intro a
   exact abs_of_nonneg (eigenvalue_nonneg_of_isPositive hpos.toLinearMap a)
 
-omit [CompleteSpace H] in
-/-- The real spectral trace of a positive bundled operator is nonnegative. -/
-theorem spectralTrace_nonneg (h : SpectralTraceClass T)
-    (hpos : (T : H →ₗ[ℂ] H).IsPositive) :
-    0 ≤ spectralTrace T :=
-  ContinuousLinearMap.trace_nonneg hpos
-
 /-- A nonzero positive spectral-trace-class operator has strictly positive real spectral trace. -/
 theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
     0 < spectralTrace T := by
