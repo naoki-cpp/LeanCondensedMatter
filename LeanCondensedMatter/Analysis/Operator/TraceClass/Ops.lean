@@ -195,6 +195,67 @@ theorem traceNorm_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     hT.traceNorm_smul]
   simp
 
+/-- The trace norm satisfies the triangle inequality. -/
+theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
+    (hT.add hR).traceNorm ≤ hT.traceNorm + hR.traceNorm := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (T + R)
+  have hTpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
+  have hRpair := hR.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
+  have hdiagCast (i : w) :
+      (diagonalExpectationValue (CFC.abs (T + R))
+        (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ) =
+        inner ℂ (U (d i)) ((T + R) (d i)) := by
+    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right U (d i) ((T + R) (d i))
+  have hdiagNorm (i : w) :
+      diagonalExpectationValue (CFC.abs (T + R))
+        (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) =
+        ‖inner ℂ (U (d i)) ((T + R) (d i))‖ := by
+    have hnonneg := diagonalExpectationValue_nonneg
+      (CFC.abs (T + R)) (CFC.abs_nonneg (T + R)) (d i)
+    calc
+      diagonalExpectationValue (CFC.abs (T + R))
+          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) =
+          ‖(diagonalExpectationValue (CFC.abs (T + R))
+            (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ)‖ := by
+        simp [abs_of_nonneg hnonneg]
+      _ = ‖inner ℂ (U (d i)) ((T + R) (d i))‖ := congrArg norm (hdiagCast i)
+  have hpoint_le (i : w) :
+      diagonalExpectationValue (CFC.abs (T + R))
+          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) ≤
+        ‖inner ℂ (U (d i)) (T (d i))‖ +
+          ‖inner ℂ (U (d i)) (R (d i))‖ := by
+    rw [hdiagNorm]
+    simpa [add_apply, inner_add_right] using
+      norm_add_le (inner ℂ (U (d i)) (T (d i)))
+        (inner ℂ (U (d i)) (R (d i)))
+  have hdiagSum := (hT.add hR).isTraceClassWrt d
+  rw [IsTraceClassWrt] at hdiagSum
+  have hrhsSum := hTpair.1.add hRpair.1
+  rw [(hT.add hR).traceNorm_eq_tsum_diagonalExpectationValue d]
+  calc
+    (∑' i, diagonalExpectationValue (CFC.abs (T + R))
+        (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i)) ≤
+        ∑' i, (‖inner ℂ (U (d i)) (T (d i))‖ +
+          ‖inner ℂ (U (d i)) (R (d i))‖) :=
+      hdiagSum.tsum_le_tsum hpoint_le hrhsSum
+    _ = (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) +
+        ∑' i, ‖inner ℂ (U (d i)) (R (d i))‖ :=
+      hTpair.1.tsum_add hRpair.1
+    _ ≤ hT.traceNorm + hR.traceNorm := add_le_add hTpair.2 hRpair.2
+
+/-- The trace norm dominates the modulus of the trace. -/
+theorem norm_trace_le_traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    ‖hT.trace‖ ≤ hT.traceNorm := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  have hpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm
+    (ContinuousLinearMap.id ℂ H) ContinuousLinearMap.norm_id_le d
+  rw [hT.trace_eq_seriesWrt d]
+  unfold traceSeriesWrt
+  exact (norm_tsum_le_tsum_norm (hT.summable_norm_traceSeriesWrt d)).trans (by
+    simpa using hpair.2)
+
 /-- The zero operator has trace zero. -/
 @[simp]
 theorem trace_zero :
@@ -221,6 +282,16 @@ theorem trace_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   rw [show -T = (-1 : ℂ) • T by simp, trace_proof_irrel hT.neg (hT.smul (-1 : ℂ)),
     hT.trace_smul]
   simp
+
+/-- The trace is additive. -/
+theorem trace_add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
+    (hT.add hR).trace = hT.trace + hR.trace := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  rw [(hT.add hR).trace_eq_seriesWrt d, hT.trace_eq_seriesWrt d, hR.trace_eq_seriesWrt d]
+  unfold traceSeriesWrt
+  simpa [add_apply, inner_add_right] using
+    ((hT.summable_traceSeriesWrt d).hasSum.add
+      (hR.summable_traceSeriesWrt d).hasSum).tsum_eq
 
 end IsTraceClass
 
