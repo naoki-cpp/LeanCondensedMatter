@@ -222,18 +222,6 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
   have h₂ := ambientEquiv.symm.injective h₁
   exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
-omit [Fintype ι] [Fintype α] in
-/-- Reassembling the extracted local orders and shuffle recovers the global order. -/
-private theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ} (size : ι → ℕ)
-    (hcard : ∀ i, Fintype.card (F i) = size i)
-    (ambientEquiv : α ≃ Σ i, F i)
-    (order : Fin total ≃ α) :
-    assembleFamilyOrderOfSize F size ambientEquiv
-        (familyOrdersOfOrder F size hcard ambientEquiv order)
-        (familyShuffleOfOrder F size hcard ambientEquiv order) = order := by
-  ext j
-  simp [assembleFamilyOrderOfSize, familyShuffleOfOrder, familyOrderedEquiv]
-
 /-- A global order on a finite family is equivalent to local fiber orders together with an
 order-preserving family shuffle. Empty fibers are retained as zero-size shuffle blocks. -/
 noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι → ℕ)
@@ -245,8 +233,9 @@ noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι �
     (familyOrdersOfOrder F size hcard ambientEquiv order,
       familyShuffleOfOrder F size hcard ambientEquiv order)
   invFun x := assembleFamilyOrderOfSize F size ambientEquiv x.1 x.2
-  left_inv order :=
-    assembleFamilyOrder_ordersOfOrder_shuffleOfOrder F size hcard ambientEquiv order
+  left_inv order := by
+    ext j
+    simp [assembleFamilyOrderOfSize, familyShuffleOfOrder, familyOrderedEquiv]
   right_inv x := by
     obtain ⟨orders, shuffle⟩ := x
     let order := assembleFamilyOrderOfSize F size ambientEquiv orders shuffle
