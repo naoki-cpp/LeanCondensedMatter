@@ -25,7 +25,8 @@ noncomputable def traceSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) : ℂ :=
   ∑' i, inner ℂ (d i) (T (d i))
 
-private theorem IsTraceClass.exists_hilbertSchmidt_factorization
+/-- Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors. -/
+theorem IsTraceClass.exists_hilbertSchmidt_factorization
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     ∃ A B : H →L[ℂ] H,
       IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ ContinuousLinearMap.adjoint A * B = T := by
