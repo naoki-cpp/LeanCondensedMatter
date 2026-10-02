@@ -53,8 +53,8 @@ theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →�
   exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
 
 omit [CompleteSpace H] in
-/-- The spectral trace of a positive spectrally summable operator is nonnegative. -/
-theorem trace_nonneg {T : H →L[ℂ] H}
+/-- The spectral trace of a positive operator is nonnegative. -/
+theorem spectralTrace_nonneg {T : H →L[ℂ] H}
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ spectralTrace T :=
   tsum_nonneg fun a => eigenvalue_nonneg_of_isPositive hpos a
 
