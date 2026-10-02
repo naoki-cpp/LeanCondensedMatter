@@ -37,13 +37,6 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
     add_assoc, add_comm, add_left_comm]
 
-/-- Double-sum form of `crossingCount_eq_sum_crosses`. -/
-theorem Pairing.crossingCount_eq_sum_sum_crosses {n : ℕ} (pairing : Pairing n) :
-    pairing.crossingCount =
-      ∑ p : pairing.NormalizedPair, ∑ q : pairing.NormalizedPair,
-        if Crosses p.1 q.1 then 1 else 0 := by
-  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
-
 /-- Two normalized pairs with disjoint endpoints cross in one orientation exactly when their four
 cross-pair endpoint comparisons have odd parity. -/
 private theorem pairEndpointInversionCount_mod_two_eq_one_iff_crosses {n : ℕ}

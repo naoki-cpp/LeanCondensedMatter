@@ -160,7 +160,7 @@ theorem Pairing.componentCrossingCount_self_eq
     pairing.componentCrossingCount e B B = localPairing.crossingCount := by
   classical
   rw [Pairing.componentCrossingCount, Fintype.sum_prod_type,
-    Pairing.crossingCount_eq_sum_sum_crosses]
+    Pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : F B => (e ⟨B, p⟩).1)
     (fun pr : localPairing.NormalizedPair => pr.1)
