@@ -37,9 +37,8 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
       spectralTraceClass := HilbertBasis.diagonalOpSpectralTraceClass b p hp_norm hp_nonneg
       spectralTrace_eq_one := ?_ }
   calc
-    (HilbertBasis.diagonalOpSpectralTraceClass b p hp_norm hp_nonneg).trace
-        = ∑' i, p i :=
-      HilbertBasis.diagonalOpSpectralTraceClass_trace b p hp_norm hp_nonneg
+    spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = ∑' i, p i :=
+      HilbertBasis.spectralTrace_diagonalOp_eq_tsum b p hp_norm hp_nonneg
     _ = Z⁻¹ * ∑' i, a i := by
       simp only [p]
       rw [tsum_mul_left]
