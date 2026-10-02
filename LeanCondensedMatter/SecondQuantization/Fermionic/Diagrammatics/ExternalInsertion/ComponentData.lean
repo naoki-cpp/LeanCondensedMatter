@@ -459,17 +459,34 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
           (interactionSector
             (B : Finset (ExternalInsertionVertex E
               (Finset.univ : Finset (Fin n))))).card))).injective
-      rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-        Equiv.apply_symm_apply]
-      rfl
+      rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv]
+      change localLeg =
+        externalInsertionLegEquiv (d.externalPairCount B)
+          (Finset.univ : Finset (Fin
+            (interactionSector
+              (B : Finset (ExternalInsertionVertex E
+                (Finset.univ : Finset (Fin n))))).card))
+          ((externalInsertionLegEquiv (d.externalPairCount B)
+            (Finset.univ : Finset (Fin
+              (interactionSector
+                (B : Finset (ExternalInsertionVertex E
+                  (Finset.univ : Finset (Fin n))))).card))).symm localLeg)
+      exact (Equiv.apply_symm_apply _ localLeg).symm
     exact congrArg Fin.val hpos
   rw [hlocal, ← hfixed]
-  apply (externalInsertionLegEquiv E
-    (Finset.univ : Finset (Fin n))).injective
-  rw [Equiv.apply_symm_apply,
-    externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv]
+  have hambient :
+      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+            (d.componentOrderedLeg B localLeg)) =
+        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
+          (d.componentOrderedLeg B localLeg) := by
+    apply (externalInsertionLegEquiv E
+      (Finset.univ : Finset (Fin n))).injective
+    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+      externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+      Equiv.apply_symm_apply]
   unfold ExternalInsertionWickDiagram.componentMixedPosition
-  rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
+  exact hambient.symm
 
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
