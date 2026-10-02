@@ -68,7 +68,7 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
   let g : w → ℝ := fun i =>
     diagonalExpectationValue (entropyOp ρ)
       (entropyOpSpectralTraceClass ρ hsummable).isSelfAdjoint (b i)
-  have hfull : HasSum g spectralTrace (entropyOp ρ) := by
+  have hfull : HasSum g (spectralTrace (entropyOp ρ)) := by
     simpa [g] using
       (entropyOpSpectralTraceClass ρ hsummable).hasSum_diagonalExpectationValue b
   have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
@@ -96,7 +96,7 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     rw [coe_diagonalExpectationValue_right, hentropy]
     simp
   have hrestricted :
-      HasSum (g ∘ j) spectralTrace (entropyOp ρ) :=
+      HasSum (g ∘ j) (spectralTrace (entropyOp ρ)) :=
     (hj.hasSum_iff hzero).mpr hfull
   simpa only [Function.comp_apply] using
     HasSum.congr_fun hrestricted fun a => (hpoint a).symm
@@ -129,7 +129,7 @@ theorem vonNeumannEntropy_ne_top_and_toReal_eq_tsum (ρ : DensityOperator H)
 theorem vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace (ρ : DensityOperator H)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
     vonNeumannEntropy ρ =
-      ENNReal.ofReal spectralTrace (entropyOp ρ) := by
+      ENNReal.ofReal (spectralTrace (entropyOp ρ)) := by
   rw [vonNeumannEntropy]
   symm
   rw [entropyOp_spectralTrace_eq_tsum ρ hsummable]
