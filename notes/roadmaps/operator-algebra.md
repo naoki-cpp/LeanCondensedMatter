@@ -50,10 +50,10 @@ Hilbert-basis formulas. The neutral Hilbert-basis diagonal operator construction
 `Analysis/Operator/Diagonal.lean`.
 
 `traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
-`IsTraceClass T` it is not called the trace norm. The canonical trace norm and complex trace must
-be basis-independent values built on the general membership layer. Their comparison with
-`SpectralTraceClass` belongs to the compact self-adjoint overlap rather than to the definition of
-general trace class.
+`IsTraceClass T` it is not called the trace norm. For `hT : IsTraceClass T`, `hT.traceNorm` is the
+basis-independent trace norm, defined from the canonical squared Hilbert--Schmidt norm of
+`sqrt(|T|)`. The future complex trace and the comparison with `SpectralTraceClass` belong to the
+next layers rather than to the definition of general trace class.
 
 ## Hilbert--Schmidt operators
 
@@ -61,9 +61,9 @@ general trace class.
 invariance, closure under bounded composition, the basis-relative totalized norm-square series, the
 pairing `innerHS`, and comparison with spectral trace on the compact self-adjoint overlap.
 
-General non-self-adjoint trace-class membership is now defined from Hilbert--Schmidt membership of
-`sqrt(|T|)`. Closure as an operator ideal, the canonical trace norm, the general complex trace, and
-completeness remain open.
+General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
+Hilbert--Schmidt layer. Closure as an operator ideal, the general complex trace, and completeness
+remain open.
 
 ## Fredholm determinant
 
@@ -156,7 +156,7 @@ bounded `Observable` layer until such infrastructure exists.
 
 The following remain open or only partially covered:
 
-- general trace-class closure, canonical trace norm, complex trace, and the broader Schatten hierarchy;
+- general trace-class closure, complex trace, and the broader Schatten hierarchy;
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;

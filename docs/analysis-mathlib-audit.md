@@ -82,17 +82,17 @@ ContinuousLinearMap.SpectralTraceClass T
 which bundles compactness, symmetry, and summability of nonzero real eigenvalues. Its associated
 `spectralTrace` is a real spectral sum for compact self-adjoint operators.
 
-`Analysis/Operator/TraceClass/General.lean` owns general membership and the basis-relative
-trace-norm series. `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled
+`Analysis/Operator/TraceClass/General.lean` owns general membership and the Hilbert-basis criterion.
+`Analysis/Operator/TraceClass/Norm.lean` owns the basis-relative trace-norm series and canonical
+basis-independent real trace norm. `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled
 compact self-adjoint specialization, spectral trace identities, scalar transport, unitary transport,
 and spectral equality criteria.
 
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
 the absolutely summable rank-one series, basis action, and compactness.
 
-The repository does not yet define the canonical trace norm or a basis-independent complex trace on
-all trace-class operators, so `SpectralTraceClass.trace` must not be read as that future general
-trace.
+The repository does not yet define a basis-independent complex trace on all trace-class operators,
+so `SpectralTraceClass.trace` must not be read as that future general trace.
 
 ## Hilbert–Schmidt API
 
@@ -124,8 +124,8 @@ normal, or trace-class operators and is not independent of unrelated diagonal pr
 the underlying linear endomorphism. It is appropriate only for future finite-dimensional
 compatibility results and is not used as the infinite-dimensional definition.
 
-A general implementation still requires the trace-class ideal closure laws, a canonical trace norm
-and completeness theory, a general complex trace, a convergent presentation-independent determinant
+A general implementation still requires the trace-class ideal closure laws, completeness theory, a
+general complex trace, a convergent presentation-independent determinant
 construction, and structural identities on the valid domain. The scoped dependency graph is
 recorded in `notes/roadmaps/fredholm-determinant.md`.
 
@@ -176,7 +176,7 @@ unbounded heartbeat setting. Before upstreaming or broadening this API:
 
 The repository does not yet provide:
 
-- the remaining general trace-class ideal closure laws, canonical trace norm, and complex trace;
+- the remaining general trace-class ideal closure laws and complex trace;
 - a complete Schatten hierarchy;
 - a Fredholm determinant on general trace-class operators;
 - basis independence for unrelated diagonal presentations without spectral uniqueness;

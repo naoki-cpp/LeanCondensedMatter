@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 
@@ -92,18 +92,5 @@ theorem IsTraceClass.of_isTraceClassWrt {ι : Type*} {d : HilbertBasis ι ℂ H}
     {T : H →L[ℂ] H} (hT : IsTraceClassWrt d T) :
     IsTraceClass T :=
   (isTraceClass_iff_isTraceClassWrt d T).mpr hT
-
-/-- The totalized trace-norm series evaluated in a chosen Hilbert basis. Outside trace-class
-membership, this is only the totalized `tsum` value and is not the trace norm. -/
-noncomputable def traceNormSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
-    (T : H →L[ℂ] H) : ℝ :=
-  hilbertSchmidtNormSqSeriesWrt d (CFC.sqrt (CFC.abs T))
-
-/-- For a trace-class operator, the trace-norm series has the same value in every Hilbert basis. -/
-theorem traceNormSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
-    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
-    traceNormSeriesWrt d T = traceNormSeriesWrt f T := by
-  unfold traceNormSeriesWrt
-  exact hilbertSchmidtNormSqSeriesWrt_eq d f (CFC.sqrt (CFC.abs T)) hT
 
 end ContinuousLinearMap
