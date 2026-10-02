@@ -16,11 +16,13 @@ applies.
   its basis action and compactness. Positivity and spectral-trace packaging are separate adapters
   under `Analysis/Operator/TraceClass/`.
 
-- **General trace-class membership is not yet a complete operator-ideal API.**
+- **The general trace-class API is not yet complete as a normed operator ideal.**
   `ContinuousLinearMap.IsTraceClass T` is implemented through Hilbert–Schmidt membership of
   `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace.
-  Addition and scalar closure are available, but adjoint closure, bounded left/right ideal closure,
-  their trace-norm bounds, and general cyclicity remain missing.
+  Membership is closed under addition, scalar multiplication, adjoint, and bounded left/right
+  multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
+  by contractions. General `‖W‖`-weighted ideal bounds, trace cyclicity, and completeness remain
+  missing.
 
 - **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
@@ -36,10 +38,11 @@ applies.
   determinant identities on the valid domain.
 
 - **Density-state expectations are not yet expressed through the general trace ideal.**
-  For a density operator `ρ` and bounded operator `A`, the canonical complex trace is available,
-  but the project has not yet proved that `ρ.op ∘L A` is trace class under bounded right
-  composition. `DensityOperator.expectation` therefore still uses `ρ`’s spectral decomposition.
-  In finite dimensions it is proved equal to the ordinary matrix trace `Tr(ρA)`.
+  For a density operator `ρ` and bounded operator `A`, bounded right multiplication now proves
+  that `ρ.op * A` is trace class. The project has not yet identified
+  `DensityOperator.expectation ρ A` with the resulting canonical complex trace, so the expectation
+  API still uses `ρ`’s spectral decomposition. In finite dimensions it is proved equal to the
+  ordinary matrix trace `Tr(ρA)`.
 
 - **A bounded Hamiltonian does not yield a genuine infinite-dimensional compact Gibbs operator.**
   `gibbsOp Hop β = exp (-β Hop)` is invertible. If it is compact, the identity is compact and the
