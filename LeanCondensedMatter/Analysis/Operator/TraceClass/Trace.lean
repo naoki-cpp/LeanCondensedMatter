@@ -43,8 +43,10 @@ private theorem norm_cfcAbs_apply_eq (T : H →L[ℂ] H) (x : H) :
         rw [mul_apply_eq_comp]
       _ = inner ℂ (T x) (T x) :=
         ContinuousLinearMap.adjoint_inner_right T x (T x)
-  have hre := congrArg Complex.re hinner
-  simpa [inner_self_eq_norm_sq_to_K] using hre
+  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
+  rw [@norm_sq_eq_re_inner ℂ _ _ _ _ (CFC.abs T x),
+    @norm_sq_eq_re_inner ℂ _ _ _ _ (T x)]
+  exact congrArg Complex.re hinner
 
 /-- A bounded operator admits the part of polar decomposition needed for trace-class
 factorization: a bounded `U` satisfying `U |T| = T`. -/
@@ -61,7 +63,6 @@ private theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
   have hbound : ∃ c : ℝ, ∀ x : H, ‖T x‖ ≤ c * ‖A x‖ := by
     refine ⟨1, fun x => ?_⟩
     rw [one_mul, norm_cfcAbs_apply_eq]
-    exact le_rfl
   let f : R →L[ℂ] H := T.toLinearMap.compLeftInverse A.toLinearMap
   have hf_norm (y : R) : ‖f y‖ = ‖j y‖ := by
     obtain ⟨x, hx⟩ := y.2
@@ -71,7 +72,7 @@ private theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
     calc
       ‖f y‖ = ‖T x‖ := by rw [hf_apply]
       _ = ‖A x‖ := (norm_cfcAbs_apply_eq T x).symm
-      _ = ‖(y : H)‖ := by rw [hx]
+      _ = ‖(y : H)‖ := congrArg norm hx
       _ = ‖j y‖ := rfl
   let V : C →ₗᵢ[ℂ] H := f.toLinearMap.extendOfIsometry hj_dense hf_norm
   letI : CompleteSpace C := R.isClosed_topologicalClosure.completeSpace_coe
