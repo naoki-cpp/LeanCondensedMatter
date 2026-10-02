@@ -106,4 +106,29 @@ theorem traceNormSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
   unfold traceNormSeriesWrt
   exact hilbertSchmidtNormSqSeriesWrt_eq d f (CFC.sqrt (CFC.abs T)) hT
 
+namespace IsTraceClass
+
+/-- The trace norm of a trace-class operator. -/
+noncomputable def traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) : ℝ :=
+  IsHilbertSchmidt.normSq hT
+
+/-- The trace norm is the diagonal trace-norm series in every Hilbert basis. -/
+theorem traceNorm_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.traceNorm = traceNormSeriesWrt d T := by
+  unfold traceNorm traceNormSeriesWrt
+  exact IsHilbertSchmidt.normSq_eq_seriesWrt hT d
+
+/-- The trace norm is independent of the proof of trace-class membership. -/
+theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
+    hT.traceNorm = hT'.traceNorm := by
+  exact IsHilbertSchmidt.normSq_proof_irrel hT hT'
+
+/-- The trace norm is nonnegative. -/
+theorem traceNorm_nonneg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    0 ≤ hT.traceNorm :=
+  IsHilbertSchmidt.normSq_nonneg hT
+
+end IsTraceClass
+
 end ContinuousLinearMap
