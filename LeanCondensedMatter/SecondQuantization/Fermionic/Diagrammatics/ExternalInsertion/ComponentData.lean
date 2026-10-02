@@ -436,28 +436,23 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
               (interactionSector
                 (B : Finset (ExternalInsertionVertex E
                   (Finset.univ : Finset (Fin n))))).card))).symm localLeg) := by
-    apply Fin.ext
-    change
-      (externalInsertionMixedTimeAmbientPositionEquiv
-          localExternalTime localInteractionTime p).val =
-        ((externalInsertionLegEquiv (d.externalPairCount B)
-          (Finset.univ : Finset (Fin
-            (interactionSector
-              (B : Finset (ExternalInsertionVertex E
-                (Finset.univ : Finset (Fin n))))).card))).symm localLeg).val
-    apply Fin.ext_iff.mp
-      ((externalInsertionLegEquiv (d.externalPairCount B)
-        (Finset.univ : Finset (Fin
-          (interactionSector
-            (B : Finset (ExternalInsertionVertex E
-              (Finset.univ : Finset (Fin n))))).card))).injective
-        (by
-          rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv]
-          rfl))
+    unfold ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv
+    apply (finCongr (by simp)).injective
+    apply (externalInsertionLegEquiv (d.externalPairCount B)
+      (Finset.univ : Finset (Fin
+        (interactionSector
+          (B : Finset (ExternalInsertionVertex E
+            (Finset.univ : Finset (Fin n))))).card))).injective
+    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+      Equiv.apply_symm_apply]
+    rfl
   rw [hlocal, ← hfixed]
+  apply (externalInsertionLegEquiv E
+    (Finset.univ : Finset (Fin n))).injective
+  rw [Equiv.apply_symm_apply,
+    externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv]
   unfold ExternalInsertionWickDiagram.componentMixedPosition
-  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-    externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
+  rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
 
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
