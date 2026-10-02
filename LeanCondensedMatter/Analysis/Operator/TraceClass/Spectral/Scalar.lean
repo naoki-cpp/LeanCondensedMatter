@@ -185,12 +185,6 @@ theorem smul (h : SpectralTraceClass T) (c : ℝ) :
     exact h.symmetric.smul (c := (c : ℂ)) (by simp)
   summable := hasSummableRealEigenvalues_smul c h.summable
 
-omit [CompleteSpace H] in
-/-- The bundled spectral trace is homogeneous under multiplication by any real scalar. -/
-theorem trace_smul (h : SpectralTraceClass T) (c : ℝ) :
-    (h.smul c).trace = c * h.trace := by
-  rw [(h.smul c).trace_eq_spectralTrace, h.trace_eq_spectralTrace]
-  exact spectralTrace_smul c h.summable
 
 end SpectralTraceClass
 
