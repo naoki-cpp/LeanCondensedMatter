@@ -19,15 +19,15 @@ or consumer structure changes.
 
 ## Retained declarations
 
-- `familyGlobalSlot_injective` — retain private: the injectivity fact is used both to count a fiber's occupied ambient slots and to construct the private fiber-to-slot equivalence.
-- `card_familyGlobalSlots` — retain private: the cardinality identity is reused throughout the canonical local-order construction and its uniqueness proof.
+- `Combinatorics.MultiplicativeWeight.cumulantFromMoment_objectMoment` — retain public: fundamental Möbius-inversion endpoint recovering the connected contribution from the raw object moment; a single current theorem consumer does not make the statement implementation-only.
+- `Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply` — retain public `[simp]`: canonical evaluation rule exposing the underlying raw object moment of the normalized wrapper.
+- `Combinatorics.MultiplicativeWeight.weight_decompose` — retain public: this is the defining multiplicativity contract of `MultiplicativeWeight`; the generated structure projection is essential API despite its single current compiled consumer.
+- `Combinatorics.NormalizedSetFunction.cumulant_apply` — retain public `[simp]`: canonical evaluation rule for the bundled cumulant transform.
+- `Combinatorics.NormalizedSetFunction.cumulant_moment` — retain public: one half of the moment–cumulant inverse laws and the left-inverse theorem used to build `momentCumulantEquiv`.
 - `familyOrderOfOrder_slot` — retain private: the induced local-order coordinate formula is used both to prove the extracted shuffle is order-preserving and to prove uniqueness of the local order.
 - `familyOrder_eq_of_strictMono` — retain private: nontrivial uniqueness lemma for the canonical increasing-slot fiber order, used by the right inverse of `familyOrderDecompositionEquivOfSize`.
 - `blockEquiv_reconstruct_val` — retain private: the flattened-coordinate reconstruction formula is used in both directions of the lexicographic-order proof `blockEquiv_lt_iff`.
 - `local_add_block_mul_lt_of_block_lt` — retain private: the arithmetic separation lemma is used twice in `blockEquiv_lt_iff` and isolates the nontrivial block-order estimate.
-- `Combinatorics.FiniteIndex.blockEquiv_lt_iff` — retain public: canonical statement that flattened fixed-width coordinates carry the lexicographic block/local order; it is reused by pairing-sign infrastructure.
-- `Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne` — retain public: canonical distinct-block specialization used directly by quartic component and two-point leg ordering proofs.
-- `Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq` — retain public: canonical same-block specialization used directly by quartic component and two-point leg ordering proofs.
 - `Finpartition.assembleOrder_shuffleOfOrder` — canonical `[simp]` reconstruction law: reassembling a global order from compatible part-local orders and its extracted partition shuffle recovers the original order.
 - `Finpartition.partOrderOfOrder_strictMono` — canonical monotonicity property of the local order induced on one partition part by increasing ambient slots.
 - `Finpartition.partOrdersCompatible_partOrdersOfOrder` — canonical compatibility theorem for the family of part-local orders induced by an ambient global order.
@@ -36,18 +36,12 @@ or consumer structure changes.
 - `Finpartition.sum_order_eq_mul_prod_sum_partOrders` — general finite-partition factorization theorem reducing a sum over global orders to a common shuffle factor times products of local-order sums.
 - `Combinatorics.assembleFamilyOrderOfSize_symm_apply` — canonical `[simp]` evaluation rule for the inverse of a global order assembled from explicit family-local orders and a family slot shuffle.
 - `Combinatorics.assembleFamilyOrderOfSize_eq_order` — extensional reconstruction theorem characterizing when the explicitly assembled family order equals a given global order.
-- `Combinatorics.FiniteIndex.blockCoordinate_lt` — reusable arithmetic bound ensuring the row-major coordinate `i * k + j` lies in the flattened finite block range.
-- `Combinatorics.FiniteIndex.blockEquiv_cast_mul_add` — canonical forward computation rule for the fixed-width block equivalence, mapping a flattened row-major coordinate back to its block/local pair.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_self` — canonical `[simp]` boundary for the inter-block inversion count, recording that the diagonal block contribution is zero.
-- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — canonical expansion of the inter-block inversion count for distinct blocks; downstream crossing/parity proofs use this explicit counting formula.
 - `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq` — reusable transport theorem lifting pairwise modular agreement of block inversion counts to the total ordered inversion count.
 - `Combinatorics.FamilySlotShuffleTo.timeAssignment_apply` — canonical `[simp]` evaluation rule for restricting an ambient time assignment to one local shuffled block; it is an established simplification boundary used by diagrammatic consumers.
 - `Finpartition.partOrdersCompatible_assembleOrder` — canonical compatibility law for a global order assembled from part-local orders and a partition shuffle.
-- `Finpartition.partGlobalSlot_injective` — core structural property of the public map sending elements of one partition part to their ambient slots.
 - `Finpartition.partGlobalSlot_mem_partGlobalSlots` — canonical `[simp]` membership rule stating that every part element lands in that part's ambient-slot subset.
-- `Finpartition.card_partGlobalSlots` — canonical cardinality theorem identifying the number of ambient slots occupied by a part with the cardinality of that part.
 - `Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm` — canonical `[simp]` inverse-evaluation rule for the equivalence between a partition part and its occupied ambient-slot subtype.
-- `Finpartition.partGlobalSlot_partOrderOfOrder` — canonical `[simp]` computation rule relating the induced local part order to the increasing enumeration of its ambient slots.
 - `Combinatorics.FamilySlotShuffle.cons_slotEquiv_zero` — canonical `[simp]` computation rule for the head-block coordinates of the recursive family-shuffle constructor.
 - `Combinatorics.FamilySlotShuffle.continuous_integrand` — general closure theorem that a finite product of continuous local integrands remains continuous after a family shuffle; this is a reusable ordered-simplex analysis API.
 - `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_succ` — canonical `[simp]` normalization rule for the tail branch of the dependent head/tail local-slot equivalence.
