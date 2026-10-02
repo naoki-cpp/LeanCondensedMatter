@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 import LeanCondensedMatter.Analysis.Operator.Diagonal
 
 /-!

@@ -6,7 +6,8 @@ import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 Defines `innerHS d S T := Σᵢ ⟪S dᵢ, T dᵢ⟫` for `S`, `T` Hilbert–Schmidt with respect to a basis
 `d`, and proves it's well-defined (summable) and basis-independent. See
 `HilbertSchmidtBasic.lean`'s module docstring for the motivation, and
-`HilbertSchmidtTrace.lean` for the reconciliation with `ContinuousLinearMap.trace`.
+`HilbertSchmidtTrace.lean` for the reconciliation with `spectralTrace` on the compact
+self-adjoint overlap.
 -/
 
 namespace ContinuousLinearMap

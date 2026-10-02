@@ -8,7 +8,7 @@ For a discrete unbounded-Hamiltonian thermal model, construct the bounded heat o
 
 The diagonal-series construction gives a compact operator, explicit basis action, positivity, and a spectral-trace formula under stated summability and nonzero-partition hypotheses. It is a thermal-state backend, not yet a complete unbounded Hamiltonian/domain theory; integrability, time evolution, and unbounded observables retain their own analytic obligations.
 
-Evidence: [diagonal operator construction](../../LeanCondensedMatter/Analysis/Operator/Diagonal.lean), [spectral-trace packaging](../../LeanCondensedMatter/Analysis/Operator/TraceClass/DiagonalSpectralTrace.lean), and [density normalization](../../LeanCondensedMatter/QuantumTheory/DensityOperator/Normalize.lean).
+Evidence: [diagonal operator construction](../../LeanCondensedMatter/Analysis/Operator/Diagonal.lean), [spectral-trace packaging](../../LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Diagonal.lean), and [density normalization](../../LeanCondensedMatter/QuantumTheory/DensityOperator/Normalize.lean).
 
 ## Historical evidence
 

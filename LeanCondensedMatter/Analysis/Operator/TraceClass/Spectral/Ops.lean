@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 
 set_option linter.style.header false

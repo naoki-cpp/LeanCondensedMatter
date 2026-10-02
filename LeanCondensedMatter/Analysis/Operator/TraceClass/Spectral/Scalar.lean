@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 import Mathlib.Algebra.GroupWithZero.Units.Equiv
 
 set_option linter.style.header false

@@ -33,7 +33,7 @@ evolution.
 
 Reusable bounded-operator unitary-conjugation facts live in
 `Analysis/Operator/Unitary.lean`; spectral summability and trace transport are thin adapters under
-`Analysis/Operator/TraceClass/Unitary.lean`. The physics layer consumes these analysis-owned APIs.
+`Analysis/Operator/TraceClass/Spectral/Unitary.lean`. The physics layer consumes these analysis-owned APIs.
 
 The reusable Hilbert-basis diagonal operator construction lives under
 `Analysis/Operator/Diagonal.lean`; density and Gibbs constructors consume that neutral API through

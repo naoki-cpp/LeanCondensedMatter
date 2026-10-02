@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Order
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 
 set_option linter.style.header false
 

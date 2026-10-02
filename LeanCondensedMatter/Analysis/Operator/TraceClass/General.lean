@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
 import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 
@@ -97,28 +97,13 @@ theorem IsTraceClass.of_isTraceClassWrt {ι : Type*} {d : HilbertBasis ι ℂ H}
 membership, this is only the totalized `tsum` value and is not the trace norm. -/
 noncomputable def traceNormSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) : ℝ :=
-  ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i)
-
-/-- The basis-relative totalized series is the squared Hilbert--Schmidt norm series of
-`sqrt(|T|)`. -/
-theorem traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs {ι : Type*}
-    (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
-    traceNormSeriesWrt d T = ∑' i, ‖CFC.sqrt (CFC.abs T) (d i)‖ ^ 2 := by
-  unfold traceNormSeriesWrt
-  apply tsum_congr
-  intro i
-  exact diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs T (d i)
+  hilbertSchmidtNormSqSeriesWrt d (CFC.sqrt (CFC.abs T))
 
 /-- For a trace-class operator, the trace-norm series has the same value in every Hilbert basis. -/
 theorem traceNormSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
     traceNormSeriesWrt d T = traceNormSeriesWrt f T := by
-  have hd : IsTraceClassWrt d T := hT.isTraceClassWrt d
-  have hHS :
-      IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)) :=
-    (isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs d T).mp hd
-  rw [traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs,
-    traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs]
-  exact (summable_norm_sq_apply_and_tsum_eq d f (CFC.sqrt (CFC.abs T)) hHS).2.symm
+  unfold traceNormSeriesWrt
+  exact hilbertSchmidtNormSqSeriesWrt_eq d f (CFC.sqrt (CFC.abs T)) hT
 
 end ContinuousLinearMap

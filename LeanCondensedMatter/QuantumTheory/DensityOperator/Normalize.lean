@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 import Mathlib.Analysis.InnerProductSpace.StarOrder
 

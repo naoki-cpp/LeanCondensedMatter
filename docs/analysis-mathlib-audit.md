@@ -66,31 +66,33 @@ the repository. `Analysis/Operator/Spectral/` provides:
 - kernel/orthogonal-complement decomposition;
 - Hilbert-basis comparison theorems.
 
-## Spectral trace-class API
+## Trace-class APIs
 
-The project’s canonical operator hypothesis is
+`ContinuousLinearMap.IsTraceClass T` is the project-local general non-self-adjoint trace-class
+membership predicate. It is defined by Hilbert--Schmidt membership of
+`CFC.sqrt (CFC.abs T)` and is equivalent, in every Hilbert basis, to summability of the
+nonnegative diagonal of `|T|`.
+
+The compact self-adjoint spectral specialization remains
 
 ```lean
 ContinuousLinearMap.SpectralTraceClass T
 ```
 
-It bundles compactness, symmetry, and summability of nonzero real eigenvalues. The associated trace
-is a spectral trace for compact self-adjoint operators.
+which bundles compactness, symmetry, and summability of nonzero real eigenvalues. Its associated
+`spectralTrace` is a real spectral sum for compact self-adjoint operators.
 
-`Analysis/Operator/TraceClass/` provides:
-
-- bundled and unbundled spectral summability;
-- trace computation from arbitrary Hilbert bases;
-- positivity, scalar linearity, additivity, and supported cyclicity;
-- positive and scalar constructions;
-- orthonormal-family trace bounds.
+`Analysis/Operator/TraceClass/General.lean` owns general membership and the basis-relative
+trace-norm series. `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled
+compact self-adjoint specialization, spectral trace identities, scalar transport, unitary transport,
+and spectral equality criteria.
 
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
-the absolutely summable rank-one series, basis action, and compactness. The TraceClass diagonal
-modules adapt that construction to positivity and `SpectralTraceClass`.
+the absolutely summable rank-one series, basis action, and compactness.
 
-This is not Mathlib’s general trace-class operator ideal and must not be described as a trace on all
-non-self-adjoint trace-class maps.
+The repository does not yet define the canonical trace norm or a basis-independent complex trace on
+all trace-class operators, so `SpectralTraceClass.trace` must not be read as that future general
+trace.
 
 ## Hilbert–Schmidt API
 
@@ -98,8 +100,8 @@ non-self-adjoint trace-class maps.
 basis-independence results, adjoint and bounded-composition closure, inner product, and trace
 reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
 
-The package does not yet supply a general non-self-adjoint trace-class ideal or a trace on every
-product of two Hilbert–Schmidt operators.
+The package now supplies the neutral norm-square series used by general trace-class membership, but
+not the remaining trace-ideal closure laws or a complex trace on arbitrary trace-class operators.
 
 ## Diagonal Fredholm determinant API
 
@@ -122,8 +124,8 @@ normal, or trace-class operators and is not independent of unrelated diagonal pr
 the underlying linear endomorphism. It is appropriate only for future finite-dimensional
 compatibility results and is not used as the infinite-dimensional definition.
 
-A general implementation still requires a non-self-adjoint trace-class ideal, a trace norm and
-completeness theory, a general trace, a convergent presentation-independent determinant
+A general implementation still requires the trace-class ideal closure laws, a canonical trace norm
+and completeness theory, a general complex trace, a convergent presentation-independent determinant
 construction, and structural identities on the valid domain. The scoped dependency graph is
 recorded in `notes/roadmaps/fredholm-determinant.md`.
 
@@ -174,7 +176,7 @@ unbounded heartbeat setting. Before upstreaming or broadening this API:
 
 The repository does not yet provide:
 
-- a general non-self-adjoint trace-class ideal;
+- the remaining general trace-class ideal closure laws, canonical trace norm, and complex trace;
 - a complete Schatten hierarchy;
 - a Fredholm determinant on general trace-class operators;
 - basis independence for unrelated diagonal presentations without spectral uniqueness;

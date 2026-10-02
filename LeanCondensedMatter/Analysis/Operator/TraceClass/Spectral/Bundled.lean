@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 
 set_option linter.style.header false

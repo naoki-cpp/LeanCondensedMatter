@@ -246,7 +246,7 @@ private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #
 private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
   let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
-  let traceClassUnitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+  let traceClassUnitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary
   #[
     { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
