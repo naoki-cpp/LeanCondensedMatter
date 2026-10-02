@@ -48,8 +48,7 @@ theorem entropyOpSpectralTraceClass_hasSum_diagonal (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
-    HasSum (fun i => Real.negMulLog (w i))
-      (spectralTrace (entropyOp ρ)) := by
+    HasSum (fun i => Real.negMulLog (w i)) (spectralTrace (entropyOp ρ)) := by
   have hsum := (entropyOpSpectralTraceClass ρ hsummable).hasSum_diagonalExpectationValue b
   exact HasSum.congr_fun hsum fun i => by
     apply Complex.ofReal_injective
