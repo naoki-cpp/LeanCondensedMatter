@@ -18,6 +18,18 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Combinatorics.Pairing.crossingCount_eraseZeroPair` — canonical recursion splitting the total crossing count into the erased pairing contribution plus crossings with the first pair.
+- `Combinatorics.Pairing.crossingsWithFirstPair_mod_two` — canonical parity bridge from first-pair crossings to the number of intervening positions, used by pairing-weight recursion.
+- `Combinatorics.Pairing.eraseZeroOrderIso_partner` — canonical `[simp]` compatibility of the erased pairing partner map with the increasing order isomorphism onto undeleted positions.
+- `Combinatorics.Pairing.eraseZeroPair_insertFirstPair` — canonical inverse law showing that erasing a freshly inserted first pair recovers the original pairing.
+- `Combinatorics.Pairing.even_card_of_partner_mem` — general parity theorem stating that any finite partner-closed subset of pairing positions has even cardinality.
+- `Combinatorics.Pairing.insertFirstPair_partner_zero` — canonical `[simp]` computation rule identifying the partner of the newly inserted zero position.
+- `Combinatorics.Pairing.isSplit_inr` — structural theorem that right-side closure follows automatically from left-side split closure by involutivity of the partner map.
+- `Combinatorics.Pairing.isSplit_ofSplit` — canonical constructor law asserting that a pairing assembled with `ofSplit` is split by the assembling position splitting.
+- `Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions` — structural lemma showing that every non-first normalized pair lies entirely in the undeleted position set.
+- `Combinatorics.Pairing.mem_pairs_map_iff` — canonical membership equivalence for normalized pairs under a partner-intertwining order embedding.
+- `Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff` — canonical crossing-preservation theorem for partner-intertwining order embeddings of pairings.
+- `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt` — canonical ordered-endpoint specialization of normalized-pair transport: increasing transported endpoints are not swapped.
 - `Combinatorics.NormalizedSetFunction.moment_apply` — retain public `[simp]`: canonical evaluation rule for the bundled moment transform.
 - `Combinatorics.NormalizedSetFunction.moment_cumulant` — retain public: one half of the moment–cumulant inverse laws and the right-inverse theorem used to build `momentCumulantEquiv`.
 - `Combinatorics.Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter` — retain public: canonical decomposition of the global crossing count into component-internal and inter-component contributions.
