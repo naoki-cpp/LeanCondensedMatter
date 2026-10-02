@@ -5,11 +5,11 @@ applies.
 
 ## Quantum and operator analysis
 
-- **The project’s spectral trace is not a general trace-class ideal.**
-  `ContinuousLinearMap.SpectralTraceClass` is built for compact self-adjoint operators and defines
-  trace through real eigenvalues with multiplicity. It does not provide a trace on every
-  non-self-adjoint trace-class operator, a full Schatten hierarchy, or all ideal/product closure
-  theorems.
+- **The real spectral trace is not the general trace API.**
+  `ContinuousLinearMap.SpectralTraceClass` is built for compact self-adjoint operators, while
+  `spectralTrace` is the real eigenvalue sum with multiplicity. The canonical trace on general
+  trace-class bounded operators is `IsTraceClass.trace : ℂ`; on the compact self-adjoint overlap
+  it agrees with `spectralTrace` after coercion to `ℂ`.
 
 - **Hilbert-basis diagonal operators are not trace-class-specific.**
   `Analysis/Operator/Diagonal.lean` constructs the absolutely summable rank-one series and proves
@@ -18,8 +18,9 @@ applies.
 
 - **General trace-class membership is not yet a complete operator-ideal API.**
   `ContinuousLinearMap.IsTraceClass T` is implemented through Hilbert–Schmidt membership of
-  `sqrt(|T|)`, with a basis-independent real trace norm. Closure under the operations needed for a
-  full trace ideal and a basis-independent complex trace are still missing.
+  `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace.
+  Addition and scalar closure are available, but adjoint closure, bounded left/right ideal closure,
+  their trace-norm bounds, and general cyclicity remain missing.
 
 - **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
@@ -34,9 +35,10 @@ applies.
   The general Fredholm theory still requires a non-self-adjoint trace-class ideal, convergence, and
   determinant identities on the valid domain.
 
-- **Density-state expectations are more general than the available spectral trace of a product.**
-  For a density operator `ρ` and bounded operator `A`, the product `ρ.op ∘L A` need not be
-  self-adjoint. `DensityOperator.expectation` is therefore defined from `ρ`’s spectral decomposition.
+- **Density-state expectations are not yet expressed through the general trace ideal.**
+  For a density operator `ρ` and bounded operator `A`, the canonical complex trace is available,
+  but the project has not yet proved that `ρ.op ∘L A` is trace class under bounded right
+  composition. `DensityOperator.expectation` therefore still uses `ρ`’s spectral decomposition.
   In finite dimensions it is proved equal to the ordinary matrix trace `Tr(ρA)`.
 
 - **A bounded Hamiltonian does not yield a genuine infinite-dimensional compact Gibbs operator.**

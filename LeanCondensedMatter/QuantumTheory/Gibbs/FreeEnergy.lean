@@ -177,8 +177,7 @@ theorem spectralTrace_gibbsOp_pos [Nontrivial H] (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β)) :
     0 < spectralTrace (gibbsOp Hop β) := by
   let htrace := gibbsOp_spectralTraceClass Hop β hcompact
-  rw [← htrace.trace_eq_spectralTrace]
-  exact htrace.trace_pos (gibbsOp_isPositive Hop β) (gibbsOp_ne_zero Hop β)
+  exact htrace.spectralTrace_pos (gibbsOp_isPositive Hop β) (gibbsOp_ne_zero Hop β)
 
 /-- Peierls–Bogoliubov in lossless diagonal-expectation form against a unit vector. -/
 theorem exp_neg_beta_energy_le_gibbs_diagonal (Hop : Observable H) (β : ℝ) (v : H)
@@ -249,9 +248,8 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H]
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
-    have hbound := hGibbs.sum_diagonalExpectationValue_le_trace
+    have hbound := hGibbs.sum_diagonalExpectationValue_le_spectralTrace
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
-    rw [hGibbs.trace_eq_spectralTrace] at hbound
     simpa [Z, hq_def] using hbound
   have hpsum := ρ.spectralTrace_op_eq_one
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum

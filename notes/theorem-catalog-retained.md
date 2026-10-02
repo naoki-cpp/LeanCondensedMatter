@@ -202,9 +202,9 @@ or consumer structure changes.
 - `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate` — canonical closure theorem transporting
   bundled spectral trace-class data through unitary conjugation; it is the stable construction used
   by trace invariance and density-operator evolution.
-- `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate` — bundled trace-invariance endpoint
-  for spectral trace-class operators. It is the caller-facing theorem corresponding to the unbundled
-  spectral-trace identity and remains useful despite being terminal in the compiled theorem graph.
+- `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate` — canonical complex-trace
+  invariance endpoint for bundled spectral trace-class operators. It uses spectral transport to
+  provide unitary invariance before the general trace-class ideal closure API is available.
 - `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
   The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.

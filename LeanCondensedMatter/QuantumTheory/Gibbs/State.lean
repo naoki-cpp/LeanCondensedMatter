@@ -102,6 +102,5 @@ theorem gibbsState_op [Nontrivial H] (Hop : Observable H) (β : ℝ)
     (gibbsState Hop β hcompact).op =
       (spectralTrace (gibbsOp Hop β))⁻¹ • gibbsOp Hop β := by
   rw [gibbsState, DensityOperator.normalizePositive_op]
-  rw [(gibbsOp_spectralTraceClass Hop β hcompact).trace_eq_spectralTrace]
 
 end QuantumTheory

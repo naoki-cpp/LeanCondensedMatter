@@ -94,9 +94,10 @@ of general trace-class membership, trace norm, and complex trace.
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
 the absolutely summable rank-one series, basis action, and compactness.
 
-The basis-independent general complex trace is `IsTraceClass.trace`. The existing
-`SpectralTraceClass.trace` remains the real-valued compact self-adjoint spectral trace; the bundled
-bridge identifies the general trace with its coercion to `ℂ`.
+The basis-independent general complex trace is `IsTraceClass.trace`, and it is the only bundled
+trace API. The real-valued `spectralTrace` remains the eigenvalue-sum representation for compact
+self-adjoint operators. On the overlap, `IsTraceClass.trace_eq_spectralTrace` identifies the
+canonical complex trace with the coercion of that real spectral sum to `ℂ`.
 
 ## Hilbert–Schmidt API
 
