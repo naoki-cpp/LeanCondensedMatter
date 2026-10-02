@@ -398,6 +398,12 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.Polar",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Polar.lean",
+      "imports": [],
+      "externalImportCount": 6
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.Positive",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Positive.lean",
       "imports": [],
@@ -469,6 +475,15 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Ops.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
       "externalImportCount": 0
     },
@@ -554,9 +569,10 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Trace.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
+        "LeanCondensedMatter.Analysis.Operator.Polar",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass",
@@ -564,6 +580,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
@@ -666,6 +683,7 @@
         "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt",
+        "LeanCondensedMatter.Analysis.Operator.Polar",
         "LeanCondensedMatter.Analysis.Operator.Spectral",
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
         "LeanCondensedMatter.Analysis.Operator.TraceClass",
