@@ -193,44 +193,26 @@ theorem traceNorm_eq_tsum_abs_eigenvalues (h : SpectralTraceClass T) :
     h.isTraceClass.traceNorm = ∑' a : EigenvectorIndex T, |a.1.1| :=
   h.isTraceClass.traceNorm_eq_tsum_abs_eigenvalues h.compact h.isSelfAdjoint
 
-/-- The spectral trace associated with the bundled hypotheses. -/
-noncomputable def trace (_h : SpectralTraceClass T) : ℝ :=
-  ContinuousLinearMap.spectralTrace T
-
-omit [CompleteSpace H] in
-@[simp]
-theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
-    h.trace = ContinuousLinearMap.spectralTrace T :=
-  rfl
-
-/-- The general complex trace of bundled spectral trace-class data agrees with its real spectral
-trace after coercion to `ℂ`. -/
-theorem generalTrace_eq_trace (h : SpectralTraceClass T) :
-    h.isTraceClass.trace = (h.trace : ℂ) := by
-  rw [h.isTraceClass.trace_eq_spectralTrace h.compact h.isSelfAdjoint,
-    h.trace_eq_spectralTrace]
-
 /-- For a positive bundled spectral trace-class operator, the general trace norm agrees with the
-spectral trace. -/
-theorem traceNorm_eq_trace (h : SpectralTraceClass T) (hpos : T.IsPositive) :
-    h.isTraceClass.traceNorm = h.trace := by
-  rw [h.traceNorm_eq_tsum_abs_eigenvalues, h.trace_eq_spectralTrace]
+real spectral trace. -/
+theorem traceNorm_eq_spectralTrace (h : SpectralTraceClass T) (hpos : T.IsPositive) :
+    h.isTraceClass.traceNorm = spectralTrace T := by
+  rw [h.traceNorm_eq_tsum_abs_eigenvalues]
   unfold spectralTrace
   apply tsum_congr
   intro a
   exact abs_of_nonneg (eigenvalue_nonneg_of_isPositive hpos.toLinearMap a)
 
 omit [CompleteSpace H] in
-/-- The spectral trace of a positive bundled operator is nonnegative. -/
-theorem trace_nonneg (h : SpectralTraceClass T)
+/-- The real spectral trace of a positive bundled operator is nonnegative. -/
+theorem spectralTrace_nonneg (h : SpectralTraceClass T)
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) :
-    0 ≤ h.trace := by
-  rw [h.trace_eq_spectralTrace]
-  exact ContinuousLinearMap.trace_nonneg hpos
+    0 ≤ spectralTrace T :=
+  ContinuousLinearMap.trace_nonneg hpos
 
-/-- A nonzero positive spectral-trace-class operator has strictly positive trace. -/
-theorem trace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
-    0 < h.trace := by
+/-- A nonzero positive spectral-trace-class operator has strictly positive real spectral trace. -/
+theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
+    0 < spectralTrace T := by
   classical
   have hnonempty : Nonempty (EigenvectorIndex T) := by
     by_contra hidx
@@ -248,45 +230,35 @@ theorem trace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 
     summable_eigenvectorIndex h.summable
   have hle : a.1.1 ≤ spectralTrace T :=
     hsum.le_tsum a (fun b _ => eigenvalue_nonneg_of_isPositive hpos.toLinearMap b)
-  rw [← h.trace_eq_spectralTrace] at hle
   exact lt_of_lt_of_le ha_pos hle
 
-/-- Compute the bundled spectral trace against any Hilbert basis using lossless diagonal
-expectation values. -/
+/-- Compute the real spectral trace against any Hilbert basis using lossless diagonal expectation
+values. -/
 theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) h.trace := by
-  rw [h.trace_eq_spectralTrace]
-  exact ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace
-      h.compact h.isSelfAdjoint h.summable d
+    HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) (spectralTrace T) :=
+  ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace
+    h.compact h.isSelfAdjoint h.summable d
 
-/-- Bound the lossless diagonal-expectation sum over an orthonormal family by the bundled spectral
+/-- Bound the lossless diagonal-expectation sum over an orthonormal family by the real spectral
 trace. -/
-theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
+theorem sum_diagonalExpectationValue_le_spectralTrace (h : SpectralTraceClass T)
     (hpos : T.IsPositive) {ι : Type*} {d : ι → H}
     (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) ∧
-      ∑' i, diagonalExpectationValue T h.isSelfAdjoint (d i) ≤ h.trace := by
+      ∑' i, diagonalExpectationValue T h.isSelfAdjoint (d i) ≤ spectralTrace T := by
   have hbound := h.isTraceClass.sum_diagonalExpectationValue_le_traceNorm hpos hd
-  rw [h.traceNorm_eq_trace hpos] at hbound
+  rw [h.traceNorm_eq_spectralTrace hpos] at hbound
   simpa using hbound
 
-/-- Additivity of the bundled spectral trace. -/
-theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
-    (hadd : SpectralTraceClass (T + T')) :
-    hadd.trace = hT.trace + hT'.trace := by
-  rw [hadd.trace_eq_spectralTrace, hT.trace_eq_spectralTrace, hT'.trace_eq_spectralTrace]
-  exact ContinuousLinearMap.spectralTrace_add
-    hT.compact hT.symmetric hT'.compact hT'.symmetric hadd.compact hadd.symmetric
-    hT.summable hT'.summable hadd.summable
-
-/-- Cyclicity of the bundled spectral trace for two products. The individual factors only need to
-be symmetric; compactness and summability are required for the two products whose traces appear. -/
+/-- Cyclicity of the canonical complex trace for two products carrying spectral trace-class data.
+The individual factors only need to be symmetric. -/
 theorem trace_comp_comm (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
     (hTT' : SpectralTraceClass (T * T')) (hT'T : SpectralTraceClass (T' * T)) :
-    hTT'.trace = hT'T.trace := by
-  rw [hTT'.trace_eq_spectralTrace, hT'T.trace_eq_spectralTrace]
-  exact ContinuousLinearMap.spectralTrace_comp_comm
+    hTT'.isTraceClass.trace = hT'T.isTraceClass.trace := by
+  rw [hTT'.isTraceClass.trace_eq_spectralTrace hTT'.compact hTT'.isSelfAdjoint,
+    hT'T.isTraceClass.trace_eq_spectralTrace hT'T.compact hT'T.isSelfAdjoint]
+  exact_mod_cast ContinuousLinearMap.spectralTrace_comp_comm
     hTsym hT'sym hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
     hTT'.summable hT'T.summable
 
