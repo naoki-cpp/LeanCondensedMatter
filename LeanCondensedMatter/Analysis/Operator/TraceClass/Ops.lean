@@ -43,6 +43,7 @@ private theorem diagonalExpectationValue_abs_smul
   rw [smul_apply]
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ) ‖c‖ ((CFC.abs T) x)]
   rw [inner_smul_right]
+  rfl
 
 /-- Trace-class membership is closed under complex scalar multiplication. -/
 theorem IsTraceClass.smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
