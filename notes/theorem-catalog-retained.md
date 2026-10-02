@@ -18,6 +18,56 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_self` — canonical `[simp]` boundary for the inter-block inversion count, recording that the diagonal block contribution is zero.
+- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — canonical expansion of the inter-block inversion count for distinct blocks; downstream crossing/parity proofs use this explicit counting formula.
+- `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq` — reusable transport theorem lifting pairwise modular agreement of block inversion counts to the total ordered inversion count.
+- `Combinatorics.FamilySlotShuffleTo.timeAssignment_apply` — canonical `[simp]` evaluation rule for restricting an ambient time assignment to one local shuffled block; it is an established simplification boundary used by diagrammatic consumers.
+- `Finpartition.partOrdersCompatible_assembleOrder` — canonical compatibility law for a global order assembled from part-local orders and a partition shuffle.
+- `Finpartition.partGlobalSlot_injective` — core structural property of the public map sending elements of one partition part to their ambient slots.
+- `Finpartition.partGlobalSlot_mem_partGlobalSlots` — canonical `[simp]` membership rule stating that every part element lands in that part's ambient-slot subset.
+- `Finpartition.card_partGlobalSlots` — canonical cardinality theorem identifying the number of ambient slots occupied by a part with the cardinality of that part.
+- `Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm` — canonical `[simp]` inverse-evaluation rule for the equivalence between a partition part and its occupied ambient-slot subtype.
+- `Finpartition.partGlobalSlot_partOrderOfOrder` — canonical `[simp]` computation rule relating the induced local part order to the increasing enumeration of its ambient slots.
+- `Combinatorics.FamilySlotShuffle.cons_slotEquiv_zero` — canonical `[simp]` computation rule for the head-block coordinates of the recursive family-shuffle constructor.
+- `Combinatorics.FamilySlotShuffle.continuous_integrand` — general closure theorem that a finite product of continuous local integrands remains continuous after a family shuffle; this is a reusable ordered-simplex analysis API.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_succ` — canonical `[simp]` normalization rule for the tail branch of the dependent head/tail local-slot equivalence.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inl` — canonical `[simp]` inverse-evaluation rule sending a head local slot back to the zero-index sigma fiber.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inr` — canonical `[simp]` inverse-evaluation rule sending a tail local slot back to the successor sigma fiber.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_zero` — canonical `[simp]` normalization rule for the head branch of the dependent head/tail local-slot equivalence.
+- `Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand` — general closure theorem that measurable locally bounded local integrands remain so after a finite family shuffle; it is the regularity input used by the recursive shuffle-integral proof.
+- `Combinatorics.FamilySlotShuffle.mem_headSlots_iff` — canonical `[simp]` membership characterization of the ambient head-slot subset in terms of the family-shuffle slot equivalence.
+- `Combinatorics.FamilySlotShuffle.mem_tailSlots_iff` — canonical `[simp]` membership characterization of the ambient tail-slot subset in terms of the head/tail local-slot decomposition.
+- `Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons` — public recursion law identifying the ordered-simplex integral of a constructed family shuffle with the corresponding binary head-versus-tail shuffled integral.
+- `Combinatorics.BinaryShuffle.slotShuffleLeftSlotSetEquiv_apply` — canonical `[simp]` evaluation rule for the equivalence between ambient slot shuffles and their left-slot subsets; it exposes the semantic map rather than the `Equiv.ofBijective` implementation.
+- `Combinatorics.BinaryShuffle.slot_injective` — core structural property of the public tagged-slot map `slot`; injectivity is independently useful and is the mathematical reason the tagged slots form an ambient-slot equivalence.
+- `Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul` — public continuous-integrand shuffle product formula in the ambient `SlotShuffle` presentation; this is an analytic endpoint used downstream by family-shuffle and two-point integration layers.
+- `Combinatorics.BinaryShuffle.sum_succ_succ` — canonical recursion splitting a finite binary-shuffle sum by the side supplying the outermost slot.
+- `Combinatorics.BinaryShuffle.sum_zero_left` — canonical boundary evaluation of a shuffle sum when the left family is empty.
+- `Combinatorics.BinaryShuffle.sum_zero_right` — canonical boundary evaluation of a shuffle sum when the right family is empty.
+- `Combinatorics.FamilySlotShuffle.card_headSlots` — canonical `[simp]` cardinality theorem for the public head-slot subset in the recursive family-shuffle decomposition.
+- `Combinatorics.FamilySlotShuffle.cons_injective` — standard injectivity theorem for the public recursive `FamilySlotShuffle.cons` constructor; it is useful independently of the current `consEquiv` construction.
+- `Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle` — canonical reconstruction law showing that extracting the outer and tail shuffles and recombining them recovers the original family shuffle.
+- `Combinatorics.FamilySlotShuffle.cons_slotEquiv_succ` — canonical `[simp]` computation rule for tail-block coordinates under the recursive family-shuffle constructor.
+- `Combinatorics.BinaryShuffle.eq_allLeft` — canonical uniqueness theorem for the boundary type `BinaryShuffle m 0`; it underlies `zeroRightEquiv` and provides a direct rewrite to the unique all-left shuffle.
+- `Combinatorics.BinaryShuffle.eq_allRight` — canonical uniqueness theorem for the boundary type `BinaryShuffle 0 n`; it underlies `zeroLeftEquiv` and provides a direct rewrite to the unique all-right shuffle.
+- `Combinatorics.BinaryShuffle.leftSlot_consLeft_succ` — `[simp]` computation rule for recursive left-slot coordinates after a left outer step; it is part of the public recursive slot API used by shuffle-equivalence proofs.
+- `Combinatorics.BinaryShuffle.leftSlot_consLeft_zero` — `[simp]` computation rule identifying the newly inserted left outer slot with ambient slot zero.
+- `Combinatorics.BinaryShuffle.orderedSimplexContribution_allLeft` — canonical boundary identity reducing the unique all-left shuffle contribution to the left ordered-simplex integral times the zero-dimensional right value.
+- `Combinatorics.BinaryShuffle.orderedSimplexContribution_allRight` — canonical boundary identity reducing the unique all-right shuffle contribution to the zero-dimensional left value times the right ordered-simplex integral.
+- `Combinatorics.BinaryShuffle.rightSlot_consLeft` — `[simp]` computation rule for right-slot coordinates after a left outer shuffle step; it is used in the recursive slot-equivalence proofs.
+- `Combinatorics.BinaryShuffle.slotEquiv_inl` — canonical `[simp]` evaluation rule exposing the left branch of the noncomputable tagged-slot equivalence.
+- `Combinatorics.BinaryShuffle.slotEquiv_inr` — canonical `[simp]` evaluation rule exposing the right branch of the noncomputable tagged-slot equivalence.
+- `Combinatorics.BinaryShuffle.slotShuffleEquiv_apply` — canonical `[simp]` evaluation rule for the equivalence between recursive binary shuffles and ambient slot shuffles; it keeps downstream code independent of the `Equiv.ofBijective` implementation.
+- `BerryGeometry.PointwiseEigenbasisData.berryConnection_diagonal_im_eq_zero` — canonical gauge-local Berry-connection fact that each diagonal connection element is real; this is a physically meaningful endpoint derived from Hermiticity, not proof routing.
+- `BerryGeometry.PointwiseEigenbasisData.berryCurvature_swap` — canonical antisymmetry of pointwise Berry curvature under exchange of parameter directions.
+- `BerryGeometry.PointwiseEigenbasisData.bornFock_berryConnection` — canonical Born–Fock off-diagonal Berry-connection formula relating eigenvector derivatives to Hamiltonian-derivative matrix elements and level spacings.
+- `BerryGeometry.PointwiseEigenbasisData.hellmannFeynman` — canonical Hellmann–Feynman theorem for the pointwise eigenbasis data.
+- `Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin` — canonical identification of the increasing enumeration of ambient left slots with the slot-shuffle embedding; it is used source-level by the two-point fiber shuffle integral even though the proof dependency is erased from compiled consumers.
+- `Combinatorics.BinaryShuffle.card_slotShuffle` — canonical binomial-cardinality theorem for ambient order-preserving slot shuffles; it is source-level input to the equivalence constructions with left-slot sets and recursive binary shuffles.
+- `Combinatorics.BinaryShuffle.card_succ_succ` — natural Pascal recurrence for the recursively defined binary-shuffle type and the induction step underlying the closed binomial cardinality formula.
+- `Combinatorics.BinaryShuffle.card_zero_left` — canonical `[simp]` boundary stating uniqueness of a binary shuffle with no left slots.
+- `Combinatorics.BinaryShuffle.card_zero_right` — canonical `[simp]` boundary stating uniqueness of a binary shuffle with no right slots.
+- `Combinatorics.BinaryShuffle.continuous_orderedSimplexContribution_of_continuous` — general joint-continuity theorem for one explicit binary-shuffle ordered-simplex contribution with varying bound and parameter-dependent integrands; it is reusable independently of the private summation proof.
 - `LinearPMap.boundedSelfAdjointApproximation_commute` — reusable resolvent-approximation commutation theorem for arbitrary positive scales; its present private error-estimate consumer does not make the operator-theoretic statement implementation-only.
 - `LinearPMap.boundedUnitaryEvolution_add_generator_of_commute` — reusable factorization law for bounded evolutions generated by commuting operators; retain the general operator theorem rather than inline it into one private estimate.
 - `QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum` — generic finite-sum closure property for adiabatic-removal limits, independent of the Lehmann consumer that currently uses it.
@@ -35,10 +85,6 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg` — canonical compatibility of component-local and ambient timed fields under the component leg embedding.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
 - `SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders` — deliberate quartic-diagram specialization of the generic finite-partition order/shuffle factorization; it packages component orders and shuffles in the diagram vocabulary used by both bosonic and fermionic amplitude factorizations.
-- `SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator` — canonical vertex-level
-  energy-shift eigenoperator law: a quartic vertex assembled from ladder eigenoperators evolves with
-  the total signed energy shift of its four legs. It remains independently meaningful even without a
-  current compiled consumer.
 - `QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self` — canonical
   dimension-independent signed-regulator Herglotz identity for a self-adjoint resolvent. Consumers
   that need the reversed inner-product orientation should reverse it locally rather than expose a
@@ -111,10 +157,6 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
   specialization fixing the derivative-localizer coefficient to `iℏ`; it records the expected
   orbital-angular-momentum localization commutator rather than a proof-routing alias.
-- `LinearPMap.resolventApproximationEvolution_continuous` — canonical operator-norm continuity
-  property of the named bounded resolvent-approximation evolution used in the Stone construction.
-- `LinearPMap.resolventApproximationEvolution_hasDerivAt` — canonical differential equation for the
-  named bounded resolvent-approximation evolution, exposing its generator at the construction API.
 - `QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_isClosed`
   — physical real-scalar-potential closedness theorem for the named continuum Hamiltonian; the
   generic complex-multiplier proof does not make the real-potential endpoint redundant.
@@ -205,11 +247,6 @@ or consumer structure changes.
   the named fermionic two-point time-ordering operator, exposing the fermionic minus sign.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time` — canonical equal-time branch of
   the named fermionic two-point time-ordering operator, fixing the project's equal-time convention.
-- `LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le` —
-  canonical generator-domain error estimate comparing the limiting Stone evolution with one bounded
-  resolvent approximant; it is reusable independently of the downstream slope argument.
-- `LinearPMap.resolventApproximationEvolutionAtScale_dist_eq` — canonical isometry property of the
-  totalized bounded resolvent approximants, not merely a transport step in the strong-limit proof.
 - `QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one` — spectral normalization law for a
   density operator: the absolute eigenvalue weights sum to one independently of the expectation
   norm estimate that currently consumes it.
@@ -268,9 +305,6 @@ or consumer structure changes.
 - `SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem` — semantic
   normalization rule for the external-insertion flattened-leg component predicate, identifying it
   with membership of the incident vertex in the component part.
-- `Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv` — canonical reconstruction law for
-  flattened finite block coordinates; it is the inverse-direction companion to
-  `blockEquiv_cast_mul_add` and is useful independently of its compiled-consumer count.
 - `LeanCondensedMatter.Crystal.reciprocalPairing_isSymm` — canonical symmetry property of the
   normalized reciprocal pairing used to construct crystallographic reciprocal bases and lattices.
 - `LinearPMap.stoneEvolution_apply_hasDerivAt_zero` — Stone-generator endpoint identifying the
@@ -284,9 +318,6 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator` —
   canonical completed-space CAR statement for the unified thermal ladder operator, expressing its
   anticommutator as the scalar CAR coefficient times the identity.
-- `Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod` — canonical finite-family
-  ordered-simplex shuffle product identity for measurably locally bounded local integrands; retain
-  the general theorem even when its current compiled consumer is private.
 - `Combinatorics.Pairing.presentsPairs_of_partner_blockPair` — Criterion for presenting a pairing.
 - `Combinatorics.blockPair_apply` — The two positions of a block, written through the block-slot
   presentation.
@@ -363,7 +394,6 @@ or consumer structure changes.
   commutes.
 - `SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff` — The
   fixed-order component-pair embedding preserves and reflects crossings.
-- `SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts` — canonical TwoPoint-diagram specialization of the generic interaction-sector product factorization; it exposes the named `vertexLabel` product used by both the Dyson-sign decomposition and downstream fermionic fixed-time factorization.
 - `SecondQuantization.Common.TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum` — The Dyson sign
   factors into the external component sign and all vacuum-component signs.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —
