@@ -99,9 +99,8 @@ theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     IsTraceClass (ContinuousLinearMap.adjoint T) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
   apply IsTraceClass.of_hilbertSchmidt_factorization hB hA
-  rw [← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.star_eq_adjoint,
-    ← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star]
-  exact congrArg star hfactor
+  simpa only [star_mul, ContinuousLinearMap.star_eq_adjoint,
+    ContinuousLinearMap.adjoint_adjoint] using congrArg star hfactor
 
 /-- Left composition by a bounded operator preserves trace-class membership. -/
 theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
