@@ -40,6 +40,7 @@ private theorem diagonalExpectationValue_abs_smul
   apply Complex.ofReal_injective
   rw [coe_diagonalExpectationValue_right, Complex.ofReal_mul,
     coe_diagonalExpectationValue_right, CFC.abs_smul]
+  rw [smul_apply]
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ) ‖c‖ ((CFC.abs T) x)]
   rw [inner_smul_right]
 
@@ -226,8 +227,14 @@ theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTra
         ‖inner ℂ (U (d i)) ((T + R) (d i))‖ := by
     have hnonneg := diagonalExpectationValue_nonneg
       (CFC.abs (T + R)) (nonneg_iff_isPositive.mp (CFC.abs_nonneg (T + R))) (d i)
-    rw [← hdiagCast i]
-    simp [abs_of_nonneg hnonneg]
+    have hnorm := congrArg norm (hdiagCast i)
+    have hcastNorm :
+        ‖(diagonalExpectationValue (CFC.abs (T + R))
+          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ)‖ =
+          diagonalExpectationValue (CFC.abs (T + R))
+            (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) := by
+      rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
+    exact hcastNorm.symm.trans hnorm
   have hpoint_le (i : w) :
       diagonalExpectationValue (CFC.abs (T + R))
           (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) ≤
