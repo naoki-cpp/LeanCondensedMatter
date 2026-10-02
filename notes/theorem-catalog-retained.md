@@ -2,12 +2,13 @@
 
 The theorem catalog exposes structural review signals such as low compiled-consumer count,
 direct-wrapper status, and terminal status. None of these signals is automatic evidence that a
-public theorem should be removed. A declaration remains public when it is the canonical statement
-of an independently useful mathematical or physical fact, a deliberate simplification boundary, or
-a stable domain-level API.
+declaration should be removed or inlined. A public declaration remains public when it is the
+canonical statement of an independently useful mathematical or physical fact, a deliberate
+simplification boundary, or a stable domain-level API. A private helper remains separate when it
+captures a nontrivial proof step reused enough to improve the local proof structure.
 
-Declarations listed here have been semantically reviewed and are intentionally retained despite one
-or more audit signals. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
+Declarations listed here have been semantically reviewed and are intentionally retained at their
+current visibility despite one or more audit signals. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
 short-name mentions from this document as the
 `retainedMention` attribute. Retained declarations keep their structural attributes in the full
 catalog but are omitted from terminal, single-consumer, and direct-wrapper review queues so those
@@ -18,6 +19,15 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `familyGlobalSlot_injective` — retain private: the injectivity fact is used both to count a fiber's occupied ambient slots and to construct the private fiber-to-slot equivalence.
+- `card_familyGlobalSlots` — retain private: the cardinality identity is reused throughout the canonical local-order construction and its uniqueness proof.
+- `familyOrderOfOrder_slot` — retain private: the induced local-order coordinate formula is used both to prove the extracted shuffle is order-preserving and to prove uniqueness of the local order.
+- `familyOrder_eq_of_strictMono` — retain private: nontrivial uniqueness lemma for the canonical increasing-slot fiber order, used by the right inverse of `familyOrderDecompositionEquivOfSize`.
+- `blockEquiv_reconstruct_val` — retain private: the flattened-coordinate reconstruction formula is used in both directions of the lexicographic-order proof `blockEquiv_lt_iff`.
+- `local_add_block_mul_lt_of_block_lt` — retain private: the arithmetic separation lemma is used twice in `blockEquiv_lt_iff` and isolates the nontrivial block-order estimate.
+- `Combinatorics.FiniteIndex.blockEquiv_lt_iff` — retain public: canonical statement that flattened fixed-width coordinates carry the lexicographic block/local order; it is reused by pairing-sign infrastructure.
+- `Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne` — retain public: canonical distinct-block specialization used directly by quartic component and two-point leg ordering proofs.
+- `Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq` — retain public: canonical same-block specialization used directly by quartic component and two-point leg ordering proofs.
 - `Finpartition.assembleOrder_shuffleOfOrder` — canonical `[simp]` reconstruction law: reassembling a global order from compatible part-local orders and its extracted partition shuffle recovers the original order.
 - `Finpartition.partOrderOfOrder_strictMono` — canonical monotonicity property of the local order induced on one partition part by increasing ambient slots.
 - `Finpartition.partOrdersCompatible_partOrdersOfOrder` — canonical compatibility theorem for the family of part-local orders induced by an ambient global order.
