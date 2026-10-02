@@ -60,9 +60,9 @@ theorem ExternalInsertionWickDiagram.mixedPairContractionProduct_eq_prod_compone
   exact d.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
     ε β externalTime σ B pr.1.1 pr.1.2
 
+omit [Fintype Mode] in
 /-- The mixed-order crossing count is the sum of component-local mixed crossing counts and
 the residual crossings between distinct components. -/
-omit [Fintype Mode] in
 theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
@@ -94,9 +94,9 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_co
     (fun pr => by
       simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)
 
+omit [Fintype Mode] in
 /-- The exchange-statistics weight of the mixed-order pairing factors into a residual
 inter-component weight and the standalone mixed-order component weights. -/
-omit [Fintype Mode] in
 theorem ExternalInsertionWickDiagram.pairingInMixedOrder_weight_eq_inter_mul_prod_components
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
