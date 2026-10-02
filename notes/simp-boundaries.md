@@ -79,7 +79,6 @@ homomorphic normalization rules:
 - `L2Multiplication.multiplicationLinear_apply`
 - `PowerSeries.logOf_one`
 - `FamilySlotShuffleTo.timeAssignment_apply`
-- `SpectralTraceClass.trace_eq_spectralTrace`
 - `boundedUnitaryEvolution_zero`
 - `resolventApproximationEvolution_zero`
 - `stoneEvolution_apply`
