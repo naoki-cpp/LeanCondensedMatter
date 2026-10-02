@@ -35,10 +35,6 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg` — canonical compatibility of component-local and ambient timed fields under the component leg embedding.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
 - `SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders` — deliberate quartic-diagram specialization of the generic finite-partition order/shuffle factorization; it packages component orders and shuffles in the diagram vocabulary used by both bosonic and fermionic amplitude factorizations.
-- `SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator` — canonical vertex-level
-  energy-shift eigenoperator law: a quartic vertex assembled from ladder eigenoperators evolves with
-  the total signed energy shift of its four legs. It remains independently meaningful even without a
-  current compiled consumer.
 - `QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self` — canonical
   dimension-independent signed-regulator Herglotz identity for a self-adjoint resolvent. Consumers
   that need the reversed inner-product orientation should reverse it locally rather than expose a
@@ -111,10 +107,6 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
   specialization fixing the derivative-localizer coefficient to `iℏ`; it records the expected
   orbital-angular-momentum localization commutator rather than a proof-routing alias.
-- `LinearPMap.resolventApproximationEvolution_continuous` — canonical operator-norm continuity
-  property of the named bounded resolvent-approximation evolution used in the Stone construction.
-- `LinearPMap.resolventApproximationEvolution_hasDerivAt` — canonical differential equation for the
-  named bounded resolvent-approximation evolution, exposing its generator at the construction API.
 - `QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_isClosed`
   — physical real-scalar-potential closedness theorem for the named continuum Hamiltonian; the
   generic complex-multiplier proof does not make the real-potential endpoint redundant.
@@ -205,11 +197,6 @@ or consumer structure changes.
   the named fermionic two-point time-ordering operator, exposing the fermionic minus sign.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time` — canonical equal-time branch of
   the named fermionic two-point time-ordering operator, fixing the project's equal-time convention.
-- `LinearPMap.norm_stoneEvolution_sub_resolventApproximationEvolution_le` —
-  canonical generator-domain error estimate comparing the limiting Stone evolution with one bounded
-  resolvent approximant; it is reusable independently of the downstream slope argument.
-- `LinearPMap.resolventApproximationEvolutionAtScale_dist_eq` — canonical isometry property of the
-  totalized bounded resolvent approximants, not merely a transport step in the strong-limit proof.
 - `QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one` — spectral normalization law for a
   density operator: the absolute eigenvalue weights sum to one independently of the expectation
   norm estimate that currently consumes it.
@@ -268,9 +255,6 @@ or consumer structure changes.
 - `SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem` — semantic
   normalization rule for the external-insertion flattened-leg component predicate, identifying it
   with membership of the incident vertex in the component part.
-- `Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv` — canonical reconstruction law for
-  flattened finite block coordinates; it is the inverse-direction companion to
-  `blockEquiv_cast_mul_add` and is useful independently of its compiled-consumer count.
 - `LeanCondensedMatter.Crystal.reciprocalPairing_isSymm` — canonical symmetry property of the
   normalized reciprocal pairing used to construct crystallographic reciprocal bases and lattices.
 - `LinearPMap.stoneEvolution_apply_hasDerivAt_zero` — Stone-generator endpoint identifying the
@@ -284,9 +268,6 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator` —
   canonical completed-space CAR statement for the unified thermal ladder operator, expressing its
   anticommutator as the scalar CAR coefficient times the identity.
-- `Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod` — canonical finite-family
-  ordered-simplex shuffle product identity for measurably locally bounded local integrands; retain
-  the general theorem even when its current compiled consumer is private.
 - `Combinatorics.Pairing.presentsPairs_of_partner_blockPair` — Criterion for presenting a pairing.
 - `Combinatorics.blockPair_apply` — The two positions of a block, written through the block-slot
   presentation.
@@ -363,7 +344,6 @@ or consumer structure changes.
   commutes.
 - `SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff` — The
   fixed-order component-pair embedding preserves and reflects crossings.
-- `SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts` — canonical TwoPoint-diagram specialization of the generic interaction-sector product factorization; it exposes the named `vertexLabel` product used by both the Dyson-sign decomposition and downstream fermionic fixed-time factorization.
 - `SecondQuantization.Common.TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum` — The Dyson sign
   factors into the external component sign and all vacuum-component signs.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —
