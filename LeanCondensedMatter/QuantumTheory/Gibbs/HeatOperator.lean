@@ -23,7 +23,7 @@ theorem hasSum_purePointBoltzmannWeight_of_basis_action
     (K : H →L[ℂ] H) (htrace : SpectralTraceClass K)
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
-    HasSum (purePointBoltzmannWeight E β) htrace.trace := by
+    HasSum (purePointBoltzmannWeight E β) (spectralTrace K) := by
   have hsum := htrace.hasSum_diagonalExpectationValue b
   exact HasSum.congr_fun hsum fun i => by
     apply Complex.ofReal_injective
@@ -52,7 +52,7 @@ theorem heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action
     (K : H →L[ℂ] H) (htrace : SpectralTraceClass K)
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
-    htrace.trace = purePointPartitionFunction E β := by
+    spectralTrace K = purePointPartitionFunction E β := by
   rw [purePointPartitionFunction]
   exact (hasSum_purePointBoltzmannWeight_of_basis_action K htrace b E β happly).tsum_eq.symm
 
