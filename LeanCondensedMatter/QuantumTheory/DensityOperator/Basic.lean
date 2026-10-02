@@ -27,6 +27,8 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   spectralTraceClass : SpectralTraceClass op
   trace_eq_one : spectralTraceClass.isTraceClass.trace = 1
 
+attribute [simp] DensityOperator.trace_eq_one
+
 /-- Density operators are determined by their underlying bounded operators; all remaining fields
 are proof data. -/
 @[ext]
