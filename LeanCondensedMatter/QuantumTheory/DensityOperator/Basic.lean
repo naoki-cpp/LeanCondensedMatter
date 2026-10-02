@@ -53,6 +53,21 @@ theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ
 theorem DensityOperator.isSelfAdjoint (ρ : DensityOperator H) : IsSelfAdjoint ρ.op :=
   ρ.pos.isSelfAdjoint
 
+/-- A density operator is trace class in the general bounded-operator sense. -/
+theorem DensityOperator.isTraceClass (ρ : DensityOperator H) : IsTraceClass ρ.op :=
+  ρ.spectralTraceClass.isTraceClass
+
+/-- The general trace norm of a density operator is one. -/
+@[simp]
+theorem DensityOperator.traceNorm_eq_one (ρ : DensityOperator H) :
+    ρ.isTraceClass.traceNorm = 1 := by
+  calc
+    ρ.isTraceClass.traceNorm = ρ.spectralTraceClass.isTraceClass.traceNorm :=
+      IsTraceClass.traceNorm_proof_irrel ρ.isTraceClass ρ.spectralTraceClass.isTraceClass
+    _ = ρ.spectralTraceClass.trace :=
+      ρ.spectralTraceClass.traceNorm_eq_trace ρ.pos
+    _ = 1 := ρ.spectralTrace_eq_one
+
 /-- Every nonzero spectral eigenvalue of a density operator is nonnegative. -/
 theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
     (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
@@ -73,16 +88,16 @@ basis. -/
 theorem DensityOperator.hasSum_diagonalExpectationValue_eq_one (ρ : DensityOperator H)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i)) 1 := by
-  have h := ρ.spectralTraceClass.hasSum_diagonalExpectationValue d
-  rwa [ρ.spectralTrace_eq_one] at h
+  have h := ρ.isTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm ρ.pos d
+  rwa [ρ.traceNorm_eq_one] at h
 
 /-- The lossless diagonal-expectation sum over any orthonormal family is bounded above by one. -/
 theorem DensityOperator.sum_diagonalExpectationValue_le_one (ρ : DensityOperator H)
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i)) ∧
       ∑' i, diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i) ≤ 1 := by
-  have h := ρ.spectralTraceClass.sum_diagonalExpectationValue_le_trace ρ.pos hd
-  rwa [ρ.spectralTrace_eq_one] at h
+  have h := ρ.isTraceClass.sum_diagonalExpectationValue_le_traceNorm ρ.pos hd
+  rwa [ρ.traceNorm_eq_one] at h
 
 /-- Each vector of the density operator's spectral eigenvector family is a unit vector. -/
 theorem eigenvectorFamily_norm_eq_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :

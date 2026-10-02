@@ -52,8 +52,10 @@ Hilbert-basis formulas. The neutral Hilbert-basis diagonal operator construction
 `traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
 `IsTraceClass T` it is not called the trace norm. For `hT : IsTraceClass T`, `hT.traceNorm` is the
 basis-independent trace norm, defined from the canonical squared Hilbert--Schmidt norm of
-`sqrt(|T|)`. The future complex trace and the comparison with `SpectralTraceClass` belong to the
-next layers rather than to the definition of general trace class.
+`sqrt(|T|)`. The compact self-adjoint overlap identifies general trace-class membership with absolute spectral
+summability and the general trace norm with the absolute eigenvalue sum. For positive bundled
+spectral trace-class operators, that trace norm agrees with the spectral trace. The future complex
+trace and its agreement with the spectral trace remain for the next layer.
 
 ## Hilbert--Schmidt operators
 
