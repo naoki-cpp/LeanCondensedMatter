@@ -48,11 +48,13 @@ theorem normSq_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
   unfold normSq
   exact hilbertSchmidtNormSqSeriesWrt_eq _ d T hT
 
+omit [CompleteSpace H] in
 /-- The squared Hilbert--Schmidt norm is independent of the proof of membership. -/
 theorem normSq_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsHilbertSchmidt T) :
     hT.normSq = hT'.normSq := by
   exact congrArg normSq (Subsingleton.elim hT hT')
 
+omit [CompleteSpace H] in
 /-- The squared Hilbert--Schmidt norm is nonnegative. -/
 theorem normSq_nonneg {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     0 ≤ hT.normSq := by
