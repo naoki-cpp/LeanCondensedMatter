@@ -1,5 +1,6 @@
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.InnerProductSpace.Adjoint
+import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 import Mathlib.Analysis.Normed.Operator.Extend
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
@@ -88,10 +89,20 @@ theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
     simpa [f, y] using
       LinearMap.compLeftInverse_apply_of_bdd T.toLinearMap A.toLinearMap hbound x (A x) rfl
   have hUU : ContinuousLinearMap.adjoint U * U = C.starProjection := by
-    simp only [U, ContinuousLinearMap.mul_def, ContinuousLinearMap.adjoint_comp,
-      ← ContinuousLinearMap.comp_assoc, LinearIsometry.adjoint_comp_self,
-      ContinuousLinearMap.one_comp, Submodule.adjoint_orthogonalProjectionOnto,
-      Submodule.starProjection]
+    have hAdjU :
+        ContinuousLinearMap.adjoint U =
+          C.subtypeL.comp (ContinuousLinearMap.adjoint V.toContinuousLinearMap) := by
+      dsimp [U]
+      rw [ContinuousLinearMap.adjoint_comp, Submodule.adjoint_orthogonalProjectionOnto]
+    rw [hAdjU]
+    change
+      (C.subtypeL.comp (ContinuousLinearMap.adjoint V.toContinuousLinearMap)).comp
+          (V.toContinuousLinearMap.comp C.orthogonalProjectionOnto) =
+        C.subtypeL.comp C.orthogonalProjectionOnto
+    rw [← ContinuousLinearMap.comp_assoc]
+    rw [ContinuousLinearMap.comp_assoc C.subtypeL
+      (ContinuousLinearMap.adjoint V.toContinuousLinearMap) V.toContinuousLinearMap]
+    rw [LinearIsometry.adjoint_comp_self V, ContinuousLinearMap.comp_id]
   have hright : ContinuousLinearMap.adjoint U * T = A := by
     rw [← hleft, ← mul_assoc, hUU]
     apply ContinuousLinearMap.ext
