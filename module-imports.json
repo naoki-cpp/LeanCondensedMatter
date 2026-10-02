@@ -485,6 +485,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Bundled.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops"
       ],
       "externalImportCount": 0

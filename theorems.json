@@ -10,8 +10,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryConnection_diagonal_im_eq_zero",
     "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
@@ -138,8 +138,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryCurvature_swap",
     "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
@@ -176,8 +176,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.bornFock_berryConnection",
     "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
@@ -529,8 +529,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.hellmannFeynman",
     "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
@@ -1033,8 +1033,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
@@ -1474,8 +1474,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.card_slotShuffle",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
@@ -1517,8 +1517,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.card_succ_succ",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -1555,8 +1555,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.card_zero_left",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -1593,8 +1593,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.card_zero_right",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -1631,8 +1631,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.continuous_orderedSimplexContribution_of_continuous",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
@@ -1667,8 +1667,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.eq_allLeft",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -1701,8 +1701,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.eq_allRight",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -1737,8 +1737,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.leftSlot_consLeft_succ",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
@@ -1775,8 +1775,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.leftSlot_consLeft_zero",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
@@ -1939,8 +1939,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.orderedSimplexContribution_allLeft",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
@@ -1977,8 +1977,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.orderedSimplexContribution_allRight",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
@@ -2015,8 +2015,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.rightSlot_consLeft",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
@@ -2221,8 +2221,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.slotEquiv_inl",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
@@ -2259,8 +2259,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.slotEquiv_inr",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
@@ -2297,8 +2297,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.slotShuffleEquiv_apply",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
@@ -2335,8 +2335,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.slotShuffleLeftSlotSetEquiv_apply",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
@@ -2373,8 +2373,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.slot_injective",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
@@ -2546,8 +2546,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
@@ -2633,8 +2633,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.sum_succ_succ",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -2671,8 +2671,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.sum_zero_left",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -2709,8 +2709,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.sum_zero_right",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffle",
@@ -2791,8 +2791,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.card_headSlots",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -2879,8 +2879,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.cons_injective",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -2963,8 +2963,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3007,8 +3007,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.cons_slotEquiv_succ",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3045,8 +3045,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.cons_slotEquiv_zero",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3083,8 +3083,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.continuous_integrand",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
@@ -3210,8 +3210,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_succ",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3246,8 +3246,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inl",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3282,8 +3282,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inr",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3318,8 +3318,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_zero",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3355,8 +3355,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
@@ -3396,8 +3396,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.mem_headSlots_iff",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3434,8 +3434,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
@@ -3516,8 +3516,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
@@ -3733,7 +3733,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
@@ -3778,8 +3778,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.blockInversionCount_self",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
@@ -3897,8 +3897,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
@@ -3982,7 +3982,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
@@ -4029,8 +4029,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.timeAssignment_apply",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
@@ -4338,7 +4338,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
     "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
@@ -13864,7 +13864,54 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (hpos : T.IsPositive) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  HasSum (fun i => T.diagonalExpectationValue ⋯ (d i)) hT.traceNorm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+    "externalAxioms": [],
+    "docString": "For a positive trace-class operator, the diagonal expectation values in every Hilbert basis\nsum to the trace norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), ContinuousLinearMap.IsTraceClassWrt d T",
     "standardAxioms": [
       "Classical.choice",
@@ -13883,14 +13930,22 @@
     "docString": "A basis-independent trace-class witness supplies summability in every Hilbert basis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
+    ],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13904,8 +13959,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} {d : HilbertBasis ι ℂ H} {T : H →L[ℂ] H}, ContinuousLinearMap.IsTraceClassWrt d T → T.IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.of_isTraceClassWrt",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "Evidence of trace-class membership in one Hilbert basis packages into the basis-independent\npredicate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (hpos : T.IsPositive) {ι : Type u_2} {d : ι → H},\n  Orthonormal ℂ d →\n    (Summable fun i => T.diagonalExpectationValue ⋯ (d i)) ∧\n      ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) ≤ hT.traceNorm",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13917,20 +14016,27 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsTraceClass.of_isTraceClassWrt",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "name": "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
     "externalAxioms": [],
-    "docString": "Evidence of trace-class membership in one Hilbert basis packages into the basis-independent\npredicate. ",
+    "docString": "For a positive trace-class operator, the diagonal sum over any orthonormal family is bounded\nby the trace norm. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
+    ],
     "dependencies": [
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+      "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+      "ContinuousLinearMap.diagonalExpectationValue_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13988,7 +14094,53 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass),\n  IsCompactOperator ⇑T → IsSelfAdjoint T → hT.traceNorm = ∑' (a : T.EigenvectorIndex), |↑a.fst|",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": "On compact self-adjoint operators, the canonical trace norm is the absolute eigenvalue sum\nwith multiplicity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  hT.traceNorm = ∑' (i : ι), (CFC.abs T).diagonalExpectationValue ⋯ (d i)",
     "standardAxioms": [
       "Classical.choice",
@@ -14007,15 +14159,21 @@
     "docString": "The trace norm is the diagonal series of `|T|` in every Hilbert basis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues"
+    ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_seriesWrt",
       "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_diagonalExpectationValue"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14069,7 +14227,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT hT' : T.IsTraceClass), hT.traceNorm = hT'.traceNorm",
     "standardAxioms": [
       "Classical.choice",
@@ -14077,7 +14235,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14088,14 +14246,18 @@
     "docString": "The trace norm is independent of the proof of trace-class membership. ",
     "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
     "directWrapperOf": "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel"
     ],
     "crossModuleDirectWrapper": true,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14130,8 +14292,9 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "ContinuousLinearMap.SpectralTraceClass.smul",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
@@ -14169,8 +14332,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "ContinuousLinearMap.SpectralTraceClass.smul",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
@@ -14203,7 +14367,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 34,
+    "compiledConsumerCount": 35,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14238,7 +14402,6 @@
     "directWrapperOf": null,
     "dependents": [
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
@@ -14254,12 +14417,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14294,10 +14456,10 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
@@ -14311,10 +14473,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
@@ -14322,6 +14484,61 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
     "compiledConsumerCount": 10,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.SpectralTraceClass → T.IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": "Bundled compact self-adjoint spectral trace-class data supplies general trace-class\nmembership. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "QuantumTheory.DensityOperator.isTraceClass",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
+      "ContinuousLinearMap.SpectralTraceClass.summable",
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "QuantumTheory.DensityOperator.isTraceClass",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14492,25 +14709,22 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "ContinuousLinearMap.SpectralTraceClass.summable",
-      "ContinuousLinearMap.SpectralTraceClass.trace_eq_spectralTrace",
-      "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace"
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14545,8 +14759,8 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "ContinuousLinearMap.SpectralTraceClass.smul",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
@@ -14571,8 +14785,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "ContinuousLinearMap.SpectralTraceClass.smul",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
@@ -14645,6 +14859,102 @@
       "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate"
     ],
     "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (h : T.SpectralTraceClass), T.IsPositive → ⋯.traceNorm = h.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": "For a positive bundled spectral trace-class operator, the general trace norm agrees with the\nspectral trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "ContinuousLinearMap.SpectralTraceClass.trace_eq_spectralTrace",
+      "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (h : T.SpectralTraceClass), ⋯.traceNorm = ∑' (a : T.EigenvectorIndex), |↑a.fst|",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": "The general trace norm of bundled spectral trace-class data is the absolute eigenvalue sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14767,7 +15077,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_nonneg",
@@ -14785,7 +15095,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_add",
       "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
       "ContinuousLinearMap.SpectralTraceClass.trace_nonneg",
@@ -15103,7 +15413,8 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState"
+      "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -15118,9 +15429,10 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState"
+      "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15310,6 +15622,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
@@ -15340,10 +15653,11 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 23,
+    "compiledConsumerCount": 24,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15551,6 +15865,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
       "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -15561,12 +15876,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.diagonalExpectationNNReal",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
       "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15642,6 +15958,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
       "ContinuousLinearMap.hasSummableRealEigenvalues_of_positive_of_summable_diagonal",
       "ContinuousLinearMap.trace_nonneg",
@@ -15656,6 +15973,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
       "ContinuousLinearMap.SpectralTraceClass.trace_pos",
       "ContinuousLinearMap.hasSummableRealEigenvalues_of_positive_of_summable_diagonal",
       "ContinuousLinearMap.trace_nonneg",
@@ -15666,7 +15984,7 @@
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16363,7 +16681,8 @@
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
     "dependencies": [
       "ContinuousLinearMap.orthogonal_closure_span_eigenvectorFamily"
@@ -16375,9 +16694,10 @@
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16923,6 +17243,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, IsCompactOperator ⇑T → IsSelfAdjoint T → (T.IsTraceClass ↔ T.HasSummableRealEigenvalues)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": "On compact self-adjoint operators, general trace-class membership is exactly absolute\nsummability of the nonzero real eigenvalues with multiplicity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
+      "ContinuousLinearMap.IsTraceClass.of_isTraceClassWrt",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H), T.IsTraceClass ↔ ContinuousLinearMap.IsTraceClassWrt d T",
     "standardAxioms": [
       "Classical.choice",
@@ -17141,6 +17507,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.orthonormal_eigenvectorFamilyInClosure",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
     ],
     "dependencies": [
@@ -17163,9 +17530,10 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.orthonormal_eigenvectorFamilyInClosure",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17538,7 +17906,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTpos : T.IsPositive),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_2} {d : ι → H},\n          Orthonormal ℂ d →\n            (Summable fun i => T.diagonalExpectationValue ⋯ (d i)) ∧\n              ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) ≤ T.spectralTrace",
     "standardAxioms": [
       "Classical.choice",
@@ -17546,7 +17914,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -17557,19 +17925,15 @@
     "docString": "The sum of lossless diagonal expectation values of a positive spectrally summable operator\nagainst any orthonormal family is at most its spectral trace. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace"
-    ],
+    "dependents": [],
     "dependencies": [
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20459,7 +20823,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.card_partGlobalSlots",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -21280,7 +21644,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.partGlobalSlot_injective",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -21326,8 +21690,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.partGlobalSlot_mem_partGlobalSlots",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -21368,8 +21732,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -21413,7 +21777,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.partGlobalSlot_partOrderOfOrder",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -21551,8 +21915,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.partOrdersCompatible_assembleOrder",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -40349,10 +40713,10 @@
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "QuantumTheory.DensityOperator.spectralTraceClass",
-      "QuantumTheory.DensityOperator.spectralTrace_eq_one"
+      "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
+      "QuantumTheory.DensityOperator.isTraceClass",
+      "QuantumTheory.DensityOperator.pos",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -40662,6 +41026,55 @@
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
     "compiledConsumerCount": 9,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H), ρ.op.IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.DensityOperator.isTraceClass",
+    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
+    "externalAxioms": [],
+    "docString": "A density operator is trace class in the general bounded-operator sense. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
+      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
+      "QuantumTheory.DensityOperator.spectralTraceClass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
+      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41038,11 +41451,13 @@
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.DensityOperator.isSelfAdjoint",
       "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.sqrtOp_apply_eigenvector",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass",
       "QuantumTheory.entropyOp_apply_eigenvector",
       "QuantumTheory.entropyOp_isCompact",
@@ -41058,18 +41473,20 @@
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.DensityOperator.isSelfAdjoint",
       "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.sqrtOp_apply_eigenvector",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass",
       "QuantumTheory.entropyOp_apply_eigenvector",
       "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 17,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41115,12 +41532,12 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
+      "QuantumTheory.DensityOperator.isTraceClass",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.DensityOperator.summable_expectation_term",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass",
       "QuantumTheory.entropyOp_isCompact",
@@ -41155,12 +41572,12 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
+      "QuantumTheory.DensityOperator.isTraceClass",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.DensityOperator.summable_expectation_term",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass",
       "QuantumTheory.entropyOp_isCompact",
@@ -41213,19 +41630,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
-      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41473,11 +41888,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
+      "QuantumTheory.DensityOperator.isTraceClass",
       "QuantumTheory.DensityOperator.pos",
-      "QuantumTheory.DensityOperator.spectralTraceClass",
-      "QuantumTheory.DensityOperator.spectralTrace_eq_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41732,6 +42146,58 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.isStationary_toNormalizedExpectation_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H), ⋯.traceNorm = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.DensityOperator.traceNorm_eq_one",
+    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
+    "externalAxioms": [],
+    "docString": "The general trace norm of a density operator is one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
+      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_trace",
+      "QuantumTheory.DensityOperator.isTraceClass",
+      "QuantumTheory.DensityOperator.pos",
+      "QuantumTheory.DensityOperator.spectralTraceClass",
+      "QuantumTheory.DensityOperator.spectralTrace_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
+      "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -104751,7 +105217,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct",
@@ -113305,7 +113771,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
@@ -146036,6 +146502,100 @@
     "compiledConsumers": [
       "ContinuousLinearMap.eigenvectorHilbertBasis",
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.eigenvectorHilbertBasis_apply"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, IsSelfAdjoint T → ∀ {v : H} {c : ℝ}, ↑T v = ↑c • v → (CFC.abs T) v = ↑|c| • v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.cfcAbs_apply_eigenvector",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
+    ],
+    "dependencies": [
+      "cfc_apply_eigenvector"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    IsSelfAdjoint T →\n      ∃ u b j,\n        Function.Injective j ∧\n          (∀ (a : T.EigenvectorIndex), (CFC.abs T).diagonalExpectationValue ⋯ (b (j a)) = |↑a.fst|) ∧\n            ∀ x ∉ Set.range j, (CFC.abs T).diagonalExpectationValue ⋯ (b x) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
+    "externalAxioms": [],
+    "docString": "Extend the canonical nonzero-eigenvector family of a compact self-adjoint operator to a\nHilbert basis on which the diagonal of `|T|` is `|λ|` on spectral vectors and zero on the\nadditional basis vectors lying in the kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.apply_eigenvectorFamily",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "ContinuousLinearMap.hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range",
+      "ContinuousLinearMap.orthonormal_eigenvectorFamily",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.cfcAbs_apply_eigenvector"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -179582,6 +180142,7 @@
       "QuantumTheory.DensityOperator.sqrtOp_apply_eigenvector",
       "QuantumTheory.entropyOp_apply_eigenvector",
       "QuantumTheory.gibbsOp_apply_eigenvector",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.cfcAbs_apply_eigenvector",
       "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
     ],
     "dependencies": [],
@@ -179591,9 +180152,10 @@
       "QuantumTheory.DensityOperator.sqrtOp_apply_eigenvector",
       "QuantumTheory.entropyOp_apply_eigenvector",
       "QuantumTheory.gibbsOp_apply_eigenvector",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.cfcAbs_apply_eigenvector",
       "gibbs_peierls_bogoliubov_eq_iff_eigenvector"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
