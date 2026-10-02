@@ -37,8 +37,8 @@ infinite-dimensional definition.
 The existing Hilbert--Schmidt layer provides basis independence, adjoint invariance, bounded
 composition, a basis-independent norm-square series on Hilbert--Schmidt operators, and the pairing
 `innerHS`. General non-self-adjoint trace-class membership is defined by Hilbert--Schmidt membership
-of `sqrt(|T|)`, but the project does not yet have the full ideal closure, canonical trace norm, or
-general complex trace required by Fredholm theory.
+of `sqrt(|T|)`, and its canonical real trace norm is available. The project does not yet have the
+full ideal closure or general complex trace required by Fredholm theory.
 
 `ContinuousLinearMap.SpectralTraceClass` remains a compact self-adjoint spectral construction; it is
 not a substitute for that missing ideal.
@@ -66,7 +66,7 @@ conditions.
 
 - characterize invertibility of `1 + diagonalOp b coeff` under exact diagonal hypotheses;
 - relate the diagonal determinant to the existing spectral trace on a proved overlap;
-- complete the general trace-class ideal operations, canonical trace norm, and complex trace;
+- complete the general trace-class ideal operations and complex trace;
 - extend the determinant beyond diagonal or otherwise explicitly controlled spectral data.
 
 The current API must not be broadened by finite-dimensional fallback behavior or by silently treating
