@@ -275,7 +275,7 @@ private noncomputable def crossIndicator (pairing : Pairing n) (e : Fin n ≃ pa
 private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : Pairing n)
     (e : Fin n ≃ pairing.NormalizedPair) :
     pairing.crossingCount = ∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing e k l := by
-  rw [pairing.crossingCount_eq_sum_sum_crosses, ← Equiv.sum_comp e]
+  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type, ← Equiv.sum_comp e]
   exact Finset.sum_congr rfl fun k _ => (Equiv.sum_comp e _).symm
 
 private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : Pairing n)
