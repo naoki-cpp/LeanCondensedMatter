@@ -99,6 +99,16 @@ noncomputable def traceNormSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) : ℝ :=
   hilbertSchmidtNormSqSeriesWrt d (CFC.sqrt (CFC.abs T))
 
+/-- The basis-relative trace-norm series is the diagonal series of `|T|`. -/
+theorem traceNormSeriesWrt_eq_tsum_diagonalExpectationValue {ι : Type*}
+    (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
+    traceNormSeriesWrt d T =
+      ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
+  unfold traceNormSeriesWrt hilbertSchmidtNormSqSeriesWrt
+  apply tsum_congr
+  intro i
+  exact (diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs T (d i)).symm
+
 /-- For a trace-class operator, the trace-norm series has the same value in every Hilbert basis. -/
 theorem traceNormSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
@@ -118,6 +128,13 @@ theorem traceNorm_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
     hT.traceNorm = traceNormSeriesWrt d T := by
   unfold traceNorm traceNormSeriesWrt
   exact IsHilbertSchmidt.normSq_eq_seriesWrt hT d
+
+/-- The trace norm is the diagonal series of `|T|` in every Hilbert basis. -/
+theorem traceNorm_eq_tsum_diagonalExpectationValue {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.traceNorm =
+      ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
+  rw [hT.traceNorm_eq_seriesWrt d, traceNormSeriesWrt_eq_tsum_diagonalExpectationValue]
 
 /-- The trace norm is independent of the proof of trace-class membership. -/
 theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
