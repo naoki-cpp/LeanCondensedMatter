@@ -39,16 +39,18 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
       spectralTraceClass := hstc
       trace_eq_one := ?_ }
   rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.compact hstc.isSelfAdjoint]
-  apply Complex.ofReal_injective
-  calc
-    spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = ∑' i, p i :=
-      HilbertBasis.spectralTrace_diagonalOp_eq_tsum b p hp_norm hp_nonneg
-    _ = Z⁻¹ * ∑' i, a i := by
-      simp only [p]
-      rw [tsum_mul_left]
-    _ = 1 := by
-      change Z⁻¹ * Z = 1
-      exact inv_mul_cancel₀ hZ_ne
+  have hspectral :
+      spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = 1 := by
+    calc
+      spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = ∑' i, p i :=
+        HilbertBasis.spectralTrace_diagonalOp_eq_tsum b p hp_norm hp_nonneg
+      _ = Z⁻¹ * ∑' i, a i := by
+        simp only [p]
+        rw [tsum_mul_left]
+      _ = 1 := by
+        change Z⁻¹ * Z = 1
+        exact inv_mul_cancel₀ hZ_ne
+  exact_mod_cast hspectral
 
 /-- Every density operator is diagonal in a Hilbert basis. The basis extends the canonical
 orthonormal family of nonzero spectral eigenvectors; all additional basis vectors lie in the
