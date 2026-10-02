@@ -136,6 +136,13 @@ theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
     (hA.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
   exact hsum.congr fun i => (diagonal_eq_hilbertSchmidt_inner hfactor (d i)).symm
 
+/-- The norms of the complex diagonal terms of a trace-class operator are summable in every
+Hilbert basis. -/
+theorem IsTraceClass.summable_norm_traceSeriesWrt {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => ‖inner ℂ (d i) (T (d i))‖) :=
+  (hT.summable_traceSeriesWrt d).norm
+
 /-- For a trace-class operator, the complex diagonal series has the same value in every Hilbert
 basis. -/
 theorem traceSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
