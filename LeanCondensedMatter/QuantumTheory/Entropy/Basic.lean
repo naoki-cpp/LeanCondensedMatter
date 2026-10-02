@@ -52,7 +52,7 @@ theorem entropyOpSpectralTraceClass (ρ : DensityOperator H)
 theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
     HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
-      spectralTrace (entropyOp ρ) := by
+      (spectralTrace (entropyOp ρ)) := by
   classical
   let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
   let hρsym : ρ.op.IsSymmetric := ρ.pos.isSelfAdjoint.isSymmetric
