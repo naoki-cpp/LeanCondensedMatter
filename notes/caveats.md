@@ -18,8 +18,8 @@ applies.
 
 - **General trace-class membership is not yet a complete operator-ideal API.**
   `ContinuousLinearMap.IsTraceClass T` is implemented through Hilbert–Schmidt membership of
-  `sqrt(|T|)`. Closure under the operations needed for a full trace ideal, a canonical trace norm,
-  and a basis-independent complex trace are still missing.
+  `sqrt(|T|)`, with a basis-independent real trace norm. Closure under the operations needed for a
+  full trace ideal and a basis-independent complex trace are still missing.
 
 - **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
