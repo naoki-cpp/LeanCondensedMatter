@@ -18,6 +18,9 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Combinatorics.NormalizedSetFunction.moment_apply` — retain public `[simp]`: canonical evaluation rule for the bundled moment transform.
+- `Combinatorics.NormalizedSetFunction.moment_cumulant` — retain public: one half of the moment–cumulant inverse laws and the right-inverse theorem used to build `momentCumulantEquiv`.
+- `Combinatorics.Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter` — retain public: canonical decomposition of the global crossing count into component-internal and inter-component contributions.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_self` — canonical `[simp]` boundary for the inter-block inversion count, recording that the diagonal block contribution is zero.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — canonical expansion of the inter-block inversion count for distinct blocks; downstream crossing/parity proofs use this explicit counting formula.
 - `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq` — reusable transport theorem lifting pairwise modular agreement of block inversion counts to the total ordered inversion count.
