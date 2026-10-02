@@ -12,7 +12,8 @@ slots. This module supplies the canonical increasing reindexing needed to apply 
 one connected component, together with the induced local external and interaction times. It also
 identifies each local canonical atomic leg with its ambient canonical leg and proves that the
 attached timed field is preserved by this embedding. The same semantic embedding is then lifted to
-mixed-time positions, where the free-Gibbs pair kernel agrees with the standalone component kernel.
+mixed-time positions, where it intertwines pairing partners and the free-Gibbs pair kernel agrees
+with the standalone component kernel.
 -/
 
 namespace SecondQuantization
@@ -179,6 +180,141 @@ theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : �
   exact
     externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
       hExternal hInteraction externalTime σ
+
+/-- Flattening a component-local canonical leg and then embedding it into the ambient diagram
+agrees with embedding the canonical leg directly. -/
+private theorem ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts)
+    (leg : OrderedExternalInsertionLeg (d.externalPairCount B)
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
+    (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
+        (d.componentOrderedLeg B leg) =
+      d.componentDiagramLeg B
+        ((finCongr (by simp))
+          ((externalInsertionLegEquiv (d.externalPairCount B)
+            (Finset.univ : Finset (Fin
+              (interactionSector
+                (B : Finset (ExternalInsertionVertex E
+                  (Finset.univ : Finset (Fin n))))).card))).symm leg)) := by
+  let T :=
+    interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  cases leg with
+  | inl e =>
+      have hcast :
+          (finCongr (by simp)
+              ((externalInsertionLegEquiv (d.externalPairCount B)
+                (Finset.univ : Finset (Fin T.card))).symm (Sum.inl e)) :
+            Fin (2 * (2 * T.card + d.externalPairCount B))) =
+            externalInsertionExternalLeg (d.externalPairCount B) T e := by
+        apply Fin.ext
+        change (externalInsertionExternalLeg (d.externalPairCount B)
+          (Finset.univ : Finset (Fin T.card)) e).val =
+            (externalInsertionExternalLeg (d.externalPairCount B) T e).val
+        simp
+      rw [hcast, d.componentDiagramLeg_external B]
+      rfl
+  | inr leg =>
+      rcases leg with ⟨v, l⟩
+      let vT : ↥T := T.orderIsoOfFin rfl v.1
+      have hcast :
+          (finCongr (by simp)
+              ((externalInsertionLegEquiv (d.externalPairCount B)
+                (Finset.univ : Finset (Fin T.card))).symm (Sum.inr (v, l))) :
+            Fin (2 * (2 * T.card + d.externalPairCount B))) =
+            externalInsertionInteractionLeg (E := d.externalPairCount B) vT l := by
+        apply Fin.ext
+        change (externalInsertionInteractionLeg (E := d.externalPairCount B)
+          (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
+            (externalInsertionInteractionLeg (E := d.externalPairCount B) vT l).val
+        rw [externalInsertionInteractionLeg_val, externalInsertionInteractionLeg_val]
+        have huniv :
+            (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm v).val =
+              v.1.val := by
+          rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+        have hT : ((T.orderIsoOfFin rfl).symm vT).val = v.1.val := by
+          simp [vT]
+        rw [huniv, hT]
+      rw [hcast, d.componentDiagramLeg_interaction B]
+      rfl
+
+/-- The diagram partner map on canonical legs commutes with the canonical component-leg embedding. -/
+private theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts)
+    (leg : OrderedExternalInsertionLeg (d.externalPairCount B)
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
+    d.atomicLegPartner (d.componentOrderedLeg B leg) =
+      d.componentOrderedLeg B ((d.componentWickDiagram B).atomicLegPartner leg) := by
+  let T :=
+    interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  let r := d.restrictComponent B
+  let h : 2 * T.card + d.externalPairCount B =
+      2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by
+    simp
+  have hpair : (d.componentWickDiagram B).pairing =
+      Equiv.cast (congrArg Combinatorics.Pairing h) r.pairing := by
+    unfold ExternalInsertionWickDiagram.componentWickDiagram
+    dsimp [T, r]
+  have hfin : (finCongr (by simp) :
+      Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
+        d.externalPairCount B)) ≃
+      Fin (2 * (2 * T.card + d.externalPairCount B))) =
+      finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
+    congr
+  apply (externalInsertionLegEquiv E
+    (Finset.univ : Finset (Fin n))).symm.injective
+  rw [ExternalInsertionWickDiagram.atomicLegPartner, Equiv.symm_apply_apply]
+  rw [d.componentOrderedLeg_fixedPosition B leg,
+    d.componentOrderedLeg_fixedPosition B
+      ((d.componentWickDiagram B).atomicLegPartner leg)]
+  unfold ExternalInsertionWickDiagram.atomicLegPartner
+  simp only [Equiv.symm_apply_apply]
+  rw [hpair, hfin, Combinatorics.Pairing.cast_partner h r.pairing]
+  exact (d.componentDiagramLeg_restrictComponent_pairing_partner B _).symm
+
+/-- The ambient mixed-order pairing partner of an embedded component position is the embedding of
+the component mixed-order pairing partner. -/
+theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B))) :
+    (d.pairingInMixedOrder externalTime σ).partner
+        (d.componentMixedPosition externalTime σ B p) =
+      d.componentMixedPosition externalTime σ B
+        (((d.componentWickDiagram B).pairingInMixedOrder
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B)).partner p) := by
+  let localExternalTime := d.componentExternalTime externalTime B
+  let localInteractionTime := d.componentInteractionTime σ B
+  let localLeg :=
+    externalInsertionMixedTimeOrderedAtomicLegEquiv
+      localExternalTime localInteractionTime p
+  have hLocal :
+      (d.componentWickDiagram B).atomicLegPartner localLeg =
+        externalInsertionMixedTimeOrderedAtomicLegEquiv
+          localExternalTime localInteractionTime
+          (((d.componentWickDiagram B).pairingInMixedOrder
+            localExternalTime localInteractionTime).partner p) := by
+    have hPartner :=
+      (d.componentWickDiagram B).pairingInMixedOrder_partner_legPosition
+        localExternalTime localInteractionTime localLeg
+    have h := congrArg
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        localExternalTime localInteractionTime) hPartner
+    simpa [localLeg] using h.symm
+  unfold ExternalInsertionWickDiagram.componentMixedPosition
+  rw [d.pairingInMixedOrder_partner_legPosition,
+    d.atomicLegPartner_componentOrderedLeg B localLeg,
+    hLocal]
 
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
