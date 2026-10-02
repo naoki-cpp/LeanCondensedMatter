@@ -43,7 +43,6 @@ private theorem norm_cfcAbs_apply_eq (T : H →L[ℂ] H) (x : H) :
         rw [mul_apply_eq_comp]
       _ = inner ℂ (T x) (T x) :=
         ContinuousLinearMap.adjoint_inner_right T x (T x)
-  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
   rw [@norm_sq_eq_re_inner ℂ _ _ _ _ (CFC.abs T x),
     @norm_sq_eq_re_inner ℂ _ _ _ _ (T x)]
   exact congrArg Complex.re hinner
