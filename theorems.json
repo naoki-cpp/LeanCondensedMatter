@@ -13693,6 +13693,134 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H}\n  (hT : T.IsHilbertSchmidt) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  hT.normSq = ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt d T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "externalAxioms": [],
+    "docString": "The squared Hilbert--Schmidt norm is the square-norm series in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_seriesWrt"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_seriesWrt"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H}\n  (hT : T.IsHilbertSchmidt), 0 ≤ hT.normSq",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "externalAxioms": [],
+    "docString": "The squared Hilbert--Schmidt norm is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H}\n  (hT hT' : T.IsHilbertSchmidt), hT.normSq = hT'.normSq",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "externalAxioms": [],
+    "docString": "The squared Hilbert--Schmidt norm is independent of the proof of membership. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {d : HilbertBasis ι ℂ H} {T : H →L[ℂ] H}, ContinuousLinearMap.IsHilbertSchmidtWrt d T → T.IsHilbertSchmidt",
     "standardAxioms": [
       "Classical.choice",
@@ -13800,6 +13928,171 @@
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  hT.traceNorm = ContinuousLinearMap.traceNormSeriesWrt d T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_eq_seriesWrt",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+    "externalAxioms": [],
+    "docString": "The trace norm is the diagonal trace-norm series in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  hT.traceNorm = ∑' (i : ι), (CFC.abs T).diagonalExpectationValue ⋯ (d i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+    "externalAxioms": [],
+    "docString": "The trace norm is the diagonal series of `|T|` in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_seriesWrt",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_diagonalExpectationValue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass), 0 ≤ hT.traceNorm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+    "externalAxioms": [],
+    "docString": "The trace norm is nonnegative. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "directWrapperOf": "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg"
+    ],
+    "crossModuleDirectWrapper": true,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT hT' : T.IsTraceClass), hT.traceNorm = hT'.traceNorm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+    "externalAxioms": [],
+    "docString": "The trace norm is independent of the proof of trace-class membership. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "directWrapperOf": "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel"
+    ],
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
@@ -15112,7 +15405,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15124,7 +15417,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_diagonalExpectationValue"
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right"
@@ -15132,9 +15426,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
+      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_diagonalExpectationValue"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16104,7 +16399,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -16116,6 +16411,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
       "ContinuousLinearMap.traceNormSeriesWrt_eq"
     ],
     "dependencies": [
@@ -16125,9 +16421,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
       "ContinuousLinearMap.traceNormSeriesWrt_eq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17578,7 +17875,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.traceNormSeriesWrt_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
     "externalAxioms": [],
     "docString": "For a trace-class operator, the trace-norm series has the same value in every Hilbert basis. ",
     "directWrapperTargetModule": null,
@@ -17591,6 +17888,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.traceNormSeriesWrt d T = ∑' (i : ι), (CFC.abs T).diagonalExpectationValue ⋯ (d i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_diagonalExpectationValue",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+    "externalAxioms": [],
+    "docString": "The basis-relative trace-norm series is the diagonal series of `|T|`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123651,7 +123992,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  StrictMono (d.componentMixedPosition externalTime σ B)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    ((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n        (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedNormalizedPairEmbedding externalTime σ B) pr) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123659,6 +124000,44 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedNormalizedPairEmbedding_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": "The mixed normalized-pair embedding maps both endpoints by `componentMixedPosition`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  StrictMono (d.componentMixedPosition externalTime σ B)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -123675,8 +124054,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionOrderEmbedding"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

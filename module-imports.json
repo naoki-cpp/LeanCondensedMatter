@@ -459,9 +459,18 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/General.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm"
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic"
       ],
       "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Norm.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.General"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
@@ -544,6 +553,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral"
       ],
       "externalImportCount": 0
