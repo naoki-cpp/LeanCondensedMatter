@@ -437,15 +437,32 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
                 (B : Finset (ExternalInsertionVertex E
                   (Finset.univ : Finset (Fin n))))).card))).symm localLeg) := by
     unfold ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv
-    apply (finCongr (by simp)).injective
-    apply (externalInsertionLegEquiv (d.externalPairCount B)
-      (Finset.univ : Finset (Fin
-        (interactionSector
-          (B : Finset (ExternalInsertionVertex E
-            (Finset.univ : Finset (Fin n))))).card))).injective
-    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-      Equiv.apply_symm_apply]
-    rfl
+    apply Fin.ext
+    change
+      (externalInsertionMixedTimeAmbientPositionEquiv
+        localExternalTime localInteractionTime p).val =
+      ((externalInsertionLegEquiv (d.externalPairCount B)
+        (Finset.univ : Finset (Fin
+          (interactionSector
+            (B : Finset (ExternalInsertionVertex E
+              (Finset.univ : Finset (Fin n))))).card))).symm localLeg).val
+    have hpos :
+        externalInsertionMixedTimeAmbientPositionEquiv
+            localExternalTime localInteractionTime p =
+          (externalInsertionLegEquiv (d.externalPairCount B)
+            (Finset.univ : Finset (Fin
+              (interactionSector
+                (B : Finset (ExternalInsertionVertex E
+                  (Finset.univ : Finset (Fin n))))).card))).symm localLeg := by
+      apply (externalInsertionLegEquiv (d.externalPairCount B)
+        (Finset.univ : Finset (Fin
+          (interactionSector
+            (B : Finset (ExternalInsertionVertex E
+              (Finset.univ : Finset (Fin n))))).card))).injective
+      rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+        Equiv.apply_symm_apply]
+      rfl
+    exact congrArg Fin.val hpos
   rw [hlocal, ← hfixed]
   apply (externalInsertionLegEquiv E
     (Finset.univ : Finset (Fin n))).injective
