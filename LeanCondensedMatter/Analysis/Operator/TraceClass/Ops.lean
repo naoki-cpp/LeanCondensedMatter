@@ -128,6 +128,52 @@ theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
   apply IsTraceClass.of_hilbertSchmidt_factorization hA hBW
   rw [← mul_assoc, hfactor]
 
+private theorem IsTraceClass.exists_controlled_hilbertSchmidt_factorization
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    ∃ A B : H →L[ℂ] H,
+      IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧
+      ContinuousLinearMap.adjoint A * B = T ∧
+      (show IsHilbertSchmidt A from by assumption).normSq ≤ hT.traceNorm ∧
+      (show IsHilbertSchmidt B from by assumption).normSq = hT.traceNorm := by
+  obtain ⟨U, hUleft, -, hUnorm⟩ := exists_leftPolarFactor T
+  let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
+  have hS : IsHilbertSchmidt S := hT
+  have hSself : IsSelfAdjoint S := (CFC.sqrt_nonneg (CFC.abs T)).isSelfAdjoint
+  have hSS : S * S = CFC.abs T :=
+    CFC.sqrt_mul_sqrt_self (CFC.abs T) (CFC.abs_nonneg T)
+  let A : H →L[ℂ] H := S * ContinuousLinearMap.adjoint U
+  have hA : IsHilbertSchmidt A :=
+    isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint U)
+  have hAdjA : ContinuousLinearMap.adjoint A = U * S := by
+    rw [show ContinuousLinearMap.adjoint A = star A from
+      (ContinuousLinearMap.star_eq_adjoint A).symm]
+    dsimp [A]
+    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
+      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint,
+      hSself.adjoint_eq]
+  have hfactor : ContinuousLinearMap.adjoint A * S = T := by
+    rw [hAdjA, mul_assoc, hSS, hUleft]
+  have hSnorm : hS.normSq = hT.traceNorm := by
+    unfold traceNorm
+    exact IsHilbertSchmidt.normSq_proof_irrel hS
+      (show IsHilbertSchmidt S from hT)
+  have hAdjUnorm : ‖ContinuousLinearMap.adjoint U‖ ≤ 1 := by
+    rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
+    exact hUnorm
+  have hAnorm_le : hA.normSq ≤ hT.traceNorm := by
+    have hraw := IsHilbertSchmidt.normSq_comp_right_le hS (ContinuousLinearMap.adjoint U)
+    have hraw' :
+        hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq := by
+      exact (IsHilbertSchmidt.normSq_proof_irrel hA
+        (isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint U))) ▸ hraw
+    calc
+      hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq := hraw'
+      _ ≤ 1 ^ 2 * hS.normSq := by
+        exact mul_le_mul_of_nonneg_right
+          (pow_le_pow_left₀ (norm_nonneg _) hAdjUnorm 2) hS.normSq_nonneg
+      _ = hT.traceNorm := by rw [one_pow, one_mul, hSnorm]
+  exact ⟨A, S, hA, hS, hfactor, hAnorm_le, hSnorm⟩
+
 /-- Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an
 absolutely summable complex series. -/
 theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
