@@ -86,7 +86,8 @@ which bundles compactness, symmetry, and summability of nonzero real eigenvalues
 `Analysis/Operator/TraceClass/Norm.lean` owns the basis-relative trace-norm series and canonical
 basis-independent real trace norm. `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled
 compact self-adjoint specialization, spectral trace identities, scalar transport, unitary transport,
-and spectral equality criteria.
+and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint
+characterization of general trace-class membership and trace norm.
 
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
 the absolutely summable rank-one series, basis action, and compactness.
