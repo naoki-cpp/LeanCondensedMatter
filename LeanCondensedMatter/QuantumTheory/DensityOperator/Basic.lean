@@ -25,7 +25,7 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   op : H →L[ℂ] H
   pos : op.IsPositive
   spectralTraceClass : SpectralTraceClass op
-  spectralTrace_eq_one : spectralTrace op = 1
+  trace_eq_one : spectralTraceClass.isTraceClass.trace = 1
 
 /-- Density operators are determined by their underlying bounded operators; all remaining fields
 are proof data. -/
@@ -38,11 +38,14 @@ theorem DensityOperator.ext {ρ σ : DensityOperator H} (h : ρ.op = σ.op) : ρ
       cases h
       rfl
 
-/-- The totalized spectral trace of a density operator is one. -/
+/-- The real spectral representation of a density operator's trace is one. -/
 @[simp]
 theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
-    spectralTrace ρ.op = 1 :=
-  ρ.spectralTrace_eq_one
+    spectralTrace ρ.op = 1 := by
+  have h := ρ.trace_eq_one
+  rw [ρ.spectralTraceClass.isTraceClass.trace_eq_spectralTrace
+    ρ.spectralTraceClass.compact ρ.spectralTraceClass.isSelfAdjoint] at h
+  exact_mod_cast h
 
 /-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
@@ -56,13 +59,6 @@ theorem DensityOperator.isSelfAdjoint (ρ : DensityOperator H) : IsSelfAdjoint �
 theorem DensityOperator.isTraceClass (ρ : DensityOperator H) : IsTraceClass ρ.op :=
   ρ.spectralTraceClass.isTraceClass
 
-/-- The canonical complex trace of a density operator is one. -/
-@[simp]
-theorem DensityOperator.trace_eq_one (ρ : DensityOperator H) :
-    ρ.isTraceClass.trace = 1 := by
-  rw [ρ.isTraceClass.trace_eq_spectralTrace ρ.spectralTraceClass.compact ρ.isSelfAdjoint]
-  exact_mod_cast ρ.spectralTrace_eq_one
-
 /-- The general trace norm of a density operator is one. -/
 @[simp]
 theorem DensityOperator.traceNorm_eq_one (ρ : DensityOperator H) :
@@ -72,7 +68,7 @@ theorem DensityOperator.traceNorm_eq_one (ρ : DensityOperator H) :
       IsTraceClass.traceNorm_proof_irrel ρ.isTraceClass ρ.spectralTraceClass.isTraceClass
     _ = spectralTrace ρ.op :=
       ρ.spectralTraceClass.traceNorm_eq_spectralTrace ρ.pos
-    _ = 1 := ρ.spectralTrace_eq_one
+    _ = 1 := ρ.spectralTrace_op_eq_one
 
 /-- Every nonzero spectral eigenvalue of a density operator is nonnegative. -/
 theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
