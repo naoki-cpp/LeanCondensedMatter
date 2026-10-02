@@ -4999,6 +4999,7 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing.0.SecondQuantization.Common.orderedTwoPointPairingCastEquiv_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField.0.SecondQuantization.Fermionic.externalInsertionPairingCastEquiv_partner"
     ],
     "dependencies": [],
@@ -5006,9 +5007,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing.0.SecondQuantization.Common.orderedTwoPointPairingCastEquiv_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField.0.SecondQuantization.Fermionic.externalInsertionPairingCastEquiv_partner"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13660,6 +13662,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
@@ -13670,11 +13673,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13732,7 +13736,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), ContinuousLinearMap.IsTraceClassWrt d T",
     "standardAxioms": [
       "Classical.choice",
@@ -13740,7 +13744,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -13751,18 +13755,14 @@
     "docString": "A basis-independent trace-class witness supplies summability in every Hilbert basis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
-    ],
+    "dependents": [],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13830,7 +13830,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.compact",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -13938,7 +13938,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Compute the bundled spectral trace against any Hilbert basis using lossless diagonal\nexpectation values. ",
     "directWrapperTargetModule": null,
@@ -13994,7 +13994,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "A bundled spectral-trace-class operator is self-adjoint. ",
     "directWrapperTargetModule": null,
@@ -14056,7 +14056,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.ofCFC",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Build bundled spectral-trace data for a continuous functional calculus transform.\nCompactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;\nself-adjointness of the transform supplies symmetry. Summability of the transformed nonzero\neigenvalues remains an explicit hypothesis. ",
     "directWrapperTargetModule": null,
@@ -14100,7 +14100,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.ofPositive",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Build bundled spectral-trace data for a positive compact operator with summable real\neigenvalues. Positivity supplies symmetry. ",
     "directWrapperTargetModule": null,
@@ -14145,7 +14145,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": "Spectral trace class is preserved under multiplication by any real scalar. ",
     "directWrapperTargetModule": null,
@@ -14193,7 +14193,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_trace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Bound the lossless diagonal-expectation sum over an orthonormal family by the bundled spectral\ntrace. ",
     "directWrapperTargetModule": null,
@@ -14245,7 +14245,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.summable",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -14327,7 +14327,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.symmetric",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -14379,7 +14379,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Additivity of the bundled spectral trace. ",
     "directWrapperTargetModule": null,
@@ -14423,7 +14423,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_comp_comm",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Cyclicity of the bundled spectral trace for two products. The individual factors only need to\nbe symmetric; compactness and summability are required for the two products whose traces appear. ",
     "directWrapperTargetModule": null,
@@ -14467,7 +14467,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_eq_spectralTrace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -14533,7 +14533,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_nonneg",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "The spectral trace of a positive bundled operator is nonnegative. ",
     "directWrapperTargetModule": null,
@@ -14574,7 +14574,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_pos",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "A nonzero positive spectral-trace-class operator has strictly positive trace. ",
     "directWrapperTargetModule": null,
@@ -14624,7 +14624,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": "The bundled spectral trace is homogeneous under multiplication by any real scalar. ",
     "directWrapperTargetModule": null,
@@ -14667,7 +14667,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary",
     "externalAxioms": [],
     "docString": "The bundled spectral trace is invariant under unitary conjugation. ",
     "directWrapperTargetModule": null,
@@ -14710,7 +14710,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary",
     "externalAxioms": [],
     "docString": "Spectral trace-class data transports canonically through unitary conjugation. ",
     "directWrapperTargetModule": null,
@@ -15112,7 +15112,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15124,8 +15124,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs"
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right"
@@ -15133,10 +15132,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs"
+      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15343,7 +15341,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Basic",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
     "externalAxioms": [],
     "docString": "Every eigenvalue of a positive operator is nonnegative. ",
     "directWrapperTargetModule": null,
@@ -15770,7 +15768,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": "`spectralTrace` can be computed against any Hilbert basis using lossless diagonal expectation\nvalues. ",
     "directWrapperTargetModule": null,
@@ -15826,7 +15824,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": "The eigenvector expansion of a compact self-adjoint operator, paired with a vector, sums to the\nlossless real diagonal expectation. ",
     "directWrapperTargetModule": null,
@@ -15838,7 +15836,7 @@
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.hasSum_eigenvectorFamily",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.inner_mul_inner_conj_eq_norm_sq"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops.0.inner_mul_inner_conj_eq_norm_sq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15924,7 +15922,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.hasSummableRealEigenvalues_of_positive_of_summable_diagonal",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal",
     "externalAxioms": [],
     "docString": "A positive compact operator whose lossless diagonal values are summable against one Hilbert\nbasis has summable nonzero real eigenvalues. ",
     "directWrapperTargetModule": null,
@@ -15971,7 +15969,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": "Spectral summability is preserved under multiplication by any real scalar. ",
     "directWrapperTargetModule": null,
@@ -15980,8 +15978,8 @@
       "ContinuousLinearMap.SpectralTraceClass.smul"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -16016,7 +16014,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary",
     "externalAxioms": [],
     "docString": "Absolute summability of real eigenvalues with multiplicity is invariant under unitary\nconjugation. ",
     "directWrapperTargetModule": null,
@@ -16085,6 +16083,51 @@
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  T.IsHilbertSchmidt →\n    ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt d T = ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt f T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "externalAxioms": [],
+    "docString": "For a Hilbert--Schmidt operator, the square-norm series has the same value in every Hilbert\nbasis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
+      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16557,8 +16600,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.isTraceClassWrt_iff",
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "dependencies": [
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs"
@@ -16567,10 +16609,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.isTraceClassWrt_iff",
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16737,7 +16778,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Equality",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality",
     "externalAxioms": [],
     "docString": "If a positive operator has strictly positive diagonal value on every unit vector, an\northonormal family can saturate its spectral trace only when its span has trivial orthogonal\ncomplement. ",
     "directWrapperTargetModule": null,
@@ -17032,7 +17073,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.spectralTrace_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": "Additivity of `spectralTrace`. ",
     "directWrapperTargetModule": null,
@@ -17077,7 +17118,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.spectralTrace_comp_comm",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": "Cyclicity of `spectralTrace` for two products satisfying the required hypotheses. ",
     "directWrapperTargetModule": null,
@@ -17123,7 +17164,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.spectralTrace_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": "`spectralTrace` is homogeneous under multiplication by any real scalar. ",
     "directWrapperTargetModule": null,
@@ -17132,8 +17173,8 @@
       "ContinuousLinearMap.SpectralTraceClass.trace_smul"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -17168,7 +17209,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.spectralTrace_unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary",
     "externalAxioms": [],
     "docString": "The spectral trace is invariant under unitary conjugation. ",
     "directWrapperTargetModule": null,
@@ -17214,7 +17255,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": "The sum of lossless diagonal expectation values of a positive spectrally summable operator\nagainst any orthonormal family is at most its spectral trace. ",
     "directWrapperTargetModule": null,
@@ -17259,7 +17300,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.summable_eigenvectorIndex",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Basic",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -17270,7 +17311,7 @@
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.hasSum_probNNReal",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -17281,7 +17322,7 @@
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
       "QuantumTheory.hasSum_probNNReal",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -17497,8 +17538,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
     ],
     "dependencies": [
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq"
@@ -17506,8 +17547,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
+      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -17544,59 +17585,12 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.isTraceClassWrt",
-      "ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
-      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq",
-      "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs"
+      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.traceNormSeriesWrt d T = ∑' (i : ι), ‖(CFC.sqrt (CFC.abs T)) (d i)‖ ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.traceNormSeriesWrt_eq_tsum_norm_sq_sqrt_abs",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
-    "externalAxioms": [],
-    "docString": "The basis-relative totalized series is the squared Hilbert--Schmidt norm series of\n`sqrt(|T|)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.traceNormSeriesWrt_eq"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17624,7 +17618,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.trace_nonneg",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Basic",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
     "externalAxioms": [],
     "docString": "The spectral trace of a positive spectrally summable operator is nonnegative. ",
     "directWrapperTargetModule": null,
@@ -17668,21 +17662,21 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.tsum_eigenvectorIndex_eq_tsum_mul_finrank",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Basic",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
     "externalAxioms": [],
     "docString": "Splits the spectral-trace `tsum` over `EigenvectorIndex S` into an outer sum over the\nbase nonzero eigenvalues and an inner finite sum over each eigenspace's basis vectors. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.spectralTrace_unitaryConjugate",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.spectralTrace_unitaryConjugate",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -22876,7 +22870,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "HilbertBasis.diagonalOpSpectralTraceClass",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal",
     "externalAxioms": [],
     "docString": "Bundle a diagonal operator with summable nonnegative real weights as spectral-trace-class. ",
     "directWrapperTargetModule": null,
@@ -22928,7 +22922,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "HilbertBasis.diagonalOpSpectralTraceClass_trace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal",
     "externalAxioms": [],
     "docString": "The spectral trace of a diagonal operator with nonnegative weights is their sum. ",
     "directWrapperTargetModule": null,
@@ -26968,8 +26962,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.boundedSelfAdjointApproximation_commute",
     "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
@@ -27161,8 +27155,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_add_generator_of_commute",
     "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
@@ -41680,8 +41674,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
@@ -41722,8 +41716,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
@@ -44433,8 +44427,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
@@ -45646,8 +45640,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
@@ -45690,8 +45684,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.hasStaticLimit_unswitchedLehmannTerm",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
@@ -57534,8 +57528,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction",
@@ -76220,8 +76214,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator",
     "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
@@ -76838,8 +76832,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self",
     "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
@@ -77019,8 +77013,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjectorOperator_eq_one",
     "module": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
@@ -79245,8 +79239,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
     "module": "LeanCondensedMatter.Transport.KuboBastin.Finite",
@@ -93162,8 +93156,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
@@ -99116,7 +99110,8 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val"
@@ -99125,9 +99120,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99162,7 +99158,8 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_interaction"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_interaction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [
       "SecondQuantization.Common.interactionSector_subset",
@@ -99172,9 +99169,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_interaction"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_interaction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99209,7 +99207,8 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val"
@@ -99218,9 +99217,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110431,7 +110431,8 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -110439,9 +110440,10 @@
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110478,7 +110480,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionLeg_lt_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -110487,9 +110490,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionLeg_lt_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110566,6 +110570,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
@@ -110574,10 +110579,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110591,7 +110597,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + E))),\n  SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n      ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ) p) =\n    p",
     "standardAxioms": [
       "Classical.choice",
@@ -110599,7 +110605,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110610,12 +110616,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113477,7 +113487,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalSlotLegSplitting_external_externalPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalSlotLegSplitting_interaction_externalPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [
       "SecondQuantization.Common.mem_interactionSector"
@@ -113494,9 +113505,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalSlotLegSplitting_external_externalPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalSlotLegSplitting_interaction_externalPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117682,13 +117694,13 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Two interaction-time assignments lie in the same mixed-order chamber exactly when\nthey determine the same finite strict-comparison signature. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -123889,8 +123901,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
@@ -123922,7 +123934,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (d.pairingInMixedOrder externalTime σ).partner\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ (d.atomicLegPartner leg)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  (d.pairingInMixedOrder externalTime σ).partner (d.componentMixedPosition externalTime σ B p) =\n    d.componentMixedPosition externalTime σ B\n      (((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n            (d.componentInteractionTime σ B)).partner\n        p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123934,13 +123946,58 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": "The ambient mixed-order pairing partner of an embedded component position is the embedding of\nthe component mixed-order pairing partner. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_equiv",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (d.pairingInMixedOrder externalTime σ).partner\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ (d.atomicLegPartner leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
     "externalAxioms": [],
     "docString": "The mixed-order partner of the position selected by a canonical leg is the mixed position of\nthat leg's diagram partner. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+    ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
@@ -123948,8 +124005,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145624,8 +145683,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.inner_mul_inner_conj_eq_norm_sq",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops.0.inner_mul_inner_conj_eq_norm_sq",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -145666,22 +145725,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenspace_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenspace_smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -145710,22 +145769,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -145754,22 +145813,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -145798,25 +145857,25 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": "Internal nonzero-scalar transport used by the total public scalar theorem below. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenspace_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenspace_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.hasSummableRealEigenvalues_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -145845,8 +145904,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -145855,7 +145914,7 @@
       "ContinuousLinearMap.hasSummableRealEigenvalues_smul"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -145889,8 +145948,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_smul_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": "Internal nonzero-scalar trace transport used by the total public scalar theorem below. ",
     "directWrapperTargetModule": null,
@@ -145901,9 +145960,9 @@
     "dependencies": [
       "ContinuousLinearMap.summable_eigenvectorIndex",
       "ContinuousLinearMap.tsum_eigenvectorIndex_eq_tsum_mul_finrank",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenspace_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenspace_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenvalueScaleEquiv_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.hasSummableRealEigenvalues_smul_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -145937,8 +145996,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.spectralTrace_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.spectralTrace_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -145947,7 +146006,7 @@
       "ContinuousLinearMap.spectralTrace_smul"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Scalar.0.ContinuousLinearMap.eigenvectorIndex_zero_elim"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -168354,6 +168413,100 @@
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg\n      (SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  d.atomicLegPartner (d.componentOrderedLeg B leg) =\n    d.componentOrderedLeg B ((d.componentWickDiagram B).atomicLegPartner leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": "The diagram partner map on canonical legs commutes with the canonical component-leg embedding. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.cast_partner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg\n      (SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  (SecondQuantization.Common.externalInsertionLegEquiv E Finset.univ).symm (d.componentOrderedLeg B leg) =\n    SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg d B\n      ((finCongr ⋯)\n        ((SecondQuantization.Common.externalInsertionLegEquiv\n              (SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B) Finset.univ).symm\n          leg))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "externalAxioms": [],
+    "docString": "Flattening a component-local canonical leg and then embedding it into the ambient diagram\nagrees with embedding the canonical leg directly. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
+      "SecondQuantization.Common.externalInsertionExternalLeg_val",
+      "SecondQuantization.Common.externalInsertionInteractionLeg_val",
+      "SecondQuantization.Common.interactionSector_subset"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
