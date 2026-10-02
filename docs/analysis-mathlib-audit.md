@@ -84,16 +84,19 @@ which bundles compactness, symmetry, and summability of nonzero real eigenvalues
 
 `Analysis/Operator/TraceClass/General.lean` owns general membership and the Hilbert-basis criterion.
 `Analysis/Operator/TraceClass/Norm.lean` owns the basis-relative trace-norm series and canonical
-basis-independent real trace norm. `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled
-compact self-adjoint specialization, spectral trace identities, scalar transport, unitary transport,
-and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint
-characterization of general trace-class membership and trace norm.
+basis-independent real trace norm. `Analysis/Operator/TraceClass/Trace.lean` owns the absolutely
+convergent complex diagonal series, basis independence, and the canonical complex trace.
+`Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled compact self-adjoint
+specialization, spectral trace identities, scalar transport, unitary transport, and spectral
+equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
+of general trace-class membership, trace norm, and complex trace.
 
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
 the absolutely summable rank-one series, basis action, and compactness.
 
-The repository does not yet define a basis-independent complex trace on all trace-class operators,
-so `SpectralTraceClass.trace` must not be read as that future general trace.
+The basis-independent general complex trace is `IsTraceClass.trace`. The existing
+`SpectralTraceClass.trace` remains the real-valued compact self-adjoint spectral trace; the bundled
+bridge identifies the general trace with its coercion to `ℂ`.
 
 ## Hilbert–Schmidt API
 
@@ -101,8 +104,9 @@ so `SpectralTraceClass.trace` must not be read as that future general trace.
 basis-independence results, adjoint and bounded-composition closure, inner product, and trace
 reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
 
-The package now supplies the neutral norm-square series used by general trace-class membership, but
-not the remaining trace-ideal closure laws or a complex trace on arbitrary trace-class operators.
+The package supplies the neutral norm-square series used by general trace-class membership together
+with the Hilbert--Schmidt inner product used to prove absolute convergence and basis independence of
+the general complex trace. The remaining trace-ideal closure laws are not yet supplied.
 
 ## Diagonal Fredholm determinant API
 
@@ -125,9 +129,9 @@ normal, or trace-class operators and is not independent of unrelated diagonal pr
 the underlying linear endomorphism. It is appropriate only for future finite-dimensional
 compatibility results and is not used as the infinite-dimensional definition.
 
-A general implementation still requires the trace-class ideal closure laws, completeness theory, a
-general complex trace, a convergent presentation-independent determinant
-construction, and structural identities on the valid domain. The scoped dependency graph is
+A general implementation still requires the trace-class ideal closure laws, completeness theory,
+a convergent presentation-independent determinant construction, and structural identities on the
+valid domain. The scoped dependency graph is
 recorded in `notes/roadmaps/fredholm-determinant.md`.
 
 ## Ordered-simplex and Dyson analysis
@@ -177,7 +181,7 @@ unbounded heartbeat setting. Before upstreaming or broadening this API:
 
 The repository does not yet provide:
 
-- the remaining general trace-class ideal closure laws and complex trace;
+- the remaining general trace-class ideal closure laws;
 - a complete Schatten hierarchy;
 - a Fredholm determinant on general trace-class operators;
 - basis independence for unrelated diagonal presentations without spectral uniqueness;
