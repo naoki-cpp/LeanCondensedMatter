@@ -321,9 +321,7 @@ theorem traceNorm_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   simpa only [neg_one_smul, norm_neg, norm_one, one_mul] using
     hT.traceNorm_smul (-1 : ℂ)
 
-/-- A Hilbert--Schmidt factorization bounds the trace norm by the arithmetic mean of the
-squared Hilbert--Schmidt norms. -/
-theorem traceNorm_le_half_normSq_add_of_factorization
+private theorem traceNorm_le_half_normSq_add_of_factorization
     {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
     (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
     (hfactor : ContinuousLinearMap.adjoint A * B = T) :
@@ -427,7 +425,7 @@ theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 
 /-- Left multiplication by a contraction does not increase the trace norm. -/
 theorem traceNorm_comp_left_le_of_norm_le_one
-    (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
     (hT.comp_left W).traceNorm ≤ hT.traceNorm := by
   obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
     hT.exists_controlled_hilbertSchmidt_factorization
@@ -467,27 +465,26 @@ theorem traceNorm_comp_left_le_of_norm_le_one
 theorem traceNorm_comp_right_le_of_norm_le_one
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
     (hT.comp_right W).traceNorm ≤ hT.traceNorm := by
-  obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
-    hT.exists_controlled_hilbertSchmidt_factorization
-  have hBW : IsHilbertSchmidt (B * W) := isHilbertSchmidt_comp_right hB W
-  have hBWnorm : hBW.normSq ≤ hT.traceNorm := by
-    have hraw := IsHilbertSchmidt.normSq_comp_right_le hB W
-    have hraw' : hBW.normSq ≤ ‖W‖ ^ 2 * hB.normSq := by
-      exact (IsHilbertSchmidt.normSq_proof_irrel hBW
-        (isHilbertSchmidt_comp_right hB W)) ▸ hraw
-    calc
-      hBW.normSq ≤ ‖W‖ ^ 2 * hB.normSq := hraw'
-      _ ≤ 1 ^ 2 * hB.normSq := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg W) hW 2) hB.normSq_nonneg
-      _ = hT.traceNorm := by rw [one_pow, one_mul, hBnorm]
-  have hfactor' : ContinuousLinearMap.adjoint A * (B * W) = T * W := by
-    rw [← mul_assoc, hfactor]
-  have hbound :=
-    traceNorm_le_half_normSq_add_of_factorization (hT.comp_right W) hA hBW hfactor'
+  have hAdjW : ‖ContinuousLinearMap.adjoint W‖ ≤ 1 := by
+    rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
+    exact hW
+  have hprodAdj :
+      ContinuousLinearMap.adjoint (T * W) =
+        ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
+    rw [show ContinuousLinearMap.adjoint (T * W) = star (T * W) from
+      (ContinuousLinearMap.star_eq_adjoint (T * W)).symm]
+    rw [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint]
+  have hleft :=
+    hT.adjoint.traceNorm_comp_left_le_of_norm_le_one (ContinuousLinearMap.adjoint W) hAdjW
   calc
-    (hT.comp_right W).traceNorm ≤ (hA.normSq + hBW.normSq) / 2 := hbound
-    _ ≤ hT.traceNorm := by linarith
+    (hT.comp_right W).traceNorm =
+        (hT.comp_right W).adjoint.traceNorm :=
+      (hT.comp_right W).traceNorm_adjoint.symm
+    _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm := by
+      rw [hprodAdj]
+      exact IsTraceClass.traceNorm_proof_irrel _ _
+    _ ≤ hT.adjoint.traceNorm := hleft
+    _ = hT.traceNorm := hT.traceNorm_adjoint
 
 /-- The trace norm satisfies the triangle inequality. -/
 theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
