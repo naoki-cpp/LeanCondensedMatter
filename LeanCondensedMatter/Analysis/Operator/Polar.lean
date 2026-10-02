@@ -102,7 +102,10 @@ theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
     rw [← ContinuousLinearMap.comp_assoc]
     rw [ContinuousLinearMap.comp_assoc C.subtypeL
       (ContinuousLinearMap.adjoint V.toContinuousLinearMap) V.toContinuousLinearMap]
-    rw [LinearIsometry.adjoint_comp_self V, ContinuousLinearMap.comp_id]
+    rw [LinearIsometry.adjoint_comp_self V]
+    apply ContinuousLinearMap.ext
+    intro x
+    rfl
   have hright : ContinuousLinearMap.adjoint U * T = A := by
     rw [← hleft, ← mul_assoc, hUU]
     apply ContinuousLinearMap.ext
