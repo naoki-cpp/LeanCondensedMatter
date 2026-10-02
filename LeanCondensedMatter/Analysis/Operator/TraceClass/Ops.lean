@@ -16,11 +16,22 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+private theorem diagonalExpectationValue_zero
+    (h0 : IsSelfAdjoint (0 : H →L[ℂ] H)) (x : H) :
+    diagonalExpectationValue 0 h0 x = 0 := by
+  apply Complex.ofReal_injective
+  rw [coe_diagonalExpectationValue_right]
+  simp
+
 /-- The zero bounded operator is trace class. -/
 theorem isTraceClass_zero : IsTraceClass (0 : H →L[ℂ] H) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   apply IsTraceClass.of_isTraceClassWrt (d := d)
-  simp [IsTraceClassWrt]
+  rw [IsTraceClassWrt]
+  simpa only [CFC.abs_zero] using
+    (summable_zero.congr fun i =>
+      (diagonalExpectationValue_zero
+        (show IsSelfAdjoint (0 : H →L[ℂ] H) by simp) (d i)).symm)
 
 private theorem diagonalExpectationValue_abs_smul
     (c : ℂ) (T : H →L[ℂ] H) (x : H) :
@@ -29,7 +40,8 @@ private theorem diagonalExpectationValue_abs_smul
   apply Complex.ofReal_injective
   rw [coe_diagonalExpectationValue_right, Complex.ofReal_mul,
     coe_diagonalExpectationValue_right, CFC.abs_smul]
-  simp [RCLike.real_smul_eq_coe_smul, inner_smul_right]
+  rw [RCLike.real_smul_eq_coe_smul (K := ℂ) ‖c‖ ((CFC.abs T) x)]
+  rw [inner_smul_right]
 
 /-- Trace-class membership is closed under complex scalar multiplication. -/
 theorem IsTraceClass.smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
@@ -176,6 +188,7 @@ theorem traceNorm_zero :
     (isTraceClass_zero (H := H)).traceNorm = 0 := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   rw [(isTraceClass_zero (H := H)).traceNorm_eq_tsum_diagonalExpectationValue d]
+  simp_rw [CFC.abs_zero, diagonalExpectationValue_zero]
   simp
 
 /-- Scalar multiplication scales the trace norm by the scalar norm. -/
@@ -191,9 +204,8 @@ theorem traceNorm_smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
 @[simp]
 theorem traceNorm_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     hT.neg.traceNorm = hT.traceNorm := by
-  rw [show -T = (-1 : ℂ) • T by simp, traceNorm_proof_irrel hT.neg (hT.smul (-1 : ℂ)),
-    hT.traceNorm_smul]
-  simp
+  simpa only [neg_one_smul, norm_neg, norm_one, one_mul] using
+    hT.traceNorm_smul (-1 : ℂ)
 
 /-- The trace norm satisfies the triangle inequality. -/
 theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
@@ -213,14 +225,9 @@ theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTra
         (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) =
         ‖inner ℂ (U (d i)) ((T + R) (d i))‖ := by
     have hnonneg := diagonalExpectationValue_nonneg
-      (CFC.abs (T + R)) (CFC.abs_nonneg (T + R)) (d i)
-    calc
-      diagonalExpectationValue (CFC.abs (T + R))
-          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) =
-          ‖(diagonalExpectationValue (CFC.abs (T + R))
-            (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ)‖ := by
-        simp [abs_of_nonneg hnonneg]
-      _ = ‖inner ℂ (U (d i)) ((T + R) (d i))‖ := congrArg norm (hdiagCast i)
+      (CFC.abs (T + R)) (nonneg_iff_isPositive.mp (CFC.abs_nonneg (T + R))) (d i)
+    rw [← hdiagCast i]
+    simp [abs_of_nonneg hnonneg]
   have hpoint_le (i : w) :
       diagonalExpectationValue (CFC.abs (T + R))
           (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) ≤
@@ -279,9 +286,7 @@ theorem trace_smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
 @[simp]
 theorem trace_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     hT.neg.trace = -hT.trace := by
-  rw [show -T = (-1 : ℂ) • T by simp, trace_proof_irrel hT.neg (hT.smul (-1 : ℂ)),
-    hT.trace_smul]
-  simp
+  simpa only [neg_one_smul, neg_one_mul] using hT.trace_smul (-1 : ℂ)
 
 /-- The trace is additive. -/
 theorem trace_add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
