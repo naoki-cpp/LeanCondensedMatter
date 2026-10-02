@@ -316,6 +316,57 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     d.atomicLegPartner_componentOrderedLeg B localLeg,
     hLocal]
 
+/-- The canonical mixed-position embedding of one component, packaged as an order embedding. -/
+noncomputable def ExternalInsertionWickDiagram.componentMixedPositionOrderEmbedding
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts) :
+    Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B)) ↪o
+      Fin (2 * (2 * n + E)) :=
+  OrderEmbedding.ofStrictMono
+    (d.componentMixedPosition externalTime σ B)
+    (d.componentMixedPosition_strictMono externalTime σ B)
+
+/-- A component-local mixed-order normalized pair embeds canonically into the ambient mixed-order
+pairing. -/
+noncomputable def ExternalInsertionWickDiagram.componentMixedNormalizedPairEmbedding
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts) :
+    ((d.componentWickDiagram B).pairingInMixedOrder
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)).NormalizedPair ↪
+      (d.pairingInMixedOrder externalTime σ).NormalizedPair :=
+  let small :=
+    (d.componentWickDiagram B).pairingInMixedOrder
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)
+  let big := d.pairingInMixedOrder externalTime σ
+  small.normalizedPairEmbedding big
+    (d.componentMixedPositionOrderEmbedding externalTime σ B)
+    (fun p => by
+      simpa [ExternalInsertionWickDiagram.componentMixedPositionOrderEmbedding] using
+        d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ B p)
+
+/-- The mixed normalized-pair embedding maps both endpoints by `componentMixedPosition`. -/
+@[simp]
+theorem ExternalInsertionWickDiagram.componentMixedNormalizedPairEmbedding_apply
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (pr : ((d.componentWickDiagram B).pairingInMixedOrder
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)).NormalizedPair) :
+    (d.componentMixedNormalizedPairEmbedding externalTime σ B pr).1 =
+      (d.componentMixedPosition externalTime σ B pr.1.1,
+        d.componentMixedPosition externalTime σ B pr.1.2) := by
+  rfl
+
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
     {E n : ℕ}
