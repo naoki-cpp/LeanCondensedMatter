@@ -54,7 +54,7 @@ noncomputable def DensityOperator.ofFiniteDimensional
   have heigen : ∑ i, hsymm.eigenvalues rfl i = 1 := by
     exact_mod_cast heigenComplex
   calc
-    hstc.trace = ∑ i, diagonalExpectationValue ρ hstc.isSelfAdjoint (b i) := by
+    spectralTrace ρ = ∑ i, diagonalExpectationValue ρ hstc.isSelfAdjoint (b i) := by
       simpa using hsum.symm
     _ = ∑ i, hsymm.eigenvalues rfl i := by
       apply Finset.sum_congr rfl
