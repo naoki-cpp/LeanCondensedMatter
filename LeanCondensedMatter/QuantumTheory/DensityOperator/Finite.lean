@@ -39,7 +39,6 @@ noncomputable def DensityOperator.ofFiniteDimensional
       spectralTraceClass := hstc
       trace_eq_one := ?_ }
   rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.compact hstc.isSelfAdjoint]
-  apply Complex.ofReal_injective
   let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
     hsymm.eigenvectorBasis rfl
   have hb (i : Fin (Module.finrank ℂ H)) :
@@ -55,17 +54,19 @@ noncomputable def DensityOperator.ofFiniteDimensional
   rw [htrace] at heigenComplex
   have heigen : ∑ i, hsymm.eigenvalues rfl i = 1 := by
     exact_mod_cast heigenComplex
-  calc
-    spectralTrace ρ = ∑ i, diagonalExpectationValue ρ hstc.isSelfAdjoint (b i) := by
-      simpa using hsum.symm
-    _ = ∑ i, hsymm.eigenvalues rfl i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Complex.ofReal_injective
-      rw [coe_diagonalExpectationValue_right, hb i, inner_smul_right,
-        inner_self_eq_norm_sq_to_K, b.norm_eq_one]
-      simp
-    _ = 1 := heigen
+  have hspectral : spectralTrace ρ = 1 := by
+    calc
+      spectralTrace ρ = ∑ i, diagonalExpectationValue ρ hstc.isSelfAdjoint (b i) := by
+        simpa using hsum.symm
+      _ = ∑ i, hsymm.eigenvalues rfl i := by
+        apply Finset.sum_congr rfl
+        intro i _
+        apply Complex.ofReal_injective
+        rw [coe_diagonalExpectationValue_right, hb i, inner_smul_right,
+          inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+        simp
+      _ = 1 := heigen
+  exact_mod_cast hspectral
 
 @[simp]
 theorem DensityOperator.ofFiniteDimensional_op
