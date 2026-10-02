@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 
@@ -112,6 +112,24 @@ theorem isTraceClass_iff_hasSummableRealEigenvalues
     apply IsTraceClass.of_isTraceClassWrt (d := b)
     simpa [IsTraceClassWrt, g] using hfull.summable
 
+/-- On compact self-adjoint operators, the general complex trace agrees with the real spectral
+trace after coercion to `ℂ`. -/
+theorem IsTraceClass.trace_eq_spectralTrace
+    (hT : IsTraceClass T) (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T) :
+    hT.trace = (spectralTrace T : ℂ) := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  rw [hT.trace_eq_seriesWrt d]
+  unfold traceSeriesWrt
+  have hspec : HasSummableRealEigenvalues T :=
+    (isTraceClass_iff_hasSummableRealEigenvalues hcompact hself).1 hT
+  have hcast :=
+    (hasSum_diagonalExpectationValue_eq_spectralTrace hcompact hself hspec d).mapL
+      Complex.ofRealCLM
+  simp only [Complex.ofRealCLM_apply] at hcast
+  exact
+    (HasSum.congr_fun hcast fun i =>
+      coe_diagonalExpectationValue_right T hself (d i)).tsum_eq
+
 /-- On compact self-adjoint operators, the canonical trace norm is the absolute eigenvalue sum
 with multiplicity. -/
 theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
@@ -169,6 +187,13 @@ theorem isSelfAdjoint (h : SpectralTraceClass T) : IsSelfAdjoint T :=
 membership. -/
 theorem isTraceClass (h : SpectralTraceClass T) : IsTraceClass T :=
   (isTraceClass_iff_hasSummableRealEigenvalues h.compact h.isSelfAdjoint).2 h.summable
+
+/-- The general complex trace of bundled spectral trace-class data agrees with its real spectral
+trace after coercion to `ℂ`. -/
+theorem generalTrace_eq_trace (h : SpectralTraceClass T) :
+    h.isTraceClass.trace = (h.trace : ℂ) := by
+  rw [h.isTraceClass.trace_eq_spectralTrace h.compact h.isSelfAdjoint,
+    h.trace_eq_spectralTrace]
 
 /-- The general trace norm of bundled spectral trace-class data is the absolute eigenvalue sum. -/
 theorem traceNorm_eq_tsum_abs_eigenvalues (h : SpectralTraceClass T) :
