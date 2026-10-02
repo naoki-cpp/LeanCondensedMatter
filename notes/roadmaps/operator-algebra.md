@@ -66,8 +66,10 @@ invariance, closure under bounded composition, the basis-relative totalized norm
 pairing `innerHS`, and comparison with spectral trace on the compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
-complex trace are defined from the Hilbert--Schmidt layer. Closure as an operator ideal and
-completeness remain open.
+complex trace are defined from the Hilbert--Schmidt layer. Membership is closed under adjoint and
+bounded left/right multiplication. The trace norm is adjoint-invariant and contractive under
+left/right multiplication by contractions. General operator-norm-weighted ideal bounds, trace
+cyclicity, and completeness remain open.
 
 ## Fredholm determinant
 
@@ -160,7 +162,7 @@ bounded `Observable` layer until such infrastructure exists.
 
 The following remain open or only partially covered:
 
-- general trace-class closure and the broader Schatten hierarchy;
+- general trace-class normed-ideal bounds, cyclicity, completeness, and the broader Schatten hierarchy;
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;
