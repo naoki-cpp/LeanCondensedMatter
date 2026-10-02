@@ -18,6 +18,36 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_self` — canonical `[simp]` boundary for the inter-block inversion count, recording that the diagonal block contribution is zero.
+- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — canonical expansion of the inter-block inversion count for distinct blocks; downstream crossing/parity proofs use this explicit counting formula.
+- `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq` — reusable transport theorem lifting pairwise modular agreement of block inversion counts to the total ordered inversion count.
+- `Combinatorics.FamilySlotShuffleTo.timeAssignment_apply` — canonical `[simp]` evaluation rule for restricting an ambient time assignment to one local shuffled block; it is an established simplification boundary used by diagrammatic consumers.
+- `Finpartition.partOrdersCompatible_assembleOrder` — canonical compatibility law for a global order assembled from part-local orders and a partition shuffle.
+- `Finpartition.partGlobalSlot_injective` — core structural property of the public map sending elements of one partition part to their ambient slots.
+- `Finpartition.partGlobalSlot_mem_partGlobalSlots` — canonical `[simp]` membership rule stating that every part element lands in that part's ambient-slot subset.
+- `Finpartition.card_partGlobalSlots` — canonical cardinality theorem identifying the number of ambient slots occupied by a part with the cardinality of that part.
+- `Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm` — canonical `[simp]` inverse-evaluation rule for the equivalence between a partition part and its occupied ambient-slot subtype.
+- `Finpartition.partGlobalSlot_partOrderOfOrder` — canonical `[simp]` computation rule relating the induced local part order to the increasing enumeration of its ambient slots.
+- `Combinatorics.FamilySlotShuffle.cons_slotEquiv_zero` — canonical `[simp]` computation rule for the head-block coordinates of the recursive family-shuffle constructor.
+- `Combinatorics.FamilySlotShuffle.continuous_integrand` — general closure theorem that a finite product of continuous local integrands remains continuous after a family shuffle; this is a reusable ordered-simplex analysis API.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_succ` — canonical `[simp]` normalization rule for the tail branch of the dependent head/tail local-slot equivalence.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inl` — canonical `[simp]` inverse-evaluation rule sending a head local slot back to the zero-index sigma fiber.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inr` — canonical `[simp]` inverse-evaluation rule sending a tail local slot back to the successor sigma fiber.
+- `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_zero` — canonical `[simp]` normalization rule for the head branch of the dependent head/tail local-slot equivalence.
+- `Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand` — general closure theorem that measurable locally bounded local integrands remain so after a finite family shuffle; it is the regularity input used by the recursive shuffle-integral proof.
+- `Combinatorics.FamilySlotShuffle.mem_headSlots_iff` — canonical `[simp]` membership characterization of the ambient head-slot subset in terms of the family-shuffle slot equivalence.
+- `Combinatorics.FamilySlotShuffle.mem_tailSlots_iff` — canonical `[simp]` membership characterization of the ambient tail-slot subset in terms of the head/tail local-slot decomposition.
+- `Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons` — public recursion law identifying the ordered-simplex integral of a constructed family shuffle with the corresponding binary head-versus-tail shuffled integral.
+- `Combinatorics.BinaryShuffle.slotShuffleLeftSlotSetEquiv_apply` — canonical `[simp]` evaluation rule for the equivalence between ambient slot shuffles and their left-slot subsets; it exposes the semantic map rather than the `Equiv.ofBijective` implementation.
+- `Combinatorics.BinaryShuffle.slot_injective` — core structural property of the public tagged-slot map `slot`; injectivity is independently useful and is the mathematical reason the tagged slots form an ambient-slot equivalence.
+- `Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul` — public continuous-integrand shuffle product formula in the ambient `SlotShuffle` presentation; this is an analytic endpoint used downstream by family-shuffle and two-point integration layers.
+- `Combinatorics.BinaryShuffle.sum_succ_succ` — canonical recursion splitting a finite binary-shuffle sum by the side supplying the outermost slot.
+- `Combinatorics.BinaryShuffle.sum_zero_left` — canonical boundary evaluation of a shuffle sum when the left family is empty.
+- `Combinatorics.BinaryShuffle.sum_zero_right` — canonical boundary evaluation of a shuffle sum when the right family is empty.
+- `Combinatorics.FamilySlotShuffle.card_headSlots` — canonical `[simp]` cardinality theorem for the public head-slot subset in the recursive family-shuffle decomposition.
+- `Combinatorics.FamilySlotShuffle.cons_injective` — standard injectivity theorem for the public recursive `FamilySlotShuffle.cons` constructor; it is useful independently of the current `consEquiv` construction.
+- `Combinatorics.FamilySlotShuffle.cons_outerShuffle_tailShuffle` — canonical reconstruction law showing that extracting the outer and tail shuffles and recombining them recovers the original family shuffle.
+- `Combinatorics.FamilySlotShuffle.cons_slotEquiv_succ` — canonical `[simp]` computation rule for tail-block coordinates under the recursive family-shuffle constructor.
 - `Combinatorics.BinaryShuffle.eq_allLeft` — canonical uniqueness theorem for the boundary type `BinaryShuffle m 0`; it underlies `zeroRightEquiv` and provides a direct rewrite to the unique all-left shuffle.
 - `Combinatorics.BinaryShuffle.eq_allRight` — canonical uniqueness theorem for the boundary type `BinaryShuffle 0 n`; it underlies `zeroLeftEquiv` and provides a direct rewrite to the unique all-right shuffle.
 - `Combinatorics.BinaryShuffle.leftSlot_consLeft_succ` — `[simp]` computation rule for recursive left-slot coordinates after a left outer step; it is part of the public recursive slot API used by shuffle-equivalence proofs.
