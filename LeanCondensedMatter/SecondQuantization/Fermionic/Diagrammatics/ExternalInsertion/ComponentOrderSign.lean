@@ -46,6 +46,15 @@ private noncomputable def familyRelativePerm {ι : Type*} {size : ι → ℕ} {t
     (σ τ : FamilySlotShuffleTo size total) : Equiv.Perm (Fin total) :=
   σ.slotEquiv.symm.trans τ.slotEquiv
 
+private theorem orderedBlockInversionCount_castTotalEquiv
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {m n : ℕ}
+    (h : m = n) (shuffle : FamilySlotShuffleTo size m)
+    (blockOrder : ι ≃ Fin (Fintype.card ι)) :
+    (FamilySlotShuffleTo.castTotalEquiv h shuffle).orderedBlockInversionCount blockOrder =
+      shuffle.orderedBlockInversionCount blockOrder := by
+  subst n
+  rfl
+
 private noncomputable def familyBlockDisagreementCount
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
     (σ τ : FamilySlotShuffleTo size total) (i j : ι) : ℕ :=
@@ -69,15 +78,26 @@ private theorem familyRelativePerm_inversionCount_eq_sum_blockDisagreementCount
   classical
   unfold permInversionCount
   simp_rw [sum_Ioi_eq_sum_ite]
-  rw [← Equiv.sum_comp σ.slotEquiv]
-  apply Finset.sum_congr rfl
-  rintro ⟨i, p⟩ _
-  rw [← Equiv.sum_comp σ.slotEquiv]
-  simp only [familyRelativePerm, Equiv.trans_apply, Equiv.symm_apply_apply]
-  rw [Fintype.sum_sigma]
-  simp only [familyBlockDisagreementCount]
-  rw [Fintype.sum_sigma]
-  rfl
+  calc
+    (∑ i : Fin total, ∑ j : Fin total,
+        if i < j then
+          if (familyRelativePerm σ τ) j < (familyRelativePerm σ τ) i then 1 else 0
+        else 0) =
+      ∑ x : Σ i, Fin (size i), ∑ y : Σ i, Fin (size i),
+        if σ.slotEquiv x < σ.slotEquiv y then
+          if τ.slotEquiv y < τ.slotEquiv x then 1 else 0
+        else 0 := by
+      rw [← Equiv.sum_comp σ.slotEquiv]
+      apply Finset.sum_congr rfl
+      intro x _
+      rw [← Equiv.sum_comp σ.slotEquiv]
+      simp only [familyRelativePerm, Equiv.trans_apply, Equiv.symm_apply_apply]
+    _ = ∑ i : ι, ∑ j : ι, familyBlockDisagreementCount σ τ i j := by
+      simp_rw [Fintype.sum_sigma]
+      unfold familyBlockDisagreementCount
+      apply Finset.sum_congr rfl
+      intro i _
+      rw [Finset.sum_comm]
 
 private theorem familyBlockDisagreementCount_self
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
@@ -107,27 +127,44 @@ private theorem familyBlockDisagreementCount_add_swap_mod_two
   classical
   rw [σ.blockInversionCount_of_ne hij, τ.blockInversionCount_of_ne hij]
   unfold familyBlockDisagreementCount
-  rw [Finset.sum_comm (f := fun q : Fin (size j) =>
-    ∑ p : Fin (size i),
-      if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then
-        if τ.slotEquiv ⟨i, p⟩ < τ.slotEquiv ⟨j, q⟩ then 1 else 0
-      else 0)]
-  rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-  rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-  refine Nat.ModEq.sum ?_
-  intro p hp
-  refine Nat.ModEq.sum ?_
-  intro q hq
-  have htag : (⟨i, p⟩ : Σ k, Fin (size k)) ≠ ⟨j, q⟩ := by
-    intro h
-    exact hij (congrArg Sigma.fst h)
-  have hσne : σ.slotEquiv ⟨i, p⟩ ≠ σ.slotEquiv ⟨j, q⟩ :=
-    σ.slotEquiv.injective.ne htag
-  have hτne : τ.slotEquiv ⟨i, p⟩ ≠ τ.slotEquiv ⟨j, q⟩ :=
-    τ.slotEquiv.injective.ne htag
-  rcases lt_or_gt_of_ne hσne with hσ | hσ <;>
-    rcases lt_or_gt_of_ne hτne with hτ | hτ <;>
-    simp [hσ, hτ, asymm hσ, asymm hτ, Nat.ModEq]
+  have hswap :
+      (∑ p : Fin (size j), ∑ q : Fin (size i),
+        if σ.slotEquiv ⟨j, p⟩ < σ.slotEquiv ⟨i, q⟩ then
+          if τ.slotEquiv ⟨i, q⟩ < τ.slotEquiv ⟨j, p⟩ then 1 else 0
+        else 0) =
+      ∑ p : Fin (size i), ∑ q : Fin (size j),
+        if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then
+          if τ.slotEquiv ⟨i, p⟩ < τ.slotEquiv ⟨j, q⟩ then 1 else 0
+        else 0 := by
+    rw [Finset.sum_comm]
+  rw [hswap]
+  have hsum :
+      Nat.ModEq 2
+        (∑ p : Fin (size i), ∑ q : Fin (size j),
+          (if σ.slotEquiv ⟨i, p⟩ < σ.slotEquiv ⟨j, q⟩ then
+              if τ.slotEquiv ⟨j, q⟩ < τ.slotEquiv ⟨i, p⟩ then 1 else 0
+            else 0) +
+          (if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then
+              if τ.slotEquiv ⟨i, p⟩ < τ.slotEquiv ⟨j, q⟩ then 1 else 0
+            else 0))
+        (∑ p : Fin (size i), ∑ q : Fin (size j),
+          (if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then 1 else 0) +
+          (if τ.slotEquiv ⟨j, q⟩ < τ.slotEquiv ⟨i, p⟩ then 1 else 0)) := by
+    refine Nat.ModEq.sum ?_
+    intro p _
+    refine Nat.ModEq.sum ?_
+    intro q _
+    have htag : (⟨i, p⟩ : Σ k, Fin (size k)) ≠ ⟨j, q⟩ := by
+      intro h
+      exact hij (congrArg Sigma.fst h)
+    have hσne : σ.slotEquiv ⟨i, p⟩ ≠ σ.slotEquiv ⟨j, q⟩ :=
+      σ.slotEquiv.injective.ne htag
+    have hτne : τ.slotEquiv ⟨i, p⟩ ≠ τ.slotEquiv ⟨j, q⟩ :=
+      τ.slotEquiv.injective.ne htag
+    rcases lt_or_gt_of_ne hσne with hσ | hσ <;>
+      rcases lt_or_gt_of_ne hτne with hτ | hτ <;>
+      simp [hσ, hτ, asymm hσ, asymm hτ, Nat.ModEq]
+  simpa only [Finset.sum_add_distrib] using hsum
 
 private theorem familyRelativePerm_inversionCount_mod_two
     {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
@@ -151,7 +188,6 @@ private theorem familyRelativePerm_inversionCount_mod_two
       (∑ i : ι, ∑ j : ι, rel i j) =
           ∑ p ∈ (Finset.univ : Finset ι) ×ˢ Finset.univ, rel p.1 p.2 := by
         rw [Finset.sum_product]
-        simp
       _ = ∑ p ∈ (Finset.univ : Finset ι).offDiag, rel p.1 p.2 := by
         rw [← Finset.diag_union_offDiag, Finset.sum_union (Finset.disjoint_diag_offDiag _)]
         simp [rel, familyBlockDisagreementCount_self]
@@ -168,7 +204,7 @@ private theorem familyRelativePerm_inversionCount_mod_two
             have hne : blockOrder i ≠ blockOrder j := by
               intro h
               exact hij (blockOrder.injective h)
-            exact lt_of_le_of_ne (le_of_not_gt hlt) hne
+            exact lt_of_le_of_ne (le_of_not_gt hlt) hne.symm
           have hnot : ¬ blockOrder i < blockOrder j := hlt
           simpa [selected, hnot, hgt, zero_add, add_comm] using
             familyBlockDisagreementCount_add_swap_mod_two σ τ j i hij.symm)
@@ -199,6 +235,19 @@ private theorem familyRelativePerm_sign_eq_orderedBlockInversionCount_add
 
 variable {Mode : Type*}
 
+/-- Relative permutation from fixed component-local atomic positions to mixed-time component-local
+atomic positions. -/
+noncomputable def ExternalInsertionWickDiagram.relativeComponentShuffle
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    Equiv.Perm (Fin (2 * (2 * n + E))) :=
+  familyRelativePerm
+    (FamilySlotShuffleTo.castTotalEquiv
+      (m := 2 * (2 * (Finset.univ : Finset (Fin n)).card + E))
+      (n := 2 * (2 * n + E)) (by simp) d.componentLegShuffle)
+    (d.componentMixedPositionShuffle externalTime σ)
+
 /-- The relative permutation between fixed and mixed component shuffles carries exactly the fixed
 external regrouping sign and the residual mixed inter-component crossing sign. -/
 theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter
@@ -207,19 +256,27 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (blockOrder : d.vertexGraph.componentPartition.parts ≃
       Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
-    (((Equiv.Perm.sign
-      (familyRelativePerm d.componentLegShuffle
-        (d.componentMixedPositionShuffle externalTime σ)) : ℤ) : ℂ)) =
+    (((Equiv.Perm.sign (d.relativeComponentShuffle externalTime σ) : ℤ) : ℂ)) =
       componentExternalOrderSign d blockOrder *
         (Common.Statistics.fermion.zetaInt : ℂ) ^
           d.mixedInterComponentCrossingCount externalTime σ := by
+  let fixedShuffle :=
+    FamilySlotShuffleTo.castTotalEquiv
+      (m := 2 * (2 * (Finset.univ : Finset (Fin n)).card + E))
+      (n := 2 * (2 * n + E)) (by simp) d.componentLegShuffle
+  change (((Equiv.Perm.sign
+    (familyRelativePerm fixedShuffle
+      (d.componentMixedPositionShuffle externalTime σ)) : ℤ) : ℂ)) = _
   rw [familyRelativePerm_sign_eq_orderedBlockInversionCount_add
-    d.componentLegShuffle (d.componentMixedPositionShuffle externalTime σ) blockOrder]
+    fixedShuffle (d.componentMixedPositionShuffle externalTime σ) blockOrder]
   simp only [Int.units_pow_coe, Int.cast_pow, Int.cast_neg, Int.cast_one]
   rw [pow_add]
   unfold componentExternalOrderSign
-  have hfixed :=
-    d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
+  have hfixed :
+      fixedShuffle.orderedBlockInversionCount blockOrder % 2 =
+        d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2 := by
+    rw [orderedBlockInversionCount_castTotalEquiv]
+    exact d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
   have hmixed :=
     d.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
       externalTime σ blockOrder
