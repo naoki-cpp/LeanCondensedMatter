@@ -40,7 +40,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Spectral trace-class theory and trace identities | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Countable diagonal infinite-dimensional Fredholm determinant | C | `proved` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) |
-| General non-self-adjoint trace-class ideal | C | `proved` for membership closure and contraction norm bounds; cyclicity/completeness remain `idea` | [operator analysis](roadmaps/operator-algebra.md) |
+| General non-self-adjoint trace-class ideal | C | `proved` for membership closure and left/right norm bounds; cyclicity/completeness remain `idea` | [operator analysis](roadmaps/operator-algebra.md) |
 | General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#requirements-for-a-general-fredholm-determinant) |
 | Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` |
 | Finite-volume Kubo–Bastin and regularized Středa response chain | A/C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-clean-response-chain) |

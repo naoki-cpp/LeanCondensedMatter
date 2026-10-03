@@ -507,6 +507,69 @@ theorem traceNorm_comp_right_le_of_norm_le_one
     _ ≤ hT.adjoint.traceNorm := hleft
     _ = hT.traceNorm := hT.traceNorm_adjoint
 
+/-- Left multiplication by a bounded operator scales the trace norm by at most its
+operator norm. -/
+theorem traceNorm_comp_left_le
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
+    (hT.comp_left W).traceNorm ≤ ‖W‖ * hT.traceNorm := by
+  by_cases hWzero : W = 0
+  · subst W
+    have hzero :
+        (hT.comp_left (0 : H →L[ℂ] H)).traceNorm =
+          (isTraceClass_zero (H := H)).traceNorm :=
+      traceNorm_eq_of_eq (hT.comp_left (0 : H →L[ℂ] H))
+        (isTraceClass_zero (H := H)) (by simp)
+    rw [hzero, traceNorm_zero]
+    simp
+  · have hWpos : 0 < ‖W‖ := norm_pos_iff.mpr hWzero
+    let W₀ : H →L[ℂ] H := ((‖W‖ : ℂ)⁻¹) • W
+    have hW₀norm : ‖W₀‖ = 1 := by
+      simp [W₀, norm_smul, norm_inv, hWpos.ne']
+    have hcontract :
+        (hT.comp_left W₀).traceNorm ≤ hT.traceNorm :=
+      hT.traceNorm_comp_left_le_of_norm_le_one W₀ hW₀norm.le
+    have hscale : (‖W‖ : ℂ) • W₀ = W := by
+      simp [W₀, smul_smul, hWpos.ne']
+    have hprod :
+        W * T = (‖W‖ : ℂ) • (W₀ * T) := by
+      calc
+        W * T = ((‖W‖ : ℂ) • W₀) * T := by rw [hscale]
+        _ = (‖W‖ : ℂ) • (W₀ * T) := by rw [smul_mul_assoc]
+    calc
+      (hT.comp_left W).traceNorm =
+          ((hT.comp_left W₀).smul (‖W‖ : ℂ)).traceNorm :=
+        traceNorm_eq_of_eq (hT.comp_left W)
+          ((hT.comp_left W₀).smul (‖W‖ : ℂ)) hprod
+      _ = ‖(‖W‖ : ℂ)‖ * (hT.comp_left W₀).traceNorm :=
+        (hT.comp_left W₀).traceNorm_smul (‖W‖ : ℂ)
+      _ ≤ ‖(‖W‖ : ℂ)‖ * hT.traceNorm :=
+        mul_le_mul_of_nonneg_left hcontract (norm_nonneg (‖W‖ : ℂ))
+      _ = ‖W‖ * hT.traceNorm := by simp
+
+/-- Right multiplication by a bounded operator scales the trace norm by at most its
+operator norm. -/
+theorem traceNorm_comp_right_le
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
+    (hT.comp_right W).traceNorm ≤ ‖W‖ * hT.traceNorm := by
+  have hprodAdj :
+      ContinuousLinearMap.adjoint (T * W) =
+        ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
+    rw [show ContinuousLinearMap.adjoint (T * W) = star (T * W) from
+      (ContinuousLinearMap.star_eq_adjoint (T * W)).symm]
+    rw [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint]
+  have hleft :=
+    hT.adjoint.traceNorm_comp_left_le (ContinuousLinearMap.adjoint W)
+  calc
+    (hT.comp_right W).traceNorm =
+        (hT.comp_right W).adjoint.traceNorm :=
+      (hT.comp_right W).traceNorm_adjoint.symm
+    _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm :=
+      traceNorm_eq_of_eq (hT.comp_right W).adjoint
+        (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)) hprodAdj
+    _ ≤ ‖ContinuousLinearMap.adjoint W‖ * hT.adjoint.traceNorm := hleft
+    _ = ‖W‖ * hT.traceNorm := by
+      rw [← ContinuousLinearMap.star_eq_adjoint, norm_star, hT.traceNorm_adjoint]
+
 /-- The trace norm satisfies the triangle inequality. -/
 theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
     (hT.add hR).traceNorm ≤ hT.traceNorm + hR.traceNorm := by

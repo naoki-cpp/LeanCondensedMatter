@@ -21,8 +21,8 @@ applies.
   `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace.
   Membership is closed under addition, scalar multiplication, adjoint, and bounded left/right
   multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
-  by contractions. General `‖W‖`-weighted ideal bounds, trace cyclicity, and completeness remain
-  missing.
+  by contractions, with the general bounds `‖WT‖₁ ≤ ‖W‖ ‖T‖₁` and
+  `‖TW‖₁ ≤ ‖W‖ ‖T‖₁`. Trace cyclicity and completeness remain missing.
 
 - **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
