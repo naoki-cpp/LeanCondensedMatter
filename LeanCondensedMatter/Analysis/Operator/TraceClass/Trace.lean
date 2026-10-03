@@ -118,7 +118,7 @@ theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
 
 /-- For a trace-class operator, the complex diagonal series has the same value in every Hilbert
 basis. -/
-theorem traceSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+private theorem traceSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
     traceSeriesWrt d T = traceSeriesWrt f T := by
   obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
@@ -169,11 +169,6 @@ theorem trace_eq_innerHS_of_hilbertSchmidt_factorization
       intro i
       exact diagonal_eq_hilbertSchmidt_inner hfactor (f i)
     _ = innerHS d A B := innerHS_eq_of_isHilbertSchmidt f d hA hB
-
-/-- The trace is independent of the proof of trace-class membership. -/
-theorem trace_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
-    hT.trace = hT'.trace := by
-  exact congrArg trace (Subsingleton.elim hT hT')
 
 end IsTraceClass
 
