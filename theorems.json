@@ -14083,6 +14083,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
@@ -14094,10 +14095,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14131,7 +14133,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
     "dependencies": [
@@ -14142,10 +14146,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14167,7 +14173,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14179,6 +14185,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
     "dependencies": [
@@ -14189,9 +14196,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14569,6 +14577,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.neg",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_neg",
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
       "ContinuousLinearMap.IsTraceClass.trace_neg",
@@ -14583,12 +14592,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.neg",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_neg",
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
       "ContinuousLinearMap.IsTraceClass.trace_neg",
       "ContinuousLinearMap.IsTraceClass.trace_smul"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14898,7 +14908,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14910,6 +14920,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
     "dependencies": [
@@ -14920,7 +14931,58 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (W : H →L[ℂ] H), ⋯.traceNorm ≤ ‖W‖ * hT.traceNorm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "externalAxioms": [],
+    "docString": "Left multiplication by a bounded operator scales the trace norm by at most its\noperator norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.comp_left",
+      "ContinuousLinearMap.IsTraceClass.smul",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
+      "ContinuousLinearMap.isTraceClass_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -14944,7 +15006,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14956,6 +15018,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
     "dependencies": [
@@ -14969,9 +15032,55 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (W : H →L[ℂ] H), ⋯.traceNorm ≤ ‖W‖ * hT.traceNorm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "externalAxioms": [],
+    "docString": "Right multiplication by a bounded operator scales the trace norm by at most its\noperator norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.adjoint",
+      "ContinuousLinearMap.IsTraceClass.comp_left",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15314,7 +15423,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15326,6 +15435,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_neg"
     ],
     "dependencies": [
@@ -15336,9 +15446,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_neg"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15352,7 +15463,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H],\n  ⋯.traceNorm = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -15360,7 +15471,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15371,7 +15482,9 @@
     "docString": "The zero operator has trace norm zero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le"
+    ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
       "ContinuousLinearMap.isTraceClass_zero",
@@ -15379,8 +15492,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18718,6 +18833,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
       "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
@@ -18728,10 +18844,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
       "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148385,7 +148502,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -148397,6 +148514,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
     "dependencies": [
@@ -148405,9 +148524,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
