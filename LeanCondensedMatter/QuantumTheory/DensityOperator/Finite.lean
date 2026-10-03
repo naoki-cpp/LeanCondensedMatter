@@ -136,7 +136,7 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
       LinearMap.trace ℂ H ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) =
         ∑ i, g i := by
     simpa [g] using htrace
-  rw [ρ.expectation_apply, hsum, ← hgtrace]
+  rw [ρ.expectation_eq_spectral_tsum, hsum, ← hgtrace]
 
 /-- In finite dimensions, the ordinary trace of a density operator is one. -/
 theorem DensityOperator.linearMap_trace_eq_one (ρ : DensityOperator H) :
