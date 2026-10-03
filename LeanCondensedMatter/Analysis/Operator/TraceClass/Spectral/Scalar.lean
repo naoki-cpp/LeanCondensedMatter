@@ -157,7 +157,7 @@ private theorem spectralTrace_zero :
 
 omit [CompleteSpace H] in
 /-- Spectral summability is preserved under multiplication by any real scalar. -/
-theorem hasSummableRealEigenvalues_smul (c : ℝ)
+private theorem hasSummableRealEigenvalues_smul (c : ℝ)
     (h : HasSummableRealEigenvalues T) : HasSummableRealEigenvalues (c • T) := by
   by_cases hc : c = 0
   · subst c
