@@ -75,7 +75,7 @@ theorem DensityOperator.ofFiniteDimensional_op
     (DensityOperator.ofFiniteDimensional ρ hpos htrace).op = ρ :=
   rfl
 
-/-- In finite dimensions, the spectral expectation equals the ordinary trace `Tr(ρA)`. -/
+/-- In finite dimensions, the canonical expectation agrees with the ordinary linear-map trace. -/
 theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
     (A : H →L[ℂ] H) :
     ρ.expectation A =
