@@ -141,15 +141,15 @@ private theorem familyBlockDisagreementCount_add_swap_mod_two
   have hsum :
       Nat.ModEq 2
         (∑ p : Fin (size i), ∑ q : Fin (size j),
-          (if σ.slotEquiv ⟨i, p⟩ < σ.slotEquiv ⟨j, q⟩ then
+          ((if σ.slotEquiv ⟨i, p⟩ < σ.slotEquiv ⟨j, q⟩ then
               if τ.slotEquiv ⟨j, q⟩ < τ.slotEquiv ⟨i, p⟩ then 1 else 0
             else 0) +
           (if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then
               if τ.slotEquiv ⟨i, p⟩ < τ.slotEquiv ⟨j, q⟩ then 1 else 0
-            else 0))
+            else 0)))
         (∑ p : Fin (size i), ∑ q : Fin (size j),
-          (if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then 1 else 0) +
-          (if τ.slotEquiv ⟨j, q⟩ < τ.slotEquiv ⟨i, p⟩ then 1 else 0)) := by
+          ((if σ.slotEquiv ⟨j, q⟩ < σ.slotEquiv ⟨i, p⟩ then 1 else 0) +
+          (if τ.slotEquiv ⟨j, q⟩ < τ.slotEquiv ⟨i, p⟩ then 1 else 0))) := by
     refine Nat.ModEq.sum ?_
     intro p _
     refine Nat.ModEq.sum ?_
@@ -269,7 +269,8 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
       (d.componentMixedPositionShuffle externalTime σ)) : ℤ) : ℂ)) = _
   rw [familyRelativePerm_sign_eq_orderedBlockInversionCount_add
     fixedShuffle (d.componentMixedPositionShuffle externalTime σ) blockOrder]
-  simp only [Int.units_pow_coe, Int.cast_pow, Int.cast_neg, Int.cast_one]
+  simp only [Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one,
+    Int.cast_pow, Int.cast_neg, Int.cast_one]
   rw [pow_add]
   unfold componentExternalOrderSign
   have hfixed :
