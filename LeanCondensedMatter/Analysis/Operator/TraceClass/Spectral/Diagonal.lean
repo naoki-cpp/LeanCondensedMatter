@@ -20,7 +20,7 @@ variable {T : H →L[ℂ] H}
 
 /-- A positive compact operator whose lossless diagonal values are summable against one Hilbert
 basis has summable nonzero real eigenvalues. -/
-theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
+private theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
     (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
     (d : HilbertBasis ι ℂ H)
     (hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) :
