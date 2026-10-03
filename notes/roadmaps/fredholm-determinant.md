@@ -38,8 +38,9 @@ The existing Hilbert--Schmidt layer provides basis independence, adjoint invaria
 composition, a basis-independent norm-square series on Hilbert--Schmidt operators, and the pairing
 `innerHS`. General non-self-adjoint trace-class membership is defined by Hilbert--Schmidt membership
 of `sqrt(|T|)`; its canonical real trace norm and basis-independent complex trace are available.
-The project does not yet have the full trace-class ideal closure and cyclicity results required by
-Fredholm theory.
+Membership is closed under adjoint and bounded multiplication, and contraction trace-norm bounds
+are available. General operator-norm-weighted ideal estimates, completeness/approximation, and
+trace cyclicity required by Fredholm theory remain open.
 
 `ContinuousLinearMap.SpectralTraceClass` remains a compact self-adjoint spectral construction; it is
 not a substitute for that missing ideal.
@@ -67,7 +68,7 @@ conditions.
 
 - characterize invertibility of `1 + diagonalOp b coeff` under exact diagonal hypotheses;
 - relate the diagonal determinant to the existing spectral trace on a proved overlap;
-- complete the general trace-class ideal operations and trace cyclicity;
+- complete the general trace-class norm bounds, approximation/completeness, and trace cyclicity;
 - extend the determinant beyond diagonal or otherwise explicitly controlled spectral data.
 
 The current API must not be broadened by finite-dimensional fallback behavior or by silently treating
