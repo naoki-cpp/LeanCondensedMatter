@@ -158,7 +158,7 @@ theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
 
 namespace SpectralTraceClass
 
-variable {T T' : H →L[ℂ] H}
+variable {T : H →L[ℂ] H}
 
 /-- Build bundled spectral-trace data for a positive compact operator with summable real
 eigenvalues. Positivity supplies symmetry. -/
@@ -239,17 +239,6 @@ theorem sum_diagonalExpectationValue_le_spectralTrace (h : SpectralTraceClass T)
   have hbound := h.isTraceClass.sum_diagonalExpectationValue_le_traceNorm hpos hd
   rw [h.traceNorm_eq_spectralTrace hpos] at hbound
   simpa using hbound
-
-/-- Cyclicity of the canonical complex trace for two products carrying spectral trace-class data.
-The individual factors only need to be symmetric. -/
-theorem trace_comp_comm (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
-    (hTT' : SpectralTraceClass (T * T')) (hT'T : SpectralTraceClass (T' * T)) :
-    hTT'.isTraceClass.trace = hT'T.isTraceClass.trace := by
-  rw [hTT'.isTraceClass.trace_eq_spectralTrace hTT'.compact hTT'.isSelfAdjoint,
-    hT'T.isTraceClass.trace_eq_spectralTrace hT'T.compact hT'T.isSelfAdjoint]
-  exact_mod_cast ContinuousLinearMap.spectralTrace_comp_comm
-    hTsym hT'sym hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
-    hTT'.summable hT'T.summable
 
 end SpectralTraceClass
 end ContinuousLinearMap
