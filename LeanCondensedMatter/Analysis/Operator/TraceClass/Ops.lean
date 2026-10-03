@@ -321,6 +321,32 @@ theorem traceNorm_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   simpa only [neg_one_smul, norm_neg, norm_one, one_mul] using
     hT.traceNorm_smul (-1 : ℂ)
 
+private theorem traceNorm_eq_tsum_norm_inner_left_of_polar
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (U : H →L[ℂ] H)
+    (hU : ContinuousLinearMap.adjoint U * T = CFC.abs T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.traceNorm = ∑' i, ‖inner ℂ (U (d i)) (T (d i))‖ := by
+  rw [hT.traceNorm_eq_tsum_diagonalExpectationValue d]
+  apply tsum_congr
+  intro i
+  have hdiag :
+      (diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ) =
+        inner ℂ (U (d i)) (T (d i)) := by
+    rw [coe_diagonalExpectationValue_right, ← hU, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
+  have hnonneg := diagonalExpectationValue_nonneg
+    (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
+  have hcastNorm :
+      ‖(diagonalExpectationValue (CFC.abs T)
+        (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ =
+        diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
+    rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
+  calc
+    diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) =
+        ‖(diagonalExpectationValue (CFC.abs T)
+          (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ := hcastNorm.symm
+    _ = ‖inner ℂ (U (d i)) (T (d i))‖ := by rw [hdiag]
+
 private theorem traceNorm_le_half_normSq_add_of_factorization
     {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
     (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
@@ -340,37 +366,19 @@ private theorem traceNorm_le_half_normSq_add_of_factorization
         exact mul_le_mul_of_nonneg_right
           (pow_le_pow_left₀ (norm_nonneg U) hUnorm 2) hA.normSq_nonneg
       _ = hA.normSq := by rw [one_pow, one_mul]
-  have hdiagCast (i : w) :
-      (diagonalExpectationValue (CFC.abs T)
-        (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ) =
+  have hterm (i : w) :
+      inner ℂ (U (d i)) (T (d i)) =
         inner ℂ ((A * U) (d i)) (B (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
     calc
-      inner ℂ (d i) ((ContinuousLinearMap.adjoint U) (T (d i))) =
-          inner ℂ (U (d i)) (T (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
-      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A * B) (d i)) := by
-        rw [hfactor]
+      inner ℂ (U (d i)) (T (d i)) =
+          inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A * B) (d i)) := by rw [hfactor]
       _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
         rw [mul_apply_eq_comp]
       _ = inner ℂ (A (U (d i))) (B (d i)) :=
         ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-      _ = inner ℂ ((A * U) (d i)) (B (d i)) := by
-        rw [mul_apply_eq_comp]
-  have hdiagNorm (i : w) :
-      diagonalExpectationValue (CFC.abs T)
-        (CFC.abs_nonneg T).isSelfAdjoint (d i) =
-        ‖inner ℂ ((A * U) (d i)) (B (d i))‖ := by
-    have hnonneg := diagonalExpectationValue_nonneg
-      (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
-    have hnorm := congrArg norm (hdiagCast i)
-    have hcastNorm :
-        ‖(diagonalExpectationValue (CFC.abs T)
-          (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ =
-          diagonalExpectationValue (CFC.abs T)
-            (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
-      rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
-    exact hcastNorm.symm.trans hnorm
+      _ = inner ℂ ((A * U) (d i)) (B (d i)) := by rw [mul_apply_eq_comp]
+  have hsumInner := hT.summable_inner_left U d
+  have hnormSummable : Summable (fun i => ‖inner ℂ (U (d i)) (T (d i))‖) := hsumInner.norm
   have hAUhas : HasSum (fun i => ‖(A * U) (d i)‖ ^ 2) hAU.normSq := by
     rw [hAU.normSq_eq_seriesWrt d]
     exact (hAU.isHilbertSchmidtWrt d).hasSum
@@ -382,20 +390,15 @@ private theorem traceNorm_le_half_normSq_add_of_factorization
         ((hAU.normSq + hB.normSq) / 2) :=
     (hAUhas.add hBhas).div_const 2
   have hpoint_le (i : w) :
-      diagonalExpectationValue (CFC.abs T)
-          (CFC.abs_nonneg T).isSelfAdjoint (d i) ≤
+      ‖inner ℂ (U (d i)) (T (d i))‖ ≤
         (‖(A * U) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2 := by
-    rw [hdiagNorm]
+    rw [hterm]
     exact (norm_inner_le_norm ((A * U) (d i)) (B (d i))).trans (by
       nlinarith [sq_nonneg (‖(A * U) (d i)‖ - ‖B (d i)‖)])
-  have hdiagSum := hT.isTraceClassWrt d
-  rw [IsTraceClassWrt] at hdiagSum
-  rw [hT.traceNorm_eq_tsum_diagonalExpectationValue d]
+  rw [traceNorm_eq_tsum_norm_inner_left_of_polar hT U hUright d]
   calc
-    (∑' i, diagonalExpectationValue (CFC.abs T)
-        (CFC.abs_nonneg T).isSelfAdjoint (d i)) ≤
-        (hAU.normSq + hB.normSq) / 2 :=
-      (hdiagSum.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
+    (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) ≤ (hAU.normSq + hB.normSq) / 2 :=
+      (hnormSummable.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
     _ ≤ (hA.normSq + hB.normSq) / 2 := by linarith
 
 private theorem traceNorm_adjoint_le {T : H →L[ℂ] H} (hT : IsTraceClass T) :
@@ -422,7 +425,6 @@ theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   have hrev' : hTT.traceNorm ≤ hT.adjoint.traceNorm := by
     simpa only [ContinuousLinearMap.adjoint_adjoint] using hrev
   exact (hT.traceNorm_proof_irrel hTT).le.trans hrev'
-
 /-- Left multiplication by a contraction does not increase the trace norm. -/
 private theorem traceNorm_comp_left_le_of_norm_le_one
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
@@ -438,42 +440,23 @@ private theorem traceNorm_comp_left_le_of_norm_le_one
       _ ≤ 1 * 1 := mul_le_mul_of_nonneg_left hUnorm zero_le_one
       _ = 1 := one_mul 1
   have hpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm Bop hBopNorm d
-  have hdiagCast (i : w) :
-      (diagonalExpectationValue (CFC.abs (W * T))
-        (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) : ℂ) =
-        inner ℂ (Bop (d i)) (T (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
-    calc
-      inner ℂ (d i) ((ContinuousLinearMap.adjoint U) ((W * T) (d i))) =
-          inner ℂ (U (d i)) ((W * T) (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right U (d i) ((W * T) (d i))
-      _ = inner ℂ (U (d i)) (W (T (d i))) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ ((ContinuousLinearMap.adjoint W) (U (d i))) (T (d i)) :=
-        (ContinuousLinearMap.adjoint_inner_left W (T (d i)) (U (d i))).symm
-      _ = inner ℂ (Bop (d i)) (T (d i)) := by
-        rw [mul_apply_eq_comp]
-  have hdiagNorm (i : w) :
-      diagonalExpectationValue (CFC.abs (W * T))
-        (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) =
-        ‖inner ℂ (Bop (d i)) (T (d i))‖ := by
-    have hnonneg := diagonalExpectationValue_nonneg
-      (CFC.abs (W * T)) (nonneg_iff_isPositive.mp (CFC.abs_nonneg (W * T))) (d i)
-    have hnorm := congrArg norm (hdiagCast i)
-    have hcastNorm :
-        ‖(diagonalExpectationValue (CFC.abs (W * T))
-          (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) : ℂ)‖ =
-          diagonalExpectationValue (CFC.abs (W * T))
-            (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) := by
-      rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
-    exact hcastNorm.symm.trans hnorm
-  rw [(hT.comp_left W).traceNorm_eq_tsum_diagonalExpectationValue d]
+  rw [traceNorm_eq_tsum_norm_inner_left_of_polar (hT.comp_left W) U hUright d]
   calc
-    (∑' i, diagonalExpectationValue (CFC.abs (W * T))
-        (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i)) =
+    (∑' i, ‖inner ℂ (U (d i)) ((W * T) (d i))‖) =
         ∑' i, ‖inner ℂ (Bop (d i)) (T (d i))‖ := by
       apply tsum_congr
-      exact hdiagNorm
+      intro i
+      have hterm :
+          inner ℂ (U (d i)) ((W * T) (d i)) =
+            inner ℂ (Bop (d i)) (T (d i)) := by
+        rw [mul_apply_eq_comp]
+        calc
+          inner ℂ (U (d i)) (W (T (d i))) =
+              inner ℂ ((ContinuousLinearMap.adjoint W) (U (d i))) (T (d i)) :=
+            (ContinuousLinearMap.adjoint_inner_left W (T (d i)) (U (d i))).symm
+          _ = inner ℂ (Bop (d i)) (T (d i)) := by
+            simp [Bop, mul_apply_eq_comp]
+      rw [hterm]
     _ ≤ hT.traceNorm := hpair.2
 
 private theorem traceNorm_eq_of_eq
@@ -552,45 +535,22 @@ theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTra
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (T + R)
   have hTpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
   have hRpair := hR.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
-  have hdiagCast (i : w) :
-      (diagonalExpectationValue (CFC.abs (T + R))
-        (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ) =
-        inner ℂ (U (d i)) ((T + R) (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right U (d i) ((T + R) (d i))
-  have hdiagNorm (i : w) :
-      diagonalExpectationValue (CFC.abs (T + R))
-        (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) =
-        ‖inner ℂ (U (d i)) ((T + R) (d i))‖ := by
-    have hnonneg := diagonalExpectationValue_nonneg
-      (CFC.abs (T + R)) (nonneg_iff_isPositive.mp (CFC.abs_nonneg (T + R))) (d i)
-    have hnorm := congrArg norm (hdiagCast i)
-    have hcastNorm :
-        ‖(diagonalExpectationValue (CFC.abs (T + R))
-          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ)‖ =
-          diagonalExpectationValue (CFC.abs (T + R))
-            (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) := by
-      rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
-    exact hcastNorm.symm.trans hnorm
+  have hsumPair :=
+    (hT.add hR).summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
+  have hrhsSum := hTpair.1.add hRpair.1
   have hpoint_le (i : w) :
-      diagonalExpectationValue (CFC.abs (T + R))
-          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) ≤
+      ‖inner ℂ (U (d i)) ((T + R) (d i))‖ ≤
         ‖inner ℂ (U (d i)) (T (d i))‖ +
           ‖inner ℂ (U (d i)) (R (d i))‖ := by
-    rw [hdiagNorm]
     simpa [add_apply, inner_add_right] using
       norm_add_le (inner ℂ (U (d i)) (T (d i)))
         (inner ℂ (U (d i)) (R (d i)))
-  have hdiagSum := (hT.add hR).isTraceClassWrt d
-  rw [IsTraceClassWrt] at hdiagSum
-  have hrhsSum := hTpair.1.add hRpair.1
-  rw [(hT.add hR).traceNorm_eq_tsum_diagonalExpectationValue d]
+  rw [traceNorm_eq_tsum_norm_inner_left_of_polar (hT.add hR) U hUright d]
   calc
-    (∑' i, diagonalExpectationValue (CFC.abs (T + R))
-        (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i)) ≤
+    (∑' i, ‖inner ℂ (U (d i)) ((T + R) (d i))‖) ≤
         ∑' i, (‖inner ℂ (U (d i)) (T (d i))‖ +
           ‖inner ℂ (U (d i)) (R (d i))‖) :=
-      hdiagSum.tsum_le_tsum hpoint_le hrhsSum
+      hsumPair.1.tsum_le_tsum hpoint_le hrhsSum
     _ = (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) +
         ∑' i, ‖inner ℂ (U (d i)) (R (d i))‖ :=
       hTpair.1.tsum_add hRpair.1
