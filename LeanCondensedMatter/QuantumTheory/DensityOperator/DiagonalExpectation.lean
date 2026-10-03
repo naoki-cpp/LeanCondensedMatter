@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 
 attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
@@ -23,6 +24,18 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 /-- The positive square root of a density operator. -/
 noncomputable def DensityOperator.sqrtOp (ρ : DensityOperator H) : H →L[ℂ] H :=
   cfc Real.sqrt ρ.op
+
+/-- The positive square root of a density operator is self-adjoint. -/
+theorem DensityOperator.sqrtOp_isSelfAdjoint (ρ : DensityOperator H) :
+    IsSelfAdjoint ρ.sqrtOp := by
+  simpa [DensityOperator.sqrtOp] using (CFC.sqrt_nonneg ρ.op).isSelfAdjoint
+
+/-- Squaring the positive square root recovers the density operator. -/
+theorem DensityOperator.sqrtOp_mul_self (ρ : DensityOperator H) :
+    ρ.sqrtOp * ρ.sqrtOp = ρ.op := by
+  have hnonneg : 0 ≤ ρ.op := nonneg_iff_isPositive.mpr ρ.pos
+  simpa [DensityOperator.sqrtOp] using
+    (CFC.sqrt_mul_sqrt_self ρ.op hnonneg)
 
 /-- The square-root density operator acts on an eigenvector by the square root of its eigenvalue. -/
 theorem DensityOperator.sqrtOp_apply_eigenvector (ρ : DensityOperator H) {v : H} {c : ℝ}
@@ -143,5 +156,41 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
     ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp) := hbasis
     _ = innerHS d ρ.sqrtOp (A * ρ.sqrtOp) :=
       (innerHS_eq_of_isHilbertSchmidt d b hsqrt hAsqrt).symm
+
+/-- The canonical density-state expectation is the canonical complex trace `Tr(ρA)`.
+This is valid for every bounded operator `A`. -/
+theorem DensityOperator.expectation_eq_trace (ρ : DensityOperator H)
+    (A : H →L[ℂ] H) :
+    ρ.expectation A = (ρ.isTraceClass.comp_right A).trace := by
+  obtain ⟨κ, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  have hsqrt : IsHilbertSchmidt ρ.sqrtOp := ρ.sqrtOp_isHilbertSchmidt
+  have hAsqrt : IsHilbertSchmidt (A * ρ.sqrtOp) :=
+    isHilbertSchmidt_comp_left A hsqrt
+  have hfactorSandwich :
+      ContinuousLinearMap.adjoint ρ.sqrtOp * (A * ρ.sqrtOp) =
+        ρ.sqrtOp * (A * ρ.sqrtOp) := by
+    rw [ρ.sqrtOp_isSelfAdjoint.adjoint_eq]
+  have hsandwich : IsTraceClass (ρ.sqrtOp * (A * ρ.sqrtOp)) :=
+    IsTraceClass.of_hilbertSchmidt_factorization hsqrt hAsqrt hfactorSandwich
+  have hright : IsTraceClass ((A * ρ.sqrtOp) * ρ.sqrtOp) := by
+    apply IsTraceClass.of_hilbertSchmidt_factorization
+      (isHilbertSchmidt_adjoint hAsqrt) hsqrt
+    rw [ContinuousLinearMap.adjoint_adjoint]
+  have hcycle :
+      hsandwich.trace = hright.trace :=
+    IsTraceClass.trace_mul_comm_of_hilbertSchmidt hsqrt hAsqrt hsandwich hright
+  have hprod : (A * ρ.sqrtOp) * ρ.sqrtOp = A * ρ.op := by
+    rw [mul_assoc, ρ.sqrtOp_mul_self]
+  calc
+    ρ.expectation A = innerHS d ρ.sqrtOp (A * ρ.sqrtOp) :=
+      ρ.expectation_eq_innerHS A d
+    _ = hsandwich.trace :=
+      (hsandwich.trace_eq_innerHS_of_hilbertSchmidt_factorization
+        hsqrt hAsqrt hfactorSandwich d).symm
+    _ = hright.trace := hcycle
+    _ = (ρ.isTraceClass.comp_left A).trace :=
+      IsTraceClass.trace_eq_of_eq hright (ρ.isTraceClass.comp_left A) hprod
+    _ = (ρ.isTraceClass.comp_right A).trace :=
+      (ρ.isTraceClass.trace_comp_comm A).symm
 
 end QuantumTheory
