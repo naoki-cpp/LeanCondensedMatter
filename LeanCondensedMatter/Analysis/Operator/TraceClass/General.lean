@@ -58,14 +58,6 @@ theorem isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs
   unfold IsTraceClassWrt IsHilbertSchmidtWrt
   simpa only [diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs]
 
-/-- `IsTraceClassWrt` is independent of the chosen Hilbert basis. -/
-theorem isTraceClassWrt_iff {ι κ : Type*} (d : HilbertBasis ι ℂ H)
-    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) :
-    IsTraceClassWrt d T ↔ IsTraceClassWrt f T := by
-  rw [isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs,
-    isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs]
-  exact isHilbertSchmidtWrt_iff d f (CFC.sqrt (CFC.abs T))
-
 /-- A bounded operator is trace class when `sqrt(|T|)` is Hilbert--Schmidt. The equivalent
 Hilbert-basis diagonal criterion is `isTraceClass_iff_isTraceClassWrt`. -/
 def IsTraceClass (T : H →L[ℂ] H) : Prop :=
