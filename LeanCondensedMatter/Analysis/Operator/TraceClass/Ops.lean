@@ -450,7 +450,7 @@ theorem traceNorm_comp_left_le_of_norm_le_one
       _ = inner ℂ (U (d i)) (W (T (d i))) := by
         rw [mul_apply_eq_comp]
       _ = inner ℂ ((ContinuousLinearMap.adjoint W) (U (d i))) (T (d i)) :=
-        (ContinuousLinearMap.adjoint_inner_left W (U (d i)) (T (d i))).symm
+        (ContinuousLinearMap.adjoint_inner_left W (T (d i)) (U (d i))).symm
       _ = inner ℂ (Bop (d i)) (T (d i)) := by
         rw [mul_apply_eq_comp]
   have hdiagNorm (i : w) :
