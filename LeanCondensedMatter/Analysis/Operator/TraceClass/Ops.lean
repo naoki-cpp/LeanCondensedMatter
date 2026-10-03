@@ -481,7 +481,7 @@ theorem traceNorm_comp_right_le_of_norm_le_one
         (hT.comp_right W).adjoint.traceNorm :=
       (hT.comp_right W).traceNorm_adjoint.symm
     _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm := by
-      rw [hprodAdj]
+      cases hprodAdj
       exact IsTraceClass.traceNorm_proof_irrel _ _
     _ ≤ hT.adjoint.traceNorm := hleft
     _ = hT.traceNorm := hT.traceNorm_adjoint
