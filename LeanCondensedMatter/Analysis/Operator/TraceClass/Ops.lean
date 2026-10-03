@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
 
 set_option linter.style.header false
 
