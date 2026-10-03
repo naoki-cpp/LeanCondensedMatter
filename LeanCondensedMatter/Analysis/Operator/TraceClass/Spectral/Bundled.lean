@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
