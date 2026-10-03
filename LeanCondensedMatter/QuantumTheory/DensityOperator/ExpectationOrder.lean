@@ -31,7 +31,7 @@ theorem DensityOperator.expectation_im_eq_zero_of_isSymmetric
     (ρ : DensityOperator H) {A : H →L[ℂ] H}
     (hA : (A : H →ₗ[ℂ] H).IsSymmetric) :
     (ρ.expectation A).im = 0 := by
-  rw [ρ.expectation_apply, Complex.im_tsum (ρ.summable_expectation_term A)]
+  rw [ρ.expectation_eq_spectral_tsum, Complex.im_tsum (ρ.summable_expectation_term A)]
   calc
     (∑' a : EigenvectorIndex ρ.op,
         ((a.1.1 : ℂ) *
@@ -62,7 +62,7 @@ private theorem inner_apply_im_eq_zero_of_isPositive
 theorem DensityOperator.expectation_im_eq_zero_of_isPositive
     (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
     (ρ.expectation A).im = 0 := by
-  rw [ρ.expectation_apply, Complex.im_tsum (ρ.summable_expectation_term A)]
+  rw [ρ.expectation_eq_spectral_tsum, Complex.im_tsum (ρ.summable_expectation_term A)]
   calc
     (∑' a : EigenvectorIndex ρ.op,
         ((a.1.1 : ℂ) *
@@ -85,7 +85,7 @@ theorem DensityOperator.expectation_isSelfAdjoint_of_isPositive
 theorem DensityOperator.expectation_re_nonneg_of_isPositive
     (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
     0 ≤ (ρ.expectation A).re := by
-  rw [ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term A)]
+  rw [ρ.expectation_eq_spectral_tsum, Complex.re_tsum (ρ.summable_expectation_term A)]
   apply tsum_nonneg
   intro a
   simpa [Complex.mul_re] using
