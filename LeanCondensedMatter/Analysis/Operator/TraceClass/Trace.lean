@@ -26,7 +26,7 @@ noncomputable def traceSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
   ∑' i, inner ℂ (d i) (T (d i))
 
 /-- Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors. -/
-theorem IsTraceClass.exists_hilbertSchmidt_factorization
+private theorem exists_hilbertSchmidt_factorization_of_isTraceClass
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     ∃ A B : H →L[ℂ] H,
       IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ ContinuousLinearMap.adjoint A * B = T := by
@@ -50,7 +50,7 @@ theorem IsTraceClass.exists_hilbertSchmidt_factorization
   rw [hAdjA, mul_assoc, hSS, hU]
 
 /-- A product `A† B` of Hilbert--Schmidt operators is trace class. -/
-theorem IsTraceClass.of_hilbertSchmidt_factorization
+private theorem isTraceClass_of_hilbertSchmidt_factorization
     {A B T : H →L[ℂ] H} (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
     (hfactor : ContinuousLinearMap.adjoint A * B = T) :
     IsTraceClass T := by
@@ -79,7 +79,7 @@ theorem IsTraceClass.of_hilbertSchmidt_factorization
       Summable (fun i =>
         ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ)) :=
     hsum.congr fun i => (hpoint i).symm
-  apply IsTraceClass.of_isTraceClassWrt (d := d)
+  apply (isTraceClass_iff_isTraceClassWrt d T).mpr
   rw [IsTraceClassWrt]
   exact Complex.summable_ofReal.mp hcast
 
@@ -90,9 +90,9 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
       ∃ A B : H →L[ℂ] H,
         IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ ContinuousLinearMap.adjoint A * B = T := by
   constructor
-  · exact IsTraceClass.exists_hilbertSchmidt_factorization
+  · exact exists_hilbertSchmidt_factorization_of_isTraceClass
   · rintro ⟨A, B, hA, hB, hfactor⟩
-    exact IsTraceClass.of_hilbertSchmidt_factorization hA hB hfactor
+    exact isTraceClass_of_hilbertSchmidt_factorization hA hB hfactor
 
 private theorem diagonal_eq_hilbertSchmidt_inner
     {T A B : H →L[ℂ] H} (hfactor : ContinuousLinearMap.adjoint A * B = T)
@@ -111,7 +111,7 @@ basis. -/
 theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
     (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => inner ℂ (d i) (T (d i))) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
     (hA.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
   exact hsum.congr fun i => (diagonal_eq_hilbertSchmidt_inner hfactor (d i)).symm
@@ -121,7 +121,7 @@ basis. -/
 private theorem traceSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
     traceSeriesWrt d T = traceSeriesWrt f T := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hd : traceSeriesWrt d T = innerHS d A B := by
     unfold traceSeriesWrt innerHS
     apply tsum_congr
