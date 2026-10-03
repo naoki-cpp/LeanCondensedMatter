@@ -203,7 +203,9 @@ theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace =
         ρ.isTraceClass.trace :=
       trace_eq_of_eq (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H))
-        ρ.isTraceClass (by simp)
+        ρ.isTraceClass (by
+          ext x
+          rw [mul_apply_eq_comp, ContinuousLinearMap.id_apply])
     _ = ρ.spectralTraceClass.isTraceClass.trace :=
       ρ.isTraceClass.trace_proof_irrel ρ.spectralTraceClass.isTraceClass
     _ = 1 := ρ.trace_eq_one
