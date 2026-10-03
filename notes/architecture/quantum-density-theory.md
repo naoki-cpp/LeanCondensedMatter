@@ -77,7 +77,15 @@ density-backed theory rather than a second pure-state implementation.
 ## Mixed-state expectations
 
 `DensityOperator.expectation` is the canonical complex-linear expectation functional on bounded
-operators. For `Observable H`,
+operators, defined by the general trace-class formula
+
+```lean
+ρ.expectation A = (ρ.isTraceClass.comp_right A).trace
+```
+
+The spectral eigenvalue expansion is exposed separately by
+`DensityOperator.expectation_eq_spectral_tsum`; it is a representation theorem rather than the
+definition of expectation. For `Observable H`,
 
 ```lean
 DensityOperator.observableExpectation : ℝ
@@ -94,14 +102,15 @@ APIs. It does not require a particular proof helper or literal implementation bo
 
 ## Countable diagonal foundation
 
-The generic diagonal theory is countable rather than finite-dimensional. The diagonal bridge module
-owns the square-root/Hilbert--Schmidt representation and the canonical trace representation:
+The generic diagonal theory is countable rather than finite-dimensional. The canonical trace
+expectation and its spectral representation are owned by `DensityOperator/Expectation.lean`.
+The diagonal bridge module owns the independent square-root/Hilbert--Schmidt representation:
 
 ```lean
+DensityOperator.expectation_eq_spectral_tsum
 DensityOperator.sqrtOp
 DensityOperator.sqrtOp_isHilbertSchmidt
 DensityOperator.expectation_eq_innerHS
-DensityOperator.expectation_eq_trace
 ```
 
 and the diagonal-formula layer owns the `HasSum`, `Summable`, complex `tsum`, and real observable
