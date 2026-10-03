@@ -24,7 +24,7 @@ open Combinatorics
 open Common
 open scoped BigOperators
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*}
 
 /-- The canonical family shuffle from component-local mixed atomic positions to the ambient
 mixed-time atomic positions. -/
@@ -39,7 +39,10 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPositionShuffle
             d.externalPairCount B))
       (2 * (2 * n + E)) where
   slotEquiv := d.componentMixedPositionEquiv externalTime σ
-  strictMono := fun B => d.componentMixedPosition_strictMono externalTime σ B
+  strictMono := fun B => by
+    intro a b hab
+    simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+      d.componentMixedPosition_strictMono externalTime σ B hab
 
 @[simp]
 theorem ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply
@@ -79,8 +82,8 @@ theorem ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_tw
     (d.componentMixedPositionShuffle externalTime σ).blockInversionCount_of_ne hBC]
   simp only [ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply]
   exact
-    (d.pairingInMixedOrder externalTime σ).
-      componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+    Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+      (d.pairingInMixedOrder externalTime σ)
         (d.componentMixedPairEquiv externalTime σ)
         (fun D =>
           ((d.componentWickDiagram D).pairingInMixedOrder
@@ -149,9 +152,9 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_co
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B)).crossingCount) +
         d.mixedInterComponentCrossingCount externalTime σ := by
-  rw [(d.pairingInMixedOrder externalTime σ).
-    crossingCount_eq_sum_componentCrossingCount_diag_add_inter
-      (d.componentMixedPairEquiv externalTime σ)]
+  rw [Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter
+    (d.pairingInMixedOrder externalTime σ)
+    (d.componentMixedPairEquiv externalTime σ)]
   apply congrArg (fun k : ℕ => k + d.mixedInterComponentCrossingCount externalTime σ)
   apply Finset.sum_congr rfl
   intro B _
