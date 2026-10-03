@@ -2105,6 +2105,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Expectation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
       "externalImportCount": 0
