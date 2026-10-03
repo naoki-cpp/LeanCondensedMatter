@@ -174,7 +174,7 @@ private theorem IsTraceClass.exists_controlled_hilbertSchmidt_factorization
 
 /-- Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an
 absolutely summable complex series. -/
-theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
+private theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => inner ℂ (W (d i)) (T (d i))) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
@@ -191,7 +191,7 @@ theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass 
 
 /-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
 by the trace norm. -/
-theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
+private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧
