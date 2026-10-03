@@ -137,6 +137,14 @@ theorem trace_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
     hT.trace = hT'.trace := by
   exact congrArg trace (Subsingleton.elim hT hT')
 
+/-- Equal trace-class operators have equal canonical traces, independently of the supplied
+trace-class witnesses. -/
+theorem trace_eq_of_eq {S T : H →L[ℂ] H}
+    (hS : IsTraceClass S) (hT : IsTraceClass T) (h : S = T) :
+    hS.trace = hT.trace := by
+  subst T
+  exact hS.trace_proof_irrel hT
+
 end IsTraceClass
 
 end ContinuousLinearMap
