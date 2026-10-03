@@ -51,7 +51,7 @@ theorem diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs
 
 /-- Trace-class membership with respect to a basis is equivalent to the Hilbert--Schmidt property
 of `sqrt(|T|)` with respect to that basis. -/
-theorem isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs
+private theorem isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs
     {ι : Type*} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
     IsTraceClassWrt d T ↔
       IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)) := by
