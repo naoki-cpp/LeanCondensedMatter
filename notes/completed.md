@@ -29,5 +29,4 @@ The completed fermionic free line also contains bounded completed CAR operators,
 self-adjointness results for supported unbounded diagonal operators, summability-controlled free Gibbs
 specializations, and finite-mode Gibbs convergence against bounded observables. Completed bosonic
 operator-domain theory, interacting completed-space perturbation theory, thermodynamic limits,
-general trace cyclicity and trace-class completeness, and the convergence-aware bosonic Dyson line
-remain separate targets.
+trace-class completeness, and the convergence-aware bosonic Dyson line remain separate targets.

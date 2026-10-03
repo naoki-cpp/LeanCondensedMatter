@@ -110,8 +110,8 @@ reconciliation used by current proofs. No pinned-Mathlib replacement covers the 
 The package supplies the neutral norm-square series used by general trace-class membership together
 with the Hilbert--Schmidt inner product used to prove absolute convergence and basis independence of
 the general complex trace. The general trace-class layer builds on this package for adjoint and
-bounded-composition closure and the left/right ideal norm bounds; cyclicity and completeness remain
-separate downstream results.
+bounded-composition closure, the left/right ideal norm bounds, and cyclicity of the canonical
+complex trace; completeness remains a separate downstream result.
 
 ## Diagonal Fredholm determinant API
 
@@ -134,9 +134,8 @@ normal, or trace-class operators and is not independent of unrelated diagonal pr
 the underlying linear endomorphism. It is appropriate only for future finite-dimensional
 compatibility results and is not used as the infinite-dimensional definition.
 
-A general Fredholm determinant still requires trace-class approximation/completeness, cyclicity of
-the general trace on its valid product domain, and a convergent presentation-independent determinant
-construction. The scoped dependency graph is
+A general Fredholm determinant still requires trace-class approximation/completeness and a
+convergent presentation-independent determinant construction. The scoped dependency graph is
 recorded in `notes/roadmaps/fredholm-determinant.md`.
 
 ## Ordered-simplex and Dyson analysis
@@ -186,7 +185,7 @@ unbounded heartbeat setting. Before upstreaming or broadening this API:
 
 The repository does not yet provide:
 
-- general trace cyclicity and trace-class approximation/completeness;
+- trace-class approximation/completeness;
 - a complete Schatten hierarchy;
 - a Fredholm determinant on general trace-class operators;
 - basis independence for unrelated diagonal presentations without spectral uniqueness;

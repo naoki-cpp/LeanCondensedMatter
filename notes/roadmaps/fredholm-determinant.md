@@ -39,8 +39,8 @@ composition, a basis-independent norm-square series on Hilbert--Schmidt operator
 `innerHS`. General non-self-adjoint trace-class membership is defined by Hilbert--Schmidt membership
 of `sqrt(|T|)`; its canonical real trace norm and basis-independent complex trace are available.
 Membership is closed under adjoint and bounded multiplication, and the general operator-norm-weighted
-left/right trace-norm bounds are available. Completeness/approximation and trace cyclicity required
-by Fredholm theory remain open.
+left/right trace-norm bounds and cyclicity of the canonical complex trace are available.
+Completeness/approximation required by Fredholm theory remains open.
 
 `ContinuousLinearMap.SpectralTraceClass` remains a distinct compact self-adjoint spectral
 construction and does not replace the general non-self-adjoint trace-class ideal.
@@ -55,10 +55,9 @@ A determinant on arbitrary trace-class operators requires, at minimum:
 
 1. a general non-self-adjoint trace-class ideal closed under adjoint and bounded multiplication;
 2. a trace-class norm with the completeness/approximation results needed by the chosen construction;
-3. cyclicity of the basis-independent general trace on its valid product domain;
-4. a convergent determinant construction, such as an exterior-power series, eigenvalue product with
+3. a convergent determinant construction, such as an exterior-power series, eigenvalue product with
    multiplicity control, or trace-norm completion of finite-rank determinants;
-5. structural results such as finite-rank compatibility, continuity, and multiplicativity under
+4. structural results such as finite-rank compatibility, continuity, and multiplicativity under
    explicit hypotheses.
 
 Trace-log identities additionally require explicit convergence and complex-logarithm branch
@@ -68,7 +67,7 @@ conditions.
 
 - characterize invertibility of `1 + diagonalOp b coeff` under exact diagonal hypotheses;
 - relate the diagonal determinant to the existing spectral trace on a proved overlap;
-- complete trace-class approximation/completeness and trace cyclicity;
+- complete trace-class approximation/completeness;
 - extend the determinant beyond diagonal or otherwise explicitly controlled spectral data.
 
 The current API must not be broadened by finite-dimensional fallback behavior or by silently treating

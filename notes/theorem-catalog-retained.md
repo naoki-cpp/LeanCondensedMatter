@@ -219,7 +219,7 @@ or consumer structure changes.
   by trace invariance and density-operator evolution.
 - `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate` — canonical complex-trace
   invariance endpoint for bundled spectral trace-class operators. It uses spectral transport to
-  provide unitary invariance without relying on the still-missing general trace-cyclicity theorem.
+  provide the spectral specialization directly without routing through the general trace-cyclicity theorem.
 - `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
   The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.
