@@ -129,6 +129,33 @@ theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
     exact sub_eq_zero.mp hzero
   simpa using hsum
 
+/-- An ordering selects one representative from each unordered pair in an off-diagonal sum.
+
+If the combined contribution of each pair agrees modulo `n` with `g a b`, then the sum of `f` over
+all ordered distinct pairs agrees with the sum of `g` in the orientation selected by an injective
+order. -/
+theorem finset_sum_offDiag_modEq_of_pair_add_modEq_of_order {α β : Type*}
+    [LinearOrder β] (n : ℕ) (s : Finset α) (order : α → β) (horder : Set.InjOn order s)
+    (f g : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) (g a b)) :
+    Nat.ModEq n
+      (∑ p ∈ s.offDiag, f p.1 p.2)
+      (∑ p ∈ s.offDiag, if order p.1 < order p.2 then g p.1 p.2 else 0) := by
+  classical
+  apply finset_sum_offDiag_modEq_of_pair_add_modEq n s f
+    (fun a b => if order a < order b then g a b else 0)
+  intro a ha b hb hab
+  by_cases hlt : order a < order b
+  · have hnlt : ¬ order b < order a := asymm hlt
+    simpa [hlt, hnlt] using hpair a ha b hb hab
+  · have hne : order a ≠ order b := fun h => hab (horder ha hb h)
+    have hrev : order b < order a := by
+      rcases lt_trichotomy (order a) (order b) with h | h | h
+      · exact absurd h hlt
+      · exact absurd h hne
+      · exact h
+    simpa [hlt, hrev, add_comm] using hpair b hb a ha hab.symm
+
 /-- If every symmetric off-diagonal pair is zero modulo `n`, a finite double sum is congruent to its
 diagonal modulo `n`. -/
 private theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}

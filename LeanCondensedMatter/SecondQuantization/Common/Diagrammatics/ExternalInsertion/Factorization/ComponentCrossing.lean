@@ -75,31 +75,18 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
     d.pairing.componentCrossingCount d.componentPairEquiv B C
   let inv := fun B C : d.vertexGraph.componentPartition.parts =>
     d.componentLegInversionCount B C
-  let selected := fun B C : d.vertexGraph.componentPartition.parts =>
-    if blockOrder B < blockOrder C then inv B C else 0
   have hsum :=
-    finset_sum_offDiag_modEq_of_pair_add_modEq
-      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) cross selected
+    finset_sum_offDiag_modEq_of_pair_add_modEq_of_order
+      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
+      (fun _ _ h => blockOrder.injective h) cross inv
       (fun B _ C _ hBC => by
-        by_cases hlt : blockOrder B < blockOrder C
-        · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
-          simpa [Nat.ModEq, selected, hlt, hnlt, inv, cross] using
-            d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC
-        · have hneOrder : blockOrder B ≠ blockOrder C := by
-            intro h
-            exact hBC (blockOrder.injective h)
-          have hrev : blockOrder C < blockOrder B := by
-            rcases lt_trichotomy (blockOrder B) (blockOrder C) with h | h | h
-            · exact absurd h hlt
-            · exact absurd h hneOrder
-            · exact h
-          simpa [Nat.ModEq, selected, hlt, hrev, inv, cross, add_comm] using
-            d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount C B hBC.symm)
+        simpa [Nat.ModEq, inv, cross] using
+          d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC)
   simpa [Nat.ModEq, ExternalInsertionDiagram.interComponentCrossingCount,
     Combinatorics.Pairing.interComponentCrossingCount,
     FamilySlotShuffleTo.orderedBlockInversionCount,
     ExternalInsertionDiagram.componentLegInversionCount,
-    cross, inv, selected] using hsum
+    cross, inv] using hsum
 
 /-- The ambient crossing count is the sum of all component-local crossing counts plus the residual
 crossing count between distinct connected components. -/
