@@ -524,7 +524,7 @@ theorem traceNorm_comp_left_le
   · have hWpos : 0 < ‖W‖ := norm_pos_iff.mpr hWzero
     let W₀ : H →L[ℂ] H := ((‖W‖ : ℂ)⁻¹) • W
     have hW₀norm : ‖W₀‖ = 1 := by
-      simp [W₀, norm_smul, norm_inv, hWpos.le, hWpos.ne']
+      simp [W₀, norm_smul, norm_inv, hWpos.ne']
     have hcontract :
         (hT.comp_left W₀).traceNorm ≤ hT.traceNorm :=
       hT.traceNorm_comp_left_le_of_norm_le_one W₀ hW₀norm.le
@@ -532,7 +532,9 @@ theorem traceNorm_comp_left_le
       simp [W₀, smul_smul, hWpos.ne']
     have hprod :
         W * T = (‖W‖ : ℂ) • (W₀ * T) := by
-      rw [← hscale, smul_mul_assoc]
+      calc
+        W * T = ((‖W‖ : ℂ) • W₀) * T := by rw [hscale]
+        _ = (‖W‖ : ℂ) • (W₀ * T) := by rw [smul_mul_assoc]
     calc
       (hT.comp_left W).traceNorm =
           ((hT.comp_left W₀).smul (‖W‖ : ℂ)).traceNorm :=
