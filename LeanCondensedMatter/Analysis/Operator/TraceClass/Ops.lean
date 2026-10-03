@@ -63,7 +63,8 @@ theorem IsTraceClass.neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 /-- Taking the adjoint preserves trace-class membership. -/
 theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     IsTraceClass (ContinuousLinearMap.adjoint T) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   apply (isTraceClass_iff_exists_hilbertSchmidt_factorization
     (T := ContinuousLinearMap.adjoint T)).mpr
   refine ⟨B, A, hB, hA, ?_⟩
@@ -74,7 +75,8 @@ theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
     (hT : IsTraceClass T) :
     IsTraceClass (W * T) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   let A' : H →L[ℂ] H := A * ContinuousLinearMap.adjoint W
   have hA' : IsHilbertSchmidt A' :=
     isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W)
@@ -92,7 +94,8 @@ theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
 theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) :
     IsTraceClass (T * W) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hBW : IsHilbertSchmidt (B * W) := isHilbertSchmidt_comp_right hB W
   apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T * W)).mpr
   refine ⟨A, B * W, hA, hBW, ?_⟩
@@ -147,7 +150,8 @@ absolutely summable complex series. -/
 private theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => inner ℂ (W (d i)) (T (d i))) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
   have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
     (hAW.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
