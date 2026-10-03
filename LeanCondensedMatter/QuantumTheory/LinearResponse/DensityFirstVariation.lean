@@ -28,9 +28,9 @@ where
 When `K_V(t)` is skew-adjoint, this reduces to the Liouville commutator `[K_V(t), ρ₀]`.
 
 The result is deliberately stated in the bounded-operator space. Bundling `ρ_λ(t)` again as a
-`DensityOperator` requires unitarity of the propagator. Converting the density variation to the
-usual trace formula still requires the density-expectation/general-trace bridge, together with
-general trace cyclicity for the standard commutator rearrangements. Those are separate layers.
+`DensityOperator` requires unitarity of the propagator. General trace cyclicity is available for
+the standard commutator rearrangements, but converting the density variation to the usual trace
+formula still requires the density-expectation/general-trace bridge.
 -/
 
 namespace QuantumTheory

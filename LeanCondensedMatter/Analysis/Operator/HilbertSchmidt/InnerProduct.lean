@@ -121,4 +121,49 @@ theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ 
   have h3 := summable_inner_adjoint_apply_and_tsum_eq f d hSf hTf
   exact h2.2.symm.trans h3.2
 
+/-- Right composition can be transferred between the two Hilbert--Schmidt factors by taking the
+adjoint:
+`⟪S, T W⟫_{HS} = ⟪S W†, T⟫_{HS}`. -/
+theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
+    {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S) (hT : IsHilbertSchmidt T)
+    (W : H →L[ℂ] H) :
+    innerHS d S (T * W) =
+      innerHS d (S * ContinuousLinearMap.adjoint W) T := by
+  have hTW : IsHilbertSchmidt (T * W) := isHilbertSchmidt_comp_right hT W
+  have hSW : IsHilbertSchmidt (S * ContinuousLinearMap.adjoint W) :=
+    isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint W)
+  have hleft := summable_inner_adjoint_apply_and_tsum_eq d d
+    (hS.isHilbertSchmidtWrt d) (hTW.isHilbertSchmidtWrt d)
+  have hright := summable_inner_adjoint_apply_and_tsum_eq d d
+    (hSW.isHilbertSchmidtWrt d) (hT.isHilbertSchmidtWrt d)
+  have hAdjTW :
+      ContinuousLinearMap.adjoint (T * W) =
+        ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
+    rw [show ContinuousLinearMap.adjoint (T * W) = star (T * W) from
+      (ContinuousLinearMap.star_eq_adjoint (T * W)).symm]
+    rw [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint]
+  have hAdjSW :
+      ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) =
+        W * ContinuousLinearMap.adjoint S := by
+    rw [show ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) =
+      star (S * ContinuousLinearMap.adjoint W) from
+      (ContinuousLinearMap.star_eq_adjoint (S * ContinuousLinearMap.adjoint W)).symm]
+    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
+      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint]
+  unfold innerHS
+  calc
+    (∑' i, (inner ℂ (S (d i)) ((T * W) (d i)) : ℂ)) =
+        ∑' i, (inner ℂ (ContinuousLinearMap.adjoint (T * W) (d i))
+          (ContinuousLinearMap.adjoint S (d i)) : ℂ) := hleft.2.symm
+    _ = ∑' i, (inner ℂ (ContinuousLinearMap.adjoint T (d i))
+          (ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) (d i)) : ℂ) := by
+      apply tsum_congr
+      intro i
+      rw [hAdjTW, hAdjSW, mul_apply_eq_comp, mul_apply_eq_comp]
+      exact ContinuousLinearMap.adjoint_inner_left W
+        (ContinuousLinearMap.adjoint S (d i))
+        (ContinuousLinearMap.adjoint T (d i))
+    _ = ∑' i, (inner ℂ ((S * ContinuousLinearMap.adjoint W) (d i)) (T (d i)) : ℂ) :=
+      hright.2
+
 end ContinuousLinearMap

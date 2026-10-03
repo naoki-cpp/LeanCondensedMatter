@@ -22,7 +22,8 @@ applies.
   Membership is closed under addition, scalar multiplication, adjoint, and bounded left/right
   multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
   by contractions, with the general bounds `‖WT‖₁ ≤ ‖W‖ ‖T‖₁` and
-  `‖TW‖₁ ≤ ‖W‖ ‖T‖₁`. Trace cyclicity and completeness remain missing.
+  `‖TW‖₁ ≤ ‖W‖ ‖T‖₁`. The canonical complex trace is cyclic under bounded
+  left/right multiplication; completeness remains missing.
 
 - **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
@@ -34,9 +35,8 @@ applies.
 - **`ContinuousLinearMap.det` is not an infinite-dimensional Fredholm determinant.**
   Mathlib's determinant is used only for finite-dimensional compatibility. It must not be applied
   through fallback behavior or weakened hypotheses to define the infinite-dimensional quantity.
-  The general Fredholm theory still requires trace-class approximation/completeness, cyclicity of
-  the general trace on its valid product domain, and a convergent presentation-independent
-  determinant construction.
+  The general Fredholm theory still requires trace-class approximation/completeness and a
+  convergent presentation-independent determinant construction.
 
 - **Density-state expectations are not yet expressed through the general trace ideal.**
   For a density operator `ρ` and bounded operator `A`, bounded right multiplication now proves
