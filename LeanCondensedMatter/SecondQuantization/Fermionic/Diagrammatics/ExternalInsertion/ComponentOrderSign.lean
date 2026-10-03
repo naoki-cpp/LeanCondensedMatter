@@ -283,7 +283,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
       externalTime σ blockOrder
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hfixed]
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hmixed.symm]
-  rfl
+  simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
 
 end Fermionic
 end SecondQuantization
