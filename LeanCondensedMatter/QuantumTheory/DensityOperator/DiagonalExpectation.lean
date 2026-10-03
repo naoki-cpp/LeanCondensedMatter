@@ -97,6 +97,9 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
   let g : u → ℂ := fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i))
   have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
     rw [hb]
+  have heigen (a : EigenvectorIndex ρ.op) :
+      ρ.op (e a) = (a.1.1 : ℂ) • e a := by
+    simpa [e] using apply_eigenvectorFamily hρcompact a
   have hpoint (a : EigenvectorIndex ρ.op) :
       g (j a) = (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
     change inner ℂ (ρ.sqrtOp (b (j a))) ((A * ρ.sqrtOp) (b (j a))) = _
@@ -175,7 +178,7 @@ theorem DensityOperator.expectation_eq_trace (ρ : DensityOperator H)
         simpa only [ρ.isSelfAdjoint.adjoint_eq] using
           (ContinuousLinearMap.adjoint_inner_right ρ.op (e a) (A (e a)))
       _ = (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
-        rw [apply_eigenvectorFamily hρcompact a, inner_smul_left]
+        rw [heigen a, inner_smul_left]
         simp
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
