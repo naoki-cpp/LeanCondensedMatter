@@ -60,40 +60,6 @@ theorem IsTraceClass.neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     IsTraceClass (-T) := by
   simpa only [neg_one_smul] using hT.smul (-1 : ℂ)
 
-/-- A product `A† B` of Hilbert--Schmidt operators is trace class. -/
-theorem IsTraceClass.of_hilbertSchmidt_factorization
-    {A B T : H →L[ℂ] H} (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
-    (hfactor : ContinuousLinearMap.adjoint A * B = T) :
-    IsTraceClass T := by
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor T
-  have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
-  have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
-    (hAU.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
-  have hpoint (i : w) :
-      ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ) =
-        inner ℂ ((A * U) (d i)) (B (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
-    calc
-      inner ℂ (d i) ((ContinuousLinearMap.adjoint U) (T (d i))) =
-          inner ℂ (U (d i)) (T (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
-      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A * B) (d i)) := by
-        rw [hfactor]
-      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ (A (U (d i))) (B (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-      _ = inner ℂ ((A * U) (d i)) (B (d i)) := by
-        rw [mul_apply_eq_comp]
-  have hcast :
-      Summable (fun i =>
-        ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ)) :=
-    hsum.congr fun i => (hpoint i).symm
-  apply IsTraceClass.of_isTraceClassWrt (d := d)
-  rw [IsTraceClassWrt]
-  exact Complex.summable_ofReal.mp hcast
-
 /-- Taking the adjoint preserves trace-class membership. -/
 theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     IsTraceClass (ContinuousLinearMap.adjoint T) := by
