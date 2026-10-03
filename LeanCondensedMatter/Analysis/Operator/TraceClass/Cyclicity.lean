@@ -16,6 +16,23 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace IsTraceClass
 
+private theorem trace_eq_innerHS_of_factorization
+    {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
+    (hfactor : ContinuousLinearMap.adjoint A * B = T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.trace = innerHS d A B := by
+  rw [hT.trace_eq_seriesWrt d]
+  unfold traceSeriesWrt innerHS
+  apply tsum_congr
+  intro i
+  calc
+    inner ℂ (d i) (T (d i)) =
+        inner ℂ (d i) ((ContinuousLinearMap.adjoint A * B) (d i)) := by rw [hfactor]
+    _ = inner ℂ (d i) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
+      rw [mul_apply_eq_comp]
+    _ = inner ℂ (A (d i)) (B (d i)) :=
+      ContinuousLinearMap.adjoint_inner_right A (d i) (B (d i))
+
 /-- If `T` is trace class and `W` is bounded, then `Tr(TW) = Tr(WT)`. -/
 theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
     (hT.comp_right W).trace = (hT.comp_left W).trace := by
@@ -41,13 +58,11 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[�
     rw [hAdjAW, mul_assoc, hfactor]
   calc
     (hT.comp_right W).trace = innerHS d A (B * W) :=
-      (hT.comp_right W).trace_eq_innerHS_of_hilbertSchmidt_factorization
-        hA hBW hfactorRight d
+      trace_eq_innerHS_of_factorization (hT.comp_right W) hfactorRight d
     _ = innerHS d (A * ContinuousLinearMap.adjoint W) B :=
       innerHS_comp_right d hA hB W
     _ = (hT.comp_left W).trace :=
-      ((hT.comp_left W).trace_eq_innerHS_of_hilbertSchmidt_factorization
-        hAW hB hfactorLeft d).symm
+      (trace_eq_innerHS_of_factorization (hT.comp_left W) hfactorLeft d).symm
 
 end IsTraceClass
 

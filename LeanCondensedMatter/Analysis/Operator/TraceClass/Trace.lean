@@ -154,24 +154,6 @@ theorem trace_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
   unfold trace
   exact traceSeriesWrt_eq _ d T hT
 
-/-- If a trace-class operator is written as `A† B` with Hilbert--Schmidt factors, its
-canonical trace is their Hilbert--Schmidt inner product in every Hilbert basis. -/
-theorem trace_eq_innerHS_of_hilbertSchmidt_factorization
-    {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
-    (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
-    (hfactor : ContinuousLinearMap.adjoint A * B = T)
-    {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    hT.trace = innerHS d A B := by
-  obtain ⟨κ, f, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  calc
-    hT.trace = traceSeriesWrt f T := hT.trace_eq_seriesWrt f
-    _ = innerHS f A B := by
-      unfold traceSeriesWrt innerHS
-      apply tsum_congr
-      intro i
-      exact diagonal_eq_hilbertSchmidt_inner hfactor (f i)
-    _ = innerHS d A B := innerHS_eq_of_isHilbertSchmidt f d hA hB
-
 end IsTraceClass
 
 end ContinuousLinearMap
