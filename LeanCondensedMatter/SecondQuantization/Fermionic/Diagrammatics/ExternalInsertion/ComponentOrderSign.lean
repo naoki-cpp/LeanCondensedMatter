@@ -61,18 +61,23 @@ private theorem sum_familyBlockFiber_eq
   symm
   refine Finset.sum_bij (fun p _ => σ.slotEquiv ⟨i, p⟩) ?_ ?_ ?_ ?_
   · intro p _
-    change (σ.slotEquiv.symm (σ.slotEquiv ⟨i, p⟩)).1 = i
+    rw [Finset.mem_filter]
+    refine ⟨Finset.mem_univ _, ?_⟩
+    unfold familyBlockOf
     simp
   · intro p _ q _ hpq
     simpa using σ.slotEquiv.injective hpq
   · intro x hx
     rcases Finset.mem_filter.mp hx with ⟨_, hblock⟩
-    unfold familyBlockOf at hblock
-    obtain ⟨j, p⟩ := σ.slotEquiv.symm x
-    change j = i at hblock
-    subst j
-    refine ⟨p, Finset.mem_univ _, ?_⟩
-    exact σ.slotEquiv.apply_symm_apply x
+    cases hsymm : σ.slotEquiv.symm x with
+    | mk j p =>
+        have hji : j = i := by
+          simpa [familyBlockOf, hsymm] using hblock
+        subst j
+        refine ⟨p, Finset.mem_univ _, ?_⟩
+        have h := σ.slotEquiv.apply_symm_apply x
+        rw [hsymm] at h
+        exact h
   · intro p _
     rfl
 
