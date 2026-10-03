@@ -18,6 +18,14 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Combinatorics.Pairing.ofSplit_splitLeft_splitRight` — canonical `[simp]` reconstruction law: assembling a split pairing from its induced left and right restrictions recovers the original pairing.
+- `Combinatorics.Pairing.pairEndpointEquiv_apply` — canonical `[simp]` evaluation rule exposing the semantic endpoint-selection map of `pairEndpointEquiv`.
+- `Combinatorics.Pairing.partner_sideMatching` — canonical `[simp]` characterization of the permutation extracted from a bipartite pairing: its image is exactly the right-side partner of each left position.
+- `Combinatorics.Pairing.prod_pairs_eq_firstPair_mul` — general multiplicative decomposition of a product over normalized pairs into the first-pair factor and the erased-pairing product.
+- `Combinatorics.Pairing.splitLeft_ofSplit` — canonical `[simp]` left inverse law for assembling then restricting a split pairing.
+- `Combinatorics.Pairing.splitRight_ofSplit` — canonical `[simp]` right inverse law for assembling then restricting a split pairing.
+- `Combinatorics.Pairing.sum_eq_sum_sum_insertFirstPair` — general additive reindexing theorem decomposing a sum over larger pairings by the partner of zero and the erased smaller pairing.
+- `Combinatorics.Pairing.vertexGraph_componentBlockOn_partner` — semantic finite-subtype endpoint stating that paired legs occupy the same ambient connected-component block in the induced vertex graph.
 - `Combinatorics.Pairing.crossingCount_eraseZeroPair` — canonical recursion splitting the total crossing count into the erased pairing contribution plus crossings with the first pair.
 - `Combinatorics.Pairing.crossingsWithFirstPair_mod_two` — canonical parity bridge from first-pair crossings to the number of intervening positions, used by pairing-weight recursion.
 - `Combinatorics.Pairing.eraseZeroOrderIso_partner` — canonical `[simp]` compatibility of the erased pairing partner map with the increasing order isomorphism onto undeleted positions.
