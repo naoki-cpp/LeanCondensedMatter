@@ -135,7 +135,7 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
       (fun a : EigenvectorIndex ρ.op =>
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
       (ρ.expectation A) := by
-    rw [ρ.expectation_apply]
+    rw [ρ.expectation_eq_spectral_tsum]
     exact (ρ.summable_expectation_term A).hasSum
   have hbasis : ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp) :=
     hexpect.unique hrestricted

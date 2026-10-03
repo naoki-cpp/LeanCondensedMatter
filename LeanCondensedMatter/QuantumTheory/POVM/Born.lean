@@ -96,7 +96,7 @@ private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     (ρ : DensityOperator H) (m : M) :
     HasSum (fun a => probabilityKernel P ρ a m) (probNNReal P ρ m : ℝ) := by
   have hcomplex := (ρ.summable_expectation_term (P.E m)).hasSum
-  rw [← ρ.expectation_apply (P.E m), ρ.expectation_effect_eq_probNNReal P m] at hcomplex
+  rw [← ρ.expectation_eq_spectral_tsum (P.E m), ρ.expectation_effect_eq_probNNReal P m] at hcomplex
   have hcomplex' :
       HasSum (fun a : EigenvectorIndex ρ.op => ((probabilityKernel P ρ a m : ℝ) : ℂ))
         (((probNNReal P ρ m : ℝ) : ℂ)) :=

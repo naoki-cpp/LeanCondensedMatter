@@ -49,7 +49,7 @@ theorem DensityOperator.expectation_pure_observable
     (ψ : StateVector H) (A : Observable H) :
     (pure ψ).expectation A.1 = expValue A ψ := by
   letI := uniqueEigenvectorIndexRankOne ψ.2
-  rw [(pure ψ).expectation_apply A.1]
+  rw [(pure ψ).expectation_eq_spectral_tsum A.1]
   change
     (∑' a : EigenvectorIndex
       (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H),

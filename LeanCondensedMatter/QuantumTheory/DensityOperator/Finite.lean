@@ -75,68 +75,21 @@ theorem DensityOperator.ofFiniteDimensional_op
     (DensityOperator.ofFiniteDimensional ρ hpos htrace).op = ρ :=
   rfl
 
-/-- In finite dimensions, the spectral expectation equals the ordinary trace `Tr(ρA)`. -/
+/-- In finite dimensions, the canonical expectation agrees with the ordinary linear-map trace. -/
 theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
     (A : H →L[ℂ] H) :
     ρ.expectation A =
       LinearMap.trace ℂ H ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) := by
-  classical
-  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
-  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
-  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
-  have he : Orthonormal ℂ e := by
-    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_orthonormalBasis_extension
-  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hj : Function.Injective j := by
-    intro a a' haa'
-    apply he.linearIndependent.injective
-    exact congrArg Subtype.val haa'
-  let g : u → ℂ := fun i => inner ℂ (b i) ((ρ.op ∘L A) (b i))
-  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
-    rw [hb]
-  have hpoint (a : EigenvectorIndex ρ.op) :
-      g (j a) = (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
-    change inner ℂ (b (j a))
-        ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b (j a)))) =
-      (a.1.1 : ℂ) * inner ℂ (e a) ((A : H →ₗ[ℂ] H) (e a))
-    rw [hb_j]
-    calc
-      inner ℂ (e a) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (e a))) =
-          inner ℂ ((ρ.op : H →ₗ[ℂ] H) (e a)) ((A : H →ₗ[ℂ] H) (e a)) :=
-        (hρsym (e a) ((A : H →ₗ[ℂ] H) (e a))).symm
-      _ = (a.1.1 : ℂ) * inner ℂ (e a) ((A : H →ₗ[ℂ] H) (e a)) := by
-        rw [apply_eigenvectorFamily hρcompact, inner_smul_left]
-        simp [e]
-  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hρcompact hρsym b.toHilbertBasis j (fun a => by simpa [e] using hb_j a) x hx
-    have hxker' : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
-      simpa using hxker
-    change inner ℂ (b x) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b x))) = 0
-    calc
-      inner ℂ (b x) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b x))) =
-          inner ℂ ((ρ.op : H →ₗ[ℂ] H) (b x)) ((A : H →ₗ[ℂ] H) (b x)) :=
-        (hρsym (b x) ((A : H →ₗ[ℂ] H) (b x))).symm
-      _ = 0 := by rw [hxker', inner_zero_left]
-  have hfull : HasSum g (∑ i, g i) := hasSum_fintype _
-  have hrestricted : HasSum
-      (fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
-      (∑ i, g i) := by
-    simpa only [Function.comp_apply] using
-      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
-  have hsum :
-      (∑' a : EigenvectorIndex ρ.op,
-        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a))) = ∑ i, g i :=
-    (ρ.summable_expectation_term A).hasSum.unique hrestricted
-  have htrace := LinearMap.trace_eq_sum_inner
-    ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) b
-  have hgtrace :
-      LinearMap.trace ℂ H ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) =
-        ∑ i, g i := by
-    simpa [g] using htrace
-  rw [ρ.expectation_apply, hsum, ← hgtrace]
+  let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
+    ρ.isSymmetric.eigenvectorBasis rfl
+  rw [ρ.expectation_apply,
+    (ρ.isTraceClass.comp_right A).trace_eq_seriesWrt b.toHilbertBasis]
+  unfold traceSeriesWrt
+  rw [tsum_fintype]
+  symm
+  simpa [ContinuousLinearMap.mul_def] using
+    (LinearMap.trace_eq_sum_inner
+      ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) b)
 
 /-- In finite dimensions, the ordinary trace of a density operator is one. -/
 theorem DensityOperator.linearMap_trace_eq_one (ρ : DensityOperator H) :

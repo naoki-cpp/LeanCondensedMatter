@@ -77,7 +77,15 @@ density-backed theory rather than a second pure-state implementation.
 ## Mixed-state expectations
 
 `DensityOperator.expectation` is the canonical complex-linear expectation functional on bounded
-operators. For `Observable H`,
+operators, defined by the general trace-class formula
+
+```lean
+ρ.expectation A = (ρ.isTraceClass.comp_right A).trace
+```
+
+The spectral eigenvalue expansion is exposed separately by
+`DensityOperator.expectation_eq_spectral_tsum`; it is a representation theorem rather than the
+definition of expectation. For `Observable H`,
 
 ```lean
 DensityOperator.observableExpectation : ℝ
@@ -94,9 +102,12 @@ APIs. It does not require a particular proof helper or literal implementation bo
 
 ## Countable diagonal foundation
 
-The generic diagonal theory is countable rather than finite-dimensional. The square-root layer owns
+The generic diagonal theory is countable rather than finite-dimensional. The canonical trace
+expectation and its spectral representation are owned by `DensityOperator/Expectation.lean`.
+The diagonal bridge module owns the independent square-root/Hilbert--Schmidt representation:
 
 ```lean
+DensityOperator.expectation_eq_spectral_tsum
 DensityOperator.sqrtOp
 DensityOperator.sqrtOp_isHilbertSchmidt
 DensityOperator.expectation_eq_innerHS
@@ -202,8 +213,8 @@ not naturally expressed by merely compiling the library.
 ## Scope boundaries
 
 The current API does not yet provide a projective/ray pure-state presentation, a general
-continuous-outcome POVM theory, a full Schatten-ideal hierarchy, arbitrary non-self-adjoint
-trace-class operators, unbounded observables in the bounded core, or thermodynamic limits. An
+continuous-outcome POVM theory, a full Schatten-ideal hierarchy, unbounded observables in the
+bounded core, or thermodynamic limits. An
 explicit one-dimensional-range predicate for pure density operators is likewise unnecessary for the
 current maximal-purity characterization and should be introduced only if it becomes a useful public
 formulation. These extensions should build on the canonical state and expectation APIs rather than

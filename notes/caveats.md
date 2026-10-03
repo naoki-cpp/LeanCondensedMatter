@@ -38,13 +38,6 @@ applies.
   The general Fredholm theory still requires trace-class approximation/completeness and a
   convergent presentation-independent determinant construction.
 
-- **Density-state expectations are not yet expressed through the general trace ideal.**
-  For a density operator `ρ` and bounded operator `A`, bounded right multiplication now proves
-  that `ρ.op * A` is trace class. The project has not yet identified
-  `DensityOperator.expectation ρ A` with the resulting canonical complex trace, so the expectation
-  API still uses `ρ`’s spectral decomposition. In finite dimensions it is proved equal to the
-  ordinary matrix trace `Tr(ρA)`.
-
 - **A bounded Hamiltonian does not yield a genuine infinite-dimensional compact Gibbs operator.**
   `gibbsOp Hop β = exp (-β Hop)` is invertible. If it is compact, the identity is compact and the
   Hilbert space is finite-dimensional. Infinite-dimensional Gibbs states require an unbounded
