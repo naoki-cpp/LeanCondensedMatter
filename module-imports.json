@@ -4970,6 +4970,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingValue.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData"
       ],
       "externalImportCount": 0
