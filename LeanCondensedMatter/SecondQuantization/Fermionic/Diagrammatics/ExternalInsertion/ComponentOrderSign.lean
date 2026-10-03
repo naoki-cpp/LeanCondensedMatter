@@ -46,6 +46,54 @@ private noncomputable def familyRelativePerm {ι : Type*} {size : ι → ℕ} {t
     (σ τ : FamilySlotShuffleTo size total) : Equiv.Perm (Fin total) :=
   σ.slotEquiv.symm.trans τ.slotEquiv
 
+
+private noncomputable def familyBlockOf
+    {ι : Type*} {size : ι → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (x : Fin total) : ι :=
+  (σ.slotEquiv.symm x).1
+
+private theorem sum_familyBlockFiber_eq
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (i : ι) (f : Fin total → ℕ) :
+    (∑ x ∈ (Finset.univ : Finset (Fin total)) with familyBlockOf σ x = i, f x) =
+      ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
+  classical
+  symm
+  refine Finset.sum_bij (fun p _ => σ.slotEquiv ⟨i, p⟩) ?_ ?_ ?_ ?_
+  · intro p _
+    simp [familyBlockOf]
+  · intro p _ q _ hpq
+    simpa using σ.slotEquiv.injective hpq
+  · intro x hx
+    rw [Finset.mem_filter] at hx
+    let y := σ.slotEquiv.symm x
+    rcases y with ⟨j, p⟩
+    change j = i at hx
+    subst j
+    refine ⟨p, Finset.mem_univ _, ?_⟩
+    exact σ.slotEquiv.apply_symm_apply x
+  · intro p _
+    rfl
+
+private theorem sum_familyBlocks_eq
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (f : Fin total → ℕ) :
+    (∑ x : Fin total, f x) =
+      ∑ i : ι, ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
+  classical
+  calc
+    (∑ x : Fin total, f x) =
+        ∑ i : ι,
+          ∑ x ∈ (Finset.univ : Finset (Fin total)) with familyBlockOf σ x = i, f x := by
+      simpa using
+        (Finset.sum_fiberwise_eq_sum_filter
+          (Finset.univ : Finset (Fin total)) (Finset.univ : Finset ι)
+          (familyBlockOf σ) f).symm
+    _ = ∑ i : ι, ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
+      apply Finset.sum_congr rfl
+      intro i _
+      exact sum_familyBlockFiber_eq σ i f
+
 private theorem orderedBlockInversionCount_castTotalEquiv
     {ι : Type*} [Fintype ι] {size : ι → ℕ} {m n : ℕ}
     (h : m = n) (shuffle : FamilySlotShuffleTo size m)
@@ -78,26 +126,19 @@ private theorem familyRelativePerm_inversionCount_eq_sum_blockDisagreementCount
   classical
   unfold permInversionCount
   simp_rw [sum_Ioi_eq_sum_ite]
-  calc
-    (∑ i : Fin total, ∑ j : Fin total,
-        if i < j then
-          if (familyRelativePerm σ τ) j < (familyRelativePerm σ τ) i then 1 else 0
-        else 0) =
-      ∑ x : Σ i, Fin (size i), ∑ y : Σ i, Fin (size i),
-        if σ.slotEquiv x < σ.slotEquiv y then
-          if τ.slotEquiv y < τ.slotEquiv x then 1 else 0
-        else 0 := by
-      rw [← Equiv.sum_comp σ.slotEquiv]
-      apply Finset.sum_congr rfl
-      intro x _
-      rw [← Equiv.sum_comp σ.slotEquiv]
-      simp only [familyRelativePerm, Equiv.trans_apply, Equiv.symm_apply_apply]
-    _ = ∑ i : ι, ∑ j : ι, familyBlockDisagreementCount σ τ i j := by
-      simp_rw [Fintype.sum_sigma]
-      unfold familyBlockDisagreementCount
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [Finset.sum_comm]
+  rw [sum_familyBlocks_eq σ]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [sum_familyBlocks_eq σ]
+  unfold familyBlockDisagreementCount
+  apply Finset.sum_congr rfl
+  intro p _
+  apply Finset.sum_congr rfl
+  intro q _
+  simp only [familyRelativePerm, Equiv.trans_apply, Equiv.symm_apply_apply]
 
 private theorem familyBlockDisagreementCount_self
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
@@ -237,7 +278,7 @@ variable {Mode : Type*}
 
 /-- Relative permutation from fixed component-local atomic positions to mixed-time component-local
 atomic positions. -/
-noncomputable def ExternalInsertionWickDiagram.relativeComponentShuffle
+private noncomputable def ExternalInsertionWickDiagram.relativeComponentShuffle
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
@@ -250,7 +291,7 @@ noncomputable def ExternalInsertionWickDiagram.relativeComponentShuffle
 
 /-- The relative permutation between fixed and mixed component shuffles carries exactly the fixed
 external regrouping sign and the residual mixed inter-component crossing sign. -/
-theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter
+private theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
