@@ -424,7 +424,7 @@ theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   exact (hT.traceNorm_proof_irrel hTT).le.trans hrev'
 
 /-- Left multiplication by a contraction does not increase the trace norm. -/
-theorem traceNorm_comp_left_le_of_norm_le_one
+private theorem traceNorm_comp_left_le_of_norm_le_one
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
     (hT.comp_left W).traceNorm ≤ hT.traceNorm := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
@@ -482,31 +482,6 @@ private theorem traceNorm_eq_of_eq
   subst R
   exact IsTraceClass.traceNorm_proof_irrel _ _
 
-/-- Right multiplication by a contraction does not increase the trace norm. -/
-theorem traceNorm_comp_right_le_of_norm_le_one
-    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
-    (hT.comp_right W).traceNorm ≤ hT.traceNorm := by
-  have hAdjW : ‖ContinuousLinearMap.adjoint W‖ ≤ 1 := by
-    rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
-    exact hW
-  have hprodAdj :
-      ContinuousLinearMap.adjoint (T * W) =
-        ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
-    rw [show ContinuousLinearMap.adjoint (T * W) = star (T * W) from
-      (ContinuousLinearMap.star_eq_adjoint (T * W)).symm]
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint]
-  have hleft :=
-    hT.adjoint.traceNorm_comp_left_le_of_norm_le_one (ContinuousLinearMap.adjoint W) hAdjW
-  calc
-    (hT.comp_right W).traceNorm =
-        (hT.comp_right W).adjoint.traceNorm :=
-      (hT.comp_right W).traceNorm_adjoint.symm
-    _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm :=
-      traceNorm_eq_of_eq (hT.comp_right W).adjoint
-        (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)) hprodAdj
-    _ ≤ hT.adjoint.traceNorm := hleft
-    _ = hT.traceNorm := hT.traceNorm_adjoint
-
 /-- Left multiplication by a bounded operator scales the trace norm by at most its
 operator norm. -/
 theorem traceNorm_comp_left_le
@@ -527,7 +502,7 @@ theorem traceNorm_comp_left_le
       simp [W₀, norm_smul, norm_inv, hWpos.ne']
     have hcontract :
         (hT.comp_left W₀).traceNorm ≤ hT.traceNorm :=
-      hT.traceNorm_comp_left_le_of_norm_le_one W₀ hW₀norm.le
+      traceNorm_comp_left_le_of_norm_le_one hT W₀ hW₀norm.le
     have hscale : (‖W‖ : ℂ) • W₀ = W := by
       simp [W₀, smul_smul, hWpos.ne']
     have hprod :

@@ -266,8 +266,8 @@ Annotated reference list. One entry per source: full citation, what it is used f
   [10.1016/0001-8708(77)90057-3](https://doi.org/10.1016/0001-8708(77)90057-3).
   - **Roadmap use:** Primary analytic reference for Lidskii's theorem, trace ideals, Fredholm
     determinants, and regularized determinants; it anchors the second boundary in issue #2457.
-  - **Caveat:** Current determinant APIs are finite or explicitly diagonal and are not claimed to be
-    a general trace-class ideal implementation.
+  - **Caveat:** Current determinant APIs are finite or explicitly diagonal and are not claimed to
+    define a determinant on arbitrary trace-class operators.
 
 - **G. Panati, H. Spohn, and S. Teufel.** “Effective Dynamics for Bloch Electrons: Peierls
   Substitution and Beyond.” *Communications in Mathematical Physics* **242**, 547–578 (2003).

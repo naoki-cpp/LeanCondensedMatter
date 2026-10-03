@@ -34,8 +34,9 @@ applies.
 - **`ContinuousLinearMap.det` is not an infinite-dimensional Fredholm determinant.**
   Mathlib's determinant is used only for finite-dimensional compatibility. It must not be applied
   through fallback behavior or weakened hypotheses to define the infinite-dimensional quantity.
-  The general Fredholm theory still requires a non-self-adjoint trace-class ideal, convergence, and
-  determinant identities on the valid domain.
+  The general Fredholm theory still requires trace-class approximation/completeness, cyclicity of
+  the general trace on its valid product domain, and a convergent presentation-independent
+  determinant construction.
 
 - **Density-state expectations are not yet expressed through the general trace ideal.**
   For a density operator `ρ` and bounded operator `A`, bounded right multiplication now proves
