@@ -18,6 +18,13 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Combinatorics.PairingOn.sigmaCongrRight_partner` — retain public `[simp]`: canonical computation rule for the partner map of the dependent-sum pairing constructor.
+- `Combinatorics.PairingOn.sumCongr_partner_inl` — retain public `[simp]`: canonical left-summand computation rule for the disjoint-sum pairing constructor.
+- `Combinatorics.PairingOn.sumCongr_partner_inr` — retain public `[simp]`: canonical right-summand computation rule for the disjoint-sum pairing constructor.
+- `Combinatorics.PairingOn.transport_symm_transport` — retain public `[simp]`: canonical inverse law for transporting a pairing along an equivalence and then back along its inverse.
+- `Combinatorics.PairingOn.transport_trans` — retain public: canonical composition law for pairing transport along composed equivalences.
+- `Combinatorics.PairingOn.transport_transport_symm` — retain public `[simp]`: canonical inverse law for transporting first along an inverse equivalence and then along the original equivalence.
+- `Combinatorics.SumEquiv.leftSubtypeEquiv_val` — retain public `[simp]`: canonical evaluation rule for the equivalence from the left summand to its image subtype.
 - `Combinatorics.Pairing.ofSplit_splitLeft_splitRight` — canonical `[simp]` reconstruction law: assembling a split pairing from its induced left and right restrictions recovers the original pairing.
 - `Combinatorics.Pairing.pairEndpointEquiv_apply` — canonical `[simp]` evaluation rule exposing the semantic endpoint-selection map of `pairEndpointEquiv`.
 - `Combinatorics.Pairing.partner_sideMatching` — canonical `[simp]` characterization of the permutation extracted from a bipartite pairing: its image is exactly the right-side partner of each left position.
