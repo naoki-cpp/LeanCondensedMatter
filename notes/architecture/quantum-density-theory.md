@@ -202,8 +202,8 @@ not naturally expressed by merely compiling the library.
 ## Scope boundaries
 
 The current API does not yet provide a projective/ray pure-state presentation, a general
-continuous-outcome POVM theory, a full Schatten-ideal hierarchy, arbitrary non-self-adjoint
-trace-class operators, unbounded observables in the bounded core, or thermodynamic limits. An
+continuous-outcome POVM theory, a full Schatten-ideal hierarchy, unbounded observables in the
+bounded core, or thermodynamic limits. An
 explicit one-dimensional-range predicate for pure density operators is likewise unnecessary for the
 current maximal-purity characterization and should be introduced only if it becomes a useful public
 formulation. These extensions should build on the canonical state and expectation APIs rather than
