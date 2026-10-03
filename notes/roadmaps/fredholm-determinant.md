@@ -42,8 +42,8 @@ Membership is closed under adjoint and bounded multiplication, and the general o
 left/right trace-norm bounds are available. Completeness/approximation and trace cyclicity required
 by Fredholm theory remain open.
 
-`ContinuousLinearMap.SpectralTraceClass` remains a compact self-adjoint spectral construction; it is
-not a substitute for that missing ideal.
+`ContinuousLinearMap.SpectralTraceClass` remains a distinct compact self-adjoint spectral
+construction and does not replace the general non-self-adjoint trace-class ideal.
 
 Reindexing invariance of `diagonalDet` does not imply independence from arbitrary unrelated
 diagonalizing Hilbert bases. Such a statement needs spectral uniqueness on the relevant operator
