@@ -65,8 +65,9 @@ invariance, closure under bounded composition, the basis-relative totalized norm
 pairing `innerHS`, and comparison with spectral trace on the compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
-complex trace are defined from the Hilbert--Schmidt layer. Membership is closed under adjoint and
-bounded left/right multiplication. The trace norm is adjoint-invariant and contractive under
+complex trace are defined from the Hilbert--Schmidt layer. Trace-class membership is equivalently
+characterized by a factorization `T = A† B` with Hilbert--Schmidt factors. Membership is closed under
+adjoint and bounded left/right multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
 bounds are also proved. The canonical complex trace is cyclic for a trace-class factor and a
 bounded factor. Trace-class completeness remains open.
