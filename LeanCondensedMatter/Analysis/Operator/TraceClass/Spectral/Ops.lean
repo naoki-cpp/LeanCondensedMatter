@@ -5,12 +5,12 @@ import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 set_option linter.style.header false
 
 /-!
-# Spectral-trace linearity, cyclicity, and bounds
+# Spectral-trace basis formulas and cyclicity
 
-This module proves algebraic and norm bounds for the spectral trace of compact self-adjoint
-operators. The arguments compare operators against a common Hilbert basis rather than choosing
-unrelated eigenbases for each operator. Diagonal matrix elements are transported through
-`selfAdjoint ℂ` before being treated as real scalars.
+This module proves Hilbert-basis formulas and cyclicity for the spectral trace of compact
+self-adjoint operators. The arguments compare operators against a common Hilbert basis rather
+than choosing unrelated eigenbases for each operator. Diagonal matrix elements are transported
+through `selfAdjoint ℂ` before being treated as real scalars.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -137,31 +137,5 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H}
       rw [h1', h2', hconj]
       exact hz.symm
   exact hs1'.unique hs2
-
-/-- The sum of lossless diagonal expectation values of a positive spectrally summable operator
-against any orthonormal family is at most its spectral trace. -/
-theorem sum_diagonalExpectationValue_le_spectralTrace
-    {T : H →L[ℂ] H} (hT : IsCompactOperator T) (hTpos : T.IsPositive)
-    (h : HasSummableRealEigenvalues T) {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
-    Summable (fun i => diagonalExpectationValue T hTpos.isSelfAdjoint (d i)) ∧
-      ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) ≤ spectralTrace T := by
-  obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
-  set g : w → ℝ := fun j =>
-    diagonalExpectationValue T hTpos.isSelfAdjoint (b j) with hg_def
-  have htr : HasSum g (spectralTrace T) :=
-    hasSum_diagonalExpectationValue_eq_spectralTrace hT hTpos.isSelfAdjoint h b
-  have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
-    simpa [g] using diagonalExpectationValue_nonneg T hTpos (b j)
-  have hd_inj : Function.Injective d := hd.linearIndependent.injective
-  set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
-  have he_inj : Function.Injective e := fun i j hij => hd_inj (congrArg Subtype.val hij)
-  have hge : ∀ i, g (e i) = diagonalExpectationValue T hTpos.isSelfAdjoint (d i) := fun i => by
-    change diagonalExpectationValue T hTpos.isSelfAdjoint (b (e i)) = _
-    rw [show (b (e i) : H) = d i from by rw [hb_eq]]
-  have hfsum : Summable (fun i => g (e i)) := htr.summable.comp_injective he_inj
-  have hle : ∑' i, g (e i) ≤ spectralTrace T :=
-    hasSum_le_inj e he_inj (fun j _ => hgnonneg j) (fun _ => le_rfl) hfsum.hasSum htr
-  refine ⟨hfsum.congr hge, ?_⟩
-  rwa [tsum_congr hge] at hle
 
 end ContinuousLinearMap
