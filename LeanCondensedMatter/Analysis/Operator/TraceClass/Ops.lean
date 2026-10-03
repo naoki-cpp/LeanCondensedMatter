@@ -461,6 +461,12 @@ theorem traceNorm_comp_left_le_of_norm_le_one
     (hT.comp_left W).traceNorm ≤ (hA'.normSq + hB.normSq) / 2 := hbound
     _ ≤ hT.traceNorm := by rw [hBnorm]; linarith
 
+private theorem traceNorm_eq_of_eq
+    {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R) (hSR : S = R) :
+    hS.traceNorm = hR.traceNorm := by
+  subst R
+  exact IsTraceClass.traceNorm_proof_irrel _ _
+
 /-- Right multiplication by a contraction does not increase the trace norm. -/
 theorem traceNorm_comp_right_le_of_norm_le_one
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
@@ -480,9 +486,9 @@ theorem traceNorm_comp_right_le_of_norm_le_one
     (hT.comp_right W).traceNorm =
         (hT.comp_right W).adjoint.traceNorm :=
       (hT.comp_right W).traceNorm_adjoint.symm
-    _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm := by
-      cases hprodAdj
-      exact IsTraceClass.traceNorm_proof_irrel _ _
+    _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm :=
+      traceNorm_eq_of_eq (hT.comp_right W).adjoint
+        (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)) hprodAdj
     _ ≤ hT.adjoint.traceNorm := hleft
     _ = hT.traceNorm := hT.traceNorm_adjoint
 
