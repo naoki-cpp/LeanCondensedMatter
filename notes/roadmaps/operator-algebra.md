@@ -50,10 +50,9 @@ scalar transport, supported cyclicity, and Hilbert-basis formulas; it does not d
 bundled trace value. The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`.
 
-`traceNormSeriesWrt d T` is only the totalized basis-diagonal series of `|T|`; outside
-`IsTraceClass T` it is not called the trace norm. For `hT : IsTraceClass T`, `hT.traceNorm` is the
-basis-independent trace norm, defined from the canonical squared Hilbert--Schmidt norm of
-`sqrt(|T|)`. The compact self-adjoint specialization identifies general trace-class membership with absolute
+For `hT : IsTraceClass T`, `hT.traceNorm` is the basis-independent trace norm, defined from the
+canonical squared Hilbert--Schmidt norm of `sqrt(|T|)`. Its Hilbert-basis diagonal formula is
+exposed directly, without a second basis-relative trace-norm wrapper. The compact self-adjoint specialization identifies general trace-class membership with absolute
 spectral summability and the general trace norm with the absolute eigenvalue sum. For positive bundled
 spectral trace-class operators, that trace norm agrees with the spectral trace. The basis-independent
 general complex trace is the absolutely convergent Hilbert-basis diagonal sum and agrees, on compact
