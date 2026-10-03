@@ -51,12 +51,6 @@ theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
   exact HasSum.congr_fun hsum fun a =>
     abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
 
-private theorem trace_eq_of_eq
-    {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass T) (h : S = T) :
-    hS.trace = hT.trace := by
-  subst T
-  exact hS.trace_proof_irrel hT
-
 /-- The unbundled canonical trace expectation used to construct `DensityOperator.expectation`. -/
 private noncomputable def densityExpectationTrace
     (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
@@ -67,29 +61,15 @@ private theorem densityExpectationTrace_add
     densityExpectationTrace ρ (A + B) =
       densityExpectationTrace ρ A + densityExpectationTrace ρ B := by
   unfold densityExpectationTrace
-  have hprod : ρ.op * (A + B) = ρ.op * A + ρ.op * B := by
-    rw [mul_add]
-  calc
-    (ρ.isTraceClass.comp_right (A + B)).trace =
-        ((ρ.isTraceClass.comp_right A).add (ρ.isTraceClass.comp_right B)).trace :=
-      trace_eq_of_eq (ρ.isTraceClass.comp_right (A + B))
-        ((ρ.isTraceClass.comp_right A).add (ρ.isTraceClass.comp_right B)) hprod
-    _ = (ρ.isTraceClass.comp_right A).trace + (ρ.isTraceClass.comp_right B).trace :=
-      (ρ.isTraceClass.comp_right A).trace_add (ρ.isTraceClass.comp_right B)
+  simpa only [mul_add] using
+    (ρ.isTraceClass.comp_right A).trace_add (ρ.isTraceClass.comp_right B)
 
 private theorem densityExpectationTrace_smul
     (ρ : DensityOperator H) (c : ℂ) (A : H →L[ℂ] H) :
     densityExpectationTrace ρ (c • A) = c * densityExpectationTrace ρ A := by
   unfold densityExpectationTrace
-  have hprod : ρ.op * (c • A) = c • (ρ.op * A) := by
-    rw [mul_smul_comm]
-  calc
-    (ρ.isTraceClass.comp_right (c • A)).trace =
-        ((ρ.isTraceClass.comp_right A).smul c).trace :=
-      trace_eq_of_eq (ρ.isTraceClass.comp_right (c • A))
-        ((ρ.isTraceClass.comp_right A).smul c) hprod
-    _ = c * (ρ.isTraceClass.comp_right A).trace :=
-      (ρ.isTraceClass.comp_right A).trace_smul c
+  simpa only [mul_smul_comm] using
+    (ρ.isTraceClass.comp_right A).trace_smul c
 
 private theorem densityExpectationTrace_norm_le
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :
@@ -201,11 +181,9 @@ theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
   rw [ρ.expectation_apply]
   calc
     (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace =
-        ρ.isTraceClass.trace :=
-      trace_eq_of_eq (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H))
-        ρ.isTraceClass (by
-          ext x
-          rw [mul_apply_eq_comp, ContinuousLinearMap.id_apply])
+        ρ.isTraceClass.trace := by
+      simpa only [mul_one] using
+        (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace_proof_irrel ρ.isTraceClass
     _ = ρ.spectralTraceClass.isTraceClass.trace :=
       ρ.isTraceClass.trace_proof_irrel ρ.spectralTraceClass.isTraceClass
     _ = 1 := ρ.trace_eq_one
