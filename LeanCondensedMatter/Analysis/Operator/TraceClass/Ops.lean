@@ -530,7 +530,7 @@ theorem norm_trace_le_traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     (ContinuousLinearMap.id ℂ H) ContinuousLinearMap.norm_id_le d
   rw [hT.trace_eq_seriesWrt d]
   unfold traceSeriesWrt
-  exact (norm_tsum_le_tsum_norm (hT.summable_norm_traceSeriesWrt d)).trans (by
+  exact (norm_tsum_le_tsum_norm (hT.summable_traceSeriesWrt d).norm).trans (by
     simpa using hpair.2)
 
 /-- The zero operator has trace zero. -/
