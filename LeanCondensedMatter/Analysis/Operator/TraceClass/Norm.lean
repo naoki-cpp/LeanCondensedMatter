@@ -54,7 +54,7 @@ theorem hasSum_diagonalExpectationValue_eq_traceNorm {T : H →L[ℂ] H}
   have habs : CFC.abs T = T := CFC.abs_of_nonneg T hnonneg
   have hsummable :
       Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) := by
-    simpa [IsTraceClassWrt, habs] using hT.isTraceClassWrt d
+    simpa [IsTraceClassWrt, habs] using (isTraceClass_iff_isTraceClassWrt d T).mp hT
   have hnorm :
       hT.traceNorm = ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i) := by
     simpa [habs] using hT.traceNorm_eq_tsum_diagonalExpectationValue d

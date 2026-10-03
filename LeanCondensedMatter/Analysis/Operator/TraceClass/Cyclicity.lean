@@ -19,7 +19,8 @@ namespace IsTraceClass
 /-- If `T` is trace class and `W` is bounded, then `Tr(TW) = Tr(WT)`. -/
 theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
     (hT.comp_right W).trace = (hT.comp_left W).trace := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   obtain ⟨ι, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   have hBW : IsHilbertSchmidt (B * W) := isHilbertSchmidt_comp_right hB W
   have hAW : IsHilbertSchmidt (A * ContinuousLinearMap.adjoint W) :=

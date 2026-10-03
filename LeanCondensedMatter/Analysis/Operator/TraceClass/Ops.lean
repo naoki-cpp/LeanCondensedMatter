@@ -26,7 +26,7 @@ private theorem diagonalExpectationValue_zero
 /-- The zero bounded operator is trace class. -/
 theorem isTraceClass_zero : IsTraceClass (0 : H →L[ℂ] H) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  apply IsTraceClass.of_isTraceClassWrt (d := d)
+  apply (isTraceClass_iff_isTraceClassWrt d (0 : H →L[ℂ] H)).mpr
   rw [IsTraceClassWrt]
   simpa only [CFC.abs_zero] using
     (summable_zero.congr fun i =>
@@ -49,9 +49,9 @@ private theorem diagonalExpectationValue_abs_smul
 theorem IsTraceClass.smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
     IsTraceClass (c • T) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  apply IsTraceClass.of_isTraceClassWrt (d := d)
+  apply (isTraceClass_iff_isTraceClassWrt d (c • T)).mpr
   rw [IsTraceClassWrt]
-  have hsum := hT.isTraceClassWrt d
+  have hsum := (isTraceClass_iff_isTraceClassWrt d T).mp hT
   rw [IsTraceClassWrt] at hsum
   exact (hsum.mul_left ‖c‖).congr fun i => (diagonalExpectationValue_abs_smul c T (d i)).symm
 
@@ -63,8 +63,11 @@ theorem IsTraceClass.neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 /-- Taking the adjoint preserves trace-class membership. -/
 theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     IsTraceClass (ContinuousLinearMap.adjoint T) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
-  apply IsTraceClass.of_hilbertSchmidt_factorization hB hA
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  apply (isTraceClass_iff_exists_hilbertSchmidt_factorization
+    (T := ContinuousLinearMap.adjoint T)).mpr
+  refine ⟨B, A, hB, hA, ?_⟩
   simpa only [star_mul, ContinuousLinearMap.star_eq_adjoint,
     ContinuousLinearMap.adjoint_adjoint] using congrArg star hfactor
 
@@ -72,11 +75,13 @@ theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
     (hT : IsTraceClass T) :
     IsTraceClass (W * T) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   let A' : H →L[ℂ] H := A * ContinuousLinearMap.adjoint W
   have hA' : IsHilbertSchmidt A' :=
     isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W)
-  apply IsTraceClass.of_hilbertSchmidt_factorization hA' hB
+  apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := W * T)).mpr
+  refine ⟨A', B, hA', hB, ?_⟩
   have hAdjA' : ContinuousLinearMap.adjoint A' = W * ContinuousLinearMap.adjoint A := by
     rw [show ContinuousLinearMap.adjoint A' = star A' from
       (ContinuousLinearMap.star_eq_adjoint A').symm]
@@ -89,9 +94,11 @@ theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
 theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) :
     IsTraceClass (T * W) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hBW : IsHilbertSchmidt (B * W) := isHilbertSchmidt_comp_right hB W
-  apply IsTraceClass.of_hilbertSchmidt_factorization hA hBW
+  apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T * W)).mpr
+  refine ⟨A, B * W, hA, hBW, ?_⟩
   rw [← mul_assoc, hfactor]
 
 private theorem IsTraceClass.exists_controlled_hilbertSchmidt_factorization
@@ -143,7 +150,8 @@ absolutely summable complex series. -/
 private theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => inner ℂ (W (d i)) (T (d i))) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := hT.exists_hilbertSchmidt_factorization
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
   have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
     (hAW.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
@@ -256,7 +264,7 @@ theorem IsTraceClass.add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTra
     symm
     rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
     exact ContinuousLinearMap.adjoint_inner_right U (d i) ((T + R) (d i))
-  apply IsTraceClass.of_isTraceClassWrt (d := d)
+  apply (isTraceClass_iff_isTraceClassWrt d (T + R)).mpr
   rw [IsTraceClassWrt]
   exact Complex.summable_ofReal.mp hcast
 

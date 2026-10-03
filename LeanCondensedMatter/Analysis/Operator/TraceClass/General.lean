@@ -72,17 +72,4 @@ theorem isTraceClass_iff_isTraceClassWrt {ι : Type*} (d : HilbertBasis ι ℂ H
   rw [isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs]
   exact isHilbertSchmidt_iff_isHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T))
 
-/-- A basis-independent trace-class witness supplies summability in every Hilbert basis. -/
-theorem IsTraceClass.isTraceClassWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
-    {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    IsTraceClassWrt d T :=
-  (isTraceClass_iff_isTraceClassWrt d T).mp hT
-
-/-- Evidence of trace-class membership in one Hilbert basis packages into the basis-independent
-predicate. -/
-theorem IsTraceClass.of_isTraceClassWrt {ι : Type*} {d : HilbertBasis ι ℂ H}
-    {T : H →L[ℂ] H} (hT : IsTraceClassWrt d T) :
-    IsTraceClass T :=
-  (isTraceClass_iff_isTraceClassWrt d T).mpr hT
-
 end ContinuousLinearMap

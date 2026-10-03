@@ -97,7 +97,7 @@ theorem isTraceClass_iff_hasSummableRealEigenvalues
   constructor
   · intro htrace
     have hg : Summable g := by
-      have hbtrace := htrace.isTraceClassWrt b
+      have hbtrace := (isTraceClass_iff_isTraceClassWrt b T).mp htrace
       simpa [IsTraceClassWrt, g] using hbtrace
     rw [HasSummableRealEigenvalues]
     have hrestricted : Summable (g ∘ j) := hg.comp_injective hj
@@ -110,7 +110,7 @@ theorem isTraceClass_iff_hasSummableRealEigenvalues
       exact HasSum.congr_fun hweights.hasSum hg_point
     have hfull : HasSum g (∑' a : EigenvectorIndex T, |a.1.1|) :=
       (hj.hasSum_iff hg_zero).mp hrestricted
-    apply IsTraceClass.of_isTraceClassWrt (d := b)
+    apply (isTraceClass_iff_isTraceClassWrt b T).mpr
     simpa [IsTraceClassWrt, g] using hfull.summable
 
 /-- On compact self-adjoint operators, the general complex trace agrees with the real spectral
@@ -146,7 +146,7 @@ theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
   have hg_zero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     simpa [g] using hzero x hx
   have hg : Summable g := by
-    have hbtrace := hT.isTraceClassWrt b
+    have hbtrace := (isTraceClass_iff_isTraceClassWrt b T).mp hT
     simpa [IsTraceClassWrt, g] using hbtrace
   have htrace : hT.traceNorm = ∑' i, g i := by
     simpa [g] using hT.traceNorm_eq_tsum_diagonalExpectationValue b
