@@ -80,11 +80,8 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
       2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
       (fun _ _ h => blockOrder.injective h) cross inv
       (fun B _ C _ hBC => by
-        by_cases hlt : blockOrder B < blockOrder C
-        · simpa [Nat.ModEq, hlt, inv, cross] using
-            d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC
-        · simpa [Nat.ModEq, hlt, inv, cross, add_comm] using
-            d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount C B hBC.symm)
+        simpa [Nat.ModEq, inv, cross] using
+          d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC)
   simpa [Nat.ModEq, ExternalInsertionDiagram.interComponentCrossingCount,
     Combinatorics.Pairing.interComponentCrossingCount,
     FamilySlotShuffleTo.orderedBlockInversionCount,

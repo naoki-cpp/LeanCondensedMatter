@@ -118,13 +118,9 @@ theorem ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq
       2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
       (fun _ _ h => blockOrder.injective h) cross inv
       (fun B _ C _ hBC => by
-        by_cases hlt : blockOrder B < blockOrder C
-        · simpa [Nat.ModEq, hlt, inv, cross, pairing, pairEquiv] using
-            d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
-              externalTime σ B C hBC
-        · simpa [Nat.ModEq, hlt, inv, cross, pairing, pairEquiv, add_comm] using
-            d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
-              externalTime σ C B hBC.symm)
+        simpa [Nat.ModEq, inv, cross, pairing, pairEquiv] using
+          d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
+            externalTime σ B C hBC)
   simpa [Nat.ModEq, ExternalInsertionWickDiagram.mixedInterComponentCrossingCount,
     Pairing.interComponentCrossingCount, FamilySlotShuffleTo.orderedBlockInversionCount,
     cross, inv, pairing, pairEquiv] using hsum
