@@ -3743,6 +3743,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_eq_sum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_eq_sum"
     ],
@@ -3751,10 +3752,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_eq_sum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_eq_sum"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5095,6 +5097,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add"
     ],
@@ -5103,10 +5106,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5141,6 +5145,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount"
     ],
@@ -5154,10 +5159,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9499,6 +9505,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero"
     ],
     "dependencies": [],
@@ -9506,9 +9513,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13633,6 +13641,7 @@
       "ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
       "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+      "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
@@ -13651,12 +13660,13 @@
       "ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
       "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+      "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14133,6 +14143,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "dependencies": [
@@ -14145,9 +14156,10 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14169,7 +14181,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14181,7 +14193,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization",
@@ -14191,9 +14204,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14232,6 +14246,7 @@
       "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.traceSeriesWrt_eq"
     ],
     "dependencies": [
@@ -14246,9 +14261,10 @@
       "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.traceSeriesWrt_eq"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15438,6 +15454,97 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (W : H →L[ℂ] H), ⋯.trace = ⋯.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
+    "externalAxioms": [],
+    "docString": "If `T` is trace class and `W` is bounded, then `Tr(TW) = Tr(WT)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.comp_left",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.innerHS_comp_right",
+      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T A B : H →L[ℂ] H} (hT : T.IsTraceClass),\n  A.IsHilbertSchmidt →\n    B.IsHilbertSchmidt →\n      ContinuousLinearMap.adjoint A * B = T →\n        ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), hT.trace = ContinuousLinearMap.innerHS d A B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "If a trace-class operator is written as `A† B` with Hilbert--Schmidt factors, its\ncanonical trace is their Hilbert--Schmidt inner product in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.trace_eq_seriesWrt",
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.diagonal_eq_hilbertSchmidt_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  hT.trace = ContinuousLinearMap.traceSeriesWrt d T",
     "standardAxioms": [
@@ -15460,6 +15567,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero"
@@ -15472,11 +15580,12 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18084,6 +18193,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) {S T : H →L[ℂ] H},\n  S.IsHilbertSchmidt →\n    T.IsHilbertSchmidt →\n      ∀ (W : H →L[ℂ] H),\n        ContinuousLinearMap.innerHS d S (T * W) = ContinuousLinearMap.innerHS d (S * ContinuousLinearMap.adjoint W) T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.innerHS_comp_right",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
+    "externalAxioms": [],
+    "docString": "Right composition can be transferred between the two Hilbert--Schmidt factors by taking the\nadjoint:\n`⟪S, T W⟫_{HS} = ⟪S W†, T⟫_{HS}`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isHilbertSchmidt_comp_right",
+      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H},\n  S.IsHilbertSchmidt → T.IsHilbertSchmidt → ContinuousLinearMap.innerHS d S T = ContinuousLinearMap.innerHS f S T",
     "standardAxioms": [
       "Classical.choice",
@@ -18103,6 +18258,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.traceSeriesWrt_eq",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS"
     ],
@@ -18113,10 +18269,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.traceSeriesWrt_eq",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18386,6 +18543,8 @@
       "ContinuousLinearMap.IsTraceClass.of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
+      "ContinuousLinearMap.innerHS_comp_right",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -18403,10 +18562,12 @@
       "ContinuousLinearMap.IsTraceClass.of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
+      "ContinuousLinearMap.innerHS_comp_right",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19445,7 +19606,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -19457,6 +19618,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
     ],
     "dependencies": [
@@ -19466,9 +19628,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125949,6 +126112,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairContractionProduct_eq_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
     ],
@@ -125961,10 +126125,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairContractionProduct_eq_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125986,7 +126151,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -125998,7 +126163,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPairEquiv_apply"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPairEquiv_apply",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
@@ -126008,7 +126174,52 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPairEquiv_apply"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPairEquiv_apply",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  (d.componentMixedPositionShuffle externalTime σ).slotEquiv ⟨B, p⟩ = d.componentMixedPosition externalTime σ B p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "directWrapperOf": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply"
+    ],
+    "crossModuleDirectWrapper": true,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -126218,6 +126429,95 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairContractionProduct_eq_prod_components"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B C : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  B ≠ C →\n    ((d.pairingInMixedOrder externalTime σ).componentCrossingCount (d.componentMixedPairEquiv externalTime σ) B C +\n          (d.pairingInMixedOrder externalTime σ).componentCrossingCount (d.componentMixedPairEquiv externalTime σ) C\n            B) %\n        2 =\n      (d.componentMixedPositionShuffle externalTime σ).blockInversionCount B C % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
+    "externalAxioms": [],
+    "docString": "For two distinct components, mixed-order geometric crossing parity is exactly the parity of\nambient slot inversions between their mixed-position blocks. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
+      "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPairEquiv_apply",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  d.mixedInterComponentCrossingCount externalTime σ % 2 =\n    (d.componentMixedPositionShuffle externalTime σ).orderedBlockInversionCount blockOrder % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
+    "externalAxioms": [],
+    "docString": "The residual mixed-order inter-component crossing parity is the total inversion parity of the\ncanonical mixed component-position shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149132,6 +149432,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.traceSeriesWrt_eq"
     ],
     "dependencies": [],
@@ -149139,9 +149440,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_hilbertSchmidt_factorization",
       "ContinuousLinearMap.traceSeriesWrt_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
