@@ -111,7 +111,8 @@ basis. -/
 theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
     (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => inner ℂ (d i) (T (d i))) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
     (hA.isHilbertSchmidtWrt d) (hB.isHilbertSchmidtWrt d)
   exact hsum.congr fun i => (diagonal_eq_hilbertSchmidt_inner hfactor (d i)).symm
@@ -121,7 +122,8 @@ basis. -/
 private theorem traceSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
     traceSeriesWrt d T = traceSeriesWrt f T := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ := (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hd : traceSeriesWrt d T = innerHS d A B := by
     unfold traceSeriesWrt innerHS
     apply tsum_congr
