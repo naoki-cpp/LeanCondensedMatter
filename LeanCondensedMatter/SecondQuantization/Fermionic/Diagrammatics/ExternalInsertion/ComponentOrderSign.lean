@@ -53,7 +53,7 @@ private noncomputable def familyBlockOf
   (σ.slotEquiv.symm x).1
 
 private theorem sum_familyBlockFiber_eq
-    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    {ι : Type*} [Fintype ι] [DecidableEq ι] {size : ι → ℕ} {total : ℕ}
     (σ : FamilySlotShuffleTo size total) (i : ι) (f : Fin total → ℕ) :
     (∑ x ∈ (Finset.univ : Finset (Fin total)) with familyBlockOf σ x = i, f x) =
       ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
@@ -65,10 +65,10 @@ private theorem sum_familyBlockFiber_eq
   · intro p _ q _ hpq
     simpa using σ.slotEquiv.injective hpq
   · intro x hx
-    rw [Finset.mem_filter] at hx
+    rcases Finset.mem_filter.mp hx with ⟨_, hblock⟩
     let y := σ.slotEquiv.symm x
     rcases y with ⟨j, p⟩
-    change j = i at hx
+    change j = i at hblock
     subst j
     refine ⟨p, Finset.mem_univ _, ?_⟩
     exact σ.slotEquiv.apply_symm_apply x
@@ -129,10 +129,10 @@ private theorem familyRelativePerm_inversionCount_eq_sum_blockDisagreementCount
   rw [sum_familyBlocks_eq σ]
   apply Finset.sum_congr rfl
   intro i _
+  simp_rw [sum_familyBlocks_eq σ]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro j _
-  rw [sum_familyBlocks_eq σ]
   unfold familyBlockDisagreementCount
   apply Finset.sum_congr rfl
   intro p _
