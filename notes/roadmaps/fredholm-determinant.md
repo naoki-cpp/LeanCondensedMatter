@@ -40,7 +40,7 @@ composition, a basis-independent norm-square series on Hilbert--Schmidt operator
 of `sqrt(|T|)`; its canonical real trace norm and basis-independent complex trace are available.
 Membership is closed under adjoint and bounded multiplication, and the general operator-norm-weighted
 left/right trace-norm bounds and cyclicity of the canonical complex trace are available.
-Completeness/approximation required by Fredholm theory remains open.
+Trace-class completeness/approximation required by Fredholm theory remains open.
 
 `ContinuousLinearMap.SpectralTraceClass` remains a distinct compact self-adjoint spectral
 construction and does not replace the general non-self-adjoint trace-class ideal.
