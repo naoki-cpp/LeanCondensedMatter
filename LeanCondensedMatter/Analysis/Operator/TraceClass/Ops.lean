@@ -427,39 +427,54 @@ theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 theorem traceNorm_comp_left_le_of_norm_le_one
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
     (hT.comp_left W).traceNorm ≤ hT.traceNorm := by
-  obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
-    hT.exists_controlled_hilbertSchmidt_factorization
-  let A' : H →L[ℂ] H := A * ContinuousLinearMap.adjoint W
-  have hA' : IsHilbertSchmidt A' :=
-    isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W)
-  have hAdjWnorm : ‖ContinuousLinearMap.adjoint W‖ ≤ 1 := by
-    rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
-    exact hW
-  have hA'norm : hA'.normSq ≤ hT.traceNorm := by
-    have hraw := IsHilbertSchmidt.normSq_comp_right_le hA (ContinuousLinearMap.adjoint W)
-    have hraw' :
-        hA'.normSq ≤ ‖ContinuousLinearMap.adjoint W‖ ^ 2 * hA.normSq := by
-      exact (IsHilbertSchmidt.normSq_proof_irrel hA'
-        (isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W))) ▸ hraw
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (W * T)
+  let Bop : H →L[ℂ] H := ContinuousLinearMap.adjoint W * U
+  have hBopNorm : ‖Bop‖ ≤ 1 := by
     calc
-      hA'.normSq ≤ ‖ContinuousLinearMap.adjoint W‖ ^ 2 * hA.normSq := hraw'
-      _ ≤ 1 ^ 2 * hA.normSq := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg _) hAdjWnorm 2) hA.normSq_nonneg
-      _ ≤ hT.traceNorm := by simpa using hAnorm
-  have hAdjA' : ContinuousLinearMap.adjoint A' = W * ContinuousLinearMap.adjoint A := by
-    rw [show ContinuousLinearMap.adjoint A' = star A' from
-      (ContinuousLinearMap.star_eq_adjoint A').symm]
-    dsimp [A']
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
-      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint]
-  have hfactor' : ContinuousLinearMap.adjoint A' * B = W * T := by
-    rw [hAdjA', mul_assoc, hfactor]
-  have hbound :=
-    traceNorm_le_half_normSq_add_of_factorization (hT.comp_left W) hA' hB hfactor'
+      ‖Bop‖ ≤ ‖ContinuousLinearMap.adjoint W‖ * ‖U‖ := norm_mul_le _ _
+      _ = ‖W‖ * ‖U‖ := by rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
+      _ ≤ 1 * ‖U‖ := mul_le_mul_of_nonneg_right hW (norm_nonneg U)
+      _ ≤ 1 * 1 := mul_le_mul_of_nonneg_left hUnorm zero_le_one
+      _ = 1 := one_mul 1
+  have hpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm Bop hBopNorm d
+  have hdiagCast (i : w) :
+      (diagonalExpectationValue (CFC.abs (W * T))
+        (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) : ℂ) =
+        inner ℂ (Bop (d i)) (T (d i)) := by
+    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
+    calc
+      inner ℂ (d i) ((ContinuousLinearMap.adjoint U) ((W * T) (d i))) =
+          inner ℂ (U (d i)) ((W * T) (d i)) :=
+        ContinuousLinearMap.adjoint_inner_right U (d i) ((W * T) (d i))
+      _ = inner ℂ (U (d i)) (W (T (d i))) := by
+        rw [mul_apply_eq_comp]
+      _ = inner ℂ ((ContinuousLinearMap.adjoint W) (U (d i))) (T (d i)) :=
+        (ContinuousLinearMap.adjoint_inner_left W (U (d i)) (T (d i))).symm
+      _ = inner ℂ (Bop (d i)) (T (d i)) := by
+        rw [mul_apply_eq_comp]
+  have hdiagNorm (i : w) :
+      diagonalExpectationValue (CFC.abs (W * T))
+        (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) =
+        ‖inner ℂ (Bop (d i)) (T (d i))‖ := by
+    have hnonneg := diagonalExpectationValue_nonneg
+      (CFC.abs (W * T)) (nonneg_iff_isPositive.mp (CFC.abs_nonneg (W * T))) (d i)
+    have hnorm := congrArg norm (hdiagCast i)
+    have hcastNorm :
+        ‖(diagonalExpectationValue (CFC.abs (W * T))
+          (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) : ℂ)‖ =
+          diagonalExpectationValue (CFC.abs (W * T))
+            (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i) := by
+      rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
+    exact hcastNorm.symm.trans hnorm
+  rw [(hT.comp_left W).traceNorm_eq_tsum_diagonalExpectationValue d]
   calc
-    (hT.comp_left W).traceNorm ≤ (hA'.normSq + hB.normSq) / 2 := hbound
-    _ ≤ hT.traceNorm := by rw [hBnorm]; linarith
+    (∑' i, diagonalExpectationValue (CFC.abs (W * T))
+        (CFC.abs_nonneg (W * T)).isSelfAdjoint (d i)) =
+        ∑' i, ‖inner ℂ (Bop (d i)) (T (d i))‖ := by
+      apply tsum_congr
+      exact hdiagNorm
+    _ ≤ hT.traceNorm := hpair.2
 
 private theorem traceNorm_eq_of_eq
     {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R) (hSR : S = R) :
