@@ -96,25 +96,6 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     (Equiv.prodComm ι (EigenvectorIndex T)).tsum_eq (Function.uncurry f)
   rwa [hsymmeq, hS_eq] at hHS
 
-/-- Additivity of `spectralTrace`. -/
-theorem spectralTrace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsSymmetric)
-    (hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
-    (hTT' : IsCompactOperator (T + T')) (hTT'sym : (T + T' : H →L[ℂ] H).IsSymmetric)
-    (h : HasSummableRealEigenvalues T) (h' : HasSummableRealEigenvalues T')
-    (hsum : HasSummableRealEigenvalues (T + T')) :
-    spectralTrace (T + T') = spectralTrace T + spectralTrace T' := by
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  let hTself : IsSelfAdjoint T := ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hTsym
-  let hT'self : IsSelfAdjoint T' := ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hT'sym
-  let hsumself : IsSelfAdjoint (T + T') :=
-    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hTT'sym
-  have hs1 := hasSum_diagonalExpectationValue_eq_spectralTrace hT hTself h d
-  have hs2 := hasSum_diagonalExpectationValue_eq_spectralTrace hT' hT'self h' d
-  have hs3 := hasSum_diagonalExpectationValue_eq_spectralTrace hTT' hsumself hsum d
-  have hadd := HasSum.congr_fun (hs1.add hs2) fun i =>
-    diagonalExpectationValue_add T T' hTself hT'self (d i)
-  exact (hadd.unique hs3).symm
-
 /-- Cyclicity of `spectralTrace` for two products satisfying the required hypotheses. -/
 theorem spectralTrace_comp_comm {T' : H →L[ℂ] H}
     (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
