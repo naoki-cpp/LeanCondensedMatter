@@ -198,20 +198,14 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
 @[simp]
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
-  rw [ρ.expectation_eq_spectral_tsum]
+  rw [ρ.expectation_apply]
   calc
-    (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-      inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        ((ContinuousLinearMap.id ℂ H) (eigenvectorFamily ρ.spectralTraceClass.compact a))) =
-        ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) := by
-      apply tsum_congr
-      intro a
-      rw [ContinuousLinearMap.id_apply, inner_self_eq_norm_sq_to_K,
-        eigenvectorFamily_norm_eq_one ρ a]
-      norm_num
-    _ = 1 := by
-      have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-        simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
-      exact_mod_cast htrace
+    (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace =
+        ρ.isTraceClass.trace :=
+      trace_eq_of_eq (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H))
+        ρ.isTraceClass (by simp)
+    _ = ρ.spectralTraceClass.isTraceClass.trace :=
+      ρ.isTraceClass.trace_proof_irrel ρ.spectralTraceClass.isTraceClass
+    _ = 1 := ρ.trace_eq_one
 
 end QuantumTheory
