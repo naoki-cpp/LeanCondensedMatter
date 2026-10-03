@@ -1,11 +1,12 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
 # Expectations of bounded operators
 
 A density operator defines a normalized continuous complex-linear functional on bounded operators.
-The definition uses the density operator's spectral decomposition, so the observed operator need
-not be compact, self-adjoint, or trace-class.
+The canonical definition is the general trace-class trace `Tr(ρA)`. The spectral eigenvalue
+expansion is derived as a representation theorem.
 -/
 
 noncomputable section
@@ -27,7 +28,7 @@ private theorem norm_inner_apply_le_opNorm_of_norm_eq_one
       exact A.le_opNorm _
     _ = ‖A‖ := by rw [hx]; ring
 
-/-- The spectral series defining the expectation of a bounded operator is summable. -/
+/-- The spectral series representing the expectation of a bounded operator is summable. -/
 theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
       (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
@@ -50,73 +51,154 @@ theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
   exact HasSum.congr_fun hsum fun a =>
     abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
 
-/-- The unbundled complex expectation value used to construct `DensityOperator.expectation`. -/
-private noncomputable def densityExpectation (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
-  ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-    (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-      (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)
+private theorem trace_eq_of_eq
+    {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass T) (h : S = T) :
+    hS.trace = hT.trace := by
+  subst T
+  exact hS.trace_proof_irrel hT
 
-private theorem densityExpectation_add (ρ : DensityOperator H) (A B : H →L[ℂ] H) :
-    densityExpectation ρ (A + B) = densityExpectation ρ A + densityExpectation ρ B := by
-  rw [densityExpectation, densityExpectation, densityExpectation,
-    ← ((ρ.summable_expectation_term A).hasSum.add
-      (ρ.summable_expectation_term B).hasSum).tsum_eq]
-  apply tsum_congr
-  intro a
-  simp [inner_add_right, mul_add]
+/-- The unbundled canonical trace expectation used to construct `DensityOperator.expectation`. -/
+private noncomputable def densityExpectationTrace
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
+  (ρ.isTraceClass.comp_right A).trace
 
-private theorem densityExpectation_smul (ρ : DensityOperator H) (c : ℂ) (A : H →L[ℂ] H) :
-    densityExpectation ρ (c • A) = c * densityExpectation ρ A := by
-  rw [densityExpectation, densityExpectation,
-    ← ((ρ.summable_expectation_term A).hasSum.mul_left c).tsum_eq]
-  apply tsum_congr
-  intro a
-  simp [inner_smul_right]
-  ring
+private theorem densityExpectationTrace_add
+    (ρ : DensityOperator H) (A B : H →L[ℂ] H) :
+    densityExpectationTrace ρ (A + B) =
+      densityExpectationTrace ρ A + densityExpectationTrace ρ B := by
+  unfold densityExpectationTrace
+  have hprod : ρ.op * (A + B) = ρ.op * A + ρ.op * B := by
+    rw [mul_add]
+  calc
+    (ρ.isTraceClass.comp_right (A + B)).trace =
+        ((ρ.isTraceClass.comp_right A).add (ρ.isTraceClass.comp_right B)).trace :=
+      trace_eq_of_eq (ρ.isTraceClass.comp_right (A + B))
+        ((ρ.isTraceClass.comp_right A).add (ρ.isTraceClass.comp_right B)) hprod
+    _ = (ρ.isTraceClass.comp_right A).trace + (ρ.isTraceClass.comp_right B).trace :=
+      (ρ.isTraceClass.comp_right A).trace_add (ρ.isTraceClass.comp_right B)
 
-private theorem densityExpectation_norm_le (ρ : DensityOperator H) (A : H →L[ℂ] H) :
-    ‖densityExpectation ρ A‖ ≤ ‖A‖ := by
-  rw [densityExpectation]
-  have hsum : HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1| * ‖A‖) (1 * ‖A‖) :=
-    (ρ.hasSum_abs_eigenvalues_eq_one).mul_right ‖A‖
-  have hbound :
-      ‖∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-        (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ 1 * ‖A‖ := by
-    apply tsum_of_norm_bounded hsum
-    intro a
-    have hle := norm_inner_apply_le_opNorm_of_norm_eq_one A (eigenvectorFamily_norm_eq_one ρ a)
-    rw [norm_mul, Complex.norm_real]
-    exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
-  simpa using hbound
+private theorem densityExpectationTrace_smul
+    (ρ : DensityOperator H) (c : ℂ) (A : H →L[ℂ] H) :
+    densityExpectationTrace ρ (c • A) = c * densityExpectationTrace ρ A := by
+  unfold densityExpectationTrace
+  have hprod : ρ.op * (c • A) = c • (ρ.op * A) := by
+    rw [mul_smul_comm]
+  calc
+    (ρ.isTraceClass.comp_right (c • A)).trace =
+        ((ρ.isTraceClass.comp_right A).smul c).trace :=
+      trace_eq_of_eq (ρ.isTraceClass.comp_right (c • A))
+        ((ρ.isTraceClass.comp_right A).smul c) hprod
+    _ = c * (ρ.isTraceClass.comp_right A).trace :=
+      (ρ.isTraceClass.comp_right A).trace_smul c
 
-/-- The normalized complex expectation functional associated with a density operator. -/
+private theorem densityExpectationTrace_norm_le
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) :
+    ‖densityExpectationTrace ρ A‖ ≤ ‖A‖ := by
+  unfold densityExpectationTrace
+  calc
+    ‖(ρ.isTraceClass.comp_right A).trace‖ ≤
+        (ρ.isTraceClass.comp_right A).traceNorm :=
+      (ρ.isTraceClass.comp_right A).norm_trace_le_traceNorm
+    _ ≤ ‖A‖ * ρ.isTraceClass.traceNorm :=
+      ρ.isTraceClass.traceNorm_comp_right_le A
+    _ = ‖A‖ := by rw [ρ.traceNorm_eq_one, mul_one]
+
+/-- The normalized complex expectation functional associated with a density operator.
+Its canonical value on `A` is the general trace-class trace `Tr(ρA)`. -/
 noncomputable def DensityOperator.expectation (ρ : DensityOperator H) :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   IsBoundedLinearMap.toContinuousLinearMap
-    (fun A : H →L[ℂ] H => densityExpectation ρ A)
-    { map_add := densityExpectation_add ρ
+    (fun A : H →L[ℂ] H => densityExpectationTrace ρ A)
+    { map_add := densityExpectationTrace_add ρ
       map_smul := fun c A => by
-        simpa only [smul_eq_mul] using densityExpectation_smul ρ c A
-      bound := ⟨1, zero_lt_one, fun A => by simpa using densityExpectation_norm_le ρ A⟩ }
+        simpa only [smul_eq_mul] using densityExpectationTrace_smul ρ c A
+      bound := ⟨1, zero_lt_one, fun A => by simpa using densityExpectationTrace_norm_le ρ A⟩ }
 
+/-- The canonical expectation is the general trace-class trace `Tr(ρA)`. -/
 theorem DensityOperator.expectation_apply (ρ : DensityOperator H) (A : H →L[ℂ] H) :
+    ρ.expectation A = (ρ.isTraceClass.comp_right A).trace :=
+  rfl
+
+/-- The canonical trace expectation has the usual spectral eigenvalue expansion. -/
+theorem DensityOperator.expectation_eq_spectral_tsum
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ρ.expectation A =
       ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
         (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) :=
-  rfl
+          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) := by
+  classical
+  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
+  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
+  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
+  have he : Orthonormal ℂ e := by
+    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
+  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
+  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
+  have hj : Function.Injective j := by
+    intro a a' haa'
+    apply he.linearIndependent.injective
+    exact congrArg Subtype.val haa'
+  let g : u → ℂ := fun i => inner ℂ (b i) ((ρ.op * A) (b i))
+  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
+    rw [hb]
+  have heigen (a : EigenvectorIndex ρ.op) :
+      ρ.op (e a) = (a.1.1 : ℂ) • e a := by
+    simpa [e] using apply_eigenvectorFamily hρcompact a
+  have hpoint (a : EigenvectorIndex ρ.op) :
+      g (j a) = (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
+    change inner ℂ (b (j a)) ((ρ.op * A) (b (j a))) = _
+    rw [hb_j, mul_apply_eq_comp]
+    calc
+      inner ℂ (e a) (ρ.op (A (e a))) =
+          inner ℂ (ρ.op (e a)) (A (e a)) := by
+        simpa only [ρ.isSelfAdjoint.adjoint_eq] using
+          (ContinuousLinearMap.adjoint_inner_right ρ.op (e a) (A (e a)))
+      _ = (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
+        rw [heigen a, inner_smul_left]
+        simp
+  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
+    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
+      hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
+    change inner ℂ (b x) ((ρ.op * A) (b x)) = 0
+    rw [mul_apply_eq_comp]
+    calc
+      inner ℂ (b x) (ρ.op (A (b x))) =
+          inner ℂ (ρ.op (b x)) (A (b x)) := by
+        simpa only [ρ.isSelfAdjoint.adjoint_eq] using
+          (ContinuousLinearMap.adjoint_inner_right ρ.op (b x) (A (b x)))
+      _ = 0 := by simp [hxker]
+  have hfull : HasSum g (traceSeriesWrt b (ρ.op * A)) := by
+    change HasSum (fun i => inner ℂ (b i) ((ρ.op * A) (b i)))
+      (traceSeriesWrt b (ρ.op * A))
+    unfold traceSeriesWrt
+    exact ((ρ.isTraceClass.comp_right A).summable_traceSeriesWrt b).hasSum
+  have hrestricted : HasSum
+      (fun a : EigenvectorIndex ρ.op =>
+        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
+      (traceSeriesWrt b (ρ.op * A)) := by
+    simpa only [Function.comp_apply] using
+      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
+  calc
+    ρ.expectation A = (ρ.isTraceClass.comp_right A).trace := ρ.expectation_apply A
+    _ = traceSeriesWrt b (ρ.op * A) :=
+      (ρ.isTraceClass.comp_right A).trace_eq_seriesWrt b
+    _ = ∑' a : EigenvectorIndex ρ.op,
+        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := hrestricted.tsum_eq.symm
+    _ = ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
+        inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) := by
+      simp only [e]
 
 /-- Expectations are contractive in the operator norm. -/
 theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ‖ρ.expectation A‖ ≤ ‖A‖ :=
-  densityExpectation_norm_le ρ A
+  densityExpectationTrace_norm_le ρ A
 
 /-- The expectation of the identity operator is one. -/
 @[simp]
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
-  rw [ρ.expectation_apply]
+  rw [ρ.expectation_eq_spectral_tsum]
   calc
     (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
       inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
