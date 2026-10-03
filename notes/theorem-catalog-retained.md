@@ -279,8 +279,8 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time` — canonical equal-time branch of
   the named fermionic two-point time-ordering operator, fixing the project's equal-time convention.
 - `QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one` — spectral normalization law for a
-  density operator: the absolute eigenvalue weights sum to one independently of the expectation
-  norm estimate that currently consumes it.
+  density operator: the absolute eigenvalue weights sum to one as an independent statement about
+  the density state's spectral probability weights.
 - `QuantumTheory.POVM.hasSum_inner_apply` — canonical diagonal weak-operator consequence of strong
   POVM normalization and a reusable bridge from operator normalization to Born probabilities.
 - `QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_eq_closedForm` —
