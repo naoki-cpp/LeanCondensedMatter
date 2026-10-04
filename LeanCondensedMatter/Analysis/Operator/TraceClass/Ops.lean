@@ -153,9 +153,7 @@ private theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTra
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
-  have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (A * W)).mp hAW)
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d B).mp hB)
+  have hsum := hAW.summable_inner_apply hB d
   exact hsum.congr fun i => by
     calc
       inner ℂ ((A * W) (d i)) (B (d i)) =
@@ -219,16 +217,12 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
         simp [Bop, mul_apply_eq_comp]
   have hnormSummable :
       Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) := by
-    have hpair := summable_inner_apply_of_isHilbertSchmidtWrt d
-      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (S * Bop)).mp hA)
-      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS)
+    have hpair := hA.summable_inner_apply hS d
     exact (hpair.congr fun i => (hpoint (d i)).symm).norm
-  have hAhas : HasSum (fun i => ‖(S * Bop) (d i)‖ ^ 2) hA.normSq := by
-    rw [hA.normSq_eq_seriesWrt d]
-    exact ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (S * Bop)).mp hA).hasSum
-  have hShas : HasSum (fun i => ‖S (d i)‖ ^ 2) hS.normSq := by
-    rw [hS.normSq_eq_seriesWrt d]
-    exact ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS).hasSum
+  have hAhas : HasSum (fun i => ‖(S * Bop) (d i)‖ ^ 2) hA.normSq :=
+    hA.hasSum_norm_sq_apply d
+  have hShas : HasSum (fun i => ‖S (d i)‖ ^ 2) hS.normSq :=
+    hS.hasSum_norm_sq_apply d
   have hmajorHas :
       HasSum (fun i => (‖(S * Bop) (d i)‖ ^ 2 + ‖S (d i)‖ ^ 2) / 2)
         ((hA.normSq + hS.normSq) / 2) :=
@@ -355,12 +349,10 @@ private theorem traceNorm_le_half_normSq_add_of_factorization
       _ = inner ℂ ((A * U) (d i)) (B (d i)) := by rw [mul_apply_eq_comp]
   have hsumInner := hT.summable_inner_left U d
   have hnormSummable : Summable (fun i => ‖inner ℂ (U (d i)) (T (d i))‖) := hsumInner.norm
-  have hAUhas : HasSum (fun i => ‖(A * U) (d i)‖ ^ 2) hAU.normSq := by
-    rw [hAU.normSq_eq_seriesWrt d]
-    exact ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (A * U)).mp hAU).hasSum
-  have hBhas : HasSum (fun i => ‖B (d i)‖ ^ 2) hB.normSq := by
-    rw [hB.normSq_eq_seriesWrt d]
-    exact ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d B).mp hB).hasSum
+  have hAUhas : HasSum (fun i => ‖(A * U) (d i)‖ ^ 2) hAU.normSq :=
+    hAU.hasSum_norm_sq_apply d
+  have hBhas : HasSum (fun i => ‖B (d i)‖ ^ 2) hB.normSq :=
+    hB.hasSum_norm_sq_apply d
   have hmajorHas :
       HasSum (fun i => (‖(A * U) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2)
         ((hAU.normSq + hB.normSq) / 2) :=

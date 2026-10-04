@@ -90,6 +90,16 @@ theorem isHilbertSchmidt_iff_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis 
     obtain ⟨w, e, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
     exact ⟨w, e, (isHilbertSchmidtWrt_iff d e T).mp hd⟩
 
+namespace IsHilbertSchmidt
+
+/-- A Hilbert--Schmidt operator has square-summable images in every Hilbert basis. -/
+theorem summable_norm_sq_apply {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => ‖T (d i)‖ ^ 2) :=
+  (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
+
+end IsHilbertSchmidt
+
 /-- **Hilbert–Schmidt-ness is preserved by taking the adjoint.** A direct consequence of the
 basis-independence computation: `T` being Hilbert–Schmidt with respect to `d` already gives that
 `T†` is Hilbert–Schmidt with respect to that *same* `d` (no basis change needed for this

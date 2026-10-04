@@ -4,7 +4,8 @@ import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 # The Hilbert–Schmidt inner product
 
 Defines `innerHS d S T := Σᵢ ⟪S dᵢ, T dᵢ⟫` for `S`, `T` Hilbert–Schmidt with respect to a basis
-`d`, and proves it's well-defined (summable) and basis-independent. See
+`d`, and proves it is well-defined and basis-independent through the basis-independent
+`IsHilbertSchmidt` predicate. See
 `HilbertSchmidtBasic.lean`'s module docstring for the motivation, and
 `HilbertSchmidtTrace.lean` for the reconciliation with `spectralTrace` on the compact
 self-adjoint overlap.
@@ -14,20 +15,39 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- **The Hilbert–Schmidt inner product, for a fixed basis.** `Σᵢ ⟪S dᵢ, T dᵢ⟫`; convergence
-(for `S`, `T` Hilbert–Schmidt with respect to `d`) is `summable_inner_apply_of_isHilbertSchmidtWrt`
-below, and independence of the choice of `d` is `innerHS_eq_of_isHilbertSchmidt`. -/
+/-- **The Hilbert–Schmidt inner product, for a fixed basis.** `Σᵢ ⟪S dᵢ, T dᵢ⟫`.
+Convergence for basis-independent Hilbert--Schmidt operators is exposed by
+`IsHilbertSchmidt.summable_inner_apply`, and independence of the choice of `d` is
+`innerHS_eq_of_isHilbertSchmidt`. -/
 noncomputable def innerHS {ι : Type*} (d : HilbertBasis ι ℂ H) (S T : H →L[ℂ] H) : ℂ :=
   ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)
 
 omit [CompleteSpace H] in
-theorem summable_inner_apply_of_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
+private theorem summable_inner_apply_of_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     {S T : H →L[ℂ] H} (hS : IsHilbertSchmidtWrt d S) (hT : IsHilbertSchmidtWrt d T) :
     Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
   refine Summable.of_norm_bounded ((hS.add hT).div_const 2) fun i => ?_
   have hab : ‖S (d i)‖ * ‖T (d i)‖ ≤ (‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2 := by
     nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)]
   exact (norm_inner_le_norm (S (d i)) (T (d i))).trans hab
+
+namespace IsHilbertSchmidt
+
+/-- The Hilbert--Schmidt diagonal pairing is summable in every Hilbert basis. -/
+theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
+    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) :=
+  summable_inner_apply_of_isHilbertSchmidtWrt d
+    (hS.summable_norm_sq_apply d) (hT.summable_norm_sq_apply d)
+
+/-- The Hilbert--Schmidt diagonal pairing sums to `innerHS` in every Hilbert basis. -/
+theorem hasSum_innerHS {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
+    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) (innerHS d S T) := by
+  unfold innerHS
+  exact (hS.summable_inner_apply hT d).hasSum
+
+end IsHilbertSchmidt
 
 omit [CompleteSpace H] in
 /-- **Absolute summability of the "resolution of the identity" double product**
@@ -113,10 +133,10 @@ the latter with `innerHS f S T`. -/
 theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
     (hT : IsHilbertSchmidt T) : innerHS d S T = innerHS f S T := by
-  have hSd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS
-  have hTd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
-  have hSf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f S).mp hS
-  have hTf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f T).mp hT
+  have hSd := hS.summable_norm_sq_apply d
+  have hTd := hT.summable_norm_sq_apply d
+  have hSf := hS.summable_norm_sq_apply f
+  have hTf := hT.summable_norm_sq_apply f
   have h2 := summable_inner_adjoint_apply_and_tsum_eq d d hSd hTd
   have h3 := summable_inner_adjoint_apply_and_tsum_eq f d hSf hTf
   exact h2.2.symm.trans h3.2
@@ -133,12 +153,11 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
   have hSW : IsHilbertSchmidt (S * ContinuousLinearMap.adjoint W) :=
     isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint W)
   have hleft := summable_inner_adjoint_apply_and_tsum_eq d d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS)
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (T * W)).mp hTW)
+    (hS.summable_norm_sq_apply d)
+    (hTW.summable_norm_sq_apply d)
   have hright := summable_inner_adjoint_apply_and_tsum_eq d d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d
-      (S * ContinuousLinearMap.adjoint W)).mp hSW)
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)
+    (hSW.summable_norm_sq_apply d)
+    (hT.summable_norm_sq_apply d)
   have hAdjTW :
       ContinuousLinearMap.adjoint (T * W) =
         ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
