@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.ExchangeSign
-import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
+import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import Mathlib.GroupTheory.Perm.Sign
 
 set_option linter.style.header false
