@@ -44,8 +44,10 @@ Basis independence is reduced to the existing Hilbert--Schmidt layer: the diagon
 chosen Hilbert basis. Basis choices remain witnesses rather than mathematical data stored in the
 operator property.
 
-The existing `ContinuousLinearMap.SpectralTraceClass` remains the compact self-adjoint spectral
-specialization. Its real-valued `spectralTrace` supplies eigenvalue-sum formulas, positivity,
+`ContinuousLinearMap.SpectralTraceClass` is the self-adjoint specialization of the general
+trace-class API: it stores `IsTraceClass T` and symmetry, while compactness is derived from general
+trace-class compactness and spectral summability is derived from the compact self-adjoint
+characterization. Its real-valued `spectralTrace` supplies eigenvalue-sum formulas, positivity,
 scalar transport, supported cyclicity, and Hilbert-basis formulas; it does not define a second
 bundled trace value. The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`.
