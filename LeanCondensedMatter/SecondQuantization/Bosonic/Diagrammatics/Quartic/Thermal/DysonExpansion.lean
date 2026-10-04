@@ -391,6 +391,12 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
         QuarticDiagram.orderedDysonThermalAmplitude ε β g
           (d.restrictComponent B.2) order t)
       (1 : ℂ) (fun orders => by
+        change (∑ shuffle : d.ComponentShuffle,
+          QuarticDiagram.orderedDysonThermalAmplitude ε β g d
+            (d.assembleVertexOrder orders shuffle) t) =
+          (1 : ℂ) * ∏ B : d.vertexGraph.componentPartitionOn.parts,
+            QuarticDiagram.orderedDysonThermalAmplitude ε β g
+              (d.restrictComponent B.2) (orders B) t
         simpa only [one_mul] using
           QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components
             ε β g d orders t))

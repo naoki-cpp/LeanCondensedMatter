@@ -44,6 +44,10 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
       (fun order : Common.QuarticVertexOrder S =>
         d.orderedSimplexContribution ε β order)
       localContribution (1 : ℂ) (fun orders => by
+        change (∑ shuffle : d.ComponentShuffle,
+          d.orderedSimplexContribution ε β (d.assembleVertexOrder orders shuffle)) =
+          (1 : ℂ) * ∏ B : d.vertexGraph.componentPartitionOn.parts,
+            localContribution B (orders B)
         simp only [one_mul, QuarticWickDiagram.orderedSimplexContribution]
         let componentIntegrand :
             ∀ B : d.vertexGraph.componentPartitionOn.parts,

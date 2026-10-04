@@ -77,6 +77,13 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
     (fun B order =>
       QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order)
     (Fintype.card d.ComponentShuffle : ℂ) (fun orders => by
+      change (∑ shuffle : d.ComponentShuffle,
+        QuarticDiagram.orderedThermalAmplitude ε β g d
+          (d.assembleVertexOrder orders shuffle)) =
+        (Fintype.card d.ComponentShuffle : ℂ) *
+          ∏ B : d.vertexGraph.componentPartitionOn.parts,
+            QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2)
+              (orders B)
       simp_rw [QuarticDiagram.orderedThermalAmplitude_eq_prod_components ε β g d orders]
       simp)
 
