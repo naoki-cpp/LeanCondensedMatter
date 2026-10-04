@@ -82,12 +82,8 @@ theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
   by_cases hi : i ∈ n
-  · have hm : m = removeOccupation i n := by
-      by_contra hne
-      apply hmn
-      rw [annihilate_basisState_of_mem hi]
-      exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
-    subst m
+  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+      (annihilate_basisState_of_mem hi) hmn
     rw [fermionEnergy_removeOccupation_of_mem hi]
     ring
   · exfalso
@@ -105,12 +101,8 @@ theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
     apply hmn
     rw [create_basisState_of_mem hi]
     rfl
-  · have hm : m = insertOccupation i n := by
-      by_contra hne
-      apply hmn
-      rw [create_basisState_of_not_mem hi]
-      exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
-    subst m
+  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+      (create_basisState_of_not_mem hi) hmn
     rw [fermionEnergy_insertOccupation_of_not_mem hi]
 
 /-! ## Evolved creation and annihilation operators -/

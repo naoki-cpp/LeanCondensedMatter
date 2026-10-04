@@ -23,6 +23,23 @@ def CarriesShift {Config G : Type*} [AddCommGroup G] (grading : Config → G)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (q : G) : Prop :=
   ∀ m n, matrixCoeff A m n ≠ 0 → grading m = grading n + q
 
+/-- If a basis vector is sent to a scalar multiple of one target basis vector with grading shift
+`q`, every nonzero matrix coefficient in that column has the same grading shift. -/
+theorem grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+    {Config G : Type*} [AddCommGroup G] {grading : Config → G}
+    {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+    {m n k : Config} {c : ℂ} {q : G}
+    (hA : A (basisState n) = c • basisState k) (hmn : matrixCoeff A m n ≠ 0)
+    (hk : grading k = grading n + q) :
+    grading m = grading n + q := by
+  have hm : m = k := by
+    by_contra hmk
+    apply hmn
+    rw [matrixCoeff, hA]
+    exact smul_basisState_apply_of_ne c (Ne.symm hmk)
+  rw [hm]
+  exact hk
+
 /-- Fixed support shifts compose additively under `LinearMap.comp`. -/
 theorem CarriesShift.comp {Config G : Type*} [AddCommGroup G] {grading : Config → G}
     {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {qA qB : G}
