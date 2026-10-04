@@ -1102,9 +1102,9 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity"
+        "LeanCondensedMatter.Combinatorics.FiniteSumModEq"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
@@ -1133,6 +1133,12 @@
         "LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/FiniteSumModEq.lean",
+      "imports": [],
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -1190,6 +1196,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/ComponentCrossing.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity"
       ],
       "externalImportCount": 0
@@ -1483,6 +1490,7 @@
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign",
         "LeanCondensedMatter.Combinatorics.FiniteIndex",
+        "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
         "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
         "LeanCondensedMatter.Combinatorics.IncidenceAlgebra",
         "LeanCondensedMatter.Combinatorics.InvolutionCard",
@@ -3576,6 +3584,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Factorization/ComponentCrossing.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight"
@@ -5024,6 +5033,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentMixedCrossing.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData"
       ],
