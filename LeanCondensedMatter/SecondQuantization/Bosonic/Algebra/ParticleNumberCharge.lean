@@ -9,9 +9,8 @@ set_option linter.style.header false
 The bosonic mirror of `Fermionic/Algebra/ParticleNumberCharge.lean`: instantiates
 `Common.CarriesShift` for `annihilate i`/`create i`, with `particleNumber` (cast to `ℤ`) as the
 additive grading. The proof needs no positivity fact about the `√n`/`√(n+1)` normalization
-coefficients — `Common.smul_basisState_apply_of_ne` kills the off-target basis coefficient for
-*any* scalar multiplier, so acting on `basisState n` has a nonzero `m`-coefficient only at the
-single occupation state targeted by the operator.
+coefficients — `Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul` packages the support-selection
+argument, leaving only the occupation update and particle-number difference in these proofs.
 -/
 
 namespace SecondQuantization
@@ -30,13 +29,11 @@ theorem carriesParticleNumberCharge_annihilate (i : Mode) :
   by_cases hi : n i = 0
   · rw [annihilate_basisState_of_zero hi] at hmn
     simp at hmn
-  · rw [annihilate_basisState_of_pos hi] at hmn
-    by_cases hm : m = removeOccupation i n
-    · have hcard := particleNumber_removeOccupation_of_pos hi
-      rw [hm]
-      change (particleNumber (removeOccupation i n) : ℤ) = (particleNumber n : ℤ) + (-1)
-      omega
-    · exact absurd (Common.smul_basisState_apply_of_ne _ (Ne.symm hm)) hmn
+  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+      (annihilate_basisState_of_pos hi) hmn
+    have hcard := particleNumber_removeOccupation_of_pos hi
+    change (particleNumber (removeOccupation i n) : ℤ) = (particleNumber n : ℤ) + (-1)
+    omega
 
 /-- **`create i` carries particle-number charge `+1`**: it only ever connects a basis state `m` to
 a basis state `n` with one more particle. -/
@@ -46,13 +43,11 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
   classical
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn
-  rw [create_basisState_eq] at hmn
-  by_cases hm : m = createOccupation i n
-  · have hcard := particleNumber_createOccupation i n
-    rw [hm]
-    change (particleNumber (createOccupation i n) : ℤ) = (particleNumber n : ℤ) + 1
-    omega
-  · exact absurd (Common.smul_basisState_apply_of_ne _ (Ne.symm hm)) hmn
+  apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+    (create_basisState_eq i n) hmn
+  have hcard := particleNumber_createOccupation i n
+  change (particleNumber (createOccupation i n) : ℤ) = (particleNumber n : ℤ) + 1
+  omega
 
 /-- Two annihilation operators have zero diagonal matrix coefficient. -/
 theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :

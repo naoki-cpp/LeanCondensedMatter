@@ -29,14 +29,12 @@ theorem carriesParticleNumberCharge_annihilate (i : Mode) :
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
   by_cases hi : i ∈ n
-  · rw [annihilate_basisState_of_mem hi] at hmn
-    by_cases hm : m = removeOccupation i n
-    · have hcard := particleNumber_removeOccupation_of_mem hi
-      rw [hm]
-      change (particleNumber (removeOccupation i n) : ℤ) =
-        (particleNumber n : ℤ) + (-1)
-      omega
-    · exact absurd (Common.smul_basisState_apply_of_ne _ (Ne.symm hm)) hmn
+  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+      (annihilate_basisState_of_mem hi) hmn
+    have hcard := particleNumber_removeOccupation_of_mem hi
+    change (particleNumber (removeOccupation i n) : ℤ) =
+      (particleNumber n : ℤ) + (-1)
+    omega
   · rw [annihilate_basisState_of_not_mem hi] at hmn
     simp at hmn
 
@@ -51,14 +49,12 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
   by_cases hi : i ∈ n
   · rw [create_basisState_of_mem hi] at hmn
     simp at hmn
-  · rw [create_basisState_of_not_mem hi] at hmn
-    by_cases hm : m = insertOccupation i n
-    · have hcard := particleNumber_insertOccupation_of_not_mem hi
-      rw [hm]
-      change (particleNumber (insertOccupation i n) : ℤ) =
-        (particleNumber n : ℤ) + 1
-      omega
-    · exact absurd (Common.smul_basisState_apply_of_ne _ (Ne.symm hm)) hmn
+  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+      (create_basisState_of_not_mem hi) hmn
+    have hcard := particleNumber_insertOccupation_of_not_mem hi
+    change (particleNumber (insertOccupation i n) : ℤ) =
+      (particleNumber n : ℤ) + 1
+    omega
 
 /-! ## Same-type products have zero diagonal coefficients -/
 

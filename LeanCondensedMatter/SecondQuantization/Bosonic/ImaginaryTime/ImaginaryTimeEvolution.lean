@@ -110,12 +110,8 @@ theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
     apply hmn
     rw [annihilate_basisState_of_zero hi]
     rfl
-  · have hm : m = removeOccupation i n := by
-      by_contra hne
-      apply hmn
-      rw [annihilate_basisState_of_pos hi]
-      exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
-    subst m
+  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+      (annihilate_basisState_of_pos hi) hmn
     rw [freeEigenvalue_removeOccupation_of_pos hi]
     ring
 
@@ -124,12 +120,8 @@ theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
     Common.CarriesShift (freeEigenvalue ε) (create i) (ε i) := by
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn
-  have hm : m = createOccupation i n := by
-    by_contra hne
-    apply hmn
-    rw [create_basisState_eq]
-    exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
-  subst m
+  apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
+    (create_basisState_eq i n) hmn
   rw [freeEigenvalue_createOccupation]
 
 /-- The annihilation operator evolves with energy shift `-ε i`. -/
