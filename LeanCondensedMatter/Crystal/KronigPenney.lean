@@ -299,9 +299,8 @@ private theorem BandEdgeData.composite_second_derivative
   have hderiv_comp :
       (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k) =ᶠ[
         𝓝 edge.blochCoordinate]
-        (fun k =>
-          deriv (discriminant params) (edge.branchEnergy k) *
-            deriv edge.branchEnergy k) := by
+        ((fun k => deriv (discriminant params) (edge.branchEnergy k)) *
+          fun k => deriv edge.branchEnergy k) := by
     filter_upwards [edge.branchDifferentiable, edge.discriminantDifferentiable] with k hbranch hdisc
     simpa [Function.comp_def] using
       (deriv_comp k hdisc hbranch)
@@ -322,12 +321,10 @@ private theorem BandEdgeData.composite_second_derivative
     exact edge.discriminantDerivative.deriv
   have hproduct :
       HasDerivAt
-        (fun k =>
-          deriv (discriminant params) (edge.branchEnergy k) *
-            deriv edge.branchEnergy k)
+        ((fun k => deriv (discriminant params) (edge.branchEnergy k)) *
+          fun k => deriv edge.branchEnergy k)
         (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
-    simpa only [Pi.mul_apply, hbranchDeriv, hdiscDeriv, zero_mul, zero_add] using
-      hleft.mul edge.secondDerivative
+    simpa [hbranchDeriv, hdiscDeriv] using hleft.mul edge.secondDerivative
   exact hproduct.congr_of_eventuallyEq hderiv_comp
 
 private theorem cosine_second_derivative (period k : ℝ) :
