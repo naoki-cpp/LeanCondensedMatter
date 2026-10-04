@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 
@@ -8,12 +9,13 @@ set_option linter.style.header false
 attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
 /-!
-# Bundled compact symmetric spectral trace class
+# Bundled self-adjoint spectral trace class
 
-`SpectralTraceClass T` bundles compactness, symmetry, and absolute summability of the indexed
-nonzero real eigenvalues. This module is the public spectral operator API and also owns the
-compact self-adjoint bridge to general `IsTraceClass` membership and trace norm. The lower-level
-spectral theorems in `Basic` and `Ops` remain implementation infrastructure.
+`SpectralTraceClass T` bundles general trace-class membership and symmetry. Compactness follows
+from general trace-class compactness, while absolute summability of the indexed nonzero real
+eigenvalues follows from the compact self-adjoint spectral characterization. This module is the
+public spectral operator API and owns the bridge between the general and spectral presentations.
+The lower-level spectral theorems in `Basic` and `Ops` remain implementation infrastructure.
 
 The diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after proving that
 they are real. Both the public API and its trace-series implementation use this lossless path.
@@ -23,11 +25,10 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace ContinuousLinearMap
 
-/-- A compact symmetric operator whose indexed nonzero real eigenvalues are absolutely summable. -/
+/-- A symmetric trace-class operator, with compactness and spectral summability derived. -/
 structure SpectralTraceClass (T : H →L[ℂ] H) : Prop where
-  compact : IsCompactOperator T
+  isTraceClass : IsTraceClass T
   symmetric : T.IsSymmetric
-  summable : HasSummableRealEigenvalues T
 
 variable {T : H →L[ℂ] H}
 
@@ -160,34 +161,41 @@ namespace SpectralTraceClass
 
 variable {T : H →L[ℂ] H}
 
-/-- Build bundled spectral-trace data for a positive compact operator with summable real
-eigenvalues. Positivity supplies symmetry. -/
-theorem ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
-    (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T where
-  compact := hcompact
-  symmetric := hpos.isSelfAdjoint.isSymmetric
-  summable := hsummable
-
-/-- Build bundled spectral-trace data for a continuous functional calculus transform.
-Compactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;
-self-adjointness of the transform supplies symmetry. Summability of the transformed nonzero
-eigenvalues remains an explicit hypothesis. -/
-theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactOperator T)
-    (hf : Continuous f) (hf0 : f 0 = 0)
-    (hsummable : HasSummableRealEigenvalues (cfc f T)) :
-    SpectralTraceClass (cfc f T) where
-  compact := isCompactOperator_cfc_of_zero hself hcompact hf hf0
-  symmetric := (IsSelfAdjoint.cfc (f := f) (a := T)).isSymmetric
-  summable := hsummable
-
 /-- A bundled spectral-trace-class operator is self-adjoint. -/
 theorem isSelfAdjoint (h : SpectralTraceClass T) : IsSelfAdjoint T :=
   ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr h.symmetric
 
-/-- Bundled compact self-adjoint spectral trace-class data supplies general trace-class
-membership. -/
-theorem isTraceClass (h : SpectralTraceClass T) : IsTraceClass T :=
-  (isTraceClass_iff_hasSummableRealEigenvalues h.compact h.isSelfAdjoint).2 h.summable
+/-- Every bundled spectral-trace-class operator is compact, by general trace-class compactness. -/
+theorem compact (h : SpectralTraceClass T) : IsCompactOperator T :=
+  h.isTraceClass.isCompact
+
+/-- Every bundled spectral-trace-class operator has absolutely summable nonzero real eigenvalues. -/
+theorem summable (h : SpectralTraceClass T) : HasSummableRealEigenvalues T :=
+  (isTraceClass_iff_hasSummableRealEigenvalues h.compact h.isSelfAdjoint).1 h.isTraceClass
+
+/-- Build bundled spectral-trace data for a positive compact operator with summable real
+eigenvalues. Positivity supplies symmetry; spectral summability supplies general trace class. -/
+theorem ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
+    (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T where
+  isTraceClass :=
+    (isTraceClass_iff_hasSummableRealEigenvalues hcompact hpos.isSelfAdjoint).2 hsummable
+  symmetric := hpos.isSelfAdjoint.isSymmetric
+
+/-- Build bundled spectral-trace data for a continuous functional calculus transform.
+Compactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;
+self-adjointness of the transform supplies symmetry. Summability of the transformed nonzero
+eigenvalues supplies general trace class. -/
+theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactOperator T)
+    (hf : Continuous f) (hf0 : f 0 = 0)
+    (hsummable : HasSummableRealEigenvalues (cfc f T)) :
+    SpectralTraceClass (cfc f T) := by
+  let hcompact' : IsCompactOperator (cfc f T) :=
+    isCompactOperator_cfc_of_zero hself hcompact hf hf0
+  let hself' : IsSelfAdjoint (cfc f T) := IsSelfAdjoint.cfc (f := f) (a := T)
+  exact
+    { isTraceClass :=
+        (isTraceClass_iff_hasSummableRealEigenvalues hcompact' hself').2 hsummable
+      symmetric := hself'.isSymmetric }
 
 /-- For a positive bundled spectral trace-class operator, the general trace norm agrees with the
 real spectral trace. -/
