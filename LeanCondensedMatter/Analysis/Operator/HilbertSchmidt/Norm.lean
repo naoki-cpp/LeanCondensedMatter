@@ -107,7 +107,7 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
     rw [(isHilbertSchmidt_adjoint hTB).normSq_eq_tsum_norm_sq_apply d,
       hleft.normSq_eq_tsum_norm_sq_apply d]
-      apply tsum_congr
+    apply tsum_congr
     intro i
     rw [hadj_eq]
   calc
