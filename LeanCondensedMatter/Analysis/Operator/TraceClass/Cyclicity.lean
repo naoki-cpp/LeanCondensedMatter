@@ -16,6 +16,23 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace IsTraceClass
 
+private theorem trace_eq_innerHS_of_factorization
+    {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
+    (hfactor : ContinuousLinearMap.adjoint A * B = T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.trace = innerHS d A B := by
+  rw [hT.trace_eq_seriesWrt d]
+  unfold traceSeriesWrt innerHS
+  apply tsum_congr
+  intro i
+  calc
+    inner ℂ (d i) (T (d i)) =
+        inner ℂ (d i) ((ContinuousLinearMap.adjoint A * B) (d i)) := by rw [hfactor]
+    _ = inner ℂ (d i) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
+      rw [mul_apply_eq_comp]
+    _ = inner ℂ (A (d i)) (B (d i)) :=
+      ContinuousLinearMap.adjoint_inner_right A (d i) (B (d i))
+
 /-- If `T` is trace class and `W` is bounded, then `Tr(TW) = Tr(WT)`. -/
 theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
     (hT.comp_right W).trace = (hT.comp_left W).trace := by
@@ -41,37 +58,12 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[�
     rw [hAdjAW, mul_assoc, hfactor]
   calc
     (hT.comp_right W).trace = innerHS d A (B * W) :=
-      (hT.comp_right W).trace_eq_innerHS_of_factorization hfactorRight d
+      trace_eq_innerHS_of_factorization (hT.comp_right W) hfactorRight d
     _ = innerHS d (A * ContinuousLinearMap.adjoint W) B :=
       innerHS_comp_right d hA hB W
     _ = (hT.comp_left W).trace :=
-      ((hT.comp_left W).trace_eq_innerHS_of_factorization hfactorLeft d).symm
+      (trace_eq_innerHS_of_factorization (hT.comp_left W) hfactorLeft d).symm
 
 end IsTraceClass
-
-namespace IsHilbertSchmidt
-
-/-- For Hilbert--Schmidt operators `A` and `B`, the canonical traces of `AB` and `BA`
-agree. Both products are trace class. -/
-theorem trace_mul_comm {A B : H →L[ℂ] H}
-    (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B) :
-    (hA.mul_isTraceClass hB).trace = (hB.mul_isTraceClass hA).trace := by
-  obtain ⟨ι, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  have hfactorAB :
-      ContinuousLinearMap.adjoint (ContinuousLinearMap.adjoint A) * B = A * B := by
-    rw [ContinuousLinearMap.adjoint_adjoint]
-  have hfactorBA :
-      ContinuousLinearMap.adjoint (ContinuousLinearMap.adjoint B) * A = B * A := by
-    rw [ContinuousLinearMap.adjoint_adjoint]
-  calc
-    (hA.mul_isTraceClass hB).trace =
-        innerHS d (ContinuousLinearMap.adjoint A) B :=
-      (hA.mul_isTraceClass hB).trace_eq_innerHS_of_factorization hfactorAB d
-    _ = innerHS d (ContinuousLinearMap.adjoint B) A :=
-      innerHS_adjoint_swap d hA hB
-    _ = (hB.mul_isTraceClass hA).trace :=
-      ((hB.mul_isTraceClass hA).trace_eq_innerHS_of_factorization hfactorBA d).symm
-
-end IsHilbertSchmidt
 
 end ContinuousLinearMap
