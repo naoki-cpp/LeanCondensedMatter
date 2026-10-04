@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 
 set_option linter.style.header false
@@ -155,6 +156,51 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
     d.mixedPairContractionProduct_eq_prod_components ε β externalTime σ,
     Finset.prod_mul_distrib]
   ring
+
+/-- Multiplying the mixed pairing value by the sign that carries fixed component-leg order to
+mixed-time component-leg order leaves the fixed external-component sign times the component-local
+mixed pairing values. This is a pairing-level identity; it does not assert factorization of the
+full fixed-time amplitude. -/
+theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairingValue_eq_componentExternalOrderSign_mul_prod_components
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    (((Equiv.Perm.sign (d.relativeComponentShuffle externalTime σ) : ℤ) : ℂ)) *
+        d.mixedPairingValue ε β externalTime σ =
+      componentExternalOrderSign d blockOrder *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (d.componentWickDiagram B).mixedPairingValue ε β
+            (d.componentExternalTime externalTime B)
+            (d.componentInteractionTime σ B) := by
+  rw [d.relativeComponentShuffleSign_eq_external_mul_mixedInter,
+    d.mixedPairingValue_eq_inter_mul_prod_components]
+  have hsignsquare :
+      (Common.Statistics.fermion.zetaInt : ℂ) ^
+          d.mixedInterComponentCrossingCount externalTime σ *
+        (Common.Statistics.fermion.zetaInt : ℂ) ^
+          d.mixedInterComponentCrossingCount externalTime σ = 1 := by
+    simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
+    rw [← pow_add]
+    rw [show
+      d.mixedInterComponentCrossingCount externalTime σ +
+          d.mixedInterComponentCrossingCount externalTime σ =
+        2 * d.mixedInterComponentCrossingCount externalTime σ by omega, pow_mul]
+    norm_num
+  calc
+    _ = componentExternalOrderSign d blockOrder *
+          (((Common.Statistics.fermion.zetaInt : ℂ) ^
+                d.mixedInterComponentCrossingCount externalTime σ *
+              (Common.Statistics.fermion.zetaInt : ℂ) ^
+                d.mixedInterComponentCrossingCount externalTime σ) *
+            ∏ B : d.vertexGraph.componentPartition.parts,
+              (d.componentWickDiagram B).mixedPairingValue ε β
+                (d.componentExternalTime externalTime B)
+                (d.componentInteractionTime σ B)) := by
+      ac_rfl
+    _ = _ := by rw [hsignsquare, one_mul]
 
 end Fermionic
 end SecondQuantization
