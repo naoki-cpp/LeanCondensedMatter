@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Crystal.Brillouin
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic
@@ -189,14 +191,40 @@ normalization and orientation. -/
 def cellBlochPhase (params : Parameters) (k : ℝ) : ℂ :=
   blochPhase k params.period
 
+/-- The model-local one-cell phase/cosine bridge inherited from `Crystal.blochPhase`. -/
+theorem cellBlochPhase_add_inv_eq_two_cos (params : Parameters) (k : ℝ) :
+    cellBlochPhase params k + (cellBlochPhase params k)⁻¹ =
+      ((2 * Real.cos (k * params.period) : ℝ) : ℂ) := by
+  simpa [cellBlochPhase] using
+    (blochPhase_add_inv_eq_two_cos k params.period)
+
+/-- Reciprocal-lattice shifts preserve the one-cell Bloch phase whenever the model period is a
+translation in the ambient real-space lattice. This is the bridge from the model coordinate to the
+canonical `Crystal.reciprocalLattice`/Brillouin convention. -/
+theorem cellBlochPhase_add_eq_of_mem_reciprocalLattice
+    (params : Parameters) {L : Submodule ℤ ℝ} {G k : ℝ}
+    (hG : G ∈ reciprocalLattice L) (hperiod : params.period ∈ L) :
+    cellBlochPhase params (k + G) = cellBlochPhase params k := by
+  simpa [cellBlochPhase] using
+    (blochPhase_add_eq_of_mem_reciprocalLattice (L := L) k hG hperiod)
+
 /-- Bloch condition for the fixed left-to-right transfer convention.
 
-The first equality is the real discriminant form. The second pins it to the repository Bloch-phase
-convention rather than introducing a model-local phase normalization. -/
+The condition is stored once in the real discriminant form. The equivalent canonical complex-phase
+form is supplied by `BlochCondition.phase_form`, so consumers do not reconstruct Euler-phase
+algebra. -/
 def BlochCondition (params : Parameters) (energy k : ℝ) : Prop :=
-  discriminant params energy = Real.cos (k * params.period) ∧
+  discriminant params energy = Real.cos (k * params.period)
+
+/-- A Bloch condition implies the equivalent canonical phase form
+`2 Δ(E) = exp(i k a) + exp(-i k a)`. -/
+theorem BlochCondition.phase_form
+    {params : Parameters} {energy k : ℝ} (h : BlochCondition params energy k) :
     (((2 * discriminant params energy : ℝ) : ℂ) =
-      cellBlochPhase params k + (cellBlochPhase params k)⁻¹)
+      cellBlochPhase params k + (cellBlochPhase params k)⁻¹) := by
+  rw [cellBlochPhase_add_inv_eq_two_cos]
+  norm_cast
+  rw [h]
 
 /-- An energy in the finite model lies in an allowed band exactly when the normalized
 discriminant has absolute value at most one. -/
@@ -219,11 +247,10 @@ theorem allowedBand_or_forbiddenGap
 
 /-- Local data for a nondegenerate finite-model band edge.
 
-The branch is required to stay inside the finite Bloch and energy domains, to satisfy the fixed
-Bloch condition there, and to carry explicit first/second derivative data. The final
-`implicitCurvatureIdentity` is the second-order implicit-dispersion relation at a stationary edge;
-keeping it explicit avoids claiming an implicit-function theorem under hypotheses not represented
-by this finite benchmark. -/
+The branch remains in the finite model on the chosen first-Brillouin representative and satisfies
+the Bloch dispersion relation on a neighborhood of the edge. Local differentiability assumptions
+are explicit; the curvature identity itself is not a field and is derived below by differentiating
+the Bloch relation twice. -/
 structure BandEdgeData (params : Parameters) where
   /-- Local band-energy branch as a function of the one-dimensional Bloch coordinate. -/
   branchEnergy : ℝ → ℝ
@@ -241,19 +268,107 @@ structure BandEdgeData (params : Parameters) where
   branchEnergy_mem :
     ∀ k, inBlochDomain params k → inEnergyDomain params (branchEnergy k)
   bloch_relation :
-    ∀ k, inBlochDomain params k → BlochCondition params (branchEnergy k) k
+    (fun k => discriminant params (branchEnergy k)) =ᶠ[𝓝 blochCoordinate]
+      (fun k => Real.cos (k * params.period))
+  branchDifferentiable :
+    ∀ᶠ k in 𝓝 blochCoordinate, DifferentiableAt ℝ branchEnergy k
+  discriminantDifferentiable :
+    ∀ᶠ k in 𝓝 blochCoordinate,
+      DifferentiableAt ℝ (discriminant params) (branchEnergy k)
   stationary : HasDerivAt branchEnergy 0 blochCoordinate
   secondDerivative :
     HasDerivAt (fun k => deriv branchEnergy k) curvature blochCoordinate
   discriminantDerivative :
     HasDerivAt (discriminant params) discriminantSlope energy
+  discriminantDerivativeDifferentiable :
+    DifferentiableAt ℝ (fun e => deriv (discriminant params) e) energy
   discriminantSlope_ne_zero : discriminantSlope ≠ 0
   curvature_ne_zero : curvature ≠ 0
   phaseCurvatureDenominator_ne_zero :
     params.period ^ 2 * Real.cos (blochCoordinate * params.period) ≠ 0
-  implicitCurvatureIdentity :
-    discriminantSlope * curvature =
-      -(params.period ^ 2 * Real.cos (blochCoordinate * params.period))
+
+private theorem BandEdgeData.composite_second_derivative
+    {params : Parameters} (edge : BandEdgeData params) :
+    HasDerivAt
+      (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k)
+      (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
+  have hderiv_comp :
+      (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k) =ᶠ[
+        𝓝 edge.blochCoordinate]
+        (fun k =>
+          deriv (discriminant params) (edge.branchEnergy k) *
+            deriv edge.branchEnergy k) := by
+    filter_upwards [edge.branchDifferentiable, edge.discriminantDifferentiable] with k hbranch hdisc
+    simpa [Function.comp_def] using
+      (deriv_comp k hdisc hbranch)
+  have hdiscSecond := edge.discriminantDerivativeDifferentiable.hasDerivAt
+  rw [← edge.energy_eq] at hdiscSecond
+  have hleft :
+      HasDerivAt
+        (fun k => deriv (discriminant params) (edge.branchEnergy k)) 0
+        edge.blochCoordinate := by
+    simpa using hdiscSecond.comp edge.blochCoordinate edge.stationary
+  have hbranchDeriv : deriv edge.branchEnergy edge.blochCoordinate = 0 :=
+    edge.stationary.deriv
+  have hdiscDeriv :
+      deriv (discriminant params) (edge.branchEnergy edge.blochCoordinate) =
+        edge.discriminantSlope := by
+    rw [edge.energy_eq]
+    exact edge.discriminantDerivative.deriv
+  have hproduct :
+      HasDerivAt
+        (fun k =>
+          deriv (discriminant params) (edge.branchEnergy k) *
+            deriv edge.branchEnergy k)
+        (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
+    simpa [hbranchDeriv, hdiscDeriv] using hleft.mul edge.secondDerivative
+  exact hproduct.congr_of_eventuallyEq hderiv_comp.symm
+
+private theorem cosine_second_derivative (period k : ℝ) :
+    HasDerivAt
+      (fun x => deriv (fun q => Real.cos (q * period)) x)
+      (-(period ^ 2 * Real.cos (k * period))) k := by
+  have hfirst :
+      (fun x => deriv (fun q => Real.cos (q * period)) x) =ᶠ[𝓝 k]
+        (fun x => -Real.sin (x * period) * period) := by
+    filter_upwards [] with x
+    have hlin : HasDerivAt (fun q => q * period) period x := by
+      simpa using (hasDerivAt_id x).mul_const period
+    simpa using ((Real.hasDerivAt_cos (x * period)).comp x hlin).deriv
+  have hlin : HasDerivAt (fun q => q * period) period k := by
+    simpa using (hasDerivAt_id k).mul_const period
+  have hsin :
+      HasDerivAt (fun x => Real.sin (x * period))
+        (Real.cos (k * period) * period) k := by
+    simpa using (Real.hasDerivAt_sin (k * period)).comp k hlin
+  have hrhs :
+      HasDerivAt (fun x => -Real.sin (x * period) * period)
+        (-(period ^ 2 * Real.cos (k * period))) k := by
+    convert hsin.neg.mul_const period using 1 <;> ring
+  exact hrhs.congr_of_eventuallyEq hfirst.symm
+
+/-- The second-order Bloch dispersion identity follows from the local Bloch relation and the
+explicit differentiability assumptions. -/
+theorem BandEdgeData.discriminantSlope_mul_curvature
+    {params : Parameters} (edge : BandEdgeData params) :
+    edge.discriminantSlope * edge.curvature =
+      -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := by
+  have hsecond := edge.bloch_relation.iteratedDeriv_eq 2
+  have hleft := edge.composite_second_derivative.deriv
+  have hright := (cosine_second_derivative params.period edge.blochCoordinate).deriv
+  calc
+    edge.discriminantSlope * edge.curvature =
+        deriv (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k)
+          edge.blochCoordinate := hleft.symm
+    _ = iteratedDeriv 2 (fun q => discriminant params (edge.branchEnergy q))
+          edge.blochCoordinate := by
+        simp [iteratedDeriv_succ']
+    _ = iteratedDeriv 2 (fun q => Real.cos (q * params.period))
+          edge.blochCoordinate := hsecond
+    _ = deriv (fun k => deriv (fun q => Real.cos (q * params.period)) k)
+          edge.blochCoordinate := by
+        simp [iteratedDeriv_succ']
+    _ = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := hright
 
 /-- Band-edge curvature obtained from the finite Bloch discriminant relation. -/
 theorem BandEdgeData.curvature_eq
@@ -262,7 +377,7 @@ theorem BandEdgeData.curvature_eq
       -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) /
         edge.discriminantSlope := by
   apply (eq_div_iff edge.discriminantSlope_ne_zero).2
-  simpa [mul_comm] using edge.implicitCurvatureIdentity
+  simpa [mul_comm] using edge.discriminantSlope_mul_curvature
 
 /-- Effective mass defined from the nonzero band curvature in physical wave-vector coordinates. -/
 def effectiveMass (params : Parameters) (edge : BandEdgeData params) : ℝ :=
