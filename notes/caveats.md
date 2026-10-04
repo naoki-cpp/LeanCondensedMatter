@@ -6,10 +6,11 @@ applies.
 ## Quantum and operator analysis
 
 - **The real spectral trace is not the general trace API.**
-  `ContinuousLinearMap.SpectralTraceClass` is built for compact self-adjoint operators, while
-  `spectralTrace` is the real eigenvalue sum with multiplicity. The canonical trace on general
-  trace-class bounded operators is `IsTraceClass.trace : ℂ`; on the compact self-adjoint overlap
-  it agrees with `spectralTrace` after coercion to `ℂ`.
+  `ContinuousLinearMap.SpectralTraceClass` is the self-adjoint specialization of general trace-class
+  membership; compactness and absolute spectral summability are derived. `spectralTrace` is the real
+  eigenvalue sum with multiplicity. The canonical trace on general trace-class bounded operators is
+  `IsTraceClass.trace : ℂ`, and on the self-adjoint specialization it agrees with `spectralTrace`
+  after coercion to `ℂ`.
 
 - **Hilbert-basis diagonal operators are not trace-class-specific.**
   `Analysis/Operator/Diagonal.lean` constructs the absolutely summable rank-one series and proves
