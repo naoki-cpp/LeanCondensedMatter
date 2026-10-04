@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Crystal.Brillouin
+import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -163,6 +165,7 @@ theorem oneCellTransfer_det
     (hbarrier : barrierWaveNumber params energy ≠ 0) :
     (oneCellTransfer params energy).det = 1 := by
   rw [oneCellTransfer, Matrix.det_mul]
+  rw [barrierTransfer, wellTransfer]
   rw [regionTransfer_det _ _ hbarrier, regionTransfer_det _ _ hwell]
   rfl
 
@@ -258,8 +261,8 @@ theorem BandEdgeData.curvature_eq
     edge.curvature =
       -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) /
         edge.discriminantSlope := by
-  field_simp [edge.discriminantSlope_ne_zero]
-  nlinarith [edge.implicitCurvatureIdentity]
+  apply (eq_div_iff edge.discriminantSlope_ne_zero).2
+  simpa [mul_comm] using edge.implicitCurvatureIdentity
 
 /-- Effective mass defined from the nonzero band curvature in physical wave-vector coordinates. -/
 def effectiveMass (params : Parameters) (edge : BandEdgeData params) : ℝ :=
@@ -275,9 +278,8 @@ theorem BandEdgeData.effectiveMass_eq
     effectiveMass params edge =
       -(params.hbar ^ 2 * edge.discriminantSlope) /
         (params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := by
-  unfold effectiveMass
-  field_simp [edge.curvature_ne_zero, edge.phaseCurvatureDenominator_ne_zero]
-  nlinarith [edge.implicitCurvatureIdentity]
+  rw [effectiveMass, edge.curvature_eq]
+  field_simp [edge.discriminantSlope_ne_zero, edge.phaseCurvatureDenominator_ne_zero] <;> ring
 
 end
 
