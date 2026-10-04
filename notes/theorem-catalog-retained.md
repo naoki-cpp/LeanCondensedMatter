@@ -208,18 +208,10 @@ or consumer structure changes.
 - `ContinuousLinearMap.eigenspace_unitaryConjugate` — canonical eigenspace transport theorem under
   unitary conjugation. It identifies the full eigenspace submodule, not merely the finite-dimensional
   rank consequence used downstream.
-- `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate` — independently useful invariance
-  of absolute summability of real eigenvalues with multiplicity under unitary conjugation; it is the
-  analytic input for bundled spectral trace-class transport.
-- `ContinuousLinearMap.spectralTrace_unitaryConjugate` — canonical unbundled trace-invariance theorem
-  `Tr(U T U†) = Tr(T)` for the project's spectral trace under explicit summability hypotheses.
-- `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate` — canonical closure theorem transporting
-  bundled spectral trace-class data through unitary conjugation; it is the stable construction used
-  by trace invariance and density-operator evolution.
-- `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate` — canonical complex-trace
-  invariance endpoint for bundled spectral trace-class operators. It uses spectral transport to
-  provide the spectral specialization directly without routing through the general trace-cyclicity
-  theorem.
+- `ContinuousLinearMap.IsTraceClass.unitaryConjugate` — canonical closure of general
+  trace-class membership under bounded adjoint conjugation `T ↦ U T U†`.
+- `ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate` — canonical complex-trace invariance
+  endpoint `Tr(U T U†) = Tr(T)` under `U†U = 1`, derived directly from general trace cyclicity.
 - `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
   The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.
