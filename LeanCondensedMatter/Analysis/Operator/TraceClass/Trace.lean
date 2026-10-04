@@ -145,6 +145,14 @@ noncomputable def trace {T : H →L[ℂ] H} (hT : IsTraceClass T) : ℂ :=
   let d : HilbertBasis w ℂ H := Classical.choose hw
   traceSeriesWrt d T
 
+/-- The trace depends only on the underlying operator, not on a chosen proof of trace-class
+membership or an equal presentation of the operator. -/
+theorem trace_eq_of_eq {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R)
+    (hSR : S = R) :
+    hS.trace = hR.trace := by
+  subst R
+  rfl
+
 /-- The trace is the complex diagonal series in every Hilbert basis. -/
 theorem trace_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
