@@ -194,9 +194,10 @@ theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactO
     (hf : Continuous f) (hf0 : f 0 = 0)
     (hsummable : HasSummableRealEigenvalues (cfc f T)) :
     SpectralTraceClass (cfc f T) := by
-  let hcompact' : IsCompactOperator (cfc f T) :=
+  let hcompact' : IsCompactOperator (cfc f T : H →L[ℂ] H) :=
     isCompactOperator_cfc_of_zero hself hcompact hf hf0
-  let hself' : IsSelfAdjoint (cfc f T) := IsSelfAdjoint.cfc (f := f) (a := T)
+  let hself' : IsSelfAdjoint (cfc f T : H →L[ℂ] H) :=
+    IsSelfAdjoint.cfc (f := f) (a := T)
   exact
     { isTraceClass :=
         (isTraceClass_iff_hasSummableRealEigenvalues hcompact' hself').2 hsummable
