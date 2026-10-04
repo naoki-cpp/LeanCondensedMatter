@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedOrderData
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
 
 set_option linter.style.header false
@@ -9,12 +9,11 @@ set_option linter.style.header false
 
 A restricted external-insertion component retains its interaction vertices as a subset of the
 ambient slots. The concrete fermionic amplitude layer instead uses consecutive `Fin m` interaction
-slots. This module supplies the canonical increasing reindexing needed to apply that amplitude to
-one connected component, together with the induced local external and interaction times. It also
-identifies each local canonical atomic leg with its ambient canonical leg and proves that the
-attached timed field is preserved by this embedding. The same semantic embedding is then lifted to
-mixed-time positions, where it intertwines pairing partners and the free-Gibbs pair kernel agrees
-with the standalone component kernel.
+slots. This module supplies the canonical increasing reindexing needed to apply the component diagram
+data to one connected component, together with the induced local external and interaction times.
+It identifies local canonical legs with their ambient counterparts and constructs the induced
+mixed-position embeddings and normalized-pair equivalences. Timed-field and thermal-kernel
+locality are proved in a separate Fermionic consumer module.
 -/
 
 namespace SecondQuantization
@@ -110,31 +109,6 @@ theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexLabelSequence {E
           (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
             rfl v).1 := by
   rfl
-
-/-- The timed field attached to a component-local canonical leg is exactly the ambient timed field
-on the corresponding canonical leg. -/
-theorem ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts)
-    (leg : OrderedExternalInsertionLeg (d.externalPairCount B)
-      (interactionSector
-        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
-    orderedExternalInsertionLegField
-        (d.componentWickDiagram B).externalLabel
-        (d.componentExternalTime externalTime B)
-        (d.componentWickDiagram B).vertexLabelSequence
-        (d.componentInteractionTime σ B) leg =
-      orderedExternalInsertionLegField d.externalLabel externalTime
-        d.vertexLabelSequence σ (d.componentOrderedLeg B leg) := by
-  cases leg with
-  | inl e =>
-      rfl
-  | inr leg =>
-      rcases leg with ⟨v, l⟩
-      rfl
-
 
 /-- Embed a component-local mixed-time atomic position into the ambient mixed-time atomic order by
 preserving the represented canonical leg. -/
@@ -548,51 +522,6 @@ theorem ExternalInsertionWickDiagram.componentMixedPairEquiv_apply
           d.componentMixedPosition_strictMono externalTime σ C)
       B pr)
 
-private theorem
-    ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts)
-    (p : Fin (2 * (2 * (interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-        d.externalPairCount B))) :
-    externalInsertionMixedTimeOrderedAtomicFieldFamily
-        d.externalLabel externalTime d.vertexLabelSequence σ
-        (d.componentMixedPosition externalTime σ B p) =
-      externalInsertionMixedTimeOrderedAtomicFieldFamily
-        (d.componentWickDiagram B).externalLabel
-        (d.componentExternalTime externalTime B)
-        (d.componentWickDiagram B).vertexLabelSequence
-        (d.componentInteractionTime σ B) p := by
-  unfold externalInsertionMixedTimeOrderedAtomicFieldFamily
-  simp only [ExternalInsertionWickDiagram.componentMixedPosition,
-    externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
-  rw [← d.orderedExternalInsertionLegField_componentOrderedLeg externalTime σ B]
-
-/-- The ambient free-Gibbs pair contraction restricts to the standalone component pair contraction
-under the canonical mixed-position embedding. -/
-theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
-    [LinearOrder Mode] [Fintype Mode] {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts)
-    (a b : Fin (2 * (2 * (interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-        d.externalPairCount B))) :
-    externalInsertionMixedTimeOrderedAtomicPairValue ε β
-        d.externalLabel externalTime d.vertexLabelSequence σ
-        (d.componentMixedPosition externalTime σ B a)
-        (d.componentMixedPosition externalTime σ B b) =
-      externalInsertionMixedTimeOrderedAtomicPairValue ε β
-        (d.componentWickDiagram B).externalLabel
-        (d.componentExternalTime externalTime B)
-        (d.componentWickDiagram B).vertexLabelSequence
-        (d.componentInteractionTime σ B) a b := by
-  unfold externalInsertionMixedTimeOrderedAtomicPairValue
-  rw [d.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition externalTime σ B a,
-    d.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition externalTime σ B b]
 
 end Fermionic
 end SecondQuantization
