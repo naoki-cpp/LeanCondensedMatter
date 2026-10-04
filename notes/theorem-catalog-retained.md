@@ -114,7 +114,6 @@ or consumer structure changes.
 - `SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq` — canonical equivalence between the geometric mixed-order chamber relation and the finite signature used for measurable chamber decomposition.
 - `SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg` — canonical compatibility of component-local and ambient timed fields under the component leg embedding.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
-- `SecondQuantization.Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders` — deliberate quartic-diagram specialization of the generic finite-partition order/shuffle factorization; it packages component orders and shuffles in the diagram vocabulary used by both bosonic and fermionic amplitude factorizations.
 - `QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self` — canonical
   dimension-independent signed-regulator Herglotz identity for a self-adjoint resolvent. Consumers
   that need the reversed inner-product orientation should reverse it locally rather than expose a

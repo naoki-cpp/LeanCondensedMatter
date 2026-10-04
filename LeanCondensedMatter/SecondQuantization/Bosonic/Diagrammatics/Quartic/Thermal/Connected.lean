@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
+import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
@@ -69,13 +70,20 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order := by
   classical
-  exact Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
-    d
+  exact Finpartition.sum_order_eq_mul_prod_sum_partOrders
+    d.vertexGraph.componentPartitionOn
     (fun order : Common.QuarticVertexOrder S =>
       QuarticDiagram.orderedThermalAmplitude ε β g d order)
     (fun B order =>
       QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order)
     (Fintype.card d.ComponentShuffle : ℂ) (fun orders => by
+      change (∑ shuffle : d.ComponentShuffle,
+        QuarticDiagram.orderedThermalAmplitude ε β g d
+          (d.assembleVertexOrder orders shuffle)) =
+        (Fintype.card d.ComponentShuffle : ℂ) *
+          ∏ B : d.vertexGraph.componentPartitionOn.parts,
+            QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2)
+              (orders B)
       simp_rw [QuarticDiagram.orderedThermalAmplitude_eq_prod_components ε β g d orders]
       simp)
 

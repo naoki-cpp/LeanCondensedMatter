@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
+import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
@@ -38,11 +39,15 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
     fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
       (d.restrictComponentConnected B.2).1 order
   simpa only [one_mul] using
-    (Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
-      d
+    (Finpartition.sum_order_eq_mul_prod_sum_partOrders
+      d.vertexGraph.componentPartitionOn
       (fun order : Common.QuarticVertexOrder S =>
         d.orderedSimplexContribution ε β order)
       localContribution (1 : ℂ) (fun orders => by
+        change (∑ shuffle : d.ComponentShuffle,
+          d.orderedSimplexContribution ε β (d.assembleVertexOrder orders shuffle)) =
+          (1 : ℂ) * ∏ B : d.vertexGraph.componentPartitionOn.parts,
+            localContribution B (orders B)
         simp only [one_mul, QuarticWickDiagram.orderedSimplexContribution]
         let componentIntegrand :
             ∀ B : d.vertexGraph.componentPartitionOn.parts,

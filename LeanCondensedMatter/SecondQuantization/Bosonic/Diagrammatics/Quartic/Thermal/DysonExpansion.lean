@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
@@ -382,14 +383,20 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
   classical
   unfold QuarticDiagram.dysonThermalAmplitude
   simpa only [one_mul] using
-    (Common.QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
-      d
+    (Finpartition.sum_order_eq_mul_prod_sum_partOrders
+      d.vertexGraph.componentPartitionOn
       (fun order : Common.QuarticVertexOrder S =>
         QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t)
       (fun B order =>
         QuarticDiagram.orderedDysonThermalAmplitude ε β g
           (d.restrictComponent B.2) order t)
       (1 : ℂ) (fun orders => by
+        change (∑ shuffle : d.ComponentShuffle,
+          QuarticDiagram.orderedDysonThermalAmplitude ε β g d
+            (d.assembleVertexOrder orders shuffle) t) =
+          (1 : ℂ) * ∏ B : d.vertexGraph.componentPartitionOn.parts,
+            QuarticDiagram.orderedDysonThermalAmplitude ε β g
+              (d.restrictComponent B.2) (orders B) t
         simpa only [one_mul] using
           QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components
             ε β g d orders t))
