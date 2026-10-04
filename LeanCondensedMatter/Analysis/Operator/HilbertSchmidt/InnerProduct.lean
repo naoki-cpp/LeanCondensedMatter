@@ -121,19 +121,6 @@ theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ 
   have h3 := summable_inner_adjoint_apply_and_tsum_eq f d hSf hTf
   exact h2.2.symm.trans h3.2
 
-/-- Swapping two Hilbert--Schmidt factors and taking adjoints leaves their
-Hilbert--Schmidt pairing unchanged. -/
-theorem innerHS_adjoint_swap {ι : Type*} (d : HilbertBasis ι ℂ H)
-    {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S) (hT : IsHilbertSchmidt T) :
-    innerHS d (ContinuousLinearMap.adjoint S) T =
-      innerHS d (ContinuousLinearMap.adjoint T) S := by
-  have h := summable_inner_adjoint_apply_and_tsum_eq d d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d
-      (ContinuousLinearMap.adjoint S)).mp (isHilbertSchmidt_adjoint hS))
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)
-  unfold innerHS
-  simpa only [ContinuousLinearMap.adjoint_adjoint] using h.2.symm
-
 /-- Right composition can be transferred between the two Hilbert--Schmidt factors by taking the
 adjoint:
 `⟪S, T W⟫_{HS} = ⟪S W†, T⟫_{HS}`. -/
