@@ -117,7 +117,7 @@ noncomputable def pure (ψ : StateVector H) : DensityOperator H := by
   exact {
     op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
     pos := InnerProductSpace.isPositive_rankOne_self ψ.1
-    spectralTraceClass := htraceClass
+    isTraceClass := htraceClass.isTraceClass
     trace_eq_one := by
       rw [htraceClass.isTraceClass.trace_eq_spectralTrace htraceClass.isSelfAdjoint]
       exact_mod_cast rankOne_spectralTrace_eq_one ψ.2 }
