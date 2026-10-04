@@ -37,8 +37,7 @@ noncomputable def normalizePositive
     pos := hscaledPos
     spectralTraceClass := hscaledTrace
     trace_eq_one := by
-      rw [hscaledTrace.isTraceClass.trace_eq_spectralTrace
-        hscaledTrace.compact hscaledTrace.isSelfAdjoint]
+      rw [hscaledTrace.isTraceClass.trace_eq_spectralTrace hscaledTrace.isSelfAdjoint]
       have hspectral : spectralTrace (r • T) = 1 := by
         rw [spectralTrace_smul r htrace.summable]
         dsimp [r, Z]
