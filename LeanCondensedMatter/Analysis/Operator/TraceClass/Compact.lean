@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization
 
 set_option linter.style.header false
 
