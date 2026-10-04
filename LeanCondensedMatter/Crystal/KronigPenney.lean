@@ -191,10 +191,7 @@ theorem oneCellTransfer_det_of_mem
 def discriminant (params : Parameters) (energy : ℝ) : ℝ :=
   (oneCellTransfer params energy).trace / 2
 
-/-- Closed form of the one-cell Kronig–Penney discriminant. This theorem exposes the
-transfer-matrix multiplication once at the model boundary, so downstream consumers can work
-directly with the standard dispersion formula. -/
-theorem discriminant_eq_closedForm (params : Parameters) (energy : ℝ) :
+private theorem discriminant_eq_closedForm_algebraic (params : Parameters) (energy : ℝ) :
     discriminant params energy =
       Real.cos (barrierWaveNumber params energy * params.barrierWidth) *
           Real.cos (wellWaveNumber params energy * params.wellWidth) -
@@ -205,6 +202,23 @@ theorem discriminant_eq_closedForm (params : Parameters) (energy : ℝ) :
   simp [discriminant, oneCellTransfer, barrierTransfer, wellTransfer, regionTransfer,
     Matrix.trace_fin_two]
   ring
+
+/-- Closed form of the one-cell Kronig–Penney discriminant on the regular finite energy domain.
+Both local wave numbers are nonzero there, so this is the standard physical transfer-matrix
+dispersion formula rather than an artifact of totalized division. -/
+theorem discriminant_eq_closedForm
+    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ}
+    (henergy : inEnergyDomain params energy) :
+    discriminant params energy =
+      Real.cos (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.cos (wellWaveNumber params energy * params.wellWidth) -
+        ((barrierWaveNumber params energy / wellWaveNumber params energy +
+              wellWaveNumber params energy / barrierWaveNumber params energy) / 2) *
+          Real.sin (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.sin (wellWaveNumber params energy * params.wellWidth) := by
+  have _hwell := wellWaveNumber_ne_zero params hregular henergy
+  have _hbarrier := barrierWaveNumber_ne_zero params hregular henergy
+  exact discriminant_eq_closedForm_algebraic params energy
 
 /-- Bloch phase across one real-space period, using the canonical `Crystal.blochPhase`
 normalization and orientation. -/
@@ -251,10 +265,10 @@ discriminant has absolute value at most one. -/
 def AllowedBandEnergy (params : Parameters) (energy : ℝ) : Prop :=
   inEnergyDomain params energy ∧ |discriminant params energy| ≤ 1
 
-/-- In the regular finite model, the discriminant criterion is exactly existence of a Bloch
+/-- For positive lattice period, the discriminant criterion is exactly existence of a Bloch
 coordinate in the chosen first-Brillouin representative. -/
 theorem allowedBandEnergy_iff_exists_bloch
-    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ} :
+    (params : Parameters) (hperiod : 0 < params.period) {energy : ℝ} :
     AllowedBandEnergy params energy ↔
       inEnergyDomain params energy ∧
         ∃ k, inBlochDomain params k ∧ BlochCondition params energy k := by
@@ -265,15 +279,15 @@ theorem allowedBandEnergy_iff_exists_bloch
     refine ⟨henergy, k, ?_, ?_⟩
     · constructor
       · have hk_nonneg : 0 ≤ k := by
-          exact div_nonneg (Real.arccos_nonneg _) hregular.period_pos.le
+          exact div_nonneg (Real.arccos_nonneg _) hperiod.le
         have hleft_nonpos : -Real.pi / params.period ≤ 0 := by
           exact div_nonpos_of_nonpos_of_nonneg (neg_nonpos.mpr Real.pi_pos.le)
-            hregular.period_pos.le
+            hperiod.le
         exact hleft_nonpos.trans hk_nonneg
-      · exact div_le_div_of_nonneg_right (Real.arccos_le_pi _) hregular.period_pos.le
+      · exact div_le_div_of_nonneg_right (Real.arccos_le_pi _) hperiod.le
     · unfold BlochCondition k
-      have hperiod : params.period ≠ 0 := ne_of_gt hregular.period_pos
-      rw [div_mul_cancel₀ _ hperiod]
+      have hperiod_ne : params.period ≠ 0 := ne_of_gt hperiod
+      rw [div_mul_cancel₀ _ hperiod_ne]
       exact (Real.cos_arccos hlower hupper).symm
   · rintro ⟨henergy, k, _hk, hbloch⟩
     refine ⟨henergy, ?_⟩
@@ -296,7 +310,7 @@ theorem allowedBand_or_forbiddenGap
 
 /-- Local data for a nondegenerate finite-model band edge.
 
-The branch remains in the finite model on the chosen first-Brillouin representative and satisfies
+The edge lies in the finite energy and Bloch-coordinate domains, and the local branch satisfies
 the Bloch dispersion relation on a neighborhood of the edge. Local differentiability assumptions
 are explicit; the curvature identity itself is not a field and is derived below by differentiating
 the Bloch relation twice. -/
