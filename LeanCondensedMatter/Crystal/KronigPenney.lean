@@ -326,7 +326,8 @@ private theorem BandEdgeData.composite_second_derivative
           deriv (discriminant params) (edge.branchEnergy k) *
             deriv edge.branchEnergy k)
         (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
-    simpa [hbranchDeriv, hdiscDeriv] using hleft.mul edge.secondDerivative
+    simpa only [Pi.mul_apply, hbranchDeriv, hdiscDeriv, zero_mul, zero_add] using
+      hleft.mul edge.secondDerivative
   exact hproduct.congr_of_eventuallyEq hderiv_comp
 
 private theorem cosine_second_derivative (period k : ℝ) :
@@ -369,12 +370,14 @@ theorem BandEdgeData.discriminantSlope_mul_curvature
           edge.blochCoordinate := hleft.symm
     _ = iteratedDeriv 2 (fun q => discriminant params (edge.branchEnergy q))
           edge.blochCoordinate := by
-        simp [iteratedDeriv_succ']
+        rw [show (2 : ℕ) = 1 + 1 by norm_num, iteratedDeriv_succ',
+          show (1 : ℕ) = 0 + 1 by norm_num, iteratedDeriv_succ', iteratedDeriv_zero]
     _ = iteratedDeriv 2 (fun q => Real.cos (q * params.period))
           edge.blochCoordinate := hsecond
     _ = deriv (fun k => deriv (fun q => Real.cos (q * params.period)) k)
           edge.blochCoordinate := by
-        simp [iteratedDeriv_succ']
+        rw [show (2 : ℕ) = 1 + 1 by norm_num, iteratedDeriv_succ',
+          show (1 : ℕ) = 0 + 1 by norm_num, iteratedDeriv_succ', iteratedDeriv_zero]
     _ = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := hright
 
 /-- Band-edge curvature obtained from the finite Bloch discriminant relation. -/
