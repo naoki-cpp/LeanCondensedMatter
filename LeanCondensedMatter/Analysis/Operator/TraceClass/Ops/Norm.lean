@@ -148,38 +148,36 @@ theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 private theorem traceNorm_comp_left_le_of_norm_le_one
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
     (hT.comp_left W).traceNorm ≤ hT.traceNorm := by
-  obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
-    hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
-  let A' : H →L[ℂ] H := A * ContinuousLinearMap.adjoint W
-  have hA' : IsHilbertSchmidt A' :=
-    isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W)
-  have hAdjA' : ContinuousLinearMap.adjoint A' = W * ContinuousLinearMap.adjoint A := by
-    rw [show ContinuousLinearMap.adjoint A' = star A' from
-      (ContinuousLinearMap.star_eq_adjoint A').symm]
-    dsimp [A']
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
-      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint]
-  have hfactor' : ContinuousLinearMap.adjoint A' * B = W * T := by
-    rw [hAdjA', mul_assoc, hfactor]
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (W * T)
   have hAdjWnorm : ‖ContinuousLinearMap.adjoint W‖ ≤ 1 := by
     rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
     exact hW
-  have hA'norm : hA'.normSq ≤ hT.traceNorm := by
-    have hraw := IsHilbertSchmidt.normSq_comp_right_le hA (ContinuousLinearMap.adjoint W)
-    have hraw' : hA'.normSq ≤ ‖ContinuousLinearMap.adjoint W‖ ^ 2 * hA.normSq := by
-      exact (IsHilbertSchmidt.normSq_proof_irrel hA'
-        (isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W))) ▸ hraw
+  have hcontract : ‖ContinuousLinearMap.adjoint W * U‖ ≤ 1 := by
     calc
-      hA'.normSq ≤ ‖ContinuousLinearMap.adjoint W‖ ^ 2 * hA.normSq := hraw'
-      _ ≤ 1 ^ 2 * hA.normSq := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg _) hAdjWnorm 2) hA.normSq_nonneg
-      _ = hT.traceNorm := by rw [one_pow, one_mul, hAnorm]
-  have hbound :=
-    (hT.comp_left W).traceNorm_le_half_normSq_add_of_factorization hA' hB hfactor'
+      ‖ContinuousLinearMap.adjoint W * U‖ ≤
+          ‖ContinuousLinearMap.adjoint W‖ * ‖U‖ := norm_mul_le _ _
+      _ ≤ 1 := by
+        nlinarith [norm_nonneg (ContinuousLinearMap.adjoint W), norm_nonneg U]
+  have hpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm
+    (ContinuousLinearMap.adjoint W * U) hcontract d
+  rw [(hT.comp_left W).traceNorm_eq_tsum_norm_inner_left_of_polar U hUright d]
   calc
-    (hT.comp_left W).traceNorm ≤ (hA'.normSq + hB.normSq) / 2 := hbound
-    _ ≤ hT.traceNorm := by rw [hBnorm]; linarith
+    (∑' i, ‖inner ℂ (U (d i)) ((W * T) (d i))‖) =
+        ∑' i, ‖inner ℂ ((ContinuousLinearMap.adjoint W * U) (d i)) (T (d i))‖ := by
+      apply tsum_congr
+      intro i
+      apply congrArg norm
+      simp only [mul_apply_eq_comp]
+      calc
+        inner ℂ (U (d i)) (W (T (d i))) =
+            inner ℂ (U (d i))
+              ((ContinuousLinearMap.adjoint (ContinuousLinearMap.adjoint W)) (T (d i))) := by
+          rw [ContinuousLinearMap.adjoint_adjoint]
+        _ = inner ℂ ((ContinuousLinearMap.adjoint W) (U (d i))) (T (d i)) :=
+          ContinuousLinearMap.adjoint_inner_right
+            (ContinuousLinearMap.adjoint W) (U (d i)) (T (d i))
+    _ ≤ hT.traceNorm := hpair.2
 
 private theorem traceNorm_eq_of_eq
     {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R) (hSR : S = R) :
