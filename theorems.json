@@ -9508,8 +9508,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq_of_order",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.familyRelativePerm_inversionCount_mod_two"
     ],
@@ -9517,12 +9516,57 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq_of_order",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.familyRelativePerm_inversionCount_mod_two"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} [inst : LinearOrder β] (n : ℕ) (s : Finset α) (order : α → β),\n  Set.InjOn order ↑s →\n    ∀ (f g : α → α → ℕ),\n      (∀ a ∈ s, ∀ b ∈ s, a ≠ b → f a b + f b a ≡ g a b [MOD n]) →\n        ∑ p ∈ s.offDiag, f p.1 p.2 ≡ ∑ p ∈ s.offDiag, if order p.1 < order p.2 then g p.1 p.2 else 0 [MOD n]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq_of_order",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": "An ordering selects one representative from each unordered pair in an off-diagonal sum.\n\nIf the combined contribution of each pair agrees modulo `n` with `g a b`, then the sum of `f` over\nall ordered distinct pairs agrees with the sum of `g` in the orientation selected by an injective\norder. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "dependencies": [
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17503,50 +17547,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.IsHilbertSchmidtWrt d T ↔ ContinuousLinearMap.IsHilbertSchmidtWrt f T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
-    "externalAxioms": [],
-    "docString": "**`IsHilbertSchmidtWrt` is independent of the choice of Hilbert basis.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsHilbertSchmidt → (ContinuousLinearMap.adjoint T).IsHilbertSchmidt",
     "standardAxioms": [
       "Classical.choice",
@@ -17747,7 +17747,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.isHilbertSchmidtWrt_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -18720,11 +18720,11 @@
     "name": "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq",
     "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
     "externalAxioms": [],
-    "docString": "**The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying\n`summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using\n`T†† = T` transports the sum of squared norms of `T` from any one basis to any other. This is\nthe public-facing form of the basis-independence computation: callers wanting to compare `T`\nacross bases (`isHilbertSchmidtWrt_iff`) should use this rather than reasoning about `T†`\ndirectly. ",
+    "docString": "**The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying\n`summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using\n`T†† = T` transports the sum of squared norms of `T` from any one basis to any other. This\nvalue-level result underlies the canonical basis-independent characterization below. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.isHilbertSchmidtWrt_iff",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
     ],
     "dependencies": [
@@ -18733,7 +18733,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.isHilbertSchmidtWrt_iff",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
     ],
     "compiledConsumerCount": 2,
@@ -100969,7 +100969,7 @@
       "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
     "dependencies": [
-      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq",
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq_of_order",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount"
     ],
     "crossModuleDirectWrapper": false,
@@ -125349,7 +125349,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
     ],
     "dependencies": [
-      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq",
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq_of_order",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount"
     ],
     "crossModuleDirectWrapper": false,
@@ -147185,6 +147185,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.isHilbertSchmidt_comp_left"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.IsHilbertSchmidtWrt d T ↔ ContinuousLinearMap.IsHilbertSchmidtWrt f T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
+    "externalAxioms": [],
+    "docString": "**`IsHilbertSchmidtWrt` is independent of the choice of Hilbert basis.** ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
