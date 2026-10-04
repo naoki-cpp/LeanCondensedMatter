@@ -203,7 +203,7 @@ theorem discriminant_eq_closedForm (params : Parameters) (energy : ℝ) :
           Real.sin (barrierWaveNumber params energy * params.barrierWidth) *
           Real.sin (wellWaveNumber params energy * params.wellWidth) := by
   simp [discriminant, oneCellTransfer, barrierTransfer, wellTransfer, regionTransfer,
-    Matrix.trace_fin_two, Matrix.mul_apply, Fin.sum_univ_two]
+    Matrix.trace_fin_two]
   ring
 
 /-- Bloch phase across one real-space period, using the canonical `Crystal.blochPhase`
