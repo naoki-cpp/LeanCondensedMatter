@@ -31,9 +31,9 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
 
 ### Density states
 
-`QuantumTheory.DensityOperator H` is the canonical density-state representation. Its underlying bounded
-operator is positive, compact, self-adjoint, spectrally trace-class, and normalized to spectral
-trace `1`. Physical pure states form the subtype `QuantumTheory.PureState H`; arbitrary mixed states
+`QuantumTheory.DensityOperator H` is the canonical density-state representation. Its stored data are a
+positive bounded operator with general trace-class membership and canonical complex trace `1`.
+Compactness, self-adjointness, spectral summability, and spectral trace `1` are derived. Physical pure states form the subtype `QuantumTheory.PureState H`; arbitrary mixed states
 are represented directly by `DensityOperator H`.
 
 The model is dimension-independent. The canonical purity characterization is
@@ -198,7 +198,8 @@ and later thermodynamic limits is documented in
 
 ### Infinite-dimensional density states
 
-- The state operator is compact, positive, self-adjoint, and spectrally trace-class.
+- The state operator is positive and trace class; compactness, self-adjointness, and spectral
+  summability follow from the general operator theory.
 - Bounded observables are used.
 - Entropy may be infinite unless an additional summability theorem applies.
 
