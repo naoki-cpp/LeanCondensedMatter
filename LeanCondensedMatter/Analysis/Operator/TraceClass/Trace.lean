@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 
 set_option linter.style.header false
 
