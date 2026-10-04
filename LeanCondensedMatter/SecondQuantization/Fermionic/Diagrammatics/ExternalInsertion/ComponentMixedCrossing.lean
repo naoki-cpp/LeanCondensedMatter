@@ -113,31 +113,17 @@ theorem ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq
     pairing.componentCrossingCount pairEquiv B C
   let inv := fun B C : d.vertexGraph.componentPartition.parts =>
     (d.componentMixedPositionShuffle externalTime σ).blockInversionCount B C
-  let selected := fun B C : d.vertexGraph.componentPartition.parts =>
-    if blockOrder B < blockOrder C then inv B C else 0
   have hsum :=
-    finset_sum_offDiag_modEq_of_pair_add_modEq
-      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) cross selected
+    finset_sum_offDiag_modEq_of_pair_add_modEq_of_order
+      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
+      (fun _ _ _ _ h => blockOrder.injective h) cross inv
       (fun B _ C _ hBC => by
-        by_cases hlt : blockOrder B < blockOrder C
-        · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
-          simpa [Nat.ModEq, selected, hlt, hnlt, inv, cross, pairing, pairEquiv] using
-            d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
-              externalTime σ B C hBC
-        · have hneOrder : blockOrder B ≠ blockOrder C := by
-            intro h
-            exact hBC (blockOrder.injective h)
-          have hrev : blockOrder C < blockOrder B := by
-            rcases lt_trichotomy (blockOrder B) (blockOrder C) with h | h | h
-            · exact absurd h hlt
-            · exact absurd h hneOrder
-            · exact h
-          simpa [Nat.ModEq, selected, hlt, hrev, inv, cross, pairing, pairEquiv, add_comm] using
-            d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
-              externalTime σ C B hBC.symm)
+        simpa [Nat.ModEq, inv, cross, pairing, pairEquiv] using
+          d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
+            externalTime σ B C hBC)
   simpa [Nat.ModEq, ExternalInsertionWickDiagram.mixedInterComponentCrossingCount,
     Pairing.interComponentCrossingCount, FamilySlotShuffleTo.orderedBlockInversionCount,
-    cross, inv, selected, pairing, pairEquiv] using hsum
+    cross, inv, pairing, pairEquiv] using hsum
 
 end Fermionic
 end SecondQuantization
