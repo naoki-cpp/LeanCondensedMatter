@@ -229,7 +229,6 @@
       "id": "quantumTheoryDensityUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory/DensityOperator.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
       ]
     },
