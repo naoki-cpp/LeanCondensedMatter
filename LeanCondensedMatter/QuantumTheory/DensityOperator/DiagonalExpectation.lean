@@ -32,47 +32,16 @@ theorem DensityOperator.sqrtOp_apply_eigenvector (ρ : DensityOperator H) {v : H
     (cfc_apply_eigenvector (T := ρ.op) ρ.pos.isSelfAdjoint hv
       (f := Real.sqrt) Real.continuous_sqrt)
 
-/-- The positive square root of a density operator is Hilbert–Schmidt. Its squared
-Hilbert–Schmidt norm is the trace-one eigenvalue sum. -/
+/-- The positive square root of a density operator is Hilbert–Schmidt.
+This is the positive specialization of general trace-class membership. -/
 theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
     IsHilbertSchmidt ρ.sqrtOp := by
-  classical
-  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
-  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
-  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
-  have he : Orthonormal ℂ e := by
-    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hj : Function.Injective j := by
-    intro a a' haa'
-    apply he.linearIndependent.injective
-    exact congrArg Subtype.val haa'
-  let g : u → ℝ := fun i => ‖ρ.sqrtOp (b i)‖ ^ 2
-  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
-    rw [hb]
-  have hpoint (a : EigenvectorIndex ρ.op) : g (j a) = a.1.1 := by
-    change ‖ρ.sqrtOp (b (j a))‖ ^ 2 = a.1.1
-    rw [hb_j, ρ.sqrtOp_apply_eigenvector (apply_eigenvectorFamily hρcompact a),
-      norm_smul, he.1 a]
-    simp [Real.sq_sqrt (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)]
-  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
-    have hsqrt : ρ.sqrtOp (b x) = 0 := by
-      simpa using ρ.sqrtOp_apply_eigenvector (v := b x) (c := 0) (by simpa using hxker)
-    change ‖ρ.sqrtOp (b x)‖ ^ 2 = 0
-    simp [hsqrt]
-  have hweights : HasSum (fun a : EigenvectorIndex ρ.op => a.1.1) 1 := by
-    have h := (summable_eigenvectorIndex ρ.spectralTraceClass.summable).hasSum
-    have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-      simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
-    rwa [htrace] at h
-  have hrestricted : HasSum (g ∘ j) 1 := by
-    change HasSum (fun a => g (j a)) 1
-    exact HasSum.congr_fun hweights hpoint
-  have hfull : HasSum g 1 := (hj.hasSum_iff hzero).mp hrestricted
-  exact (isHilbertSchmidt_iff_isHilbertSchmidtWrt b ρ.sqrtOp).mpr hfull.summable
+  have hnonneg : 0 ≤ ρ.op := nonneg_iff_isPositive.mpr ρ.pos
+  have habs : CFC.abs ρ.op = ρ.op := CFC.abs_of_nonneg ρ.op hnonneg
+  have htrace : IsHilbertSchmidt (CFC.sqrt ρ.op) := by
+    simpa [IsTraceClass, habs] using ρ.isTraceClass
+  rw [CFC.sqrt_eq_real_sqrt ρ.op hnonneg, cfcₙ_eq_cfc] at htrace
+  simpa [DensityOperator.sqrtOp] using htrace
 
 /-- The canonical density-state expectation is the basis-independent Hilbert–Schmidt pairing
 `⟪√ρ, A√ρ⟫`. This formula is valid for every bounded operator, not only observables. -/
