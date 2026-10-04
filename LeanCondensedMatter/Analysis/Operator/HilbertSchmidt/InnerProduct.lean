@@ -37,7 +37,7 @@ omit [CompleteSpace H] in
 nonnegative). The absolute-summability half of
 `summable_inner_adjoint_apply_and_tsum_eq`'s argument, isolated since it doesn't need the
 row/column identification that follows it. -/
-theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
     (hTd : IsHilbertSchmidtWrt d T) :
     Summable (fun p : ι × κ =>
@@ -74,7 +74,7 @@ Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the do
 (giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving
 `Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor
 with the adjoint). -/
-theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+private theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
     (hTd : IsHilbertSchmidtWrt d T) :
     Summable (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
