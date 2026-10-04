@@ -32,8 +32,9 @@ have stationary expectations and density operators commuting with `H₀` are fix
 evolution.
 
 Reusable bounded-operator unitary-conjugation facts live in
-`Analysis/Operator/Unitary.lean`; spectral summability and trace transport are thin adapters under
-`Analysis/Operator/TraceClass/Spectral/Unitary.lean`. The physics layer consumes these analysis-owned APIs.
+`Analysis/Operator/Unitary.lean`; general trace-class closure and trace invariance under adjoint
+conjugation live in `Analysis/Operator/TraceClass/Unitary.lean`. The physics layer consumes these
+analysis-owned APIs.
 
 The reusable Hilbert-basis diagonal operator construction lives under
 `Analysis/Operator/Diagonal.lean`; density and Gibbs constructors consume that neutral API through
@@ -41,11 +42,11 @@ the TraceClass adapters where positivity and spectral trace data are required.
 
 ## Density operators, physical pure states, expectations, and purity
 
-Status: `proved` for the current spectral trace-class density model and density-backed physical pure
-states.
+Status: `proved` for the current positive general trace-class density model and density-backed
+physical pure states.
 
-`QuantumTheory.DensityOperator H` bundles a positive bounded operator with compact self-adjoint
-spectral trace-class data and spectral trace `1`. `QuantumTheory.PureState H` is the subtype of density
+`QuantumTheory.DensityOperator H` bundles a positive bounded operator with general trace-class
+membership and canonical complex trace `1`; compact self-adjoint spectral data are derived. `QuantumTheory.PureState H` is the subtype of density
 operators represented by some normalized state vector through `QuantumTheory.pure`. The API includes:
 
 - the rank-one embedding `QuantumTheory.pure` and `PureState.ofStateVector`;
