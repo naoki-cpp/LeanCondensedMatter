@@ -86,6 +86,7 @@ which bundles compactness, symmetry, and summability of nonzero real eigenvalues
 `Analysis/Operator/TraceClass/Norm.lean` owns the canonical basis-independent real trace norm and
 its Hilbert-basis diagonal formula. `Analysis/Operator/TraceClass/Trace.lean` owns the absolutely
 convergent complex diagonal series, basis independence, and the canonical complex trace.
+`Analysis/Operator/TraceClass/Compact.lean` derives compactness from Hilbert--Schmidt factorization.
 `Analysis/Operator/TraceClass/Ops.lean` owns additive/scalar/adjoint closure, bounded left/right
 ideal closure, and the left/right operator-norm trace-norm bounds.
 `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled compact self-adjoint
@@ -104,8 +105,8 @@ canonical complex trace with the coercion of that real spectral sum to `ℂ`.
 ## Hilbert–Schmidt API
 
 `Analysis/Operator/HilbertSchmidt/` contains the project-local Hilbert–Schmidt predicate,
-basis-independence results, adjoint and bounded-composition closure, inner product, and trace
-reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
+basis-independence results, adjoint and bounded-composition closure, compactness, inner product, and
+trace reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
 
 The package supplies the neutral norm-square series used by general trace-class membership together
 with the Hilbert--Schmidt inner product used to prove absolute convergence and basis independence of
