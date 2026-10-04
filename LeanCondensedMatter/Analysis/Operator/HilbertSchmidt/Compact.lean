@@ -64,6 +64,7 @@ private theorem norm_sub_finiteRangeApprox_sq_le {ι : Type*} (d : HilbertBasis 
     {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (s : Finset ι) (x : H) :
     ‖(T - finiteRangeApprox d T s) x‖ ^ 2 ≤
       (∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) * ‖x‖ ^ 2 := by
+  classical
   let hTadj : IsHilbertSchmidt (ContinuousLinearMap.adjoint T) :=
     isHilbertSchmidt_adjoint hT
   have hparse :
@@ -124,6 +125,7 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
     {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (s : Finset ι) :
     ‖T - finiteRangeApprox d T s‖ ≤
       Real.sqrt (∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) := by
+  classical
   let tail : ℝ :=
     ∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2
   have htail : 0 ≤ tail := tsum_nonneg fun _ => sq_nonneg _
@@ -135,6 +137,7 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
 /-- Every Hilbert--Schmidt operator is compact. -/
 theorem isCompact {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     IsCompactOperator T := by
+  classical
   obtain ⟨ι, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   let tail : Finset ι → ℝ := fun s =>
     ∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2
