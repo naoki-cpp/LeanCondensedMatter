@@ -16672,7 +16672,6 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-      "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
@@ -16685,11 +16684,10 @@
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.diagonalExpectationNNReal",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-      "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17254,8 +17252,7 @@
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
       "ContinuousLinearMap.innerHS_one_eq_spectralTrace",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-      "ContinuousLinearMap.spectralTrace_comp_comm",
-      "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace"
+      "ContinuousLinearMap.spectralTrace_comp_comm"
     ],
     "dependencies": [
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
@@ -17269,10 +17266,9 @@
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
       "ContinuousLinearMap.innerHS_one_eq_spectralTrace",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-      "ContinuousLinearMap.spectralTrace_comp_comm",
-      "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace"
+      "ContinuousLinearMap.spectralTrace_comp_comm"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18717,47 +18713,6 @@
       "ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTpos : T.IsPositive),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_2} {d : ι → H},\n          Orthonormal ℂ d →\n            (Summable fun i => T.diagonalExpectationValue ⋯ (d i)) ∧\n              ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) ≤ T.spectralTrace",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
-    "externalAxioms": [],
-    "docString": "The sum of lossless diagonal expectation values of a positive spectrally summable operator\nagainst any orthonormal family is at most its spectral trace. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ContinuousLinearMap.diagonalExpectationValue_nonneg",
-      "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
