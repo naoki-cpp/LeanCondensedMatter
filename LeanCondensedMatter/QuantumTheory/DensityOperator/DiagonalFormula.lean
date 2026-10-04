@@ -39,6 +39,7 @@ theorem DensityOperator.hasSum_expectation_diagonal (ρ : DensityOperator H)
     rw [ρ.expectation_apply, (ρ.isTraceClass.comp_right A).trace_eq_seriesWrt b]
     exact ((ρ.isTraceClass.comp_right A).summable_traceSeriesWrt b).hasSum
   exact HasSum.congr_fun hsum fun i => by
+    symm
     rw [mul_apply_eq_comp]
     calc
       inner ℂ (b i) (ρ.op (A (b i))) =
