@@ -62,29 +62,5 @@ noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (F
     QuarticVertexOrder S ≃ d.ComponentVertexOrders × d.ComponentShuffle :=
   d.vertexGraph.componentPartitionOn.orderDecompositionEquiv
 
-/-- Diagram-facing specialization of the generic finite-partition order/shuffle sum theorem.
-A global vertex-order sum factors into component-local order sums once the fixed-local-orders
-shuffle fiber is known to be a common scalar times the product of local weights. -/
-theorem QuarticDiagram.sum_vertexOrder_eq_mul_prod_sum_componentOrders
-    {R : Type*} [CommSemiring R] {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S)
-    (globalWeight : QuarticVertexOrder S → R)
-    (localWeight :
-      ∀ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticVertexOrder (B : Finset (Fin N)) → R)
-    (c : R)
-    (hshuffle : ∀ orders : d.ComponentVertexOrders,
-      (∑ shuffle : d.ComponentShuffle,
-        globalWeight (d.assembleVertexOrder orders shuffle)) =
-        c * ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          localWeight B (orders B)) :
-    (∑ order : QuarticVertexOrder S, globalWeight order) =
-      c * ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
-          localWeight B order := by
-  classical
-  exact Finpartition.sum_order_eq_mul_prod_sum_partOrders
-    d.vertexGraph.componentPartitionOn globalWeight localWeight c hshuffle
-
 end Common
 end SecondQuantization
