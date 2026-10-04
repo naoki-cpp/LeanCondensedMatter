@@ -21,8 +21,8 @@ private theorem trace_eq_innerHS_of_factorization
     (hfactor : ContinuousLinearMap.adjoint A * B = T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     hT.trace = innerHS d A B := by
-  rw [hT.trace_eq_seriesWrt d]
-  unfold traceSeriesWrt innerHS
+  rw [hT.trace_eq_tsum_inner d]
+  unfold innerHS
   apply tsum_congr
   intro i
   calc

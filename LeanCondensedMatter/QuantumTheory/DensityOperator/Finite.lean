@@ -83,8 +83,7 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
   let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
     ρ.isSymmetric.eigenvectorBasis rfl
   rw [ρ.expectation_apply,
-    (ρ.isTraceClass.comp_right A).trace_eq_seriesWrt b.toHilbertBasis]
-  unfold traceSeriesWrt
+    (ρ.isTraceClass.comp_right A).trace_eq_tsum_inner b.toHilbertBasis]
   rw [tsum_fintype]
   symm
   simpa [ContinuousLinearMap.mul_def] using

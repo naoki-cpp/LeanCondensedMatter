@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Trace of general trace-class operators
 
 The trace is the basis-independent complex diagonal sum of a trace-class bounded operator.
-Hilbert--Schmidt factorization supplies absolute convergence and basis independence; the
-factorization itself is owned by `TraceClass/Factorization.lean`.
+Hilbert--Schmidt factorization supplies absolute convergence and basis independence. Public
+basis-facing results use the diagonal series directly rather than a separate wrapper definition.
 -/
 
 noncomputable section
@@ -15,12 +15,6 @@ noncomputable section
 namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-
-/-- The totalized complex diagonal series of an operator in a chosen Hilbert basis. Outside
-trace-class membership this is only a totalized `tsum`. -/
-noncomputable def traceSeriesWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
-    (T : H →L[ℂ] H) : ℂ :=
-  ∑' i, inner ℂ (d i) (T (d i))
 
 private theorem diagonal_eq_hilbertSchmidt_inner
     {T A B : H →L[ℂ] H} (hfactor : ContinuousLinearMap.adjoint A * B = T)
@@ -36,7 +30,7 @@ private theorem diagonal_eq_hilbertSchmidt_inner
 
 /-- The complex diagonal series of a trace-class operator is absolutely summable in every Hilbert
 basis. -/
-theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
+theorem IsTraceClass.summable_trace_diagonal {T : H →L[ℂ] H}
     (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => inner ℂ (d i) (T (d i))) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
@@ -44,23 +38,22 @@ theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
   have hsum := hA.summable_inner_apply hB d
   exact hsum.congr fun i => (diagonal_eq_hilbertSchmidt_inner hfactor (d i)).symm
 
-/-- For a trace-class operator, the complex diagonal series has the same value in every Hilbert
-basis. -/
-private theorem traceSeriesWrt_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+/-- The diagonal `tsum` of a trace-class operator is independent of the Hilbert basis. -/
+private theorem trace_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hT : IsTraceClass T) :
-    traceSeriesWrt d T = traceSeriesWrt f T := by
+    (∑' i, inner ℂ (d i) (T (d i))) = ∑' j, inner ℂ (f j) (T (f j)) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
-  have hd : traceSeriesWrt d T = innerHS d A B := by
-    unfold traceSeriesWrt innerHS
+  have hd : (∑' i, inner ℂ (d i) (T (d i))) = innerHS d A B := by
+    unfold innerHS
     apply tsum_congr
     intro i
     exact diagonal_eq_hilbertSchmidt_inner hfactor (d i)
-  have hf : traceSeriesWrt f T = innerHS f A B := by
-    unfold traceSeriesWrt innerHS
+  have hf : (∑' j, inner ℂ (f j) (T (f j))) = innerHS f A B := by
+    unfold innerHS
     apply tsum_congr
-    intro i
-    exact diagonal_eq_hilbertSchmidt_inner hfactor (f i)
+    intro j
+    exact diagonal_eq_hilbertSchmidt_inner hfactor (f j)
   rw [hd, hf]
   exact innerHS_eq_of_isHilbertSchmidt d f hA hB
 
@@ -72,14 +65,21 @@ noncomputable def trace {T : H →L[ℂ] H} (hT : IsTraceClass T) : ℂ :=
   let hw : ∃ d : HilbertBasis w ℂ H,
       IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)) := Classical.choose_spec hT
   let d : HilbertBasis w ℂ H := Classical.choose hw
-  traceSeriesWrt d T
+  ∑' i, inner ℂ (d i) (T (d i))
 
-/-- The trace is the complex diagonal series in every Hilbert basis. -/
-theorem trace_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
+/-- The trace is the diagonal `tsum` in every Hilbert basis. -/
+theorem trace_eq_tsum_inner {T : H →L[ℂ] H} (hT : IsTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    hT.trace = traceSeriesWrt d T := by
+    hT.trace = ∑' i, inner ℂ (d i) (T (d i)) := by
   unfold trace
-  exact traceSeriesWrt_eq _ d T hT
+  exact trace_tsum_eq _ d T hT
+
+/-- The diagonal series sums to the trace in every Hilbert basis. -/
+theorem hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => inner ℂ (d i) (T (d i))) hT.trace := by
+  rw [hT.trace_eq_tsum_inner d]
+  exact (hT.summable_trace_diagonal d).hasSum
 
 end IsTraceClass
 
