@@ -57,9 +57,7 @@ private theorem isTraceClass_of_hilbertSchmidt_factorization
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor T
   have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
-  have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (A * U)).mp hAU)
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d B).mp hB)
+  have hsum := hAU.summable_inner_apply hB d
   have hpoint (i : w) :
       ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ) =
         inner ℂ ((A * U) (d i)) (B (d i)) := by
@@ -114,9 +112,7 @@ theorem IsTraceClass.summable_traceSeriesWrt {T : H →L[ℂ] H}
     Summable (fun i => inner ℂ (d i) (T (d i))) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
-  have hsum := summable_inner_apply_of_isHilbertSchmidtWrt d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d A).mp hA)
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d B).mp hB)
+  have hsum := hA.summable_inner_apply hB d
   exact hsum.congr fun i => (diagonal_eq_hilbertSchmidt_inner hfactor (d i)).symm
 
 /-- For a trace-class operator, the complex diagonal series has the same value in every Hilbert
