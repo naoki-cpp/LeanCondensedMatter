@@ -72,8 +72,8 @@ Hilbert--Schmidt layer. `TraceClass/Factorization/Basic.lean` owns the trace-nor
 characterization `T = A† B` with Hilbert--Schmidt factors. `TraceClass/Factorization/Norm.lean`
 adds the estimate `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2` and a factorization satisfying
 `‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`. Compactness and trace convergence consume only the basic layer;
-trace-norm estimates consume the norm-aware layer. In particular, every trace-class operator is compact without depending on the
-trace-value implementation. Membership is closed under adjoint and bounded left/right
+trace-norm estimates consume the norm-aware layer. In particular, every trace-class operator is compact
+without depending on the trace-value implementation. Membership is closed under adjoint and bounded left/right
 multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
 bounds are also proved. The canonical complex trace is exposed through direct Hilbert-basis
