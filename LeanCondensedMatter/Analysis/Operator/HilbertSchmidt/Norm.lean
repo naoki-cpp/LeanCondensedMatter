@@ -29,7 +29,8 @@ private theorem hilbertSchmidtNormSqSeriesWrt_eq {ι κ : Type*}
     (T : H →L[ℂ] H) (hT : IsHilbertSchmidt T) :
     hilbertSchmidtNormSqSeriesWrt d T = hilbertSchmidtNormSqSeriesWrt f T := by
   unfold hilbertSchmidtNormSqSeriesWrt
-  exact (summable_norm_sq_apply_and_tsum_eq d f T ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)).2.symm
+  exact (summable_norm_sq_apply_and_tsum_eq d f T
+    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)).2.symm
 
 namespace IsHilbertSchmidt
 
@@ -78,9 +79,11 @@ theorem normSq_comp_left_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
   rw [(isHilbertSchmidt_comp_left B hT).normSq_eq_seriesWrt d,
     hT.normSq_eq_seriesWrt d]
   unfold hilbertSchmidtNormSqSeriesWrt
-  have hTsum : Summable (fun i => ‖T (d i)‖ ^ 2) := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
+  have hTsum : Summable (fun i => ‖T (d i)‖ ^ 2) :=
+    (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
   have hBTsum : Summable (fun i => ‖(B * T) (d i)‖ ^ 2) :=
-    (isHilbertSchmidt_iff_isHilbertSchmidtWrt d (B * T)).mp (isHilbertSchmidt_comp_left B hT)
+    (isHilbertSchmidt_iff_isHilbertSchmidtWrt d (B * T)).mp
+      (isHilbertSchmidt_comp_left B hT)
   have hscaled : Summable (fun i => ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2) :=
     hTsum.mul_left (‖B‖ ^ 2)
   calc
