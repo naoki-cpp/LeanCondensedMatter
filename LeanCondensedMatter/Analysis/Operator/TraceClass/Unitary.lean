@@ -19,6 +19,12 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace IsTraceClass
 
+private theorem trace_eq_of_eq {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R)
+    (hSR : S = R) :
+    hS.trace = hR.trace := by
+  subst R
+  rfl
+
 /-- Bounded adjoint conjugation preserves trace-class membership. -/
 theorem unitaryConjugate {T : H →L[ℂ] H} (hT : IsTraceClass T) (U : H →L[ℂ] H) :
     IsTraceClass (ContinuousLinearMap.unitaryConjugate U T) := by
@@ -32,11 +38,11 @@ theorem trace_unitaryConjugate {T : H →L[ℂ] H} (hT : IsTraceClass T) (U : H 
   calc
     (hT.unitaryConjugate U).trace =
         ((hT.comp_left U).comp_right (star U)).trace :=
-      IsTraceClass.trace_eq_of_eq _ _ rfl
+      trace_eq_of_eq _ _ rfl
     _ = ((hT.comp_left U).comp_left (star U)).trace :=
       (hT.comp_left U).trace_comp_comm (star U)
     _ = hT.trace :=
-      IsTraceClass.trace_eq_of_eq _ _ (by rw [← mul_assoc, hleft, one_mul])
+      trace_eq_of_eq _ _ (by rw [← mul_assoc, hleft, one_mul])
 
 end IsTraceClass
 
