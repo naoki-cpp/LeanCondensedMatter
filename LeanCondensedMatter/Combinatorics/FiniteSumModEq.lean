@@ -2,6 +2,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
