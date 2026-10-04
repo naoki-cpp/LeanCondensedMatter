@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 
 set_option linter.style.header false
