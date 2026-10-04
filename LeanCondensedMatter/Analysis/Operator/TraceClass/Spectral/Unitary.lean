@@ -78,9 +78,8 @@ theorem SpectralTraceClass.trace_unitaryConjugate {T : H →L[ℂ] H}
     (hT.unitaryConjugate U hleft hright).isTraceClass.trace =
       hT.isTraceClass.trace := by
   rw [(hT.unitaryConjugate U hleft hright).isTraceClass.trace_eq_spectralTrace
-      (hT.unitaryConjugate U hleft hright).compact
       (hT.unitaryConjugate U hleft hright).isSelfAdjoint,
-    hT.isTraceClass.trace_eq_spectralTrace hT.compact hT.isSelfAdjoint]
+    hT.isTraceClass.trace_eq_spectralTrace hT.isSelfAdjoint]
   exact_mod_cast ContinuousLinearMap.spectralTrace_unitaryConjugate
     U T hleft hright hT.summable
     (hT.unitaryConjugate U hleft hright).summable
