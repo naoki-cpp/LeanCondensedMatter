@@ -1,0 +1,475 @@
+import LeanCondensedMatter.Crystal.Brillouin
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# Finite Kronig–Penney Bloch-band benchmark
+
+This module fixes one finite one-dimensional square-potential benchmark. One cell has a well of
+width `wellWidth` at zero potential followed by a barrier of width `barrierWidth` and height
+`barrierHeight`; their sum is the lattice period. Energies are restricted to a finite closed
+interval lying strictly above the barrier, so both local wave numbers are real.
+
+Transfer matrices act on the column state `(ψ, ∂ₓψ)` from left to right. With the cell starting at
+the well, the one-cell matrix is therefore `M_barrier * M_well`. The discriminant is explicitly
+normalized as one half of the one-cell trace. The Bloch phase itself is not redefined here:
+`cellBlochPhase` delegates to `Crystal.blochPhase`, preserving the repository convention
+`exp (i k · R)`.
+
+The model is finite and convention-explicit. It does not introduce transport, Berry curvature,
+Chern data, an infinite-crystal limit, or a thermodynamic limit.
+-/
+
+namespace LeanCondensedMatter.Crystal.KronigPenney
+
+open scoped Topology
+
+noncomputable section
+
+/-- Physical and finite-domain parameters for one square-potential Kronig–Penney benchmark.
+
+The energy zero is the well bottom, the barrier potential is `barrierHeight`, and `hbar` is the
+reduced-Planck normalization entering the local wave number
+`q = sqrt (2 m (E - V)) / hbar`. -/
+structure Parameters where
+  /-- Lattice period of one square-potential cell. -/
+  period : ℝ
+  /-- Width of the zero-potential well. -/
+  wellWidth : ℝ
+  /-- Width of the positive square barrier. -/
+  barrierWidth : ℝ
+  /-- Barrier potential measured from the well-bottom energy zero. -/
+  barrierHeight : ℝ
+  /-- Particle mass. -/
+  particleMass : ℝ
+  /-- Reduced Planck constant used in the wave-number normalization. -/
+  hbar : ℝ
+  /-- Lower endpoint of the finite energy domain. -/
+  energyMin : ℝ
+  /-- Upper endpoint of the finite energy domain. -/
+  energyMax : ℝ
+
+/-- Regular finite-parameter regime used by the explicit transfer-matrix formulas. -/
+structure Parameters.IsRegular (params : Parameters) : Prop where
+  period_pos : 0 < params.period
+  wellWidth_pos : 0 < params.wellWidth
+  barrierWidth_pos : 0 < params.barrierWidth
+  widths_sum : params.wellWidth + params.barrierWidth = params.period
+  barrierHeight_nonneg : 0 ≤ params.barrierHeight
+  particleMass_pos : 0 < params.particleMass
+  hbar_pos : 0 < params.hbar
+  barrier_below_energyMin : params.barrierHeight < params.energyMin
+  energyMin_lt_energyMax : params.energyMin < params.energyMax
+
+/-- The well-bottom energy convention is exactly zero. -/
+def wellPotential (_params : Parameters) : ℝ := 0
+
+/-- The barrier potential in the well-bottom-zero convention. -/
+def barrierPotential (params : Parameters) : ℝ := params.barrierHeight
+
+/-- Membership in the finite energy interval carried by the benchmark. -/
+def inEnergyDomain (params : Parameters) (energy : ℝ) : Prop :=
+  energy ∈ Set.Icc params.energyMin params.energyMax
+
+/-- First Brillouin-zone representative interval for the one-dimensional lattice period.
+
+This is a coordinate representative of the existing Brillouin quotient, not a second quotient
+construction. -/
+def inBlochDomain (params : Parameters) (k : ℝ) : Prop :=
+  k ∈ Set.Icc (-Real.pi / params.period) (Real.pi / params.period)
+
+/-- Local real wave number in a constant-potential region. -/
+def waveNumber (params : Parameters) (potential energy : ℝ) : ℝ :=
+  Real.sqrt (2 * params.particleMass * (energy - potential)) / params.hbar
+
+/-- Wave number in the zero-potential well. -/
+def wellWaveNumber (params : Parameters) (energy : ℝ) : ℝ :=
+  waveNumber params (wellPotential params) energy
+
+/-- Wave number in the square barrier. -/
+def barrierWaveNumber (params : Parameters) (energy : ℝ) : ℝ :=
+  waveNumber params (barrierPotential params) energy
+
+private theorem waveNumber_pos
+    (params : Parameters) (potential energy : ℝ)
+    (hmass : 0 < params.particleMass) (hhbar : 0 < params.hbar)
+    (henergy : potential < energy) :
+    0 < waveNumber params potential energy := by
+  unfold waveNumber
+  exact div_pos
+    (Real.sqrt_pos.2
+      (mul_pos (mul_pos (by norm_num) hmass) (sub_pos.mpr henergy)))
+    hhbar
+
+/-- The well wave number is nonzero throughout the regular finite energy domain. -/
+theorem wellWaveNumber_ne_zero
+    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ}
+    (henergy : inEnergyDomain params energy) :
+    wellWaveNumber params energy ≠ 0 := by
+  have hbarrier_lt_energy : params.barrierHeight < energy :=
+    lt_of_lt_of_le hregular.barrier_below_energyMin henergy.1
+  have hzero_lt_energy : 0 < energy :=
+    lt_of_le_of_lt hregular.barrierHeight_nonneg hbarrier_lt_energy
+  exact ne_of_gt
+    (by
+      simpa [wellWaveNumber, wellPotential] using
+        waveNumber_pos params 0 energy hregular.particleMass_pos hregular.hbar_pos
+          hzero_lt_energy)
+
+/-- The barrier wave number is nonzero throughout the regular finite energy domain. -/
+theorem barrierWaveNumber_ne_zero
+    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ}
+    (henergy : inEnergyDomain params energy) :
+    barrierWaveNumber params energy ≠ 0 := by
+  have hbarrier_lt_energy : params.barrierHeight < energy :=
+    lt_of_lt_of_le hregular.barrier_below_energyMin henergy.1
+  exact ne_of_gt
+    (by
+      simpa [barrierWaveNumber, barrierPotential] using
+        waveNumber_pos params params.barrierHeight energy hregular.particleMass_pos
+          hregular.hbar_pos hbarrier_lt_energy)
+
+/-- Transfer matrix through a constant-potential region of width `width` with nonzero real wave
+number `q`, acting on `(ψ, ∂ₓψ)`. The totalized formula is defined for every `q`; determinant
+statements below state the required nonzero hypothesis explicitly. -/
+def regionTransfer (q width : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  !![Real.cos (q * width), Real.sin (q * width) / q;
+    -(q * Real.sin (q * width)), Real.cos (q * width)]
+
+/-- A constant-region transfer matrix is unimodular whenever its wave number is nonzero. -/
+theorem regionTransfer_det (q width : ℝ) (hq : q ≠ 0) :
+    (regionTransfer q width).det = 1 := by
+  rw [Matrix.det_fin_two]
+  simp [regionTransfer]
+  field_simp [hq]
+  nlinarith [Real.sin_sq_add_cos_sq (q * width)]
+
+/-- Transfer through the well part of one cell. -/
+def wellTransfer (params : Parameters) (energy : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  regionTransfer (wellWaveNumber params energy) params.wellWidth
+
+/-- Transfer through the barrier part of one cell. -/
+def barrierTransfer (params : Parameters) (energy : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  regionTransfer (barrierWaveNumber params energy) params.barrierWidth
+
+/-- One-cell transfer matrix for the convention well first, barrier second. -/
+def oneCellTransfer (params : Parameters) (energy : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  barrierTransfer params energy * wellTransfer params energy
+
+/-- The one-cell transfer matrix is unimodular when both local wave numbers are nonzero. -/
+theorem oneCellTransfer_det
+    (params : Parameters) (energy : ℝ)
+    (hwell : wellWaveNumber params energy ≠ 0)
+    (hbarrier : barrierWaveNumber params energy ≠ 0) :
+    (oneCellTransfer params energy).det = 1 := by
+  rw [oneCellTransfer, Matrix.det_mul]
+  rw [barrierTransfer, wellTransfer]
+  rw [regionTransfer_det _ _ hbarrier, regionTransfer_det _ _ hwell]
+  norm_num
+
+/-- In the regular finite energy domain, one-cell unimodularity follows from the parameter
+assumptions. -/
+theorem oneCellTransfer_det_of_mem
+    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ}
+    (henergy : inEnergyDomain params energy) :
+    (oneCellTransfer params energy).det = 1 :=
+  oneCellTransfer_det params energy
+    (wellWaveNumber_ne_zero params hregular henergy)
+    (barrierWaveNumber_ne_zero params hregular henergy)
+
+/-- Kronig–Penney discriminant with the normalization exposed explicitly as
+`Δ(E) = tr M(E) / 2`. -/
+def discriminant (params : Parameters) (energy : ℝ) : ℝ :=
+  (oneCellTransfer params energy).trace / 2
+
+private theorem discriminant_eq_closedForm_algebraic (params : Parameters) (energy : ℝ) :
+    discriminant params energy =
+      Real.cos (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.cos (wellWaveNumber params energy * params.wellWidth) -
+        ((barrierWaveNumber params energy / wellWaveNumber params energy +
+              wellWaveNumber params energy / barrierWaveNumber params energy) / 2) *
+          Real.sin (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.sin (wellWaveNumber params energy * params.wellWidth) := by
+  simp [discriminant, oneCellTransfer, barrierTransfer, wellTransfer, regionTransfer,
+    Matrix.trace_fin_two]
+  ring
+
+/-- Closed form of the one-cell Kronig–Penney discriminant on the regular finite energy domain.
+Both local wave numbers are nonzero there, so this is the standard physical transfer-matrix
+dispersion formula rather than an artifact of totalized division. -/
+theorem discriminant_eq_closedForm
+    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ}
+    (henergy : inEnergyDomain params energy) :
+    discriminant params energy =
+      Real.cos (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.cos (wellWaveNumber params energy * params.wellWidth) -
+        ((barrierWaveNumber params energy / wellWaveNumber params energy +
+              wellWaveNumber params energy / barrierWaveNumber params energy) / 2) *
+          Real.sin (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.sin (wellWaveNumber params energy * params.wellWidth) := by
+  have _hwell := wellWaveNumber_ne_zero params hregular henergy
+  have _hbarrier := barrierWaveNumber_ne_zero params hregular henergy
+  exact discriminant_eq_closedForm_algebraic params energy
+
+/-- Bloch phase across one real-space period, using the canonical `Crystal.blochPhase`
+normalization and orientation. -/
+def cellBlochPhase (params : Parameters) (k : ℝ) : ℂ :=
+  blochPhase k params.period
+
+/-- The model-local one-cell phase/cosine bridge inherited from `Crystal.blochPhase`. -/
+theorem cellBlochPhase_add_inv_eq_two_cos (params : Parameters) (k : ℝ) :
+    cellBlochPhase params k + (cellBlochPhase params k)⁻¹ =
+      ((2 * Real.cos (k * params.period) : ℝ) : ℂ) := by
+  simpa [cellBlochPhase, mul_comm] using
+    (blochPhase_add_inv_eq_two_cos k params.period)
+
+/-- Reciprocal-lattice shifts preserve the one-cell Bloch phase whenever the model period is a
+translation in the ambient real-space lattice. This is the bridge from the model coordinate to the
+canonical `Crystal.reciprocalLattice`/Brillouin convention. -/
+theorem cellBlochPhase_add_eq_of_mem_reciprocalLattice
+    (params : Parameters) {L : Submodule ℤ ℝ} {G k : ℝ}
+    (hG : G ∈ reciprocalLattice L) (hperiod : params.period ∈ L) :
+    cellBlochPhase params (k + G) = cellBlochPhase params k := by
+  simpa [cellBlochPhase] using
+    (blochPhase_add_eq_of_mem_reciprocalLattice (L := L) k hG hperiod)
+
+/-- Bloch condition for the fixed left-to-right transfer convention.
+
+The condition is stored once in the real discriminant form. The equivalent canonical complex-phase
+form is supplied by `BlochCondition.phase_form`, so consumers do not reconstruct Euler-phase
+algebra. -/
+def BlochCondition (params : Parameters) (energy k : ℝ) : Prop :=
+  discriminant params energy = Real.cos (k * params.period)
+
+/-- A Bloch condition implies the equivalent canonical phase form
+`2 Δ(E) = exp(i k a) + exp(-i k a)`. -/
+theorem BlochCondition.phase_form
+    {params : Parameters} {energy k : ℝ} (h : BlochCondition params energy k) :
+    (((2 * discriminant params energy : ℝ) : ℂ) =
+      cellBlochPhase params k + (cellBlochPhase params k)⁻¹) := by
+  rw [cellBlochPhase_add_inv_eq_two_cos]
+  norm_cast
+  rw [h]
+
+/-- An energy in the finite model lies in an allowed band exactly when the normalized
+discriminant has absolute value at most one. -/
+def AllowedBandEnergy (params : Parameters) (energy : ℝ) : Prop :=
+  inEnergyDomain params energy ∧ |discriminant params energy| ≤ 1
+
+/-- For positive lattice period, the discriminant criterion is exactly existence of a Bloch
+coordinate in the chosen first-Brillouin representative. -/
+theorem allowedBandEnergy_iff_exists_bloch
+    (params : Parameters) (hperiod : 0 < params.period) {energy : ℝ} :
+    AllowedBandEnergy params energy ↔
+      inEnergyDomain params energy ∧
+        ∃ k, inBlochDomain params k ∧ BlochCondition params energy k := by
+  constructor
+  · rintro ⟨henergy, hallowed⟩
+    obtain ⟨hlower, hupper⟩ := abs_le.mp hallowed
+    let k := Real.arccos (discriminant params energy) / params.period
+    refine ⟨henergy, k, ?_, ?_⟩
+    · constructor
+      · have hk_nonneg : 0 ≤ k := by
+          exact div_nonneg (Real.arccos_nonneg _) hperiod.le
+        have hleft_nonpos : -Real.pi / params.period ≤ 0 := by
+          exact div_nonpos_of_nonpos_of_nonneg (neg_nonpos.mpr Real.pi_pos.le)
+            hperiod.le
+        exact hleft_nonpos.trans hk_nonneg
+      · exact div_le_div_of_nonneg_right (Real.arccos_le_pi _) hperiod.le
+    · unfold BlochCondition k
+      have hperiod_ne : params.period ≠ 0 := ne_of_gt hperiod
+      rw [div_mul_cancel₀ _ hperiod_ne]
+      exact (Real.cos_arccos hlower hupper).symm
+  · rintro ⟨henergy, k, _hk, hbloch⟩
+    refine ⟨henergy, ?_⟩
+    rw [hbloch]
+    exact Real.abs_cos_le_one _
+
+/-- An energy in the finite model lies in a forbidden gap exactly when the normalized
+discriminant has absolute value greater than one. -/
+def ForbiddenGapEnergy (params : Parameters) (energy : ℝ) : Prop :=
+  inEnergyDomain params energy ∧ 1 < |discriminant params energy|
+
+/-- Every energy in the finite domain is classified by the explicit discriminant normalization as
+allowed or forbidden. -/
+theorem allowedBand_or_forbiddenGap
+    (params : Parameters) {energy : ℝ} (henergy : inEnergyDomain params energy) :
+    AllowedBandEnergy params energy ∨ ForbiddenGapEnergy params energy := by
+  rcases le_or_gt |discriminant params energy| 1 with hallowed | hgap
+  · exact Or.inl ⟨henergy, hallowed⟩
+  · exact Or.inr ⟨henergy, hgap⟩
+
+/-- Local data for a nondegenerate finite-model band edge.
+
+The edge lies in the finite energy and Bloch-coordinate domains, and the local branch satisfies
+the Bloch dispersion relation on a neighborhood of the edge. Local differentiability assumptions
+are explicit; the curvature identity itself is not a field and is derived below by differentiating
+the Bloch relation twice. -/
+structure BandEdgeData (params : Parameters) where
+  /-- Local band-energy branch as a function of the one-dimensional Bloch coordinate. -/
+  branchEnergy : ℝ → ℝ
+  /-- Bloch coordinate of the edge. -/
+  blochCoordinate : ℝ
+  /-- Energy at the edge. -/
+  energy : ℝ
+  /-- Second derivative of the band energy at the edge. -/
+  curvature : ℝ
+  /-- Energy derivative of the normalized discriminant at the edge. -/
+  discriminantSlope : ℝ
+  energy_eq : branchEnergy blochCoordinate = energy
+  energy_mem : inEnergyDomain params energy
+  bloch_mem : inBlochDomain params blochCoordinate
+  bloch_relation :
+    (fun k => discriminant params (branchEnergy k)) =ᶠ[𝓝 blochCoordinate]
+      (fun k => Real.cos (k * params.period))
+  branchDifferentiable :
+    ∀ᶠ k in 𝓝 blochCoordinate, DifferentiableAt ℝ branchEnergy k
+  discriminantDifferentiable :
+    ∀ᶠ k in 𝓝 blochCoordinate,
+      DifferentiableAt ℝ (discriminant params) (branchEnergy k)
+  stationary : HasDerivAt branchEnergy 0 blochCoordinate
+  secondDerivative :
+    HasDerivAt (fun k => deriv branchEnergy k) curvature blochCoordinate
+  discriminantDerivative :
+    HasDerivAt (discriminant params) discriminantSlope energy
+  discriminantDerivativeDifferentiable :
+    DifferentiableAt ℝ (fun e => deriv (discriminant params) e) energy
+  discriminantSlope_ne_zero : discriminantSlope ≠ 0
+  phaseCurvatureDenominator_ne_zero :
+    params.period ^ 2 * Real.cos (blochCoordinate * params.period) ≠ 0
+
+private theorem BandEdgeData.composite_second_derivative
+    {params : Parameters} (edge : BandEdgeData params) :
+    HasDerivAt
+      (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k)
+      (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
+  have hderiv_comp :
+      (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k) =ᶠ[
+        𝓝 edge.blochCoordinate]
+        ((fun k => deriv (discriminant params) (edge.branchEnergy k)) *
+          fun k => deriv edge.branchEnergy k) := by
+    filter_upwards [edge.branchDifferentiable, edge.discriminantDifferentiable] with k hbranch hdisc
+    simpa [Function.comp_def] using
+      (deriv_comp k hdisc hbranch)
+  have hdiscSecond := edge.discriminantDerivativeDifferentiable.hasDerivAt
+  rw [← edge.energy_eq] at hdiscSecond
+  have hleft :
+      HasDerivAt
+        (fun k => deriv (discriminant params) (edge.branchEnergy k)) 0
+        edge.blochCoordinate := by
+    simpa [Function.comp_def] using
+      hdiscSecond.comp edge.blochCoordinate edge.stationary
+  have hbranchDeriv : deriv edge.branchEnergy edge.blochCoordinate = 0 :=
+    edge.stationary.deriv
+  have hdiscDeriv :
+      deriv (discriminant params) (edge.branchEnergy edge.blochCoordinate) =
+        edge.discriminantSlope := by
+    rw [edge.energy_eq]
+    exact edge.discriminantDerivative.deriv
+  have hproduct :
+      HasDerivAt
+        ((fun k => deriv (discriminant params) (edge.branchEnergy k)) *
+          fun k => deriv edge.branchEnergy k)
+        (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
+    simpa [hbranchDeriv, hdiscDeriv] using hleft.mul edge.secondDerivative
+  exact hproduct.congr_of_eventuallyEq hderiv_comp
+
+private theorem cosine_second_derivative (period k : ℝ) :
+    HasDerivAt
+      (fun x => deriv (fun q => Real.cos (q * period)) x)
+      (-(period ^ 2 * Real.cos (k * period))) k := by
+  have hfirst :
+      (fun x => deriv (fun q => Real.cos (q * period)) x) =ᶠ[𝓝 k]
+        (fun x => -Real.sin (x * period) * period) := by
+    filter_upwards [] with x
+    have hlin : HasDerivAt (fun q => q * period) period x := by
+      simpa using (hasDerivAt_id x).mul_const period
+    simpa [Function.comp_def] using
+      ((Real.hasDerivAt_cos (x * period)).comp x hlin).deriv
+  have hlin : HasDerivAt (fun q => q * period) period k := by
+    simpa using (hasDerivAt_id k).mul_const period
+  have hsin :
+      HasDerivAt (fun x => Real.sin (x * period))
+        (Real.cos (k * period) * period) k := by
+    simpa [Function.comp_def] using
+      (Real.hasDerivAt_sin (k * period)).comp k hlin
+  have hrhs :
+      HasDerivAt (fun x => -Real.sin (x * period) * period)
+        (-(period ^ 2 * Real.cos (k * period))) k := by
+    convert hsin.neg.mul_const period using 1 ; ring
+  exact hrhs.congr_of_eventuallyEq hfirst
+
+/-- The second-order Bloch dispersion identity follows from the local Bloch relation and the
+explicit differentiability assumptions. -/
+theorem BandEdgeData.discriminantSlope_mul_curvature
+    {params : Parameters} (edge : BandEdgeData params) :
+    edge.discriminantSlope * edge.curvature =
+      -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := by
+  have hsecond := edge.bloch_relation.iteratedDeriv_eq 2
+  have hleft := edge.composite_second_derivative.deriv
+  have hright := (cosine_second_derivative params.period edge.blochCoordinate).deriv
+  calc
+    edge.discriminantSlope * edge.curvature =
+        deriv (fun k => deriv (fun q => discriminant params (edge.branchEnergy q)) k)
+          edge.blochCoordinate := hleft.symm
+    _ = iteratedDeriv 2 (fun q => discriminant params (edge.branchEnergy q))
+          edge.blochCoordinate := by
+        rw [show (2 : ℕ) = 1 + 1 by norm_num, iteratedDeriv_succ',
+          show (1 : ℕ) = 0 + 1 by norm_num, iteratedDeriv_succ', iteratedDeriv_zero]
+    _ = iteratedDeriv 2 (fun q => Real.cos (q * params.period))
+          edge.blochCoordinate := hsecond
+    _ = deriv (fun k => deriv (fun q => Real.cos (q * params.period)) k)
+          edge.blochCoordinate := by
+        rw [show (2 : ℕ) = 1 + 1 by norm_num, iteratedDeriv_succ',
+          show (1 : ℕ) = 0 + 1 by norm_num, iteratedDeriv_succ', iteratedDeriv_zero]
+    _ = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := hright
+
+/-- Nonzero phase curvature and nonzero discriminant slope force the band curvature to be
+nonzero. -/
+theorem BandEdgeData.curvature_ne_zero
+    {params : Parameters} (edge : BandEdgeData params) :
+    edge.curvature ≠ 0 := by
+  intro hcurvature
+  have hidentity := edge.discriminantSlope_mul_curvature
+  rw [hcurvature, mul_zero] at hidentity
+  apply edge.phaseCurvatureDenominator_ne_zero
+  linarith
+
+/-- Band-edge curvature obtained from the finite Bloch discriminant relation. -/
+theorem BandEdgeData.curvature_eq
+    {params : Parameters} (edge : BandEdgeData params) :
+    edge.curvature =
+      -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) /
+        edge.discriminantSlope := by
+  apply (eq_div_iff edge.discriminantSlope_ne_zero).2
+  simpa [mul_comm] using edge.discriminantSlope_mul_curvature
+
+/-- Effective mass defined from the nonzero band curvature in physical wave-vector coordinates. -/
+def effectiveMass (params : Parameters) (edge : BandEdgeData params) : ℝ :=
+  params.hbar ^ 2 / edge.curvature
+
+/-- Finite-model effective-mass identity at a nondegenerate stationary band edge:
+`m* = -ℏ² Δ'(E₀) / (a² cos(k₀ a))`.
+
+All differentiability, stationary-point, and nonzero-denominator assumptions are carried explicitly
+by `BandEdgeData`; no infinite-period or thermodynamic statement is used. -/
+theorem BandEdgeData.effectiveMass_eq
+    {params : Parameters} (edge : BandEdgeData params) :
+    effectiveMass params edge =
+      -(params.hbar ^ 2 * edge.discriminantSlope) /
+        (params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := by
+  rw [effectiveMass, edge.curvature_eq]
+  field_simp [edge.discriminantSlope_ne_zero, edge.phaseCurvatureDenominator_ne_zero]
+
+end
+
+end LeanCondensedMatter.Crystal.KronigPenney

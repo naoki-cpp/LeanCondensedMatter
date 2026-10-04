@@ -5,6 +5,7 @@ Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Lattice
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.GroupTheory.QuotientGroup.Defs
 
 /-!
@@ -27,6 +28,16 @@ abbrev BrillouinTorus (Lstar : Submodule ℤ K) :=
 /-- The Bloch phase `exp (i k · R)` for wave vector `k` and real-space translation `R`. -/
 noncomputable def blochPhase (k R : K) : ℂ :=
   Complex.exp ((inner ℝ k R : ℂ) * Complex.I)
+
+/-- The canonical Bloch phase and its inverse sum to twice the cosine of the phase angle. This is
+the real-discriminant bridge used by periodic-potential models. -/
+theorem blochPhase_add_inv_eq_two_cos (k R : K) :
+    blochPhase k R + (blochPhase k R)⁻¹ =
+      ((2 * Real.cos (inner ℝ k R) : ℝ) : ℂ) := by
+  rw [blochPhase, ← Complex.exp_neg]
+  rw [show -((inner ℝ k R : ℂ) * Complex.I) = (-(inner ℝ k R : ℂ)) * Complex.I by ring]
+  rw [← Complex.two_cos]
+  norm_cast
 
 /-- A reciprocal-lattice vector has trivial Bloch phase on every real-space lattice vector. -/
 theorem blochPhase_eq_one_of_mem_reciprocalLattice
