@@ -181,15 +181,10 @@ theorem FreeThermalField.norm_matrixCoeff_orderedProduct_le
       (orderedProductMajorant n fields.length) ^ fields.length := by
   rcases FreeThermalField.orderedProduct_basisState_bound_aux
       fields n fields.length (le_refl _) with ⟨c, m, haction, _, hc⟩
-  unfold Common.matrixCoeff
-  change ‖(FreeThermalField.orderedProduct fields (basisState n)) n‖ ≤ _
-  rw [haction]
-  by_cases hmn : m = n
-  · change ‖(c • Common.basisState m) n‖ ≤ _
-    rw [hmn, Common.smul_basisState_apply_self]
-    simpa using hc
-  · change ‖(c • Common.basisState m) n‖ ≤ _
-    rw [Common.smul_basisState_apply_of_ne c hmn, norm_zero]
+  rw [Common.matrixCoeff_eq_ite_of_basisState_smul haction]
+  split_ifs
+  · simpa using hc
+  · rw [norm_zero]
     exact pow_nonneg (orderedProductMajorant_nonneg n fields.length) _
 
 /-- Every finite ordered product of free bosonic thermal fields has a summable free-Gibbs numerator

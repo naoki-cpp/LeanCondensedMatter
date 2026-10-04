@@ -72,17 +72,13 @@ noncomputable def weightSum (w : Config → ℂ) : ℂ :=
 theorem traceFock_id : traceFock (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) =
     (Fintype.card Config : ℂ) := by
   rw [traceFock_eq_sum_matrixCoeff]
-  have h : ∀ n : Config, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
-    matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
-  simp [h]
+  simp [matrixCoeff_id]
 
 /-- The weighted trace of the identity is the total weight. -/
 theorem weightedTrace_id (w : Config → ℂ) :
     weightedTrace w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = weightSum w := by
   rw [weightedTrace_eq_sum_matrixCoeff]
-  have h : ∀ n : Config, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
-    matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
-  simp [weightSum, h]
+  simp [weightSum, matrixCoeff_id]
 
 /-- The weighted trace of a diagonal operator is the weighted sum of its eigenvalues. -/
 theorem weightedTrace_diagonalOperator (w a : Config → ℂ) :

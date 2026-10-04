@@ -91,14 +91,27 @@ noncomputable def diagonalCoeff {Config : Type*}
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) : ℂ :=
   matrixCoeff A n n
 
-/-- **Diagonal matrix coefficients.** If `A` acts on `basisState n` as `c • basisState n`, the
-`(n, n)` matrix coefficient is exactly `c`. -/
-theorem matrixCoeff_of_smul_basisState {Config : Type*}
+open scoped Classical in
+/-- **Matrix coefficients of a one-basis-state image.** If `A` sends `basisState n` to
+`c • basisState k`, its `(m, n)` coefficient is `c` at `m = k` and `0` elsewhere. -/
+theorem matrixCoeff_eq_ite_of_basisState_smul {Config : Type*}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
-    {n : Config} {c : ℂ} (h : A (basisState n) = c • basisState n) :
-    matrixCoeff A n n = c := by
-  change A (basisState n) n = c
-  rw [h, smul_basisState_apply_self]
+    {m n k : Config} {c : ℂ}
+    (hA : A (basisState n) = c • basisState k) :
+    matrixCoeff A m n = if m = k then c else 0 := by
+  rw [matrixCoeff, hA]
+  split_ifs with h
+  · subst m
+    exact smul_basisState_apply_self c k
+  · exact smul_basisState_apply_of_ne c (Ne.symm h)
+
+open scoped Classical in
+/-- The identity operator has the Kronecker-delta matrix in the canonical basis. -/
+theorem matrixCoeff_id {Config : Type*} (m n : Config) :
+    matrixCoeff (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) m n =
+      if m = n then 1 else 0 := by
+  apply matrixCoeff_eq_ite_of_basisState_smul
+  rw [LinearMap.id_apply, one_smul]
 
 /-- **Two operators agreeing on every matrix coefficient are equal.** -/
 theorem matrixCoeff_ext {Config : Type*}
@@ -222,11 +235,8 @@ theorem diagonalOperator_comp {Config : Type*} (a b : Config → ℂ) :
 
 open scoped Classical in
 theorem matrixCoeff_diagonalOperator {Config : Type*} (a : Config → ℂ) (m n : Config) :
-    matrixCoeff (diagonalOperator a) m n = if m = n then a n else 0 := by
-  rw [matrixCoeff, diagonalOperator_basisState]
-  split_ifs with h
-  · subst h; simp
-  · exact smul_basisState_apply_of_ne (a n) (Ne.symm h)
+    matrixCoeff (diagonalOperator a) m n = if m = n then a n else 0 :=
+  matrixCoeff_eq_ite_of_basisState_smul (m := m) (diagonalOperator_basisState a n)
 
 open scoped Classical in
 /-- **`diagonalOperator` is injective in its eigenvalue function** — two diagonal operators agree
