@@ -48,7 +48,7 @@ operator property.
 trace-class API: it stores `IsTraceClass T` and symmetry, while compactness is derived from general
 trace-class compactness and spectral summability is derived from the compact self-adjoint
 characterization. Its real-valued `spectralTrace` supplies eigenvalue-sum formulas, positivity,
-scalar transport, supported cyclicity, and Hilbert-basis formulas; it does not define a second
+and Hilbert-basis formulas; it does not define a second
 bundled trace value. The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`.
 
@@ -74,7 +74,8 @@ every trace-class operator is compact. Membership is closed under adjoint and bo
 multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
 bounds are also proved. The canonical complex trace is cyclic for a trace-class factor and a
-bounded factor. Trace-class completeness remains open.
+bounded factor. General adjoint conjugation preserves trace class, and trace invariance under
+`U†U = 1` is derived directly from that cyclicity. Trace-class completeness remains open.
 
 ## Fredholm determinant
 
