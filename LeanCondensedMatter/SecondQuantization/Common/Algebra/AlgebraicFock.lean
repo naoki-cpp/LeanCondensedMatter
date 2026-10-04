@@ -105,6 +105,14 @@ theorem matrixCoeff_eq_ite_of_basisState_smul {Config : Type*}
     exact smul_basisState_apply_self c k
   · exact smul_basisState_apply_of_ne c (Ne.symm h)
 
+open scoped Classical in
+/-- The identity operator has the Kronecker-delta matrix in the canonical basis. -/
+theorem matrixCoeff_id {Config : Type*} (m n : Config) :
+    matrixCoeff (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) m n =
+      if m = n then 1 else 0 := by
+  apply matrixCoeff_eq_ite_of_basisState_smul
+  rw [LinearMap.id_apply, one_smul]
+
 /-- **Two operators agreeing on every matrix coefficient are equal.** -/
 theorem matrixCoeff_ext {Config : Type*}
     {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
