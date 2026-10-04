@@ -5050,17 +5050,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder.0.SecondQuantization.Common.externalInsertionPairingCastEquiv_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing.0.SecondQuantization.Common.orderedTwoPointPairingCastEquiv_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField.0.SecondQuantization.Fermionic.externalInsertionPairingCastEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder.0.SecondQuantization.Common.externalInsertionPairingCastEquiv_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing.0.SecondQuantization.Common.orderedTwoPointPairingCastEquiv_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField.0.SecondQuantization.Fermionic.externalInsertionPairingCastEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -8008,10 +8008,10 @@
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
+      "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
@@ -8026,10 +8026,10 @@
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
+      "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
@@ -100909,6 +100909,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + E))),\n  (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)\n      ((d.pairingInMixedOrder externalTime σ).partner p) =\n    d.pairing.partner ((SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ) p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "Transporting a mixed-order partner back to the fixed flattened enumeration recovers the\noriginal diagram partner. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder.0.SecondQuantization.Common.externalInsertionPairingCastEquiv_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {M : Type u_3} [inst : CommMonoid M]\n  {S : Finset (Fin N)} (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (w : InternalLabel → M), d.vertexWeight w = ∏ B, (d.restrictComponent B).vertexWeight w",
     "standardAxioms": [
       "Classical.choice",
@@ -111636,7 +111681,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -111646,7 +111691,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -124716,7 +124761,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    ((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n        (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedNormalizedPairEmbedding externalTime σ B) pr) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n        (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedNormalizedPairEmbedding externalTime σ B) pr) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124754,7 +124799,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    ((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n        (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedPairEquiv externalTime σ) ⟨B, pr⟩) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n        (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedPairEquiv externalTime σ) ⟨B, pr⟩) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125073,7 +125118,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
     "externalAxioms": [],
     "docString": "The ambient free-Gibbs pair contraction restricts to the standalone component pair contraction\nunder the canonical mixed-position embedding. ",
     "directWrapperTargetModule": null,
@@ -125082,7 +125127,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairContractionProduct_eq_prod_components"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125104,7 +125149,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B C : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  B ≠ C →\n    ((d.pairingInMixedOrder externalTime σ).componentCrossingCount (d.componentMixedPairEquiv externalTime σ) B C +\n          (d.pairingInMixedOrder externalTime σ).componentCrossingCount (d.componentMixedPairEquiv externalTime σ) C\n            B) %\n        2 =\n      (d.componentMixedPositionShuffle externalTime σ).blockInversionCount B C % 2",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B C : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  B ≠ C →\n    ((SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).componentCrossingCount\n            (d.componentMixedPairEquiv externalTime σ) B C +\n          (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime\n                σ).componentCrossingCount\n            (d.componentMixedPairEquiv externalTime σ) C B) %\n        2 =\n      (d.componentMixedPositionShuffle externalTime σ).blockInversionCount B C % 2",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125197,7 +125242,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  ∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,\n      SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n        d.vertexLabelSequence σ pr.1 pr.2 =\n    ∏ B,\n      ∏\n        pr ∈\n          ((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n              (d.componentInteractionTime σ B)).pairs,\n        SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β\n          (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n          (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) pr.1 pr.2",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n      SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n        d.vertexLabelSequence σ pr.1 pr.2 =\n    ∏ B,\n      ∏\n        pr ∈\n          (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n              (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).pairs,\n        SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β\n          (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n          (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) pr.1 pr.2",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125243,7 +125288,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  d.mixedPairingValue ε β externalTime σ =\n    ↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n        (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ) *\n      ∏ B,\n        (d.componentWickDiagram B).mixedPairingValue ε β (d.componentExternalTime externalTime B)\n          (d.componentInteractionTime σ B)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  d.mixedPairingValue ε β externalTime σ =\n    ↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n        (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime\n              σ).interComponentCrossingCount\n          (d.componentMixedPairEquiv externalTime σ) *\n      ∏ B,\n        (d.componentWickDiagram B).mixedPairingValue ε β (d.componentExternalTime externalTime B)\n          (d.componentInteractionTime σ B)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125288,51 +125333,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + E))),\n  (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)\n      ((d.pairingInMixedOrder externalTime σ).partner p) =\n    d.pairing.partner ((SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
-    "externalAxioms": [],
-    "docString": "Transporting a mixed-order partner back to the fixed flattened enumeration recovers the\noriginal diagram partner. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.transport_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField.0.SecondQuantization.Fermionic.externalInsertionPairingCastEquiv_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg\n      (SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  SecondQuantization.Fermionic.orderedExternalInsertionLegField (d.componentWickDiagram B).externalLabel\n      (d.componentExternalTime externalTime B) (d.componentWickDiagram B).vertexLabelSequence\n      (d.componentInteractionTime σ B) leg =\n    SecondQuantization.Fermionic.orderedExternalInsertionLegField d.externalLabel externalTime d.vertexLabelSequence σ\n      (d.componentOrderedLeg B leg)",
     "standardAxioms": [
       "Classical.choice",
@@ -125346,19 +125346,19 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
     "externalAxioms": [],
     "docString": "The timed field attached to a component-local canonical leg is exactly the ambient timed field\non the corresponding canonical leg. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -125375,7 +125375,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (d.pairingInMixedOrder externalTime σ).crossingCount =\n    ∑ B,\n        ((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n            (d.componentInteractionTime σ B)).crossingCount +\n      (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).crossingCount =\n    ∑ B,\n        (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n            (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).crossingCount +\n      (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime\n            σ).interComponentCrossingCount\n        (d.componentMixedPairEquiv externalTime σ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125422,7 +125422,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  (d.pairingInMixedOrder externalTime σ).partner (d.componentMixedPosition externalTime σ B p) =\n    d.componentMixedPosition externalTime σ B\n      (((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n            (d.componentInteractionTime σ B)).partner\n        p)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).partner\n      (d.componentMixedPosition externalTime σ B p) =\n    d.componentMixedPosition externalTime σ B\n      ((SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n            (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).partner\n        p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125469,7 +125469,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (d.pairingInMixedOrder externalTime σ).partner\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ (d.atomicLegPartner leg)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).partner\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ (d.atomicLegPartner leg)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125482,7 +125482,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedOrderData",
     "externalAxioms": [],
     "docString": "The mixed-order partner of the position selected by a canonical leg is the mixed position of\nthat leg's diagram partner. ",
     "directWrapperTargetModule": null,
@@ -125491,9 +125491,9 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
     ],
     "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
-      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner"
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125515,7 +125515,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (s : SecondQuantization.Common.Statistics) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Combinatorics.Pairing.weight s (d.pairingInMixedOrder externalTime σ) =\n    ↑s.zetaInt ^\n        (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ) *\n      ∏ B,\n        Combinatorics.Pairing.weight s\n          ((d.componentWickDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n            (d.componentInteractionTime σ B))",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (s : SecondQuantization.Common.Statistics) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Combinatorics.Pairing.weight s\n      (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ) =\n    ↑s.zetaInt ^\n        (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime\n              σ).interComponentCrossingCount\n          (d.componentMixedPairEquiv externalTime σ) *\n      ∏ B,\n        Combinatorics.Pairing.weight s\n          (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n            (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164357,6 +164357,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {E n : ℕ} (pairing : Combinatorics.Pairing (2 * Finset.univ.card + E)) (p : Fin (2 * (2 * n + E))),\n  (finCongr ⋯) (((SecondQuantization.Common.externalInsertionPairingCastEquiv✝ E n) pairing).partner p) =\n    pairing.partner ((finCongr ⋯) p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder.0.SecondQuantization.Common.externalInsertionPairingCastEquiv_partner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.cast_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.vertexGraph.componentPartitionOn.parts), Function.Injective (d.blockVertex hB)",
     "standardAxioms": [
       "Classical.choice",
@@ -171736,51 +171780,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily d.externalLabel externalTime\n      d.vertexLabelSequence σ (d.componentMixedPosition externalTime σ B p) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily\n      (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n      (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} {m n : ℕ} (h : m = n)\n  (shuffle : Combinatorics.FamilySlotShuffleTo size m) (blockOrder : ι ≃ Fin (Fintype.card ι)),\n  ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv h) shuffle).orderedBlockInversionCount blockOrder =\n    shuffle.orderedBlockInversionCount blockOrder",
     "standardAxioms": [
       "Classical.choice",
@@ -171823,7 +171822,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (pairing : Combinatorics.Pairing (2 * Finset.univ.card + E)) (p : Fin (2 * (2 * n + E))),\n  (finCongr ⋯) (((SecondQuantization.Fermionic.externalInsertionPairingCastEquiv✝ E n) pairing).partner p) =\n    pairing.partner ((finCongr ⋯) p)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily d.externalLabel externalTime\n      d.vertexLabelSequence σ (d.componentMixedPosition externalTime σ B p) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily\n      (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n      (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) p",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171835,22 +171834,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField.0.SecondQuantization.Fermionic.externalInsertionPairingCastEquiv_partner",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.cast_partner"
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeAmbientPositionEquiv_partner"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
