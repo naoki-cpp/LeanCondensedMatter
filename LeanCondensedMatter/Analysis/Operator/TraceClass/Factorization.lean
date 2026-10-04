@@ -72,34 +72,9 @@ theorem traceNorm_le_half_normSq_add_of_factorization
     rw [hterm]
     exact (norm_inner_le_norm ((A * U) (d i)) (B (d i))).trans (by
       nlinarith [sq_nonneg (‖(A * U) (d i)‖ - ‖B (d i)‖)])
-  rw [hT.traceNorm_eq_tsum_diagonalExpectationValue d]
+  rw [hT.traceNorm_eq_tsum_norm_inner_left_of_polar U hUright d]
   calc
-    (∑' i, diagonalExpectationValue (CFC.abs T)
-        (CFC.abs_nonneg T).isSelfAdjoint (d i)) =
-        ∑' i, ‖inner ℂ (U (d i)) (T (d i))‖ := by
-      apply tsum_congr
-      intro i
-      have hdiag :
-          (diagonalExpectationValue (CFC.abs T)
-            (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ) =
-            inner ℂ (U (d i)) (T (d i)) := by
-        rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
-        exact ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
-      have hnonneg := diagonalExpectationValue_nonneg
-        (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
-      have hcastNorm :
-          ‖(diagonalExpectationValue (CFC.abs T)
-            (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ =
-            diagonalExpectationValue (CFC.abs T)
-              (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
-        rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
-      calc
-        diagonalExpectationValue (CFC.abs T)
-            (CFC.abs_nonneg T).isSelfAdjoint (d i) =
-            ‖(diagonalExpectationValue (CFC.abs T)
-              (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ := hcastNorm.symm
-        _ = ‖inner ℂ (U (d i)) (T (d i))‖ := by rw [hdiag]
-    _ ≤ (hAU.normSq + hB.normSq) / 2 :=
+    (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) ≤ (hAU.normSq + hB.normSq) / 2 :=
       (hnormSummable.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
     _ ≤ (hA.normSq + hB.normSq) / 2 := by linarith
 
