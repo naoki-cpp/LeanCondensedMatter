@@ -30,6 +30,8 @@ Chern data, an infinite-crystal limit, or a thermodynamic limit.
 
 namespace LeanCondensedMatter.Crystal.KronigPenney
 
+open scoped Topology
+
 noncomputable section
 
 /-- Physical and finite-domain parameters for one square-potential Kronig–Penney benchmark.
@@ -197,7 +199,7 @@ def cellBlochPhase (params : Parameters) (k : ℝ) : ℂ :=
 theorem cellBlochPhase_add_inv_eq_two_cos (params : Parameters) (k : ℝ) :
     cellBlochPhase params k + (cellBlochPhase params k)⁻¹ =
       ((2 * Real.cos (k * params.period) : ℝ) : ℂ) := by
-  simpa [cellBlochPhase] using
+  simpa [cellBlochPhase, mul_comm] using
     (blochPhase_add_inv_eq_two_cos k params.period)
 
 /-- Reciprocal-lattice shifts preserve the one-cell Bloch phase whenever the model period is a
@@ -309,7 +311,8 @@ private theorem BandEdgeData.composite_second_derivative
       HasDerivAt
         (fun k => deriv (discriminant params) (edge.branchEnergy k)) 0
         edge.blochCoordinate := by
-    simpa using hdiscSecond.comp edge.blochCoordinate edge.stationary
+    simpa [Function.comp_def] using
+      hdiscSecond.comp edge.blochCoordinate edge.stationary
   have hbranchDeriv : deriv edge.branchEnergy edge.blochCoordinate = 0 :=
     edge.stationary.deriv
   have hdiscDeriv :
@@ -336,13 +339,15 @@ private theorem cosine_second_derivative (period k : ℝ) :
     filter_upwards [] with x
     have hlin : HasDerivAt (fun q => q * period) period x := by
       simpa using (hasDerivAt_id x).mul_const period
-    simpa using ((Real.hasDerivAt_cos (x * period)).comp x hlin).deriv
+    simpa [Function.comp_def] using
+      ((Real.hasDerivAt_cos (x * period)).comp x hlin).deriv
   have hlin : HasDerivAt (fun q => q * period) period k := by
     simpa using (hasDerivAt_id k).mul_const period
   have hsin :
       HasDerivAt (fun x => Real.sin (x * period))
         (Real.cos (k * period) * period) k := by
-    simpa using (Real.hasDerivAt_sin (k * period)).comp k hlin
+    simpa [Function.comp_def] using
+      (Real.hasDerivAt_sin (k * period)).comp k hlin
   have hrhs :
       HasDerivAt (fun x => -Real.sin (x * period) * period)
         (-(period ^ 2 * Real.cos (k * period))) k := by
