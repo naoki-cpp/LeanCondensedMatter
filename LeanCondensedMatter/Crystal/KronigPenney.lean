@@ -167,7 +167,7 @@ theorem oneCellTransfer_det
   rw [oneCellTransfer, Matrix.det_mul]
   rw [barrierTransfer, wellTransfer]
   rw [regionTransfer_det _ _ hbarrier, regionTransfer_det _ _ hwell]
-  rfl
+  norm_num
 
 /-- In the regular finite energy domain, one-cell unimodularity follows from the parameter
 assumptions. -/
@@ -279,7 +279,7 @@ theorem BandEdgeData.effectiveMass_eq
       -(params.hbar ^ 2 * edge.discriminantSlope) /
         (params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := by
   rw [effectiveMass, edge.curvature_eq]
-  field_simp [edge.discriminantSlope_ne_zero, edge.phaseCurvatureDenominator_ne_zero] <;> ring
+  field_simp [edge.discriminantSlope_ne_zero, edge.phaseCurvatureDenominator_ne_zero]
 
 end
 
