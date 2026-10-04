@@ -36,8 +36,8 @@ theorem DensityOperator.hasSum_expectation_diagonal (ρ : DensityOperator H)
     HasSum (fun i => (w i : ℂ) * inner ℂ (b i) (A (b i))) (ρ.expectation A) := by
   have hsum :
       HasSum (fun i => inner ℂ (b i) ((ρ.op * A) (b i))) (ρ.expectation A) := by
-    rw [ρ.expectation_apply, (ρ.isTraceClass.comp_right A).trace_eq_seriesWrt b]
-    exact ((ρ.isTraceClass.comp_right A).summable_traceSeriesWrt b).hasSum
+    rw [ρ.expectation_apply]
+    exact (ρ.isTraceClass.comp_right A).hasSum_trace b
   exact HasSum.congr_fun hsum fun i => by
     symm
     rw [mul_apply_eq_comp]
