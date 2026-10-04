@@ -13775,7 +13775,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply",
@@ -13785,7 +13785,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -13961,8 +13961,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
@@ -13978,10 +13977,9 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14071,8 +14069,7 @@
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -14081,10 +14078,9 @@
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14122,8 +14118,7 @@
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -14133,10 +14128,9 @@
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14174,7 +14168,7 @@
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.summable_norm_sq_apply",
@@ -14187,7 +14181,7 @@
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -14275,7 +14269,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.add",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Trace-class membership is closed under addition. ",
     "directWrapperTargetModule": null,
@@ -14288,7 +14282,7 @@
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.exists_leftPolarFactor",
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14324,7 +14318,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.adjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Taking the adjoint preserves trace-class membership. ",
     "directWrapperTargetModule": null,
@@ -14332,7 +14326,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
@@ -14342,7 +14336,7 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -14372,7 +14366,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.comp_left",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Left composition by a bounded operator preserves trace-class membership. ",
     "directWrapperTargetModule": null,
@@ -14383,8 +14377,8 @@
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
       "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "dependencies": [
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
@@ -14398,8 +14392,8 @@
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
       "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -14429,7 +14423,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.comp_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Right composition by a bounded operator preserves trace-class membership. ",
     "directWrapperTargetModule": null,
@@ -14548,9 +14542,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
@@ -14559,11 +14552,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14793,7 +14785,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.neg",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Trace-class membership is closed under negation. ",
     "directWrapperTargetModule": null,
@@ -14833,7 +14825,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "The trace norm dominates the modulus of the trace. ",
     "directWrapperTargetModule": null,
@@ -14844,7 +14836,7 @@
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14879,7 +14871,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Trace-class membership is closed under complex scalar multiplication. ",
     "directWrapperTargetModule": null,
@@ -14894,7 +14886,7 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14990,7 +14982,7 @@
       "ContinuousLinearMap.IsTraceClass.hasSum_trace",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.summable_inner_apply",
@@ -15003,7 +14995,7 @@
       "ContinuousLinearMap.IsTraceClass.hasSum_trace",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -15033,7 +15025,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "The trace norm satisfies the triangle inequality. ",
     "directWrapperTargetModule": null,
@@ -15043,7 +15035,7 @@
       "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.exists_leftPolarFactor",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15076,7 +15068,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "Taking the adjoint preserves the trace norm. ",
     "directWrapperTargetModule": null,
@@ -15087,7 +15079,7 @@
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
       "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15122,7 +15114,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "Left multiplication by a bounded operator scales the trace norm by at most its\noperator norm. ",
     "directWrapperTargetModule": null,
@@ -15136,8 +15128,8 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
       "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
       "ContinuousLinearMap.isTraceClass_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15172,7 +15164,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "Right multiplication by a bounded operator scales the trace norm by at most its\noperator norm. ",
     "directWrapperTargetModule": null,
@@ -15186,7 +15178,7 @@
       "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15328,7 +15320,8 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
@@ -15339,9 +15332,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15376,8 +15370,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
@@ -15393,10 +15386,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15424,7 +15416,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_neg",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "Negation preserves the trace norm. ",
     "directWrapperTargetModule": null,
@@ -15513,7 +15505,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel"
@@ -15523,7 +15515,7 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -15553,7 +15545,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "Scalar multiplication scales the trace norm by the scalar norm. ",
     "directWrapperTargetModule": null,
@@ -15565,7 +15557,7 @@
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.smul",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15601,7 +15593,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "The zero operator has trace norm zero. ",
     "directWrapperTargetModule": null,
@@ -15612,7 +15604,7 @@
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
       "ContinuousLinearMap.isTraceClass_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15647,7 +15639,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.trace_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "The trace is additive. ",
     "directWrapperTargetModule": null,
@@ -15848,7 +15840,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.trace_neg",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "The trace changes sign under negation. ",
     "directWrapperTargetModule": null,
@@ -15889,7 +15881,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.trace_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "The trace is complex-linear under scalar multiplication. ",
     "directWrapperTargetModule": null,
@@ -15980,7 +15972,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.trace_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "The zero operator has trace zero. ",
     "directWrapperTargetModule": null,
@@ -16933,8 +16925,10 @@
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
@@ -16970,13 +16964,15 @@
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 30,
+    "compiledConsumerCount": 32,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17331,7 +17327,8 @@
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.Polar.0.ContinuousLinearMap.norm_cfcAbs_apply_eq"
@@ -17343,9 +17340,10 @@
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18182,8 +18180,7 @@
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.innerHS_comp_right",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "dependencies": [
       "ContinuousLinearMap.isHilbertSchmidt_adjoint",
@@ -18200,10 +18197,9 @@
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.innerHS_comp_right",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18482,7 +18478,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.isTraceClass_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "The zero bounded operator is trace class. ",
     "directWrapperTargetModule": null,
@@ -18494,7 +18490,7 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93608,8 +93604,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct"
     ],
     "dependencies": [
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.orderedProductMajorant_nonneg"
     ],
@@ -94458,6 +94453,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
@@ -94469,10 +94465,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94512,7 +94509,6 @@
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
@@ -94532,7 +94528,6 @@
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
@@ -94540,7 +94535,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94581,7 +94576,6 @@
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
@@ -94602,7 +94596,6 @@
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
@@ -94610,7 +94603,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98619,8 +98612,8 @@
       "SecondQuantization.Bosonic.createOccupation_apply_same",
       "SecondQuantization.Bosonic.create_basisState_eq",
       "SecondQuantization.Bosonic.removeOccupation_apply_ne",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
+      "SecondQuantization.Common.smul_basisState_apply_of_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98664,10 +98657,8 @@
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
-      "SecondQuantization.Common.smul_basisState_apply_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_eq"
+      "SecondQuantization.Bosonic.annihilate_basisState_eq",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98958,8 +98949,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_basisState",
-      "SecondQuantization.Common.smul_basisState_apply_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_eq"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -99114,8 +99104,7 @@
       "SecondQuantization.Bosonic.occupation_le_particleNumber",
       "SecondQuantization.Bosonic.particleNumber_createOccupation",
       "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound.0.SecondQuantization.Bosonic.sqrt_four_mul_le_sq"
     ],
     "crossModuleDirectWrapper": false,
@@ -111952,7 +111941,6 @@
       "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_basisState",
       "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
       "SecondQuantization.Common.diagonalEvolution_zero",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve",
       "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_basisState"
     ],
@@ -111965,11 +111953,10 @@
       "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_basisState",
       "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
       "SecondQuantization.Common.diagonalEvolution_zero",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve",
       "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_basisState"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115240,7 +115227,7 @@
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create"
     ],
     "dependencies": [
-      "SecondQuantization.Common.smul_basisState_apply_of_ne"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -116996,9 +116983,7 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum"
     ],
     "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_basisState",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self"
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_eq_ite"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -117076,7 +117061,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (τ : ℝ) (m n : Config),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalEvolution energy τ) m n =\n    if m = n then Complex.exp ↑(τ * energy n) else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -117084,7 +117069,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117095,14 +117080,18 @@
     "docString": "**`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal\nand `0` off it — the algebraic content of \"`diagonalEvolution` acts on each basis state by a\nscalar\". Specialized to `energy := freeEigenvalue`/`fermionEnergy`, `τ := -β`, the same formula\nprovides the basis-diagonal Gibbs-weight coefficients. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution"
+    ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_diagonalOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117142,8 +117131,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalOperator_basisState",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -117195,6 +117183,65 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config}\n  {m n k : Config} {c : ℂ},\n  A (SecondQuantization.Common.basisState n) = c • SecondQuantization.Common.basisState k →\n    SecondQuantization.Common.matrixCoeff A m n = if m = k then c else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
+    "externalAxioms": [],
+    "docString": "**Matrix coefficients of a one-basis-state image.** If `A` sends `basisState n` to\n`c • basisState k`, its `(m, n)` coefficient is `c` at `m = k` and `0` elsewhere. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
+      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
+      "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
+      "SecondQuantization.Common.matrixCoeff_id"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.smul_basisState_apply_of_ne",
+      "SecondQuantization.Common.smul_basisState_apply_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
+      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
+      "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
+      "SecondQuantization.Common.matrixCoeff_id"
+    ],
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117319,6 +117366,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Config : Type u_1} (m n : Config), SecondQuantization.Common.matrixCoeff LinearMap.id m n = if m = n then 1 else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.matrixCoeff_id",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
+    "externalAxioms": [],
+    "docString": "The identity operator has the Kronecker-delta matrix in the canonical basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.traceFock_id",
+      "SecondQuantization.Common.weightedTrace_id"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.traceFock_id",
+      "SecondQuantization.Common.weightedTrace_id"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (m n : Config),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.interactionPicture energy V τ) m n =\n    Complex.exp ↑(τ * (energy m - energy n)) * SecondQuantization.Common.matrixCoeff V m n",
     "standardAxioms": [
       "Classical.choice",
@@ -117357,52 +117450,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self"
     ],
     "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {n : Config}\n  {c : ℂ},\n  A (SecondQuantization.Common.basisState n) = c • SecondQuantization.Common.basisState n →\n    SecondQuantization.Common.matrixCoeff A n n = c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
-    "externalAxioms": [],
-    "docString": "**Diagonal matrix coefficients.** If `A` acts on `basisState n` as `c • basisState n`, the\n`(n, n)` matrix coefficient is exactly `c`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.traceFock_id",
-      "SecondQuantization.Common.weightedTrace_id"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.smul_basisState_apply_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.traceFock_id",
-      "SecondQuantization.Common.weightedTrace_id"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120991,33 +121038,25 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
-      "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
-      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
-      "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
-      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121051,35 +121090,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
-      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
-      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
-      "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
-      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
-      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
-      "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122289,7 +122314,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
+      "SecondQuantization.Common.matrixCoeff_id",
       "SecondQuantization.Common.traceFock_eq_sum_matrixCoeff"
     ],
     "crossModuleDirectWrapper": false,
@@ -124045,7 +124070,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
+      "SecondQuantization.Common.matrixCoeff_id",
       "SecondQuantization.Common.weightedTrace_eq_sum_matrixCoeff"
     ],
     "crossModuleDirectWrapper": false,
@@ -149685,8 +149710,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an\nabsolutely summable complex series. ",
     "directWrapperTargetModule": null,
@@ -149718,6 +149743,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] (c : ℂ)\n  (T : H →L[ℂ] H) (x : H),\n  (CFC.abs (c • T)).diagonalExpectationValue ⋯ x = ‖c‖ * (CFC.abs T).diagonalExpectationValue ⋯ x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.smul"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.smul"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (h0 : IsSelfAdjoint 0) (x : H), ContinuousLinearMap.diagonalExpectationValue 0 h0 x = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isTraceClass_zero"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isTraceClass_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (W : H →L[ℂ] H),\n  ‖W‖ ≤ 1 →\n    ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n      (Summable fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧ ∑' (i : ι), ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm",
     "standardAxioms": [
       "Classical.choice",
@@ -149730,15 +149843,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded\nby the trace norm. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_add_le"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
@@ -149753,9 +149867,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_add_le"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149782,8 +149897,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149828,8 +149943,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": "Left multiplication by a contraction does not increase the trace norm. ",
     "directWrapperTargetModule": null,
@@ -149838,13 +149953,10 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
       "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
+      "ContinuousLinearMap.exists_leftPolarFactor",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149878,8 +149990,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_of_eq",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149919,19 +150031,18 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.smul",
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul"
     ],
     "dependencies": [
@@ -149940,10 +150051,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.smul",
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149965,20 +150075,19 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.diagonalExpectationValue_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
-      "ContinuousLinearMap.isTraceClass_zero"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_zero"
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right"
@@ -149986,10 +150095,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
-      "ContinuousLinearMap.isTraceClass_zero"
+      "ContinuousLinearMap.IsTraceClass.traceNorm_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164548,23 +164656,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
