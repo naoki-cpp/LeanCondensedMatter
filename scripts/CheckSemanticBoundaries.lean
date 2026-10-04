@@ -67,7 +67,6 @@ private def boundedDimensionIndependentModules : Array Name := #[
   `LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics,
   `LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation,
   `LeanCondensedMatter.QuantumTheory.DensityOperator.Basic,
-  `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation,
   `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula,
 ]
 

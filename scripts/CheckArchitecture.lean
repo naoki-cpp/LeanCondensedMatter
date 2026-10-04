@@ -310,11 +310,7 @@ private def conservationOwnerRequirements : Array OwnerRequirement :=
 
 private def diagonalOwnerRequirements : Array OwnerRequirement :=
   let formulaModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-  let bridgeModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation
   #[
-    { declaration := `QuantumTheory.DensityOperator.sqrtOp, moduleName := bridgeModule },
-    { declaration := `QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt, moduleName := bridgeModule },
-    { declaration := `QuantumTheory.DensityOperator.expectation_eq_innerHS, moduleName := bridgeModule },
     { declaration := `QuantumTheory.DensityOperator.hasSum_expectation_diagonal, moduleName := formulaModule },
     { declaration := `QuantumTheory.DensityOperator.summable_expectation_diagonal, moduleName := formulaModule },
     { declaration := `QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal, moduleName := formulaModule },
