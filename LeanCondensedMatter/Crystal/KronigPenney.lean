@@ -324,7 +324,7 @@ private theorem BandEdgeData.composite_second_derivative
             deriv edge.branchEnergy k)
         (edge.discriminantSlope * edge.curvature) edge.blochCoordinate := by
     simpa [hbranchDeriv, hdiscDeriv] using hleft.mul edge.secondDerivative
-  exact hproduct.congr_of_eventuallyEq hderiv_comp.symm
+  exact hproduct.congr_of_eventuallyEq hderiv_comp
 
 private theorem cosine_second_derivative (period k : ℝ) :
     HasDerivAt
@@ -347,7 +347,7 @@ private theorem cosine_second_derivative (period k : ℝ) :
       HasDerivAt (fun x => -Real.sin (x * period) * period)
         (-(period ^ 2 * Real.cos (k * period))) k := by
     convert hsin.neg.mul_const period using 1 <;> ring
-  exact hrhs.congr_of_eventuallyEq hfirst.symm
+  exact hrhs.congr_of_eventuallyEq hfirst
 
 /-- The second-order Bloch dispersion identity follows from the local Bloch relation and the
 explicit differentiability assumptions. -/
