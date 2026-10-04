@@ -540,7 +540,7 @@ theorem trace_zero :
     (isTraceClass_zero (H := H)).trace = 0 := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   rw [(isTraceClass_zero (H := H)).trace_eq_tsum_inner d]
-  simp [traceSeriesWrt]
+  simp
 
 /-- The trace is complex-linear under scalar multiplication. -/
 theorem trace_smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
