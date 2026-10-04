@@ -183,11 +183,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
         (Common.Statistics.fermion.zetaInt : ℂ) ^
           d.mixedInterComponentCrossingCount externalTime σ = 1 := by
     simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-    rw [← pow_add]
-    rw [show
-      d.mixedInterComponentCrossingCount externalTime σ +
-          d.mixedInterComponentCrossingCount externalTime σ =
-        2 * d.mixedInterComponentCrossingCount externalTime σ by omega, pow_mul]
+    rw [← mul_pow]
     norm_num
   calc
     _ = componentExternalOrderSign d blockOrder *
