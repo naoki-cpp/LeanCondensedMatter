@@ -72,7 +72,7 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
     change HasSum (fun a => g (j a)) 1
     exact HasSum.congr_fun hweights hpoint
   have hfull : HasSum g 1 := (hj.hasSum_iff hzero).mp hrestricted
-  exact IsHilbertSchmidt.of_isHilbertSchmidtWrt hfull.summable
+  exact (isHilbertSchmidt_iff_isHilbertSchmidtWrt b ρ.sqrtOp).mpr hfull.summable
 
 /-- The canonical density-state expectation is the basis-independent Hilbert–Schmidt pairing
 `⟪√ρ, A√ρ⟫`. This formula is valid for every bounded operator, not only observables. -/
@@ -124,7 +124,8 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
     change HasSum (fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i)))
       (innerHS b ρ.sqrtOp (A * ρ.sqrtOp))
     exact (summable_inner_apply_of_isHilbertSchmidtWrt b
-      (hsqrt.isHilbertSchmidtWrt b) (hAsqrt.isHilbertSchmidtWrt b)).hasSum
+      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b ρ.sqrtOp).mp hsqrt)
+      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b (A * ρ.sqrtOp)).mp hAsqrt)).hasSum
   have hrestricted : HasSum
       (fun a : EigenvectorIndex ρ.op =>
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
