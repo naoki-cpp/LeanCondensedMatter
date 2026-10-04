@@ -95,6 +95,14 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
   · rintro ⟨A, B, hA, hB, hfactor⟩
     exact isTraceClass_of_hilbertSchmidt_factorization hA hB hfactor
 
+/-- The product of two Hilbert--Schmidt operators is trace class. -/
+theorem IsHilbertSchmidt.mul_isTraceClass {A B : H →L[ℂ] H}
+    (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B) :
+    IsTraceClass (A * B) := by
+  apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := A * B)).mpr
+  refine ⟨ContinuousLinearMap.adjoint A, B, isHilbertSchmidt_adjoint hA, hB, ?_⟩
+  rw [ContinuousLinearMap.adjoint_adjoint]
+
 private theorem diagonal_eq_hilbertSchmidt_inner
     {T A B : H →L[ℂ] H} (hfactor : ContinuousLinearMap.adjoint A * B = T)
     (x : H) :
@@ -155,6 +163,18 @@ theorem trace_eq_seriesWrt {T : H →L[ℂ] H} (hT : IsTraceClass T)
     hT.trace = traceSeriesWrt d T := by
   unfold trace
   exact traceSeriesWrt_eq _ d T hT
+
+/-- A Hilbert--Schmidt factorization computes the canonical trace as the
+Hilbert--Schmidt pairing of its factors. -/
+theorem trace_eq_innerHS_of_factorization {T A B : H →L[ℂ] H}
+    (hT : IsTraceClass T) (hfactor : ContinuousLinearMap.adjoint A * B = T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.trace = innerHS d A B := by
+  rw [hT.trace_eq_seriesWrt d]
+  unfold traceSeriesWrt innerHS
+  apply tsum_congr
+  intro i
+  exact diagonal_eq_hilbertSchmidt_inner hfactor (d i)
 
 end IsTraceClass
 
