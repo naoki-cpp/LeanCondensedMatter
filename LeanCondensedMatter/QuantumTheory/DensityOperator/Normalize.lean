@@ -54,6 +54,7 @@ theorem normalizePositive_op
     (normalizePositive T hpos htrace hne).op = (spectralTrace T)⁻¹ • T := by
   change (((spectralTrace T)⁻¹ : ℝ) : ℂ) • T = (spectralTrace T)⁻¹ • T
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
+  rfl
 
 end DensityOperator
 
