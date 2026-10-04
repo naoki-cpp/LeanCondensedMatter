@@ -19,7 +19,8 @@ namespace ContinuousLinearMap
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- `T` is Hilbert–Schmidt with respect to a given Hilbert basis `d`: the squared norms of its
-images on the basis vectors are summable. Basis-independent — see `isHilbertSchmidtWrt_iff`. -/
+images on the basis vectors are summable. Its relation to the basis-independent predicate is
+`isHilbertSchmidt_iff_isHilbertSchmidtWrt`. -/
 def IsHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) : Prop :=
   Summable (fun i => ‖T (d i)‖ ^ 2)
 
@@ -60,10 +61,8 @@ theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertB
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using
-`T†† = T` transports the sum of squared norms of `T` from any one basis to any other. This is
-the public-facing form of the basis-independence computation: callers wanting to compare `T`
-across bases (`isHilbertSchmidtWrt_iff`) should use this rather than reasoning about `T†`
-directly. -/
+`T†† = T` transports the sum of squared norms of `T` from any one basis to any other. This
+value-level result underlies the canonical basis-independent characterization below. -/
 theorem summable_norm_sq_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hd : Summable (fun i => ‖T (d i)‖ ^ 2)) :
     Summable (fun j => ‖T (f j)‖ ^ 2) ∧ ∑' j, ‖T (f j)‖ ^ 2 = ∑' i, ‖T (d i)‖ ^ 2 := by
@@ -73,7 +72,7 @@ theorem summable_norm_sq_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι 
   exact ⟨h2.1, h2.2.trans h1.2⟩
 
 /-- **`IsHilbertSchmidtWrt` is independent of the choice of Hilbert basis.** -/
-theorem isHilbertSchmidtWrt_iff {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
+private theorem isHilbertSchmidtWrt_iff {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
     (T : H →L[ℂ] H) : IsHilbertSchmidtWrt d T ↔ IsHilbertSchmidtWrt f T :=
   ⟨fun hd => (summable_norm_sq_apply_and_tsum_eq d f T hd).1,
     fun hf => (summable_norm_sq_apply_and_tsum_eq f d T hf).1⟩
