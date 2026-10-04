@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.General
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
 import LeanCondensedMatter.Analysis.Operator.Polar
 
@@ -8,8 +8,9 @@ set_option linter.style.header false
 # Hilbert--Schmidt factorization of trace-class operators
 
 A bounded operator is trace class exactly when it factors as `A† B` with Hilbert--Schmidt
-operators `A` and `B`. This characterization is independent of the trace value and is the
-shared structural input for compactness, ideal closure, and trace convergence.
+operators `A` and `B`. A trace-class operator admits such a factorization with both squared
+Hilbert--Schmidt norms bounded by its trace norm. This characterization is the shared structural
+input for compactness, ideal closure, trace convergence, and trace-norm estimates.
 -/
 
 noncomputable section
@@ -18,12 +19,16 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors. -/
-private theorem exists_hilbertSchmidt_factorization_of_isTraceClass
+namespace IsTraceClass
+
+/-- Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors whose squared
+Hilbert--Schmidt norms are bounded by the trace norm. -/
+theorem exists_hilbertSchmidt_factorization_normSq_le_traceNorm
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
-    ∃ A B : H →L[ℂ] H,
-      IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ ContinuousLinearMap.adjoint A * B = T := by
-  obtain ⟨U, hU, -, -⟩ := exists_leftPolarFactor T
+    ∃ A B : H →L[ℂ] H, ∃ hA : IsHilbertSchmidt A, ∃ hB : IsHilbertSchmidt B,
+      ContinuousLinearMap.adjoint A * B = T ∧
+      hA.normSq ≤ hT.traceNorm ∧ hB.normSq ≤ hT.traceNorm := by
+  obtain ⟨U, hUleft, -, hUnorm⟩ := exists_leftPolarFactor T
   let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
   have hS : IsHilbertSchmidt S := hT
   have hSself : IsSelfAdjoint S := (CFC.sqrt_nonneg (CFC.abs T)).isSelfAdjoint
@@ -39,8 +44,30 @@ private theorem exists_hilbertSchmidt_factorization_of_isTraceClass
     rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
       ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint,
       hSself.adjoint_eq]
-  refine ⟨A, S, hA, hS, ?_⟩
-  rw [hAdjA, mul_assoc, hSS, hU]
+  have hfactor : ContinuousLinearMap.adjoint A * S = T := by
+    rw [hAdjA, mul_assoc, hSS, hUleft]
+  have hSnorm : hS.normSq = hT.traceNorm := by
+    unfold traceNorm
+    exact IsHilbertSchmidt.normSq_proof_irrel hS
+      (show IsHilbertSchmidt S from hT)
+  have hAdjUnorm : ‖ContinuousLinearMap.adjoint U‖ ≤ 1 := by
+    rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
+    exact hUnorm
+  have hAnorm_le : hA.normSq ≤ hT.traceNorm := by
+    have hraw := IsHilbertSchmidt.normSq_comp_right_le hS (ContinuousLinearMap.adjoint U)
+    have hraw' :
+        hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq := by
+      exact (IsHilbertSchmidt.normSq_proof_irrel hA
+        (isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint U))) ▸ hraw
+    calc
+      hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq := hraw'
+      _ ≤ 1 ^ 2 * hS.normSq := by
+        exact mul_le_mul_of_nonneg_right
+          (pow_le_pow_left₀ (norm_nonneg _) hAdjUnorm 2) hS.normSq_nonneg
+      _ = hT.traceNorm := by rw [one_pow, one_mul, hSnorm]
+  exact ⟨A, S, hA, hS, hfactor, hAnorm_le, hSnorm.le⟩
+
+end IsTraceClass
 
 /-- A product `A† B` of Hilbert--Schmidt operators is trace class. -/
 private theorem isTraceClass_of_hilbertSchmidt_factorization
@@ -82,7 +109,10 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
       ∃ A B : H →L[ℂ] H,
         IsHilbertSchmidt A ∧ IsHilbertSchmidt B ∧ ContinuousLinearMap.adjoint A * B = T := by
   constructor
-  · exact exists_hilbertSchmidt_factorization_of_isTraceClass
+  · intro hT
+    obtain ⟨A, B, hA, hB, hfactor, -, -⟩ :=
+      hT.exists_hilbertSchmidt_factorization_normSq_le_traceNorm
+    exact ⟨A, B, hA, hB, hfactor⟩
   · rintro ⟨A, B, hA, hB, hfactor⟩
     exact isTraceClass_of_hilbertSchmidt_factorization hA hB hfactor
 
