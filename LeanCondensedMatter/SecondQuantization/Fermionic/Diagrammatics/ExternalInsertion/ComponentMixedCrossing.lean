@@ -116,7 +116,7 @@ theorem ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq
   have hsum :=
     finset_sum_offDiag_modEq_of_pair_add_modEq_of_order
       2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
-      (fun _ _ h => blockOrder.injective h) cross inv
+      (fun _ _ _ _ h => blockOrder.injective h) cross inv
       (fun B _ C _ hBC => by
         simpa [Nat.ModEq, inv, cross, pairing, pairEquiv] using
           d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
