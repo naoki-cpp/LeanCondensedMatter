@@ -94,7 +94,7 @@ noncomputable def gibbsState [Nontrivial H] (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β)) : DensityOperator H :=
   DensityOperator.normalizePositive
     (gibbsOp Hop β) (gibbsOp_isPositive Hop β)
-    (gibbsOp_spectralTraceClass Hop β hcompact) (gibbsOp_ne_zero Hop β)
+    (gibbsOp_spectralTraceClass Hop β hcompact).isTraceClass (gibbsOp_ne_zero Hop β)
 
 @[simp]
 theorem gibbsState_op [Nontrivial H] (Hop : Observable H) (β : ℝ)
