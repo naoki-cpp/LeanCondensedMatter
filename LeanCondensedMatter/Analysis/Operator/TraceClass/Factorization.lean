@@ -23,7 +23,7 @@ namespace IsTraceClass
 
 /-- Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors whose squared
 Hilbert--Schmidt norms are bounded by the trace norm. -/
-theorem exists_hilbertSchmidt_factorization_normSq_le_traceNorm
+theorem exists_hilbertSchmidt_factorization_le_traceNorm
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     ∃ A B : H →L[ℂ] H, ∃ hA : IsHilbertSchmidt A, ∃ hB : IsHilbertSchmidt B,
       ContinuousLinearMap.adjoint A * B = T ∧
@@ -111,7 +111,7 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
   constructor
   · intro hT
     obtain ⟨A, B, hA, hB, hfactor, -, -⟩ :=
-      hT.exists_hilbertSchmidt_factorization_normSq_le_traceNorm
+      hT.exists_hilbertSchmidt_factorization_le_traceNorm
     exact ⟨A, B, hA, hB, hfactor⟩
   · rintro ⟨A, B, hA, hB, hfactor⟩
     exact isTraceClass_of_hilbertSchmidt_factorization hA hB hfactor
