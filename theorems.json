@@ -13625,72 +13625,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H},\n  T.IsHilbertSchmidt → ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), ContinuousLinearMap.IsHilbertSchmidtWrt d T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
-    "externalAxioms": [],
-    "docString": "**Accessor: an `IsHilbertSchmidt` witness gives `IsHilbertSchmidtWrt` against *any* basis.**\nLets a caller who already has a specific basis `d` in mind write `hT.isHilbertSchmidtWrt d`\ninstead of unfolding `isHilbertSchmidt_iff_isHilbertSchmidtWrt`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
-      "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
-      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
-      "ContinuousLinearMap.innerHS_comp_right",
-      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
-      "QuantumTheory.DensityOperator.expectation_eq_innerHS",
-      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
-      "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
-      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
-      "ContinuousLinearMap.innerHS_comp_right",
-      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
-      "QuantumTheory.DensityOperator.expectation_eq_innerHS",
-      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
-    ],
-    "compiledConsumerCount": 12,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsHilbertSchmidt), ⋯.normSq = hT.normSq",
     "standardAxioms": [
       "Classical.choice",
@@ -13713,9 +13647,9 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
       "ContinuousLinearMap.isHilbertSchmidt_adjoint",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq"
     ],
     "crossModuleDirectWrapper": false,
@@ -13760,9 +13694,9 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
+      "ContinuousLinearMap.isHilbertSchmidt_comp_left",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -13865,7 +13799,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
     "dependencies": [
-      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -13976,50 +13910,6 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
     "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {d : HilbertBasis ι ℂ H} {T : H →L[ℂ] H}, ContinuousLinearMap.IsHilbertSchmidtWrt d T → T.IsHilbertSchmidt",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
-    "externalAxioms": [],
-    "docString": "**Accessor: the reverse direction**, packaging `IsHilbertSchmidtWrt` evidence for one basis\ninto the basis-independent `IsHilbertSchmidt`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14498,7 +14388,7 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
       "ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.diagonal_eq_hilbertSchmidt_inner"
@@ -17479,51 +17369,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  T.IsHilbertSchmidt →\n    ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt d T = ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt f T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
-    "externalAxioms": [],
-    "docString": "For a Hilbert--Schmidt operator, the square-norm series has the same value in every Hilbert\nbasis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) {S T : H →L[ℂ] H},\n  S.IsHilbertSchmidt →\n    T.IsHilbertSchmidt →\n      ∀ (W : H →L[ℂ] H),\n        ContinuousLinearMap.innerHS d S (T * W) = ContinuousLinearMap.innerHS d (S * ContinuousLinearMap.adjoint W) T",
     "standardAxioms": [
       "Classical.choice",
@@ -17546,9 +17391,9 @@
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
-      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -17593,8 +17438,8 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.traceSeriesWrt_eq"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -17644,48 +17489,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} (d : HilbertBasis ι ℂ H)\n  (B : H →L[ℂ] H) {T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d T → ContinuousLinearMap.IsHilbertSchmidtWrt d (B * T)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.isHilbertSchmidtWrt_comp_left",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
-    "externalAxioms": [],
-    "docString": "**Composing a Hilbert–Schmidt operator with a bounded operator on the left stays\nHilbert–Schmidt**, with respect to the same basis, by the comparison test against the operator\nnorm bound `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17818,7 +17621,7 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isHilbertSchmidtWrt_comp_left"
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.isHilbertSchmidtWrt_comp_left"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -17928,9 +17731,20 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt",
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
+      "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
+      "ContinuousLinearMap.innerHS_comp_right",
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
+      "QuantumTheory.DensityOperator.expectation_eq_innerHS",
+      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
+      "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
     ],
     "dependencies": [
       "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
@@ -17938,11 +17752,22 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
-      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt",
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
+      "ContinuousLinearMap.IsTraceClass.summable_traceSeriesWrt",
+      "ContinuousLinearMap.innerHS_comp_right",
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
+      "QuantumTheory.DensityOperator.expectation_eq_innerHS",
+      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
+      "QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18779,53 +18604,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d S →\n    ContinuousLinearMap.IsHilbertSchmidtWrt d T →\n      (Summable fun j => inner ℂ ((ContinuousLinearMap.adjoint T) (f j)) ((ContinuousLinearMap.adjoint S) (f j))) ∧\n        ∑' (j : κ), inner ℂ ((ContinuousLinearMap.adjoint T) (f j)) ((ContinuousLinearMap.adjoint S) (f j)) =\n          ∑' (i : ι), inner ℂ (S (d i)) (T (d i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
-    "externalAxioms": [],
-    "docString": "**The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`\nHilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum\n`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` (`summable_inner_resolution_product`) can be summed either row-first\n(giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving\n`Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor\nwith the adjoint). ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.innerHS_comp_right",
-      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.summable_inner_resolution_product",
-      "tsum_fiberwise_eq_of_summable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.innerHS_comp_right",
-      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} (d : HilbertBasis ι ℂ H)\n  {S T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d S →\n    ContinuousLinearMap.IsHilbertSchmidtWrt d T → Summable fun i => inner ℂ (S (d i)) (T (d i))",
     "standardAxioms": [
       "Classical.choice",
@@ -18864,50 +18642,6 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
     ],
     "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} {κ : Type u_3}\n  (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d S →\n    ContinuousLinearMap.IsHilbertSchmidtWrt d T →\n      Summable fun p => inner ℂ (S (d p.1)) (f p.2) * inner ℂ (f p.2) (T (d p.1))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.summable_inner_resolution_product",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
-    "externalAxioms": [],
-    "docString": "**Absolute summability of the \"resolution of the identity\" double product**\n`⟪S dᵢ, fⱼ⟫⟪fⱼ, T dᵢ⟫`, for `S`, `T` Hilbert–Schmidt with respect to `d` and *any* other basis\n`f`. Established via the AM–GM bound `|ab| ≤ (|a|² + |b|²) / 2` (rather than\n`summable_prod_of_nonneg` applied to the family itself, since the summands here are complex, not\nnonnegative). The absolute-summability half of\n`summable_inner_adjoint_apply_and_tsum_eq`'s argument, isolated since it doesn't need the\nrow/column identification that follows it. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
-    ],
-    "dependencies": [
-      "HilbertBasis.hasSum_norm_sq_inner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18990,8 +18724,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
     ],
     "dependencies": [
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq"
@@ -18999,8 +18733,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
-      "ContinuousLinearMap.isHilbertSchmidtWrt_iff"
+      "ContinuousLinearMap.isHilbertSchmidtWrt_iff",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -24490,8 +24224,8 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
-      "ContinuousLinearMap.summable_inner_resolution_product",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_resolution_product",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal.0.ContinuousLinearMap.hasSummableRealEigenvalues_of_positive_of_summable_diagonal"
     ],
     "dependencies": [],
@@ -24499,8 +24233,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
-      "ContinuousLinearMap.summable_inner_resolution_product",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_resolution_product",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal.0.ContinuousLinearMap.hasSummableRealEigenvalues_of_positive_of_summable_diagonal"
     ],
     "compiledConsumerCount": 4,
@@ -40531,13 +40265,13 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.SpectralTraceClass.compact",
       "ContinuousLinearMap.apply_eigenvectorFamily",
       "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
       "ContinuousLinearMap.hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
       "ContinuousLinearMap.isHilbertSchmidt_comp_left",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.orthonormal_eigenvectorFamily",
       "ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
@@ -41527,8 +41261,8 @@
       "QuantumTheory.DensityOperator.summable_expectation_diagonal"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.isHilbertSchmidt_comp_left",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt",
       "QuantumTheory.DensityOperator.expectation_eq_innerHS",
       "QuantumTheory.DensityOperator.inner_sqrtOp_comp_apply_eq_diagonal_term",
@@ -42515,12 +42249,12 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.of_isHilbertSchmidtWrt",
       "ContinuousLinearMap.SpectralTraceClass.compact",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.apply_eigenvectorFamily",
       "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
       "ContinuousLinearMap.hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.orthonormal_eigenvectorFamily",
       "ContinuousLinearMap.summable_eigenvectorIndex",
       "QuantumTheory.DensityOperator.isSymmetric",
@@ -147425,6 +147159,184 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} (d : HilbertBasis ι ℂ H)\n  (B : H →L[ℂ] H) {T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d T → ContinuousLinearMap.IsHilbertSchmidtWrt d (B * T)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.isHilbertSchmidtWrt_comp_left",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
+    "externalAxioms": [],
+    "docString": "**Composing a Hilbert–Schmidt operator with a bounded operator on the left stays\nHilbert–Schmidt**, with respect to the same basis, by the comparison test against the operator\nnorm bound `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d S →\n    ContinuousLinearMap.IsHilbertSchmidtWrt d T →\n      (Summable fun j => inner ℂ ((ContinuousLinearMap.adjoint T) (f j)) ((ContinuousLinearMap.adjoint S) (f j))) ∧\n        ∑' (j : κ), inner ℂ ((ContinuousLinearMap.adjoint T) (f j)) ((ContinuousLinearMap.adjoint S) (f j)) =\n          ∑' (i : ι), inner ℂ (S (d i)) (T (d i))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
+    "externalAxioms": [],
+    "docString": "**The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`\nHilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum\n`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` (`summable_inner_resolution_product`) can be summed either row-first\n(giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving\n`Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor\nwith the adjoint). ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.innerHS_comp_right",
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_resolution_product",
+      "tsum_fiberwise_eq_of_summable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.innerHS_comp_right",
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} {κ : Type u_3}\n  (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d S →\n    ContinuousLinearMap.IsHilbertSchmidtWrt d T →\n      Summable fun p => inner ℂ (S (d p.1)) (f p.2) * inner ℂ (f p.2) (T (d p.1))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_resolution_product",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
+    "externalAxioms": [],
+    "docString": "**Absolute summability of the \"resolution of the identity\" double product**\n`⟪S dᵢ, fⱼ⟫⟪fⱼ, T dᵢ⟫`, for `S`, `T` Hilbert–Schmidt with respect to `d` and *any* other basis\n`f`. Established via the AM–GM bound `|ab| ≤ (|a|² + |b|²) / 2` (rather than\n`summable_prod_of_nonneg` applied to the family itself, since the summands here are complex, not\nnonnegative). The absolute-summability half of\n`summable_inner_adjoint_apply_and_tsum_eq`'s argument, isolated since it doesn't need the\nrow/column identification that follows it. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
+    ],
+    "dependencies": [
+      "HilbertBasis.hasSum_norm_sq_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {ι : Type u_2}\n  {κ : Type u_3} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H),\n  T.IsHilbertSchmidt →\n    ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt d T = ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt f T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm.0.ContinuousLinearMap.hilbertSchmidtNormSqSeriesWrt_eq",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "externalAxioms": [],
+    "docString": "For a Hilbert--Schmidt operator, the square-norm series has the same value in every Hilbert\nbasis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
+      "ContinuousLinearMap.summable_norm_sq_apply_and_tsum_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (r : ℝ) (z w : ℂ), inner ℂ (↑r * z) w = inner ℂ z (↑r * w)",
     "standardAxioms": [
       "Classical.choice",
@@ -147845,8 +147757,8 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
       "ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt"
     ],
@@ -147895,13 +147807,13 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
       "ContinuousLinearMap.exists_leftPolarFactor",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt"
     ],
     "crossModuleDirectWrapper": false,
@@ -148137,13 +148049,13 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_seriesWrt",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
       "ContinuousLinearMap.exists_leftPolarFactor",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar"
     ],
@@ -148913,10 +148825,10 @@
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isHilbertSchmidtWrt",
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.exists_leftPolarFactor",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
       "ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt"
     ],
@@ -184984,17 +184896,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq",
-      "QuantumTheory.hasSum_probNNReal"
+      "QuantumTheory.hasSum_probNNReal",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq",
-      "QuantumTheory.hasSum_probNNReal"
+      "QuantumTheory.hasSum_probNNReal",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_adjoint_apply_and_tsum_eq"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
