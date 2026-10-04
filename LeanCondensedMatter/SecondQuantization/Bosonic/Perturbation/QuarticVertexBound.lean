@@ -53,6 +53,7 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
   classical
   by_cases h1 : n q.annihilate₁ = 0
   · rw [Common.matrixCoeff]
+    change ‖(quarticVertexOperator q (basisState n)) n‖ ≤ _
     simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
     rw [annihilate_basisState_of_zero h1]
     simp only [map_zero, Finsupp.coe_zero, Pi.zero_apply, norm_zero]
@@ -62,6 +63,7 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
       simpa [n1] using particleNumber_removeOccupation_of_pos h1
     by_cases h2 : n1 q.annihilate₂ = 0
     · rw [Common.matrixCoeff]
+      change ‖(quarticVertexOperator q (basisState n)) n‖ ≤ _
       simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
       rw [annihilate_basisState_of_pos h1, map_smul]
       change ‖(create q.create₁

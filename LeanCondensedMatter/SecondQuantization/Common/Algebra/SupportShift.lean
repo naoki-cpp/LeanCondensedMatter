@@ -35,7 +35,8 @@ theorem grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
   have hm : m = k := by
     by_contra hmk
     apply hmn
-    rw [matrixCoeff_eq_ite_of_basisState_smul hA, if_neg hmk]
+    rw [matrixCoeff_eq_ite_of_basisState_smul hA]
+    simp [hmk]
   rw [hm]
   exact hk
 
