@@ -70,7 +70,7 @@ on the compact self-adjoint overlap.
 General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
 Hilbert--Schmidt layer. `TraceClass/Factorization.lean` owns the equivalent characterization
 `T = A† B` with Hilbert--Schmidt factors, the general estimate
-`‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, and a canonical factorization satisfying
+`‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, and a factorization satisfying
 `‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`; compactness, trace convergence, and trace-norm estimates consume this
 structural layer. In particular, every trace-class operator is compact without depending on the
 trace-value implementation. Membership is closed under adjoint and bounded left/right
