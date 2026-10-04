@@ -12,8 +12,8 @@ Representatives are useful for wavefunction calculations and are not identified 
 global phase.
 
 `QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
-positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
-spectral trace to `1`. `QuantumTheory.PureState H` is the subtype of density operators represented by
+positivity, general trace-class membership, and normalization of the canonical complex trace to `1`.
+Compactness, self-adjointness, spectral summability, and the real spectral-trace formula are derived. `QuantumTheory.PureState H` is the subtype of density operators represented by
 some normalized state vector through the rank-one constructor `pure`, so equality of physical pure
 states is ordinary equality of their density operators. For this density model, the existential
 rank-one criterion is equivalent to maximal spectral purity:
@@ -22,8 +22,7 @@ rank-one criterion is equivalent to maximal spectral purity:
 IsPureDensity ρ ↔ purity ρ = 1
 ```
 
-The converse is dimension-independent within the current compact self-adjoint spectral trace-class
-model: spectral positivity and trace normalization force the nonzero spectrum to a single eigenvalue
+The converse is dimension-independent within the current positive trace-class density model: spectral positivity and trace normalization force the nonzero spectrum to a single eigenvalue
 `1`, and the existing spectral reconstruction recovers the corresponding rank-one density operator.
 No separate finite-dimensional assumption or parallel pure-state representation is required.
 
