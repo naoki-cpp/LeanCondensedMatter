@@ -38,7 +38,10 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
     IsHilbertSchmidt ρ.sqrtOp := by
   have hnonneg : 0 ≤ ρ.op := nonneg_iff_isPositive.mpr ρ.pos
   have habs : CFC.abs ρ.op = ρ.op := CFC.abs_of_nonneg ρ.op hnonneg
-  simpa [DensityOperator.sqrtOp, IsTraceClass, habs] using ρ.isTraceClass
+  have htrace : IsHilbertSchmidt (CFC.sqrt ρ.op) := by
+    simpa [IsTraceClass, habs] using ρ.isTraceClass
+  rw [CFC.sqrt_eq_real_sqrt ρ.op hnonneg, cfcₙ_eq_cfc] at htrace
+  simpa [DensityOperator.sqrtOp] using htrace
 
 /-- The canonical density-state expectation is the basis-independent Hilbert–Schmidt pairing
 `⟪√ρ, A√ρ⟫`. This formula is valid for every bounded operator, not only observables. -/
