@@ -104,20 +104,12 @@ APIs. It does not require a particular proof helper or literal implementation bo
 
 The generic diagonal theory is countable rather than finite-dimensional. The canonical trace
 expectation and its spectral representation are owned by `DensityOperator/Expectation.lean`.
-The diagonal bridge module owns the independent square-root/Hilbert--Schmidt representation:
-
-```lean
-DensityOperator.expectation_eq_spectral_tsum
-DensityOperator.sqrtOp
-DensityOperator.sqrtOp_isHilbertSchmidt
-DensityOperator.expectation_eq_innerHS
-```
-
-and the diagonal-formula layer owns the `HasSum`, `Summable`, complex `tsum`, and real observable
-`tsum` formulas.
+The diagonal-formula layer derives its `HasSum`, `Summable`, complex `tsum`, and real observable
+`tsum` formulas directly from the general trace-class diagonal series. No density-specific
+square-root/Hilbert--Schmidt bridge is part of the public API.
 
 These modules must remain free of accidental `[FiniteDimensional ...]` and `[Fintype ...]`
-assumptions. The density umbrella exports the canonical diagonal bridge and formula modules.
+assumptions. The density umbrella exports the canonical diagonal formula module.
 
 For a Hamiltonian, `Gibbs/DiagonalEnergy.lean` exposes the countable common-eigenbasis
 `HilbertBasis`/`tsum` theorem as the generic foundation. Architecture CI requires that foundation to
@@ -191,7 +183,7 @@ finite-dimensional corollaries where finiteness is genuinely required
 - unique canonical ownership of pure-state and density-state real observable expectations;
 - unique canonical ownership of `probNNReal` and `bornPMF`;
 - the lossless Born probability-kernel boundary;
-- ownership of the Hilbert-Schmidt diagonal bridge and countable diagonal formulas;
+- ownership of the countable diagonal formulas;
 - absence of finite-dimensional/index assumptions from the generic countable diagonal modules;
 - export of the canonical diagonal modules from the density umbrella;
 - presence of the countable Gibbs diagonal-energy foundation.
