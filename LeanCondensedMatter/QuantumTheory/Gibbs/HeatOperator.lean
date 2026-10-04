@@ -63,11 +63,11 @@ theorem DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_ba
     (htrace : SpectralTraceClass K) (hne : K ≠ 0)
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
-    DensityOperator.normalizePositive K hpos htrace hne =
+    DensityOperator.normalizePositive K hpos htrace.isTraceClass hne =
       purePointGibbsDensityOperator b E β
         (purePointGibbsSummable_of_basis_action K htrace b E β happly) := by
   let hsum := purePointGibbsSummable_of_basis_action K htrace b E β happly
-  change DensityOperator.normalizePositive K hpos htrace hne =
+  change DensityOperator.normalizePositive K hpos htrace.isTraceClass hne =
     purePointGibbsDensityOperator b E β hsum
   apply DensityOperator.ext
   apply ContinuousLinearMap.ext_on
