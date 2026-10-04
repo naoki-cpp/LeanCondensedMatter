@@ -18,9 +18,9 @@ applies.
 
 - **The general trace-class API is not yet complete as a normed operator ideal.**
   `ContinuousLinearMap.IsTraceClass T` is implemented through Hilbert–Schmidt membership of
-  `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace.
-  Membership is closed under addition, scalar multiplication, adjoint, and bounded left/right
-  multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
+  `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace. Every
+  trace-class operator is compact. Membership is closed under addition, scalar multiplication,
+  adjoint, and bounded left/right multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
   by contractions, with the general bounds `‖WT‖₁ ≤ ‖W‖ ‖T‖₁` and
   `‖TW‖₁ ≤ ‖W‖ ‖T‖₁`. The canonical complex trace is cyclic under bounded
   left/right multiplication; completeness remains missing.
