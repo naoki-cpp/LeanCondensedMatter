@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
+import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false

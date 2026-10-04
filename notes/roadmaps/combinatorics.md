@@ -89,6 +89,9 @@ cumulants, and connected decompositions remain in `Combinatorics`.
 
 ## Ownership boundary
 
+- finite-set off-diagonal sum congruences modulo `n` belong in
+  `Combinatorics/FiniteSumModEq.lean`; pairing-crossing proofs consume that general result without
+  owning it;
 - set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
   identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
 - Mathlib provides `SimpleGraph.reachableSetoid`, connected components, and

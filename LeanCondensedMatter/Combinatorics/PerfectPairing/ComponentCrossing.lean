@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
+import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 
 set_option linter.style.header false
 
