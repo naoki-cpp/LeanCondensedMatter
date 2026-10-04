@@ -24,12 +24,12 @@ noncomputable def hilbertSchmidtNormSqSeriesWrt {ι : Type*}
 
 /-- For a Hilbert--Schmidt operator, the square-norm series has the same value in every Hilbert
 basis. -/
-theorem hilbertSchmidtNormSqSeriesWrt_eq {ι κ : Type*}
+private theorem hilbertSchmidtNormSqSeriesWrt_eq {ι κ : Type*}
     (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
     (T : H →L[ℂ] H) (hT : IsHilbertSchmidt T) :
     hilbertSchmidtNormSqSeriesWrt d T = hilbertSchmidtNormSqSeriesWrt f T := by
   unfold hilbertSchmidtNormSqSeriesWrt
-  exact (summable_norm_sq_apply_and_tsum_eq d f T (hT.isHilbertSchmidtWrt d)).2.symm
+  exact (summable_norm_sq_apply_and_tsum_eq d f T ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)).2.symm
 
 namespace IsHilbertSchmidt
 
@@ -68,7 +68,7 @@ theorem normSq_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
   rw [(isHilbertSchmidt_adjoint hT).normSq_eq_seriesWrt d, hT.normSq_eq_seriesWrt d]
   unfold hilbertSchmidtNormSqSeriesWrt
   exact (summable_norm_sq_adjoint_apply_and_tsum_eq d d T
-    (hT.isHilbertSchmidtWrt d)).2
+    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)).2
 
 /-- Left composition by a bounded operator increases the squared Hilbert--Schmidt norm by at most
 the square of the operator norm. -/
@@ -78,9 +78,9 @@ theorem normSq_comp_left_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
   rw [(isHilbertSchmidt_comp_left B hT).normSq_eq_seriesWrt d,
     hT.normSq_eq_seriesWrt d]
   unfold hilbertSchmidtNormSqSeriesWrt
-  have hTsum : Summable (fun i => ‖T (d i)‖ ^ 2) := hT.isHilbertSchmidtWrt d
+  have hTsum : Summable (fun i => ‖T (d i)‖ ^ 2) := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
   have hBTsum : Summable (fun i => ‖(B * T) (d i)‖ ^ 2) :=
-    (isHilbertSchmidt_comp_left B hT).isHilbertSchmidtWrt d
+    (isHilbertSchmidt_iff_isHilbertSchmidtWrt d (B * T)).mp (isHilbertSchmidt_comp_left B hT)
   have hscaled : Summable (fun i => ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2) :=
     hTsum.mul_left (‖B‖ ^ 2)
   calc
