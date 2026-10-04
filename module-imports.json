@@ -2084,21 +2084,11 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/DiagonalExpectation.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/DiagonalFormula.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation"
       ],
       "externalImportCount": 0
     },
@@ -2178,7 +2168,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder",
@@ -2886,6 +2875,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/Connected.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
+        "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder"
@@ -2907,6 +2897,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
+        "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
@@ -5128,6 +5119,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/AmplitudeFactorization.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+        "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Amplitude",
