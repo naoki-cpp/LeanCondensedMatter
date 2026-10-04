@@ -61,8 +61,9 @@ self-adjoint operators, with the real spectral trace after coercion to `ℂ`.
 ## Hilbert--Schmidt operators
 
 `Analysis/Operator/HilbertSchmidt/` provides basis-independent Hilbert--Schmidt membership, adjoint
-invariance, closure under bounded composition, the basis-relative totalized norm-square series, the
-pairing `innerHS`, and comparison with spectral trace on the compact self-adjoint overlap.
+invariance, closure under bounded composition, the canonical squared norm with direct Hilbert-basis
+`Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace on the
+compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
 complex trace are defined from the Hilbert--Schmidt layer. Trace-class membership is equivalently
