@@ -175,8 +175,9 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
           (d.componentWickDiagram B).mixedPairingValue ε β
             (d.componentExternalTime externalTime B)
             (d.componentInteractionTime σ B) := by
-  simp only [d.relativeComponentShuffleSign_eq_external_mul_mixedInter,
-    d.mixedPairingValue_eq_inter_mul_prod_components]
+  conv_lhs =>
+    rw [d.relativeComponentShuffleSign_eq_external_mul_mixedInter]
+    rw [d.mixedPairingValue_eq_inter_mul_prod_components]
   have hsignsquare :
       (Common.Statistics.fermion.zetaInt : ℂ) ^
           d.mixedInterComponentCrossingCount externalTime σ *
