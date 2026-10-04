@@ -131,9 +131,9 @@ modules.
 
 For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
 **heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed
-`β > 0`, a bounded positive heat operator `Kβ` together with explicit spectral trace-class data
-and nonzeroness. Positivity plus spectral trace class and nonzeroness imply strictly positive trace,
-and `DensityOperator.normalizePositive` is the canonical normalization boundary. The statement that
+`β > 0`, a bounded positive heat operator `Kβ` together with general trace-class data and
+nonzeroness. Positivity plus trace class and nonzeroness imply strictly positive spectral trace, and
+`DensityOperator.normalizePositive` is the canonical normalization boundary. The statement that
 `Kβ = exp (-β H)` for a semibounded unbounded self-adjoint Hamiltonian belongs to
 the upstream domain-aware analysis layer and must retain the Hamiltonian domain and lower-bound
 assumptions explicitly. A future heat-semigroup or unbounded functional-calculus implementation can
