@@ -20,26 +20,29 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace DensityOperator
 
-/-- Normalize a nonzero positive spectral-trace-class operator to a density operator. -/
+/-- Normalize a nonzero positive trace-class operator to a density operator. -/
 noncomputable def normalizePositive
     (T : H →L[ℂ] H) (hpos : T.IsPositive)
-    (htrace : SpectralTraceClass T) (hne : T ≠ 0) : DensityOperator H := by
+    (htrace : IsTraceClass T) (hne : T ≠ 0) : DensityOperator H := by
+  let hstc : SpectralTraceClass T :=
+    { isTraceClass := htrace
+      symmetric := hpos.isSelfAdjoint.isSymmetric }
   let Z : ℝ := spectralTrace T
   let r : ℝ := Z⁻¹
   have hZpos : 0 < Z := by
-    simpa [Z] using htrace.spectralTrace_pos hpos hne
+    simpa [Z] using hstc.spectralTrace_pos hpos hne
   have hscaledPos : ((r : ℂ) • T).IsPositive :=
     hpos.smul_of_nonneg (RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZpos.le))
   let hscaledTrace : IsTraceClass ((r : ℂ) • T) :=
-    htrace.isTraceClass.smul (r : ℂ)
+    htrace.smul (r : ℂ)
   exact {
     op := (r : ℂ) • T
     pos := hscaledPos
     isTraceClass := hscaledTrace
     trace_eq_one := by
       dsimp [hscaledTrace]
-      rw [htrace.isTraceClass.trace_smul,
-        htrace.isTraceClass.trace_eq_spectralTrace htrace.isSelfAdjoint]
+      rw [htrace.trace_smul,
+        htrace.trace_eq_spectralTrace hpos.isSelfAdjoint]
       dsimp [r, Z]
       exact_mod_cast inv_mul_cancel₀ (ne_of_gt hZpos)
   }
@@ -47,7 +50,7 @@ noncomputable def normalizePositive
 @[simp]
 theorem normalizePositive_op
     (T : H →L[ℂ] H) (hpos : T.IsPositive)
-    (htrace : SpectralTraceClass T) (hne : T ≠ 0) :
+    (htrace : IsTraceClass T) (hne : T ≠ 0) :
     (normalizePositive T hpos htrace hne).op = (spectralTrace T)⁻¹ • T := by
   change (((spectralTrace T)⁻¹ : ℝ) : ℂ) • T = (spectralTrace T)⁻¹ • T
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
