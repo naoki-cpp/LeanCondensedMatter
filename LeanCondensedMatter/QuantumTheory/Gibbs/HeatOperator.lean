@@ -56,8 +56,9 @@ theorem heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action
   rw [purePointPartitionFunction]
   exact (hasSum_purePointBoltzmannWeight_of_basis_action K htrace b E β happly).tsum_eq.symm
 
-/-- A positive nonzero spectral-trace-class heat operator with pure-point Boltzmann basis action
-normalizes to the existing pure-point Gibbs density operator. -/
+/-- A positive nonzero trace-class heat operator with pure-point Boltzmann basis action normalizes
+to the existing pure-point Gibbs density operator. The spectral witness is retained here only for
+the pure-point basis formulas. -/
 theorem DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action
     [Nonempty ι] (K : H →L[ℂ] H) (hpos : K.IsPositive)
     (htrace : SpectralTraceClass K) (hne : K ≠ 0)
