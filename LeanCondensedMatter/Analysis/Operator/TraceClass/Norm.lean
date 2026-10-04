@@ -29,8 +29,7 @@ theorem traceNorm_eq_tsum_diagonalExpectationValue {T : H →L[ℂ] H}
     hT.traceNorm =
       ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
   unfold traceNorm
-  rw [IsHilbertSchmidt.normSq_eq_seriesWrt hT d]
-  unfold hilbertSchmidtNormSqSeriesWrt
+  rw [IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply hT d]
   apply tsum_congr
   intro i
   exact (diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs T (d i)).symm
