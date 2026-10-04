@@ -126,8 +126,7 @@ theorem IsTraceClass.trace_eq_spectralTrace
     (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
     hT.trace = (spectralTrace T : ℂ) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [hT.trace_eq_seriesWrt d]
-  unfold traceSeriesWrt
+  rw [hT.trace_eq_tsum_inner d]
   have hspec : HasSummableRealEigenvalues T := hT.hasSummableRealEigenvalues hself
   have hcast :=
     (hasSum_diagonalExpectationValue_eq_spectralTrace hT.isCompact hself hspec d).mapL
