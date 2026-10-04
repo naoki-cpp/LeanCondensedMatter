@@ -13959,7 +13959,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -13975,7 +13975,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -14066,8 +14066,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -14075,8 +14075,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -14115,8 +14115,8 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -14125,8 +14125,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -14457,6 +14457,58 @@
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_smul"
     ],
     "compiledConsumerCount": 10,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass),\n  ∃ A B,\n    ∃ (hA : A.IsHilbertSchmidt) (hB : B.IsHilbertSchmidt),\n      ContinuousLinearMap.adjoint A * B = T ∧ hA.normSq ≤ hT.traceNorm ∧ hB.normSq ≤ hT.traceNorm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization",
+    "externalAxioms": [],
+    "docString": "Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors whose squared\nHilbert--Schmidt norms are bounded by the trace norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
+      "ContinuousLinearMap.exists_leftPolarFactor",
+      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17116,11 +17168,9 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.add",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.exists_hilbertSchmidt_factorization_of_isTraceClass",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
@@ -17131,15 +17181,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.add",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.exists_hilbertSchmidt_factorization_of_isTraceClass",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17971,11 +18019,10 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.comp_left",
       "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.innerHS_comp_right",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.exists_hilbertSchmidt_factorization_of_isTraceClass",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
@@ -17990,16 +18037,15 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.comp_left",
       "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "ContinuousLinearMap.innerHS_comp_right",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.exists_hilbertSchmidt_factorization_of_isTraceClass",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18131,7 +18177,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.exists_hilbertSchmidt_factorization_of_isTraceClass",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
     ],
     "crossModuleDirectWrapper": false,
@@ -126313,44 +126359,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n        (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedNormalizedPairEmbedding externalTime σ B) pr) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedNormalizedPairEmbedding_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
-    "externalAxioms": [],
-    "docString": "The mixed normalized-pair embedding maps both endpoints by `componentMixedPosition`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (pr :\n    (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n        (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).NormalizedPair),\n  ↑((d.componentMixedPairEquiv externalTime σ) ⟨B, pr⟩) =\n    (d.componentMixedPosition externalTime σ B (↑pr).1, d.componentMixedPosition externalTime σ B (↑pr).2)",
     "standardAxioms": [
@@ -126524,10 +126532,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPairEquiv_apply",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionOrderEmbedding",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149374,51 +149381,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  T.IsTraceClass → ∃ A B, A.IsHilbertSchmidt ∧ B.IsHilbertSchmidt ∧ ContinuousLinearMap.adjoint A * B = T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.0.ContinuousLinearMap.exists_hilbertSchmidt_factorization_of_isTraceClass",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization",
-    "externalAxioms": [],
-    "docString": "Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.exists_leftPolarFactor",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {A B T : H →L[ℂ] H}, A.IsHilbertSchmidt → B.IsHilbertSchmidt → ContinuousLinearMap.adjoint A * B = T → T.IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -149495,54 +149457,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass),\n  ∃ A B,\n    ∃ (hA : A.IsHilbertSchmidt) (hB : B.IsHilbertSchmidt),\n      ContinuousLinearMap.adjoint A * B = T ∧ hA.normSq ≤ hT.traceNorm ∧ hB.normSq = hT.traceNorm",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
-      "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
-      "ContinuousLinearMap.exists_leftPolarFactor",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149636,7 +149550,7 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_proof_irrel",
       "ContinuousLinearMap.IsHilbertSchmidt.summable_inner_apply",
-      "ContinuousLinearMap.exists_leftPolarFactor",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right"
     ],
     "crossModuleDirectWrapper": false,
@@ -149684,7 +149598,7 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.IsTraceClass.exists_hilbertSchmidt_factorization_le_traceNorm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization"
     ],
     "crossModuleDirectWrapper": false,

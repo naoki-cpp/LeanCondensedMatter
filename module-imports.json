@@ -493,7 +493,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
         "LeanCondensedMatter.Analysis.Operator.Polar",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.General"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm"
       ],
       "externalImportCount": 0
     },
