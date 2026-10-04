@@ -1076,6 +1076,16 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/FamilySlotShuffleSign.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.ExchangeSign",
+        "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
       "sourceFile": "LeanCondensedMatter/Combinatorics/FiniteIndex/Block.lean",
       "imports": [],
@@ -1450,6 +1460,7 @@
         "LeanCondensedMatter.Combinatorics.Cumulant",
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
+        "LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign",
         "LeanCondensedMatter.Combinatorics.FiniteIndex",
         "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
         "LeanCondensedMatter.Combinatorics.IncidenceAlgebra",
@@ -4981,6 +4992,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentOrderSign.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign"
       ],
@@ -4991,7 +5003,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingValue.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign"
       ],
       "externalImportCount": 0
     },
