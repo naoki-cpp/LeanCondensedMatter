@@ -8,9 +8,10 @@ set_option linter.style.header false
 # Hilbert--Schmidt factorization of trace-class operators
 
 A bounded operator is trace class exactly when it factors as `A† B` with Hilbert--Schmidt
-operators `A` and `B`. A trace-class operator admits such a factorization with both squared
-Hilbert--Schmidt norms bounded by its trace norm. This characterization is the shared structural
-input for compactness, ideal closure, trace convergence, and trace-norm estimates.
+operators `A` and `B`. The trace norm is bounded by the Hilbert--Schmidt norm squares of every
+such factorization, and every trace-class operator admits a factorization whose two squared
+Hilbert--Schmidt norms are exactly its trace norm. These results are the shared structural input for
+compactness, ideal closure, trace convergence, and trace-norm estimates.
 -/
 
 noncomputable section
@@ -21,13 +22,94 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace IsTraceClass
 
+/-- For any Hilbert--Schmidt factorization `T = A† B`, the trace norm is bounded by the arithmetic
+mean of the squared Hilbert--Schmidt norms. -/
+theorem traceNorm_le_half_normSq_add_of_factorization
+    {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
+    (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
+    (hfactor : ContinuousLinearMap.adjoint A * B = T) :
+    hT.traceNorm ≤ (hA.normSq + hB.normSq) / 2 := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor T
+  have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
+  have hAUnorm_le : hAU.normSq ≤ hA.normSq := by
+    have hraw := IsHilbertSchmidt.normSq_comp_right_le hA U
+    have hraw' : hAU.normSq ≤ ‖U‖ ^ 2 * hA.normSq := by
+      exact (IsHilbertSchmidt.normSq_proof_irrel hAU
+        (isHilbertSchmidt_comp_right hA U)) ▸ hraw
+    calc
+      hAU.normSq ≤ ‖U‖ ^ 2 * hA.normSq := hraw'
+      _ ≤ 1 ^ 2 * hA.normSq := by
+        exact mul_le_mul_of_nonneg_right
+          (pow_le_pow_left₀ (norm_nonneg U) hUnorm 2) hA.normSq_nonneg
+      _ = hA.normSq := by rw [one_pow, one_mul]
+  have hterm (i : w) :
+      inner ℂ (U (d i)) (T (d i)) =
+        inner ℂ ((A * U) (d i)) (B (d i)) := by
+    calc
+      inner ℂ (U (d i)) (T (d i)) =
+          inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A * B) (d i)) := by rw [hfactor]
+      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
+        rw [mul_apply_eq_comp]
+      _ = inner ℂ (A (U (d i))) (B (d i)) :=
+        ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
+      _ = inner ℂ ((A * U) (d i)) (B (d i)) := by rw [mul_apply_eq_comp]
+  have hsumInner : Summable (fun i => inner ℂ (U (d i)) (T (d i))) :=
+    (hAU.summable_inner_apply hB d).congr fun i => (hterm i).symm
+  have hnormSummable : Summable (fun i => ‖inner ℂ (U (d i)) (T (d i))‖) :=
+    hsumInner.norm
+  have hAUhas : HasSum (fun i => ‖(A * U) (d i)‖ ^ 2) hAU.normSq :=
+    hAU.hasSum_norm_sq_apply d
+  have hBhas : HasSum (fun i => ‖B (d i)‖ ^ 2) hB.normSq :=
+    hB.hasSum_norm_sq_apply d
+  have hmajorHas :
+      HasSum (fun i => (‖(A * U) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2)
+        ((hAU.normSq + hB.normSq) / 2) :=
+    (hAUhas.add hBhas).div_const 2
+  have hpoint_le (i : w) :
+      ‖inner ℂ (U (d i)) (T (d i))‖ ≤
+        (‖(A * U) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2 := by
+    rw [hterm]
+    exact (norm_inner_le_norm ((A * U) (d i)) (B (d i))).trans (by
+      nlinarith [sq_nonneg (‖(A * U) (d i)‖ - ‖B (d i)‖)])
+  rw [hT.traceNorm_eq_tsum_diagonalExpectationValue d]
+  calc
+    (∑' i, diagonalExpectationValue (CFC.abs T)
+        (CFC.abs_nonneg T).isSelfAdjoint (d i)) =
+        ∑' i, ‖inner ℂ (U (d i)) (T (d i))‖ := by
+      apply tsum_congr
+      intro i
+      have hdiag :
+          (diagonalExpectationValue (CFC.abs T)
+            (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ) =
+            inner ℂ (U (d i)) (T (d i)) := by
+        rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
+        exact ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
+      have hnonneg := diagonalExpectationValue_nonneg
+        (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
+      have hcastNorm :
+          ‖(diagonalExpectationValue (CFC.abs T)
+            (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ =
+            diagonalExpectationValue (CFC.abs T)
+              (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
+        rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
+      calc
+        diagonalExpectationValue (CFC.abs T)
+            (CFC.abs_nonneg T).isSelfAdjoint (d i) =
+            ‖(diagonalExpectationValue (CFC.abs T)
+              (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ := hcastNorm.symm
+        _ = ‖inner ℂ (U (d i)) (T (d i))‖ := by rw [hdiag]
+    _ ≤ (hAU.normSq + hB.normSq) / 2 :=
+      (hnormSummable.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
+    _ ≤ (hA.normSq + hB.normSq) / 2 := by linarith
+
 /-- Every trace-class operator factors as `A† B` with Hilbert--Schmidt factors whose squared
-Hilbert--Schmidt norms are bounded by the trace norm. -/
-theorem exists_hilbertSchmidt_factorization_le_traceNorm
+Hilbert--Schmidt norms both equal the trace norm. -/
+theorem exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
     {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     ∃ A B : H →L[ℂ] H, ∃ hA : IsHilbertSchmidt A, ∃ hB : IsHilbertSchmidt B,
       ContinuousLinearMap.adjoint A * B = T ∧
-      hA.normSq ≤ hT.traceNorm ∧ hB.normSq ≤ hT.traceNorm := by
+      hA.normSq = hT.traceNorm ∧ hB.normSq = hT.traceNorm := by
   obtain ⟨U, hUleft, -, hUnorm⟩ := exists_leftPolarFactor T
   let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
   have hS : IsHilbertSchmidt S := hT
@@ -65,7 +147,11 @@ theorem exists_hilbertSchmidt_factorization_le_traceNorm
         exact mul_le_mul_of_nonneg_right
           (pow_le_pow_left₀ (norm_nonneg _) hAdjUnorm 2) hS.normSq_nonneg
       _ = hT.traceNorm := by rw [one_pow, one_mul, hSnorm]
-  exact ⟨A, S, hA, hS, hfactor, hAnorm_le, hSnorm.le⟩
+  have hlower := hT.traceNorm_le_half_normSq_add_of_factorization hA hS hfactor
+  have hAnorm : hA.normSq = hT.traceNorm := by
+    rw [hSnorm] at hlower
+    linarith
+  exact ⟨A, S, hA, hS, hfactor, hAnorm, hSnorm⟩
 
 end IsTraceClass
 
@@ -111,7 +197,7 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
   constructor
   · intro hT
     obtain ⟨A, B, hA, hB, hfactor, -, -⟩ :=
-      hT.exists_hilbertSchmidt_factorization_le_traceNorm
+      hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
     exact ⟨A, B, hA, hB, hfactor⟩
   · rintro ⟨A, B, hA, hB, hfactor⟩
     exact isTraceClass_of_hilbertSchmidt_factorization hA hB hfactor
