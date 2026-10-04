@@ -133,9 +133,12 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
   have hSW : IsHilbertSchmidt (S * ContinuousLinearMap.adjoint W) :=
     isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint W)
   have hleft := summable_inner_adjoint_apply_and_tsum_eq d d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS) ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hTW)
+    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS)
+    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d (T * W)).mp hTW)
   have hright := summable_inner_adjoint_apply_and_tsum_eq d d
-    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hSW) ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)
+    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d
+      (S * ContinuousLinearMap.adjoint W)).mp hSW)
+    ((isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT)
   have hAdjTW :
       ContinuousLinearMap.adjoint (T * W) =
         ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
