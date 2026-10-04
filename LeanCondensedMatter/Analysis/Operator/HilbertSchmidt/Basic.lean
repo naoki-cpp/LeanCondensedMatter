@@ -104,7 +104,7 @@ omit [CompleteSpace H] in
 /-- **Composing a Hilbert–Schmidt operator with a bounded operator on the left stays
 Hilbert–Schmidt**, with respect to the same basis, by the comparison test against the operator
 norm bound `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖`. -/
-theorem isHilbertSchmidtWrt_comp_left {ι : Type*} (d : HilbertBasis ι ℂ H) (B : H →L[ℂ] H)
+private theorem isHilbertSchmidtWrt_comp_left {ι : Type*} (d : HilbertBasis ι ℂ H) (B : H →L[ℂ] H)
     {T : H →L[ℂ] H} (hT : IsHilbertSchmidtWrt d T) : IsHilbertSchmidtWrt d (B * T) := by
   refine Summable.of_nonneg_of_le (fun i => sq_nonneg _) (fun i => ?_)
     (hT.mul_left (‖B‖ ^ 2))
