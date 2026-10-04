@@ -36,9 +36,9 @@ noncomputable def DensityOperator.ofFiniteDimensional
   refine
     { op := ρ
       pos := hpos
-      spectralTraceClass := hstc
+      isTraceClass := hstc.isTraceClass
       trace_eq_one := ?_ }
-  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.compact hstc.isSelfAdjoint]
+  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.isSelfAdjoint]
   let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
     hsymm.eigenvectorBasis rfl
   have hb (i : Fin (Module.finrank ℂ H)) :

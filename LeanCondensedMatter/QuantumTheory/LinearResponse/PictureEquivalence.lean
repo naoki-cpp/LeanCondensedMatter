@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
@@ -85,22 +85,14 @@ noncomputable def evolveDensityOperator (ρ : DensityOperator H) (t : ℝ) :
     change ((freePropagator system t) ∘SL ρ.op ∘SL
       ContinuousLinearMap.adjoint (freePropagator system t)).IsPositive
     exact ρ.pos.conj_adjoint (freePropagator system t)
-  spectralTraceClass :=
-    ρ.spectralTraceClass.unitaryConjugate
-      (freePropagator system t)
-      (star_mul_freePropagator system t)
-      (freePropagator_mul_star system t)
+  isTraceClass :=
+    ρ.isTraceClass.unitaryConjugate (freePropagator system t)
   trace_eq_one := by
     calc
-      (ρ.spectralTraceClass.unitaryConjugate
-        (freePropagator system t)
-        (star_mul_freePropagator system t)
-        (freePropagator_mul_star system t)).isTraceClass.trace =
-          ρ.spectralTraceClass.isTraceClass.trace :=
-        SpectralTraceClass.trace_unitaryConjugate
-          ρ.spectralTraceClass (freePropagator system t)
-          (star_mul_freePropagator system t)
-          (freePropagator_mul_star system t)
+      (ρ.isTraceClass.unitaryConjugate (freePropagator system t)).trace =
+          ρ.isTraceClass.trace :=
+        ρ.isTraceClass.trace_unitaryConjugate
+          (freePropagator system t) (star_mul_freePropagator system t)
       _ = 1 := ρ.trace_eq_one
 
 @[simp]

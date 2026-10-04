@@ -44,9 +44,11 @@ Basis independence is reduced to the existing Hilbert--Schmidt layer: the diagon
 chosen Hilbert basis. Basis choices remain witnesses rather than mathematical data stored in the
 operator property.
 
-The existing `ContinuousLinearMap.SpectralTraceClass` remains the compact self-adjoint spectral
-specialization. Its real-valued `spectralTrace` supplies eigenvalue-sum formulas, positivity,
-scalar transport, supported cyclicity, and Hilbert-basis formulas; it does not define a second
+`ContinuousLinearMap.SpectralTraceClass` is the self-adjoint specialization of the general
+trace-class API: it stores `IsTraceClass T` and symmetry, while compactness is derived from general
+trace-class compactness and spectral summability is derived from the compact self-adjoint
+characterization. Its real-valued `spectralTrace` supplies eigenvalue-sum formulas, positivity,
+and Hilbert-basis formulas; it does not define a second
 bundled trace value. The neutral Hilbert-basis diagonal operator construction is owned by
 `Analysis/Operator/Diagonal.lean`.
 
@@ -61,17 +63,19 @@ self-adjoint operators, with the real spectral trace after coercion to `ℂ`.
 ## Hilbert--Schmidt operators
 
 `Analysis/Operator/HilbertSchmidt/` provides basis-independent Hilbert--Schmidt membership, adjoint
-invariance, closure under bounded composition, the canonical squared norm with direct Hilbert-basis
-`Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace on the
-compact self-adjoint overlap.
+invariance, closure under bounded composition, compactness, the canonical squared norm with direct
+Hilbert-basis `Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace
+on the compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
 complex trace are defined from the Hilbert--Schmidt layer. Trace-class membership is equivalently
-characterized by a factorization `T = A† B` with Hilbert--Schmidt factors. Membership is closed under
-adjoint and bounded left/right multiplication. The trace norm is adjoint-invariant and contractive under
+characterized by a factorization `T = A† B` with Hilbert--Schmidt factors, which also implies that
+every trace-class operator is compact. Membership is closed under adjoint and bounded left/right
+multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
 bounds are also proved. The canonical complex trace is cyclic for a trace-class factor and a
-bounded factor. Trace-class completeness remains open.
+bounded factor. General adjoint conjugation preserves trace class, and trace invariance under
+`U†U = 1` is derived directly from that cyclicity. Trace-class completeness remains open.
 
 ## Fredholm determinant
 
@@ -127,9 +131,9 @@ modules.
 
 For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
 **heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed
-`β > 0`, a bounded positive heat operator `Kβ` together with explicit spectral trace-class data
-and nonzeroness. Positivity plus spectral trace class and nonzeroness imply strictly positive trace,
-and `DensityOperator.normalizePositive` is the canonical normalization boundary. The statement that
+`β > 0`, a bounded positive heat operator `Kβ` together with general trace-class data and
+nonzeroness. Positivity plus trace class and nonzeroness imply strictly positive spectral trace, and
+`DensityOperator.normalizePositive` is the canonical normalization boundary. The statement that
 `Kβ = exp (-β H)` for a semibounded unbounded self-adjoint Hamiltonian belongs to
 the upstream domain-aware analysis layer and must retain the Hamiltonian domain and lower-bound
 assumptions explicitly. A future heat-semigroup or unbounded functional-calculus implementation can

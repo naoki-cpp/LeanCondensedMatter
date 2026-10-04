@@ -246,7 +246,7 @@ private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #
 private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
   let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
-  let traceClassUnitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary
+  let traceClassUnitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
   #[
     { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
@@ -261,13 +261,9 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
     { declaration := `ContinuousLinearMap.unitaryConjugate_rankOne, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.eigenspace_unitaryConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate,
+    { declaration := `ContinuousLinearMap.IsTraceClass.unitaryConjugate,
       moduleName := traceClassUnitaryModule },
-    { declaration := `ContinuousLinearMap.spectralTrace_unitaryConjugate,
-      moduleName := traceClassUnitaryModule },
-    { declaration := `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate,
-      moduleName := traceClassUnitaryModule },
-    { declaration := `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate,
+    { declaration := `ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate,
       moduleName := traceClassUnitaryModule },
     { declaration := `QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis,
       moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal },

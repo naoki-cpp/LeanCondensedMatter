@@ -36,9 +36,9 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
   refine
     { op := HilbertBasis.diagonalOp b (fun i => (p i : ℂ))
       pos := HilbertBasis.diagonalOp_isPositive b p hp_norm hp_nonneg
-      spectralTraceClass := hstc
+      isTraceClass := hstc.isTraceClass
       trace_eq_one := ?_ }
-  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.compact hstc.isSelfAdjoint]
+  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.isSelfAdjoint]
   have hspectral :
       spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = 1 := by
     calc

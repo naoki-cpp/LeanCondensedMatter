@@ -6,10 +6,11 @@ applies.
 ## Quantum and operator analysis
 
 - **The real spectral trace is not the general trace API.**
-  `ContinuousLinearMap.SpectralTraceClass` is built for compact self-adjoint operators, while
-  `spectralTrace` is the real eigenvalue sum with multiplicity. The canonical trace on general
-  trace-class bounded operators is `IsTraceClass.trace : ℂ`; on the compact self-adjoint overlap
-  it agrees with `spectralTrace` after coercion to `ℂ`.
+  `ContinuousLinearMap.SpectralTraceClass` is the self-adjoint specialization of general trace-class
+  membership; compactness and absolute spectral summability are derived. `spectralTrace` is the real
+  eigenvalue sum with multiplicity. The canonical trace on general trace-class bounded operators is
+  `IsTraceClass.trace : ℂ`, and on the self-adjoint specialization it agrees with `spectralTrace`
+  after coercion to `ℂ`.
 
 - **Hilbert-basis diagonal operators are not trace-class-specific.**
   `Analysis/Operator/Diagonal.lean` constructs the absolutely summable rank-one series and proves
@@ -18,9 +19,9 @@ applies.
 
 - **The general trace-class API is not yet complete as a normed operator ideal.**
   `ContinuousLinearMap.IsTraceClass T` is implemented through Hilbert–Schmidt membership of
-  `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace.
-  Membership is closed under addition, scalar multiplication, adjoint, and bounded left/right
-  multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
+  `sqrt(|T|)`, with a basis-independent real trace norm and basis-independent complex trace. Every
+  trace-class operator is compact. Membership is closed under addition, scalar multiplication,
+  adjoint, and bounded left/right multiplication. The trace norm is invariant under adjoint and nonincreasing under multiplication
   by contractions, with the general bounds `‖WT‖₁ ≤ ‖W‖ ‖T‖₁` and
   `‖TW‖₁ ≤ ‖W‖ ‖T‖₁`. The canonical complex trace is cyclic under bounded
   left/right multiplication; completeness remains missing.
