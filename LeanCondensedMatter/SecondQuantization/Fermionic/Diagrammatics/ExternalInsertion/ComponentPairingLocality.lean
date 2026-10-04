@@ -18,9 +18,9 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode]
 
+omit [LinearOrder Mode] in
 /-- The timed field attached to a component-local canonical leg is exactly the ambient timed field
 on the corresponding canonical leg. -/
-omit [LinearOrder Mode] in
 theorem ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
@@ -44,6 +44,7 @@ theorem ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentO
       rfl
 
 
+omit [LinearOrder Mode] in
 private theorem
     ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition
     {E n : ℕ}
