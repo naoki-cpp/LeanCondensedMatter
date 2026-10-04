@@ -124,7 +124,8 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
     change HasSum (fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i)))
       (innerHS b ρ.sqrtOp (A * ρ.sqrtOp))
     exact (summable_inner_apply_of_isHilbertSchmidtWrt b
-      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b _).mp hsqrt) ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b _).mp hAsqrt)).hasSum
+      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b ρ.sqrtOp).mp hsqrt)
+      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b (A * ρ.sqrtOp)).mp hAsqrt)).hasSum
   have hrestricted : HasSum
       (fun a : EigenvectorIndex ρ.op =>
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
