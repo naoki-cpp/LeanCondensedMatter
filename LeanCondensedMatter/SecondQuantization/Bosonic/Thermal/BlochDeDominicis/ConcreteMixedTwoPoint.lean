@@ -30,11 +30,12 @@ theorem matrixCoeff_annihilate_comp_create_self
       if i = j then (n i : ℂ) + 1 else 0 := by
   by_cases hij : i = j
   · subst j
-    rw [ite_eq_left rfl, Common.matrixCoeff, LinearMap.comp_apply]
-    change (annihilate i (create i (basisState n))) n = (n i : ℂ) + 1
-    rw [annihilate_create_basisState_same]
-    change (((n i : ℂ) + 1) • Common.basisState n) n = (n i : ℂ) + 1
-    exact Common.smul_basisState_apply_self ((n i : ℂ) + 1) n
+    rw [ite_eq_left rfl]
+    have haction : ((annihilate i).comp (create i)) (basisState n) =
+        ((n i : ℂ) + 1) • basisState n := by
+      rw [LinearMap.comp_apply, annihilate_create_basisState_same]
+    simpa using
+      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := n) haction)
   · rw [ite_eq_right hij, Common.matrixCoeff, LinearMap.comp_apply]
     change (annihilate i (create j (basisState n))) n = 0
     rw [create_basisState_eq, map_smul]

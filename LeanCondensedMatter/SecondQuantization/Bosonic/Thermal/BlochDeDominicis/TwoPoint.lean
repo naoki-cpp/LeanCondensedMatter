@@ -38,21 +38,17 @@ omit [Fintype Mode] in
 theorem matrixCoeff_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (τ : ℝ) (n : Occupation Mode) :
     Common.matrixCoeff (imaginaryTimeEvolveFree ε τ) n n =
       Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) := by
-  rw [matrixCoeff_eq, imaginaryTimeEvolveFree_basisState]
-  change (_ • Common.basisState n) n = _
-  rw [Common.smul_basisState_apply_self]
+  simpa using
+    (Common.matrixCoeff_eq_ite_of_basisState_smul
+      (m := n) (imaginaryTimeEvolveFree_basisState ε τ n))
 
 omit [Fintype Mode] in
 /-- The annihilation matrix coefficient against the corresponding lowered state. -/
 theorem matrixCoeff_annihilate_removeOccupation (i : Mode) (n : Occupation Mode) :
     Common.matrixCoeff (annihilate i) (removeOccupation i n) n = (Real.sqrt (n i : ℝ) : ℂ) := by
-  rw [matrixCoeff_eq]
-  by_cases h : n i = 0
-  · rw [annihilate_basisState_of_zero h, h]
-    simp
-  · rw [annihilate_basisState_of_pos h]
-    change (_ • Common.basisState (removeOccupation i n)) (removeOccupation i n) = _
-    rw [Common.smul_basisState_apply_self]
+  simpa using
+    (Common.matrixCoeff_eq_ite_of_basisState_smul
+      (m := removeOccupation i n) (annihilate_basisState_eq i n))
 
 omit [Fintype Mode] in
 /-- The matrix coefficient of `e^{τH₀}a_i†` against the corresponding lowered state. -/
