@@ -79,8 +79,9 @@ The compact self-adjoint spectral specialization remains
 ContinuousLinearMap.SpectralTraceClass T
 ```
 
-which bundles compactness, symmetry, and summability of nonzero real eigenvalues. Its associated
-`spectralTrace` is a real spectral sum for compact self-adjoint operators.
+which bundles general trace-class membership and symmetry. Compactness is derived from
+`IsTraceClass.isCompact`, and summability of the nonzero real eigenvalues is derived from the
+compact self-adjoint characterization. Its associated `spectralTrace` is the real spectral sum.
 
 `Analysis/Operator/TraceClass/General.lean` owns general membership and the Hilbert-basis criterion.
 `Analysis/Operator/TraceClass/Norm.lean` owns the canonical basis-independent real trace norm and
