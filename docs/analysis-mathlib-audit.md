@@ -84,10 +84,12 @@ which bundles general trace-class membership and symmetry. Compactness is derive
 compact self-adjoint characterization. Its associated `spectralTrace` is the real spectral sum.
 
 `Analysis/Operator/TraceClass/General.lean` owns general membership and the Hilbert-basis criterion.
-`Analysis/Operator/TraceClass/Norm.lean` owns the canonical basis-independent real trace norm and
-its Hilbert-basis diagonal formula. `Analysis/Operator/TraceClass/Factorization.lean` owns the
-characterization of trace class as `T = A† B` with Hilbert--Schmidt factors and the norm-controlled
-existence theorem bounding both squared Hilbert--Schmidt norms by the trace norm. `TraceClass/Trace.lean`
+`Analysis/Operator/TraceClass/Norm.lean` owns the canonical basis-independent real trace norm,
+its Hilbert-basis diagonal formula, and the absolute diagonal formula induced by a left polar
+factor. `Analysis/Operator/TraceClass/Factorization.lean` owns the
+characterization of trace class as `T = A† B` with Hilbert--Schmidt factors, the general bound
+`‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, and a factorization with both squared
+Hilbert--Schmidt norms equal to the trace norm. `TraceClass/Trace.lean`
 owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence, and the canonical
 complex trace; there is no separate basis-relative trace-series wrapper. `TraceClass/Compact.lean`
 derives compactness directly from the factorization layer.
