@@ -147,21 +147,18 @@ theorem DensityOperator.expectation_eq_spectral_tsum
         simpa only [ρ.isSelfAdjoint.adjoint_eq] using
           (ContinuousLinearMap.adjoint_inner_right ρ.op (b x) (A (b x)))
       _ = 0 := by simp [hxker]
-  have hfull : HasSum g (traceSeriesWrt b (ρ.op * A)) := by
+  have hfull : HasSum g (ρ.isTraceClass.comp_right A).trace := by
     change HasSum (fun i => inner ℂ (b i) ((ρ.op * A) (b i)))
-      (traceSeriesWrt b (ρ.op * A))
-    unfold traceSeriesWrt
-    exact ((ρ.isTraceClass.comp_right A).summable_traceSeriesWrt b).hasSum
+      (ρ.isTraceClass.comp_right A).trace
+    exact (ρ.isTraceClass.comp_right A).hasSum_trace b
   have hrestricted : HasSum
       (fun a : EigenvectorIndex ρ.op =>
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
-      (traceSeriesWrt b (ρ.op * A)) := by
+      (ρ.isTraceClass.comp_right A).trace := by
     simpa only [Function.comp_apply] using
       HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
   calc
     ρ.expectation A = (ρ.isTraceClass.comp_right A).trace := ρ.expectation_apply A
-    _ = traceSeriesWrt b (ρ.op * A) :=
-      (ρ.isTraceClass.comp_right A).trace_eq_seriesWrt b
     _ = ∑' a : EigenvectorIndex ρ.op,
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := hrestricted.tsum_eq.symm
     _ = ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
