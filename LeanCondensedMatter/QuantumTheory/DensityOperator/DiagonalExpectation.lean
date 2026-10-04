@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 
 attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
@@ -32,86 +32,67 @@ theorem DensityOperator.sqrtOp_apply_eigenvector (ρ : DensityOperator H) {v : H
     (cfc_apply_eigenvector (T := ρ.op) ρ.pos.isSelfAdjoint hv
       (f := Real.sqrt) Real.continuous_sqrt)
 
+/-- The density-operator square root agrees with the canonical positive operator square root. -/
+theorem DensityOperator.sqrtOp_eq_cfcSqrt (ρ : DensityOperator H) :
+    ρ.sqrtOp = CFC.sqrt ρ.op := by
+  have hnonneg : 0 ≤ ρ.op := nonneg_iff_isPositive.mpr ρ.pos
+  rw [CFC.sqrt_eq_real_sqrt ρ.op hnonneg, cfcₙ_eq_cfc]
+  rfl
+
+/-- The positive square root of a density operator is self-adjoint. -/
+theorem DensityOperator.sqrtOp_isSelfAdjoint (ρ : DensityOperator H) :
+    IsSelfAdjoint ρ.sqrtOp := by
+  rw [ρ.sqrtOp_eq_cfcSqrt]
+  exact (CFC.sqrt_nonneg ρ.op).isSelfAdjoint
+
+/-- The square of the positive square root recovers the density operator. -/
+theorem DensityOperator.sqrtOp_mul_self (ρ : DensityOperator H) :
+    ρ.sqrtOp * ρ.sqrtOp = ρ.op := by
+  have hnonneg : 0 ≤ ρ.op := nonneg_iff_isPositive.mpr ρ.pos
+  rw [ρ.sqrtOp_eq_cfcSqrt]
+  exact CFC.sqrt_mul_sqrt_self ρ.op hnonneg
+
 /-- The positive square root of a density operator is Hilbert–Schmidt.
 This is the positive specialization of general trace-class membership. -/
 theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
     IsHilbertSchmidt ρ.sqrtOp := by
   have hnonneg : 0 ≤ ρ.op := nonneg_iff_isPositive.mpr ρ.pos
   have habs : CFC.abs ρ.op = ρ.op := CFC.abs_of_nonneg ρ.op hnonneg
-  have htrace : IsHilbertSchmidt (CFC.sqrt ρ.op) := by
-    simpa [IsTraceClass, habs] using ρ.isTraceClass
-  rw [CFC.sqrt_eq_real_sqrt ρ.op hnonneg, cfcₙ_eq_cfc] at htrace
-  simpa [DensityOperator.sqrtOp] using htrace
+  rw [ρ.sqrtOp_eq_cfcSqrt]
+  simpa [IsTraceClass, habs] using ρ.isTraceClass
 
 /-- The canonical density-state expectation is the basis-independent Hilbert–Schmidt pairing
 `⟪√ρ, A√ρ⟫`. This formula is valid for every bounded operator, not only observables. -/
 theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
     (A : H →L[ℂ] H) (d : HilbertBasis ι ℂ H) :
     ρ.expectation A = innerHS d ρ.sqrtOp (A * ρ.sqrtOp) := by
-  classical
   let hsqrt : IsHilbertSchmidt ρ.sqrtOp := ρ.sqrtOp_isHilbertSchmidt
-  let hAsqrt : IsHilbertSchmidt (A * ρ.sqrtOp) := isHilbertSchmidt_comp_left A hsqrt
-  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
-  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
-  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
-  have he : Orthonormal ℂ e := by
-    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hj : Function.Injective j := by
-    intro a a' haa'
-    apply he.linearIndependent.injective
-    exact congrArg Subtype.val haa'
-  let g : u → ℂ := fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i))
-  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
-    rw [hb]
-  have hpoint (a : EigenvectorIndex ρ.op) :
-      g (j a) = (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
-    change inner ℂ (ρ.sqrtOp (b (j a))) ((A * ρ.sqrtOp) (b (j a))) = _
-    rw [hb_j, ρ.sqrtOp_apply_eigenvector (apply_eigenvectorFamily hρcompact a),
-      mul_apply_eq_comp, ρ.sqrtOp_apply_eigenvector (apply_eigenvectorFamily hρcompact a),
-      map_smul, inner_smul_left, inner_smul_right]
-    have hsqrt_sq_real :
-        Real.sqrt a.1.1 * Real.sqrt a.1.1 = a.1.1 := by
-      simpa [pow_two] using
-        Real.sq_sqrt (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
-    have hsqrt_sq :
-        (Real.sqrt a.1.1 : ℂ) * (Real.sqrt a.1.1 : ℂ) = (a.1.1 : ℂ) := by
-      exact_mod_cast hsqrt_sq_real
-    have hstar :
-        starRingEnd ℂ (Real.sqrt a.1.1 : ℂ) = (Real.sqrt a.1.1 : ℂ) := by
-      simp
-    rw [hstar, ← mul_assoc, hsqrt_sq]
-  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
-    have hsqrt_zero : ρ.sqrtOp (b x) = 0 := by
-      simpa using ρ.sqrtOp_apply_eigenvector (v := b x) (c := 0) (by simpa using hxker)
-    change inner ℂ (ρ.sqrtOp (b x)) ((A * ρ.sqrtOp) (b x)) = 0
-    simp [hsqrt_zero]
-  have hfull : HasSum g (innerHS b ρ.sqrtOp (A * ρ.sqrtOp)) := by
-    change HasSum (fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i)))
-      (innerHS b ρ.sqrtOp (A * ρ.sqrtOp))
-    exact (summable_inner_apply_of_isHilbertSchmidtWrt b
-      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b ρ.sqrtOp).mp hsqrt)
-      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b (A * ρ.sqrtOp)).mp hAsqrt)).hasSum
-  have hrestricted : HasSum
-      (fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
-      (innerHS b ρ.sqrtOp (A * ρ.sqrtOp)) := by
-    simpa only [Function.comp_apply] using
-      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
-  have hexpect : HasSum
-      (fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
-      (ρ.expectation A) := by
-    rw [ρ.expectation_eq_spectral_tsum]
-    exact (ρ.summable_expectation_term A).hasSum
-  have hbasis : ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp) :=
-    hexpect.unique hrestricted
+  let hsqrtA : IsHilbertSchmidt (ρ.sqrtOp * A) :=
+    isHilbertSchmidt_comp_right hsqrt A
+  let hleft : IsTraceClass (ρ.sqrtOp * (ρ.sqrtOp * A)) :=
+    hsqrt.mul_isTraceClass hsqrtA
+  let hright : IsTraceClass ((ρ.sqrtOp * A) * ρ.sqrtOp) :=
+    hsqrtA.mul_isTraceClass hsqrt
+  have hleftOp : ρ.sqrtOp * (ρ.sqrtOp * A) = ρ.op * A := by
+    rw [← mul_assoc, ρ.sqrtOp_mul_self]
+  have hfactorRight :
+      ContinuousLinearMap.adjoint ρ.sqrtOp * (A * ρ.sqrtOp) =
+        (ρ.sqrtOp * A) * ρ.sqrtOp := by
+    rw [ρ.sqrtOp_isSelfAdjoint.adjoint_eq, ← mul_assoc]
+  have htraceLeft :
+      (ρ.isTraceClass.comp_right A).trace = hleft.trace := by
+    rw [(ρ.isTraceClass.comp_right A).trace_eq_seriesWrt d,
+      hleft.trace_eq_seriesWrt d]
+    unfold traceSeriesWrt
+    apply tsum_congr
+    intro i
+    rw [hleftOp]
   calc
-    ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp) := hbasis
+    ρ.expectation A = (ρ.isTraceClass.comp_right A).trace := ρ.expectation_apply A
+    _ = hleft.trace := htraceLeft
+    _ = hright.trace := by
+      exact IsHilbertSchmidt.trace_mul_comm hsqrt hsqrtA
     _ = innerHS d ρ.sqrtOp (A * ρ.sqrtOp) :=
-      (innerHS_eq_of_isHilbertSchmidt d b hsqrt hAsqrt).symm
+      hright.trace_eq_innerHS_of_factorization hfactorRight d
 
 end QuantumTheory
