@@ -74,8 +74,8 @@ layer independently. In particular, every trace-class operator is compact withou
 trace-value implementation. Membership is closed under adjoint and bounded left/right
 multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
-bounds are also proved. The canonical complex trace is cyclic for a trace-class factor and a
-bounded factor. General adjoint conjugation preserves trace class, and trace invariance under
+bounds are also proved. The canonical complex trace is exposed through direct Hilbert-basis `Summable`, `HasSum`, and
+`tsum` theorems and is cyclic for a trace-class factor and a bounded factor. General adjoint conjugation preserves trace class, and trace invariance under
 `U†U = 1` is derived directly from that cyclicity. Trace-class completeness remains open.
 
 ## Fredholm determinant
