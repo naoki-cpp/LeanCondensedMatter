@@ -126,7 +126,7 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
     Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧
       ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm := by
   obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
-    hT.exists_hilbertSchmidt_factorization_normSq_le_traceNorm
+    hT.exists_hilbertSchmidt_factorization_le_traceNorm
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
   have hAWnorm : hAW.normSq ≤ hT.traceNorm := by
     have hraw := IsHilbertSchmidt.normSq_comp_right_le hA W
@@ -306,7 +306,7 @@ private theorem traceNorm_le_half_normSq_add_of_factorization
 private theorem traceNorm_adjoint_le {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     hT.adjoint.traceNorm ≤ hT.traceNorm := by
   obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
-    hT.exists_hilbertSchmidt_factorization_normSq_le_traceNorm
+    hT.exists_hilbertSchmidt_factorization_le_traceNorm
   have hfactorAdj :
       ContinuousLinearMap.adjoint B * A = ContinuousLinearMap.adjoint T := by
     simpa only [star_mul, ContinuousLinearMap.star_eq_adjoint,
