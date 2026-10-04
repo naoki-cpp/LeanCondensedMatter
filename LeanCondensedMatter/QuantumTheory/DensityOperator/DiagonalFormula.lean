@@ -69,7 +69,8 @@ theorem DensityOperator.hasSum_expectation_diagonal (ρ : DensityOperator H)
       HasSum (fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i)))
         (innerHS b ρ.sqrtOp (A * ρ.sqrtOp)) :=
     (summable_inner_apply_of_isHilbertSchmidtWrt b
-      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b _).mp hsqrt) ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b _).mp hAsqrt)).hasSum
+      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b ρ.sqrtOp).mp hsqrt)
+      ((isHilbertSchmidt_iff_isHilbertSchmidtWrt b (A * ρ.sqrtOp)).mp hAsqrt)).hasSum
   rw [ρ.expectation_eq_innerHS A b]
   exact HasSum.congr_fun hsum fun i =>
     (ρ.inner_sqrtOp_comp_apply_eq_diagonal_term A b w hρ i).symm
