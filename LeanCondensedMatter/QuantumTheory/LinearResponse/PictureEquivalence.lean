@@ -85,8 +85,8 @@ noncomputable def evolveDensityOperator (ρ : DensityOperator H) (t : ℝ) :
     change ((freePropagator system t) ∘SL ρ.op ∘SL
       ContinuousLinearMap.adjoint (freePropagator system t)).IsPositive
     exact ρ.pos.conj_adjoint (freePropagator system t)
-  spectralTraceClass :=
-    ρ.spectralTraceClass.unitaryConjugate (freePropagator system t)
+  isTraceClass :=
+    (ρ.spectralTraceClass.unitaryConjugate (freePropagator system t)).isTraceClass
   trace_eq_one := by
     calc
       (ρ.spectralTraceClass.unitaryConjugate
