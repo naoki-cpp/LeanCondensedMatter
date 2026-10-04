@@ -4,6 +4,7 @@ import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic
@@ -190,6 +191,21 @@ theorem oneCellTransfer_det_of_mem
 def discriminant (params : Parameters) (energy : ℝ) : ℝ :=
   (oneCellTransfer params energy).trace / 2
 
+/-- Closed form of the one-cell Kronig–Penney discriminant. This theorem exposes the
+transfer-matrix multiplication once at the model boundary, so downstream consumers can work
+directly with the standard dispersion formula. -/
+theorem discriminant_eq_closedForm (params : Parameters) (energy : ℝ) :
+    discriminant params energy =
+      Real.cos (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.cos (wellWaveNumber params energy * params.wellWidth) -
+        ((barrierWaveNumber params energy / wellWaveNumber params energy +
+              wellWaveNumber params energy / barrierWaveNumber params energy) / 2) *
+          Real.sin (barrierWaveNumber params energy * params.barrierWidth) *
+          Real.sin (wellWaveNumber params energy * params.wellWidth) := by
+  simp [discriminant, oneCellTransfer, barrierTransfer, wellTransfer, regionTransfer,
+    Matrix.trace_fin_two, Matrix.mul_apply, Fin.sum_univ_two]
+  ring
+
 /-- Bloch phase across one real-space period, using the canonical `Crystal.blochPhase`
 normalization and orientation. -/
 def cellBlochPhase (params : Parameters) (k : ℝ) : ℂ :=
@@ -235,6 +251,35 @@ discriminant has absolute value at most one. -/
 def AllowedBandEnergy (params : Parameters) (energy : ℝ) : Prop :=
   inEnergyDomain params energy ∧ |discriminant params energy| ≤ 1
 
+/-- In the regular finite model, the discriminant criterion is exactly existence of a Bloch
+coordinate in the chosen first-Brillouin representative. -/
+theorem allowedBandEnergy_iff_exists_bloch
+    (params : Parameters) (hregular : params.IsRegular) {energy : ℝ} :
+    AllowedBandEnergy params energy ↔
+      inEnergyDomain params energy ∧
+        ∃ k, inBlochDomain params k ∧ BlochCondition params energy k := by
+  constructor
+  · rintro ⟨henergy, hallowed⟩
+    obtain ⟨hlower, hupper⟩ := abs_le.mp hallowed
+    let k := Real.arccos (discriminant params energy) / params.period
+    refine ⟨henergy, k, ?_, ?_⟩
+    · constructor
+      · have hk_nonneg : 0 ≤ k := by
+          exact div_nonneg (Real.arccos_nonneg _) hregular.period_pos.le
+        have hleft_nonpos : -Real.pi / params.period ≤ 0 := by
+          exact div_nonpos_of_nonpos_of_nonneg (neg_nonpos.mpr Real.pi_pos.le)
+            hregular.period_pos.le
+        exact hleft_nonpos.trans hk_nonneg
+      · exact div_le_div_of_nonneg_right (Real.arccos_le_pi _) hregular.period_pos.le
+    · unfold BlochCondition k
+      have hperiod : params.period ≠ 0 := ne_of_gt hregular.period_pos
+      rw [div_mul_cancel₀ _ hperiod]
+      exact (Real.cos_arccos hlower hupper).symm
+  · rintro ⟨henergy, k, _hk, hbloch⟩
+    refine ⟨henergy, ?_⟩
+    rw [hbloch]
+    exact Real.abs_cos_le_one _
+
 /-- An energy in the finite model lies in a forbidden gap exactly when the normalized
 discriminant has absolute value greater than one. -/
 def ForbiddenGapEnergy (params : Parameters) (energy : ℝ) : Prop :=
@@ -269,8 +314,6 @@ structure BandEdgeData (params : Parameters) where
   energy_eq : branchEnergy blochCoordinate = energy
   energy_mem : inEnergyDomain params energy
   bloch_mem : inBlochDomain params blochCoordinate
-  branchEnergy_mem :
-    ∀ k, inBlochDomain params k → inEnergyDomain params (branchEnergy k)
   bloch_relation :
     (fun k => discriminant params (branchEnergy k)) =ᶠ[𝓝 blochCoordinate]
       (fun k => Real.cos (k * params.period))
@@ -287,7 +330,6 @@ structure BandEdgeData (params : Parameters) where
   discriminantDerivativeDifferentiable :
     DifferentiableAt ℝ (fun e => deriv (discriminant params) e) energy
   discriminantSlope_ne_zero : discriminantSlope ≠ 0
-  curvature_ne_zero : curvature ≠ 0
   phaseCurvatureDenominator_ne_zero :
     params.period ^ 2 * Real.cos (blochCoordinate * params.period) ≠ 0
 
@@ -376,6 +418,17 @@ theorem BandEdgeData.discriminantSlope_mul_curvature
         rw [show (2 : ℕ) = 1 + 1 by norm_num, iteratedDeriv_succ',
           show (1 : ℕ) = 0 + 1 by norm_num, iteratedDeriv_succ', iteratedDeriv_zero]
     _ = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) := hright
+
+/-- Nonzero phase curvature and nonzero discriminant slope force the band curvature to be
+nonzero. -/
+theorem BandEdgeData.curvature_ne_zero
+    {params : Parameters} (edge : BandEdgeData params) :
+    edge.curvature ≠ 0 := by
+  intro hcurvature
+  have hidentity := edge.discriminantSlope_mul_curvature
+  rw [hcurvature, mul_zero] at hidentity
+  apply edge.phaseCurvatureDenominator_ne_zero
+  linarith
 
 /-- Band-edge curvature obtained from the finite Bloch discriminant relation. -/
 theorem BandEdgeData.curvature_eq
