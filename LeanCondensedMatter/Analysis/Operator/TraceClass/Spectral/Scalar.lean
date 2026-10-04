@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import Mathlib.Algebra.GroupWithZero.Units.Equiv
 
 set_option linter.style.header false
@@ -175,7 +176,6 @@ theorem spectralTrace_smul (c : ℝ) (h : HasSummableRealEigenvalues T) :
 
 namespace SpectralTraceClass
 
-omit [CompleteSpace H] in
 /-- Spectral trace class is preserved under multiplication by any real scalar. -/
 theorem smul (h : SpectralTraceClass T) (c : ℝ) :
     SpectralTraceClass (c • T) := by
