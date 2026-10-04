@@ -89,10 +89,10 @@ its Hilbert-basis diagonal formula. `Analysis/Operator/TraceClass/Trace.lean` ow
 convergent complex diagonal series, basis independence, and the canonical complex trace.
 `Analysis/Operator/TraceClass/Compact.lean` derives compactness from Hilbert--Schmidt factorization.
 `Analysis/Operator/TraceClass/Ops.lean` owns additive/scalar/adjoint closure, bounded left/right
-ideal closure, and the left/right operator-norm trace-norm bounds.
-`Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled compact self-adjoint
-specialization, spectral trace identities, scalar transport, unitary transport, and spectral
-equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
+ideal closure, and the left/right operator-norm trace-norm bounds. `TraceClass/Unitary.lean` owns
+adjoint-conjugation closure and trace invariance derived from general cyclicity.
+`Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled self-adjoint
+specialization, spectral trace identities, and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
 of general trace-class membership, trace norm, and complex trace.
 
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
