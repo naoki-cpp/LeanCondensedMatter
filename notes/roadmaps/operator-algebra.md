@@ -68,11 +68,11 @@ Hilbert-basis `Summable`/`HasSum` formulas, the pairing `innerHS`, and compariso
 on the compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
-Hilbert--Schmidt layer. `TraceClass/Factorization.lean` owns the equivalent characterization
-`T = A† B` with Hilbert--Schmidt factors, the general estimate
-`‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, and a factorization satisfying
-`‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`; compactness, trace convergence, and trace-norm estimates consume this
-structural layer. In particular, every trace-class operator is compact without depending on the
+Hilbert--Schmidt layer. `TraceClass/Factorization/Basic.lean` owns the trace-norm-independent
+characterization `T = A† B` with Hilbert--Schmidt factors. `TraceClass/Factorization/Norm.lean`
+adds the estimate `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2` and a factorization satisfying
+`‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`. Compactness and trace convergence consume only the basic layer;
+trace-norm estimates consume the norm-aware layer. In particular, every trace-class operator is compact without depending on the
 trace-value implementation. Membership is closed under adjoint and bounded left/right
 multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
