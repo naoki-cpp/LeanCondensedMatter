@@ -352,7 +352,7 @@ private theorem cosine_second_derivative (period k : ℝ) :
   have hrhs :
       HasDerivAt (fun x => -Real.sin (x * period) * period)
         (-(period ^ 2 * Real.cos (k * period))) k := by
-    convert hsin.neg.mul_const period using 1 <;> ring
+    convert hsin.neg.mul_const period using 1 ; ring
   exact hrhs.congr_of_eventuallyEq hfirst
 
 /-- The second-order Bloch dispersion identity follows from the local Bloch relation and the
