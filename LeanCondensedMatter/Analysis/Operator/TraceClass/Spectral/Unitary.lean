@@ -53,10 +53,10 @@ theorem spectralTrace_unitaryConjugate (U T : H →L[ℂ] H)
   intro μ
   rw [finrank_eigenspace_unitaryConjugate U T hleft hright]
 
-/-- Spectral trace-class data transports canonically through unitary conjugation. -/
+/-- Spectral trace-class data is preserved by bounded conjugation `U T U†`.
+No invertibility assumption on `U` is needed for trace class or self-adjointness. -/
 theorem SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
-    (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
-    (hleft : star U * U = 1) (hright : U * star U = 1) :
+    (hT : SpectralTraceClass T) (U : H →L[ℂ] H) :
     SpectralTraceClass (ContinuousLinearMap.unitaryConjugate U T) := by
   have htrace : IsTraceClass (ContinuousLinearMap.unitaryConjugate U T) := by
     simpa [ContinuousLinearMap.unitaryConjugate, mul_assoc] using
@@ -72,13 +72,13 @@ spectral trace-class data. -/
 theorem SpectralTraceClass.trace_unitaryConjugate {T : H →L[ℂ] H}
     (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
-    (hT.unitaryConjugate U hleft hright).isTraceClass.trace =
+    (hT.unitaryConjugate U).isTraceClass.trace =
       hT.isTraceClass.trace := by
-  rw [(hT.unitaryConjugate U hleft hright).isTraceClass.trace_eq_spectralTrace
-      (hT.unitaryConjugate U hleft hright).isSelfAdjoint,
+  rw [(hT.unitaryConjugate U).isTraceClass.trace_eq_spectralTrace
+      (hT.unitaryConjugate U).isSelfAdjoint,
     hT.isTraceClass.trace_eq_spectralTrace hT.isSelfAdjoint]
   exact_mod_cast ContinuousLinearMap.spectralTrace_unitaryConjugate
     U T hleft hright hT.summable
-    (hT.unitaryConjugate U hleft hright).summable
+    (hT.unitaryConjugate U).summable
 
 end ContinuousLinearMap
