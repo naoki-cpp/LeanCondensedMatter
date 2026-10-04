@@ -67,10 +67,11 @@ invariance, closure under bounded composition, compactness, the canonical square
 Hilbert-basis `Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace
 on the compact self-adjoint overlap.
 
-General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
-complex trace are defined from the Hilbert--Schmidt layer. Trace-class membership is equivalently
-characterized by a factorization `T = A† B` with Hilbert--Schmidt factors, which also implies that
-every trace-class operator is compact. Membership is closed under adjoint and bounded left/right
+General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
+Hilbert--Schmidt layer. `TraceClass/Factorization.lean` owns the equivalent characterization
+`T = A† B` with Hilbert--Schmidt factors; compactness and the complex trace consume that structural
+layer independently. In particular, every trace-class operator is compact without depending on the
+trace-value implementation. Membership is closed under adjoint and bounded left/right
 multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
 bounds are also proved. The canonical complex trace is cyclic for a trace-class factor and a
