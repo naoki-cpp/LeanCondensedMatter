@@ -46,7 +46,7 @@ theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
     spectralTrace ρ.op = 1 := by
   have h := ρ.trace_eq_one
   rw [ρ.spectralTraceClass.isTraceClass.trace_eq_spectralTrace
-    ρ.spectralTraceClass.compact ρ.spectralTraceClass.isSelfAdjoint] at h
+    ρ.spectralTraceClass.isSelfAdjoint] at h
   exact_mod_cast h
 
 /-- A density operator's underlying operator is symmetric. -/
