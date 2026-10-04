@@ -179,15 +179,13 @@ omit [CompleteSpace H] in
 /-- Spectral trace class is preserved under multiplication by any real scalar. -/
 theorem smul (h : SpectralTraceClass T) (c : ℝ) :
     SpectralTraceClass (c • T) := by
+  have htrace : IsTraceClass (c • T) := by
+    rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
+    exact h.isTraceClass.smul (c : ℂ)
   have hsym : (c • T : H →L[ℂ] H).IsSymmetric := by
     rw [ContinuousLinearMap.toLinearMap_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)]
     exact h.symmetric.smul (c := (c : ℂ)) (by simp)
-  have hcompact : IsCompactOperator (c • T) := h.compact.smul c
-  exact
-    { isTraceClass :=
-        (isTraceClass_iff_hasSummableRealEigenvalues hcompact hsym.isSelfAdjoint).2
-          (hasSummableRealEigenvalues_smul c h.summable)
-      symmetric := hsym }
+  exact { isTraceClass := htrace, symmetric := hsym }
 
 
 end SpectralTraceClass
