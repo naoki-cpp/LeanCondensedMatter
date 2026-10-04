@@ -57,18 +57,14 @@ theorem SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
     (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
     SpectralTraceClass (ContinuousLinearMap.unitaryConjugate U T) := by
-  have hcompact : IsCompactOperator (ContinuousLinearMap.unitaryConjugate U T) := by
-    change IsCompactOperator (⇑U ∘ ⇑T ∘ ⇑(star U))
-    exact (hT.compact.comp_clm (star U)).clm_comp U
+  have htrace : IsTraceClass (ContinuousLinearMap.unitaryConjugate U T) := by
+    simpa [ContinuousLinearMap.unitaryConjugate, mul_assoc] using
+      (hT.isTraceClass.comp_right (star U)).comp_left U
   have hsym : (ContinuousLinearMap.unitaryConjugate U T).IsSymmetric := by
     have hself : IsSelfAdjoint T := hT.symmetric.isSelfAdjoint
     change (U ∘SL T ∘SL ContinuousLinearMap.adjoint U).IsSymmetric
     exact (hself.conj_adjoint U).isSymmetric
-  exact
-    { isTraceClass :=
-        (isTraceClass_iff_hasSummableRealEigenvalues hcompact hsym.isSelfAdjoint).2
-          (hasSummableRealEigenvalues_unitaryConjugate U T hleft hright hT.summable)
-      symmetric := hsym }
+  exact { isTraceClass := htrace, symmetric := hsym }
 
 /-- The canonical complex trace is invariant under unitary conjugation for bundled
 spectral trace-class data. -/
