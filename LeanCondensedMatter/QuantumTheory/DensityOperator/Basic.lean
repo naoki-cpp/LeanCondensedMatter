@@ -5,9 +5,10 @@ import Mathlib.Analysis.InnerProductSpace.Positive
 /-!
 # Density operators
 
-The canonical mixed-state model is a positive spectral-trace-class operator of trace one. The
-definition is dimension-independent; finite-dimensional matrix-trace results are specializations
-provided in `QuantumTheory/FiniteDimensional`.
+The canonical mixed-state model is a positive trace-class operator of trace one. Compactness,
+self-adjointness, and spectral summability are derived from positivity and general trace-class
+membership. The definition is dimension-independent; finite-dimensional matrix-trace results are
+specializations provided in `QuantumTheory/FiniteDimensional`.
 -/
 
 noncomputable section
@@ -18,14 +19,14 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- A density operator is a positive spectral-trace-class operator with trace one. -/
+/-- A density operator is a positive trace-class operator with trace one. -/
 structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] where
   /-- The bounded operator representing the mixed state. -/
   op : H →L[ℂ] H
   pos : op.IsPositive
-  spectralTraceClass : SpectralTraceClass op
-  trace_eq_one : spectralTraceClass.isTraceClass.trace = 1
+  isTraceClass : IsTraceClass op
+  trace_eq_one : isTraceClass.trace = 1
 
 attribute [simp] DensityOperator.trace_eq_one
 
@@ -40,15 +41,6 @@ theorem DensityOperator.ext {ρ σ : DensityOperator H} (h : ρ.op = σ.op) : ρ
       cases h
       rfl
 
-/-- The real spectral representation of a density operator's trace is one. -/
-@[simp]
-theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
-    spectralTrace ρ.op = 1 := by
-  have h := ρ.trace_eq_one
-  rw [ρ.spectralTraceClass.isTraceClass.trace_eq_spectralTrace
-    ρ.spectralTraceClass.isSelfAdjoint] at h
-  exact_mod_cast h
-
 /-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.pos.isSelfAdjoint.isSymmetric
@@ -57,9 +49,19 @@ theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ
 theorem DensityOperator.isSelfAdjoint (ρ : DensityOperator H) : IsSelfAdjoint ρ.op :=
   ρ.pos.isSelfAdjoint
 
-/-- A density operator is trace class in the general bounded-operator sense. -/
-theorem DensityOperator.isTraceClass (ρ : DensityOperator H) : IsTraceClass ρ.op :=
-  ρ.spectralTraceClass.isTraceClass
+/-- The self-adjoint spectral specialization associated to a density operator. -/
+theorem DensityOperator.spectralTraceClass (ρ : DensityOperator H) :
+    SpectralTraceClass ρ.op where
+  isTraceClass := ρ.isTraceClass
+  symmetric := ρ.isSymmetric
+
+/-- The real spectral representation of a density operator's trace is one. -/
+@[simp]
+theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
+    spectralTrace ρ.op = 1 := by
+  have h := ρ.trace_eq_one
+  rw [ρ.isTraceClass.trace_eq_spectralTrace ρ.isSelfAdjoint] at h
+  exact_mod_cast h
 
 /-- The general trace norm of a density operator is one. -/
 @[simp]
@@ -81,7 +83,8 @@ theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
 theorem DensityOperator.eigenvalue_le_one (ρ : DensityOperator H)
     (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
   have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
-    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
+    (ρ.isTraceClass.hasSummableRealEigenvalues ρ.isSelfAdjoint).congr
+      (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
   have hle := hsum.le_tsum a (fun b _ => ρ.eigenvalue_nonneg b)
   have htrace := ρ.spectralTrace_op_eq_one
   change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
@@ -105,7 +108,7 @@ theorem DensityOperator.sum_diagonalExpectationValue_le_one (ρ : DensityOperato
 
 /-- Each vector of the density operator's spectral eigenvector family is a unit vector. -/
 theorem eigenvectorFamily_norm_eq_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
-    ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ = 1 :=
-  (orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric).1 a
+    ‖eigenvectorFamily ρ.isTraceClass.isCompact a‖ = 1 :=
+  (orthonormal_eigenvectorFamily ρ.isTraceClass.isCompact ρ.isSymmetric).1 a
 
 end QuantumTheory
