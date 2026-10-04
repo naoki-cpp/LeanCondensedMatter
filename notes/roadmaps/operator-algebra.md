@@ -61,14 +61,15 @@ self-adjoint operators, with the real spectral trace after coercion to `ℂ`.
 ## Hilbert--Schmidt operators
 
 `Analysis/Operator/HilbertSchmidt/` provides basis-independent Hilbert--Schmidt membership, adjoint
-invariance, closure under bounded composition, the canonical squared norm with direct Hilbert-basis
-`Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace on the
-compact self-adjoint overlap.
+invariance, closure under bounded composition, compactness, the canonical squared norm with direct
+Hilbert-basis `Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace
+on the compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership, its canonical trace norm, and its basis-independent
 complex trace are defined from the Hilbert--Schmidt layer. Trace-class membership is equivalently
-characterized by a factorization `T = A† B` with Hilbert--Schmidt factors. Membership is closed under
-adjoint and bounded left/right multiplication. The trace norm is adjoint-invariant and contractive under
+characterized by a factorization `T = A† B` with Hilbert--Schmidt factors, which also implies that
+every trace-class operator is compact. Membership is closed under adjoint and bounded left/right
+multiplication. The trace norm is adjoint-invariant and contractive under
 left/right multiplication by contractions. The general operator-norm-weighted left/right ideal
 bounds are also proved. The canonical complex trace is cyclic for a trace-class factor and a
 bounded factor. Trace-class completeness remains open.
