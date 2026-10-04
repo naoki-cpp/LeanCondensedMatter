@@ -114,32 +114,37 @@ theorem isTraceClass_iff_hasSummableRealEigenvalues
     apply (isTraceClass_iff_isTraceClassWrt b T).mpr
     simpa [IsTraceClassWrt, g] using hfull.summable
 
-/-- On compact self-adjoint operators, the general complex trace agrees with the real spectral
+/-- A self-adjoint trace-class operator has absolutely summable nonzero real eigenvalues. -/
+theorem IsTraceClass.hasSummableRealEigenvalues
+    (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
+    HasSummableRealEigenvalues T :=
+  (isTraceClass_iff_hasSummableRealEigenvalues hT.isCompact hself).1 hT
+
+/-- On self-adjoint trace-class operators, the general complex trace agrees with the real spectral
 trace after coercion to `ℂ`. -/
 theorem IsTraceClass.trace_eq_spectralTrace
-    (hT : IsTraceClass T) (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T) :
+    (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
     hT.trace = (spectralTrace T : ℂ) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   rw [hT.trace_eq_seriesWrt d]
   unfold traceSeriesWrt
-  have hspec : HasSummableRealEigenvalues T :=
-    (isTraceClass_iff_hasSummableRealEigenvalues hcompact hself).1 hT
+  have hspec : HasSummableRealEigenvalues T := hT.hasSummableRealEigenvalues hself
   have hcast :=
-    (hasSum_diagonalExpectationValue_eq_spectralTrace hcompact hself hspec d).mapL
+    (hasSum_diagonalExpectationValue_eq_spectralTrace hT.isCompact hself hspec d).mapL
       Complex.ofRealCLM
   simp only [Complex.ofRealCLM_apply] at hcast
   exact
     (HasSum.congr_fun hcast fun i =>
       (coe_diagonalExpectationValue_right T hself (d i)).symm).tsum_eq
 
-/-- On compact self-adjoint operators, the canonical trace norm is the absolute eigenvalue sum
+/-- On self-adjoint trace-class operators, the canonical trace norm is the absolute eigenvalue sum
 with multiplicity. -/
 theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
-    (hT : IsTraceClass T) (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T) :
+    (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
     hT.traceNorm = ∑' a : EigenvectorIndex T, |a.1.1| := by
   classical
   obtain ⟨u, b, j, hj, hpoint, hzero⟩ :=
-    exists_abs_diagonal_hilbertBasis (T := T) hcompact hself
+    exists_abs_diagonal_hilbertBasis (T := T) hT.isCompact hself
   let g : u → ℝ := fun i =>
     diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (b i)
   have hg_point (a : EigenvectorIndex T) : g (j a) = |a.1.1| := by
@@ -171,7 +176,7 @@ theorem compact (h : SpectralTraceClass T) : IsCompactOperator T :=
 
 /-- Every bundled spectral-trace-class operator has absolutely summable nonzero real eigenvalues. -/
 theorem summable (h : SpectralTraceClass T) : HasSummableRealEigenvalues T :=
-  (isTraceClass_iff_hasSummableRealEigenvalues h.compact h.isSelfAdjoint).1 h.isTraceClass
+  h.isTraceClass.hasSummableRealEigenvalues h.isSelfAdjoint
 
 /-- Build bundled spectral-trace data for a positive compact operator with summable real
 eigenvalues. Positivity supplies symmetry; spectral summability supplies general trace class. -/
@@ -201,7 +206,7 @@ theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactO
 real spectral trace. -/
 theorem traceNorm_eq_spectralTrace (h : SpectralTraceClass T) (hpos : T.IsPositive) :
     h.isTraceClass.traceNorm = spectralTrace T := by
-  rw [h.isTraceClass.traceNorm_eq_tsum_abs_eigenvalues h.compact h.isSelfAdjoint]
+  rw [h.isTraceClass.traceNorm_eq_tsum_abs_eigenvalues h.isSelfAdjoint]
   unfold spectralTrace
   apply tsum_congr
   intro a
