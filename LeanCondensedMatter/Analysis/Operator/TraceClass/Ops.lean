@@ -530,9 +530,8 @@ theorem norm_trace_le_traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   have hpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm
     (ContinuousLinearMap.id ℂ H) ContinuousLinearMap.norm_id_le d
-  rw [hT.trace_eq_seriesWrt d]
-  unfold traceSeriesWrt
-  exact (norm_tsum_le_tsum_norm (hT.summable_traceSeriesWrt d).norm).trans (by
+  rw [hT.trace_eq_tsum_inner d]
+  exact (norm_tsum_le_tsum_norm (hT.summable_trace_diagonal d).norm).trans (by
     simpa using hpair.2)
 
 /-- The zero operator has trace zero. -/
@@ -540,15 +539,14 @@ theorem norm_trace_le_traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 theorem trace_zero :
     (isTraceClass_zero (H := H)).trace = 0 := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(isTraceClass_zero (H := H)).trace_eq_seriesWrt d]
+  rw [(isTraceClass_zero (H := H)).trace_eq_tsum_inner d]
   simp [traceSeriesWrt]
 
 /-- The trace is complex-linear under scalar multiplication. -/
 theorem trace_smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
     (hT.smul c).trace = c * hT.trace := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(hT.smul c).trace_eq_seriesWrt d, hT.trace_eq_seriesWrt d]
-  unfold traceSeriesWrt
+  rw [(hT.smul c).trace_eq_tsum_inner d, hT.trace_eq_tsum_inner d]
   rw [← tsum_mul_left]
   apply tsum_congr
   intro i
@@ -564,11 +562,10 @@ theorem trace_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 theorem trace_add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
     (hT.add hR).trace = hT.trace + hR.trace := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(hT.add hR).trace_eq_seriesWrt d, hT.trace_eq_seriesWrt d, hR.trace_eq_seriesWrt d]
-  unfold traceSeriesWrt
+  rw [(hT.add hR).trace_eq_tsum_inner d, hT.trace_eq_tsum_inner d, hR.trace_eq_tsum_inner d]
   simpa [add_apply, inner_add_right] using
-    ((hT.summable_traceSeriesWrt d).hasSum.add
-      (hR.summable_traceSeriesWrt d).hasSum).tsum_eq
+    ((hT.summable_trace_diagonal d).hasSum.add
+      (hR.summable_trace_diagonal d).hasSum).tsum_eq
 
 end IsTraceClass
 
