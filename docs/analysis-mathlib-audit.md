@@ -94,8 +94,9 @@ Hilbert--Schmidt norms equal to the trace norm. `TraceClass/Trace.lean`
 owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence, and the canonical
 complex trace; there is no separate basis-relative trace-series wrapper. `TraceClass/Compact.lean`
 derives compactness directly from the factorization layer.
-`Analysis/Operator/TraceClass/Ops.lean` owns additive/scalar/adjoint closure, bounded left/right
-ideal closure, and the left/right operator-norm trace-norm bounds. `TraceClass/Unitary.lean` owns
+`Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
+ideal closure, and complex-trace linearity. `TraceClass/Ops/Norm.lean` owns trace-norm identities,
+the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound. `TraceClass/Unitary.lean` owns
 adjoint-conjugation closure and trace invariance derived from general cyclicity.
 `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled self-adjoint
 specialization, spectral trace identities, and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
