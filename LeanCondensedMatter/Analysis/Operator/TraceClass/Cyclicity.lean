@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
 
 set_option linter.style.header false
 
