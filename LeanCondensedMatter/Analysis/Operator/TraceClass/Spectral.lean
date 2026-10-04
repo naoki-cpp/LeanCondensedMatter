@@ -3,7 +3,6 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary
 
 set_option linter.style.header false
 
