@@ -94,8 +94,7 @@ private theorem norm_sub_finiteRangeApprox_sq_le {ι : Type*} (d : HilbertBasis 
         ∑' i : {j // j ∉ s},
           ‖x‖ ^ 2 * ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2 := by
       exact hcoeff.tsum_le_tsum (fun i => by
-        rw [inner_sub_finiteRangeApprox_apply d T s x i]
-        simp only [i.2, ↓reduceIte]
+        simp only [inner_sub_finiteRangeApprox_apply d T s x i, if_neg i.2]
         have hi :
             ‖(inner ℂ (T x) (d i) : ℂ)‖ ≤
               ‖x‖ * ‖(ContinuousLinearMap.adjoint T) (d i)‖ := by
