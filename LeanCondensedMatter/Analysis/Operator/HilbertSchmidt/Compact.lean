@@ -61,7 +61,7 @@ private theorem inner_finiteRangeApprox_apply_of_not_mem {ι : Type*}
   apply Finset.sum_eq_zero
   intro i hi
   have hij : i ≠ j := fun h => hj (h ▸ hi)
-  rw [InnerProductSpace.inner_left_rankOne_apply, d.orthonormal.2 hij, mul_zero]
+  rw [inner_smul_left, d.orthonormal.2 hij, mul_zero]
 
 private theorem norm_sub_finiteRangeApprox_sq_le {ι : Type*} (d : HilbertBasis ι ℂ H)
     {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (s : Finset ι) (x : H) :
