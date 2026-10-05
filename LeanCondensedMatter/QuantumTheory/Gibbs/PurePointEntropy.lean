@@ -87,11 +87,11 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
     simpa [p] using purePointGibbsProbability_nonneg E β hsum i
   have hp_le_one : ∀ i, p i ≤ 1 :=
     ρ.diagonal_weight_le_one b p hρ hp_nonneg
-  have hentropy : HasSummableRealEigenvalues (entropyOp ρ) :=
-    ρ.entropyOp_hasSummableRealEigenvalues_of_diagonal b p hρ (by
+  have hentropy : IsTraceClass (entropyOp ρ) :=
+    ρ.entropyOp_isTraceClass_of_diagonal b p hρ (by
       simpa [p] using summable_norm_negMulLog_purePointGibbsProbability E β hsum hint)
   have hEntropySum :=
-    entropyOpSpectralTraceClass_hasSum_diagonal ρ b p hρ hentropy
+    hasSum_entropyOp_diagonal ρ b p hρ hentropy
   have hEnergySum :=
     hasSum_purePointGibbsEnergyExpectation E β hint
   have hProbSum := hasSum_purePointGibbsProbability E β hsum
@@ -109,13 +109,14 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
     simpa [p] using HasSum.congr_fun
       ((hEnergySum.mul_left β).add (hProbSum.mul_left (Real.log Z))) hterm
   have htrace :
-      spectralTrace (entropyOp ρ) =
+      hentropy.realTrace (entropyOp_isSelfAdjoint ρ) =
         β * purePointGibbsEnergyExpectation E β + Real.log Z :=
     hEntropySum.unique hEntropyFormula
-  have htrace_nonneg : 0 ≤ spectralTrace (entropyOp ρ) := by
+  have htrace_nonneg :
+      0 ≤ hentropy.realTrace (entropyOp_isSelfAdjoint ρ) := by
     rw [← hEntropySum.tsum_eq]
     exact tsum_nonneg fun i => Real.negMulLog_nonneg (hp_nonneg i) (hp_le_one i)
-  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace ρ hentropy
+  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_realTrace ρ hentropy
   change vonNeumannEntropy ρ ≠ ⊤ ∧
     (vonNeumannEntropy ρ).toReal =
       β * purePointGibbsEnergyExpectation E β + Real.log Z
