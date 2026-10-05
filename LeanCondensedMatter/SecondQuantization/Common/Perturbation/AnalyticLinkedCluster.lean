@@ -13,6 +13,11 @@ formal logarithm of the normalized Dyson trace series.
 
 Particle-specific diagrammatic layers only need to identify those formal-log coefficients with their
 connected contributions.
+
+This module is statistics-independent but finite-configuration: the `[Fintype Config]` hypothesis
+excludes the full bosonic occupation space even for finitely many bosonic modes. Bosonic analytic
+linked-cluster results require a separate convergence-aware interacting Gibbs construction before
+they can consume the generic analytic/formal logarithm theorem from `Analysis.PowerSeries`.
 -/
 
 namespace SecondQuantization
@@ -28,6 +33,7 @@ noncomputable def normalizedAnalyticDysonPartitionFunction (energy : Config → 
   ((PowerSeries.constantCoeff (dysonTraceSeries energy β V))⁻¹ •
     analyticDysonPartitionFunction energy β V) lam
 
+omit [Nonempty Config] in
 omit [Nonempty Config] in
 private theorem analyticDysonPartitionFunction_zero_eq_constantCoeff
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
@@ -49,6 +55,7 @@ theorem normalizedAnalyticDysonPartitionFunction_zero
   rw [analyticDysonPartitionFunction_zero_eq_constantCoeff energy hβ V]
   exact inv_mul_cancel₀ (constantCoeff_dysonTraceSeries_ne_zero energy β V)
 
+omit [Nonempty Config] in
 omit [Nonempty Config] in
 private theorem hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
