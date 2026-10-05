@@ -4354,7 +4354,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDyson.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds"
+        "LeanCondensedMatter.Analysis.Dyson.Bounds",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson"
       ],
       "externalImportCount": 0
     },
@@ -4388,17 +4389,9 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/ContinuousDyson.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Dyson.Basic",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/ContinuousDysonBounds.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Dyson.Bounds",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson"
       ],
       "externalImportCount": 0
     },
@@ -4488,7 +4481,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent",
