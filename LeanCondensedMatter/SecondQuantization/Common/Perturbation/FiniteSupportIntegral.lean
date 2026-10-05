@@ -31,7 +31,7 @@ theorem support_finiteSupportIntervalIntegral_subset (S : Finset Config)
     (f : ℝ → AlgebraicFock Config) (a b : ℝ) :
     (finiteSupportIntervalIntegral S f a b).support ⊆ S := by
   change (Finsupp.indicator S (fun m (_ : m ∈ S) => ∫ τ in a..b, f τ m)).support ⊆ S
-  exact Finsupp.support_indicator_subset
+  exact Finsupp.support_indicator_subset S (fun m (_ : m ∈ S) => ∫ τ in a..b, f τ m)
 
 /-- If every vector in the family is supported in `S`, the finite reconstruction agrees with the
 coordinatewise interval integral at every configuration. -/
