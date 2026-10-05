@@ -4,11 +4,11 @@ import Mathlib.Analysis.SpecialFunctions.Exponential
 set_option linter.style.header false
 
 /-!
-# Operator-exponential realization of the analytic Dyson evolution
+# Operator-exponential realization of the interaction-picture Dyson evolution
 
 This module places the basis-diagonal free Hamiltonian and the interacting Hamiltonian in the same
-finite-dimensional continuous-operator algebra as `analyticDysonEvolution`. The exact
-interaction-picture candidate is then the ordered product
+finite-dimensional continuous-operator algebra used by the generic interaction-picture
+`Dyson.evolution`. The exact interaction-picture candidate is then the ordered product
 
 `exp (τ H₀) * exp (-τ (H₀ + λ V))`.
 -/
