@@ -198,7 +198,6 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     overview.append(renderBreadcrumb(parts));
 
     const header = element("div", "overview-header module-overview-header");
-    header.append(element("p", "module-overview-eyebrow", "Module hierarchy"));
     header.append(element("h2", "", node.fullName));
     if (description) header.append(element("p", "module-description module-header-description", description));
     const summary = element("div", "overview-summary");

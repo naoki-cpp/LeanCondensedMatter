@@ -56,11 +56,9 @@ const ui = {
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
+  graphToolbar: document.querySelector(".graph-toolbar"),
   graphStatus: document.querySelector("#graph-status"),
   detail: document.querySelector("#detail"),
-  zoomOut: document.querySelector("#zoom-out"),
-  zoomIn: document.querySelector("#zoom-in"),
-  fitView: document.querySelector("#fit-view"),
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
 };
 
@@ -426,7 +424,7 @@ function setModuleFilterEnabled(enabled) {
 
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
-  ui.overviewLink.textContent = state.page === "theorem" ? "Back to declarations" : "Theorem Graph";
+  ui.overviewLink.textContent = "Theorems";
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name" : "Name, module, or documentation";
   ui.moduleFilterLabel.hidden = modules;
@@ -438,17 +436,17 @@ function setGraphModeChrome() {
   terminal.nextSibling.nodeValue = modules ? " no project imports" : " terminal";
   zero.nextSibling.nodeValue = modules ? " no importers" : " zero consumer";
   single.nextSibling.nodeValue = modules ? " one importer" : " single consumer";
-  ui.graphLegend.children[0].lastChild.nodeValue = modules ? " selected module" : " selected theorem";
+  ui.graphLegend.querySelector(".legend-node").parentElement.lastChild.nodeValue = modules ? " module" : " theorem";
   const edgeLegend = ui.graphLegend.querySelector(".legend-dependency");
   edgeLegend.childNodes[1].nodeValue = modules ? " import" : " dependency";
-  ui.graphLegend.children[4].hidden = modules;
+  ui.graphLegend.querySelector(".legend-edge.wrapper").parentElement.hidden = modules;
 }
 
 function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
   ui.overview.hidden = true;
   ui.viewport.hidden = false;
-  setGraphActionsEnabled(true);
+  ui.graphToolbar.hidden = false;
   setModuleFilterEnabled(state.graphKind === "theorems");
 
   const previousView = preserveView ? state.viewBox : null;
@@ -731,12 +729,6 @@ function renderDetails(name) {
   ui.detail.append(relationSection("Compiled consumers", entry.compiledConsumers));
 }
 
-function setGraphActionsEnabled(enabled) {
-  ui.zoomOut.disabled = !enabled;
-  ui.zoomIn.disabled = !enabled;
-  ui.fitView.disabled = !enabled;
-}
-
 function writeLocation(push) {
   const url = new URL(window.location.href);
   if (state.page === "imports") {
@@ -786,7 +778,6 @@ function focusRoot(name, { historyEntry = true } = {}) {
   setGraphModeChrome();
   ui.viewport.hidden = false;
   ui.overview.hidden = true;
-  setGraphActionsEnabled(true);
   setModuleFilterEnabled(state.graphKind === "theorems");
   renderDetails(name);
   renderGraph();
@@ -840,7 +831,7 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   hideSearchResults();
   ui.viewport.hidden = true;
   ui.overview.hidden = false;
-  setGraphActionsEnabled(false);
+  ui.graphToolbar.hidden = true;
   setModuleFilterEnabled(false);
   setGraphModeChrome();
   ui.graphStatus.textContent = "";
@@ -874,7 +865,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   setGraphModeChrome();
   ui.viewport.hidden = false;
   ui.overview.hidden = true;
-  setGraphActionsEnabled(true);
   setModuleFilterEnabled(false);
   renderDetails(selectedModule);
   renderGraph();
@@ -1022,9 +1012,6 @@ function restoreLocation() {
 }
 
 function bindGraphNavigation() {
-  ui.zoomIn.addEventListener("click", () => zoomGraph(0.8));
-  ui.zoomOut.addEventListener("click", () => zoomGraph(1.25));
-  ui.fitView.addEventListener("click", fitGraph);
   ui.viewport.addEventListener("wheel", (event) => {
     if (!state.root) return;
     event.preventDefault();
@@ -1145,6 +1132,7 @@ async function main() {
 
 main().catch((error) => {
   console.error(error);
+  ui.graphToolbar.hidden = false;
   ui.graphStatus.textContent = "Failed to load declaration graph.";
   const message = element("p", "error-message", error instanceof Error ? error.message : String(error));
   ui.detail.replaceChildren(message);
