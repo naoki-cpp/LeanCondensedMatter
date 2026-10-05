@@ -85,7 +85,9 @@ theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     hβ hBound lam
     hUcont.continuousOn
     (fun t _ => analyticDysonExponentialCandidate_eq_one_sub_integral energy V t lam)
-  simpa only [analyticDysonEvolution_eq_evolution] using (hEq hτ).symm
+  change Dyson.evolution (continuousInteractionPicture energy V) lam τ =
+    analyticDysonExponentialCandidate energy V τ lam
+  exact (hEq hτ).symm
 
 /-- For nonnegative imaginary time, the analytic Dyson evolution is the ordered product of the
 free and interacting operator exponentials. -/
