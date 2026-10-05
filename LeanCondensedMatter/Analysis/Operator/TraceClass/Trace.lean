@@ -74,6 +74,20 @@ theorem trace_eq_tsum_inner {T : H →L[ℂ] H} (hT : IsTraceClass T)
   unfold trace
   exact trace_tsum_eq _ d T hT
 
+/-- The canonical trace depends only on the underlying operator, not on the supplied
+trace-class witnesses. -/
+theorem trace_congr {T R : H →L[ℂ] H}
+    (hT : IsTraceClass T) (hR : IsTraceClass R) (h : T = R) :
+    hT.trace = hR.trace := by
+  subst R
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  rw [hT.trace_eq_tsum_inner d, hR.trace_eq_tsum_inner d]
+
+/-- The canonical trace is independent of the proof of trace-class membership. -/
+theorem trace_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
+    hT.trace = hT'.trace :=
+  trace_congr hT hT' rfl
+
 /-- The diagonal series sums to the trace in every Hilbert basis. -/
 theorem hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
