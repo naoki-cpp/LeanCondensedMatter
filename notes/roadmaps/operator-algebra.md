@@ -119,15 +119,21 @@ Domain-aware unbounded infrastructure is no longer wholly absent. The repository
 maximal diagonal domains, dense-domain/closedness/adjoint/self-adjointness results for real diagonal
 weights, bounded completed CAR operators, and product-domain/free-Hamiltonian relations.
 
-These results do not amount to a general unbounded spectral theory. On the pinned Mathlib
-v4.33.1 (`0df444a360eaa60ab8c11dca51a86af692955474`), `LinearPMap` provides the domain-aware
-adjoint, dense-domain consequences of self-adjointness, and closedness of self-adjoint operators.
-Neither the pinned Mathlib API nor the current project supplies a general unbounded self-adjoint
-functional calculus, projection-valued spectral measure calculus, semibounded quadratic-form
-package tied to `LinearPMap`, or a strongly continuous positive heat-semigroup construction.
-The project-local resolvent/Cayley/Stone line constructs strongly continuous unitary evolution from
-a self-adjoint `LinearPMap` without such a functional calculus; it does not define
-`exp (-β H)`.
+These results do not amount to a general unbounded spectral theory. A 2026-10-05 re-survey of
+the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612` confirms that
+`LinearPMap` still provides the domain-aware adjoint, dense-domain consequences of
+self-adjointness, and closedness of self-adjoint operators, but no general unbounded self-adjoint
+spectral or functional calculus. The pinned API also does not provide a `LinearPMap` semibounded
+quadratic-form package, positivity package, general resolvent calculus, projection-valued spectral
+measure calculus, or strongly continuous positive heat-semigroup construction. Comparing the
+previous v4.33.1 pin with v4.34.1 reveals no new unbounded functional-calculus layer that closes
+this gap.
+
+The project-local resolvent/Cayley/Stone line remains a real-time construction: it builds strongly
+continuous unitary evolution from a self-adjoint `LinearPMap` without an unbounded functional
+calculus, and it does not define `exp (-β H)`. In particular, the heat operator must not be
+introduced by formally analytically continuing Stone evolution or by a power series of unbounded
+operator products.
 Its consumer-facing endpoint is routed through
 `Analysis/Operator/Unbounded.lean`; the Stone approximation, convergence, domain transport, and
 generator proofs are consolidated in
@@ -153,11 +159,17 @@ Hilbert basis `b` and energies `E` for which the supplied heat operator satisfie
 Kβ (b i) = exp (-β E i) • b i
 ```
 
-The quantum Gibbs layer uses this basis action and spectral-trace-class data to derive Boltzmann
-summability, identifies the bundled heat trace with the pure-point partition function, and identifies
-`DensityOperator.normalizePositive Kβ ...` with `purePointGibbsDensityOperator b E β`. A general
-spectral-data-first boundary should wait for a genuine spectral-measure/functional-calculus
-API rather than extending the pure-point representation beyond what it proves.
+The quantum Gibbs layer now uses this basis action at the general trace-class boundary:
+`isTraceClass_iff_purePointGibbsSummable_of_basis_action` identifies `IsTraceClass Kβ` exactly
+with Boltzmann summability, and
+`heatTrace_eq_purePointPartitionFunction_of_basis_action` identifies the canonical complex trace
+with the pure-point partition function. For explicit pure-point heat data,
+`inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op` gives the direct operator-level
+normalization identity. `DensityOperator.normalizePositive` remains the canonical normalization
+boundary for arbitrary positive nonzero trace-class heat data, but the explicit pure-point
+compatibility theorem no longer needs to route through it. A general spectral-data-first boundary
+should still wait for a genuine spectral-measure/functional-calculus API rather than extending the
+pure-point representation beyond what it proves.
 
 The current Gibbs variational and uniqueness proofs do **not** extend to this boundary merely by
 replacing the normalized state. They quantify over an arbitrary density operator and use bounded
