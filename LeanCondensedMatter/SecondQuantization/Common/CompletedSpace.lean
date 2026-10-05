@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIs
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteThermalCompatibility
 
