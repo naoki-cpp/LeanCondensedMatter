@@ -92,7 +92,7 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_co
     (hcoeff := ?_)
     (hZ := PowerSeries.constantCoeff_normalizeByConstantCoeff
       (constantCoeff_dysonTraceSeries_ne_zero energy β V))
-    n
+    (n := n)
   intro m
   change (PowerSeries.constantCoeff (dysonTraceSeries energy β V))⁻¹ *
       (dysonTraceFPowerSeries energy β V).coeff m =
