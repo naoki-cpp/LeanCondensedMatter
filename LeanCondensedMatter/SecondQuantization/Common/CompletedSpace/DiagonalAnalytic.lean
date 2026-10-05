@@ -30,17 +30,17 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
     apply tsum_congr
     intro c
-    rw [completedBoundedDiagonalOperator_apply, completedBoundedDiagonalOperator_apply]
+    simp only [completedBoundedDiagonalOperator_apply]
     change inner ℂ ((w c : ℂ) • x c) (y c) =
       inner ℂ (x c) ((w c : ℂ) • y c)
     simp [inner_smul_left, inner_smul_right]
   · intro x
-    rw [lp.inner_eq_tsum,
+    rw [ContinuousLinearMap.reApplyInnerSelf_apply, lp.inner_eq_tsum,
       RCLike.reCLM.map_tsum (lp.summable_inner
         (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound x) x)]
     apply tsum_nonneg
     intro c
-    rw [completedBoundedDiagonalOperator_apply]
+    simp only [completedBoundedDiagonalOperator_apply]
     change 0 ≤ RCLike.re (inner ℂ ((w c : ℂ) • x c) (x c))
     simp [inner_smul_left, inner_self_eq_norm_sq_to_K, hnonneg c]
 
