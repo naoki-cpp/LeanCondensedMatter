@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
+import LeanCondensedMatter.Analysis.Dyson.Constant
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
@@ -8,9 +9,8 @@ set_option linter.style.header false
 # Time-independent Dyson evolution
 
 When the interaction-picture operator is constant, the algebraic Dyson coefficients reduce to
-ordinary exponential-series coefficients. The same specialization identifies each weighted analytic
-Dyson term and the norm-convergent analytic Dyson evolution with the corresponding operator
-exponential.
+ordinary exponential-series coefficients. The analytic evolution is identified with the corresponding
+operator exponential by specializing the generic constant-generator theorem from `Analysis.Dyson`.
 -/
 
 namespace SecondQuantization
@@ -72,21 +72,6 @@ theorem dysonCoeff_eq_of_time_independent [Finite Config] (energy : Config → �
       field_simp
     rw [hcint, neg_smul, neg_neg]
 
-/-- In the time-independent case, each weighted continuous Dyson term is the corresponding
-ordinary exponential-series coefficient. -/
-theorem analyticDysonTerm_eq_of_time_independent (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hV : ∀ τ, interactionPicture energy V τ = V)
-    (τ : ℝ) (lam : ℂ) (n : ℕ) :
-    analyticDysonTerm energy V τ lam n =
-      ((((-τ : ℂ) * lam) ^ n) / n.factorial) •
-        (finiteContinuousOperatorAlgEquiv V) ^ n := by
-  rw [analyticDysonTerm, continuousDysonCoeff,
-    dysonCoeff_eq_of_time_independent energy V hV n τ,
-    map_smul, map_pow, smul_smul]
-  congr 1
-  ring
-
 /-- If the interaction picture is time-independent, the analytic Dyson sum is the ordinary
 operator exponential of `-τ λ V`. -/
 theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → ℝ)
@@ -95,26 +80,16 @@ theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → �
     {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
     analyticDysonEvolution energy V τ lam =
       NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) := by
-  have hDyson := hasSum_analyticDysonEvolution
-    (β := τ) (τ := τ) energy V hτ ⟨hτ, le_rfl⟩ lam
-  have hExp := NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
-    (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V)
-  have hterms :
-      (fun n : ℕ => analyticDysonTerm energy V τ lam n) =
-      (fun n : ℕ => ((Nat.factorial n : ℂ)⁻¹) •
-        ((((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) ^ n)) := by
-    funext n
-    rw [analyticDysonTerm_eq_of_time_independent energy V hV τ lam n]
-    simp only [smul_pow, smul_smul]
-    congr 1
-    field_simp
-  have hDyson' : HasSum
-      (fun n : ℕ => ((Nat.factorial n : ℂ)⁻¹) •
-        ((((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) ^ n))
-      (analyticDysonEvolution energy V τ lam) := by
-    rw [← hterms]
-    exact hDyson
-  exact hDyson'.unique hExp
+  rw [analyticDysonEvolution_eq_evolution]
+  have hconst :
+      continuousInteractionPicture energy V =
+        fun _ : ℝ => finiteContinuousOperatorAlgEquiv V := by
+    funext σ
+    simp [continuousInteractionPicture, hV σ]
+  rw [hconst]
+  simpa [smul_smul] using
+    (Dyson.evolution_const_eq_exp_of_nonneg
+      (finiteContinuousOperatorAlgEquiv V) lam hτ ContinuousLinearMap.norm_id_le)
 
 end
 end Common
