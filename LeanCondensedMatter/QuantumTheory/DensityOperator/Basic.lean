@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.InnerProductSpace.Positive
@@ -49,6 +50,14 @@ theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ
 theorem DensityOperator.isSelfAdjoint (ρ : DensityOperator H) : IsSelfAdjoint ρ.op :=
   ρ.pos.isSelfAdjoint
 
+/-- The lossless real trace of a density operator is one. -/
+@[simp]
+theorem DensityOperator.realTrace_op_eq_one (ρ : DensityOperator H) :
+    ρ.isTraceClass.realTrace ρ.isSelfAdjoint = 1 := by
+  apply Complex.ofReal_injective
+  rw [ρ.isTraceClass.coe_realTrace ρ.isSelfAdjoint]
+  simpa using ρ.trace_eq_one
+
 /-- The self-adjoint spectral specialization associated to a density operator. -/
 theorem DensityOperator.spectralTraceClass (ρ : DensityOperator H) :
     SpectralTraceClass ρ.op where
@@ -68,27 +77,36 @@ theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
 theorem DensityOperator.traceNorm_eq_one (ρ : DensityOperator H) :
     ρ.isTraceClass.traceNorm = 1 := by
   calc
-    ρ.isTraceClass.traceNorm = ρ.spectralTraceClass.isTraceClass.traceNorm :=
-      IsTraceClass.traceNorm_proof_irrel ρ.isTraceClass ρ.spectralTraceClass.isTraceClass
-    _ = spectralTrace ρ.op :=
-      ρ.spectralTraceClass.traceNorm_eq_spectralTrace ρ.pos
-    _ = 1 := ρ.spectralTrace_op_eq_one
+    ρ.isTraceClass.traceNorm =
+        ρ.isTraceClass.realTrace ρ.isSelfAdjoint :=
+      ρ.isTraceClass.traceNorm_eq_realTrace ρ.pos
+    _ = 1 := ρ.realTrace_op_eq_one
 
 /-- Every nonzero spectral eigenvalue of a density operator is nonnegative. -/
 theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
     (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
   eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a
 
+/-- The nonzero spectral eigenvalues of a density operator sum to one. -/
+theorem DensityOperator.hasSum_eigenvalues_eq_one (ρ : DensityOperator H) :
+    HasSum (fun a : EigenvectorIndex ρ.op => a.1.1) 1 := by
+  have hsummable : Summable (fun a : EigenvectorIndex ρ.op => a.1.1) :=
+    (ρ.isTraceClass.hasSummableRealEigenvalues ρ.isSelfAdjoint).congr
+      (fun a => abs_of_nonneg (ρ.eigenvalue_nonneg a))
+  rw [← ρ.spectralTrace_op_eq_one]
+  simpa [spectralTrace] using hsummable.hasSum
+
+/-- The nonzero spectral eigenvalues of a density operator have total sum one. -/
+theorem DensityOperator.tsum_eigenvalues_eq_one (ρ : DensityOperator H) :
+    (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 :=
+  ρ.hasSum_eigenvalues_eq_one.tsum_eq
+
 /-- Every nonzero spectral eigenvalue of a density operator is at most one. -/
 theorem DensityOperator.eigenvalue_le_one (ρ : DensityOperator H)
     (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
-  have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
-    (ρ.isTraceClass.hasSummableRealEigenvalues ρ.isSelfAdjoint).congr
-      (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
-  have hle := hsum.le_tsum a (fun b _ => ρ.eigenvalue_nonneg b)
-  have htrace := ρ.spectralTrace_op_eq_one
-  change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
-  rwa [htrace] at hle
+  have hsum := ρ.hasSum_eigenvalues_eq_one
+  have hle := hsum.summable.le_tsum a (fun b _ => ρ.eigenvalue_nonneg b)
+  rwa [hsum.tsum_eq] at hle
 
 /-- The lossless diagonal expectation values of a density operator sum to one against any Hilbert
 basis. -/
