@@ -9,5 +9,6 @@ set_option linter.style.header false
 
 Finite-basis algebraic and continuous Dyson coefficients, the norm-convergent analytic Dyson
 evolution and its Volterra equation, formal and convergent partition series, the analytic partition
-function specialized from Common, its normalized logarithm, the analytic/formal linked-cluster bridge, and vertex moments.
+function specialized from Common, its normalized logarithm, the analytic/formal linked-cluster bridge,
+and vertex moments.
 -/
