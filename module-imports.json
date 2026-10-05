@@ -287,6 +287,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/AdjointConjugation.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/BerryGeometry/Connection.lean",
       "imports": [
@@ -471,6 +477,15 @@
       "externalImportCount": 5
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/AdjointConjugation.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Compact.lean",
       "imports": [
@@ -632,18 +647,10 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Unitary.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
-        "LeanCondensedMatter.Analysis.Operator.Unitary"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization",
@@ -651,8 +658,7 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
       "externalImportCount": 0
     },
@@ -738,6 +744,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Unitary",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily"
       ],
       "externalImportCount": 1
@@ -746,6 +753,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.BerryGeometry",
         "LeanCondensedMatter.Analysis.Operator.Compact",
         "LeanCondensedMatter.Analysis.Operator.Diagonal",
@@ -2657,7 +2665,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/PictureEquivalence.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
+        "LeanCondensedMatter.Analysis.Operator.Unitary",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation",
@@ -3265,6 +3274,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint"
       ],
       "externalImportCount": 0

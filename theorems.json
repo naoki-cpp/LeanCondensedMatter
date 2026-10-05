@@ -14353,6 +14353,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → ∀ (U : H →L[ℂ] H), (U.adjointConjugate T).IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.adjointConjugate",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
+    "externalAxioms": [],
+    "docString": "Bounded adjoint conjugation preserves trace-class membership. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.comp_left",
+      "ContinuousLinearMap.IsTraceClass.comp_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (W : H →L[ℂ] H) {T : H →L[ℂ] H}, T.IsTraceClass → (W * T).IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -14372,11 +14417,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
-      "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
@@ -14387,11 +14432,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
-      "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
@@ -14429,10 +14474,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
-      "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
@@ -14447,10 +14492,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
-      "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
@@ -15671,6 +15716,49 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (U : H →L[ℂ] H), star U * U = 1 → ⋯.trace = hT.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
+    "externalAxioms": [],
+    "docString": "If `U† U = 1`, then `Tr(U T U†) = Tr(T)` for every trace-class `T`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.adjointConjugate",
+      "ContinuousLinearMap.IsTraceClass.comp_left",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (W : H →L[ℂ] H), ⋯.trace = ⋯.trace",
     "standardAxioms": [
@@ -15691,7 +15779,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate"
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_left",
@@ -15704,7 +15792,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate"
+      "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -15915,49 +16003,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (U : H →L[ℂ] H), star U * U = 1 → ⋯.trace = hT.trace",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
-    "externalAxioms": [],
-    "docString": "If `U† U = 1`, then `Tr(U T U†) = Tr(T)` for every trace-class `T`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right",
-      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.unitaryConjugate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H], ⋯.trace = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -15985,51 +16030,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → ∀ (U : H →L[ℂ] H), (U.unitaryConjugate T).IsTraceClass",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
-    "externalAxioms": [],
-    "docString": "Bounded adjoint conjugation preserves trace-class membership. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16648,6 +16648,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : H →L[ℂ] H) (x y : H),\n  U.adjointConjugate (((InnerProductSpace.rankOne ℂ) x) y) = ((InnerProductSpace.rankOne ℂ) (U x)) (U y)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.adjointConjugate_rankOne",
+    "module": "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
+    "externalAxioms": [],
+    "docString": "Adjoint conjugation transports a rank-one operator by applying the conjugating operator to both\nvectors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.evolveDensityOperator_pure"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.evolveDensityOperator_pure"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T) (a : T.ComplexEigenvectorIndex),\n  ↑T (ContinuousLinearMap.complexEigenvectorFamily hT a) = ↑a.fst • ContinuousLinearMap.complexEigenvectorFamily hT a",
     "standardAxioms": [
@@ -17207,7 +17249,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H) (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ),\n  Module.End.eigenspace (↑(U.unitaryConjugate T)) μ =\n    Submodule.map (↑(Unitary.linearIsometryEquiv (U.unitaryOfAdjointInverse hleft hright)).toLinearEquiv)\n      (Module.End.eigenspace (↑T) μ)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H) (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ),\n  Module.End.eigenspace (↑(U.adjointConjugate T)) μ =\n    Submodule.map (↑(Unitary.linearIsometryEquiv (U.unitaryOfAdjointInverse hleft hright)).toLinearEquiv)\n      (Module.End.eigenspace (↑T) μ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17219,20 +17261,20 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "ContinuousLinearMap.eigenspace_unitaryConjugate",
+    "name": "ContinuousLinearMap.eigenspace_adjointConjugate",
     "module": "LeanCondensedMatter.Analysis.Operator.Unitary",
     "externalAxioms": [],
     "docString": "Unitary conjugation maps each eigenspace to the corresponding eigenspace with the same\neigenvalue. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.finrank_eigenspace_unitaryConjugate"
+      "ContinuousLinearMap.finrank_eigenspace_adjointConjugate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.finrank_eigenspace_unitaryConjugate"
+      "ContinuousLinearMap.finrank_eigenspace_adjointConjugate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -17638,7 +17680,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H),\n  star U * U = 1 →\n    U * star U = 1 →\n      ∀ (μ : ℂ),\n        Module.finrank ℂ ↥(Module.End.eigenspace (↑(U.unitaryConjugate T)) μ) =\n          Module.finrank ℂ ↥(Module.End.eigenspace (↑T) μ)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H),\n  star U * U = 1 →\n    U * star U = 1 →\n      ∀ (μ : ℂ),\n        Module.finrank ℂ ↥(Module.End.eigenspace (↑(U.adjointConjugate T)) μ) =\n          Module.finrank ℂ ↥(Module.End.eigenspace (↑T) μ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17650,7 +17692,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "ContinuousLinearMap.finrank_eigenspace_unitaryConjugate",
+    "name": "ContinuousLinearMap.finrank_eigenspace_adjointConjugate",
     "module": "LeanCondensedMatter.Analysis.Operator.Unitary",
     "externalAxioms": [],
     "docString": "Corresponding eigenspaces have the same finite dimension under unitary conjugation. ",
@@ -17658,7 +17700,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ContinuousLinearMap.eigenspace_unitaryConjugate"
+      "ContinuousLinearMap.eigenspace_adjointConjugate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -19105,48 +19147,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : H →L[ℂ] H) (x y : H),\n  U.unitaryConjugate (((InnerProductSpace.rankOne ℂ) x) y) = ((InnerProductSpace.rankOne ℂ) (U x)) (U y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.unitaryConjugate_rankOne",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unitary",
-    "externalAxioms": [],
-    "docString": "Conjugation transports a rank-one operator by applying the conjugating operator to both\nvectors. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.evolveDensityOperator_pure"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.evolveDensityOperator_pure"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45700,6 +45700,51 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Commute (↑system.hamiltonian) A →\n    ∀ (t : ℝ), (QuantumTheory.LinearResponse.freePropagator system t).adjointConjugate A = A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
+    "externalAxioms": [],
+    "docString": "A bounded operator commuting with the Hamiltonian is unchanged by Schrödinger-picture unitary\nconjugation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : QuantumTheory.Observable H) (t : ℝ),\n  ↑(QuantumTheory.LinearResponse.heisenbergObservable system A t) =\n    QuantumTheory.LinearResponse.heisenbergEvolution system (↑A) t",
     "standardAxioms": [
@@ -46199,7 +46244,7 @@
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.ext",
-      "QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian"
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -46221,7 +46266,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (t : ℝ),\n  (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).op =\n    (QuantumTheory.LinearResponse.freePropagator system t).unitaryConjugate ρ.op",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (t : ℝ),\n  (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).op =\n    (QuantumTheory.LinearResponse.freePropagator system t).adjointConjugate ρ.op",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46286,7 +46331,7 @@
       "QuantumTheory.LinearResponse.isPureDensity_evolveDensityOperator"
     ],
     "dependencies": [
-      "ContinuousLinearMap.unitaryConjugate_rankOne",
+      "ContinuousLinearMap.adjointConjugate_rankOne",
       "QuantumTheory.DensityOperator.ext"
     ],
     "crossModuleDirectWrapper": false,
@@ -48717,9 +48762,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.heisenbergObservable_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian"
+      "QuantumTheory.LinearResponse.heisenbergObservable_eq_self_of_commute_hamiltonian"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian",
@@ -48728,9 +48773,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.heisenbergObservable_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian"
+      "QuantumTheory.LinearResponse.heisenbergObservable_eq_self_of_commute_hamiltonian"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -52328,13 +52373,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
       "QuantumTheory.LinearResponse.inner_purePointBasis_heisenbergEvolution",
       "QuantumTheory.LinearResponse.isSelfAdjoint_heisenbergEvolution",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
-      "QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.vonNeumannEquation",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence.0.QuantumTheory.LinearResponse.inner_freePropagator_apply_eq_heisenbergEvolution"
     ],
@@ -52344,13 +52389,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_conjStarAlgAut",
       "QuantumTheory.LinearResponse.inner_purePointBasis_heisenbergEvolution",
       "QuantumTheory.LinearResponse.isSelfAdjoint_heisenbergEvolution",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
-      "QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.vonNeumannEquation",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence.0.QuantumTheory.LinearResponse.inner_freePropagator_apply_eq_heisenbergEvolution"
     ],
@@ -53511,51 +53556,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.freePropagator_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Commute (↑system.hamiltonian) A →\n    ∀ (t : ℝ), (QuantumTheory.LinearResponse.freePropagator system t).unitaryConjugate A = A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
-    "externalAxioms": [],
-    "docString": "A bounded operator commuting with the Hamiltonian is unchanged by Schrödinger-picture unitary\nconjugation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.star_freePropagator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -94452,7 +94452,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
@@ -94464,7 +94464,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
@@ -94506,13 +94506,8 @@
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
@@ -94525,16 +94520,11 @@
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94573,13 +94563,8 @@
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
@@ -94593,16 +94578,11 @@
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95326,8 +95306,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
@@ -95339,15 +95317,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95383,16 +95359,17 @@
     "dependents": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -95400,18 +95377,19 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95489,10 +95467,10 @@
     "dependents": [
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -95505,10 +95483,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -95643,14 +95621,11 @@
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
@@ -95665,17 +95640,14 @@
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95801,14 +95773,12 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
-      "SecondQuantization.Bosonic.createOccupation_apply_ne",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
       "SecondQuantization.Bosonic.create_basisState_eq",
       "SecondQuantization.Bosonic.diagonalCoeff_eq",
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
-      "SecondQuantization.Bosonic.removeOccupation_apply_same",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne"
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
+      "SecondQuantization.Bosonic.removeOccupation_apply_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98097,7 +98067,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -98109,8 +98079,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self"
     ],
     "dependencies": [
@@ -98119,11 +98087,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98534,6 +98500,59 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (m n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.annihilate i) m n =\n    if m = SecondQuantization.Bosonic.removeOccupation i n then ↑√↑(n i) else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.matrixCoeff_annihilate",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
+    "externalAxioms": [],
+    "docString": "Matrix coefficients of bosonic annihilation are supported on the lowered occupation state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.annihilate_basisState_eq",
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.annihilate j) n n =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -98604,15 +98623,12 @@
       "SecondQuantization.Bosonic.norm_matrixCoeff_annihilate_comp_create_self_le"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
-      "SecondQuantization.Bosonic.createOccupation_apply_ne",
       "SecondQuantization.Bosonic.createOccupation_apply_same",
       "SecondQuantization.Bosonic.create_basisState_eq",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "SecondQuantization.Bosonic.removeOccupation_apply_ne",
-      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98634,37 +98650,41 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.annihilate i)\n      (SecondQuantization.Bosonic.removeOccupation i n) n =\n    ↑√↑(n i)",
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (m n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.create i) m n =\n    if m = SecondQuantization.Bosonic.createOccupation i n then ↑√(↑(n i) + 1) else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
+    "name": "SecondQuantization.Bosonic.matrixCoeff_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
     "externalAxioms": [],
-    "docString": "The annihilation matrix coefficient against the corresponding lowered state. ",
+    "docString": "Matrix coefficients of bosonic creation are supported on the raised occupation state. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_eq",
+      "SecondQuantization.Bosonic.create_basisState_eq",
       "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98807,109 +98827,6 @@
       "SecondQuantization.Bosonic.freeGibbsSummable_interactionPicture_iff"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode},\n  i ≠ j →\n    ∀ (ε : Mode → ℝ) (τ : ℝ) (n k : SecondQuantization.Bosonic.Occupation Mode),\n      SecondQuantization.Common.matrixCoeff\n            (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε τ ∘ₗ SecondQuantization.Bosonic.create j) n k *\n          SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.annihilate i) k n =\n        0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
-    "externalAxioms": [],
-    "docString": "Mixed matrix coefficients vanish when the annihilation and creation modes differ. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
-      "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_basisState",
-      "SecondQuantization.Bosonic.removeOccupation_apply_ne",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (τ : ℝ) (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε τ ∘ₗ SecondQuantization.Bosonic.create i) n\n      (SecondQuantization.Bosonic.removeOccupation i n) =\n    ↑√↑(n i) * Complex.exp ↑(τ * SecondQuantization.Bosonic.freeEigenvalue ε n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
-    "externalAxioms": [],
-    "docString": "The matrix coefficient of `e^{τH₀}a_i†` against the corresponding lowered state. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_basisState",
-      "SecondQuantization.Bosonic.removeOccupation_apply_ne",
-      "SecondQuantization.Bosonic.removeOccupation_apply_same",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99908,32 +99825,34 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_comm",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_comm",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99969,13 +99888,12 @@
     "dependents": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_comm",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -99983,15 +99901,14 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_comm",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100074,7 +99991,7 @@
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -100090,7 +100007,7 @@
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.createOccupationEquivPositive",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -100113,8 +100030,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -100126,7 +100043,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
     "dependencies": [
@@ -100138,10 +100054,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100344,14 +100259,10 @@
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "SecondQuantization.Bosonic.sqrt_natCast_mul_self",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_eq"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100841,8 +100752,7 @@
       "SecondQuantization.Bosonic.createOccupation_apply_same",
       "SecondQuantization.Bosonic.create_basisState_eq",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100888,10 +100798,10 @@
     "dependencies": [
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point"
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_two_point",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -116637,8 +116547,7 @@
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
     "dependencies": [],
@@ -116663,11 +116572,10 @@
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 21,
+    "compiledConsumerCount": 20,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117030,7 +116938,9 @@
       "SecondQuantization.Bosonic.freeGibbsSummable_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalOperator_apply"
@@ -117044,9 +116954,11 @@
       "SecondQuantization.Bosonic.freeGibbsSummable_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_dysonCoeff_one_self",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117216,13 +117128,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
-      "SecondQuantization.Common.matrixCoeff_id"
+      "SecondQuantization.Common.matrixCoeff_id",
+      "SecondQuantization.Fermionic.matrixCoeff_annihilate",
+      "SecondQuantization.Fermionic.matrixCoeff_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.smul_basisState_apply_of_ne",
@@ -117232,15 +117147,18 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
-      "SecondQuantization.Common.matrixCoeff_id"
+      "SecondQuantization.Common.matrixCoeff_id",
+      "SecondQuantization.Fermionic.matrixCoeff_annihilate",
+      "SecondQuantization.Fermionic.matrixCoeff_create"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121037,10 +120955,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
@@ -121048,14 +120962,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121090,7 +121000,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
@@ -121099,11 +121008,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135821,6 +135729,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.basisState n) =\n    (if i ∈ n then ↑(SecondQuantization.Fermionic.fermionSign i n) else 0) •\n      SecondQuantization.Fermionic.basisState (SecondQuantization.Fermionic.removeOccupation i n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.annihilate_basisState_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation",
+    "externalAxioms": [],
+    "docString": "Uniform basis-state action of fermionic annihilation, with the empty-mode case absorbed into\nthe scalar coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.matrixCoeff_annihilate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
+      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.matrixCoeff_annihilate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.basisState n) =\n      ↑(SecondQuantization.Fermionic.fermionSign i n) •\n        SecondQuantization.Fermionic.basisState (SecondQuantization.Fermionic.removeOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -135840,13 +135793,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.annihilate_basisState_eq",
       "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.numberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.annihilate_basisState"
@@ -135854,13 +135807,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.annihilate_basisState_eq",
       "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.numberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -135896,6 +135849,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.annihilate_basisState_eq",
       "SecondQuantization.Fermionic.annihilate_fockVacuum",
       "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
@@ -135903,8 +135857,7 @@
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.annihilate_basisState"
@@ -135912,6 +135865,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.annihilate_basisState_eq",
       "SecondQuantization.Fermionic.annihilate_fockVacuum",
       "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
@@ -135919,8 +135873,7 @@
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -139095,6 +139048,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.basisState n) =\n    (if i ∈ n then 0 else ↑(SecondQuantization.Fermionic.fermionSign i n)) •\n      SecondQuantization.Fermionic.basisState (SecondQuantization.Fermionic.insertOccupation i n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.create_basisState_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation",
+    "externalAxioms": [],
+    "docString": "Uniform basis-state action of fermionic creation, with Pauli exclusion absorbed into the\nscalar coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.matrixCoeff_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.create_basisState_of_mem",
+      "SecondQuantization.Fermionic.create_basisState_of_not_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.matrixCoeff_create"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n → (SecondQuantization.Fermionic.create i) (SecondQuantization.Fermionic.basisState n) = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -139117,11 +139115,11 @@
       "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.create_basisState_eq",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.create_basisState"
@@ -139132,11 +139130,11 @@
       "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.create_basisState_eq",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "compiledConsumerCount": 8,
     "axioms": [
@@ -139175,14 +139173,14 @@
       "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.create_basisState_eq",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.create_fockVacuum",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.create_basisState"
@@ -139193,14 +139191,14 @@
       "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.create_basisState_eq",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.create_fockVacuum",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -142929,6 +142927,51 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (m n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Fermionic.annihilate i) m n =\n    if m = SecondQuantization.Fermionic.removeOccupation i n then\n      if i ∈ n then ↑(SecondQuantization.Fermionic.fermionSign i n) else 0\n    else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.matrixCoeff_annihilate",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation",
+    "externalAxioms": [],
+    "docString": "Matrix coefficients of fermionic annihilation are supported on the removed occupation state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
+      "SecondQuantization.Fermionic.annihilate_basisState_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Fermionic.annihilate i ∘ₗ SecondQuantization.Fermionic.annihilate j) n n =\n    0",
     "standardAxioms": [
@@ -142958,6 +143001,51 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (m n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Fermionic.create i) m n =\n    if m = SecondQuantization.Fermionic.insertOccupation i n then\n      if i ∈ n then 0 else ↑(SecondQuantization.Fermionic.fermionSign i n)\n    else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.matrixCoeff_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation",
+    "externalAxioms": [],
+    "docString": "Matrix coefficients of fermionic creation are supported on the inserted occupation state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
+      "SecondQuantization.Fermionic.create_basisState_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163877,10 +163965,9 @@
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
       "SecondQuantization.Bosonic.createOccupation_apply_same",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Common.linearMap_ext_basisState"
     ],
@@ -163904,7 +163991,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  n i ≠ 0 → ((SecondQuantization.Bosonic.create i) x) n = ↑√↑(n i) * x (SecondQuantization.Bosonic.removeOccupation i n)",
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ((SecondQuantization.Bosonic.create i) x) n = ↑√↑(n i) * x (SecondQuantization.Bosonic.removeOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163916,58 +164003,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
     "externalAxioms": [],
-    "docString": "Coordinate action of creation on a positive-occupation target. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Bosonic.removeOccupation_apply_same",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
-      "SecondQuantization.Common.linearMap_ext_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode), n i = 0 → ((SecondQuantization.Bosonic.create i) x) n = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
-    "externalAxioms": [],
-    "docString": "Creation has zero coordinate on a zero-occupation target. ",
+    "docString": "Coordinate action of creation on an arbitrary algebraic-Fock vector. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -163975,7 +164014,10 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.create_basisState_eq",
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
+      "SecondQuantization.Bosonic.removeOccupation_apply_same",
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
@@ -164594,38 +164636,89 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode)\n  (m n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff A m n = (A (SecondQuantization.Bosonic.basisState n)) m",
+    "statement": "∀ {Mode : Type u_1} {i j : Mode},\n  i ≠ j →\n    ∀ (ε : Mode → ℝ) (τ : ℝ) (n k : SecondQuantization.Bosonic.Occupation Mode),\n      SecondQuantization.Common.matrixCoeff\n            (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε τ ∘ₗ SecondQuantization.Bosonic.create j) n k *\n          SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.annihilate i) k n =\n        0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_eq",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
     "externalAxioms": [],
-    "docString": "Bridge `Common.matrixCoeff` to the local occupation-basis notation. ",
+    "docString": "Mixed matrix coefficients vanish when the annihilation and creation modes differ. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
+      "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.matrixCoeff_annihilate",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
+      "SecondQuantization.Bosonic.removeOccupation_apply_ne",
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
+      "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (τ : ℝ) (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε τ ∘ₗ SecondQuantization.Bosonic.create i) n\n      (SecondQuantization.Bosonic.removeOccupation i n) =\n    ↑√↑(n i) * Complex.exp ↑(τ * SecondQuantization.Bosonic.freeEigenvalue ε n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
+    "externalAxioms": [],
+    "docString": "The matrix coefficient of `e^{τH₀}a_i†` against the corresponding lowered state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
     ],
-    "compiledConsumerCount": 3,
+    "dependencies": [
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.matrixCoeff_create",
+      "SecondQuantization.Bosonic.removeOccupation_apply_ne",
+      "SecondQuantization.Bosonic.removeOccupation_apply_same",
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172945,11 +173038,9 @@
       "SecondQuantization.Fermionic.star_finiteHilbertCreate"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.create_basisState_of_mem",
-      "SecondQuantization.Fermionic.create_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt"
+      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
+      "SecondQuantization.Fermionic.matrixCoeff_annihilate",
+      "SecondQuantization.Fermionic.matrixCoeff_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
