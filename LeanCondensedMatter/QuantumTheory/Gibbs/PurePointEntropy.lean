@@ -109,13 +109,14 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
     simpa [p] using HasSum.congr_fun
       ((hEnergySum.mul_left β).add (hProbSum.mul_left (Real.log Z))) hterm
   have htrace :
-      spectralTrace (entropyOp ρ) =
+      hentropy.realTrace (entropyOp_isSelfAdjoint ρ) =
         β * purePointGibbsEnergyExpectation E β + Real.log Z :=
     hEntropySum.unique hEntropyFormula
-  have htrace_nonneg : 0 ≤ spectralTrace (entropyOp ρ) := by
+  have htrace_nonneg :
+      0 ≤ hentropy.realTrace (entropyOp_isSelfAdjoint ρ) := by
     rw [← hEntropySum.tsum_eq]
     exact tsum_nonneg fun i => Real.negMulLog_nonneg (hp_nonneg i) (hp_le_one i)
-  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace ρ hentropy
+  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_realTrace ρ hentropy
   change vonNeumannEntropy ρ ≠ ⊤ ∧
     (vonNeumannEntropy ρ).toReal =
       β * purePointGibbsEnergyExpectation E β + Real.log Z
