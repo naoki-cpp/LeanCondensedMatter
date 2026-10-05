@@ -18,6 +18,31 @@ noncomputable section
 
 variable {Config : Type*}
 
+/-- Uniformly bounded diagonal multiplication by nonnegative real weights is positive. -/
+theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
+    (w : Config → ℝ) {C : ℝ} (hC : 0 ≤ C)
+    (hbound : ∀ c, ‖(w c : ℂ)‖ ≤ C) (hnonneg : ∀ c, 0 ≤ w c) :
+    (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound).IsPositive := by
+  rw [isPositive_def]
+  constructor
+  · intro x y
+    rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
+    apply tsum_congr
+    intro c
+    rw [completedBoundedDiagonalOperator_apply, completedBoundedDiagonalOperator_apply]
+    change inner ℂ ((w c : ℂ) • x c) (y c) =
+      inner ℂ (x c) ((w c : ℂ) • y c)
+    simp [inner_smul_left, inner_smul_right]
+  · intro x
+    rw [lp.inner_eq_tsum,
+      RCLike.reCLM.map_tsum (lp.summable_inner
+        (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound x) x)]
+    apply tsum_nonneg
+    intro c
+    rw [completedBoundedDiagonalOperator_apply]
+    change 0 ≤ RCLike.re (inner ℂ ((w c : ℂ) • x c) (x c))
+    simp [inner_smul_left, inner_self_eq_norm_sq_to_K, hnonneg c]
+
 /-- The maximal diagonal operator is densely defined for every scalar configuration weight. -/
 theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
     Dense (((completedDiagonalOperator w).domain : Submodule ℂ (CompletedFock Config)) :
