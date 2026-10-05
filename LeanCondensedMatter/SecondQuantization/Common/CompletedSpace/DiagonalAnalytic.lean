@@ -24,7 +24,7 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     (w : Config → ℝ) {C : ℝ} (hC : 0 ≤ C)
     (hbound : ∀ c, ‖(w c : ℂ)‖ ≤ C) (hnonneg : ∀ c, 0 ≤ w c) :
     (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound).IsPositive := by
-  rw [isPositive_def]
+  rw [ContinuousLinearMap.isPositive_def]
   constructor
   · intro x y
     rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
