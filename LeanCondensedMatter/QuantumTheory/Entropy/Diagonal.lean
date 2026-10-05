@@ -43,16 +43,14 @@ theorem DensityOperator.entropyOp_isTraceClass_of_diagonal
   rw [hop]
   exact (HilbertBasis.diagonalOpSpectralTraceClass b a ha ha_nonneg).isTraceClass
 
-/-- The entropy operator's real spectral trace is the sum of `-wᵢ log wᵢ` in a diagonal presentation. -/
+/-- The entropy operator's lossless real trace is the sum of `-wᵢ log wᵢ` in a diagonal presentation. -/
 theorem hasSum_entropyOp_diagonal (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
     (htrace : IsTraceClass (entropyOp ρ)) :
-    HasSum (fun i => Real.negMulLog (w i)) (spectralTrace (entropyOp ρ)) := by
-  let hstc : SpectralTraceClass (entropyOp ρ) :=
-    { isTraceClass := htrace
-      symmetric := (entropyOp_isSelfAdjoint ρ).isSymmetric }
-  have hsum := hstc.hasSum_diagonalExpectationValue b
+    HasSum (fun i => Real.negMulLog (w i))
+      (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
+  have hsum := htrace.hasSum_realTrace (entropyOp_isSelfAdjoint ρ) b
   exact HasSum.congr_fun hsum fun i => by
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right,
@@ -60,12 +58,12 @@ theorem hasSum_entropyOp_diagonal (ρ : DensityOperator H)
       inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
 
-/-- Spectral trace form of `hasSum_entropyOp_diagonal`. -/
-theorem entropyOp_spectralTrace_eq_tsum_diagonal (ρ : DensityOperator H)
+/-- Real-trace form of `hasSum_entropyOp_diagonal`. -/
+theorem entropyOp_realTrace_eq_tsum_diagonal (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
     (htrace : IsTraceClass (entropyOp ρ)) :
-    spectralTrace (entropyOp ρ) =
+    htrace.realTrace (entropyOp_isSelfAdjoint ρ) =
       ∑' i, Real.negMulLog (w i) :=
   (hasSum_entropyOp_diagonal ρ b w happly htrace).tsum_eq.symm
 
