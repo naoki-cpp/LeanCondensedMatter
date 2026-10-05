@@ -44,7 +44,7 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
       _ = inner ℂ (x c) ((w c : ℂ) * y c) := by
         change inner ℂ ((w c : ℂ) • x c) (y c) =
           inner ℂ (x c) ((w c : ℂ) • y c)
-        rw [inner_smul_ofReal_left, inner_smul_ofReal_right]
+        rw [inner_smul_real_left, inner_smul_real_right]
       _ = inner ℂ (x c) (T y c) := by
         exact congrArg (fun z : ℂ => inner ℂ (x c) z) (hcoord y c).symm
   · intro x
@@ -60,9 +60,8 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     intro c
     rw [hcoord x c]
     change 0 ≤ RCLike.re (inner ℂ ((w c : ℂ) • x c) (x c))
-    rw [inner_smul_ofReal_left, inner_self_eq_norm_sq_to_K]
-    norm_cast
-    exact mul_nonneg (sq_nonneg ‖x c‖) (hnonneg c)
+    rw [inner_smul_real_left, RCLike.smul_re, ← norm_sq_eq_re_inner]
+    exact mul_nonneg (hnonneg c) (sq_nonneg ‖x c‖)
 
 /-- The maximal diagonal operator is densely defined for every scalar configuration weight. -/
 theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
