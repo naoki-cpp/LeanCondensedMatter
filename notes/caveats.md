@@ -10,8 +10,8 @@ applies.
   membership; compactness and absolute spectral summability are derived. The canonical trace on
   general trace-class bounded operators is `IsTraceClass.trace : ℂ`. For self-adjoint trace-class
   operators, `IsTraceClass.realTrace : ℝ` is the lossless real form of that same trace.
-  `spectralTrace` remains the eigenvalue sum with multiplicity and agrees with the canonical trace
-  on the self-adjoint specialization.
+  `spectralTrace` remains the eigenvalue sum with multiplicity and agrees, after coercion to `ℂ`,
+  with the canonical complex trace on the self-adjoint specialization.
 
 - **Hilbert-basis diagonal operators are not trace-class-specific.**
   `Analysis/Operator/Diagonal.lean` constructs the absolutely summable rank-one series and proves
