@@ -20,7 +20,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 theorem DensityOperator.summable_eigenvalue_sq (ρ : DensityOperator H) :
     Summable (fun a : EigenvectorIndex ρ.op => a.1.1 ^ 2) := by
   have heigen : Summable (fun a : EigenvectorIndex ρ.op => a.1.1) :=
-    ρ.spectralTraceClass.summable.congr (fun a => abs_of_nonneg (ρ.eigenvalue_nonneg a))
+    ρ.hasSum_eigenvalues_eq_one.summable
   exact Summable.of_nonneg_of_le
     (fun a => sq_nonneg a.1.1)
     (fun a => by nlinarith [ρ.eigenvalue_nonneg a, ρ.eigenvalue_le_one a])
@@ -38,17 +38,14 @@ theorem purity_nonneg (ρ : DensityOperator H) : 0 ≤ purity ρ := by
 /-- Purity is at most one. -/
 theorem purity_le_one (ρ : DensityOperator H) : purity ρ ≤ 1 := by
   have heigen : Summable (fun a : EigenvectorIndex ρ.op => a.1.1) :=
-    ρ.spectralTraceClass.summable.congr (fun a => abs_of_nonneg (ρ.eigenvalue_nonneg a))
+    ρ.hasSum_eigenvalues_eq_one.summable
   rw [purity]
   calc
     (∑' a : EigenvectorIndex ρ.op, a.1.1 ^ 2) ≤
         ∑' a : EigenvectorIndex ρ.op, a.1.1 :=
       ρ.summable_eigenvalue_sq.tsum_mono heigen
         (fun a => by nlinarith [ρ.eigenvalue_nonneg a, ρ.eigenvalue_le_one a])
-    _ = 1 := by
-      have htrace := ρ.spectralTrace_op_eq_one
-      change (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 at htrace
-      exact htrace
+    _ = 1 := ρ.tsum_eigenvalues_eq_one
 
 /-- The expectation of the density operator itself is its purity. -/
 @[simp]
@@ -92,7 +89,7 @@ theorem DensityOperator.eigenvalue_eq_one_of_purity_eq_one
     (ρ : DensityOperator H) (hpurity : purity ρ = 1)
     (a : EigenvectorIndex ρ.op) : a.1.1 = 1 := by
   have heigen : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
-    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
+    ρ.hasSum_eigenvalues_eq_one.summable
   have hgap : Summable (fun b : EigenvectorIndex ρ.op => b.1.1 - b.1.1 ^ 2) :=
     heigen.sub ρ.summable_eigenvalue_sq
   have hgap_nonneg : ∀ b : EigenvectorIndex ρ.op, 0 ≤ b.1.1 - b.1.1 ^ 2 := by
@@ -100,9 +97,7 @@ theorem DensityOperator.eigenvalue_eq_one_of_purity_eq_one
     nlinarith [ρ.eigenvalue_nonneg b, ρ.eigenvalue_le_one b]
   have hgap_sum : (∑' b : EigenvectorIndex ρ.op, (b.1.1 - b.1.1 ^ 2)) = 0 := by
     rw [heigen.tsum_sub ρ.summable_eigenvalue_sq]
-    have htrace := ρ.spectralTrace_op_eq_one
-    change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
-    rw [htrace]
+    rw [ρ.tsum_eigenvalues_eq_one]
     change 1 - purity ρ = 0
     rw [hpurity]
     norm_num
