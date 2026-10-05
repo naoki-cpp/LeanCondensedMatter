@@ -36,8 +36,9 @@ theorem matrixCoeff_annihilate_comp_create_self
       rw [LinearMap.comp_apply, annihilate_create_basisState_same]
     simpa using
       (Common.matrixCoeff_eq_ite_of_basisState_smul (m := n) haction)
-  · rw [ite_eq_right hij, Common.matrixCoeff, LinearMap.comp_apply,
-      create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
+  · rw [ite_eq_right hij, Common.matrixCoeff, LinearMap.comp_apply]
+    change (annihilate i (create j (basisState n))) n = 0
+    rw [create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
     change (Real.sqrt (n j + 1 : ℝ) : ℂ) *
       Common.matrixCoeff (annihilate i) n (createOccupation j n) = 0
     rw [matrixCoeff_annihilate]

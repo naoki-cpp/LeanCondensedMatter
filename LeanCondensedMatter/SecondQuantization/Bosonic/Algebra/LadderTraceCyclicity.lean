@@ -102,7 +102,8 @@ private theorem create_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupati
           rw [removeOccupation_apply_same, Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr hi)]
           push_cast
           ring
-        simp [htarget, hcoord, evalR, basisState, Common.basisState]
+        rw [ite_eq_left htarget, hcoord]
+        simp [evalR, basisState, Common.basisState]
       · have hca : n ≠ createOccupation i a := by
           intro hca
           apply h
