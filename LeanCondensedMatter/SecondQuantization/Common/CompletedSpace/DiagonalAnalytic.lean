@@ -30,6 +30,24 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
       T x c = (w c : ℂ) * x c := by
     exact completedBoundedDiagonalOperator_apply
       (fun c => (w c : ℂ)) hC hbound x c
+  have hsymmScalar (r : ℝ) (z y : ℂ) :
+      inner ℂ ((r : ℂ) * z) y = inner ℂ z ((r : ℂ) * y) := by
+    simp [RCLike.inner_apply, mul_assoc, mul_comm]
+  have hnonnegScalar (r : ℝ) (hr : 0 ≤ r) (z : ℂ) :
+      0 ≤ RCLike.re (inner ℂ ((r : ℂ) * z) z) := by
+    have hvalue :
+        RCLike.re (inner ℂ ((r : ℂ) * z) z) = r * ‖z‖ ^ 2 := by
+      calc
+        RCLike.re (inner ℂ ((r : ℂ) * z) z) =
+            RCLike.re ((r : ℂ) * (z * (starRingEnd ℂ) z)) := by
+              simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
+              congr 1
+              ac_rfl
+        _ = r * ‖z‖ ^ 2 := by
+          rw [RCLike.mul_conj, RCLike.re_eq_complex_re,
+            Complex.re_ofReal_mul, Complex.ofReal_re]
+    rw [hvalue]
+    exact mul_nonneg hr (sq_nonneg ‖z‖)
   change T.IsPositive
   rw [ContinuousLinearMap.isPositive_def]
   constructor
@@ -41,9 +59,8 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
       inner ℂ (T x c) (y c) =
           inner ℂ ((w c : ℂ) * x c) (y c) := by
             exact congrArg (fun z : ℂ => inner ℂ z (y c)) (hcoord x c)
-      _ = inner ℂ (x c) ((w c : ℂ) * y c) := by
-        simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
-        ac_rfl
+      _ = inner ℂ (x c) ((w c : ℂ) * y c) :=
+        hsymmScalar (w c) (x c) (y c)
       _ = inner ℂ (x c) (T y c) := by
         exact congrArg (fun z : ℂ => inner ℂ (x c) z) (hcoord y c).symm
   · intro x
@@ -58,20 +75,7 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     apply tsum_nonneg
     intro c
     rw [hcoord x c]
-    have hscalar :
-        RCLike.re (inner ℂ ((w c : ℂ) * x c) (x c)) =
-          w c * ‖x c‖ ^ 2 := by
-      calc
-        RCLike.re (inner ℂ ((w c : ℂ) * x c) (x c)) =
-            RCLike.re ((w c : ℂ) * (x c * (starRingEnd ℂ) (x c))) := by
-              simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
-              congr 1
-              ac_rfl
-        _ = w c * ‖x c‖ ^ 2 := by
-          rw [RCLike.mul_conj, RCLike.re_eq_complex_re,
-            Complex.re_ofReal_mul, Complex.ofReal_re]
-    rw [hscalar]
-    exact mul_nonneg (hnonneg c) (sq_nonneg ‖x c‖)
+    exact hnonnegScalar (w c) (hnonneg c) (x c)
 
 /-- The maximal diagonal operator is densely defined for every scalar configuration weight. -/
 theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
