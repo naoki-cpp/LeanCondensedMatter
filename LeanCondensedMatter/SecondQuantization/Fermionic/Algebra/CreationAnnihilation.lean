@@ -154,9 +154,9 @@ theorem annihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (h : i ∈
     annihilate i (basisState n) = (fermionSign i n : ℂ) • basisState (removeOccupation i n) := by
   rw [annihilate_basisState, annihilateBasis, ite_eq_left h]
 
+open scoped Classical in
 /-- Uniform basis-state action of fermionic creation, with Pauli exclusion absorbed into the
 scalar coefficient. -/
-open scoped Classical in
 theorem create_basisState_eq (i : Mode) (n : Occupation Mode) :
     create i (basisState n) =
       (if i ∈ n then 0 else (fermionSign i n : ℂ)) • basisState (insertOccupation i n) := by
@@ -164,9 +164,9 @@ theorem create_basisState_eq (i : Mode) (n : Occupation Mode) :
   · rw [create_basisState_of_mem h, ite_eq_left h, zero_smul]
   · rw [create_basisState_of_not_mem h, ite_eq_right h]
 
+open scoped Classical in
 /-- Uniform basis-state action of fermionic annihilation, with the empty-mode case absorbed into
 the scalar coefficient. -/
-open scoped Classical in
 theorem annihilate_basisState_eq (i : Mode) (n : Occupation Mode) :
     annihilate i (basisState n) =
       (if i ∈ n then (fermionSign i n : ℂ) else 0) • basisState (removeOccupation i n) := by
@@ -174,8 +174,8 @@ theorem annihilate_basisState_eq (i : Mode) (n : Occupation Mode) :
   · rw [annihilate_basisState_of_mem h, ite_eq_left h]
   · rw [annihilate_basisState_of_not_mem h, ite_eq_right h, zero_smul]
 
-/-- Matrix coefficients of fermionic creation are supported on the inserted occupation state. -/
 open scoped Classical in
+/-- Matrix coefficients of fermionic creation are supported on the inserted occupation state. -/
 theorem matrixCoeff_create (i : Mode) (m n : Occupation Mode) :
     Common.matrixCoeff (create i) m n =
       if m = insertOccupation i n then
@@ -183,8 +183,8 @@ theorem matrixCoeff_create (i : Mode) (m n : Occupation Mode) :
       else 0 :=
   Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (create_basisState_eq i n)
 
-/-- Matrix coefficients of fermionic annihilation are supported on the removed occupation state. -/
 open scoped Classical in
+/-- Matrix coefficients of fermionic annihilation are supported on the removed occupation state. -/
 theorem matrixCoeff_annihilate (i : Mode) (m n : Occupation Mode) :
     Common.matrixCoeff (annihilate i) m n =
       if m = removeOccupation i n then
