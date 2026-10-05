@@ -1,5 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Diagonal
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
@@ -31,26 +30,34 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
   have hp_norm : Summable fun i => ‖p i‖ := by
     have hscaled := ha.mul_left ‖Z⁻¹‖
     simpa [p, norm_mul] using hscaled
-  let hstc :=
-    HilbertBasis.diagonalOpSpectralTraceClass b p hp_norm hp_nonneg
+  let hpos :=
+    HilbertBasis.diagonalOp_isPositive b p hp_norm hp_nonneg
+  let htrace :=
+    HilbertBasis.diagonalOp_isTraceClass b p hp_norm hp_nonneg
   refine
     { op := HilbertBasis.diagonalOp b (fun i => (p i : ℂ))
-      pos := HilbertBasis.diagonalOp_isPositive b p hp_norm hp_nonneg
-      isTraceClass := hstc.isTraceClass
+      pos := hpos
+      isTraceClass := htrace
       trace_eq_one := ?_ }
-  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.isSelfAdjoint]
-  have hspectral :
-      spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = 1 := by
+  have htraceSum :
+      HasSum (fun i => (p i : ℂ)) htrace.trace := by
+    exact HasSum.congr_fun (htrace.hasSum_trace b) fun i => by
+      rw [HilbertBasis.diagonalOp_apply_basis b (fun i => (p i : ℂ))
+        (by simpa using hp_norm) i]
+      rw [inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+      simp
+  have hp_tsum : ∑' i, p i = 1 := by
     calc
-      spectralTrace (HilbertBasis.diagonalOp b (fun i => (p i : ℂ))) = ∑' i, p i :=
-        HilbertBasis.spectralTrace_diagonalOp_eq_tsum b p hp_norm hp_nonneg
-      _ = Z⁻¹ * ∑' i, a i := by
+      ∑' i, p i = Z⁻¹ * ∑' i, a i := by
         simp only [p]
         rw [tsum_mul_left]
       _ = 1 := by
         change Z⁻¹ * Z = 1
         exact inv_mul_cancel₀ hZ_ne
-  exact_mod_cast hspectral
+  have hp_hasSum : HasSum p 1 := by
+    rw [← hp_tsum]
+    exact (Summable.of_norm hp_norm).hasSum
+  exact htraceSum.unique (Complex.hasSum_ofReal.mpr hp_hasSum)
 
 /-- Every density operator is diagonal in a Hilbert basis. The basis extends the canonical
 orthonormal family of nonzero spectral eigenvectors; all additional basis vectors lie in the
