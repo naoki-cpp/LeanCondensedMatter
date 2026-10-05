@@ -24,23 +24,35 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     (w : Config → ℝ) {C : ℝ} (hC : 0 ≤ C)
     (hbound : ∀ c, ‖(w c : ℂ)‖ ≤ C) (hnonneg : ∀ c, 0 ≤ w c) :
     (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound).IsPositive := by
+  let T : CompletedFock Config →L[ℂ] CompletedFock Config :=
+    completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound
+  have hcoord (x : CompletedFock Config) (c : Config) :
+      T x c = (w c : ℂ) * x c := by
+    exact completedBoundedDiagonalOperator_apply
+      (fun c => (w c : ℂ)) hC hbound x c
+  change T.IsPositive
   rw [ContinuousLinearMap.isPositive_def]
   constructor
   · intro x y
     rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
     apply tsum_congr
     intro c
-    simp only [completedBoundedDiagonalOperator_apply]
+    rw [hcoord x c, hcoord y c]
     change inner ℂ ((w c : ℂ) • x c) (y c) =
       inner ℂ (x c) ((w c : ℂ) • y c)
     simp [inner_smul_left, inner_smul_right]
   · intro x
-    rw [ContinuousLinearMap.reApplyInnerSelf_apply, lp.inner_eq_tsum,
-      RCLike.reCLM.map_tsum (lp.summable_inner
-        (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound x) x)]
+    rw [ContinuousLinearMap.reApplyInnerSelf_apply, lp.inner_eq_tsum]
+    have hs : Summable fun c : Config => inner ℂ (T x c) (x c) :=
+      lp.summable_inner (T x) x
+    have hre :
+        RCLike.re (∑' c : Config, inner ℂ (T x c) (x c)) =
+          ∑' c : Config, RCLike.re (inner ℂ (T x c) (x c)) := by
+      exact RCLike.reCLM.map_tsum hs
+    rw [hre]
     apply tsum_nonneg
     intro c
-    simp only [completedBoundedDiagonalOperator_apply]
+    rw [hcoord x c]
     change 0 ≤ RCLike.re (inner ℂ ((w c : ℂ) • x c) (x c))
     simp [inner_smul_left, inner_self_eq_norm_sq_to_K, hnonneg c]
 
