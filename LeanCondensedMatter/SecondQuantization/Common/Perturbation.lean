@@ -7,7 +7,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorI
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
 
