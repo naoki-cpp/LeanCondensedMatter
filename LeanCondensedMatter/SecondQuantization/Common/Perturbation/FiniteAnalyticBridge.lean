@@ -93,38 +93,22 @@ theorem finiteContinuousOperator_ext_basis
     simpa [finiteAnalyticBasis] using h n
   exact LinearMap.congr_fun hlinear x
 
-/-- Matrix multiplication formula for the transported continuous operator. -/
-theorem finiteContinuousOperator_apply_apply
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (x : FiniteAnalyticFock Config) (m : Config) :
-    finiteContinuousOperatorAlgEquiv A x m = ∑ n : Config, matrixCoeff A m n * x n := by
-  classical
-  have hx : x = ∑ n : Config, x n • finiteAnalyticBasis n := by
-    simpa [finiteAnalyticBasis] using (pi_eq_sum_univ' x)
-  calc
-    finiteContinuousOperatorAlgEquiv A x m =
-        finiteContinuousOperatorAlgEquiv A
-          (∑ n : Config, x n • finiteAnalyticBasis n) m :=
-      congrArg (fun y => finiteContinuousOperatorAlgEquiv A y m) hx
-    _ = (∑ n : Config, x n • finiteContinuousOperatorAlgEquiv A (finiteAnalyticBasis n)) m := by
-      simp
-    _ = ∑ n : Config, matrixCoeff A m n * x n := by
-      simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
-        finiteContinuousOperator_basis_apply]
-      exact Finset.sum_congr rfl fun n _ => mul_comm _ _
-
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
     (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hF : ∀ m n : Config, Continuous (fun τ : ℝ => matrixCoeff (F τ) m n)) :
     Continuous (fun τ : ℝ => finiteContinuousOperatorAlgEquiv (F τ)) := by
   classical
-  rw [continuous_clm_apply]
-  intro x
-  apply continuous_pi
-  intro m
-  simpa only [finiteContinuousOperator_apply_apply] using
-    continuous_finsetSum Finset.univ fun n _ => (hF m n).mul continuous_const
+  let columns : FiniteContinuousOperator Config ≃L[ℂ] Config → FiniteAnalyticFock Config :=
+    ContinuousLinearEquiv.piRing (𝕜 := ℂ) (E := FiniteAnalyticFock Config) Config
+  have hcolumns : Continuous (fun τ : ℝ => columns (finiteContinuousOperatorAlgEquiv (F τ))) := by
+    apply continuous_pi
+    intro n
+    apply continuous_pi
+    intro m
+    simpa [columns, finiteAnalyticBasis, ContinuousLinearEquiv.piRing,
+      LinearEquiv.piRing_apply] using hF m n
+  exact (columns.symm.continuous.comp hcolumns).congr fun τ => columns.symm_apply_apply _
 
 /-- Compatibility on each analytic basis vector between the coefficientwise algebraic integral and
 Mathlib's Bochner interval integral of transported continuous operators. -/
