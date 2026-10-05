@@ -25,7 +25,7 @@ noncomputable def purePointGibbsCompetitor [Nonempty ι]
     (hint : PurePointGibbsEnergyIntegrable E β) :
     PurePointGibbsCompetitor E where
   probability := purePointGibbsProbability E β
-  nonneg := purePointGibbsProbability_nonneg E β hsum
+  nonneg := purePointGibbsProbability_nonneg E β
   hasSum_one := hasSum_purePointGibbsProbability E β hsum
   energyIntegrable := hint
 
