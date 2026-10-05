@@ -6,7 +6,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
@@ -27,6 +26,6 @@ by particle-specific finite-support expansions. On finite configuration types, t
 also satisfies the coefficientwise reconstructed
 operator-integral equation used by the continuous finite-dimensional realization.
 
-The remaining norm bounds, analytic evolution, trace series, and exponential identities are
-finite-basis constructions and retain their explicit finiteness assumptions.
+The analytic evolution, trace series, and exponential identities remain finite-basis constructions
+and retain their explicit finiteness assumptions; generic Dyson norm bounds live in `Analysis.Dyson`.
 -/
