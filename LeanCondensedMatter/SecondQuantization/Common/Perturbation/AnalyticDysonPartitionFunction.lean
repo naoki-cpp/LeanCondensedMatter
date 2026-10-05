@@ -110,8 +110,9 @@ theorem analyticDysonPartitionFunction_zero
       (QuantumTheory.purePointPartitionFunction energy β : ℂ) := by
   rw [← (hasSum_dysonTraceCoeff_analyticDysonPartitionFunction
     energy hβ V 0).tsum_eq, tsum_eq_single 0]
-  · rw [dysonTraceCoeff_zero, ← coe_purePointPartitionFunction_eq_sum_boltzmannWeight]
-    rfl
+  · rw [dysonTraceCoeff_zero]
+    simpa [weightSum] using
+      (coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β).symm
   · intro n hn
     simp [hn]
 
