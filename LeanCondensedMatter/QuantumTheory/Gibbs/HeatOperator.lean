@@ -29,7 +29,6 @@ theorem hasSum_purePointBoltzmannWeight_of_basis_action
     rw [happly i, inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
 
-
 private theorem eq_diagonalOp_purePointBoltzmann_of_basis_action
     (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β)
@@ -58,6 +57,7 @@ theorem purePointHeat_isPositive_of_basis_action
     (purePointBoltzmannWeight_nonneg E β)
 
 /-- On a nonempty pure-point spectrum, Boltzmann basis action makes the heat operator nonzero. -/
+omit [CompleteSpace H] in
 theorem purePointHeat_ne_zero_of_basis_action [Nonempty ι]
     (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
