@@ -85,7 +85,7 @@ theorem inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op
     (Submodule.dense_iff_topologicalClosure_eq_top.mpr b.dense_span)
   rintro _ ⟨i, rfl⟩
   rw [smul_apply, happly i, purePointGibbsDensityOperator_apply_basis,
-    purePointGibbsProbability, RCLike.real_smul_eq_coe_smul (K := ℂ), smul_smul]
+    purePointGibbsProbability, smul_smul]
   apply congrArg (fun z : ℂ => z • b i)
   push_cast
   rfl
