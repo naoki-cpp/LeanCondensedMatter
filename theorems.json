@@ -14398,6 +14398,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (hself : IsSelfAdjoint T), ↑(hT.realTrace hself) = hT.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.coe_realTrace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "Coercing the lossless real trace back to `ℂ` recovers the canonical complex trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (W : H →L[ℂ] H) {T : H →L[ℂ] H}, T.IsTraceClass → (W * T).IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -14662,6 +14704,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (hself : IsSelfAdjoint T) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  HasSum (fun i => T.diagonalExpectationValue hself (d i)) (hT.realTrace hself)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "The lossless real diagonal series of a self-adjoint trace-class operator sums to its real\ntrace in every Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.hasSum_entropyOp_diagonal",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.coe_realTrace",
+      "ContinuousLinearMap.IsTraceClass.hasSum_trace",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.hasSum_entropyOp_diagonal",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  HasSum (fun i => inner ℂ (d i) (T (d i))) hT.trace",
     "standardAxioms": [
       "Classical.choice",
@@ -14681,6 +14771,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
@@ -14692,11 +14783,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14786,7 +14878,9 @@
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.summable_expectation_term",
-      "QuantumTheory.eigenvectorFamily_norm_eq_one"
+      "QuantumTheory.eigenvectorFamily_norm_eq_one",
+      "QuantumTheory.entropyOp_isCompact",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.isCompact",
@@ -14802,9 +14896,11 @@
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.summable_expectation_term",
-      "QuantumTheory.eigenvectorFamily_norm_eq_one"
+      "QuantumTheory.eigenvectorFamily_norm_eq_one",
+      "QuantumTheory.entropyOp_isCompact",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15029,6 +15125,7 @@
       "ContinuousLinearMap.IsTraceClass.hasSum_trace",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
+      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
     ],
     "dependencies": [
@@ -15042,9 +15139,10 @@
       "ContinuousLinearMap.IsTraceClass.hasSum_trace",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
+      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15884,6 +15982,7 @@
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
+      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero",
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
@@ -15899,12 +15998,54 @@
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
+      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero",
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity.0.ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass), IsSelfAdjoint T → hT.trace.im = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "The trace of a self-adjoint trace-class operator has zero imaginary part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16078,10 +16219,7 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
-      "QuantumTheory.entropyOpSpectralTraceClass",
-      "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
@@ -16109,10 +16247,7 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
-      "QuantumTheory.entropyOpSpectralTraceClass",
-      "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
@@ -16122,7 +16257,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 23,
+    "compiledConsumerCount": 20,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16144,7 +16279,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -16156,9 +16291,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum"
     ],
     "dependencies": [
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -16169,11 +16302,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16211,8 +16342,6 @@
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
@@ -16226,12 +16355,10 @@
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16269,6 +16396,7 @@
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
     "dependencies": [],
@@ -16279,10 +16407,11 @@
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.DensityOperator.ofFiniteDimensional",
       "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16296,7 +16425,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} {f : ℝ → ℝ},\n  IsSelfAdjoint T →\n    IsCompactOperator ⇑T → Continuous f → f 0 = 0 → (cfc f T).HasSummableRealEigenvalues → (cfc f T).SpectralTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -16304,7 +16433,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -16315,19 +16444,15 @@
     "docString": "Build bundled spectral-trace data for a continuous functional calculus transform.\nCompactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;\nself-adjointness of the transform supplies symmetry. Summability of the transformed nonzero\neigenvalues supplies general trace class. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.entropyOpSpectralTraceClass"
-    ],
+    "dependents": [],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
       "isCompactOperator_cfc_of_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.entropyOpSpectralTraceClass"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16508,7 +16633,6 @@
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
       "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.DensityOperator.summable_expectation_term",
@@ -16529,7 +16653,6 @@
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
       "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.DensityOperator.summable_expectation_term",
@@ -16539,7 +16662,7 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.purity_le_one"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16940,6 +17063,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.add",
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.coe_coe_diagonalExpectationNNReal",
@@ -16955,9 +17079,9 @@
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
@@ -16978,6 +17102,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.add",
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.coe_coe_diagonalExpectationNNReal",
@@ -16993,9 +17118,9 @@
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
@@ -17009,7 +17134,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 31,
+    "compiledConsumerCount": 32,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18417,7 +18542,8 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
       "ContinuousLinearMap.SpectralTraceClass.ofCFC",
-      "ContinuousLinearMap.SpectralTraceClass.ofPositive"
+      "ContinuousLinearMap.SpectralTraceClass.ofPositive",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass"
     ],
     "dependencies": [
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
@@ -18428,9 +18554,10 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
       "ContinuousLinearMap.SpectralTraceClass.ofCFC",
-      "ContinuousLinearMap.SpectralTraceClass.ofPositive"
+      "ContinuousLinearMap.SpectralTraceClass.ofPositive",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18710,7 +18837,7 @@
     "dependents": [
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
@@ -18731,7 +18858,7 @@
     "compiledConsumers": [
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
@@ -24303,7 +24430,7 @@
     "directWrapperOf": null,
     "dependents": [
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal"
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal"
     ],
     "dependencies": [
       "ContinuousLinearMap.SpectralTraceClass.ofPositive",
@@ -24317,7 +24444,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator"
     ],
     "compiledConsumerCount": 3,
@@ -24358,7 +24485,7 @@
       "HilbertBasis.diagonalOpSpectralTraceClass",
       "HilbertBasis.one_add_diagonalOp_apply_basis",
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator_apply_basis"
     ],
     "dependencies": [
@@ -24371,7 +24498,7 @@
       "HilbertBasis.diagonalOpSpectralTraceClass",
       "HilbertBasis.one_add_diagonalOp_apply_basis",
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator_apply_basis"
     ],
     "compiledConsumerCount": 6,
@@ -41644,7 +41771,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.normalizedDiagonalWeight_le_one",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
@@ -41656,7 +41783,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.normalizedDiagonalWeight_le_one",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
@@ -41695,7 +41822,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal"
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.pos"
@@ -41703,7 +41830,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal"
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -41793,7 +41920,7 @@
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.purity_le_one",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum"
     ],
     "dependencies": [
@@ -41809,7 +41936,7 @@
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.purity_le_one",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum"
     ],
     "compiledConsumerCount": 5,
@@ -41852,7 +41979,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.purity_le_one",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum"
     ],
     "dependencies": [
@@ -41868,7 +41995,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.purity_le_one",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum"
     ],
     "compiledConsumerCount": 8,
@@ -41886,7 +42013,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H), (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H), (QuantumTheory.entropyOp ρ).IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41898,10 +42025,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues",
+    "name": "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
     "module": "LeanCondensedMatter.QuantumTheory.Entropy.Finite",
     "externalAxioms": [],
-    "docString": "In finite dimensions, the entropy operator has summable nonzero real eigenvalues. ",
+    "docString": "In finite dimensions, the entropy operator is trace-class. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -41910,8 +42037,10 @@
       "QuantumTheory.vonNeumannEntropy_gibbsState"
     ],
     "dependencies": [
+      "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
       "ContinuousLinearMap.orthonormal_eigenvectorFamily",
-      "QuantumTheory.entropyOp_isCompact"
+      "QuantumTheory.entropyOp_isCompact",
+      "QuantumTheory.entropyOp_isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41935,7 +42064,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    (Summable fun i => ‖(w i).negMulLog‖) → (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    (Summable fun i => ‖(w i).negMulLog‖) → (QuantumTheory.entropyOp ρ).IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41947,17 +42076,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
+    "name": "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
     "module": "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
     "externalAxioms": [],
-    "docString": "Summable diagonal entropy weights make the entropy operator spectrally summable. ",
+    "docString": "Summable diagonal entropy weights make the entropy operator trace-class. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.summable",
+      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
       "HilbertBasis.diagonalOpSpectralTraceClass",
       "HilbertBasis.diagonalOp_apply_basis",
       "QuantumTheory.DensityOperator.diagonal_weight_le_one",
@@ -43302,6 +43431,8 @@
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
+      "QuantumTheory.entropyOp_isCompact",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_add",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_smul"
@@ -43323,11 +43454,13 @@
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
+      "QuantumTheory.entropyOp_isCompact",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_add",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_smul"
     ],
-    "compiledConsumerCount": 16,
+    "compiledConsumerCount": 18,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43709,7 +43842,6 @@
       "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
-      "QuantumTheory.entropyOpSpectralTraceClass",
       "QuantumTheory.entropyOp_apply_eigenvector",
       "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
@@ -43728,13 +43860,12 @@
       "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
-      "QuantumTheory.entropyOpSpectralTraceClass",
       "QuantumTheory.entropyOp_apply_eigenvector",
       "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43781,9 +43912,6 @@
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
-      "QuantumTheory.entropyOpSpectralTraceClass",
-      "QuantumTheory.entropyOp_isCompact",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
@@ -43815,9 +43943,6 @@
       "QuantumTheory.DensityOperator.summable_eigenvalue_sq",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
-      "QuantumTheory.entropyOpSpectralTraceClass",
-      "QuantumTheory.entropyOp_isCompact",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
@@ -43829,7 +43954,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 26,
+    "compiledConsumerCount": 23,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44311,7 +44436,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
+      "QuantumTheory.entropyOp_isSelfAdjoint",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum"
     ],
@@ -44353,7 +44479,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
+      "QuantumTheory.entropyOp_isSelfAdjoint",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum"
     ],
@@ -88085,107 +88212,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H),\n  (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues → (QuantumTheory.entropyOp ρ).SpectralTraceClass",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.entropyOpSpectralTraceClass",
-    "module": "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
-    "externalAxioms": [],
-    "docString": "Bundle the entropy operator as spectral-trace-class once summability is supplied. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.SpectralTraceClass.ofCFC",
-      "QuantumTheory.DensityOperator.pos",
-      "QuantumTheory.DensityOperator.spectralTraceClass"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues →\n      HasSum (fun i => (w i).negMulLog) (QuantumTheory.entropyOp ρ).spectralTrace",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-    "module": "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
-    "externalAxioms": [],
-    "docString": "The entropy operator's real spectral trace is the sum of `-wᵢ log wᵢ` in a diagonal presentation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.entropyOp_spectralTrace_eq_tsum_diagonal",
-      "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
-      "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
-      "QuantumTheory.entropyOpSpectralTraceClass",
-      "QuantumTheory.entropyOp_apply_eigenvector"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.entropyOp_spectralTrace_eq_tsum_diagonal",
-      "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
-      "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) {v : H} {c : ℝ},\n  ↑ρ.op v = ↑c • v → (QuantumTheory.entropyOp ρ) v = ↑c.negMulLog • v",
     "standardAxioms": [
       "Classical.choice",
@@ -88205,8 +88231,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "dependencies": [
@@ -88216,8 +88242,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "compiledConsumerCount": 3,
@@ -88254,18 +88280,18 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues"
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.IsTraceClass.isCompact",
+      "QuantumTheory.DensityOperator.isTraceClass",
       "QuantumTheory.DensityOperator.pos",
-      "QuantumTheory.DensityOperator.spectralTraceClass",
       "isCompactOperator_cfc_of_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues"
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -88282,7 +88308,67 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H),\n  (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues →\n    (QuantumTheory.entropyOp ρ).spectralTrace = ∑' (a : ρ.op.EigenvectorIndex), (↑a.fst).negMulLog",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H), IsSelfAdjoint (QuantumTheory.entropyOp ρ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.entropyOp_isSelfAdjoint",
+    "module": "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
+    "externalAxioms": [],
+    "docString": "The entropy operator is self-adjoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
+      "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top",
+      "QuantumTheory.DensityOperator.vonNeumannEntropy_toReal_eq_tsum",
+      "QuantumTheory.entropyOp_realTrace_eq_tsum",
+      "QuantumTheory.entropyOp_realTrace_eq_tsum_diagonal",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
+      "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
+      "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
+      "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top",
+      "QuantumTheory.DensityOperator.vonNeumannEntropy_toReal_eq_tsum",
+      "QuantumTheory.entropyOp_realTrace_eq_tsum",
+      "QuantumTheory.entropyOp_realTrace_eq_tsum_diagonal",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
+      "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
+      "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
+    ],
+    "compiledConsumerCount": 10,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (htrace : (QuantumTheory.entropyOp ρ).IsTraceClass),\n  htrace.realTrace ⋯ = ∑' (a : ρ.op.EigenvectorIndex), (↑a.fst).negMulLog",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88294,22 +88380,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.entropyOp_spectralTrace_eq_tsum",
+    "name": "QuantumTheory.entropyOp_realTrace_eq_tsum",
     "module": "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
     "externalAxioms": [],
-    "docString": "The entropy operator's real spectral trace is the sum of `-λ log λ`. ",
+    "docString": "The entropy operator's lossless real trace is the sum of `-λ log λ`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace"
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace"
     ],
     "dependencies": [
+      "QuantumTheory.entropyOp_isSelfAdjoint",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace"
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -88326,7 +88413,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues →\n      (QuantumTheory.entropyOp ρ).spectralTrace = ∑' (i : ι), (w i).negMulLog",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    ∀ (htrace : (QuantumTheory.entropyOp ρ).IsTraceClass), htrace.realTrace ⋯ = ∑' (i : ι), (w i).negMulLog",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88338,15 +88425,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.entropyOp_spectralTrace_eq_tsum_diagonal",
+    "name": "QuantumTheory.entropyOp_realTrace_eq_tsum_diagonal",
     "module": "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
     "externalAxioms": [],
-    "docString": "Spectral trace form of `entropyOpSpectralTraceClass_hasSum_diagonal`. ",
+    "docString": "Real-trace form of `hasSum_entropyOp_diagonal`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal"
+      "QuantumTheory.entropyOp_isSelfAdjoint",
+      "QuantumTheory.hasSum_entropyOp_diagonal"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -89207,7 +89295,58 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H),\n  (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues →\n    HasSum (fun a => (↑a.fst).negMulLog) (QuantumTheory.entropyOp ρ).spectralTrace",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    ∀ (htrace : (QuantumTheory.entropyOp ρ).IsTraceClass), HasSum (fun i => (w i).negMulLog) (htrace.realTrace ⋯)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.hasSum_entropyOp_diagonal",
+    "module": "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
+    "externalAxioms": [],
+    "docString": "The entropy operator's lossless real trace is the sum of `-wᵢ log wᵢ` in a diagonal presentation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.entropyOp_realTrace_eq_tsum_diagonal",
+      "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
+      "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "QuantumTheory.entropyOp_apply_eigenvector",
+      "QuantumTheory.entropyOp_isSelfAdjoint"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.entropyOp_realTrace_eq_tsum_diagonal",
+      "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
+      "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (htrace : (QuantumTheory.entropyOp ρ).IsTraceClass),\n  HasSum (fun a => (↑a.fst).negMulLog) (htrace.realTrace ⋯)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89222,35 +89361,34 @@
     "name": "QuantumTheory.hasSum_negMulLog_eigenvalues",
     "module": "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
     "externalAxioms": [],
-    "docString": "The transformed eigenvalues sum to the real spectral trace of the entropy operator. ",
+    "docString": "The transformed eigenvalues sum to the lossless real trace of the entropy operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top",
       "QuantumTheory.DensityOperator.vonNeumannEntropy_toReal_eq_tsum",
-      "QuantumTheory.entropyOp_spectralTrace_eq_tsum",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace"
+      "QuantumTheory.entropyOp_realTrace_eq_tsum",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
+      "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+      "ContinuousLinearMap.IsTraceClass.isCompact",
       "ContinuousLinearMap.apply_eigenvectorFamily",
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range",
       "ContinuousLinearMap.orthonormal_eigenvectorFamily",
+      "QuantumTheory.DensityOperator.isTraceClass",
       "QuantumTheory.DensityOperator.pos",
-      "QuantumTheory.DensityOperator.spectralTraceClass",
-      "QuantumTheory.entropyOpSpectralTraceClass",
-      "QuantumTheory.entropyOp_apply_eigenvector"
+      "QuantumTheory.entropyOp_apply_eigenvector",
+      "QuantumTheory.entropyOp_isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top",
       "QuantumTheory.DensityOperator.vonNeumannEntropy_toReal_eq_tsum",
-      "QuantumTheory.entropyOp_spectralTrace_eq_tsum",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace"
+      "QuantumTheory.entropyOp_realTrace_eq_tsum",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -91682,7 +91820,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H),\n  (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues →\n    QuantumTheory.vonNeumannEntropy ρ = ENNReal.ofReal (QuantumTheory.entropyOp ρ).spectralTrace",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (htrace : (QuantumTheory.entropyOp ρ).IsTraceClass),\n  QuantumTheory.vonNeumannEntropy ρ = ENNReal.ofReal (htrace.realTrace ⋯)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91694,10 +91832,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace",
+    "name": "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
     "module": "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
     "externalAxioms": [],
-    "docString": "Under finite-entropy summability, entropy is the embedding of the entropy operator's real spectral trace. ",
+    "docString": "When the entropy operator is trace-class, entropy is the embedding of its lossless real trace. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -91707,7 +91845,8 @@
     "dependencies": [
       "QuantumTheory.DensityOperator.eigenvalue_le_one",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
-      "QuantumTheory.entropyOp_spectralTrace_eq_tsum",
+      "QuantumTheory.entropyOp_isSelfAdjoint",
+      "QuantumTheory.entropyOp_realTrace_eq_tsum",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "crossModuleDirectWrapper": false,
@@ -91753,7 +91892,7 @@
       "QuantumTheory.gibbsState_helmholtzFreeEnergy_eq"
     ],
     "dependencies": [
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
       "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
       "QuantumTheory.gibbsState_apply_eigenvector",
       "QuantumTheory.gibbsState_op",
@@ -91780,7 +91919,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H)\n  (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β Z : ℝ),\n  0 < Z →\n    (∀ (i : ι), ρ.op (b i) = ↑(Real.exp (-β * E i) / Z) • b i) →\n      (∀ (i : ι), ↑Hop (b i) = ↑(E i) • b i) →\n        (QuantumTheory.entropyOp ρ).HasSummableRealEigenvalues →\n          QuantumTheory.vonNeumannEntropy ρ ≠ ⊤ ∧\n            (QuantumTheory.vonNeumannEntropy ρ).toReal = β * QuantumTheory.energyExpValue ρ Hop + Real.log Z",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H)\n  (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β Z : ℝ),\n  0 < Z →\n    (∀ (i : ι), ρ.op (b i) = ↑(Real.exp (-β * E i) / Z) • b i) →\n      (∀ (i : ι), ↑Hop (b i) = ↑(E i) • b i) →\n        (QuantumTheory.entropyOp ρ).IsTraceClass →\n          QuantumTheory.vonNeumannEntropy ρ ≠ ⊤ ∧\n            (QuantumTheory.vonNeumannEntropy ρ).toReal = β * QuantumTheory.energyExpValue ρ Hop + Real.log Z",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91795,7 +91934,7 @@
     "name": "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy",
     "externalAxioms": [],
-    "docString": "A density state with Gibbs weights `exp (-β Eᵢ) / Z` in a common energy basis satisfies\n`S = β E + log Z` whenever its entropy operator is spectrally summable. ",
+    "docString": "A density state with Gibbs weights `exp (-β Eᵢ) / Z` in a common energy basis satisfies\n`S = β E + log Z` whenever its entropy operator is trace-class. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -91806,8 +91945,9 @@
       "QuantumTheory.DensityOperator.diagonal_weight_le_one",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace"
+      "QuantumTheory.entropyOp_isSelfAdjoint",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91904,14 +92044,15 @@
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.diagonal_weight_le_one",
-      "QuantumTheory.DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal",
-      "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
+      "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
+      "QuantumTheory.entropyOp_isSelfAdjoint",
+      "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_purePointGibbsEnergyExpectation",
       "QuantumTheory.hasSum_purePointGibbsProbability",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
       "QuantumTheory.summable_norm_negMulLog_purePointGibbsProbability",
-      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace",
+      "QuantumTheory.vonNeumannEntropy_eq_ofReal_entropyOp_realTrace",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability"
     ],
     "crossModuleDirectWrapper": false,
@@ -110607,7 +110748,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
     ],
     "dependencies": [
-      "SecondQuantization.Common.diagonalHamiltonian_basisState",
+      "SecondQuantization.Common.diagonalOperator_basisState",
       "SecondQuantization.Common.finiteAnalyticFockEquiv_basisState",
       "SecondQuantization.Common.finiteContinuousOperator_equiv_apply"
     ],
@@ -111138,52 +111279,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    ∀ (a b : ℝ) (n : Config),\n      (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv\n            (SecondQuantization.Common.operatorIntervalIntegral F a b))\n          (SecondQuantization.Common.finiteAnalyticBasis n) =\n        (∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ))\n          (SecondQuantization.Common.finiteAnalyticBasis n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "Compatibility on each analytic basis vector between the coefficientwise algebraic integral and\nMathlib's Bochner interval integral of transported continuous operators. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuous_finiteContinuousOperator",
-      "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    ∀ (a b : ℝ),\n      SecondQuantization.Common.finiteContinuousOperatorAlgEquiv\n          (SecondQuantization.Common.operatorIntervalIntegral F a b) =\n        ∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ)",
     "standardAxioms": [
       "Classical.choice",
@@ -111206,8 +111301,8 @@
       "SecondQuantization.Common.continuousDysonCoeff_succ"
     ],
     "dependencies": [
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
-      "SecondQuantization.Common.finiteContinuousOperator_ext_basis"
+      "SecondQuantization.Common.finiteContinuousOperator_ext_basis",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -111382,20 +111477,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
       "SecondQuantization.Common.continuous_continuousDysonCoeff",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture"
+      "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "dependencies": [
-      "SecondQuantization.Common.finiteContinuousOperatorColumns_apply",
       "SecondQuantization.Common.finiteContinuousOperator_basis_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
       "SecondQuantization.Common.continuous_continuousDysonCoeff",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture"
+      "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -112114,48 +112208,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (c : Config),\n  (SecondQuantization.Common.diagonalHamiltonian energy) (SecondQuantization.Common.basisState c) =\n    ↑(energy c) • SecondQuantization.Common.basisState c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.diagonalHamiltonian_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} (a : Config → ℂ) (x : SecondQuantization.Common.AlgebraicFock Config) (c : Config),\n  ((SecondQuantization.Common.diagonalOperator a) x) c = a c * x c",
     "standardAxioms": [
       "Classical.choice",
@@ -112224,6 +112276,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.freeHamiltonian_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply",
       "SecondQuantization.Common.diagonalEvolution_basisState",
       "SecondQuantization.Common.diagonalOperator_apply",
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
@@ -112240,6 +112293,7 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.freeHamiltonian_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply",
       "SecondQuantization.Common.diagonalEvolution_basisState",
       "SecondQuantization.Common.diagonalOperator_apply",
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
@@ -112248,7 +112302,7 @@
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113643,44 +113697,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (m : Config) (x : SecondQuantization.Common.FiniteAnalyticFock Config),\n  (SecondQuantization.Common.finiteAnalyticCoordinate m) x = x m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteAnalyticCoordinate_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (n : Config),\n  SecondQuantization.Common.finiteAnalyticFockEquiv (SecondQuantization.Common.basisState n) =\n    SecondQuantization.Common.finiteAnalyticBasis n",
     "standardAxioms": [
@@ -113728,88 +113744,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (A : SecondQuantization.Common.FiniteContinuousOperator Config)\n  (n : Config),\n  SecondQuantization.Common.finiteContinuousOperatorColumns A n = A (SecondQuantization.Common.finiteAnalyticBasis n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteContinuousOperatorColumns_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuous_finiteContinuousOperator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuous_finiteContinuousOperator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (x : SecondQuantization.Common.FiniteAnalyticFock Config) (m : Config),\n  (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv A) x m =\n    ∑ n, SecondQuantization.Common.matrixCoeff A m n * x n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteContinuousOperator_apply_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "Matrix multiplication formula for the transported continuous operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.finiteContinuousOperator_basis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (m n : Config),\n  (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv A) (SecondQuantization.Common.finiteAnalyticBasis n) m =\n    SecondQuantization.Common.matrixCoeff A m n",
     "standardAxioms": [
       "Classical.choice",
@@ -113830,10 +113764,9 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
       "SecondQuantization.Common.continuous_finiteContinuousOperator",
-      "SecondQuantization.Common.finiteContinuousOperator_apply_apply",
-      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator"
+      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteAnalyticFockEquiv_basisState",
@@ -113843,12 +113776,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
       "SecondQuantization.Common.continuous_finiteContinuousOperator",
-      "SecondQuantization.Common.finiteContinuousOperator_apply_apply",
-      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator"
+      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117303,7 +117235,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
@@ -117311,14 +117242,14 @@
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
-      "SecondQuantization.Common.operatorIntervalIntegral_zero"
+      "SecondQuantization.Common.operatorIntervalIntegral_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
@@ -117326,7 +117257,8 @@
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
-      "SecondQuantization.Common.operatorIntervalIntegral_zero"
+      "SecondQuantization.Common.operatorIntervalIntegral_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "compiledConsumerCount": 10,
     "axioms": [
@@ -121274,48 +121206,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (n : Config), (V (SecondQuantization.Common.basisState n)).support ⊆ SecondQuantization.Common.reachableSupport V 1 n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.support_basisImage_subset_reachableSupport_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport",
-    "externalAxioms": [],
-    "docString": "The first reachable support is exactly large enough to contain one algebraic basis image. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (order : ℕ)\n  (τ : ℝ) (n : Config),\n  ((SecondQuantization.Common.dysonCoeff energy V order τ) (SecondQuantization.Common.basisState n)).support ⊆\n    SecondQuantization.Common.reachableSupport V order n",
     "standardAxioms": [
       "Classical.choice",
@@ -121455,7 +121345,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -121467,8 +121357,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ",
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one"
+      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_interactionPicture"
@@ -121476,51 +121365,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ",
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one"
+      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
     ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (n : Config),\n  ((SecondQuantization.Common.interactionPicture energy V τ) (SecondQuantization.Common.basisState n)).support ⊆\n    SecondQuantization.Common.reachableSupport V 1 n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport",
-    "externalAxioms": [],
-    "docString": "Every first-order interaction-picture integrand is supported in the first reachable support. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.support_basisImage_subset_reachableSupport_one",
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172198,6 +172045,52 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonBasis_succ_apply"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    ∀ (a b : ℝ) (n : Config),\n      (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv\n            (SecondQuantization.Common.operatorIntervalIntegral F a b))\n          (SecondQuantization.Common.finiteAnalyticBasis n) =\n        (∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ))\n          (SecondQuantization.Common.finiteAnalyticBasis n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
+    "externalAxioms": [],
+    "docString": "Compatibility on each analytic basis vector between the coefficientwise algebraic integral and\nMathlib's Bochner interval integral of transported continuous operators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuous_finiteContinuousOperator",
+      "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
+      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
