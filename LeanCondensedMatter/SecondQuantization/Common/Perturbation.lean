@@ -10,6 +10,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponenti
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster
 
 set_option linter.style.header false
 
