@@ -424,7 +424,7 @@ function setModuleFilterEnabled(enabled) {
 
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
-  ui.overviewLink.textContent = state.page === "theorem" ? "Back to declarations" : "Theorem Graph";
+  ui.overviewLink.textContent = "Theorems";
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name" : "Name, module, or documentation";
   ui.moduleFilterLabel.hidden = modules;
