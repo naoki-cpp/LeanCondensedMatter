@@ -45,15 +45,12 @@ theorem entropyOp_isSelfAdjoint (ρ : DensityOperator H) :
   rw [entropyOp]
   exact cfc_predicate _ _
 
-/-- The transformed eigenvalues sum to the real spectral trace of the entropy operator. -/
+/-- The transformed eigenvalues sum to the lossless real trace of the entropy operator. -/
 theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     (htrace : IsTraceClass (entropyOp ρ)) :
     HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
-      (spectralTrace (entropyOp ρ)) := by
+      (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
   classical
-  let hstc : SpectralTraceClass (entropyOp ρ) :=
-    { isTraceClass := htrace
-      symmetric := (entropyOp_isSelfAdjoint ρ).isSymmetric }
   let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
   let hρsym : ρ.op.IsSymmetric := ρ.pos.isSelfAdjoint.isSymmetric
   let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
@@ -66,17 +63,15 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     apply he.linearIndependent.injective
     exact congrArg Subtype.val haa'
   let g : w → ℝ := fun i =>
-    diagonalExpectationValue (entropyOp ρ)
-      hstc.isSelfAdjoint (b i)
-  have hfull : HasSum g (spectralTrace (entropyOp ρ)) := by
-    simpa [g] using
-      hstc.hasSum_diagonalExpectationValue b
+    diagonalExpectationValue (entropyOp ρ) (entropyOp_isSelfAdjoint ρ) (b i)
+  have hfull : HasSum g (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
+    simpa [g] using htrace.hasSum_realTrace (entropyOp_isSelfAdjoint ρ) b
   have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
     rw [hb]
   have hpoint (a : EigenvectorIndex ρ.op) :
       g (j a) = Real.negMulLog a.1.1 := by
     change diagonalExpectationValue (entropyOp ρ)
-      hstc.isSelfAdjoint (b (j a)) =
+      (entropyOp_isSelfAdjoint ρ) (b (j a)) =
         Real.negMulLog a.1.1
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right, hb_j]
@@ -91,20 +86,20 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
       simpa using
         (entropyOp_apply_eigenvector ρ (v := b x) (c := 0) (by simpa using hxker))
     change diagonalExpectationValue (entropyOp ρ)
-      hstc.isSelfAdjoint (b x) = 0
+      (entropyOp_isSelfAdjoint ρ) (b x) = 0
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right, hentropy]
     simp
   have hrestricted :
-      HasSum (g ∘ j) (spectralTrace (entropyOp ρ)) :=
+      HasSum (g ∘ j) (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) :=
     (hj.hasSum_iff hzero).mpr hfull
   simpa only [Function.comp_apply] using
     HasSum.congr_fun hrestricted fun a => (hpoint a).symm
 
-/-- The entropy operator's real spectral trace is the sum of `-λ log λ`. -/
-theorem entropyOp_spectralTrace_eq_tsum (ρ : DensityOperator H)
+/-- The entropy operator's lossless real trace is the sum of `-λ log λ`. -/
+theorem entropyOp_realTrace_eq_tsum (ρ : DensityOperator H)
     (htrace : IsTraceClass (entropyOp ρ)) :
-    spectralTrace (entropyOp ρ) =
+    htrace.realTrace (entropyOp_isSelfAdjoint ρ) =
       ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 :=
   (hasSum_negMulLog_eigenvalues ρ htrace).tsum_eq.symm
 
@@ -125,14 +120,14 @@ theorem vonNeumannEntropy_ne_top_and_toReal_eq_tsum (ρ : DensityOperator H)
   refine ⟨by rw [hEntropyEq]; exact ENNReal.ofReal_ne_top, ?_⟩
   rw [hEntropyEq, ENNReal.toReal_ofReal (tsum_nonneg hnonneg)]
 
-/-- When the entropy operator is trace-class, entropy is the embedding of its real spectral trace. -/
-theorem vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace (ρ : DensityOperator H)
+/-- When the entropy operator is trace-class, entropy is the embedding of its lossless real trace. -/
+theorem vonNeumannEntropy_eq_ofReal_entropyOp_realTrace (ρ : DensityOperator H)
     (htrace : IsTraceClass (entropyOp ρ)) :
     vonNeumannEntropy ρ =
-      ENNReal.ofReal (spectralTrace (entropyOp ρ)) := by
+      ENNReal.ofReal (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
   rw [vonNeumannEntropy]
   symm
-  rw [entropyOp_spectralTrace_eq_tsum ρ htrace]
+  rw [entropyOp_realTrace_eq_tsum ρ htrace]
   exact ENNReal.ofReal_tsum_of_nonneg
     (fun a => Real.negMulLog_nonneg (ρ.eigenvalue_nonneg a) (ρ.eigenvalue_le_one a))
     (hasSum_negMulLog_eigenvalues ρ htrace).summable
