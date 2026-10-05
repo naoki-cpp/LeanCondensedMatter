@@ -49,24 +49,5 @@ theorem dysonCoeff_one (energy : Config → ℝ)
   funext σ
   rw [dysonCoeff_zero, LinearMap.comp_id]
 
-/-- Matrix-coefficient form of the finite Dyson successor recursion. -/
-theorem matrixCoeff_dysonCoeff_succ (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ)
-    (m n' : Config) :
-    matrixCoeff (dysonCoeff energy V (n + 1) τ) m n' =
-      - ∫ σ in (0 : ℝ)..τ, ∑ k : Config,
-          matrixCoeff (interactionPicture energy V σ) m k *
-            matrixCoeff (dysonCoeff energy V n σ) k n' := by
-  rw [dysonCoeff_succ]
-  have hneg : matrixCoeff
-      (- operatorIntervalIntegral
-          (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n' =
-        - matrixCoeff (operatorIntervalIntegral
-          (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n' := by
-    simp [matrixCoeff]
-  rw [hneg, matrixCoeff_operatorIntervalIntegral]
-  congr 1
-  exact intervalIntegral.integral_congr fun σ _ => matrixCoeff_comp _ _ m n'
-
 end Common
 end SecondQuantization
