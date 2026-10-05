@@ -27,7 +27,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-born-probabilities) |
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
 | Finite free-fermion Gibbs entropy and Fermi–Dirac binary decomposition | A/D | `proved` | [worked example](examples/free-fermion-entropy.md) |
-| Bounded Gibbs state, free-energy bound, Gibbs entropy identity, and minimizer uniqueness | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
+| Bounded Gibbs state, free-energy bound, Gibbs entropy identity, and minimizer uniqueness | A/C | `proved` in finite dimension | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
 | Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
 | Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Explicit partition-lattice Möbius formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
