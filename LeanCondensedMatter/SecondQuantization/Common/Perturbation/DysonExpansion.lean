@@ -176,14 +176,6 @@ theorem continuous_matrixCoeff_dysonCoeff (energy : Config → ℝ)
   change Continuous (fun τ : ℝ => dysonCoeff energy V order τ (basisState n) m)
   exact continuous_dysonCoeff_basisState_apply energy V order m n
 
-/-- Every matrix coefficient of a finite-order Dyson coefficient is interval-integrable. -/
-theorem intervalIntegrable_matrixCoeff_dysonCoeff (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ)
-    (m n : Config) (a b : ℝ) :
-    IntervalIntegrable (fun τ : ℝ => matrixCoeff (dysonCoeff energy V order τ) m n)
-      MeasureTheory.volume a b :=
-  (continuous_matrixCoeff_dysonCoeff energy V order m n).intervalIntegrable a b
-
 /-- At zero imaginary time, only the zeroth Dyson coefficient is nonzero. -/
 theorem dysonCoeff_at_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :

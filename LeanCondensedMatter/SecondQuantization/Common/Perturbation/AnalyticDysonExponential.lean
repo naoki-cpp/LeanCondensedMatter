@@ -26,7 +26,7 @@ noncomputable def continuousDiagonalHamiltonian (energy : Config → ℝ) :
   finiteContinuousOperatorAlgEquiv (diagonalOperator fun c => (energy c : ℂ))
 
 @[simp]
-theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ) (c : Config) :
+private theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ) (c : Config) :
     continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) =
       (energy c : ℂ) • finiteAnalyticBasis c := by
   calc
@@ -60,7 +60,7 @@ private theorem smul_continuousDiagonalHamiltonian_pow_basis_apply (energy : Con
 
 /-- The Banach-algebra exponential of the free Hamiltonian acts diagonally with the expected
 scalar exponential. -/
-theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
+private theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) :
     NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =
       Complex.exp ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
@@ -127,7 +127,7 @@ theorem analyticDysonExponentialCandidate_eq (energy : Config → ℝ)
 
 /-- Multiplying the exact candidate by the interaction-picture operator cancels the two free
 propagators in the middle. -/
-theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
+private theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
     (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (τ : ℝ) (lam : ℂ) :
