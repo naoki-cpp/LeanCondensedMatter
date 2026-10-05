@@ -34,22 +34,19 @@ theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : 
       (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
         (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)) := by
   have hnorm := eigenvectorFamily_norm_eq_one ρ
+  have hweights : Summable (fun a : EigenvectorIndex ρ.op => |a.1.1|) := by
+    simpa only [Real.norm_eq_abs] using ρ.hasSum_eigenvalues_eq_one.summable.norm
   refine Summable.of_norm_bounded
-    (ρ.spectralTraceClass.summable.mul_right ‖A‖) fun a => ?_
+    (hweights.mul_right ‖A‖) fun a => ?_
   have hle := norm_inner_apply_le_opNorm_of_norm_eq_one A (hnorm a)
   rw [norm_mul, Complex.norm_real]
   exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
 
 /-- The absolute eigenvalue weights of a density operator sum to one. -/
 theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
-    HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1|) 1 := by
-  have hsum : HasSum (fun a : EigenvectorIndex ρ.op => a.1.1) 1 := by
-    have h := (summable_eigenvectorIndex ρ.spectralTraceClass.summable).hasSum
-    have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-      simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
-    rwa [htrace] at h
-  exact HasSum.congr_fun hsum fun a =>
-    abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
+    HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1|) 1 :=
+  HasSum.congr_fun ρ.hasSum_eigenvalues_eq_one fun a =>
+    abs_of_nonneg (ρ.eigenvalue_nonneg a)
 
 /-- The unbundled canonical trace expectation used to construct `DensityOperator.expectation`. -/
 private noncomputable def densityExpectationTrace
@@ -187,8 +184,6 @@ theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
         eigenvectorFamily_norm_eq_one ρ a]
       norm_num
     _ = 1 := by
-      have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-        simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
-      exact_mod_cast htrace
+      exact_mod_cast ρ.tsum_eigenvalues_eq_one
 
 end QuantumTheory
