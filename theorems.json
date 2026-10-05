@@ -14682,7 +14682,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
-      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
+      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
@@ -14692,9 +14693,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
-      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
+      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15816,7 +15818,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15828,6 +15830,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one"
     ],
     "dependencies": [
@@ -15840,9 +15843,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16154,8 +16158,7 @@
     "dependents": [
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
+      "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
     "dependencies": [
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -16168,10 +16171,9 @@
     "compiledConsumers": [
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
+      "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16211,7 +16213,6 @@
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
@@ -16227,11 +16228,10 @@
       "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16269,7 +16269,6 @@
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
     "dependencies": [],
@@ -16280,11 +16279,10 @@
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.summable",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.DensityOperator.ofFiniteDimensional",
       "QuantumTheory.DensityOperator.traceNorm_eq_one"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16961,7 +16959,6 @@
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
@@ -17000,7 +16997,6 @@
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
@@ -17013,7 +17009,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 32,
+    "compiledConsumerCount": 31,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43468,7 +43464,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (K : H →L[ℂ] H) (hpos : K.IsPositive) (htrace : K.SpectralTraceClass)\n  (hne : K ≠ 0) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (happly : ∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i),\n  QuantumTheory.DensityOperator.normalizePositive K hpos ⋯ hne = QuantumTheory.purePointGibbsDensityOperator b E β ⋯",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (K : H →L[ℂ] H) (hpos : K.IsPositive) (htrace : K.IsTraceClass)\n  (hne : K ≠ 0) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (happly : ∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i),\n  QuantumTheory.DensityOperator.normalizePositive K hpos htrace hne =\n    QuantumTheory.purePointGibbsDensityOperator b E β ⋯",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43483,15 +43479,15 @@
     "name": "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
     "externalAxioms": [],
-    "docString": "A positive nonzero trace-class heat operator with pure-point Boltzmann basis action normalizes\nto the existing pure-point Gibbs density operator. The spectral witness is retained here only for\nthe pure-point basis formulas. ",
+    "docString": "A positive nonzero trace-class heat operator with pure-point Boltzmann basis action normalizes\nto the existing pure-point Gibbs density operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.isTraceClass",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "QuantumTheory.DensityOperator.ext",
       "QuantumTheory.DensityOperator.normalizePositive_op",
-      "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+      "QuantumTheory.heatTrace_eq_purePointPartitionFunction_of_basis_action",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsSummable_of_basis_action"
     ],
@@ -89359,7 +89355,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H),\n  K.SpectralTraceClass →\n    ∀ (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n      (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n        HasSum (QuantumTheory.purePointBoltzmannWeight E β) K.spectralTrace",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (htrace : K.IsTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    HasSum (fun i => ↑(QuantumTheory.purePointBoltzmannWeight E β i)) htrace.trace",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89374,22 +89370,20 @@
     "name": "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
     "externalAxioms": [],
-    "docString": "If supplied heat data act diagonally by the Boltzmann weights, those weights sum to the\nbundled spectral trace. ",
+    "docString": "If supplied trace-class heat data act diagonally by the Boltzmann weights, those weights sum to\nthe canonical complex trace. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+      "QuantumTheory.heatTrace_eq_purePointPartitionFunction_of_basis_action",
       "QuantumTheory.purePointGibbsSummable_of_basis_action"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+      "ContinuousLinearMap.IsTraceClass.hasSum_trace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+      "QuantumTheory.heatTrace_eq_purePointPartitionFunction_of_basis_action",
       "QuantumTheory.purePointGibbsSummable_of_basis_action"
     ],
     "compiledConsumerCount": 2,
@@ -89499,7 +89493,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H),\n  K.SpectralTraceClass →\n    ∀ (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n      (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n        K.spectralTrace = QuantumTheory.purePointPartitionFunction E β",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (htrace : K.IsTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    htrace.trace = ↑(QuantumTheory.purePointPartitionFunction E β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89511,10 +89505,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+    "name": "QuantumTheory.heatTrace_eq_purePointPartitionFunction_of_basis_action",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
     "externalAxioms": [],
-    "docString": "If supplied heat data act diagonally by the Boltzmann weights, their bundled spectral trace is\nthe pure-point partition function. ",
+    "docString": "If supplied trace-class heat data act diagonally by the Boltzmann weights, their canonical\ncomplex trace is the pure-point partition function embedded in `ℂ`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -90231,7 +90225,6 @@
     "dependents": [
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
-      "QuantumTheory.purePointGibbsSummable_of_basis_action",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability.0.SecondQuantization.Fermionic.purePointBoltzmannWeight_fermionEnergy_summable_of_mode"
@@ -90245,12 +90238,11 @@
       "QuantumTheory.purePointGibbsDensityOperator",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
-      "QuantumTheory.purePointGibbsSummable_of_basis_action",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability.0.SecondQuantization.Fermionic.purePointBoltzmannWeight_fermionEnergy_summable_of_mode"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90595,7 +90587,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H),\n  K.SpectralTraceClass →\n    ∀ (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n      (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n        QuantumTheory.PurePointGibbsSummable E β",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H),\n  K.IsTraceClass →\n    ∀ (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n      (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n        QuantumTheory.PurePointGibbsSummable E β",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90610,15 +90602,14 @@
     "name": "QuantumTheory.purePointGibbsSummable_of_basis_action",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
     "externalAxioms": [],
-    "docString": "Pure-point Boltzmann summability follows from spectral-trace-class heat data with the matching\nbasis action. ",
+    "docString": "Pure-point Boltzmann summability follows from general trace-class heat data with the matching\nbasis action. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
     ],
     "dependencies": [
-      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
-      "QuantumTheory.purePointBoltzmannWeight_nonneg"
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114997,102 +114988,13 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonBasis_succ_apply"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply_of_mem",
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply_of_not_mem"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonBasis_succ_apply"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (S : Finset Config) (f : ℝ → SecondQuantization.Common.AlgebraicFock Config) (a b : ℝ)\n  {m : Config}, m ∈ S → (SecondQuantization.Common.finiteSupportIntervalIntegral S f a b) m = ∫ (τ : ℝ) in a..b, (f τ) m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteSupportIntervalIntegral_apply_of_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral",
-    "externalAxioms": [],
-    "docString": "A reconstructed coordinate inside the prescribed support is its scalar interval integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (S : Finset Config) (f : ℝ → SecondQuantization.Common.AlgebraicFock Config) (a b : ℝ)\n  {m : Config}, m ∉ S → (SecondQuantization.Common.finiteSupportIntervalIntegral S f a b) m = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteSupportIntervalIntegral_apply_of_not_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral",
-    "externalAxioms": [],
-    "docString": "A reconstructed coordinate outside the prescribed support vanishes. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply",
-      "SecondQuantization.Common.support_finiteSupportIntervalIntegral_subset"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply",
-      "SecondQuantization.Common.support_finiteSupportIntervalIntegral_subset"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117411,10 +117313,7 @@
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
       "SecondQuantization.Common.operatorIntervalIntegral_zero"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Common.smul_basisState_apply_self"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -120943,7 +120842,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -120955,17 +120854,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121000,18 +120897,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
-      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_same",
-      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
+      "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121487,9 +121382,7 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.support_dysonBasis_subset_reachableSupport"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.finiteSupportIntervalIntegral_apply_of_not_mem"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
