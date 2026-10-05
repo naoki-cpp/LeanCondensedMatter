@@ -3,6 +3,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
