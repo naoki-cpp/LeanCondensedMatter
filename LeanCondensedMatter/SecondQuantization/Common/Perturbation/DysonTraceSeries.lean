@@ -64,5 +64,14 @@ theorem constantCoeff_dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
       weightSum (boltzmannWeight energy β) := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_dysonTraceSeries, dysonTraceCoeff_zero]
 
+variable [Nonempty Config]
+
+/-- The finite Dyson trace series has nonzero constant coefficient. -/
+theorem constantCoeff_dysonTraceSeries_ne_zero (energy : Config → ℝ) (β : ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    PowerSeries.constantCoeff (dysonTraceSeries energy β V) ≠ 0 := by
+  rw [constantCoeff_dysonTraceSeries, ← traceFock_diagonalEvolution_eq_weightSum]
+  exact traceFock_diagonalEvolution_ne_zero energy β
+
 end Common
 end SecondQuantization
