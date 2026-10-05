@@ -128,14 +128,6 @@ noncomputable def continuousDysonCoeff (energy : Config → ℝ)
     FiniteContinuousOperator Config :=
   finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n τ)
 
-/-- Each continuous Dyson coefficient is a continuous operator-valued function of imaginary
- time. -/
-theorem continuous_continuousDysonCoeff (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    Continuous (continuousDysonCoeff energy V n) := by
-  apply continuous_finiteContinuousOperator
-  exact continuous_matrixCoeff_dysonCoeff energy V n
-
 @[simp]
 theorem continuousDysonCoeff_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
@@ -152,7 +144,7 @@ theorem continuousDysonCoeff_at_zero (energy : Config → ℝ)
   · rw [ite_eq_right h, ite_eq_right h, map_zero]
 
 /-- The algebraic Dyson recursion transported to Mathlib's Bochner interval integral. -/
-theorem continuousDysonCoeff_succ (energy : Config → ℝ)
+private theorem continuousDysonCoeff_succ (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
     continuousDysonCoeff energy V (n + 1) τ =
       - ∫ σ in (0 : ℝ)..τ,
