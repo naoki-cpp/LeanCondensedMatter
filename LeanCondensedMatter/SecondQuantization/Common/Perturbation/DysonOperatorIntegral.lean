@@ -104,5 +104,7 @@ theorem dysonCoeff_eq_of_time_independent [Finite Config] (energy : Config â†’ â
       field_simp
     rw [hcint, neg_smul, neg_neg]
 
+end
+
 end Common
 end SecondQuantization
