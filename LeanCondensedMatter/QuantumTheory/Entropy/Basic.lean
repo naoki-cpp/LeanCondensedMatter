@@ -36,7 +36,7 @@ theorem entropyOp_apply_eigenvector (ρ : DensityOperator H) {v : H} {c : ℝ}
 theorem entropyOp_isCompact (ρ : DensityOperator H) :
     IsCompactOperator (entropyOp ρ : H →L[ℂ] H) := by
   rw [entropyOp]
-  exact isCompactOperator_cfc_of_zero ρ.pos.isSelfAdjoint ρ.spectralTraceClass.compact
+  exact isCompactOperator_cfc_of_zero ρ.pos.isSelfAdjoint ρ.isTraceClass.isCompact
     Real.continuous_negMulLog (by simp)
 
 /-- The entropy operator is self-adjoint. -/
@@ -51,7 +51,7 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
       (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
   classical
-  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
+  let hρcompact : IsCompactOperator ρ.op := ρ.isTraceClass.isCompact
   let hρsym : ρ.op.IsSymmetric := ρ.pos.isSelfAdjoint.isSymmetric
   let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
   have he : Orthonormal ℂ e := by
