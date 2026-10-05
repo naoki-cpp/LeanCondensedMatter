@@ -900,6 +900,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
+      "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/AnalyticLog.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Cumulant"
+      ],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Cumulant.lean",
       "imports": [
@@ -963,6 +971,7 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
         "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
@@ -4378,6 +4387,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticLinkedCluster.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/ContinuousDyson.lean",
       "imports": [
@@ -4471,6 +4489,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
@@ -5152,8 +5171,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Analytic",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Analytic.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster"
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem"
       ],
       "externalImportCount": 0
     },
@@ -5798,16 +5817,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticLinkedCluster.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries"
-      ],
-      "externalImportCount": 4
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/DysonPartitionSeries.lean",
       "imports": [
@@ -5833,7 +5842,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment"
       ],
