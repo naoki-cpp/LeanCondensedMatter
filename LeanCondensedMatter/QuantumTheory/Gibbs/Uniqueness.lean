@@ -110,17 +110,13 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H]
     have hb := negMulLog_le_of_neg_log_le (p := p a) (q := q a) (Z := Z)
       (u := β * h a) (ρ.eigenvalue_nonneg a) (hqpos a) hZpos (hstep2 a)
     nlinarith [hb]
-  have hp_summable : Summable p :=
-    ρ.spectralTraceClass.summable.congr (fun a => abs_of_nonneg (ρ.eigenvalue_nonneg a))
+  have hp_hasSum : HasSum p 1 := by
+    simpa [p] using ρ.hasSum_eigenvalues_eq_one
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
     have hbound := hGibbs.sum_diagonalExpectationValue_le_spectralTrace
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
     simpa [Z, hq_def] using hbound
-  have hpsum := ρ.spectralTrace_op_eq_one
-  change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
-  have hp_hasSum : HasSum p 1 := by
-    simpa [hpsum] using hp_summable.hasSum
   obtain ⟨hB_summable, hsum_eq⟩ :=
     summable_gibbsComparison_and_tsum_eq
       p q h β Z hp_hasSum hph_summable hq_summable_and_le.1

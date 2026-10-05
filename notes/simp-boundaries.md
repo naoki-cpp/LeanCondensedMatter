@@ -183,6 +183,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `ConservationLaw.heisenbergEvolution_apply`
 - all current simp rules in `LinearResponse/KuboFormula`
 - `DensityOperator.spectralTrace_op_eq_one`
+- `DensityOperator.realTrace_op_eq_one`
 - `DensityOperator.trace_eq_one`
 - `ResponseChannel.fixed_contactExpectation`
 - `DensityOperator.expectation_op`

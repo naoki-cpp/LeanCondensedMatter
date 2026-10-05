@@ -244,17 +244,13 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H]
   have hqpos : ∀ a, 0 < q a := fun a => (Real.exp_pos _).trans_le (hstep1 a)
   have hstep2 : ∀ a, -Real.log (q a) ≤ β * h a := fun a =>
     neg_log_le_of_exp_le (u := β * h a) (by rw [← neg_mul]; exact hstep1 a)
-  have hp_summable : Summable p :=
-    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
+  have hp_hasSum : HasSum p 1 := by
+    simpa [p] using ρ.hasSum_eigenvalues_eq_one
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
     have hbound := hGibbs.sum_diagonalExpectationValue_le_spectralTrace
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
     simpa [Z, hq_def] using hbound
-  have hpsum := ρ.spectralTrace_op_eq_one
-  change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
-  have hp_hasSum : HasSum p 1 := by
-    simpa [hpsum] using hp_summable.hasSum
   obtain ⟨hnML_summable, hfinal⟩ :=
     summable_negMulLog_and_tsum_le_gibbs
       p q h β Z (fun a => ρ.eigenvalue_nonneg a)

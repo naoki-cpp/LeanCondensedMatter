@@ -116,15 +116,13 @@ theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun a => (hrow a).summable, by
       simpa only [fun a => (hrow a).tsum_eq] using
-        summable_eigenvectorIndex ρ.spectralTraceClass.summable⟩
+        ρ.hasSum_eigenvalues_eq_one.summable⟩
   have hcol : ∀ m, HasSum (fun a => g (a, m)) (probNNReal P ρ m : ℝ) := fun m => by
     simpa [g] using hasSum_probabilityKernel_eigenvector P ρ m
   obtain ⟨_, hprob, htot⟩ :=
     tsum_fiberwise_eq_of_summable hg_summable hrow hcol
-  have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-    simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
   have hreal : HasSum (fun m => (probNNReal P ρ m : ℝ)) 1 := by
-    rw [← htot.symm.trans htrace]
+    rw [← htot.symm.trans ρ.tsum_eigenvalues_eq_one]
     exact hprob.hasSum
   exact (NNReal.hasSum_coe).mp hreal
 

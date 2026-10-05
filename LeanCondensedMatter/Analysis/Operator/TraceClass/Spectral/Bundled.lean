@@ -1,5 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
@@ -206,11 +205,14 @@ theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactO
 real spectral trace. -/
 theorem traceNorm_eq_spectralTrace (h : SpectralTraceClass T) (hpos : T.IsPositive) :
     h.isTraceClass.traceNorm = spectralTrace T := by
-  rw [h.isTraceClass.traceNorm_eq_tsum_abs_eigenvalues h.isSelfAdjoint]
-  unfold spectralTrace
-  apply tsum_congr
-  intro a
-  exact abs_of_nonneg (eigenvalue_nonneg_of_isPositive hpos.toLinearMap a)
+  calc
+    h.isTraceClass.traceNorm =
+        h.isTraceClass.realTrace h.isSelfAdjoint :=
+      h.isTraceClass.traceNorm_eq_realTrace hpos
+    _ = spectralTrace T := by
+      apply Complex.ofReal_injective
+      rw [h.isTraceClass.coe_realTrace h.isSelfAdjoint,
+        h.isTraceClass.trace_eq_spectralTrace h.isSelfAdjoint]
 
 /-- A nonzero positive spectral-trace-class operator has strictly positive real spectral trace. -/
 theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
