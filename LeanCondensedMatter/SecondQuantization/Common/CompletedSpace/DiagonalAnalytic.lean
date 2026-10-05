@@ -42,7 +42,8 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
           inner ℂ ((w c : ℂ) * x c) (y c) := by
             exact congrArg (fun z : ℂ => inner ℂ z (y c)) (hcoord x c)
       _ = inner ℂ (x c) ((w c : ℂ) * y c) := by
-        simp [RCLike.inner_apply, mul_assoc, mul_comm]
+        simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
+        ac_rfl
       _ = inner ℂ (x c) (T y c) := by
         exact congrArg (fun z : ℂ => inner ℂ (x c) z) (hcoord y c).symm
   · intro x
@@ -60,7 +61,10 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     have hscalar :
         RCLike.re (inner ℂ ((w c : ℂ) * x c) (x c)) =
           w c * ‖x c‖ ^ 2 := by
-      simp [RCLike.inner_apply, mul_assoc, mul_comm]
+      simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal, Complex.mul_re,
+        Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]
+      rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply]
+      ring
     rw [hscalar]
     exact mul_nonneg (hnonneg c) (sq_nonneg ‖x c‖)
 
