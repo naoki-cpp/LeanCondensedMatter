@@ -75,10 +75,14 @@ theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     exact continuous_iff_continuousAt.2 fun t =>
       (hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
         energy V t lam).continuousAt
+  obtain ⟨M, hBound⟩ := Dyson.exists_continuousBoundedInteraction
+    (continuousInteractionPicture energy V) hβ
+    (continuous_continuousInteractionPicture energy V)
+    ContinuousLinearMap.norm_id_le
   have hEq := Dyson.eqOn_evolution_of_volterra_of_bound
     (V := continuousInteractionPicture energy V)
     (U := fun t : ℝ => analyticDysonExponentialCandidate energy V t lam)
-    hβ (continuousInteractionPicture_boundedInteraction energy V hβ) lam
+    hβ hBound lam
     hUcont.continuousOn
     (fun t _ => analyticDysonExponentialCandidate_eq_one_sub_integral energy V t lam)
   simpa only [analyticDysonEvolution_eq_evolution] using (hEq hτ).symm

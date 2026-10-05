@@ -33,4 +33,21 @@ structure ContinuousBoundedInteraction (V : ℝ → A) (β M : ℝ) : Prop
     extends BoundedInteraction V β M where
   interaction_continuous : Continuous V
 
+/-- A continuous interaction on a nonnegative compact interval admits a uniform nonnegative bound.
+
+The weak identity estimate is supplied explicitly so this does not require a stronger norm
+typeclass. -/
+theorem exists_continuousBoundedInteraction (V : ℝ → A) {β : ℝ}
+    (hβ : 0 ≤ β) (hV : Continuous V) (hOne : ‖(1 : A)‖ ≤ 1) :
+    ∃ M : ℝ, ContinuousBoundedInteraction V β M := by
+  have hcont : Continuous (fun t : ℝ => ‖V t‖) := continuous_norm.comp hV
+  obtain ⟨tmax, htmax, hmax⟩ :=
+    isCompact_Icc.exists_isMaxOn (nonempty_Icc.2 hβ) hcont.continuousOn
+  exact ⟨‖V tmax‖,
+    { toBoundedInteraction :=
+        { norm_one_le := hOne
+          bound_nonneg := norm_nonneg _
+          interaction_norm_le := fun t ht => hmax ht }
+      interaction_continuous := hV }⟩
+
 end Dyson
