@@ -37,7 +37,7 @@ private theorem purePointProbability_summable_norm
     (data : PurePointLehmannData system ι) :
     Summable fun i => ‖data.probability i‖ := by
   have h : Summable fun i => |data.probability i| :=
-    data.probability_summable.congr fun i => by
+    data.probability_hasSum.summable.congr fun i => by
       rw [abs_of_nonneg (data.probability_nonneg i)]
   simpa only [Real.norm_eq_abs] using h
 
@@ -45,7 +45,7 @@ private theorem purePointProbability_summable_norm
 private theorem purePointProbability_tsum_pos
     (data : PurePointLehmannData system ι) :
     0 < ∑' i, data.probability i := by
-  rw [data.probability_tsum]
+  rw [data.probability_hasSum.tsum_eq]
   exact zero_lt_one
 
 /-- The canonical density operator represented by the pure-point probabilities. -/
@@ -61,7 +61,8 @@ theorem purePointDensityOperator_apply_basis
     (data : PurePointLehmannData system ι) (i : ι) :
     (purePointDensityOperator system data).op (data.basis i) =
       (data.probability i : ℂ) • data.basis i := by
-  simpa [purePointDensityOperator, normalizedDiagonalWeight, data.probability_tsum] using
+  simpa [purePointDensityOperator, normalizedDiagonalWeight,
+    data.probability_hasSum.tsum_eq] using
     diagonalDensityOperator_apply_basis data.basis data.probability
       (purePointProbability_summable_norm system data) data.probability_nonneg
       (purePointProbability_tsum_pos system data) i
