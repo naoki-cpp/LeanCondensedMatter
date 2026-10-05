@@ -29,9 +29,6 @@ theorem vonNeumannEntropy_gibbs_diagonal
   have hρw : ∀ i, ρ.op (b i) = (w i : ℂ) • b i := by
     intro i
     simpa [w] using hρ i
-  have hw_nonneg : ∀ i, 0 ≤ w i := fun i => div_nonneg (Real.exp_pos _).le hZ.le
-  have hw_le_one : ∀ i, w i ≤ 1 :=
-    ρ.diagonal_weight_le_one b w hρw hw_nonneg
   have hwSum := ρ.hasSum_diagonal_weights b w hρw
   have hEnergySum : HasSum (fun i => w i * E i) (energyExpValue ρ Hop) := by
     change HasSum (fun i => w i * E i) (ρ.observableExpectation Hop)
