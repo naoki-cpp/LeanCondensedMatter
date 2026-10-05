@@ -31,9 +31,10 @@ operator/norm differentiable form. Conservation results show that observables co
 have stationary expectations and density operators commuting with `H₀` are fixed by the free
 evolution.
 
-Reusable bounded-operator unitary-conjugation facts live in
-`Analysis/Operator/Unitary.lean`; general trace-class closure and trace invariance under adjoint
-conjugation live in `Analysis/Operator/TraceClass/Unitary.lean`. The physics layer consumes these
+Reusable bounded adjoint conjugation lives in `Analysis/Operator/AdjointConjugation.lean`, while
+unitary-specific eigenspace transport lives in `Analysis/Operator/Unitary.lean`. General trace-class
+closure and trace invariance under adjoint conjugation live in
+`Analysis/Operator/TraceClass/AdjointConjugation.lean`. The physics layer consumes these
 analysis-owned APIs.
 
 The reusable Hilbert-basis diagonal operator construction lives under
