@@ -29,19 +29,36 @@ theorem hasSum_purePointBoltzmannWeight_of_basis_action
     rw [happly i, inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
 
-/-- Pure-point Boltzmann summability follows from general trace-class heat data with the matching
-basis action. -/
-theorem purePointGibbsSummable_of_basis_action
-    (K : H →L[ℂ] H) (htrace : IsTraceClass K)
-    (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
+/-- For heat data diagonalized by the Boltzmann weights, trace-classness is exactly
+finiteness of the pure-point partition sum. -/
+theorem isTraceClass_iff_purePointGibbsSummable_of_basis_action
+    (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
-    PurePointGibbsSummable E β := by
-  have hweights :=
-    hasSum_purePointBoltzmannWeight_of_basis_action K htrace b E β happly
-  have hnorm : Summable (fun i => ‖(purePointBoltzmannWeight E β i : ℂ)‖) :=
-    hweights.summable.norm
-  change Summable fun i => ‖purePointBoltzmannWeight E β i‖
-  simpa [Complex.norm_real, Real.norm_eq_abs] using hnorm
+    IsTraceClass K ↔ PurePointGibbsSummable E β := by
+  constructor
+  · intro htrace
+    have hweights :=
+      hasSum_purePointBoltzmannWeight_of_basis_action K htrace b E β happly
+    have hnorm : Summable (fun i => ‖(purePointBoltzmannWeight E β i : ℂ)‖) :=
+      hweights.summable.norm
+    change Summable fun i => ‖purePointBoltzmannWeight E β i‖
+    simpa [Complex.norm_real, Real.norm_eq_abs] using hnorm
+  · intro hsum
+    change Summable (fun i => ‖purePointBoltzmannWeight E β i‖) at hsum
+    have hcomplex : Summable (fun i => ‖(purePointBoltzmannWeight E β i : ℂ)‖) := by
+      simpa using hsum
+    have hK :
+        K = HilbertBasis.diagonalOp b
+          (fun i => (purePointBoltzmannWeight E β i : ℂ)) := by
+      apply ContinuousLinearMap.ext_on
+        (Submodule.dense_iff_topologicalClosure_eq_top.mpr b.dense_span)
+      rintro _ ⟨i, rfl⟩
+      rw [happly i,
+        HilbertBasis.diagonalOp_apply_basis b
+          (fun i => (purePointBoltzmannWeight E β i : ℂ)) hcomplex i]
+    rw [hK]
+    exact HilbertBasis.diagonalOp_isTraceClass b (purePointBoltzmannWeight E β) hsum
+      (purePointBoltzmannWeight_nonneg E β)
 
 /-- If supplied trace-class heat data act diagonally by the Boltzmann weights, their canonical
 complex trace is the pure-point partition function embedded in `ℂ`. -/
@@ -65,8 +82,9 @@ theorem DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_ba
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
     DensityOperator.normalizePositive K hpos htrace hne =
       purePointGibbsDensityOperator b E β
-        (purePointGibbsSummable_of_basis_action K htrace b E β happly) := by
-  let hsum := purePointGibbsSummable_of_basis_action K htrace b E β happly
+        ((isTraceClass_iff_purePointGibbsSummable_of_basis_action K b E β happly).mp htrace) := by
+  let hsum :=
+    (isTraceClass_iff_purePointGibbsSummable_of_basis_action K b E β happly).mp htrace
   have hpartition :
       spectralTrace K = purePointPartitionFunction E β := by
     apply Complex.ofReal_injective
