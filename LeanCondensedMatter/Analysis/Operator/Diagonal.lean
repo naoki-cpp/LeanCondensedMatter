@@ -13,7 +13,7 @@ This module constructs the bounded operator
 
 from a Hilbert basis `b` and an absolutely summable scalar family `a`. This neutral operator layer
 is reused by Fredholm, density-state, and Gibbs constructions. It also records positivity for
-summable nonnegative real coefficients, while spectral trace-class membership remains downstream.
+summable nonnegative real coefficients, while trace-class and spectral consequences remain downstream.
 -/
 
 noncomputable section
