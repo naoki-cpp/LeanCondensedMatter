@@ -90992,7 +90992,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable E β → ∀ (i : ι), 0 ≤ QuantumTheory.purePointGibbsProbability E β i",
+    "statement": "∀ {ι : Type u_1} (E : ι → ℝ) (β : ℝ) (i : ι), 0 ≤ QuantumTheory.purePointGibbsProbability E β i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91016,8 +91016,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.purePointGibbsProbability_le_one"
     ],
     "dependencies": [
-      "QuantumTheory.purePointBoltzmannWeight_nonneg",
-      "QuantumTheory.purePointPartitionFunction_pos"
+      "QuantumTheory.purePointBoltzmannWeight_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91286,7 +91285,6 @@
     "dependents": [
       "QuantumTheory.hasSum_purePointGibbsProbability",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
-      "QuantumTheory.purePointGibbsProbability_nonneg",
       "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
@@ -91307,7 +91305,6 @@
       "QuantumTheory.hasSum_purePointGibbsProbability",
       "QuantumTheory.purePointGibbsDensityOperator",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
-      "QuantumTheory.purePointGibbsProbability_nonneg",
       "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
@@ -91317,7 +91314,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136914,7 +136911,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    0 ≤ SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ), 0 ≤ SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
