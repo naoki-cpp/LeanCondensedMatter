@@ -246,25 +246,11 @@ select:disabled {
   display: flex;
   min-height: 50px;
   padding: 0 16px;
-  gap: 14px;
   align-items: center;
-  justify-content: space-between;
   font-size: 12px;
   color: var(--muted);
   border-bottom: 1px solid var(--line);
 }
-
-.graph-actions { display: flex; gap: 6px; align-items: center; }
-.graph-actions button {
-  min-width: 36px;
-  min-height: 34px;
-  padding: 0 10px;
-  color: var(--text);
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.graph-actions button:hover { border-color: var(--line-strong); background: rgba(145, 169, 255, 0.1); }
 
 .overview-panel {
   min-height: calc(100vh - 122px);

@@ -58,9 +58,6 @@ const ui = {
   overview: document.querySelector("#overview"),
   graphStatus: document.querySelector("#graph-status"),
   detail: document.querySelector("#detail"),
-  zoomOut: document.querySelector("#zoom-out"),
-  zoomIn: document.querySelector("#zoom-in"),
-  fitView: document.querySelector("#fit-view"),
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
 };
 
@@ -448,7 +445,6 @@ function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
   ui.overview.hidden = true;
   ui.viewport.hidden = false;
-  setGraphActionsEnabled(true);
   setModuleFilterEnabled(state.graphKind === "theorems");
 
   const previousView = preserveView ? state.viewBox : null;
@@ -731,12 +727,6 @@ function renderDetails(name) {
   ui.detail.append(relationSection("Compiled consumers", entry.compiledConsumers));
 }
 
-function setGraphActionsEnabled(enabled) {
-  ui.zoomOut.disabled = !enabled;
-  ui.zoomIn.disabled = !enabled;
-  ui.fitView.disabled = !enabled;
-}
-
 function writeLocation(push) {
   const url = new URL(window.location.href);
   if (state.page === "imports") {
@@ -786,7 +776,6 @@ function focusRoot(name, { historyEntry = true } = {}) {
   setGraphModeChrome();
   ui.viewport.hidden = false;
   ui.overview.hidden = true;
-  setGraphActionsEnabled(true);
   setModuleFilterEnabled(state.graphKind === "theorems");
   renderDetails(name);
   renderGraph();
@@ -840,7 +829,6 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   hideSearchResults();
   ui.viewport.hidden = true;
   ui.overview.hidden = false;
-  setGraphActionsEnabled(false);
   setModuleFilterEnabled(false);
   setGraphModeChrome();
   ui.graphStatus.textContent = "";
@@ -874,7 +862,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   setGraphModeChrome();
   ui.viewport.hidden = false;
   ui.overview.hidden = true;
-  setGraphActionsEnabled(true);
   setModuleFilterEnabled(false);
   renderDetails(selectedModule);
   renderGraph();
@@ -1022,9 +1009,6 @@ function restoreLocation() {
 }
 
 function bindGraphNavigation() {
-  ui.zoomIn.addEventListener("click", () => zoomGraph(0.8));
-  ui.zoomOut.addEventListener("click", () => zoomGraph(1.25));
-  ui.fitView.addEventListener("click", fitGraph);
   ui.viewport.addEventListener("wheel", (event) => {
     if (!state.root) return;
     event.preventDefault();
