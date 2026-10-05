@@ -86,12 +86,16 @@ Continuous-outcome POVMs, instruments, and state-update theory remain open.
 
 ## Von Neumann entropy
 
-Status: `proved` for the spectral definition and finite-dimensional specialization.
+Status: `proved` for the `ENNReal` definition, the trace-class finite-entropy boundary, and the
+finite-dimensional specialization.
 
 `QuantumTheory.vonNeumannEntropy` is `ENNReal`-valued because a trace-one density operator can have
-infinite entropy. The theory provides the compact entropy operator, spectral/diagonal formulas, and
-finite-dimensional real-valued formulas after finiteness is established. Multiplication by `k_B` and
-identification with thermodynamic entropy is a separate physical postulate.
+infinite entropy. Finiteness is expressed operator-theoretically by
+`IsTraceClass (entropyOp ρ)`; the corresponding finite real value is the lossless
+`IsTraceClass.realTrace` of `-ρ log ρ`. Eigenvalue and diagonal sums are representation formulas,
+and finite dimensionality discharges the entropy-operator trace-class condition automatically.
+Multiplication by `k_B` and identification with thermodynamic entropy is a separate physical
+postulate.
 
 ## Gibbs states and Helmholtz free energy
 
