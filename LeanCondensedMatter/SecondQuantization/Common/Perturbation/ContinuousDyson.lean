@@ -30,6 +30,17 @@ noncomputable def continuousDiagonalEvolution (energy : Config → ℝ) (τ : �
     FiniteContinuousOperator Config :=
   finiteContinuousOperatorAlgEquiv (diagonalEvolution energy τ)
 
+/-- The continuous realization of the basis-diagonal free Hamiltonian. -/
+noncomputable def continuousDiagonalHamiltonian (energy : Config → ℝ) :
+    FiniteContinuousOperator Config :=
+  finiteContinuousOperatorAlgEquiv (diagonalOperator fun c => (energy c : ℂ))
+
+/-- The interacting Hamiltonian `H₀ + λV` in the finite continuous-operator algebra. -/
+noncomputable def continuousInteractingHamiltonian (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
+    FiniteContinuousOperator Config :=
+  continuousDiagonalHamiltonian energy + lam • finiteContinuousOperatorAlgEquiv V
+
 @[simp]
 theorem continuousDiagonalEvolution_basis_apply (energy : Config → ℝ) (τ : ℝ)
     (n : Config) :
