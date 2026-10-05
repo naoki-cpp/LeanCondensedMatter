@@ -44,7 +44,7 @@ theorem vonNeumannEntropy_gibbsState [Nontrivial H] (Hop : Observable H) (β : �
     (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z
   exact vonNeumannEntropy_gibbs_diagonal ρ Hop bE.toHilbertBasis E β Z hZpos
     (fun i => by simpa using hρbE i) (fun i => by simpa using hEbE i)
-    ρ.entropyOp_hasSummableRealEigenvalues
+    ρ.entropyOp_isTraceClass
 
 /-- For nonzero inverse temperature, the normalized Gibbs state satisfies the exact Helmholtz
 free-energy identity. -/
