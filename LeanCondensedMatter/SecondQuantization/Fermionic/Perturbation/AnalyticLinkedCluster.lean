@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import Mathlib.Analysis.Analytic.Uniqueness
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
@@ -31,7 +31,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- The interacting partition function normalized by its free value. -/
 noncomputable def normalizedAnalyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (lam : ℂ) : ℂ :=
-  ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V) lam
+  ((freePartitionFunction ε β)⁻¹ • Common.analyticDysonPartitionFunction (fermionEnergy ε) β V) lam
 
 omit [LinearOrder Mode] in
 @[simp]
@@ -40,8 +40,9 @@ theorem normalizedAnalyticDysonPartitionFunction_zero
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     normalizedAnalyticDysonPartitionFunction ε β V 0 = 1 := by
   change (freePartitionFunction ε β)⁻¹ *
-    analyticDysonPartitionFunction ε β V 0 = 1
-  rw [analyticDysonPartitionFunction_zero ε hβ V]
+    Common.analyticDysonPartitionFunction (fermionEnergy ε) β V 0 = 1
+  rw [Common.analyticDysonPartitionFunction_zero (fermionEnergy ε) hβ V,
+    ← freePartitionFunction_eq_coe_purePointPartitionFunction]
   exact inv_mul_cancel₀ (freePartitionFunction_ne_zero ε β)
 
 omit [LinearOrder Mode] in
@@ -49,11 +50,11 @@ private theorem hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     HasFPowerSeriesAt (normalizedAnalyticDysonPartitionFunction ε β V)
-      ((freePartitionFunction ε β)⁻¹ • dysonPartitionFPowerSeries ε β V) 0 := by
+      ((freePartitionFunction ε β)⁻¹ • Common.dysonTraceFPowerSeries (fermionEnergy ε) β V) 0 := by
   change HasFPowerSeriesAt
-    ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V)
-    ((freePartitionFunction ε β)⁻¹ • dysonPartitionFPowerSeries ε β V) 0
-  exact (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).const_smul
+    ((freePartitionFunction ε β)⁻¹ • Common.analyticDysonPartitionFunction (fermionEnergy ε) β V)
+    ((freePartitionFunction ε β)⁻¹ • Common.dysonTraceFPowerSeries (fermionEnergy ε) β V) 0
+  exact (Common.hasFPowerSeriesAt_analyticDysonPartitionFunction (fermionEnergy ε) hβ V).const_smul
 
 /-- The local analytic logarithm of the normalized partition function.
 
@@ -81,15 +82,15 @@ private theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerS
       Combinatorics.powerSeriesMomentCoeff
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) n := by
   have hcoeff :
-      (((freePartitionFunction ε β)⁻¹ • dysonPartitionFPowerSeries ε β V).coeff n) =
+      (((freePartitionFunction ε β)⁻¹ • Common.dysonTraceFPowerSeries (fermionEnergy ε) β V).coeff n) =
         PowerSeries.coeff n
           (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) := by
     rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff,
       normalizedDysonPartitionCoeff]
     change (freePartitionFunction ε β)⁻¹ *
-        (dysonPartitionFPowerSeries ε β V).coeff n =
+        (Common.dysonTraceFPowerSeries (fermionEnergy ε) β V).coeff n =
       dysonPartitionCoeff ε β V n / freePartitionFunction ε β
-    rw [coeff_dysonPartitionFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff]
+    rw [Common.coeff_dysonTraceFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff]
     simp [div_eq_mul_inv, mul_comm]
   rw [Combinatorics.powerSeriesMomentCoeff, ← hcoeff]
   rcases hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction ε hβ V with ⟨r, hseries⟩
