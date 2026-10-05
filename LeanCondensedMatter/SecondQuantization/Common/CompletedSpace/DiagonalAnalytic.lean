@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Positive
 import Mathlib.Analysis.InnerProductSpace.LinearPMap
 
 set_option linter.style.header false
