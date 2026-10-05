@@ -28,12 +28,6 @@ private theorem norm_inner_apply_le_opNorm_of_norm_eq_one
       exact A.le_opNorm _
     _ = ‖A‖ := by rw [hx]; ring
 
-/-- The absolute eigenvalue weights of a density operator sum to one. -/
-theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
-    HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1|) 1 :=
-  HasSum.congr_fun ρ.hasSum_eigenvalues_eq_one fun a =>
-    abs_of_nonneg (ρ.eigenvalue_nonneg a)
-
 /-- The spectral series representing the expectation of a bounded operator is summable. -/
 theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
@@ -171,10 +165,11 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
   rw [ρ.expectation_apply]
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  have htrace := ρ.trace_eq_one
-  rw [ρ.isTraceClass.trace_eq_tsum_inner d] at htrace
-  rw [(ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace_eq_tsum_inner d]
-  simpa only [mul_apply_eq_comp, ContinuousLinearMap.id_apply] using htrace
+  calc
+    (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace =
+        ρ.isTraceClass.trace := by
+      apply IsTraceClass.trace_congr
+      simp
+    _ = 1 := ρ.trace_eq_one
 
 end QuantumTheory
