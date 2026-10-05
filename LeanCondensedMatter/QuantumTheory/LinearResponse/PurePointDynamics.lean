@@ -35,18 +35,14 @@ variable (system : BoundedFreeSystem H)
 /-- File-local absolute summability proof required by the diagonal density constructor. -/
 private theorem purePointProbability_summable_norm
     (data : PurePointLehmannData system ι) :
-    Summable fun i => ‖data.probability i‖ := by
-  have h : Summable fun i => |data.probability i| :=
-    data.probability_hasSum.summable.congr fun i => by
-      rw [abs_of_nonneg (data.probability_nonneg i)]
-  simpa only [Real.norm_eq_abs] using h
+    Summable fun i => ‖data.probability i‖ :=
+  data.probability_hasSum.summable.norm
 
 /-- File-local positivity proof required by the diagonal density constructor. -/
 private theorem purePointProbability_tsum_pos
     (data : PurePointLehmannData system ι) :
     0 < ∑' i, data.probability i := by
-  rw [data.probability_hasSum.tsum_eq]
-  exact zero_lt_one
+  simpa [data.probability_hasSum.tsum_eq]
 
 /-- The canonical density operator represented by the pure-point probabilities. -/
 noncomputable def purePointDensityOperator
