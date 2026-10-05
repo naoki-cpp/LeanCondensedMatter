@@ -1,4 +1,3 @@
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Normalize
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 /-!
@@ -73,37 +72,20 @@ theorem heatTrace_eq_purePointPartitionFunction_of_basis_action
     _ = (purePointPartitionFunction E β : ℂ) := by
       rw [purePointPartitionFunction, Complex.ofReal_tsum]
 
-/-- A positive nonzero trace-class heat operator with pure-point Boltzmann basis action normalizes
-to the existing pure-point Gibbs density operator. -/
-theorem DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action
-    [Nonempty ι] (K : H →L[ℂ] H) (hpos : K.IsPositive)
-    (htrace : IsTraceClass K) (hne : K ≠ 0)
+/-- Pure-point Boltzmann heat data normalize directly to the canonical Gibbs density
+operator at the operator level. -/
+theorem inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op
+    [Nonempty ι] (K : H →L[ℂ] H)
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
+    (hsum : PurePointGibbsSummable E β)
     (happly : ∀ i, K (b i) = (purePointBoltzmannWeight E β i : ℂ) • b i) :
-    DensityOperator.normalizePositive K hpos htrace hne =
-      purePointGibbsDensityOperator b E β
-        ((isTraceClass_iff_purePointGibbsSummable_of_basis_action K b E β happly).mp htrace) := by
-  let hsum :=
-    (isTraceClass_iff_purePointGibbsSummable_of_basis_action K b E β happly).mp htrace
-  have hpartition :
-      spectralTrace K = purePointPartitionFunction E β := by
-    apply Complex.ofReal_injective
-    calc
-      (spectralTrace K : ℂ) = htrace.trace :=
-        (htrace.trace_eq_spectralTrace hpos.isSelfAdjoint).symm
-      _ = (purePointPartitionFunction E β : ℂ) :=
-        heatTrace_eq_purePointPartitionFunction_of_basis_action K htrace b E β happly
-  change DensityOperator.normalizePositive K hpos htrace hne =
-    purePointGibbsDensityOperator b E β hsum
-  apply DensityOperator.ext
+    ((purePointPartitionFunction E β)⁻¹ : ℂ) • K =
+      (purePointGibbsDensityOperator b E β hsum).op := by
   apply ContinuousLinearMap.ext_on
     (Submodule.dense_iff_topologicalClosure_eq_top.mpr b.dense_span)
   rintro _ ⟨i, rfl⟩
-  rw [DensityOperator.normalizePositive_op, smul_apply, happly i,
-    purePointGibbsDensityOperator_apply_basis]
-  rw [hpartition]
-  rw [purePointGibbsProbability]
-  rw [RCLike.real_smul_eq_coe_smul (K := ℂ), smul_smul]
+  rw [smul_apply, happly i, purePointGibbsDensityOperator_apply_basis,
+    purePointGibbsProbability, smul_smul]
   apply congrArg (fun z : ℂ => z • b i)
   push_cast
   rfl
