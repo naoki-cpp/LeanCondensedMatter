@@ -27,46 +27,34 @@ private theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
     (i : Mode) (m n : Occupation Mode) :
     star (Common.matrixCoeff (create i) n m) =
       Common.matrixCoeff (annihilate i) m n := by
-  unfold Common.matrixCoeff
-  change star ((create i) (basisState m) n) =
-    (annihilate i) (basisState n) m
+  rw [matrixCoeff_create, matrixCoeff_annihilate]
   by_cases hm : i ∈ m
-  · rw [create_basisState_of_mem hm]
-    simp only [Finsupp.zero_apply, star_zero]
-    by_cases hn : i ∈ n
-    · rw [annihilate_basisState_of_mem hn]
-      have hne : removeOccupation i n ≠ m := by
+  · by_cases hn : i ∈ n
+    · have hne : m ≠ removeOccupation i n := by
         intro h
-        have hnot : i ∉ removeOccupation i n := Finset.notMem_erase i n
-        rw [h] at hnot
+        have hnot : i ∉ removeOccupation i n := by
+          simp [removeOccupation]
+        rw [← h] at hnot
         exact hnot hm
-      simp [basisState, Common.basisState, hne]
-    · rw [annihilate_basisState_of_not_mem hn]
-      rfl
-  · rw [create_basisState_of_not_mem hm]
-    by_cases hn : i ∈ n
-    · rw [annihilate_basisState_of_mem hn]
-      by_cases hnm : n = insertOccupation i m
+      simp [hm, hn, hne]
+    · simp [hm, hn]
+  · by_cases hn : i ∈ n
+    · by_cases hnm : n = insertOccupation i m
       · subst n
         have hremove : removeOccupation i (insertOccupation i m) = m := by
           simp [removeOccupation, insertOccupation, hm]
-        rw [hremove, fermionSign_insertOccupation_of_not_lt (lt_irrefl i)]
-        simp [basisState, Common.basisState]
-      · have hinsert : insertOccupation i m ≠ n := Ne.symm hnm
-        have hremove : removeOccupation i n ≠ m := by
-          intro h
-          have hins : insertOccupation i (removeOccupation i n) = n := by
-            rw [insertOccupation, removeOccupation, Finset.insert_erase hn]
-          rw [h] at hins
-          exact hnm hins.symm
-        simp [basisState, Common.basisState, hinsert, hremove]
-    · rw [annihilate_basisState_of_not_mem hn]
-      have hne : insertOccupation i m ≠ n := by
+        simp [hm, hremove, fermionSign_insertOccupation_of_not_lt (lt_irrefl i)]
+      · have hremove : m ≠ removeOccupation i n := by
+          intro hmr
+          apply hnm
+          rw [hmr, insertOccupation, removeOccupation, Finset.insert_erase hn]
+        simp [hm, hn, hnm, hremove]
+    · have hne : n ≠ insertOccupation i m := by
         intro h
         have hi : i ∈ insertOccupation i m := Finset.mem_insert_self i m
-        rw [h] at hi
+        rw [← h] at hi
         exact hn hi
-      simp [basisState, Common.basisState, hne]
+      simp [hm, hn, hne]
 
 section Finite
 
