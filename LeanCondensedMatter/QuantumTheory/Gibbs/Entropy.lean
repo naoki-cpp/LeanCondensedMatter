@@ -16,13 +16,13 @@ open ContinuousLinearMap
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- A density state with Gibbs weights `exp (-β Eᵢ) / Z` in a common energy basis satisfies
-`S = β E + log Z` whenever its entropy operator is spectrally summable. -/
+`S = β E + log Z` whenever its entropy operator is trace-class. -/
 theorem vonNeumannEntropy_gibbs_diagonal
     (ρ : DensityOperator H) (Hop : Observable H) (b : HilbertBasis ι ℂ H)
     (E : ι → ℝ) (β Z : ℝ) (hZ : 0 < Z)
     (hρ : ∀ i, ρ.op (b i) = ((Real.exp (-β * E i) / Z : ℝ) : ℂ) • b i)
     (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i)
-    (hentropy : HasSummableRealEigenvalues (entropyOp ρ)) :
+    (hentropy : IsTraceClass (entropyOp ρ)) :
     vonNeumannEntropy ρ ≠ ⊤ ∧
       (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z := by
   let w : ι → ℝ := fun i => Real.exp (-β * E i) / Z
@@ -43,7 +43,7 @@ theorem vonNeumannEntropy_gibbs_diagonal
         inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
       simp
   have hEntropySum :=
-    entropyOpSpectralTraceClass_hasSum_diagonal ρ b w hρw hentropy
+    hasSum_entropyOp_diagonal ρ b w hρw hentropy
   have hlogw (i : ι) : Real.log (w i) = -β * E i - Real.log Z := by
     change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
     rw [Real.log_div (Real.exp_pos _).ne' hZ.ne', Real.log_exp]
