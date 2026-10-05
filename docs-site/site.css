@@ -229,8 +229,6 @@ select:disabled {
   border-radius: 50%;
   background: var(--accent);
 }
-.legend-node.root { width: 12px; height: 12px; border-color: #d9fffb; background: var(--cyan); }
-.legend-node.branch { background: var(--accent-strong); }
 .legend-edge { position: relative; width: 18px; height: 0; flex: 0 0 auto; border-top: 2px solid var(--accent); }
 .legend-edge::after { content: ""; position: absolute; top: -3px; right: 0; width: 0; height: 0; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 5px solid var(--accent); }
 .legend-edge.cross { border-top: 1px dashed #94a3b8; opacity: 0.55; }

@@ -436,10 +436,10 @@ function setGraphModeChrome() {
   terminal.nextSibling.nodeValue = modules ? " no project imports" : " terminal";
   zero.nextSibling.nodeValue = modules ? " no importers" : " zero consumer";
   single.nextSibling.nodeValue = modules ? " one importer" : " single consumer";
-  ui.graphLegend.children[0].lastChild.nodeValue = modules ? " selected module" : " selected theorem";
+  ui.graphLegend.querySelector(".legend-node").parentElement.lastChild.nodeValue = modules ? " module" : " theorem";
   const edgeLegend = ui.graphLegend.querySelector(".legend-dependency");
   edgeLegend.childNodes[1].nodeValue = modules ? " import" : " dependency";
-  ui.graphLegend.children[4].hidden = modules;
+  ui.graphLegend.querySelector(".legend-edge.wrapper").parentElement.hidden = modules;
 }
 
 function renderGraph({ preserveView = false } = {}) {
