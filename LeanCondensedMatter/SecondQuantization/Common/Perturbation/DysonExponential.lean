@@ -225,7 +225,7 @@ private theorem dysonExponentialCandidate_eq_one_sub_integral (energy : Config �
   have hFTC : (∫ σ in (0 : ℝ)..τ, f σ) = U τ - U 0 :=
     intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv (hf.intervalIntegrable 0 τ)
   have hzero : U 0 = 1 := by
-    simp [U]
+    simp [U, dysonExponentialCandidate]
   rw [hzero] at hFTC
   have hFTC' :
       -(lam • ∫ σ in (0 : ℝ)..τ, continuousInteractionPicture energy V σ * U σ) =
