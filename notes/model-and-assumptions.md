@@ -70,9 +70,9 @@ For a bounded Hamiltonian `Hop`, the project defines
 gibbsOp Hop β = exp (-β Hop)
 ```
 
-through continuous functional calculus. On a nontrivial Hilbert space, a normalized `gibbsState`
-requires compactness of this Gibbs operator; spectral summability and positive nonzero trace are
-derived from the existing operator theory.
+through continuous functional calculus. The bounded-Hamiltonian `gibbsState` API is explicitly
+finite-dimensional; compactness and spectral summability of the Gibbs operator, together with its
+positive nonzero trace, are derived internally.
 
 For Hamiltonians represented instead by pure-point spectral data, `QuantumTheory.Gibbs.PurePoint`
 constructs the density state directly from a Hilbert basis and real energies. Its canonical API is
@@ -90,11 +90,12 @@ Gibbs-state implementation.
 
 The Helmholtz free-energy theorem proves the Gibbs lower bound under its stated hypotheses, and the
 bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. For `β > 0`, equality
-in the Helmholtz bound holds exactly for the canonical Gibbs state under the same compactness and
-nontrivial-space assumptions.
+in the Helmholtz bound holds exactly for the canonical Gibbs state under the same finite-dimensional
+and nontrivial-space assumptions.
 
 A bounded Hamiltonian cannot model a genuinely infinite-dimensional compact Gibbs operator: the
-operator exponential is invertible, so compactness forces finite dimensionality. Infinite-volume or
+operator exponential is invertible, so compactness forces finite dimensionality. This equivalence is
+why the bounded Gibbs API states finite dimensionality directly. Infinite-volume or
 infinite-mode Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or a semigroup
 interface with domain control; pure-point spectral data provide one state-level route when the
 Boltzmann weights are summable.
