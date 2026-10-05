@@ -80,7 +80,8 @@ theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → �
     {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
     analyticDysonEvolution energy V τ lam =
       NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) := by
-  rw [analyticDysonEvolution_eq_evolution]
+  change Dyson.evolution (continuousInteractionPicture energy V) lam τ =
+    NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V)
   have hconst :
       continuousInteractionPicture energy V =
         fun _ : ℝ => finiteContinuousOperatorAlgEquiv V := by
