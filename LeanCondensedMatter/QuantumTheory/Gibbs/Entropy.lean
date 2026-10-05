@@ -6,7 +6,7 @@ import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 
 Dimension-independent entropy algebra for Gibbs-diagonal density states, together with the bounded
 Gibbs-state eigenvector formula. Finite dimensionality is only needed by callers that discharge
-entropy summability automatically.
+entropy-operator trace-classness automatically.
 -/
 
 namespace QuantumTheory
