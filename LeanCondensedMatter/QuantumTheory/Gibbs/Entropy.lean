@@ -29,9 +29,6 @@ theorem vonNeumannEntropy_gibbs_diagonal
   have hρw : ∀ i, ρ.op (b i) = (w i : ℂ) • b i := by
     intro i
     simpa [w] using hρ i
-  have hw_nonneg : ∀ i, 0 ≤ w i := fun i => div_nonneg (Real.exp_pos _).le hZ.le
-  have hw_le_one : ∀ i, w i ≤ 1 :=
-    ρ.diagonal_weight_le_one b w hρw hw_nonneg
   have hwSum := ρ.hasSum_diagonal_weights b w hρw
   have hEnergySum : HasSum (fun i => w i * E i) (energyExpValue ρ Hop) := by
     change HasSum (fun i => w i * E i) (ρ.observableExpectation Hop)
@@ -54,23 +51,8 @@ theorem vonNeumannEntropy_gibbs_diagonal
         (β * energyExpValue ρ Hop + Real.log Z) := by
     simpa using HasSum.congr_fun
       ((hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))) hterm
-  have hentropy : IsTraceClass (entropyOp ρ) :=
-    ρ.entropyOp_isTraceClass_of_diagonal b w hρw hEntropyFormula.summable.norm
-  have hEntropySum :=
-    hasSum_entropyOp_diagonal ρ b w hρw hentropy
-  have htrace :
-      hentropy.realTrace (entropyOp_isSelfAdjoint ρ) =
-        β * energyExpValue ρ Hop + Real.log Z :=
-    hEntropySum.unique hEntropyFormula
-  have htrace_nonneg :
-      0 ≤ hentropy.realTrace (entropyOp_isSelfAdjoint ρ) := by
-    rw [← hEntropySum.tsum_eq]
-    exact tsum_nonneg fun i => Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
-  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_realTrace ρ hentropy
-  constructor
-  · rw [hEntropyBridge]
-    exact ENNReal.ofReal_ne_top
-  · rw [hEntropyBridge, ENNReal.toReal_ofReal htrace_nonneg, htrace]
+  exact ρ.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagonal
+    b w hρw hEntropyFormula
 
 /-- The normalized Gibbs state acts diagonally on every energy eigenvector. -/
 theorem gibbsState_apply_eigenvector [Nontrivial H] (Hop : Observable H) (β : ℝ)

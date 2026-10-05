@@ -83,15 +83,6 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
   have hρ : ∀ i, ρ.op (b i) = (p i : ℂ) • b i := by
     intro i
     simpa [ρ, p] using purePointGibbsDensityOperator_apply_basis b E β hsum i
-  have hp_nonneg : ∀ i, 0 ≤ p i := fun i => by
-    simpa [p] using purePointGibbsProbability_nonneg E β hsum i
-  have hp_le_one : ∀ i, p i ≤ 1 :=
-    ρ.diagonal_weight_le_one b p hρ hp_nonneg
-  have hentropy : IsTraceClass (entropyOp ρ) :=
-    ρ.entropyOp_isTraceClass_of_diagonal b p hρ (by
-      simpa [p] using summable_norm_negMulLog_purePointGibbsProbability E β hsum hint)
-  have hEntropySum :=
-    hasSum_entropyOp_diagonal ρ b p hρ hentropy
   have hEnergySum :=
     hasSum_purePointGibbsEnergyExpectation E β hint
   have hProbSum := hasSum_purePointGibbsProbability E β hsum
@@ -108,22 +99,11 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
         (β * purePointGibbsEnergyExpectation E β + Real.log Z) := by
     simpa [p] using HasSum.congr_fun
       ((hEnergySum.mul_left β).add (hProbSum.mul_left (Real.log Z))) hterm
-  have htrace :
-      hentropy.realTrace (entropyOp_isSelfAdjoint ρ) =
-        β * purePointGibbsEnergyExpectation E β + Real.log Z :=
-    hEntropySum.unique hEntropyFormula
-  have htrace_nonneg :
-      0 ≤ hentropy.realTrace (entropyOp_isSelfAdjoint ρ) := by
-    rw [← hEntropySum.tsum_eq]
-    exact tsum_nonneg fun i => Real.negMulLog_nonneg (hp_nonneg i) (hp_le_one i)
-  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_realTrace ρ hentropy
   change vonNeumannEntropy ρ ≠ ⊤ ∧
     (vonNeumannEntropy ρ).toReal =
       β * purePointGibbsEnergyExpectation E β + Real.log Z
-  constructor
-  · rw [hEntropyBridge]
-    exact ENNReal.ofReal_ne_top
-  · rw [hEntropyBridge, ENNReal.toReal_ofReal htrace_nonneg, htrace]
+  exact ρ.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagonal
+    b p hρ hEntropyFormula
 
 /-- For nonzero inverse temperature, the countable pure-point Gibbs state satisfies the exact
 Helmholtz free-energy identity. -/
