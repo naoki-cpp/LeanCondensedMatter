@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Dyson.Bounds
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import Mathlib.Analysis.Normed.Operator.Mul
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 
