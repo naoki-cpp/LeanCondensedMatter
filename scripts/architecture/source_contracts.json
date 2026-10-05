@@ -87,8 +87,9 @@
       "id": "quantumTheoryPictureOwners",
       "paths": [
         "LeanCondensedMatter/QuantumTheory/LinearResponse/PictureEquivalence.lean",
+        "LeanCondensedMatter/Analysis/Operator/AdjointConjugation.lean",
         "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
-        "LeanCondensedMatter/Analysis/Operator/TraceClass/Unitary.lean",
+        "LeanCondensedMatter/Analysis/Operator/TraceClass/AdjointConjugation.lean",
         "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean"
       ]
     },
