@@ -47,11 +47,9 @@ noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) whe
     intro i
     norm_num
   probability_hasSum := by
-    have hsum : Summable (fun _ : Fin 2 => (1 : ℝ) / 2) := Summable.of_finite
-    rw [← show (∑' i : Fin 2, (1 : ℝ) / 2) = 1 by
-      rw [tsum_fintype]
-      norm_num [Fin.sum_univ_two]]
-    exact hsum.hasSum
+    convert (Summable.of_finite : Summable fun _ : Fin 2 => (1 : ℝ) / 2).hasSum using 1
+    rw [tsum_fintype]
+    norm_num [Fin.sum_univ_two]
 
 /-- Independently supplied scalar current on the two-level space. -/
 def twoLevelScalarCurrent :
