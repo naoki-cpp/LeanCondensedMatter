@@ -81,7 +81,9 @@ theorem trace_congr {T R : H →L[ℂ] H}
     hT.trace = hR.trace := by
   subst R
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [hT.trace_eq_tsum_inner d, hR.trace_eq_tsum_inner d]
+  calc
+    hT.trace = ∑' i, inner ℂ (d i) (T (d i)) := hT.trace_eq_tsum_inner d
+    _ = hR.trace := (hR.trace_eq_tsum_inner d).symm
 
 /-- The canonical trace is independent of the proof of trace-class membership. -/
 theorem trace_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
