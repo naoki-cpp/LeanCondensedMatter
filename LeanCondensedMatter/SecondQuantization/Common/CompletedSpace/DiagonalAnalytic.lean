@@ -61,10 +61,15 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     have hscalar :
         RCLike.re (inner ℂ ((w c : ℂ) * x c) (x c)) =
           w c * ‖x c‖ ^ 2 := by
-      simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal, Complex.mul_re,
-        Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]
-      rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply]
-      ring
+      calc
+        RCLike.re (inner ℂ ((w c : ℂ) * x c) (x c)) =
+            RCLike.re ((w c : ℂ) * (x c * (starRingEnd ℂ) (x c))) := by
+              simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
+              congr 1
+              ac_rfl
+        _ = w c * ‖x c‖ ^ 2 := by
+          rw [RCLike.mul_conj]
+          norm_cast
     rw [hscalar]
     exact mul_nonneg (hnonneg c) (sq_nonneg ‖x c‖)
 
