@@ -5,9 +5,9 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 set_option linter.style.header false
 
 /-!
-# Volterra uniqueness for the analytic Dyson evolution
+# Volterra uniqueness for the interaction-picture Dyson evolution
 
-The finite Dyson sum and the ordered operator-exponential candidate solve the same bounded
+The generic interaction-picture Dyson evolution and the ordered operator-exponential candidate solve the same bounded
 interaction-picture Volterra equation. The generic uniqueness theorem identifies them on every
 compact nonnegative time interval.
 -/
@@ -65,10 +65,10 @@ private theorem analyticDysonExponentialCandidate_eq_one_sub_integral (energy : 
 
 /-- On every compact nonnegative time interval, the analytic Dyson sum equals the exact ordered
 operator-exponential candidate. -/
-theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
+theorem dysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
-    analyticDysonEvolution energy V τ lam =
+    Dyson.evolution (continuousInteractionPicture energy V) lam τ =
       analyticDysonExponentialCandidate energy V τ lam := by
   have hUcont : Continuous
       (fun t : ℝ => analyticDysonExponentialCandidate energy V t lam) := by
@@ -91,26 +91,26 @@ theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
 
 /-- For nonnegative imaginary time, the analytic Dyson evolution is the ordered product of the
 free and interacting operator exponentials. -/
-theorem analyticDysonEvolution_eq_ordered_exp (energy : Config → ℝ)
+theorem dysonEvolution_eq_ordered_exp (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
-    analyticDysonEvolution energy V τ lam =
+    Dyson.evolution (continuousInteractionPicture energy V) lam τ =
       NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
         NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
   simpa [analyticDysonExponentialCandidate] using
-    analyticDysonEvolution_eq_exponentialCandidate
+    dysonEvolution_eq_exponentialCandidate
       (β := τ) (τ := τ) energy V hτ ⟨hτ, le_rfl⟩ lam
 
 /-- At the thermal endpoint, left multiplication by the inverse free evolution leaves the
 interacting Gibbs exponential. -/
-theorem continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp
+theorem continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp
     (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     {β : ℝ} (hβ : 0 ≤ β) (lam : ℂ) :
     continuousDiagonalEvolution energy (-β) *
-        analyticDysonEvolution energy V β lam =
+        Dyson.evolution (continuousInteractionPicture energy V) lam β =
       NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) := by
-  rw [analyticDysonEvolution_eq_ordered_exp energy V hβ lam]
+  rw [dysonEvolution_eq_ordered_exp energy V hβ lam]
   rw [← continuousDiagonalEvolution_eq_exp energy β]
   have hinv :
       continuousDiagonalEvolution energy (-β) *
