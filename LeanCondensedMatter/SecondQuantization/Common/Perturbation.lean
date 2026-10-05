@@ -9,6 +9,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyso
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction
 
 set_option linter.style.header false
 
