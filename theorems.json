@@ -15938,8 +15938,7 @@
       "ContinuousLinearMap.IsTraceClass.comp_left",
       "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.unitaryConjugate",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary.0.ContinuousLinearMap.IsTraceClass.trace_eq_of_eq"
+      "ContinuousLinearMap.IsTraceClass.unitaryConjugate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -150369,48 +150368,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {S R : H →L[ℂ] H} (hS : S.IsTraceClass) (hR : R.IsTraceClass), S = R → hS.trace = hR.trace",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary.0.ContinuousLinearMap.IsTraceClass.trace_eq_of_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
