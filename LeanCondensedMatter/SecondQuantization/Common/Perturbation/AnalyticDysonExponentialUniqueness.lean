@@ -63,9 +63,9 @@ private theorem analyticDysonExponentialCandidate_eq_one_sub_integral (energy : 
     _ = 1 - lam • ∫ σ in (0 : ℝ)..τ,
           continuousInteractionPicture energy V σ * U σ := by abel
 
-/-- On every compact nonnegative time interval, the analytic Dyson sum equals the exact ordered
-operator-exponential candidate. -/
-theorem dysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
+/-- On every compact nonnegative time interval, the interaction-picture Dyson evolution equals
+the exact ordered operator-exponential candidate. -/
+private theorem dysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     Dyson.evolution (continuousInteractionPicture energy V) lam τ =
@@ -89,8 +89,8 @@ theorem dysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     analyticDysonExponentialCandidate energy V τ lam
   exact (hEq hτ).symm
 
-/-- For nonnegative imaginary time, the analytic Dyson evolution is the ordered product of the
-free and interacting operator exponentials. -/
+/-- For nonnegative imaginary time, the interaction-picture Dyson evolution is the ordered product
+of the free and interacting operator exponentials. -/
 theorem dysonEvolution_eq_ordered_exp (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
