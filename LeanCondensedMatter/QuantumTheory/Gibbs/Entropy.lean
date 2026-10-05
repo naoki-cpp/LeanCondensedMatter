@@ -5,8 +5,8 @@ import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 # Gibbs-state entropy
 
 Dimension-independent entropy algebra for Gibbs-diagonal density states, together with the bounded
-Gibbs-state eigenvector formula. Finite dimensionality is only needed by callers that discharge
-entropy-operator trace-classness automatically.
+Gibbs-state eigenvector formula. For a bounded energy observable, normalization and the energy
+expectation make entropy summability a derived property rather than a separate hypothesis.
 -/
 
 namespace QuantumTheory
@@ -16,13 +16,13 @@ open ContinuousLinearMap
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- A density state with Gibbs weights `exp (-β Eᵢ) / Z` in a common energy basis satisfies
-`S = β E + log Z` whenever its entropy operator is trace-class. -/
+`S = β E + log Z`. For a bounded energy observable, the Gibbs identity itself gives the
+summability needed to make the entropy operator trace-class. -/
 theorem vonNeumannEntropy_gibbs_diagonal
     (ρ : DensityOperator H) (Hop : Observable H) (b : HilbertBasis ι ℂ H)
     (E : ι → ℝ) (β Z : ℝ) (hZ : 0 < Z)
     (hρ : ∀ i, ρ.op (b i) = ((Real.exp (-β * E i) / Z : ℝ) : ℂ) • b i)
-    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i)
-    (hentropy : IsTraceClass (entropyOp ρ)) :
+    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i) :
     vonNeumannEntropy ρ ≠ ⊤ ∧
       (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z := by
   let w : ι → ℝ := fun i => Real.exp (-β * E i) / Z
@@ -42,8 +42,6 @@ theorem vonNeumannEntropy_gibbs_diagonal
       rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
         inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
       simp
-  have hEntropySum :=
-    hasSum_entropyOp_diagonal ρ b w hρw hentropy
   have hlogw (i : ι) : Real.log (w i) = -β * E i - Real.log Z := by
     change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
     rw [Real.log_div (Real.exp_pos _).ne' hZ.ne', Real.log_exp]
@@ -56,6 +54,10 @@ theorem vonNeumannEntropy_gibbs_diagonal
         (β * energyExpValue ρ Hop + Real.log Z) := by
     simpa using HasSum.congr_fun
       ((hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))) hterm
+  have hentropy : IsTraceClass (entropyOp ρ) :=
+    ρ.entropyOp_isTraceClass_of_diagonal b w hρw hEntropyFormula.summable.norm
+  have hEntropySum :=
+    hasSum_entropyOp_diagonal ρ b w hρw hentropy
   have htrace :
       hentropy.realTrace (entropyOp_isSelfAdjoint ρ) =
         β * energyExpValue ρ Hop + Real.log Z :=
