@@ -53,11 +53,11 @@ theorem hasSum_completedFreeTotalNumberExpectation
 
 /-- The completed free total-number expectation is nonnegative. -/
 theorem completedFreeTotalNumberExpectation_nonneg
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    (ε : Mode → ℝ) (β : ℝ) :
     0 ≤ completedFreeTotalNumberExpectation ε β := by
   unfold completedFreeTotalNumberExpectation
   exact tsum_nonneg fun n =>
-    mul_nonneg (purePointGibbsProbability_nonneg (fermionEnergy ε) β hsum n)
+    mul_nonneg (purePointGibbsProbability_nonneg (fermionEnergy ε) β n)
       (Nat.cast_nonneg (particleNumber n))
 
 /-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
