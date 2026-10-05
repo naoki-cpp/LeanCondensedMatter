@@ -172,11 +172,11 @@ theorem summable_negMulLog_and_tsum_le_gibbs
       _ = β * (∑' i, p i * energy i) + Real.log Z := by ring
   exact ⟨hnegMulLog_summable, hfinal⟩
 
-/-- The spectral trace of a compact Gibbs operator is strictly positive. -/
-theorem spectralTrace_gibbsOp_pos [Nontrivial H] (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
+/-- The spectral trace of a finite-dimensional Gibbs operator is strictly positive. -/
+theorem spectralTrace_gibbsOp_pos [Nontrivial H] [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) :
     0 < spectralTrace (gibbsOp Hop β) := by
-  let htrace := gibbsOp_spectralTraceClass Hop β hcompact
+  let htrace := gibbsOp_spectralTraceClass Hop β
   exact htrace.spectralTrace_pos (gibbsOp_isPositive Hop β) (gibbsOp_ne_zero Hop β)
 
 /-- Peierls–Bogoliubov in lossless diagonal-expectation form against a unit vector. -/
@@ -218,9 +218,9 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
   exact ⟨hsReal.summable, hsReal.tsum_eq⟩
 
 /-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
-theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H]
+theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H] [FiniteDimensional ℂ H]
     (ρ : DensityOperator H) (Hop : Observable H)
-    (β : ℝ) (hβ : 0 < β) (hcompact : IsCompactOperator (gibbsOp Hop β)) :
+    (β : ℝ) (hβ : 0 < β) :
     vonNeumannEntropy ρ ≠ ⊤ ∧
       -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) ≤
         energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal := by
@@ -232,12 +232,12 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H]
     diagonalExpectationValue (gibbsOp Hop β)
       (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
   set Z : ℝ := spectralTrace (gibbsOp Hop β) with hZ_def
-  have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hcompact
+  have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β
   have hd_orth : Orthonormal ℂ d :=
     orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
   have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
   let hGibbs : SpectralTraceClass (gibbsOp Hop β) :=
-    gibbsOp_spectralTraceClass Hop β hcompact
+    gibbsOp_spectralTraceClass Hop β
   have hstep1 : ∀ a, Real.exp (-β * h a) ≤ q a := fun a => by
     simpa [hh_def, hq_def] using
       exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)

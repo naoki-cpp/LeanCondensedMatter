@@ -40,10 +40,11 @@ applies.
   The general Fredholm theory still requires trace-class approximation/completeness and a
   convergent presentation-independent determinant construction.
 
-- **A bounded Hamiltonian does not yield a genuine infinite-dimensional compact Gibbs operator.**
+- **The bounded-Hamiltonian Gibbs API is finite-dimensional.**
   `gibbsOp Hop β = exp (-β Hop)` is invertible. If it is compact, the identity is compact and the
-  Hilbert space is finite-dimensional. Infinite-dimensional Gibbs states require an unbounded
-  Hamiltonian or semigroup theory with domains.
+  Hilbert space is finite-dimensional, so the public bounded `gibbsState` API states
+  `FiniteDimensional ℂ H` directly. Infinite-dimensional Gibbs states require an unbounded
+  Hamiltonian, domain-aware heat-operator theory, or explicit trace-class heat data.
 
 - **Von Neumann entropy may be infinite.** A trace-one positive operator can have a summable
   eigenvalue sequence while `∑ -λ log λ` diverges. The canonical entropy is therefore `ENNReal`-

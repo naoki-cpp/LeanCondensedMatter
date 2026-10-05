@@ -99,15 +99,17 @@ postulate.
 
 ## Gibbs states and Helmholtz free energy
 
-Status: `proved` for bounded Hamiltonians under explicit compactness and summability hypotheses.
+Status: `proved` for bounded Hamiltonians in finite dimension; countable pure-point Gibbs states
+use explicit summability hypotheses.
 
 The Gibbs layer provides `gibbsOp`, normalized Gibbs states, energy expectation, common-eigenbasis
 formulas, the Helmholtz free-energy lower bound, the Gibbs entropy identity, attainment of the bound,
 and the equality/uniqueness characterization of the Gibbs minimizer.
 
-A bounded Hamiltonian cannot produce a genuinely infinite-dimensional compact invertible Gibbs
-operator. Infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian
-or semigroup/resolvent framework with explicit domains.
+The bounded Gibbs API states finite dimensionality directly. This matches the previous compactness
+boundary because an invertible bounded Gibbs exponential can be compact only in finite dimension.
+Infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or
+semigroup/resolvent framework with explicit domains.
 
 ## Open work
 

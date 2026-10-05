@@ -142,16 +142,17 @@ specializations of the same state model.
 ## Gibbs states and free energy
 
 For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by continuous functional
-calculus as `exp (-β Hop)`. On a nontrivial Hilbert space, `gibbsState` normalizes this operator
-from compactness alone: spectral summability and strictly positive trace are derived internally.
+calculus as `exp (-β Hop)`. The public bounded `gibbsState` API assumes finite dimensionality
+directly; compactness, spectral summability, and strictly positive trace are derived internally.
 
 For `β > 0`, the Helmholtz lower bound is attained exactly by the canonical Gibbs state under the
-same compactness and nontrivial-space assumptions. Pure-point spectral data provide a separate state-level Gibbs construction when the
-Boltzmann weights are summable.
+same finite-dimensional and nontrivial-space assumptions. Pure-point spectral data provide a
+separate state-level Gibbs construction when the Boltzmann weights are summable.
 
-The bounded model has the known limitation that compactness of this invertible exponential forces
-finite dimensionality. Genuine infinite-dimensional Gibbs states therefore require the separate
-unbounded/domain-aware line or explicit pure-point spectral data.
+This finite-dimensional scope is equivalent to the earlier compactness boundary for bounded
+Hamiltonians: the Gibbs exponential is invertible, so compactness forces finite dimensionality.
+Genuine infinite-dimensional Gibbs states therefore require the separate unbounded/domain-aware line
+or explicit pure-point spectral data.
 
 `energyExpValue` is the Hamiltonian-facing observable expectation API. The Lean library proves its
 relation to the generic expectation and its diagonal formulas. Architecture CI protects ownership and

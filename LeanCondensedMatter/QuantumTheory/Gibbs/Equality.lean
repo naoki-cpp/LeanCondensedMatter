@@ -39,14 +39,13 @@ theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v :
 /-- If an orthonormal family saturates the Gibbs spectral trace, its span has trivial orthogonal
 complement. -/
 theorem gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
-    (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β))
+    [FiniteDimensional ℂ H] (Hop : Observable H) (β : ℝ)
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d)
     (heq : ∑' i, diagonalExpectationValue
         (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
       spectralTrace (gibbsOp Hop β)) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
-  let htrace := gibbsOp_spectralTraceClass Hop β hcompact
+  let htrace := gibbsOp_spectralTraceClass Hop β
   apply
     ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       htrace.compact (gibbsOp_isPositive Hop β) htrace.summable hd ?_ heq
