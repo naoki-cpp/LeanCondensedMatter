@@ -171,6 +171,6 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
   rw [ρ.expectation_apply]
-  simpa using ρ.trace_eq_one
+  simpa only [mul_one] using ρ.trace_eq_one
 
 end QuantumTheory
