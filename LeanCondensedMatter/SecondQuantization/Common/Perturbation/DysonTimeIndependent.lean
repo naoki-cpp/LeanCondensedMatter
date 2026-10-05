@@ -72,16 +72,14 @@ theorem dysonCoeff_eq_of_time_independent [Finite Config] (energy : Config → �
       field_simp
     rw [hcint, neg_smul, neg_neg]
 
-/-- If the interaction picture is time-independent, the analytic Dyson sum is the ordinary
+/-- If the interaction picture is time-independent, the generic Dyson evolution is the ordinary
 operator exponential of `-τ λ V`. -/
-theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → ℝ)
+theorem dysonEvolution_eq_exp_of_time_independent (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hV : ∀ τ, interactionPicture energy V τ = V)
     {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
-    analyticDysonEvolution energy V τ lam =
+    Dyson.evolution (continuousInteractionPicture energy V) lam τ =
       NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) := by
-  change Dyson.evolution (continuousInteractionPicture energy V) lam τ =
-    NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V)
   have hconst :
       continuousInteractionPicture energy V =
         fun _ : ℝ => finiteContinuousOperatorAlgEquiv V := by
