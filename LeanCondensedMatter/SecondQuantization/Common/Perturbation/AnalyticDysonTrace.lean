@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
+import Mathlib.Analysis.Normed.Operator.Mul
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 
 set_option linter.style.header false
@@ -18,64 +19,6 @@ noncomputable section
 
 variable {Config : Type*} [Fintype Config]
 
-/-- The ordinary finite-dimensional trace, bundled as a continuous linear functional on the
-continuous-operator algebra. -/
-noncomputable def finiteOperatorTrace :
-    FiniteContinuousOperator Config →L[ℂ] ℂ :=
-  ∑ n : Config,
-    (ContinuousLinearMap.proj n : FiniteAnalyticFock Config →L[ℂ] ℂ).comp
-      (ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis n))
-
-@[simp]
-theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
-    finiteOperatorTrace A = ∑ n : Config, A (finiteAnalyticBasis n) n := by
-  simp [finiteOperatorTrace]
-
-/-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
-theorem finiteOperatorTrace_finiteContinuousOperator
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteOperatorTrace (finiteContinuousOperatorAlgEquiv A) = traceFock A := by
-  simp [finiteOperatorTrace_apply, traceFock_eq_sum_matrixCoeff,
-    finiteContinuousOperator_basis_apply]
-
-/-- Left composition by a fixed finite operator, bundled as a continuous linear map on the
-operator algebra. -/
-noncomputable def finiteOperatorLeftComp (L : FiniteContinuousOperator Config) :
-    FiniteContinuousOperator Config →L[ℂ] FiniteContinuousOperator Config :=
-  IsBoundedLinearMap.toContinuousLinearMap
-    (fun A : FiniteContinuousOperator Config => L.comp A)
-    { map_add := by
-        intro A B
-        ext x
-        simp
-      map_smul := by
-        intro c A
-        ext x
-        simp
-      bound := by
-        refine ⟨max ‖L‖ 1, lt_of_lt_of_le zero_lt_one (le_max_right _ _), fun A => ?_⟩
-        exact (L.opNorm_comp_le A).trans
-          (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg A)) }
-
-/-- Trace after left composition by a fixed operator. -/
-noncomputable def finiteOperatorTraceLeft (L : FiniteContinuousOperator Config) :
-    FiniteContinuousOperator Config →L[ℂ] ℂ :=
-  finiteOperatorTrace.comp (finiteOperatorLeftComp L)
-
-/-- Tracing the free evolution composed with a continuous Dyson coefficient gives the existing
-algebraic Dyson trace coefficient. -/
-theorem finiteOperatorTraceLeft_continuousDysonCoeff (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β))
-        (continuousDysonCoeff energy V n β) =
-      dysonTraceCoeff energy β V n := by
-  change finiteOperatorTrace
-      ((finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-β))).comp
-        (finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n β))) = _
-  rw [← ContinuousLinearMap.mul_def, ← map_mul, Module.End.mul_eq_comp,
-    finiteOperatorTrace_finiteContinuousOperator]
-  rfl
-
 /-- The scalar Dyson trace series converges to the trace of the free evolution composed with the
 analytic Dyson evolution. -/
 theorem hasSum_dysonTraceCoeff
@@ -85,20 +28,29 @@ theorem hasSum_dysonTraceCoeff
       (finiteOperatorTrace
         ((continuousDiagonalEvolution energy (-β)).comp
           (analyticDysonEvolution energy V β lam))) := by
+  let traceLeft : FiniteContinuousOperator Config →L[ℂ] ℂ :=
+    finiteOperatorTrace.comp
+      ((ContinuousLinearMap.mul ℂ (FiniteContinuousOperator Config))
+        (continuousDiagonalEvolution energy (-β)))
+  have htrace (n : ℕ) :
+      traceLeft (continuousDysonCoeff energy V n β) =
+        dysonTraceCoeff energy β V n := by
+    change finiteOperatorTrace
+      ((finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-β))).comp
+        (finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n β))) = _
+    rw [← ContinuousLinearMap.mul_def, ← map_mul, Module.End.mul_eq_comp,
+      finiteOperatorTrace_finiteContinuousOperator]
+    rfl
   have h := (hasSum_analyticDysonEvolution
     (β := β) (τ := β) energy V hβ ⟨hβ, le_rfl⟩ lam).map
-      (finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β)))
-      (finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β))).continuous
+      traceLeft traceLeft.continuous
   have hterms :
-      (finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β)) ∘
-        analyticDysonTerm energy V β lam) =
+      (traceLeft ∘ analyticDysonTerm energy V β lam) =
       (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n) := by
     funext n
-    change finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β))
-        (lam ^ n • continuousDysonCoeff energy V n β) =
+    change traceLeft (lam ^ n • continuousDysonCoeff energy V n β) =
       lam ^ n * dysonTraceCoeff energy β V n
-    rw [map_smul, smul_eq_mul,
-      finiteOperatorTraceLeft_continuousDysonCoeff]
+    rw [map_smul, smul_eq_mul, htrace]
   rw [hterms] at h
   exact h
 
