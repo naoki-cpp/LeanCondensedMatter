@@ -136,7 +136,7 @@ theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
   have h := (heisenbergEquation system ρ.op (-t)).scomp t (hasDerivAt_neg t)
   have hevolved (s : ℝ) :
       heisenbergEvolution system ρ.op (-s) = (evolveDensityOperator system ρ s).op := by
-    simp [evolveDensityOperator_op, unitaryConjugate, heisenbergEvolution,
+    simp [evolveDensityOperator_op, adjointConjugate, heisenbergEvolution,
       star_freePropagator]
   rw [show (heisenbergEvolution system ρ.op ∘ Neg.neg) =
       fun s : ℝ => (evolveDensityOperator system ρ s).op by
