@@ -19940,8 +19940,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.continuousOn_evolution_of_bound",
-      "Dyson.continuous_integrand",
-      "SecondQuantization.Common.continuous_analyticDysonTerm"
+      "Dyson.continuous_integrand"
     ],
     "dependencies": [
       "Dyson.continuous_coeff"
@@ -19950,10 +19949,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.continuousOn_evolution_of_bound",
-      "Dyson.continuous_integrand",
-      "SecondQuantization.Common.continuous_analyticDysonTerm"
+      "Dyson.continuous_integrand"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20127,8 +20125,7 @@
       "Dyson.eqOn_evolution_of_volterra_of_bound",
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral"
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound"
     ],
     "dependencies": [
       "Dyson.ContinuousBoundedInteraction.toBoundedInteraction",
@@ -20141,10 +20138,9 @@
       "Dyson.eqOn_evolution_of_volterra_of_bound",
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral"
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108342,7 +108338,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.analyticDysonEvolution_zero",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution"
@@ -108354,12 +108349,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.analyticDysonEvolution_zero",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108449,48 +108443,6 @@
       "SecondQuantization.Common.analyticDysonEvolution_eq_ordered_exp"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β →\n    τ ∈ Set.Icc 0 β →\n      ∀ (lam : ℂ),\n        SecondQuantization.Common.analyticDysonEvolution energy V τ lam =\n          1 -\n            lam •\n              ∫ (σ : ℝ) in 0..τ,\n                SecondQuantization.Common.continuousInteractionPicture energy V σ ∘SL\n                  SecondQuantization.Common.analyticDysonEvolution energy V σ lam",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonVolterra",
-    "externalAxioms": [],
-    "docString": "The finite analytic Dyson evolution solves the Volterra equation by specialization of the\ngeneric bounded-algebra theorem. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Dyson.evolution_eq_one_sub_integral_of_bound",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108740,7 +108692,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.continuous_analyticDysonTerm",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution",
       "SecondQuantization.Common.norm_analyticDysonTerm_le",
@@ -108753,13 +108704,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.continuous_analyticDysonTerm",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution",
       "SecondQuantization.Common.norm_analyticDysonTerm_le",
       "SecondQuantization.Common.summable_analyticDysonTerm"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110998,7 +110948,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution",
       "SecondQuantization.Common.norm_analyticDysonTerm_le",
@@ -111013,13 +110962,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_one_sub_integral",
       "SecondQuantization.Common.hasSumUniformlyOn_analyticDysonEvolution",
       "SecondQuantization.Common.hasSum_analyticDysonEvolution",
       "SecondQuantization.Common.norm_analyticDysonTerm_le",
       "SecondQuantization.Common.summable_analyticDysonTerm"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111265,48 +111213,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (lam : ℂ)\n  (n : ℕ), Continuous fun τ => SecondQuantization.Common.analyticDysonTerm energy V τ lam n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuous_analyticDysonTerm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonVolterra",
-    "externalAxioms": [],
-    "docString": "Every finite weighted Dyson coefficient is continuous in imaginary time, by specialization of\nthe generic continuity theorem. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Dyson.continuous_term",
-      "SecondQuantization.Common.analyticDysonTerm_eq_term",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ),\n  Continuous (SecondQuantization.Common.continuousDysonCoeff energy V n)",
     "standardAxioms": [
       "Classical.choice",
@@ -111368,7 +111274,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
-      "SecondQuantization.Common.continuous_analyticDysonTerm",
       "SecondQuantization.Common.exists_interactionPictureNormBound",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
@@ -111380,11 +111285,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_boundedInteraction",
-      "SecondQuantization.Common.continuous_analyticDysonTerm",
       "SecondQuantization.Common.exists_interactionPictureNormBound",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
