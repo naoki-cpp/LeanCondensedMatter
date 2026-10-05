@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral
 
@@ -174,6 +175,26 @@ theorem continuousDysonCoeff_succ (energy : Config → ℝ)
   simpa only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def] using
     map_mul (finiteContinuousOperatorAlgEquiv (Config := Config))
       (interactionPicture energy V σ) (dysonCoeff energy V n σ)
+
+
+/-- The transported finite-dimensional Dyson coefficient is the generic Dyson coefficient
+specialized to the continuous interaction-picture family. -/
+theorem continuousDysonCoeff_eq_coeff (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
+    continuousDysonCoeff energy V n τ =
+      Dyson.coeff (continuousInteractionPicture energy V) n τ := by
+  induction n generalizing τ with
+  | zero => simp
+  | succ n ih =>
+      rw [continuousDysonCoeff_succ, Dyson.coeff_succ]
+      apply congrArg Neg.neg
+      apply intervalIntegral.integral_congr
+      intro σ _
+      change continuousInteractionPicture energy V σ *
+          continuousDysonCoeff energy V n σ =
+        continuousInteractionPicture energy V σ *
+          Dyson.coeff (continuousInteractionPicture energy V) n σ
+      rw [ih]
 
 end
 end Common
