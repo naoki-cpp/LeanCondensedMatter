@@ -38,23 +38,16 @@ theorem matrixCoeff_annihilate_comp_create_self
       (Common.matrixCoeff_eq_ite_of_basisState_smul (m := n) haction)
   · rw [ite_eq_right hij, Common.matrixCoeff, LinearMap.comp_apply]
     change (annihilate i (create j (basisState n))) n = 0
-    rw [create_basisState_eq, map_smul]
-    by_cases hi : n i = 0
-    · have hzero : createOccupation j n i = 0 := by
-        rw [createOccupation_apply_ne hij]
-        exact hi
-      rw [annihilate_basisState_of_zero hzero, smul_zero]
-      rfl
-    · have hpos : createOccupation j n i ≠ 0 := by
-        rw [createOccupation_apply_ne hij]
-        exact hi
-      rw [annihilate_basisState_of_pos hpos, smul_smul]
-      have hne : removeOccupation i (createOccupation j n) ≠ n := by
-        intro h
-        have hj := congrArg (fun x : Occupation Mode => x j) h
-        rw [removeOccupation_apply_ne (Ne.symm hij), createOccupation_apply_same] at hj
-        omega
-      exact Common.smul_basisState_apply_of_ne _ hne
+    rw [create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
+    change (Real.sqrt (n j + 1 : ℝ) : ℂ) *
+      Common.matrixCoeff (annihilate i) n (createOccupation j n) = 0
+    rw [matrixCoeff_annihilate]
+    have hne : n ≠ removeOccupation i (createOccupation j n) := by
+      intro h
+      have hj := congrArg (fun x : Occupation Mode => x j) h
+      rw [removeOccupation_apply_ne (Ne.symm hij), createOccupation_apply_same] at hj
+      omega
+    rw [ite_eq_right hne, mul_zero]
 
 /-- The diagonal coefficient of `aᵢ aⱼ†` grows at most linearly with occupation number. -/
 theorem norm_matrixCoeff_annihilate_comp_create_self_le

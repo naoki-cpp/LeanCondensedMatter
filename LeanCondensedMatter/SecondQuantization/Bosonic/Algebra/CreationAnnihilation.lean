@@ -79,6 +79,28 @@ theorem annihilate_basisState_eq (i : Mode) (n : Occupation Mode) :
     simp
   · exact annihilate_basisState_of_pos h
 
+/-- Matrix coefficients of bosonic creation are supported on the raised occupation state. -/
+theorem matrixCoeff_create (i : Mode) (m n : Occupation Mode) :
+    Common.matrixCoeff (create i) m n =
+      if m = createOccupation i n then (Real.sqrt (n i + 1 : ℝ) : ℂ) else 0 := by
+  classical
+  by_cases h : m = createOccupation i n
+  · simpa [h] using
+      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (create_basisState_eq i n))
+  · simpa [h] using
+      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (create_basisState_eq i n))
+
+/-- Matrix coefficients of bosonic annihilation are supported on the lowered occupation state. -/
+theorem matrixCoeff_annihilate (i : Mode) (m n : Occupation Mode) :
+    Common.matrixCoeff (annihilate i) m n =
+      if m = removeOccupation i n then (Real.sqrt (n i : ℝ) : ℂ) else 0 := by
+  classical
+  by_cases h : m = removeOccupation i n
+  · simpa [h] using
+      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (annihilate_basisState_eq i n))
+  · simpa [h] using
+      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (annihilate_basisState_eq i n))
+
 @[simp]
 theorem annihilate_fockVacuum (i : Mode) :
     annihilate i (fockVacuum : FockSpace Mode) = 0 :=

@@ -52,65 +52,29 @@ private theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occu
     apply Common.linearMap_ext_basisState
     intro a
     simp only [LinearMap.comp_apply, LinearMap.smul_apply]
-    change evalN (annihilate i (basisState a)) =
-      (Real.sqrt (n i + 1 : ℝ) : ℂ) • evalC (basisState a)
-    by_cases ha : a i = 0
-    · rw [annihilate_basisState_of_zero ha]
-      have hne : a ≠ createOccupation i n := by
-        intro h
-        have hi := congrArg (fun m : Occupation Mode => m i) h
-        rw [ha, createOccupation_apply_same] at hi
-        omega
-      simp [evalN, evalC, basisState, Common.basisState, hne]
-    · rw [annihilate_basisState_of_pos ha]
-      by_cases hrem : removeOccupation i a = n
-      · have hac : a = createOccupation i n := by
+    change Common.matrixCoeff (annihilate i) n a =
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) * evalC (basisState a)
+    rw [matrixCoeff_annihilate]
+    by_cases h : a = createOccupation i n
+    · subst a
+      simp [evalC, basisState, Common.basisState, removeOccupation_createOccupation,
+        createOccupation_apply_same]
+    · by_cases ha : a i = 0
+      · simp [ha, h, evalC, basisState, Common.basisState]
+      · have hrem : n ≠ removeOccupation i a := by
+          intro hrem
+          apply h
           calc
             a = createOccupation i (removeOccupation i a) :=
               (createOccupation_removeOccupation_of_pos ha).symm
-            _ = createOccupation i n := by rw [hrem]
-        subst a
-        have hevalN :
-            evalN (basisState (removeOccupation i (createOccupation i n))) = 1 := by
-          rw [removeOccupation_createOccupation]
-          simp [evalN, basisState, Common.basisState]
-        have hevalC : evalC (basisState (createOccupation i n)) = 1 := by
-          simp [evalC, basisState, Common.basisState]
-        simp only [createOccupation_apply_same, Nat.cast_add, Nat.cast_one,
-          Complex.coe_smul, LinearMap.map_smul_of_tower,
-          Complex.real_smul, smul_eq_mul]
-        rw [hevalN, hevalC]
-      · have hne : a ≠ createOccupation i n := by
-          intro h
-          apply hrem
-          rw [h, removeOccupation_createOccupation]
-        simp [evalN, evalC, basisState, Common.basisState, hrem, hne]
+            _ = createOccupation i n := by rw [← hrem]
+        simp [hrem, h, evalC, basisState, Common.basisState]
   have hx := congrArg (fun L => L x) hmap
   simpa only [evalN, evalC, LinearMap.comp_apply, LinearMap.smul_apply,
     Finsupp.lapply_apply, smul_eq_mul] using hx
 
-/-- Creation has zero coordinate on a zero-occupation target. -/
-private theorem create_apply_coord_of_zero (i : Mode) (x : FockSpace Mode) (n : Occupation Mode)
-    (hi : n i = 0) : create i x n = 0 := by
-  let evalN : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply n
-  have hmap : evalN.comp (create i) = 0 := by
-    apply Common.linearMap_ext_basisState
-    intro a
-    simp only [LinearMap.comp_apply, LinearMap.zero_apply]
-    change evalN (create i (basisState a)) = 0
-    rw [create_basisState_eq]
-    have hne : createOccupation i a ≠ n := by
-      intro h
-      have hcoord := congrArg (fun m : Occupation Mode => m i) h
-      rw [createOccupation_apply_same, hi] at hcoord
-      omega
-    simp [evalN, basisState, Common.basisState, hne]
-  have hx := congrArg (fun L => L x) hmap
-  simpa only [evalN, LinearMap.comp_apply, Finsupp.lapply_apply, LinearMap.zero_apply] using hx
-
-/-- Coordinate action of creation on a positive-occupation target. -/
-private theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupation Mode)
-    (hi : n i ≠ 0) :
+/-- Coordinate action of creation on an arbitrary algebraic-Fock vector. -/
+private theorem create_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation Mode) :
     create i x n =
       (Real.sqrt (n i : ℝ) : ℂ) * x (removeOccupation i n) := by
   let evalN : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply n
@@ -120,32 +84,34 @@ private theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : O
     apply Common.linearMap_ext_basisState
     intro a
     simp only [LinearMap.comp_apply, LinearMap.smul_apply]
-    change evalN (create i (basisState a)) =
-      (Real.sqrt (n i : ℝ) : ℂ) • evalR (basisState a)
-    rw [create_basisState_eq]
-    by_cases hca : createOccupation i a = n
-    · have ha : a = removeOccupation i n := by
-        calc
-          a = removeOccupation i (createOccupation i a) :=
-            (removeOccupation_createOccupation i a).symm
-          _ = removeOccupation i n := by rw [hca]
-      subst a
-      have hni : 1 ≤ n i := Nat.one_le_iff_ne_zero.mpr hi
-      have hcast : ((n i - 1 : ℕ) : ℝ) + 1 = (n i : ℝ) := by
-        exact_mod_cast Nat.sub_add_cancel hni
-      have hevalN : evalN (basisState (createOccupation i (removeOccupation i n))) = 1 := by
-        rw [createOccupation_removeOccupation_of_pos hi]
-        simp [evalN, basisState, Common.basisState]
-      have hevalR : evalR (basisState (removeOccupation i n)) = 1 := by
+    change Common.matrixCoeff (create i) n a =
+      (Real.sqrt (n i : ℝ) : ℂ) * evalR (basisState a)
+    rw [matrixCoeff_create]
+    by_cases hi : n i = 0
+    · have hca : n ≠ createOccupation i a := by
+        intro hca
+        have hc := congrArg (fun m : Occupation Mode => m i) hca
+        rw [hi, createOccupation_apply_same] at hc
+        omega
+      simp [hi, hca, evalR, basisState, Common.basisState]
+    · by_cases h : a = removeOccupation i n
+      · subst a
+        have htarget : n = createOccupation i (removeOccupation i n) :=
+          (createOccupation_removeOccupation_of_pos hi).symm
+        have hcoord : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
+          rw [removeOccupation_apply_same, Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr hi)]
+          push_cast
+          ring
+        rw [ite_eq_left htarget, hcoord]
         simp [evalR, basisState, Common.basisState]
-      simp only [removeOccupation_apply_same, Complex.coe_smul,
-        LinearMap.map_smul_of_tower, Complex.real_smul, smul_eq_mul]
-      rw [hcast, hevalN, hevalR]
-    · have hane : a ≠ removeOccupation i n := by
-        intro h
-        apply hca
-        rw [h, createOccupation_removeOccupation_of_pos hi]
-      simp [evalN, evalR, basisState, Common.basisState, hca, hane]
+      · have hca : n ≠ createOccupation i a := by
+          intro hca
+          apply h
+          calc
+            a = removeOccupation i (createOccupation i a) :=
+              (removeOccupation_createOccupation i a).symm
+            _ = removeOccupation i n := by rw [← hca]
+        simp [h, hca, evalR, basisState, Common.basisState]
   have hx := congrArg (fun L => L x) hmap
   simpa only [evalN, evalR, LinearMap.comp_apply, LinearMap.smul_apply,
     Finsupp.lapply_apply, smul_eq_mul] using hx
@@ -199,11 +165,9 @@ theorem tsumTrace_create_comp (i : Mode)
     unfold f Common.matrixCoeff
     change (A (create i (basisState n))) n =
       create i (A (basisState (createOccupation i n))) (createOccupation i n)
-    rw [create_basisState_eq, map_smul, Finsupp.smul_apply,
-      create_apply_coord_of_pos]
-    · rw [removeOccupation_createOccupation, createOccupation_apply_same]
-      simp only [smul_eq_mul, Nat.cast_add, Nat.cast_one]
-    · simp [createOccupation_apply_same]
+    rw [create_basisState_eq, map_smul, Finsupp.smul_apply, create_apply_coord,
+      removeOccupation_createOccupation, createOccupation_apply_same]
+    simp only [smul_eq_mul, Nat.cast_add, Nat.cast_one]
   have hsupport : Function.support f ⊆ positiveOccupationSet i := by
     intro n hn
     change n i ≠ 0
@@ -211,7 +175,8 @@ theorem tsumTrace_create_comp (i : Mode)
     apply hn
     unfold f Common.matrixCoeff
     change create i (A (basisState n)) n = 0
-    exact create_apply_coord_of_zero i (A (basisState n)) n hi
+    rw [create_apply_coord, hi]
+    simp
   unfold Common.tsumTrace
   calc
     (∑' n, Common.matrixCoeff ((create i).comp A) n n) = ∑' n, f n := rfl
