@@ -31,19 +31,20 @@ noncomputable def analyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
 omit [LinearOrder Mode] in
 /-- The analytic partition function is the thermal trace of the interaction-picture Dyson
 operator. -/
-theorem analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution
+theorem analyticDysonPartitionFunction_eq_trace_dysonEvolution
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (lam : ℂ) :
     analyticDysonPartitionFunction ε β V lam =
       Common.finiteOperatorTrace
         ((Common.continuousDiagonalEvolution (fermionEnergy ε) (-β)).comp
-          (Common.analyticDysonEvolution (fermionEnergy ε) V β lam)) := by
+          (Dyson.evolution
+            (Common.continuousInteractionPicture (fermionEnergy ε) V) lam β)) := by
   unfold analyticDysonPartitionFunction
   apply congrArg Common.finiteOperatorTrace
   change NormedSpace.exp ((-β) • Common.continuousInteractingHamiltonian (fermionEnergy ε) V lam) =
     Common.continuousDiagonalEvolution (fermionEnergy ε) (-β) *
-      Common.analyticDysonEvolution (fermionEnergy ε) V β lam
-  exact (Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp
+      Dyson.evolution (Common.continuousInteractionPicture (fermionEnergy ε) V) lam β
+  exact (Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp
     (fermionEnergy ε) V hβ lam).symm
 
 omit [LinearOrder Mode] in
@@ -54,7 +55,7 @@ theorem hasSum_dysonTraceCoeff
     HasSum
       (fun n : ℕ => lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n)
       (analyticDysonPartitionFunction ε β V lam) := by
-  rw [analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution ε hβ V lam]
+  rw [analyticDysonPartitionFunction_eq_trace_dysonEvolution ε hβ V lam]
   exact Common.hasSum_dysonTraceCoeff
     (fermionEnergy ε) hβ V lam
 
