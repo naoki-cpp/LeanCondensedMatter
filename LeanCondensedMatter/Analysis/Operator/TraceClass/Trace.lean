@@ -125,7 +125,7 @@ theorem hasSum_realTrace {T : H →L[ℂ] H}
       HasSum (fun i => ((diagonalExpectationValue T hself (d i) : ℝ) : ℂ))
         hT.trace := by
     exact HasSum.congr_fun (hT.hasSum_trace d) fun i =>
-      (coe_diagonalExpectationValue_right T hself (d i)).symm
+      coe_diagonalExpectationValue_right T hself (d i)
   rw [← hT.coe_realTrace hself] at hcomplex
   exact Complex.hasSum_ofReal.mp hcomplex
 
