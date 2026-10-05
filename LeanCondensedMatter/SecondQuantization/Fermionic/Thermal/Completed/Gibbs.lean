@@ -1,7 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.HeatOperator
+import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 
 set_option linter.style.header false
 
@@ -41,6 +39,22 @@ theorem completedFreeGibbsDensityOperator_apply_basis
   simpa [completedFreeGibbsDensityOperator] using
     purePointGibbsDensityOperator_apply_basis
       (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum n
+
+/-- Normalizing the bounded completed free heat operator by the pure-point partition function
+recovers the canonical completed Gibbs density operator. -/
+theorem inv_partition_smul_completedFreeHeatOperator_eq_gibbsDensityOperator_op
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    ((purePointPartitionFunction (fermionEnergy ε) β)⁻¹ : ℂ) •
+        completedFreeHeatOperator ε β
+          (completedFreeHeatBounded_of_gibbsSummable ε β hsum) =
+      (completedFreeGibbsDensityOperator ε β hsum).op := by
+  simpa [completedFreeGibbsDensityOperator] using
+    (inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op
+      (completedFreeHeatOperator ε β
+        (completedFreeHeatBounded_of_gibbsSummable ε β hsum))
+      (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum
+      (completedFreeHeatOperator_apply_basis ε β
+        (completedFreeHeatBounded_of_gibbsSummable ε β hsum)))
 
 /-- Bounded-operator expectations in the completed free Gibbs state are the absolutely convergent
 occupation-basis pure-point Gibbs series. -/
