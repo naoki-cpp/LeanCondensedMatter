@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 
 set_option linter.style.header false
@@ -9,6 +8,6 @@ set_option linter.style.header false
 
 Finite-basis algebraic and continuous Dyson coefficients, the norm-convergent analytic Dyson
 evolution and its Volterra equation, formal and convergent partition series, the analytic partition
-function specialized from Common, its normalized logarithm, the analytic/formal linked-cluster bridge,
+function and normalized analytic logarithm specialized from Common, the formal linked-cluster series,
 and vertex moments.
 -/
