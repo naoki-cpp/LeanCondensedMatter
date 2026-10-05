@@ -248,8 +248,7 @@ structure PurePointLehmannData
   /-- Normalized diagonal probability assigned to each basis vector. -/
   probability : ι → ℝ
   probability_nonneg : ∀ i, 0 ≤ probability i
-  probability_summable : Summable probability
-  probability_tsum : ∑' i, probability i = 1
+  probability_hasSum : HasSum probability 1
 
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
