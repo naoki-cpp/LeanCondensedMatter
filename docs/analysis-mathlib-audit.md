@@ -96,8 +96,8 @@ complex trace; there is no separate basis-relative trace-series wrapper. `TraceC
 derives compactness directly from the factorization layer.
 `Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
 ideal closure, and complex-trace linearity. `TraceClass/Ops/Norm.lean` owns trace-norm identities,
-the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound. `TraceClass/Unitary.lean` owns
-adjoint-conjugation closure and trace invariance derived from general cyclicity.
+the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound. `TraceClass/AdjointConjugation.lean` owns adjoint-conjugation closure and trace invariance derived
+from general cyclicity.
 `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled self-adjoint
 specialization, spectral trace identities, and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
 of general trace-class membership, trace norm, and complex trace.
