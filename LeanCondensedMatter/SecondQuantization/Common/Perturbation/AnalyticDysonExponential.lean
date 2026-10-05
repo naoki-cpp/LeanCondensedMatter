@@ -116,15 +116,6 @@ theorem analyticDysonExponentialCandidate_zero (energy : Config → ℝ)
     analyticDysonExponentialCandidate energy V 0 lam = 1 := by
   simp [analyticDysonExponentialCandidate]
 
-/-- Rewrite the exact candidate with the existing continuous free evolution. -/
-theorem analyticDysonExponentialCandidate_eq (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (τ : ℝ) (lam : ℂ) :
-    analyticDysonExponentialCandidate energy V τ lam =
-      continuousDiagonalEvolution energy τ *
-        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
-  rw [analyticDysonExponentialCandidate, continuousDiagonalEvolution_eq_exp]
-
 /-- Multiplying the exact candidate by the interaction-picture operator cancels the two free
 propagators in the middle. -/
 private theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
@@ -136,8 +127,8 @@ private theorem continuousInteractionPicture_mul_analyticDysonExponentialCandida
       continuousDiagonalEvolution energy τ *
         (finiteContinuousOperatorAlgEquiv V *
           NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) := by
-  rw [continuousInteractionPicture_eq_conj,
-    analyticDysonExponentialCandidate_eq]
+  rw [continuousInteractionPicture_eq_conj, analyticDysonExponentialCandidate,
+    ← continuousDiagonalEvolution_eq_exp energy τ]
   change
     (continuousDiagonalEvolution energy τ *
       (finiteContinuousOperatorAlgEquiv V * continuousDiagonalEvolution energy (-τ))) *
@@ -179,19 +170,6 @@ private theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Confi
   exact (hasDerivAt_exp_smul_const (continuousDiagonalHamiltonian energy) τ).mul
     (hasDerivAt_exp_smul_const' (- continuousInteractingHamiltonian energy V lam) τ)
 
-/-- After cancellation of the free Hamiltonian, the candidate derivative contains only the
-interaction insertion. -/
-theorem hasDerivAt_analyticDysonExponentialCandidate (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (τ : ℝ) (lam : ℂ) :
-    HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
-      (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-        (-(lam • finiteContinuousOperatorAlgEquiv V)) *
-        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) τ := by
-  convert hasDerivAt_analyticDysonExponentialCandidate_raw energy V τ lam using 1
-  rw [continuousInteractingHamiltonian]
-  noncomm_ring
-
 /-- The exact candidate solves the same interaction-picture differential equation as the Dyson
 series. -/
 theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
@@ -229,7 +207,9 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
             NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))))) := by
         rw [continuousDiagonalEvolution_eq_exp]
   rw [← hderiv]
-  exact hasDerivAt_analyticDysonExponentialCandidate energy V τ lam
+  convert hasDerivAt_analyticDysonExponentialCandidate_raw energy V τ lam using 1
+  rw [continuousInteractingHamiltonian]
+  noncomm_ring
 
 end
 end Common
