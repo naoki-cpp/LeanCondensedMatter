@@ -251,6 +251,7 @@ select:disabled {
   color: var(--muted);
   border-bottom: 1px solid var(--line);
 }
+.graph-toolbar[hidden] { display: none; }
 
 .overview-panel {
   min-height: calc(100vh - 122px);

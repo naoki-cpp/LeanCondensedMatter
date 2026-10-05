@@ -56,6 +56,7 @@ const ui = {
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
+  graphToolbar: document.querySelector(".graph-toolbar"),
   graphStatus: document.querySelector("#graph-status"),
   detail: document.querySelector("#detail"),
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
@@ -445,6 +446,7 @@ function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
   ui.overview.hidden = true;
   ui.viewport.hidden = false;
+  ui.graphToolbar.hidden = false;
   setModuleFilterEnabled(state.graphKind === "theorems");
 
   const previousView = preserveView ? state.viewBox : null;
@@ -829,6 +831,7 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   hideSearchResults();
   ui.viewport.hidden = true;
   ui.overview.hidden = false;
+  ui.graphToolbar.hidden = true;
   setModuleFilterEnabled(false);
   setGraphModeChrome();
   ui.graphStatus.textContent = "";
@@ -1129,6 +1132,7 @@ async function main() {
 
 main().catch((error) => {
   console.error(error);
+  ui.graphToolbar.hidden = false;
   ui.graphStatus.textContent = "Failed to load declaration graph.";
   const message = element("p", "error-message", error instanceof Error ? error.message : String(error));
   ui.detail.replaceChildren(message);
