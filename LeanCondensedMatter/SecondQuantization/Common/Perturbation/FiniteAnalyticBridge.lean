@@ -16,11 +16,13 @@ For a finite configuration type, `AlgebraicFock Config = Config →₀ ℂ` is t
 endomorphisms are transported by the canonical conjugation algebra equivalence and the
 finite-dimensional equivalence between linear and continuous linear endomorphisms.
 
-The existing coefficientwise `operatorIntervalIntegral` remains the algebraic definition used by
-the Dyson and diagrammatic layers. The theorem `continuousOperatorIntervalIntegral_eq` proves that,
-for a matrix-coefficient-continuous operator family, its transported value agrees with Mathlib's
-Bochner interval integral. Thus analytic call sites can use the normed continuous-operator API
-without imposing a topology or norm on `AlgebraicFock Config` itself.
+The ordinary finite-dimensional trace is bundled on the continuous realization and proved compatible
+with the existing algebraic `traceFock`. The coefficientwise `operatorIntervalIntegral` remains the
+algebraic definition used by the Dyson and diagrammatic layers. The theorem
+`continuousOperatorIntervalIntegral_eq` proves that, for a matrix-coefficient-continuous operator
+family, its transported value agrees with Mathlib's Bochner interval integral. Thus analytic call
+sites can use the normed continuous-operator API without imposing a topology or norm on
+`AlgebraicFock Config` itself.
 -/
 
 namespace SecondQuantization
@@ -78,6 +80,26 @@ theorem finiteContinuousOperator_basis_apply
     finiteContinuousOperatorAlgEquiv A (finiteAnalyticBasis n) m = matrixCoeff A m n := by
   rw [← finiteAnalyticFockEquiv_basisState, finiteContinuousOperator_equiv_apply]
   rfl
+
+/-- The ordinary finite-dimensional trace, bundled as a continuous linear functional on the
+continuous-operator algebra. -/
+noncomputable def finiteOperatorTrace :
+    FiniteContinuousOperator Config →L[ℂ] ℂ :=
+  ∑ n : Config,
+    (ContinuousLinearMap.proj n : FiniteAnalyticFock Config →L[ℂ] ℂ).comp
+      (ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis n))
+
+@[simp]
+theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
+    finiteOperatorTrace A = ∑ n : Config, A (finiteAnalyticBasis n) n := by
+  simp [finiteOperatorTrace]
+
+/-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
+theorem finiteOperatorTrace_finiteContinuousOperator
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteOperatorTrace (finiteContinuousOperatorAlgEquiv A) = traceFock A := by
+  simp [finiteOperatorTrace_apply, traceFock_eq_sum_matrixCoeff,
+    finiteContinuousOperator_basis_apply]
 
 set_option linter.unusedFintypeInType false in
 /-- Two continuous finite operators that agree on every standard basis vector are equal. -/
