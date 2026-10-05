@@ -68,7 +68,7 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
               congr 1
               ac_rfl
         _ = w c * ‖x c‖ ^ 2 := by
-          rw [RCLike.mul_conj]
+          rw [RCLike.mul_conj, RCLike.re_ofReal_mul]
           norm_cast
     rw [hscalar]
     exact mul_nonneg (hnonneg c) (sq_nonneg ‖x c‖)
