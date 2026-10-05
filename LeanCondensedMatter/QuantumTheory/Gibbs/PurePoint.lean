@@ -64,10 +64,13 @@ theorem purePointPartitionFunction_pos [Nonempty ι] (E : ι → ℝ) (β : ℝ)
 noncomputable def purePointGibbsProbability (E : ι → ℝ) (β : ℝ) (i : ι) : ℝ :=
   (purePointPartitionFunction E β)⁻¹ * purePointBoltzmannWeight E β i
 
-theorem purePointGibbsProbability_nonneg [Nonempty ι] (E : ι → ℝ) (β : ℝ)
-    (hsum : PurePointGibbsSummable E β) (i : ι) :
+theorem purePointGibbsProbability_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
     0 ≤ purePointGibbsProbability E β i := by
-  exact mul_nonneg (inv_nonneg.mpr (purePointPartitionFunction_pos E β hsum).le)
+  unfold purePointGibbsProbability
+  exact mul_nonneg
+    (inv_nonneg.mpr (by
+      rw [purePointPartitionFunction]
+      exact tsum_nonneg fun j => purePointBoltzmannWeight_nonneg E β j))
     (purePointBoltzmannWeight_nonneg E β i)
 
 /-- The normalized pure-point Gibbs probabilities sum to one. -/

@@ -23,7 +23,7 @@ private theorem purePointGibbsProbability_le_one [Nonempty ι]
     purePointGibbsProbability E β i ≤ 1 := by
   have hprob := hasSum_purePointGibbsProbability E β hsum
   have hle := hprob.summable.le_tsum i
-    (fun j _ => purePointGibbsProbability_nonneg E β hsum j)
+    (fun j _ => purePointGibbsProbability_nonneg E β j)
   rw [hprob.tsum_eq] at hle
   exact hle
 
@@ -64,7 +64,7 @@ theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
   exact hEntropy.congr fun i => by
     rw [Real.norm_eq_abs,
       abs_of_nonneg (Real.negMulLog_nonneg
-        (purePointGibbsProbability_nonneg E β hsum i)
+        (purePointGibbsProbability_nonneg E β i)
         (purePointGibbsProbability_le_one E β hsum i))]
 
 /-- A countable pure-point Gibbs state with absolutely integrable energy has finite von Neumann
