@@ -113,54 +113,22 @@ theorem finiteContinuousOperator_apply_apply
         finiteContinuousOperator_basis_apply]
       exact Finset.sum_congr rfl fun n _ => mul_comm _ _
 
-/-- Continuous finite operators are continuously equivalent to their columns on the standard
-coordinate basis. -/
-noncomputable def finiteContinuousOperatorColumns :
-    FiniteContinuousOperator Config ≃L[ℂ] Config → FiniteAnalyticFock Config := by
-  classical
-  exact ContinuousLinearEquiv.piRing (𝕜 := ℂ) (E := FiniteAnalyticFock Config) Config
-
-set_option linter.unusedFintypeInType false in
-@[simp]
-theorem finiteContinuousOperatorColumns_apply
-    (A : FiniteContinuousOperator Config) (n : Config) :
-    finiteContinuousOperatorColumns A n = A (finiteAnalyticBasis n) := by
-  classical
-  simp [finiteContinuousOperatorColumns, finiteAnalyticBasis,
-    ContinuousLinearEquiv.piRing, LinearEquiv.piRing_apply]
-
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
     (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hF : ∀ m n : Config, Continuous (fun τ : ℝ => matrixCoeff (F τ) m n)) :
     Continuous (fun τ : ℝ => finiteContinuousOperatorAlgEquiv (F τ)) := by
   classical
-  have hcolumns : Continuous (fun τ : ℝ =>
-      finiteContinuousOperatorColumns (finiteContinuousOperatorAlgEquiv (F τ))) := by
-    apply continuous_pi
-    intro n
-    apply continuous_pi
-    intro m
-    simpa only [finiteContinuousOperatorColumns_apply, finiteContinuousOperator_basis_apply]
-      using hF m n
-  exact (finiteContinuousOperatorColumns.symm.continuous.comp hcolumns).congr fun τ =>
-    finiteContinuousOperatorColumns.symm_apply_apply _
-
-/-- Coordinate evaluation on the analytic finite-dimensional realization. -/
-noncomputable def finiteAnalyticCoordinate (m : Config) : FiniteAnalyticFock Config →L[ℂ] ℂ :=
-  ({
-    toFun := fun x => x m
-    map_add' := fun _ _ => rfl
-    map_smul' := fun _ _ => rfl
-  } : FiniteAnalyticFock Config →ₗ[ℂ] ℂ).toContinuousLinearMap
-
-@[simp]
-theorem finiteAnalyticCoordinate_apply (m : Config) (x : FiniteAnalyticFock Config) :
-    finiteAnalyticCoordinate m x = x m := rfl
+  rw [continuous_clm_apply]
+  intro x
+  apply continuous_pi
+  intro m
+  simpa only [finiteContinuousOperator_apply_apply] using
+    continuous_finsetSum Finset.univ fun n _ => (hF m n).mul continuous_const
 
 /-- Compatibility on each analytic basis vector between the coefficientwise algebraic integral and
 Mathlib's Bochner interval integral of transported continuous operators. -/
-theorem continuousOperatorIntervalIntegral_basis
+private theorem continuousOperatorIntervalIntegral_basis
     (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hF : ∀ m n : Config, Continuous (fun τ : ℝ => matrixCoeff (F τ) m n))
     (a b : ℝ) (n : Config) :
@@ -181,9 +149,10 @@ theorem continuousOperatorIntervalIntegral_basis
       (fun τ : ℝ => finiteContinuousOperatorAlgEquiv (F τ) (finiteAnalyticBasis n))
       MeasureTheory.volume a b := hvecCont.intervalIntegrable a b
   change (∫ τ in a..b, matrixCoeff (F τ) m n) =
-    finiteAnalyticCoordinate m
+    (ContinuousLinearMap.proj m : FiniteAnalyticFock Config →L[ℂ] ℂ)
       (∫ τ in a..b, finiteContinuousOperatorAlgEquiv (F τ) (finiteAnalyticBasis n))
-  rw [← (finiteAnalyticCoordinate m).intervalIntegral_comp_comm hvecInt]
+  rw [← (ContinuousLinearMap.proj m : FiniteAnalyticFock Config →L[ℂ] ℂ).intervalIntegral_comp_comm
+    hvecInt]
   exact intervalIntegral.integral_congr fun τ _ => by
     simpa using (finiteContinuousOperator_basis_apply (F τ) m n).symm
 

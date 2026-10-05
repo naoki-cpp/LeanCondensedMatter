@@ -18,27 +18,12 @@ namespace Common
 
 noncomputable section
 
-variable {Config : Type*}
-
-/-- The algebraic basis-diagonal Hamiltonian with eigenvalue `energy c` on `basisState c`. -/
-noncomputable def diagonalHamiltonian (energy : Config → ℝ) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  Finsupp.lift (AlgebraicFock Config) ℂ Config
-    (fun c => (energy c : ℂ) • basisState c)
-
-@[simp]
-theorem diagonalHamiltonian_basisState (energy : Config → ℝ) (c : Config) :
-    diagonalHamiltonian energy (basisState c) =
-      (energy c : ℂ) • basisState c := by
-  change Finsupp.lift _ ℂ _ _ (Finsupp.single c 1) = _
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
-
-variable [Fintype Config]
+variable {Config : Type*} [Fintype Config]
 
 /-- The continuous realization of the basis-diagonal free Hamiltonian. -/
 noncomputable def continuousDiagonalHamiltonian (energy : Config → ℝ) :
     FiniteContinuousOperator Config :=
-  finiteContinuousOperatorAlgEquiv (diagonalHamiltonian energy)
+  finiteContinuousOperatorAlgEquiv (diagonalOperator fun c => (energy c : ℂ))
 
 @[simp]
 theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ) (c : Config) :
@@ -47,11 +32,11 @@ theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ) (c :
   calc
     continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) =
         finiteAnalyticFockEquiv
-          (diagonalHamiltonian energy (basisState c)) := by
+          (diagonalOperator (fun c => (energy c : ℂ)) (basisState c)) := by
       rw [continuousDiagonalHamiltonian, ← finiteAnalyticFockEquiv_basisState,
         finiteContinuousOperator_equiv_apply]
     _ = (energy c : ℂ) • finiteAnalyticBasis c := by
-      rw [diagonalHamiltonian_basisState, map_smul, finiteAnalyticFockEquiv_basisState]
+      rw [diagonalOperator_basisState, map_smul, finiteAnalyticFockEquiv_basisState]
 
 private theorem smul_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) :

@@ -18,23 +18,18 @@ noncomputable section
 
 variable {Config : Type*} [Fintype Config]
 
-/-- The `(m,n)` matrix coefficient of a finite continuous operator, bundled as a continuous linear
-functional of the operator. -/
-noncomputable def finiteOperatorMatrixCoeff (m n : Config) :
-    FiniteContinuousOperator Config →L[ℂ] ℂ :=
-  (finiteAnalyticCoordinate m).comp
-    (ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis n))
-
 /-- The ordinary finite-dimensional trace, bundled as a continuous linear functional on the
 continuous-operator algebra. -/
 noncomputable def finiteOperatorTrace :
     FiniteContinuousOperator Config →L[ℂ] ℂ :=
-  ∑ n : Config, finiteOperatorMatrixCoeff n n
+  ∑ n : Config,
+    (ContinuousLinearMap.proj n : FiniteAnalyticFock Config →L[ℂ] ℂ).comp
+      (ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis n))
 
 @[simp]
 theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
     finiteOperatorTrace A = ∑ n : Config, A (finiteAnalyticBasis n) n := by
-  simp [finiteOperatorTrace, finiteOperatorMatrixCoeff]
+  simp [finiteOperatorTrace]
 
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
 theorem finiteOperatorTrace_finiteContinuousOperator
