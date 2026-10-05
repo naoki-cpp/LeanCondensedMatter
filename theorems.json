@@ -16024,7 +16024,6 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one"
     ],
     "dependencies": [
@@ -16038,10 +16037,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18957,7 +18955,7 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.orthonormal_eigenvectorFamilyInClosure",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues"
     ],
     "dependencies": [
       "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero"
@@ -18977,7 +18975,7 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.orthonormal_eigenvectorFamilyInClosure",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues"
     ],
     "compiledConsumerCount": 13,
     "axioms": [
@@ -19593,7 +19591,7 @@
       "Dyson.eqOn_evolution_of_volterra_of_bound",
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "Dyson.hasSum_intervalIntegral_integrand_of_bound",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -19603,7 +19601,7 @@
       "Dyson.eqOn_evolution_of_volterra_of_bound",
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "Dyson.hasSum_intervalIntegral_integrand_of_bound",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -20090,7 +20088,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.evolution_const_eq_exp_of_nonneg",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
     ],
     "dependencies": [
       "Dyson.BoundedInteraction.interaction_norm_le",
@@ -20104,7 +20102,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.evolution_const_eq_exp_of_nonneg",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -20164,7 +20162,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {A : Type u_1} [inst : NormedRing A] [inst_1 : NormedAlgebra ℂ A] [CompleteSpace A] (K : A) (lam : ℂ) {τ : ℝ},\n  0 ≤ τ → ‖1‖ ≤ 1 → Dyson.evolution (fun x => K) lam τ = NormedSpace.exp (-((τ • lam) • K))",
     "standardAxioms": [
       "Classical.choice",
@@ -20172,7 +20170,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -20183,9 +20181,7 @@
     "docString": "On nonnegative time, the Dyson evolution for a constant interaction is the corresponding\nBanach-algebra exponential. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exp_of_time_independent"
-    ],
+    "dependents": [],
     "dependencies": [
       "Dyson.constantExponential_eq_one_sub_integral",
       "Dyson.continuous_constantExponential",
@@ -20193,10 +20189,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exp_of_time_independent"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20418,15 +20412,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -20648,7 +20642,7 @@
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "Dyson.hasSum_integrand_of_bound",
       "Dyson.norm_evolution_sub_one_add_term_one_le_of_bound",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "dependencies": [
       "Dyson.summable_term_of_bound"
@@ -20659,7 +20653,7 @@
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "Dyson.hasSum_integrand_of_bound",
       "Dyson.norm_evolution_sub_one_add_term_one_le_of_bound",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -43142,7 +43136,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.ext_iff",
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.evolveDensityOperator_pure",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
@@ -43154,14 +43147,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.ext_iff",
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.evolveDensityOperator_pure",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "QuantumTheory.pure_smul_of_norm_eq_one"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -43839,51 +43831,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (K : H →L[ℂ] H) (hpos : K.IsPositive) (htrace : K.IsTraceClass)\n  (hne : K ≠ 0) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (happly : ∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i),\n  QuantumTheory.DensityOperator.normalizePositive K hpos htrace hne =\n    QuantumTheory.purePointGibbsDensityOperator b E β ⋯",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
-    "externalAxioms": [],
-    "docString": "A positive nonzero trace-class heat operator with pure-point Boltzmann basis action normalizes\nto the existing pure-point Gibbs density operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.ext",
-      "QuantumTheory.DensityOperator.normalizePositive_op",
-      "QuantumTheory.heatTrace_eq_purePointPartitionFunction_of_basis_action",
-      "QuantumTheory.isTraceClass_iff_purePointGibbsSummable_of_basis_action",
-      "QuantumTheory.purePointGibbsDensityOperator_apply_basis"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (T : H →L[ℂ] H) (hpos : T.IsPositive) (htrace : T.IsTraceClass) (hne : T ≠ 0),\n  (QuantumTheory.DensityOperator.normalizePositive T hpos htrace hne).op = T.spectralTrace⁻¹ • T",
     "standardAxioms": [
@@ -43892,7 +43839,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -43904,17 +43851,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.gibbsState_op"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.gibbsState_op"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45123,7 +45068,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -45135,17 +45080,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm"
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm"
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45326,6 +45269,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {system : QuantumTheory.LinearResponse.BoundedFreeSystem H} {ι : Type u_2}\n  (self : QuantumTheory.LinearResponse.PurePointLehmannData system ι), HasSum self.probability 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_tsum_pos"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_tsum_pos"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {system : QuantumTheory.LinearResponse.BoundedFreeSystem H} {ι : Type u_2}\n  (self : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (i : ι), 0 ≤ self.probability i",
     "standardAxioms": [
       "Classical.choice",
@@ -45345,102 +45334,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm"
+      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.purePointDensityOperator",
-      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {system : QuantumTheory.LinearResponse.BoundedFreeSystem H} {ι : Type u_2}\n  (self : QuantumTheory.LinearResponse.PurePointLehmannData system ι), Summable self.probability",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.PurePointLehmannData.probability_summable",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {system : QuantumTheory.LinearResponse.BoundedFreeSystem H} {ι : Type u_2}\n  (self : QuantumTheory.LinearResponse.PurePointLehmannData system ι), ∑' (i : ι), self.probability i = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.PurePointLehmannData.probability_tsum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_tsum_pos"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_tsum_pos"
+      "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -51669,8 +51570,8 @@
       "QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum",
       "QuantumTheory.LinearResponse.PurePointLehmannData.probability_nonneg",
-      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_tsum",
       "QuantumTheory.diagonalDensityOperator_apply_basis",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_summable_norm",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics.0.QuantumTheory.LinearResponse.purePointProbability_tsum_pos"
@@ -51833,7 +51734,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [Finite ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointLehmannSummable system data A B",
     "standardAxioms": [
       "Classical.choice",
@@ -51841,7 +51742,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -51852,16 +51753,12 @@
     "docString": "In finite dimension, the absolute transition-weight condition is automatic. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.purePointTimeDomainSummable_of_finite"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.purePointTimeDomainSummable_of_finite"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51956,9 +51853,7 @@
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_purePoint_eq_finite_sum_of_nonneg"
     ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.purePointLehmannSummable_of_finite"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -53290,46 +53185,6 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ),\n  QuantumTheory.LinearResponse.PurePointTimeDomainSummable system data A B →\n    Summable (QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain",
-    "externalAxioms": [],
-    "docString": "Absolute summability of the physical weights is preserved by the unit transition phase. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88981,7 +88836,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ), IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) → FiniteDimensional ℂ H",
     "standardAxioms": [
       "Classical.choice",
@@ -88991,8 +88846,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.State",
@@ -89000,22 +88855,14 @@
     "docString": "For bounded Hamiltonians, compactness of the Gibbs operator forces finite dimension. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
-      "QuantumTheory.vonNeumannEntropy_gibbsState",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
-    ],
+    "dependents": [],
     "dependencies": [
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.coe_gibbsOpUnit"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
-      "QuantumTheory.vonNeumannEntropy_gibbsState",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89283,7 +89130,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -89299,7 +89146,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -89363,7 +89210,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ),\n  IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) →\n    ∀ {ι : Type u_2} {d : ι → H},\n      Orthonormal ℂ d →\n        ∑' (i : ι), (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (d i) =\n            (QuantumTheory.gibbsOp Hop β).spectralTrace →\n          (Submodule.span ℂ (Set.range d))ᗮ = ⊥",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ) {ι : Type u_2} {d : ι → H},\n  Orthonormal ℂ d →\n    ∑' (i : ι), (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (d i) =\n        (QuantumTheory.gibbsOp Hop β).spectralTrace →\n      (Submodule.span ℂ (Set.range d))ᗮ = ⊥",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89413,7 +89260,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ),\n  IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) → (QuantumTheory.gibbsOp Hop β).SpectralTraceClass",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ), (QuantumTheory.gibbsOp Hop β).SpectralTraceClass",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89428,7 +89275,7 @@
     "name": "QuantumTheory.gibbsOp_spectralTraceClass",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.State",
     "externalAxioms": [],
-    "docString": "A compact Gibbs operator carries the canonical positive spectral-trace-class data. ",
+    "docString": "In finite dimension, the Gibbs operator carries canonical positive spectral-trace-class data. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -89440,7 +89287,7 @@
     "dependencies": [
       "ContinuousLinearMap.SpectralTraceClass.ofPositive",
       "QuantumTheory.gibbsOp_isPositive",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -89465,7 +89312,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] (Hop : QuantumTheory.Observable H) (β : ℝ)\n  (hcompact : IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β)) {v : H} {E : ℝ},\n  ↑↑Hop v = ↑E • v →\n    (QuantumTheory.gibbsState Hop β hcompact).op v =\n      ((QuantumTheory.gibbsOp Hop β).spectralTrace⁻¹ • ↑(Real.exp (-β * E))) • v",
+    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] [inst_4 : FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ) {v : H} {E : ℝ},\n  ↑↑Hop v = ↑E • v →\n    (QuantumTheory.gibbsState Hop β).op v = ((QuantumTheory.gibbsOp Hop β).spectralTrace⁻¹ • ↑(Real.exp (-β * E))) • v",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89512,7 +89359,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  β ≠ 0 →\n    ∀ (hcompact : IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β)),\n      QuantumTheory.energyExpValue (QuantumTheory.gibbsState Hop β hcompact) Hop -\n          1 / β * (QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β hcompact)).toReal =\n        -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] [inst_4 : FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  β ≠ 0 →\n    QuantumTheory.energyExpValue (QuantumTheory.gibbsState Hop β) Hop -\n        1 / β * (QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β)).toReal =\n      -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89558,7 +89405,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H) (β : ℝ),\n  0 < β →\n    ∀ (hcompact : IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β)),\n      QuantumTheory.energyExpValue (QuantumTheory.gibbsState Hop β hcompact) Hop -\n          1 / β * (QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β hcompact)).toReal ≤\n        QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] [inst_4 : FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H)\n  (Hop : QuantumTheory.Observable H) (β : ℝ),\n  0 < β →\n    QuantumTheory.energyExpValue (QuantumTheory.gibbsState Hop β) Hop -\n        1 / β * (QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β)).toReal ≤\n      QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89599,7 +89446,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] (Hop : QuantumTheory.Observable H) (β : ℝ)\n  (hcompact : IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β)),\n  (QuantumTheory.gibbsState Hop β hcompact).op =\n    (QuantumTheory.gibbsOp Hop β).spectralTrace⁻¹ • QuantumTheory.gibbsOp Hop β",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] [inst_4 : FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  (QuantumTheory.gibbsState Hop β).op = (QuantumTheory.gibbsOp Hop β).spectralTrace⁻¹ • QuantumTheory.gibbsOp Hop β",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89980,7 +89827,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (htrace : K.IsTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    htrace.trace = ↑(QuantumTheory.purePointPartitionFunction E β)",
     "standardAxioms": [
       "Classical.choice",
@@ -89988,7 +89835,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -89999,18 +89846,14 @@
     "docString": "If supplied trace-class heat data act diagonally by the Boltzmann weights, their canonical\ncomplex trace is the pure-point partition function embedded in `ℂ`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90025,7 +89868,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [Nontrivial H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H) (β : ℝ),\n  β ≠ 0 →\n    IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) →\n      QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal =\n          -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace →\n        ∑' (a : ρ.op.EigenvectorIndex),\n              (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a) =\n            (QuantumTheory.gibbsOp Hop β).spectralTrace ∧\n          (∀ (a : ρ.op.EigenvectorIndex),\n              ↑a.fst =\n                (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a) /\n                  (QuantumTheory.gibbsOp Hop β).spectralTrace) ∧\n            ∀ (a : ρ.op.EigenvectorIndex),\n              Real.exp (-β * (↑Hop).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a)) =\n                (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [Nontrivial H] [FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H)\n  (β : ℝ),\n  β ≠ 0 →\n    QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal =\n        -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace →\n      ∑' (a : ρ.op.EigenvectorIndex),\n            (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a) =\n          (QuantumTheory.gibbsOp Hop β).spectralTrace ∧\n        (∀ (a : ρ.op.EigenvectorIndex),\n            ↑a.fst =\n              (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a) /\n                (QuantumTheory.gibbsOp Hop β).spectralTrace) ∧\n          ∀ (a : ρ.op.EigenvectorIndex),\n            Real.exp (-β * (↑Hop).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a)) =\n              (QuantumTheory.gibbsOp Hop β).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90090,7 +89933,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H) (β : ℝ),\n  β ≠ 0 →\n    ∀ (hcompact : IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β)),\n      QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal =\n          -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace ↔\n        ρ = QuantumTheory.gibbsState Hop β hcompact",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] [inst_4 : FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H)\n  (Hop : QuantumTheory.Observable H) (β : ℝ),\n  β ≠ 0 →\n    (QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal =\n        -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace ↔\n      ρ = QuantumTheory.gibbsState Hop β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90119,7 +89962,6 @@
       "QuantumTheory.DensityOperator.isSymmetric",
       "QuantumTheory.DensityOperator.spectralTraceClass",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
-      "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
       "QuantumTheory.gibbsOp_isPositive",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
       "QuantumTheory.gibbsState_apply_eigenvector",
@@ -90146,7 +89988,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [Nontrivial H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H) (β : ℝ),\n  0 < β →\n    IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) →\n      QuantumTheory.vonNeumannEntropy ρ ≠ ⊤ ∧\n        -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace ≤\n          QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [Nontrivial H] [FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H)\n  (β : ℝ),\n  0 < β →\n    QuantumTheory.vonNeumannEntropy ρ ≠ ⊤ ∧\n      -(1 / β) * Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace ≤\n        QuantumTheory.energyExpValue ρ Hop - 1 / β * (QuantumTheory.vonNeumannEntropy ρ).toReal",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90192,6 +90034,46 @@
       "QuantumTheory.gibbsState_minimizes_helmholtzFreeEnergy"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable E β),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    (↑(QuantumTheory.purePointPartitionFunction E β))⁻¹ • K =\n      (QuantumTheory.purePointGibbsDensityOperator b E β hsum).op",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
+    "externalAxioms": [],
+    "docString": "Pure-point Boltzmann heat data normalize directly to the canonical Gibbs density\noperator at the operator level. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.purePointGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90338,7 +90220,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    (K.IsTraceClass ↔ QuantumTheory.PurePointGibbsSummable E β)",
     "standardAxioms": [
       "Classical.choice",
@@ -90346,7 +90228,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90357,9 +90239,7 @@
     "docString": "For heat data diagonalized by the Boltzmann weights, trace-classness is exactly\nfiniteness of the pure-point partition sum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
-    ],
+    "dependents": [],
     "dependencies": [
       "HilbertBasis.diagonalOp_apply_basis",
       "HilbertBasis.diagonalOp_isTraceClass",
@@ -90368,10 +90248,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90995,9 +90873,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.energyExpValue_purePointGibbsDensityOperator_eq_tsum",
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
+      "QuantumTheory.inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
     ],
@@ -91009,9 +90887,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.energyExpValue_purePointGibbsDensityOperator_eq_tsum",
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
+      "QuantumTheory.inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
     ],
@@ -91880,7 +91758,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [Nontrivial H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) → 0 < (QuantumTheory.gibbsOp Hop β).spectralTrace",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [Nontrivial H] [FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  0 < (QuantumTheory.gibbsOp Hop β).spectralTrace",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91895,7 +91773,7 @@
     "name": "QuantumTheory.spectralTrace_gibbsOp_pos",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
     "externalAxioms": [],
-    "docString": "The spectral trace of a compact Gibbs operator is strictly positive. ",
+    "docString": "The spectral trace of a finite-dimensional Gibbs operator is strictly positive. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -92214,7 +92092,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] (Hop : QuantumTheory.Observable H) (β : ℝ)\n  (hcompact : IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β)),\n  QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β hcompact) ≠ ⊤ ∧\n    (QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β hcompact)).toReal =\n      β * QuantumTheory.energyExpValue (QuantumTheory.gibbsState Hop β hcompact) Hop +\n        Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : Nontrivial H] [inst_4 : FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β) ≠ ⊤ ∧\n    (QuantumTheory.vonNeumannEntropy (QuantumTheory.gibbsState Hop β)).toReal =\n      β * QuantumTheory.energyExpValue (QuantumTheory.gibbsState Hop β) Hop +\n        Real.log (QuantumTheory.gibbsOp Hop β).spectralTrace",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92236,7 +92114,6 @@
       "QuantumTheory.gibbsState_helmholtzFreeEnergy_eq"
     ],
     "dependencies": [
-      "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
       "QuantumTheory.gibbsState_apply_eigenvector",
       "QuantumTheory.gibbsState_op",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
@@ -108623,96 +108500,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  SecondQuantization.Common.analyticDysonEvolution energy V τ lam =\n    Dyson.evolution (SecondQuantization.Common.continuousInteractionPicture energy V) lam τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
-    "externalAxioms": [],
-    "docString": "The finite analytic evolution is the generic Dyson evolution specialized to the continuous\ninteraction-picture family. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exp_of_time_independent",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.analyticDysonTerm_eq_term"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exp_of_time_independent",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (τ : ℝ), SecondQuantization.Common.interactionPicture energy V τ = V) →\n    ∀ {τ : ℝ},\n      0 ≤ τ →\n        ∀ (lam : ℂ),\n          SecondQuantization.Common.analyticDysonEvolution energy V τ lam =\n            NormedSpace.exp ((-↑τ * lam) • SecondQuantization.Common.finiteContinuousOperatorAlgEquiv V)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonEvolution_eq_exp_of_time_independent",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent",
-    "externalAxioms": [],
-    "docString": "If the interaction picture is time-independent, the analytic Dyson sum is the ordinary\noperator exponential of `-τ λ V`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Dyson.evolution_const_eq_exp_of_nonneg",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β →\n    τ ∈ Set.Icc 0 β →\n      ∀ (lam : ℂ),\n        SecondQuantization.Common.analyticDysonEvolution energy V τ lam =\n          SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n      (lam : ℂ),\n      SecondQuantization.Common.analyticDysonPartitionFunction energy β V lam =\n        SecondQuantization.Common.finiteOperatorTrace\n          (SecondQuantization.Common.continuousDiagonalEvolution energy (-β) ∘SL\n            Dyson.evolution (SecondQuantization.Common.continuousInteractionPicture energy V) lam β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108724,27 +108512,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
+    "name": "SecondQuantization.Common.analyticDysonPartitionFunction_eq_trace_dysonEvolution",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
     "externalAxioms": [],
-    "docString": "On every compact nonnegative time interval, the analytic Dyson sum equals the exact ordered\noperator-exponential candidate. ",
+    "docString": "The analytic partition function is the thermal trace of the interaction-picture Dyson\noperator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_ordered_exp"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction"
     ],
     "dependencies": [
-      "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "Dyson.exists_continuousBoundedInteraction",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture",
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_ordered_exp"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -108761,124 +108544,38 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {τ : ℝ},\n  0 ≤ τ →\n    ∀ (lam : ℂ),\n      SecondQuantization.Common.analyticDysonEvolution energy V τ lam =\n        NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n          NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n      SecondQuantization.Common.analyticDysonPartitionFunction energy β V 0 =\n        ↑(QuantumTheory.purePointPartitionFunction energy β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonEvolution_eq_ordered_exp",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
-    "externalAxioms": [],
-    "docString": "For nonnegative imaginary time, the analytic Dyson evolution is the ordered product of the\nfree and interacting operator exponentials. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (lam : ℂ),\n  SecondQuantization.Common.analyticDysonExponentialCandidate energy V 0 lam = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonExponentialCandidate_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
+    "name": "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "At zero coupling, the analytic partition function is the canonical finite pure-point partition\nfunction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ) (n : ℕ),\n  SecondQuantization.Common.analyticDysonTerm energy V τ lam n =\n    Dyson.term (SecondQuantization.Common.continuousInteractionPicture energy V) lam τ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.analyticDysonTerm_eq_term",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
-    "externalAxioms": [],
-    "docString": "The finite weighted coefficient is the generic Dyson term specialized to the continuous\ninteraction-picture family. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff"
+      "SecondQuantization.Common.coe_purePointPartitionFunction_eq_sum_boltzmannWeight",
+      "SecondQuantization.Common.dysonTraceCoeff_zero",
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109121,6 +108818,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction"
@@ -109131,11 +108829,54 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β : ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ),\n  (SecondQuantization.Common.dysonTraceFPowerSeries energy β V).coeff n =\n    SecondQuantization.Common.dysonTraceCoeff energy β V n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.coeff_dysonTraceFPowerSeries",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110616,7 +110357,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
@@ -110629,7 +110370,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_basisState",
@@ -110639,7 +110380,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -110696,56 +110437,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ),\n  SecondQuantization.Common.continuousDiagonalEvolution energy τ =\n    NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-    "externalAxioms": [],
-    "docString": "The continuous free evolution is the Banach-algebra exponential of the diagonal\nHamiltonian. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp",
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
-      "SecondQuantization.Common.finiteContinuousOperator_ext_basis",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp",
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ),\n  SecondQuantization.Common.continuousDiagonalEvolution energy (-τ) ∘SL\n      SecondQuantization.Common.continuousDiagonalEvolution energy τ =\n    1",
     "standardAxioms": [
       "Classical.choice",
@@ -110765,8 +110456,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate"
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate"
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_neg_comp"
@@ -110774,8 +110465,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate"
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -110792,7 +110483,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β : ℝ},\n  0 ≤ β →\n    ∀ (lam : ℂ),\n      SecondQuantization.Common.continuousDiagonalEvolution energy (-β) *\n          SecondQuantization.Common.analyticDysonEvolution energy V β lam =\n        NormedSpace.exp (-β • SecondQuantization.Common.continuousInteractingHamiltonian energy V lam)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β : ℝ},\n  0 ≤ β →\n    ∀ (lam : ℂ),\n      SecondQuantization.Common.continuousDiagonalEvolution energy (-β) *\n          Dyson.evolution (SecondQuantization.Common.continuousInteractionPicture energy V) lam β =\n        NormedSpace.exp (-β • SecondQuantization.Common.continuousInteractingHamiltonian energy V lam)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110804,24 +110495,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
+    "name": "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
     "externalAxioms": [],
     "docString": "At the thermal endpoint, left multiplication by the inverse free evolution leaves the\ninteracting Gibbs exponential. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution"
+      "SecondQuantization.Common.analyticDysonPartitionFunction_eq_trace_dysonEvolution"
     ],
     "dependencies": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_ordered_exp",
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp"
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp",
+      "SecondQuantization.Common.dysonEvolution_eq_ordered_exp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution"
+      "SecondQuantization.Common.analyticDysonPartitionFunction_eq_trace_dysonEvolution"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -110937,7 +110628,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.analyticDysonTerm_eq_term"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "dependencies": [
       "Dyson.coeff_succ",
@@ -110947,7 +110638,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonTerm_eq_term"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -111068,7 +110759,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate"
     ],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_eq_comp"
@@ -111076,7 +110767,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -111297,9 +110988,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonExponentialCandidate_eq_one_sub_integral"
     ],
     "dependencies": [
       "SecondQuantization.Common.continuous_finiteContinuousOperator",
@@ -111308,9 +110999,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonExponentialCandidate_eq_one_sub_integral"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -112146,7 +111837,7 @@
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock.0.SecondQuantization.Common.diagonalOperatorLinear_basisState"
@@ -112163,7 +111854,7 @@
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "compiledConsumerCount": 10,
     "axioms": [
@@ -112367,7 +112058,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
     "externalAxioms": [],
     "docString": "In the time-independent case, each algebraic Dyson coefficient is the corresponding ordinary\nexponential-series coefficient. ",
     "directWrapperTargetModule": null,
@@ -112669,7 +112360,6 @@
       "SecondQuantization.Common.dysonCoeff_one",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
-      "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
@@ -112689,11 +112379,54 @@
       "SecondQuantization.Common.dysonCoeff_one",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
-      "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable.0.SecondQuantization.Bosonic.matrixCoeff_dysonCoeff_one_self",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {τ : ℝ},\n  0 ≤ τ →\n    ∀ (lam : ℂ),\n      Dyson.evolution (SecondQuantization.Common.continuousInteractionPicture energy V) lam τ =\n        NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n          NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.dysonEvolution_eq_ordered_exp",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "For nonnegative imaginary time, the interaction-picture Dyson evolution is the ordered product\nof the free and interacting operator exponentials. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112755,7 +112488,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112767,6 +112500,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Common.constantCoeff_dysonTraceSeries"
     ],
     "dependencies": [
@@ -112776,9 +112510,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Common.constantCoeff_dysonTraceSeries"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113485,7 +113220,7 @@
     "dependents": [
       "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
       "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -113493,7 +113228,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
       "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -113582,7 +113317,7 @@
     "dependents": [
       "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
       "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -113590,7 +113325,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
       "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -113626,15 +113361,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
+      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
+      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -113946,7 +113681,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ),\n  SecondQuantization.Common.finiteGibbsExpectation energy β LinearMap.id = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -113954,7 +113689,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113965,18 +113700,14 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.normalizedDysonTraceCoeff_zero"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_id"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.normalizedDysonTraceCoeff_zero"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114540,7 +114271,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -114552,15 +114283,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator"
+      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator"
+      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114721,40 +114454,36 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  HasDerivAt (fun σ => SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam)\n    (-(lam •\n        (SecondQuantization.Common.continuousInteractionPicture energy V τ *\n          SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam)))\n    τ",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n      HasFPowerSeriesAt (SecondQuantization.Common.analyticDysonPartitionFunction energy β V)\n        (SecondQuantization.Common.dysonTraceFPowerSeries energy β V) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
+    "name": "SecondQuantization.Common.hasFPowerSeriesAt_analyticDysonPartitionFunction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
     "externalAxioms": [],
-    "docString": "The exact candidate solves the same interaction-picture differential equation as the Dyson\nseries. ",
+    "docString": "Taylor-series packaging at zero for downstream analytic logarithms. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
     ],
     "dependencies": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_raw"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasFPowerSeriesOnBall_analyticDysonPartitionFunction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114894,7 +114623,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β →\n    τ ∈ Set.Icc 0 β →\n      ∀ (lam : ℂ),\n        HasSum (SecondQuantization.Common.analyticDysonTerm energy V τ lam)\n          (SecondQuantization.Common.analyticDysonEvolution energy V τ lam)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n      (lam : ℂ),\n      HasSum (fun n => lam ^ n * SecondQuantization.Common.dysonTraceCoeff energy β V n)\n        (SecondQuantization.Common.finiteOperatorTrace\n          (SecondQuantization.Common.continuousDiagonalEvolution energy (-β) ∘SL\n            Dyson.evolution (SecondQuantization.Common.continuousInteractionPicture energy V) lam β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114906,27 +114635,28 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.hasSum_analyticDysonEvolution",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
+    "name": "SecondQuantization.Common.hasSum_dysonTraceCoeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
     "externalAxioms": [],
-    "docString": "The defining operator series has sum `analyticDysonEvolution`. ",
+    "docString": "The scalar Dyson trace series converges to the trace of the free evolution composed with the\ninteraction-picture Dyson evolution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction"
     ],
     "dependencies": [
       "Dyson.ContinuousBoundedInteraction.toBoundedInteraction",
       "Dyson.exists_continuousBoundedInteraction",
       "Dyson.hasSum_evolution_of_bound",
-      "SecondQuantization.Common.analyticDysonEvolution_eq_evolution",
-      "SecondQuantization.Common.analyticDysonTerm_eq_term",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture"
+      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff",
+      "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "SecondQuantization.Common.finiteOperatorTrace_apply",
+      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -114943,37 +114673,41 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n      (lam : ℂ),\n      HasSum (fun n => lam ^ n * SecondQuantization.Common.dysonTraceCoeff energy β V n)\n        (SecondQuantization.Common.finiteOperatorTrace\n          (SecondQuantization.Common.continuousDiagonalEvolution energy (-β) ∘SL\n            SecondQuantization.Common.analyticDysonEvolution energy V β lam))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n      (lam : ℂ),\n      HasSum (fun n => lam ^ n * SecondQuantization.Common.dysonTraceCoeff energy β V n)\n        (SecondQuantization.Common.analyticDysonPartitionFunction energy β V lam)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.hasSum_dysonTraceCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
+    "name": "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
     "externalAxioms": [],
-    "docString": "The scalar Dyson trace series converges to the trace of the free evolution composed with the\nanalytic Dyson evolution. ",
+    "docString": "The Common Dyson trace coefficients sum to the interacting partition function. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff"
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasFPowerSeriesOnBall_analyticDysonPartitionFunction",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.radius_dysonTraceFPowerSeries_eq_top"
     ],
     "dependencies": [
-      "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
-      "SecondQuantization.Common.hasSum_analyticDysonEvolution"
+      "SecondQuantization.Common.analyticDysonPartitionFunction_eq_trace_dysonEvolution",
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff"
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasFPowerSeriesOnBall_analyticDysonPartitionFunction",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.radius_dysonTraceFPowerSeries_eq_top"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117995,47 +117729,6 @@
       "SecondQuantization.Common.dist_completedCoordinateProjection_le"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.normalizedDysonTraceCoeff energy β V 0 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.normalizedDysonTraceCoeff_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
-    "externalAxioms": [],
-    "docString": "The normalized zeroth Dyson coefficient is one by density-state normalization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_zero",
-      "SecondQuantization.Common.finiteGibbsExpectation_id"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134536,184 +134229,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      AnalyticAt ℂ (SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.analyticAt_analyticDysonPartitionFunction_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The interacting finite-dimensional partition function is analytic at zero coupling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (lam : ℂ),\n      SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V lam =\n        SecondQuantization.Common.finiteOperatorTrace\n          (SecondQuantization.Common.continuousDiagonalEvolution (SecondQuantization.Fermionic.fermionEnergy ε) (-β) ∘SL\n            SecondQuantization.Common.analyticDysonEvolution (SecondQuantization.Fermionic.fermionEnergy ε) V β lam)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The analytic partition function is the thermal trace of the interaction-picture Dyson\noperator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      ∀ᶠ (lam : ℂ) in nhds 0, SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V lam ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The analytic partition function remains nonzero in a neighborhood of zero coupling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.analyticAt_analyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V 0 =\n        SecondQuantization.Fermionic.freePartitionFunction ε β",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "At zero coupling, the analytic partition function is the free partition function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
-      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.dysonPartitionCoeff_eq_dysonTraceCoeff",
-      "SecondQuantization.Fermionic.dysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
-      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V 0 = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -135775,92 +135290,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  (SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V).coeff n =\n    SecondQuantization.Common.dysonTraceCoeff (SecondQuantization.Fermionic.fermionEnergy ε) β V n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  (SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V).coeff n =\n    (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonPartitionSeries ε β V)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The formal `PowerSeries` coefficient and analytic formal-multilinear coefficient agree. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries",
-      "SecondQuantization.Fermionic.coeff_dysonPartitionSeries",
-      "SecondQuantization.Fermionic.dysonPartitionCoeff_eq_dysonTraceCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonPartitionSeries ε β V) =\n    SecondQuantization.Fermionic.dysonPartitionCoeff ε β V n",
     "standardAxioms": [
       "Classical.choice",
@@ -135880,7 +135309,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.dysonPartitionCoeff_zero"
     ],
@@ -135891,11 +135319,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.dysonPartitionCoeff_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137056,7 +136483,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (S : Finset Mode)\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n) •\n      SecondQuantization.Fermionic.completedBasisState n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n) •\n      SecondQuantization.Fermionic.completedBasisState n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137104,7 +136531,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (S : Finset Mode)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A =\n    ↑(SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β S) *\n      SecondQuantization.Fermionic.completedFreeModeRetainedExpectation ε β S A",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (S : Finset Mode)\n      (A :\n        ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n          ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n      (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A =\n        ↑(SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β S) *\n          SecondQuantization.Fermionic.completedFreeModeRetainedExpectation ε β S A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137150,7 +136577,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (S : Finset Mode)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A =\n    ∑' (n : SecondQuantization.Fermionic.Occupation Mode),\n      ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n) *\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          (A (SecondQuantization.Fermionic.completedBasisState n))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A =\n    ∑' (n : SecondQuantization.Fermionic.Occupation Mode),\n      ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n) *\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          (A (SecondQuantization.Fermionic.completedBasisState n))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137242,7 +136669,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (S : Finset Mode), 0 < SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction ε β S",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode),\n  0 < SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction ε β S",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138474,8 +137901,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
       "SecondQuantization.Fermionic.coeff_dysonPartitionSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
     ],
@@ -138483,12 +137908,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries",
       "SecondQuantization.Fermionic.coeff_dysonPartitionSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138510,7 +137933,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -138522,7 +137945,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero"
     ],
     "dependencies": [
@@ -138532,10 +137954,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140925,10 +140346,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction",
@@ -140938,6 +140359,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_prod"
     ],
     "dependencies": [
@@ -140946,9 +140368,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_prod"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141069,7 +140492,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
@@ -141081,104 +140503,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      HasFPowerSeriesAt (SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V)\n        (SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "Taylor-series packaging at zero for downstream analytic logarithms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.analyticAt_analyticDysonPartitionFunction_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesOnBall_analyticDysonPartitionFunction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticAt_analyticDysonPartitionFunction_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      HasFPowerSeriesOnBall (SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V)\n        (SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V) 0 ⊤",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasFPowerSeriesOnBall_analyticDysonPartitionFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The analytic partition function has the Common Dyson trace coefficients as its Taylor series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff",
-      "SecondQuantization.Fermionic.radius_dysonPartitionFPowerSeries_eq_top"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141263,55 +140593,6 @@
       "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (lam : ℂ),\n      HasSum\n        (fun n =>\n          lam ^ n * SecondQuantization.Common.dysonTraceCoeff (SecondQuantization.Fermionic.fermionEnergy ε) β V n)\n        (SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V lam)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The specialized Common Dyson trace coefficients sum to the analytic partition function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.hasFPowerSeriesOnBall_analyticDysonPartitionFunction",
-      "SecondQuantization.Fermionic.radius_dysonPartitionFPowerSeries_eq_top"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.hasSum_dysonTraceCoeff",
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.hasFPowerSeriesOnBall_analyticDysonPartitionFunction",
-      "SecondQuantization.Fermionic.radius_dysonPartitionFPowerSeries_eq_top"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142513,7 +141794,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
+      "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
+      "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_purePointPartitionFunction",
       "SecondQuantization.Fermionic.freePartitionFunction_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -143690,50 +142972,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      (SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V).radius = ⊤",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.radius_dysonPartitionFPowerSeries_eq_top",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
-    "externalAxioms": [],
-    "docString": "The Dyson partition Taylor series has infinite radius of convergence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesOnBall_analyticDysonPartitionFunction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.hasSum_dysonTraceCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesOnBall_analyticDysonPartitionFunction"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n      StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T) →\n        have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n        d.dysonFixedTimeAmplitude ε β g τ τ' σ =\n          d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ'\n              (SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑d) σ) *\n            SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n              ((SecondQuantization.Common.quarticDiagramEquivOrderedData\n                  (SecondQuantization.Common.slotSplitVacuumOrder T))\n                vac)\n              (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T)",
     "standardAxioms": [
       "Classical.choice",
@@ -144190,7 +143428,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  Filter.Tendsto\n    (fun S => (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A)\n    Filter.atTop (nhds ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation A))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  Filter.Tendsto\n    (fun S => (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A)\n    Filter.atTop (nhds ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation A))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -162132,7 +161370,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ),\n  IsCompactOperator ⇑(QuantumTheory.gibbsOp Hop β) → (QuantumTheory.gibbsOp Hop β).HasSummableRealEigenvalues",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (Hop : QuantumTheory.Observable H) (β : ℝ),\n  (QuantumTheory.gibbsOp Hop β).HasSummableRealEigenvalues",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -162144,10 +161382,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues_of_isCompact",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.gibbsOp_hasSummableRealEigenvalues",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.State",
     "externalAxioms": [],
-    "docString": "A compact Gibbs operator has summable nonzero real eigenvalues automatically. ",
+    "docString": "In finite dimension, the Gibbs operator has summable nonzero real eigenvalues\nautomatically. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -162155,7 +161393,6 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.orthonormal_eigenvectorFamily",
-      "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
       "QuantumTheory.gibbsOp_isPositive"
     ],
     "crossModuleDirectWrapper": false,
@@ -162470,8 +161707,7 @@
       "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_nonneg",
-      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_summable"
+      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -162516,7 +161752,7 @@
       "QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_tsum"
+      "QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -170895,36 +170131,35 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (c : Config),\n  (SecondQuantization.Common.continuousDiagonalHamiltonian energy) (SecondQuantization.Common.finiteAnalyticBasis c) =\n    ↑(energy c) • SecondQuantization.Common.finiteAnalyticBasis c",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n      HasFPowerSeriesOnBall (SecondQuantization.Common.analyticDysonPartitionFunction energy β V)\n        (SecondQuantization.Common.dysonTraceFPowerSeries energy β V) 0 ⊤",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasFPowerSeriesOnBall_analyticDysonPartitionFunction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
+      "SecondQuantization.Common.hasFPowerSeriesAt_analyticDysonPartitionFunction"
     ],
     "dependencies": [
-      "SecondQuantization.Common.diagonalOperator_basisState",
-      "SecondQuantization.Common.finiteAnalyticFockEquiv_basisState",
-      "SecondQuantization.Common.finiteContinuousOperator_equiv_apply"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.radius_dysonTraceFPowerSeries_eq_top"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
+      "SecondQuantization.Common.hasFPowerSeriesAt_analyticDysonPartitionFunction"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -170941,139 +170176,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  SecondQuantization.Common.continuousInteractionPicture energy V τ *\n      SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam =\n    SecondQuantization.Common.continuousDiagonalEvolution energy τ *\n      (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv V *\n        NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_analyticDysonExponentialCandidate",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-    "externalAxioms": [],
-    "docString": "Multiplying the exact candidate by the interaction-picture operator cancels the two free\npropagators in the middle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp",
-      "SecondQuantization.Common.continuousInteractionPicture_eq_conj"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : Config),\n  (NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy))\n      (SecondQuantization.Common.finiteAnalyticBasis c) =\n    Complex.exp ↑(τ * energy c) • SecondQuantization.Common.finiteAnalyticBasis c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-    "externalAxioms": [],
-    "docString": "The Banach-algebra exponential of the free Hamiltonian acts diagonally with the expected\nscalar exponential. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  HasDerivAt (fun σ => SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam)\n    (NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n          SecondQuantization.Common.continuousDiagonalHamiltonian energy *\n        NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam) +\n      NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n        (-SecondQuantization.Common.continuousInteractingHamiltonian energy V lam *\n          NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam)))\n    τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_raw",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-    "externalAxioms": [],
-    "docString": "Product-rule derivative of the exponential candidate, before cancellation of the free\nHamiltonian terms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : Config),\n  (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy)\n      (SecondQuantization.Common.finiteAnalyticBasis c) =\n    ↑(τ * energy c) • SecondQuantization.Common.finiteAnalyticBasis c",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n      (SecondQuantization.Common.dysonTraceFPowerSeries energy β V).radius = ⊤",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171085,112 +170188,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.radius_dysonTraceFPowerSeries_eq_top",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasFPowerSeriesOnBall_analyticDysonPartitionFunction"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+      "SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : Config) (n : ℕ),\n  ((τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) ^ n)\n      (SecondQuantization.Common.finiteAnalyticBasis c) =\n    ↑(τ * energy c) ^ n • SecondQuantization.Common.finiteAnalyticBasis c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  SecondQuantization.Common.analyticDysonExponentialCandidate energy V τ lam =\n    1 -\n      lam •\n        ∫ (σ : ℝ) in 0..τ,\n          SecondQuantization.Common.continuousInteractionPicture energy V σ *\n            SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness.0.SecondQuantization.Common.analyticDysonExponentialCandidate_eq_one_sub_integral",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
-    "externalAxioms": [],
-    "docString": "The exact operator-exponential candidate satisfies its interaction-picture Volterra equation,\nby the fundamental theorem of calculus. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.analyticDysonExponentialCandidate_zero",
-      "SecondQuantization.Common.continuous_continuousInteractionPicture",
-      "SecondQuantization.Common.hasDerivAt_analyticDysonExponentialCandidate_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.analyticDysonEvolution_eq_exponentialCandidate"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasFPowerSeriesOnBall_analyticDysonPartitionFunction"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -171515,6 +170528,463 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonBasis_succ_apply"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ),\n  SecondQuantization.Common.continuousDiagonalEvolution energy τ =\n    NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "The continuous free evolution is the Banach-algebra exponential of the diagonal\nHamiltonian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_basis_apply",
+      "SecondQuantization.Common.finiteContinuousOperator_ext_basis",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (c : Config),\n  (SecondQuantization.Common.continuousDiagonalHamiltonian energy) (SecondQuantization.Common.finiteAnalyticBasis c) =\n    ↑(energy c) • SecondQuantization.Common.finiteAnalyticBasis c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.diagonalOperator_basisState",
+      "SecondQuantization.Common.finiteAnalyticFockEquiv_basisState",
+      "SecondQuantization.Common.finiteContinuousOperator_equiv_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  SecondQuantization.Common.continuousInteractionPicture energy V τ *\n      SecondQuantization.Common.dysonExponentialCandidate✝ energy V τ lam =\n    SecondQuantization.Common.continuousDiagonalEvolution energy τ *\n      (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv V *\n        NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "Multiplying the exact candidate by the interaction-picture operator cancels the two free\npropagators in the middle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp",
+      "SecondQuantization.Common.continuousInteractionPicture_eq_conj",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β →\n    τ ∈ Set.Icc 0 β →\n      ∀ (lam : ℂ),\n        Dyson.evolution (SecondQuantization.Common.continuousInteractionPicture energy V) lam τ =\n          SecondQuantization.Common.dysonExponentialCandidate✝ energy V τ lam",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "On every compact nonnegative time interval, the interaction-picture Dyson evolution equals\nthe exact ordered operator-exponential candidate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.dysonEvolution_eq_ordered_exp"
+    ],
+    "dependencies": [
+      "Dyson.eqOn_evolution_of_volterra_of_bound",
+      "Dyson.exists_continuousBoundedInteraction",
+      "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonExponentialCandidate_eq_one_sub_integral",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.dysonEvolution_eq_ordered_exp"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  SecondQuantization.Common.dysonExponentialCandidate✝ energy V τ lam =\n    1 -\n      lam •\n        ∫ (σ : ℝ) in 0..τ,\n          SecondQuantization.Common.continuousInteractionPicture energy V σ *\n            SecondQuantization.Common.dysonExponentialCandidate✝ energy V σ lam",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonExponentialCandidate_eq_one_sub_integral",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "The exact operator-exponential candidate satisfies its interaction-picture Volterra equation,\nby the fundamental theorem of calculus. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : Config),\n  (NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy))\n      (SecondQuantization.Common.finiteAnalyticBasis c) =\n    Complex.exp ↑(τ * energy c) • SecondQuantization.Common.finiteAnalyticBasis c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "The Banach-algebra exponential of the free Hamiltonian acts diagonally with the expected\nscalar exponential. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  HasDerivAt (fun σ => SecondQuantization.Common.dysonExponentialCandidate✝ energy V σ lam)\n    (-(lam •\n        (SecondQuantization.Common.continuousInteractionPicture energy V τ *\n          SecondQuantization.Common.dysonExponentialCandidate✝ energy V τ lam)))\n    τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "The exact candidate solves the same interaction-picture differential equation as the Dyson\nseries. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonExponentialCandidate_eq_one_sub_integral"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalEvolution_eq_exp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_raw"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonEvolution_eq_exponentialCandidate",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.dysonExponentialCandidate_eq_one_sub_integral"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  HasDerivAt (fun σ => SecondQuantization.Common.dysonExponentialCandidate✝ energy V σ lam)\n    (NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n          SecondQuantization.Common.continuousDiagonalHamiltonian energy *\n        NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam) +\n      NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n        (-SecondQuantization.Common.continuousInteractingHamiltonian energy V lam *\n          NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam)))\n    τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_raw",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": "Product-rule derivative of the exponential candidate, before cancellation of the free\nHamiltonian terms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.hasDerivAt_dysonExponentialCandidate_interactionPicture"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : Config),\n  (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy)\n      (SecondQuantization.Common.finiteAnalyticBasis c) =\n    ↑(τ * energy c) • SecondQuantization.Common.finiteAnalyticBasis c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : Config) (n : ℕ),\n  ((τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) ^ n)\n      (SecondQuantization.Common.finiteAnalyticBasis c) =\n    ↑(τ * energy c) ^ n • SecondQuantization.Common.finiteAnalyticBasis c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_pow_basis_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174612,7 +174082,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      HasFPowerSeriesAt (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V)\n        ((SecondQuantization.Fermionic.freePartitionFunction ε β)⁻¹ •\n          SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V)\n        0",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      HasFPowerSeriesAt (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V)\n        ((SecondQuantization.Fermionic.freePartitionFunction ε β)⁻¹ •\n          SecondQuantization.Common.dysonTraceFPowerSeries (SecondQuantization.Fermionic.fermionEnergy ε) β V)\n        0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174635,7 +174105,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction"
+      "SecondQuantization.Common.hasFPowerSeriesAt_analyticDysonPartitionFunction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -174732,7 +174202,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries",
+      "SecondQuantization.Common.coeff_dysonTraceFPowerSeries",
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.dysonPartitionCoeff_eq_dysonTraceCoeff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
@@ -175241,7 +174711,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (S : Finset Mode), Summable fun n => ‖SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S n‖",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode),\n  Summable fun n => ‖SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S n‖",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175286,7 +174756,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (S : Finset Mode), Summable (SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode),\n  Summable (SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
