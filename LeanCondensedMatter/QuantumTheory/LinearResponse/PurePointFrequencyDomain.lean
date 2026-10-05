@@ -136,7 +136,8 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
     let C : ℝ := ∫ τ : ℝ in Ioi 0, ‖adiabaticFrequencyPhase omega eta τ‖
     have hweight : Summable fun mn : ι × ι =>
         ‖(purePointTransitionData system data A B mn).weight‖ := by
-      simpa only [PurePointLehmannSummable] using hsum.2.2
+      simpa only [PurePointLehmannSummable] using
+        purePointLehmannSummable_of_timeDomainSummable system data A B hsum
     have hmajorant : Summable fun mn : ι × ι =>
         C * ‖(purePointTransitionData system data A B mn).weight‖ :=
       hweight.mul_left C
