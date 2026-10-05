@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 
