@@ -367,8 +367,8 @@ or consumer structure changes.
   Explicit physical expansion of the minimally coupled Schrödinger right-hand side.
 - `QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue_eq_coordinates` —
   Coordinate expansion of the probability-density time derivative.
-- `QuantumTheory.LinearResponse.PurePointLehmannData.probability_summable` — structure-level
-  invariant recording absolute summability of the normalized pure-point probability weights.
+- `QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum` — structure-level
+  invariant recording normalization of the pure-point probability weights as a convergent sum.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum` — structure-level normalization
   invariant stating that the finite disorder probabilities sum to one.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator` — Adjointing the

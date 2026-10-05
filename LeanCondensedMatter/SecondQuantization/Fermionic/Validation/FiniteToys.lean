@@ -46,8 +46,8 @@ noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) whe
   probability_nonneg := by
     intro i
     norm_num
-  probability_summable := Summable.of_finite
-  probability_tsum := by
+  probability_hasSum := by
+    convert (Summable.of_finite : Summable fun _ : Fin 2 => (1 : ℝ) / 2).hasSum using 1
     rw [tsum_fintype]
     norm_num [Fin.sum_univ_two]
 
