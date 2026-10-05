@@ -157,40 +157,6 @@ theorem summable_purePointBackwardTimeTerm
   intro mn
   simp [purePointBackwardTimeTerm]
 
-/-- Absolute summability of the two ordered commutator products already implies absolute
-summability of the physical Lehmann transition weights. -/
-theorem purePointLehmannSummable_of_timeDomainSummable
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H)
-    (hsum : PurePointTimeDomainSummable system data A B) :
-    PurePointLehmannSummable system data A B := by
-  change Summable fun mn : ι × ι => ‖purePointTransitionWeight system data A B mn‖
-  have hbackwardSwap : Summable fun mn : ι × ι =>
-      ‖purePointBackwardWeight system data A B mn.swap‖ := by
-    change Summable
-      ((fun mn : ι × ι => ‖purePointBackwardWeight system data A B mn‖) ∘ Prod.swap)
-    exact hsum.2.comp_injective (Equiv.prodComm ι ι).injective
-  have hmajorant : Summable fun mn : ι × ι =>
-      ‖Complex.I / (system.hbar : ℂ)‖ *
-        (‖purePointForwardWeight system data A B mn‖ +
-          ‖purePointBackwardWeight system data A B mn.swap‖) :=
-    (hsum.1.add hbackwardSwap).mul_left ‖Complex.I / (system.hbar : ℂ)‖
-  refine Summable.of_nonneg_of_le (fun mn => norm_nonneg _) (fun mn => ?_) hmajorant
-  have hweight :
-      purePointTransitionWeight system data A B mn =
-        (Complex.I / (system.hbar : ℂ)) *
-          (purePointForwardWeight system data A B mn -
-            purePointBackwardWeight system data A B mn.swap) := by
-    simp [purePointTransitionWeight, purePointTransitionData,
-      orderedLehmannTransitionWeight, purePointForwardWeight, purePointBackwardWeight]
-    ring
-  rw [hweight, norm_mul]
-  exact mul_le_mul_of_nonneg_left
-    (norm_sub_le
-      (purePointForwardWeight system data A B mn)
-      (purePointBackwardWeight system data A B mn.swap))
-    (norm_nonneg _)
-
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
 theorem purePointExpectation_heisenberg_mul_eq_tsum
     (data : PurePointLehmannData system ι)
