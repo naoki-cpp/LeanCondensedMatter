@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Dyson.Constant
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
