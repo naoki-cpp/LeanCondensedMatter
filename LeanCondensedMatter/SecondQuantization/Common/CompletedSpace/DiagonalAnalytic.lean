@@ -37,10 +37,16 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
     apply tsum_congr
     intro c
-    rw [hcoord x c, hcoord y c]
-    change inner ℂ ((w c : ℂ) • x c) (y c) =
-      inner ℂ (x c) ((w c : ℂ) • y c)
-    simp [inner_smul_left, inner_smul_right]
+    calc
+      inner ℂ (T x c) (y c) =
+          inner ℂ ((w c : ℂ) * x c) (y c) := by
+            exact congrArg (fun z : ℂ => inner ℂ z (y c)) (hcoord x c)
+      _ = inner ℂ (x c) ((w c : ℂ) * y c) := by
+        change inner ℂ ((w c : ℂ) • x c) (y c) =
+          inner ℂ (x c) ((w c : ℂ) • y c)
+        simp [inner_smul_left, inner_smul_right]
+      _ = inner ℂ (x c) (T y c) := by
+        exact congrArg (fun z : ℂ => inner ℂ (x c) z) (hcoord y c).symm
   · intro x
     rw [ContinuousLinearMap.reApplyInnerSelf_apply, lp.inner_eq_tsum]
     have hs : Summable fun c : Config => inner ℂ (T x c) (x c) :=
@@ -53,8 +59,11 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     apply tsum_nonneg
     intro c
     rw [hcoord x c]
-    change 0 ≤ RCLike.re (inner ℂ ((w c : ℂ) • x c) (x c))
-    simp [inner_smul_left, inner_self_eq_norm_sq_to_K, hnonneg c]
+    change 0 ≤ (x c).re * (w c * (x c).re) + (x c).im * (w c * (x c).im)
+    ring_nf
+    exact add_nonneg
+      (mul_nonneg (hnonneg c) (sq_nonneg (x c).re))
+      (mul_nonneg (hnonneg c) (sq_nonneg (x c).im))
 
 /-- The maximal diagonal operator is densely defined for every scalar configuration weight. -/
 theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
