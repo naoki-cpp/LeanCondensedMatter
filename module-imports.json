@@ -503,6 +503,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Diagonal.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Diagonal",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.General"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Factorization/Basic.lean",
       "imports": [
@@ -602,7 +611,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Diagonal.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Diagonal",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled"
       ],
       "externalImportCount": 0
@@ -653,6 +662,7 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
@@ -2173,8 +2183,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Diagonal",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
       "externalImportCount": 0
@@ -2291,6 +2300,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Entropy/Diagonal.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
         "LeanCondensedMatter.QuantumTheory.Entropy.Basic"
       ],
