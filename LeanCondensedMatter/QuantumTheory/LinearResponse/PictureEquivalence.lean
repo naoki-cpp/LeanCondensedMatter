@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+import LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
+import LeanCondensedMatter.Analysis.Operator.Unitary
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
@@ -80,25 +81,25 @@ theorem observableExpValue_evolveState_eq_heisenberg
 /-- Schrödinger-picture evolution of a density operator by unitary conjugation. -/
 noncomputable def evolveDensityOperator (ρ : DensityOperator H) (t : ℝ) :
     DensityOperator H where
-  op := unitaryConjugate (freePropagator system t) ρ.op
+  op := adjointConjugate (freePropagator system t) ρ.op
   pos := by
     change ((freePropagator system t) ∘SL ρ.op ∘SL
       ContinuousLinearMap.adjoint (freePropagator system t)).IsPositive
     exact ρ.pos.conj_adjoint (freePropagator system t)
   isTraceClass :=
-    ρ.isTraceClass.unitaryConjugate (freePropagator system t)
+    ρ.isTraceClass.adjointConjugate (freePropagator system t)
   trace_eq_one := by
     calc
-      (ρ.isTraceClass.unitaryConjugate (freePropagator system t)).trace =
+      (ρ.isTraceClass.adjointConjugate (freePropagator system t)).trace =
           ρ.isTraceClass.trace :=
-        ρ.isTraceClass.trace_unitaryConjugate
+        ρ.isTraceClass.trace_adjointConjugate
           (freePropagator system t) (star_mul_freePropagator system t)
       _ = 1 := ρ.trace_eq_one
 
 @[simp]
 theorem evolveDensityOperator_op (ρ : DensityOperator H) (t : ℝ) :
     (evolveDensityOperator system ρ t).op =
-      unitaryConjugate (freePropagator system t) ρ.op :=
+      adjointConjugate (freePropagator system t) ρ.op :=
   rfl
 
 /-- Density-operator evolution of a rank-one state agrees exactly with evolution of its normalized
@@ -108,11 +109,11 @@ theorem evolveDensityOperator_pure (ψ : StateVector H) (t : ℝ) :
     evolveDensityOperator system (pure ψ) t =
       pure (evolveState system ψ t) := by
   apply DensityOperator.ext
-  change unitaryConjugate (freePropagator system t)
+  change adjointConjugate (freePropagator system t)
       (InnerProductSpace.rankOne ℂ ψ.1 ψ.1) =
     InnerProductSpace.rankOne ℂ
       (freePropagator system t ψ.1) (freePropagator system t ψ.1)
-  exact ContinuousLinearMap.unitaryConjugate_rankOne
+  exact ContinuousLinearMap.adjointConjugate_rankOne
     (freePropagator system t) ψ.1 ψ.1
 
 /-- Bounded unitary density evolution preserves the physical pure-density predicate. -/
