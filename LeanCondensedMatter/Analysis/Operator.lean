@@ -9,6 +9,7 @@ import LeanCondensedMatter.Analysis.Operator.Polar
 import LeanCondensedMatter.Analysis.Operator.Diagonal
 import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.Unitary
 import LeanCondensedMatter.Analysis.Operator.TraceClass
 
