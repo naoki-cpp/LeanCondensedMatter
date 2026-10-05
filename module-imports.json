@@ -588,6 +588,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Positive.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Basic.lean",
       "imports": [
@@ -601,9 +610,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops"
       ],
       "externalImportCount": 0
     },
@@ -667,6 +675,7 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
@@ -2174,6 +2183,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Basic.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
         "LeanCondensedMatter.QuantumTheory.Postulates"
       ],
