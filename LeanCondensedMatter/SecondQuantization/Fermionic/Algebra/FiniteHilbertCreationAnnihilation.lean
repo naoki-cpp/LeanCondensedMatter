@@ -36,25 +36,29 @@ private theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
           simp [removeOccupation]
         rw [← h] at hnot
         exact hnot hm
-      simp [hm, hn, hne]
+      simp [hm, hne]
     · simp [hm, hn]
   · by_cases hn : i ∈ n
     · by_cases hnm : n = insertOccupation i m
       · subst n
         have hremove : removeOccupation i (insertOccupation i m) = m := by
           simp [removeOccupation, insertOccupation, hm]
-        simp [hm, hremove, fermionSign_insertOccupation_of_not_lt (lt_irrefl i)]
+        have hi : i ∈ insertOccupation i m := by
+          simp [insertOccupation]
+        rw [ite_eq_left rfl, ite_eq_right hm, hremove, ite_eq_left rfl,
+          ite_eq_left hi, fermionSign_insertOccupation_of_not_lt (lt_irrefl i)]
+        simp
       · have hremove : m ≠ removeOccupation i n := by
           intro hmr
           apply hnm
           rw [hmr, insertOccupation, removeOccupation, Finset.insert_erase hn]
-        simp [hm, hn, hnm, hremove]
+        simp [hnm, hremove]
     · have hne : n ≠ insertOccupation i m := by
         intro h
         have hi : i ∈ insertOccupation i m := Finset.mem_insert_self i m
         rw [← h] at hi
         exact hn hi
-      simp [hm, hn, hne]
+      simp [hn, hne]
 
 section Finite
 
