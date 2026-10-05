@@ -245,8 +245,10 @@ private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #
 
 private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
+  let adjointConjugationModule := `LeanCondensedMatter.Analysis.Operator.AdjointConjugation
   let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
-  let traceClassUnitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+  let traceClassAdjointConjugationModule :=
+    `LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
   #[
     { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
@@ -257,14 +259,14 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.observableExpectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
     { declaration := `ContinuousLinearMap.unitaryOfAdjointInverse, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.unitaryConjugate_rankOne, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.eigenspace_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate, moduleName := unitaryModule },
-    { declaration := `ContinuousLinearMap.IsTraceClass.unitaryConjugate,
-      moduleName := traceClassUnitaryModule },
-    { declaration := `ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate,
-      moduleName := traceClassUnitaryModule },
+    { declaration := `ContinuousLinearMap.adjointConjugate, moduleName := adjointConjugationModule },
+    { declaration := `ContinuousLinearMap.adjointConjugate_rankOne, moduleName := adjointConjugationModule },
+    { declaration := `ContinuousLinearMap.eigenspace_adjointConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.finrank_eigenspace_adjointConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.IsTraceClass.adjointConjugate,
+      moduleName := traceClassAdjointConjugationModule },
+    { declaration := `ContinuousLinearMap.IsTraceClass.trace_adjointConjugate,
+      moduleName := traceClassAdjointConjugationModule },
     { declaration := `QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis,
       moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal },
   ]
@@ -295,7 +297,7 @@ private def conservationOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.LinearResponse.observableExpValue_hamiltonian_evolveState, moduleName := conservationModule },
     { declaration := `QuantumTheory.LinearResponse.expectation_hamiltonian_evolveDensityOperator, moduleName := conservationModule },
     { declaration := `QuantumTheory.LinearResponse.observableExpectation_hamiltonian_evolveDensityOperator, moduleName := conservationModule },
-    { declaration := `QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
     { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
     { declaration := `QuantumTheory.LinearResponse.isStationary_toNormalizedExpectation_of_commute_hamiltonian, moduleName := conservationModule },
     { declaration := `QuantumTheory.DensityOperator.toNormalizedExpectation, moduleName := densityExpectationModule },

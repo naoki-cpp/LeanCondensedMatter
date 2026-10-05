@@ -125,10 +125,10 @@ theorem observableExpectation_hamiltonian_evolveDensityOperator
 
 /-- A bounded operator commuting with the Hamiltonian is unchanged by Schrödinger-picture unitary
 conjugation. -/
-theorem unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian
+theorem adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian
     (A : H →L[ℂ] H) (hA : Commute system.hamiltonian.1 A) (t : ℝ) :
-    unitaryConjugate (freePropagator system t) A = A := by
-  simpa [unitaryConjugate, heisenbergEvolution, star_freePropagator] using
+    adjointConjugate (freePropagator system t) A = A := by
+  simpa [adjointConjugate, heisenbergEvolution, star_freePropagator] using
     heisenbergEvolution_eq_self_of_commute_hamiltonian system A hA (-t)
 
 /-- A density operator commuting with the Hamiltonian is stationary under Schrödinger evolution. -/
@@ -136,7 +136,7 @@ theorem evolveDensityOperator_eq_self_of_commute_hamiltonian
     (ρ : DensityOperator H) (hρ : Commute system.hamiltonian.1 ρ.op) (t : ℝ) :
     evolveDensityOperator system ρ t = ρ :=
   DensityOperator.ext
-    (unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian system ρ.op hρ t)
+    (adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian system ρ.op hρ t)
 
 /-- A density operator commuting with the Hamiltonian defines a stationary normalized expectation
 for the existing linear-response API. -/

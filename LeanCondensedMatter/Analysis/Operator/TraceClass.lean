@@ -5,7 +5,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+import LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 
 set_option linter.style.header false
