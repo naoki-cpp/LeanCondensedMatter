@@ -219,7 +219,7 @@ select:disabled {
 }
 .highlight-controls input { width: auto; min-height: 0; accent-color: var(--cyan); }
 
-.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; font-size: 12px; color: var(--muted); }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--muted); }
 .legend span { display: flex; gap: 7px; align-items: center; }
 .legend-node {
   width: 10px;
@@ -235,7 +235,7 @@ select:disabled {
 .legend-edge.cross::after { border-left-color: #94a3b8; }
 .legend-edge.wrapper { border-top: 2px dashed var(--accent-strong); }
 .legend-edge.wrapper::after { border-left-color: var(--accent-strong); }
-.legend-dependency { grid-column: 1 / -1; color: var(--text); }
+.legend-dependency { color: var(--text); }
 
 .muted { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
 
