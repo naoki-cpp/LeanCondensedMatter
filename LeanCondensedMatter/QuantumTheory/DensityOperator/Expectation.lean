@@ -28,25 +28,23 @@ private theorem norm_inner_apply_le_opNorm_of_norm_eq_one
       exact A.le_opNorm _
     _ = ‖A‖ := by rw [hx]; ring
 
+/-- The absolute eigenvalue weights of a density operator sum to one. -/
+theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
+    HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1|) 1 :=
+  HasSum.congr_fun ρ.hasSum_eigenvalues_eq_one fun a =>
+    abs_of_nonneg (ρ.eigenvalue_nonneg a)
+
 /-- The spectral series representing the expectation of a bounded operator is summable. -/
 theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
       (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
         (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)) := by
   have hnorm := eigenvectorFamily_norm_eq_one ρ
-  have hweights : Summable (fun a : EigenvectorIndex ρ.op => |a.1.1|) := by
-    simpa only [Real.norm_eq_abs] using ρ.hasSum_eigenvalues_eq_one.summable.norm
   refine Summable.of_norm_bounded
-    (hweights.mul_right ‖A‖) fun a => ?_
+    (ρ.hasSum_abs_eigenvalues_eq_one.summable.mul_right ‖A‖) fun a => ?_
   have hle := norm_inner_apply_le_opNorm_of_norm_eq_one A (hnorm a)
   rw [norm_mul, Complex.norm_real]
   exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
-
-/-- The absolute eigenvalue weights of a density operator sum to one. -/
-theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
-    HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1|) 1 :=
-  HasSum.congr_fun ρ.hasSum_eigenvalues_eq_one fun a =>
-    abs_of_nonneg (ρ.eigenvalue_nonneg a)
 
 /-- The unbundled canonical trace expectation used to construct `DensityOperator.expectation`. -/
 private noncomputable def densityExpectationTrace
@@ -172,18 +170,7 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
 @[simp]
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
-  rw [ρ.expectation_eq_spectral_tsum]
-  calc
-    (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-      inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        ((ContinuousLinearMap.id ℂ H) (eigenvectorFamily ρ.spectralTraceClass.compact a))) =
-        ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) := by
-      apply tsum_congr
-      intro a
-      rw [ContinuousLinearMap.id_apply, inner_self_eq_norm_sq_to_K,
-        eigenvectorFamily_norm_eq_one ρ a]
-      norm_num
-    _ = 1 := by
-      exact_mod_cast ρ.tsum_eigenvalues_eq_one
+  rw [ρ.expectation_apply]
+  simpa using ρ.trace_eq_one
 
 end QuantumTheory
