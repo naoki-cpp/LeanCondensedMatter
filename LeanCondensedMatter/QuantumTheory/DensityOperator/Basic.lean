@@ -96,6 +96,12 @@ theorem DensityOperator.hasSum_eigenvalues_eq_one (ρ : DensityOperator H) :
   rw [← ρ.spectralTrace_op_eq_one]
   simpa [spectralTrace] using hsummable.hasSum
 
+/-- The absolute nonzero spectral eigenvalue weights of a density operator sum to one. -/
+theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
+    HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1|) 1 :=
+  HasSum.congr_fun ρ.hasSum_eigenvalues_eq_one fun a =>
+    abs_of_nonneg (ρ.eigenvalue_nonneg a)
+
 /-- The nonzero spectral eigenvalues of a density operator have total sum one. -/
 theorem DensityOperator.tsum_eigenvalues_eq_one (ρ : DensityOperator H) :
     (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 :=
