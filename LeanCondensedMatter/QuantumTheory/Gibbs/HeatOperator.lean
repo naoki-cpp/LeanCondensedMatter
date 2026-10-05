@@ -44,6 +44,7 @@ theorem isTraceClass_iff_purePointGibbsSummable_of_basis_action
     change Summable fun i => ‖purePointBoltzmannWeight E β i‖
     simpa [Complex.norm_real, Real.norm_eq_abs] using hnorm
   · intro hsum
+    change Summable (fun i => ‖purePointBoltzmannWeight E β i‖) at hsum
     have hcomplex : Summable (fun i => ‖(purePointBoltzmannWeight E β i : ℂ)‖) := by
       simpa using hsum
     have hK :
