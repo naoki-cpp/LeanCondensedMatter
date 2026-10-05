@@ -28,6 +28,7 @@ then transports the scalar without loss. Existing examples include:
 
 ```lean
 Complex.selfAdjointEquiv
+ContinuousLinearMap.IsTraceClass.realTrace
 ContinuousLinearMap.diagonalExpectationValue
 ContinuousLinearMap.diagonalExpectationNNReal
 QuantumTheory.observableExpValue
