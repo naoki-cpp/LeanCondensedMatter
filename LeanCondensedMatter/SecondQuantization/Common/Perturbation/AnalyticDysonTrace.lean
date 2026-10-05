@@ -6,7 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeri
 set_option linter.style.header false
 
 /-!
-# Continuous traces of the analytic Dyson evolution
+# Continuous traces of the interaction-picture Dyson evolution
 
 The algebraic trace `traceFock` is transported to the finite-dimensional continuous-operator
 realization as a genuine continuous linear map. This lets convergent operator-valued Dyson sums be
@@ -21,14 +21,14 @@ noncomputable section
 variable {Config : Type*} [Fintype Config]
 
 /-- The scalar Dyson trace series converges to the trace of the free evolution composed with the
-analytic Dyson evolution. -/
+interaction-picture Dyson evolution. -/
 theorem hasSum_dysonTraceCoeff
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     HasSum (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n)
       (finiteOperatorTrace
         ((continuousDiagonalEvolution energy (-β)).comp
-          (analyticDysonEvolution energy V β lam))) := by
+          (Dyson.evolution (continuousInteractionPicture energy V) lam β))) := by
   obtain ⟨M, hBound⟩ := Dyson.exists_continuousBoundedInteraction
     (continuousInteractionPicture energy V) hβ
     (continuous_continuousInteractionPicture energy V)
@@ -59,7 +59,7 @@ theorem hasSum_dysonTraceCoeff
       lam ^ n * dysonTraceCoeff energy β V n
     rw [map_smul, smul_eq_mul, htrace]
   rw [hterms] at h
-  simpa [traceLeft, analyticDysonEvolution, ContinuousLinearMap.mul_def] using h
+  simpa [traceLeft, ContinuousLinearMap.mul_def] using h
 
 end
 end Common
