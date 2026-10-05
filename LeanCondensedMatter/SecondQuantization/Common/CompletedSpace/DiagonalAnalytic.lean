@@ -45,6 +45,7 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
         change inner ℂ ((w c : ℂ) • x c) (y c) =
           inner ℂ (x c) ((w c : ℂ) • y c)
         simp [inner_smul_left, inner_smul_right]
+        ring
       _ = inner ℂ (x c) (T y c) := by
         exact congrArg (fun z : ℂ => inner ℂ (x c) z) (hcoord y c).symm
   · intro x
@@ -59,11 +60,10 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     apply tsum_nonneg
     intro c
     rw [hcoord x c]
-    change 0 ≤ (x c).re * (w c * (x c).re) + (x c).im * (w c * (x c).im)
-    ring_nf
-    exact add_nonneg
-      (mul_nonneg (hnonneg c) (sq_nonneg (x c).re))
-      (mul_nonneg (hnonneg c) (sq_nonneg (x c).im))
+    rw [show (w c : ℂ) * x c = (w c : ℂ) • x c by rfl,
+      inner_smul_left, RCLike.conj_ofReal, inner_self_eq_norm_sq_to_K]
+    simpa [RCLike.re_ofReal_mul] using
+      mul_nonneg (hnonneg c) (sq_nonneg ‖x c‖)
 
 /-- The maximal diagonal operator is densely defined for every scalar configuration weight. -/
 theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
