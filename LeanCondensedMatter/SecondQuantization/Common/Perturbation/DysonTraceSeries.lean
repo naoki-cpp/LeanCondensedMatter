@@ -64,19 +64,5 @@ theorem constantCoeff_dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
       weightSum (boltzmannWeight energy β) := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_dysonTraceSeries, dysonTraceCoeff_zero]
 
-variable [Nonempty Config]
-
-/-- The normalized finite Dyson coefficient evaluated in the canonical Gibbs density state. -/
-noncomputable def normalizedDysonTraceCoeff (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) : ℂ :=
-  finiteGibbsExpectation energy β (dysonCoeff energy V n β)
-
-/-- The normalized zeroth Dyson coefficient is one by density-state normalization. -/
-@[simp]
-theorem normalizedDysonTraceCoeff_zero (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedDysonTraceCoeff energy β V 0 = 1 := by
-  simpa only [normalizedDysonTraceCoeff, dysonCoeff_zero] using finiteGibbsExpectation_id energy β
-
 end Common
 end SecondQuantization
