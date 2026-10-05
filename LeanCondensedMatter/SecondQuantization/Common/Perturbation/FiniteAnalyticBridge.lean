@@ -101,13 +101,15 @@ theorem continuous_finiteContinuousOperator
   classical
   let columns : FiniteContinuousOperator Config ≃L[ℂ] Config → FiniteAnalyticFock Config :=
     ContinuousLinearEquiv.piRing (𝕜 := ℂ) (E := FiniteAnalyticFock Config) Config
+  have hcol (A : FiniteContinuousOperator Config) (n : Config) :
+      columns A n = A (finiteAnalyticBasis n) := by
+    simp [columns, finiteAnalyticBasis, ContinuousLinearEquiv.piRing, LinearEquiv.piRing_apply]
   have hcolumns : Continuous (fun τ : ℝ => columns (finiteContinuousOperatorAlgEquiv (F τ))) := by
     apply continuous_pi
     intro n
     apply continuous_pi
     intro m
-    simpa [columns, finiteAnalyticBasis, ContinuousLinearEquiv.piRing,
-      LinearEquiv.piRing_apply] using hF m n
+    simpa only [hcol, finiteContinuousOperator_basis_apply] using hF m n
   exact (columns.symm.continuous.comp hcolumns).congr fun τ => columns.symm_apply_apply _
 
 /-- Compatibility on each analytic basis vector between the coefficientwise algebraic integral and
