@@ -76,7 +76,15 @@ theorem completedFreeHeatOperator_apply_basis
     (n : Occupation Mode) :
     completedFreeHeatOperator ε β hbounded (completedBasisState n) =
       (purePointBoltzmannWeight (fermionEnergy ε) β n : ℂ) • completedBasisState n := by
-  simpa [completedFreeHeatOperator] using
+  change
+    Common.completedBoundedDiagonalOperator
+        (fun m : Occupation Mode =>
+          (purePointBoltzmannWeight (fermionEnergy ε) β m : ℂ))
+        (Classical.choose_spec hbounded).1
+        (Classical.choose_spec hbounded).2
+        (completedBasisState n) =
+      (purePointBoltzmannWeight (fermionEnergy ε) β n : ℂ) • completedBasisState n
+  exact
     Common.completedBoundedDiagonalOperator_basisState
       (fun m : Occupation Mode =>
         (purePointBoltzmannWeight (fermionEnergy ε) β m : ℂ))
