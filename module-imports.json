@@ -2479,7 +2479,6 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Variational",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Variational.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Entropy.Finite",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy"
       ],
       "externalImportCount": 0
@@ -4390,10 +4389,10 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDysonTrace.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
@@ -4426,7 +4425,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonTimeIndependent.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
+        "LeanCondensedMatter.Analysis.Dyson.Constant",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral"
       ],
       "externalImportCount": 1
@@ -4444,6 +4444,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
       ],
       "externalImportCount": 6
@@ -5820,6 +5821,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticDysonPartitionFunction.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries"
       ],
