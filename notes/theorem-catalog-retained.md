@@ -369,6 +369,9 @@ or consumer structure changes.
   Coordinate expansion of the probability-density time derivative.
 - `QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum` — structure-level
   invariant recording normalization of the pure-point probability weights as a convergent sum.
+- `QuantumTheory.finiteDimensional_of_gibbsOp_isCompact` — bounded-Gibbs obstruction theorem:
+  compactness of the invertible Gibbs exponential forces finite dimensionality, documenting why the
+  bounded Gibbs API is explicitly finite-dimensional.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum` — structure-level normalization
   invariant stating that the finite disorder probabilities sum to one.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator` — Adjointing the
