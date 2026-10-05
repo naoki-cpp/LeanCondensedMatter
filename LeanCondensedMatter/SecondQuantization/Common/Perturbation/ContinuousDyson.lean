@@ -188,15 +188,6 @@ theorem continuousDysonCoeff_eq_coeff (energy : Config → ℝ)
           Dyson.coeff (continuousInteractionPicture energy V) n σ
       rw [ih]
 
-/-! ## Analytic Dyson evolution -/
-
-/-- The norm-topological interaction-picture Dyson evolution specialized to the finite continuous
-operator realization. -/
-noncomputable def analyticDysonEvolution (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (τ : ℝ) (lam : ℂ) : FiniteContinuousOperator Config :=
-  Dyson.evolution (continuousInteractionPicture energy V) lam τ
-
 end
 end Common
 end SecondQuantization
