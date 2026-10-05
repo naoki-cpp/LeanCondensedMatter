@@ -13,8 +13,9 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 /-!
 # Gibbs density states
 
-For bounded Hamiltonians, compactness of the unnormalized Gibbs operator already forces finite
-dimension, so spectral summability is derived rather than supplied independently.
+For bounded Hamiltonians, compactness of the invertible Gibbs operator is equivalent to finite
+dimensionality. The public bounded Gibbs-state API therefore states finite dimensionality directly,
+and derives compactness and spectral summability internally.
 -/
 
 namespace QuantumTheory
@@ -72,34 +73,38 @@ theorem gibbsOp_ne_zero [Nontrivial H] (Hop : Observable H) (β : ℝ) :
   rw [← coe_gibbsOpUnit]
   exact Units.ne_zero _
 
-/-- A compact Gibbs operator has summable nonzero real eigenvalues automatically. -/
-private theorem gibbsOp_hasSummableRealEigenvalues_of_isCompact (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
+/-- In finite dimension, the Gibbs operator has summable nonzero real eigenvalues
+automatically. -/
+private theorem gibbsOp_hasSummableRealEigenvalues [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) :
     HasSummableRealEigenvalues (gibbsOp Hop β) := by
-  letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
+  have hcompact : IsCompactOperator (gibbsOp Hop β) :=
+    isCompactOperator_of_locallyCompactSpace_dom _
   letI : Finite (EigenvectorIndex (gibbsOp Hop β)) :=
     (orthonormal_eigenvectorFamily hcompact
       (gibbsOp_isPositive Hop β).isSelfAdjoint.isSymmetric).linearIndependent.finite
   exact Summable.of_finite
 
-/-- A compact Gibbs operator carries the canonical positive spectral-trace-class data. -/
-theorem gibbsOp_spectralTraceClass (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
-    SpectralTraceClass (gibbsOp Hop β) :=
-  SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β)
-    (gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact)
+/-- In finite dimension, the Gibbs operator carries canonical positive spectral-trace-class data. -/
+theorem gibbsOp_spectralTraceClass [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) :
+    SpectralTraceClass (gibbsOp Hop β) := by
+  have hcompact : IsCompactOperator (gibbsOp Hop β) :=
+    isCompactOperator_of_locallyCompactSpace_dom _
+  exact SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β)
+    (gibbsOp_hasSummableRealEigenvalues Hop β)
 
-/-- The normalized Gibbs density operator. -/
-noncomputable def gibbsState [Nontrivial H] (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β)) : DensityOperator H :=
+/-- The normalized bounded-Hamiltonian Gibbs density operator. -/
+noncomputable def gibbsState [Nontrivial H] [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) : DensityOperator H :=
   DensityOperator.normalizePositive
     (gibbsOp Hop β) (gibbsOp_isPositive Hop β)
-    (gibbsOp_spectralTraceClass Hop β hcompact).isTraceClass (gibbsOp_ne_zero Hop β)
+    (gibbsOp_spectralTraceClass Hop β).isTraceClass (gibbsOp_ne_zero Hop β)
 
 @[simp]
-theorem gibbsState_op [Nontrivial H] (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
-    (gibbsState Hop β hcompact).op =
+theorem gibbsState_op [Nontrivial H] [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) :
+    (gibbsState Hop β).op =
       (spectralTrace (gibbsOp Hop β))⁻¹ • gibbsOp Hop β := by
   rw [gibbsState, DensityOperator.normalizePositive_op]
 
