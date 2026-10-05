@@ -11,8 +11,8 @@ This module identifies the causal commutator susceptibility of the diagonal pure
 with its countable transition series.  Each physical term projects its weight from the canonical
 `LehmannTransitionData` adapter defined in `Lehmann.lean`; the corresponding energy gap is the same
 record field used by the frequency-domain path.  The infinite-dimensional theorem keeps every
-rearrangement hypothesis explicit.  `PurePointTimeDomainSummable` requires absolute summability of
-the two ordered products entering the commutator and of the physical transition weights.
+rearrangement hypothesis explicit.  `PurePointTimeDomainSummable` requires absolute summability only of
+the two ordered products entering the commutator; physical transition-weight summability is derived.
 
 On the causal half-line the result is
 
@@ -63,16 +63,14 @@ def PurePointTimeDomainSummable
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) : Prop :=
   (Summable fun mn : ι × ι => ‖purePointForwardWeight system data A B mn‖) ∧
-  (Summable fun mn : ι × ι => ‖purePointBackwardWeight system data A B mn‖) ∧
-  PurePointLehmannSummable system data A B
+  Summable fun mn : ι × ι => ‖purePointBackwardWeight system data A B mn‖
 
 /-- In finite dimension all time-domain rearrangement assumptions are automatic. -/
 theorem purePointTimeDomainSummable_of_finite
     [Finite ι] (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) :
     PurePointTimeDomainSummable system data A B := by
-  exact ⟨Summable.of_finite, Summable.of_finite,
-    purePointLehmannSummable_of_finite system data A B⟩
+  exact ⟨Summable.of_finite, Summable.of_finite⟩
 
 /-- Schrödinger phases have unit norm. -/
 @[simp]
@@ -155,19 +153,9 @@ theorem summable_purePointBackwardTimeTerm
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : PurePointTimeDomainSummable system data A B) :
     Summable (purePointBackwardTimeTerm system data A B τ) := by
-  apply hsum.2.1.of_norm_bounded
+  apply hsum.2.of_norm_bounded
   intro mn
   simp [purePointBackwardTimeTerm]
-
-/-- Absolute summability of the physical weights is preserved by the unit transition phase. -/
-theorem summable_purePointTimeDomainTerm
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (τ : ℝ)
-    (hsum : PurePointTimeDomainSummable system data A B) :
-    Summable (purePointTimeDomainTerm system data A B τ) := by
-  apply hsum.2.2.of_norm_bounded
-  intro mn
-  simp [purePointTimeDomainTerm]
 
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
 theorem purePointExpectation_heisenberg_mul_eq_tsum
