@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.LinearAlgebra.Finsupp.Pi
