@@ -171,6 +171,10 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
   rw [ρ.expectation_apply]
-  simpa only [mul_one] using ρ.trace_eq_one
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  have htrace := ρ.trace_eq_one
+  rw [ρ.isTraceClass.trace_eq_tsum_inner d] at htrace
+  rw [(ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace_eq_tsum_inner d]
+  simpa only [mul_apply_eq_comp, ContinuousLinearMap.id_apply] using htrace
 
 end QuantumTheory
