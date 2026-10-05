@@ -202,15 +202,15 @@ or consumer structure changes.
   rather than the lower-level raw-`ζ` presentation.
 - `SecondQuantization.Fermionic.annihilate_fockVacuum` — canonical `[simp]` CAR vacuum identity that
   every fermionic annihilation operator kills the Fock vacuum.
-- `ContinuousLinearMap.unitaryConjugate_rankOne` — canonical rank-one covariance identity under
-  bounded unitary conjugation. The current single consumer is a density-operator specialization,
+- `ContinuousLinearMap.adjointConjugate_rankOne` — canonical rank-one covariance identity under
+  bounded adjoint conjugation. The current single consumer is a density-operator specialization,
   while the statement itself is general operator infrastructure.
-- `ContinuousLinearMap.eigenspace_unitaryConjugate` — canonical eigenspace transport theorem under
+- `ContinuousLinearMap.eigenspace_adjointConjugate` — canonical eigenspace transport theorem under
   unitary conjugation. It identifies the full eigenspace submodule, not merely the finite-dimensional
   rank consequence used downstream.
-- `ContinuousLinearMap.IsTraceClass.unitaryConjugate` — canonical closure of general
+- `ContinuousLinearMap.IsTraceClass.adjointConjugate` — canonical closure of general
   trace-class membership under bounded adjoint conjugation `T ↦ U T U†`.
-- `ContinuousLinearMap.IsTraceClass.trace_unitaryConjugate` — canonical complex-trace invariance
+- `ContinuousLinearMap.IsTraceClass.trace_adjointConjugate` — canonical complex-trace invariance
   endpoint `Tr(U T U†) = Tr(T)` under `U†U = 1`, derived directly from general trace cyclicity.
 - `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
