@@ -44,7 +44,7 @@ private theorem completedFreeModeTruncatedWeight_norm_summable (ε : Mode → �
     Summable fun n : Occupation Mode => ‖completedFreeModeTruncatedWeight ε β S n‖ := by
   apply summable_of_ne_finset_zero (s := S.powerset)
   intro n hn
-  have hnot : ¬n ⊆ S := by
+  have hnot : ¬ n ⊆ S := by
     simpa using hn
   simp [completedFreeModeTruncatedWeight, hnot]
 
@@ -107,7 +107,8 @@ noncomputable def completedFreeModeTruncatedGibbsProbability (ε : Mode → ℝ)
   (completedFreeModeTruncatedPartitionFunction ε β S)⁻¹ *
     completedFreeModeTruncatedWeight ε β S n
 
-/-- Finite-mode truncated free Gibbs density operator, embedded in the full completed Fock space. -/
+/-- Finite-mode truncated free Gibbs density operator, embedded in the full completed Fock space.
+Its existence is unconditional: the truncated weight is supported on the finite powerset of `S`. -/
 noncomputable def completedFreeModeTruncatedGibbsDensityOperator
     (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode) :
     DensityOperator (CompletedFockSpace Mode) :=
