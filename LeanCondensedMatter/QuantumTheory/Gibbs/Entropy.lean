@@ -57,13 +57,14 @@ theorem vonNeumannEntropy_gibbs_diagonal
     simpa using HasSum.congr_fun
       ((hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))) hterm
   have htrace :
-      spectralTrace (entropyOp ρ) =
+      hentropy.realTrace (entropyOp_isSelfAdjoint ρ) =
         β * energyExpValue ρ Hop + Real.log Z :=
     hEntropySum.unique hEntropyFormula
-  have htrace_nonneg : 0 ≤ spectralTrace (entropyOp ρ) := by
+  have htrace_nonneg :
+      0 ≤ hentropy.realTrace (entropyOp_isSelfAdjoint ρ) := by
     rw [← hEntropySum.tsum_eq]
     exact tsum_nonneg fun i => Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
-  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_spectralTrace ρ hentropy
+  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_realTrace ρ hentropy
   constructor
   · rw [hEntropyBridge]
     exact ENNReal.ofReal_ne_top
