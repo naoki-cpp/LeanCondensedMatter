@@ -80,6 +80,24 @@ theorem purePointGibbsSummable_fermionEnergy_of_mode
   unfold PurePointGibbsSummable
   exact (purePointBoltzmannWeight_fermionEnergy_summable_of_mode ε β hmode).norm
 
+/-- Free-fermion occupation-level Gibbs summability is equivalent to one-particle
+Boltzmann summability. The reverse implication is obtained by restricting the occupation sum to
+singleton configurations. -/
+theorem purePointGibbsSummable_fermionEnergy_iff_mode
+    (ε : Mode → ℝ) (β : ℝ) :
+    PurePointGibbsSummable (fermionEnergy ε) β ↔ PurePointGibbsSummable ε β := by
+  constructor
+  · intro hocc
+    unfold PurePointGibbsSummable at hocc ⊢
+    have hsingle :
+        Summable fun i : Mode =>
+          ‖purePointBoltzmannWeight (fermionEnergy ε) β ({i} : Occupation Mode)‖ :=
+      hocc.comp_injective Finset.singleton_injective
+    exact hsingle.congr fun i => by
+      rw [purePointBoltzmannWeight_fermionEnergy_eq_prod]
+      simp
+  · exact purePointGibbsSummable_fermionEnergy_of_mode ε β
+
 /-- Under one-particle pure-point Gibbs summability, the free fermion partition function is the
 infinite product `∏ᵢ (1 + exp (-β εᵢ))`. -/
 theorem purePointPartitionFunction_fermionEnergy_eq_tprod_one_add
