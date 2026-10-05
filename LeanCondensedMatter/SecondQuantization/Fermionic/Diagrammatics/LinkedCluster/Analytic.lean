@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster
 
 set_option linter.style.header false
 
@@ -26,11 +26,17 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQua
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ)
     (n : ℕ) (hn : n ≠ 0) :
     iteratedDeriv n
-        (analyticNormalizedLogPartitionFunction ε β (quarticInteraction g)) 0 =
+        (Common.analyticNormalizedLogPartitionFunction
+          (fermionEnergy ε) β (quarticInteraction g)) 0 =
       ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
         quarticWickDiagramAmplitude ε β g d.1 := by
-  rw [iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff
-    ε hβ (quarticInteraction g) n]
+  rw [Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff
+    (fermionEnergy ε) hβ (quarticInteraction g) n]
+  change (n.factorial : ℂ) *
+      PowerSeries.coeff n
+        (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+    ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
+      quarticWickDiagramAmplitude ε β g d.1
   exact factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
     ε β g n hn
 
