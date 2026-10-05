@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
 set_option linter.style.header false
