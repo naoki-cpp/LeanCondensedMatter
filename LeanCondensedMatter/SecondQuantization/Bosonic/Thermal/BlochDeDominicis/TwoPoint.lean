@@ -39,15 +39,8 @@ theorem matrixCoeff_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (τ : ℝ) 
       (m := n) (imaginaryTimeEvolveFree_basisState ε τ n))
 
 omit [Fintype Mode] in
-/-- The annihilation matrix coefficient against the corresponding lowered state. -/
-theorem matrixCoeff_annihilate_removeOccupation (i : Mode) (n : Occupation Mode) :
-    Common.matrixCoeff (annihilate i) (removeOccupation i n) n = (Real.sqrt (n i : ℝ) : ℂ) := by
-  rw [matrixCoeff_annihilate]
-  simp
-
-omit [Fintype Mode] in
 /-- The matrix coefficient of `e^{τH₀}a_i†` against the corresponding lowered state. -/
-theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation
+private theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation
     (ε : Mode → ℝ) (τ : ℝ) (i : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((imaginaryTimeEvolveFree ε τ).comp (create i)) n (removeOccupation i n) =
       (Real.sqrt (n i : ℝ) : ℂ) * Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) := by
@@ -77,7 +70,7 @@ theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation
 
 omit [Fintype Mode] in
 /-- Mixed matrix coefficients vanish when the annihilation and creation modes differ. -/
-theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
+private theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
     {i j : Mode} (h : i ≠ j) (ε : Mode → ℝ) (τ : ℝ) (n k : Occupation Mode) :
     Common.matrixCoeff ((imaginaryTimeEvolveFree ε τ).comp (create j)) n k *
       Common.matrixCoeff (annihilate i) k n = 0 := by
@@ -120,7 +113,7 @@ theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
     rw [Function.comp_apply, hFdef, hgdef]
     simp only [Function.uncurry]
     rw [matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation,
-      matrixCoeff_annihilate_removeOccupation, mul_right_comm, sqrt_natCast_mul_self]
+      matrixCoeff_annihilate, ite_eq_left rfl, mul_right_comm, sqrt_natCast_mul_self]
   rw [← hginj.summable_iff hvanish, hcomp]
   have h := (hasSum_particleNumber_boltzmannWeight ε β hpos i).mapL Complex.ofRealCLM
   have heq : (fun n : Occupation Mode => Complex.ofRealCLM ((n i : ℝ) * boltzmannWeight ε β n)) =

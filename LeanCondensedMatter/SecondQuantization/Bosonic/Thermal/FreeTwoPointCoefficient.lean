@@ -41,20 +41,17 @@ theorem diagonalCoeff_evolve_annihilate_comp_create_of_ne (ε : Mode → ℝ) (�
     (hij : i ≠ j) (n : Occupation Mode) :
     diagonalCoeff ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) n = 0 := by
   rw [diagonalCoeff_eq, LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
-    LinearMap.smul_apply, create_basisState_eq, map_smul]
-  by_cases hi : (createOccupation j n) i = 0
-  · simp [annihilate_basisState_of_zero hi]
-  · have hni : n i ≠ 0 := by rwa [createOccupation_apply_ne hij] at hi
-    have hswap :
-        removeOccupation i (createOccupation j n) = createOccupation j (removeOccupation i n) :=
-      removeOccupation_createOccupation_of_ne hij n
-    rw [annihilate_basisState_of_pos hi, smul_smul, smul_smul, hswap]
-    have hne : createOccupation j (removeOccupation i n) ≠ n := by
-      intro heq
-      have hcoord := congrArg (· i) heq
-      rw [createOccupation_apply_ne hij, removeOccupation_apply_same] at hcoord
-      omega
-    simp [basisState, Common.basisState, hne]
+    LinearMap.smul_apply, create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
+  change Complex.exp (-(τ : ℂ) * (ε i : ℂ)) *
+      ((Real.sqrt (n j + 1 : ℝ) : ℂ) *
+        Common.matrixCoeff (annihilate i) n (createOccupation j n)) = 0
+  rw [matrixCoeff_annihilate]
+  have hne : n ≠ removeOccupation i (createOccupation j n) := by
+    intro h
+    have hj := congrArg (fun x : Occupation Mode => x j) h
+    rw [removeOccupation_apply_ne (Ne.symm hij), createOccupation_apply_same] at hj
+    omega
+  rw [ite_eq_right hne, mul_zero, mul_zero]
 
 end Bosonic
 end SecondQuantization
