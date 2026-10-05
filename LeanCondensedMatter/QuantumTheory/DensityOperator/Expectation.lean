@@ -169,7 +169,8 @@ theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     (ρ.isTraceClass.comp_right (ContinuousLinearMap.id ℂ H)).trace =
         ρ.isTraceClass.trace := by
       apply IsTraceClass.trace_congr
-      simp
+      ext x
+      rw [mul_apply_eq_comp, ContinuousLinearMap.id_apply]
     _ = 1 := ρ.trace_eq_one
 
 end QuantumTheory
