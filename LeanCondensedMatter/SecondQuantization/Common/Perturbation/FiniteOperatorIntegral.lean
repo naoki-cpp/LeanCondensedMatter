@@ -22,12 +22,11 @@ namespace Common
 
 variable {Config : Type*} [Fintype Config]
 
-/-- **The image of a basis vector** under the coefficientwise interval integral: `∑ m, (∫ τ in
-a..b, matrixCoeff (F τ) m n) • basisState m`. -/
-noncomputable def operatorIntervalIntegralBasis
+/-- The image of a basis vector under the coefficientwise interval integral. -/
+private noncomputable def operatorIntervalIntegralBasis
     (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ) (n : Config) :
     AlgebraicFock Config :=
-  ∑ m : Config, (∫ τ in a..b, matrixCoeff (F τ) m n) • basisState m
+  Finsupp.equivFunOnFinite.symm fun m => ∫ τ in a..b, matrixCoeff (F τ) m n
 
 /-- **The coefficientwise interval integral** of an operator-valued function `F`, `∫ τ in a..b, F
 τ`: the linear map sending `basisState n` to `operatorIntervalIntegralBasis F a b n`. -/
@@ -46,13 +45,8 @@ theorem matrixCoeff_operatorIntervalIntegral
     change Finsupp.lift _ ℂ _ (operatorIntervalIntegralBasis F a b) (Finsupp.single n 1) =
       operatorIntervalIntegralBasis F a b n
     simp [Finsupp.lift_apply, Finsupp.sum_single_index]
-  rw [matrixCoeff, hbasis, operatorIntervalIntegralBasis, Finsupp.finsetSum_apply]
-  rw [Finset.sum_eq_single m]
-  · exact smul_basisState_apply_self _ m
-  · intro m' _ hne
-    exact smul_basisState_apply_of_ne _ hne
-  · intro h
-    exact absurd (Finset.mem_univ m) h
+  rw [matrixCoeff, hbasis, operatorIntervalIntegralBasis]
+  rfl
 
 @[simp]
 theorem operatorIntervalIntegral_zero (a b : ℝ) :
