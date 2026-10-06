@@ -170,14 +170,17 @@ private theorem sidePair_of_gt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {
   · have hnormalized := (sidePairing e σ).pairs_normalized
       ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e i).2
     rw [hpair] at hnormalized
-    simp [sideEndpointEquiv, blockSideEquiv] at hnormalized
-    exact (lt_asymm hnormalized h).elim
+    have hnormalized' : e (Sum.inl i) < e (Sum.inr (σ i)) := by
+      simpa [sideEndpointEquiv, blockSideEquiv] using hnormalized
+    exact (lt_asymm hnormalized' h).elim
   · simpa [sidePair, sideEndpointEquiv, blockSideEquiv] using hpair
 
 private noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     Fin m ≃ (sidePairing e σ).NormalizedPair :=
-  (sidePairing e σ).normalizedPairEquivOfEndpointEquiv
-    (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ)
+  Equiv.ofBijective
+    ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e)
+    ((sidePairing e σ).normalizedPairEquivOfEndpointEquiv
+      (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ)).bijective
 
 private theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplitting m)
     (σ : Equiv.Perm (Fin m)) (f : Fin (2 * m) → Fin (2 * m) → R) :
