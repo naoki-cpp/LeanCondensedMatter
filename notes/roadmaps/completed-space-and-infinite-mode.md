@@ -1,8 +1,8 @@
 # Completed-space and infinite-mode boundary
 
 Completion, unbounded-operator domains, thermal summability, and thermodynamic limits are separate
-analytic problems. This note records the current fermionic completed-space boundary and what remains
-open.
+analytic problems. This note records the current completed fermionic and free-bosonic thermal
+boundaries and what remains open.
 
 ## Completed fermionic representation
 
@@ -62,9 +62,9 @@ one-particle energies, `Bosonic.Thermal.Completed` now provides:
 This does not make bosonic creation, annihilation, number, or interacting Hamiltonians bounded.
 Those remain part of the unbounded-domain program.
 
-## Finite-mode compatibility
+## Finite-mode fermionic compatibility
 
-For finite `Mode`, the completed occupation space is finite dimensional and is canonically related to
+For finite fermionic `Mode`, the completed occupation space is finite dimensional and is canonically related to
 the finite Hilbert Fock realization through `SecondQuantization.Common.CompletedSpace` compatibility
 results. The same generic pure-point Gibbs probabilities are used on both representations; no
 independent finite Gibbs state model is required.
