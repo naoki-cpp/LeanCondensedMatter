@@ -93,21 +93,6 @@ theorem coeff_permutationConnectedCycleSeries_of_pos
   rw [coeff_permutationConnectedCycleSeries]
   exact connectedCycleCoeff_eq_pow_mul_trace_div ζ K m hm
 
-/-- Coefficientwise closed form for the connected-cycle series, including the zero-order term. -/
-theorem permutationConnectedCycleSeries_eq_mk_trace
-    [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) :
-    permutationConnectedCycleSeries ζ K =
-      PowerSeries.mk (fun m =>
-        if m = 0 then 0
-        else ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ)) := by
-  ext m
-  rw [coeff_permutationConnectedCycleSeries, PowerSeries.coeff_mk]
-  by_cases hm : m = 0
-  · subst m
-    simp [connectedCycleCoeff_zero]
-  · rw [connectedCycleCoeff_eq_pow_mul_trace_div ζ K m (Nat.pos_of_ne_zero hm)]
-    simp [hm]
-
 /-- The `ζ = 0` boundary is handled coefficientwise without dividing by `ζ`: only the linear
 coefficient survives. -/
 theorem coeff_permutationConnectedCycleSeries_zero_exchange
