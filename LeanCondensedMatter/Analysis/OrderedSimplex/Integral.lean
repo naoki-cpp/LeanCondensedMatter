@@ -79,11 +79,6 @@ theorem orderedSimplexIntegral_smul (n : ℕ) (β : ℝ) (c : ℂ) (f : (Fin n �
     simp_rw [ih]
     rw [intervalIntegral.integral_const_mul]
 
-theorem orderedSimplexIntegral_neg (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) :
-    orderedSimplexIntegral n β (fun τ => -f τ) = -orderedSimplexIntegral n β f := by
-  have h := orderedSimplexIntegral_smul n β (-1) f
-  simpa using h
-
 /-- On a constant function, the ordered-simplex integral is `βⁿ/n!` times the constant. -/
 theorem orderedSimplexIntegral_const (n : ℕ) (β : ℝ) (c : ℂ) :
     orderedSimplexIntegral n β (fun _ => c) = (β ^ n / n.factorial : ℝ) * c := by
