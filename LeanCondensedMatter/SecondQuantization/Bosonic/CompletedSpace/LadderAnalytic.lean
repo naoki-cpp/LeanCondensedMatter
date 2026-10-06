@@ -218,6 +218,7 @@ private theorem completedAnnihilate_adjoint_apply
           completedBasisState (removeOccupation i n) := by
     exact completedAnnihilate_basisState i n _
   rw [he] at h
+  dsimp [e] at h
   simpa [inner_smul_left] using h.symm
 
 private theorem completedAnnihilate_adjoint_domain_le_createDomain (i : Mode) :
