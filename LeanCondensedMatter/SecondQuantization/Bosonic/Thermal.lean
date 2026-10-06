@@ -7,6 +7,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleN
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed
 
 set_option linter.style.header false
 
@@ -31,9 +32,11 @@ The convergence-aware free bosonic thermal layer includes:
 - occupation-reindexed `tsumTrace` cyclicity for single ladder operators and the resulting normalized free-Gibbs KMS rotation;
 - the solved bosonic first-pair thermal equation with the bare CCR coefficient identified with `freeThermalPairValue`;
 - the concrete multi-point first-pair recurrence and a no-extra-admissibility `ExpectationPairingRecursion` instance;
-- concrete free thermal field labels, pair kernel, and the inherited Wick pairing expansion.
+- concrete free thermal field labels, pair kernel, and the inherited Wick pairing expansion;
+- a completed occupation-space free heat operator, trace-class identification, and canonical
+  pure-point Gibbs density operator under positive mode energies.
 
 The functional interface does not claim that arbitrary algebraic-Fock endomorphisms are summable or
-bounded. Interacting Dyson/Wick expansions still require explicit product-closure and
-operator-integration hypotheses at each order.
+bounded. Bosonic ladder operators remain unbounded on the completed representation, and interacting
+Dyson/Wick expansions still require explicit product-domain and convergence control.
 -/
