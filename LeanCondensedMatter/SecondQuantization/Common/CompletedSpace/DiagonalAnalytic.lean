@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Positive
 import Mathlib.Analysis.InnerProductSpace.LinearPMap
 
 set_option linter.style.header false
@@ -17,6 +18,65 @@ namespace Common
 noncomputable section
 
 variable {Config : Type*}
+
+/-- Uniformly bounded diagonal multiplication by nonnegative real weights is positive. -/
+theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
+    (w : Config → ℝ) {C : ℝ} (hC : 0 ≤ C)
+    (hbound : ∀ c, ‖(w c : ℂ)‖ ≤ C) (hnonneg : ∀ c, 0 ≤ w c) :
+    (completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound).IsPositive := by
+  let T : CompletedFock Config →L[ℂ] CompletedFock Config :=
+    completedBoundedDiagonalOperator (fun c => (w c : ℂ)) hC hbound
+  have hcoord (x : CompletedFock Config) (c : Config) :
+      T x c = (w c : ℂ) * x c := by
+    exact completedBoundedDiagonalOperator_apply
+      (fun c => (w c : ℂ)) hC hbound x c
+  have hsymmScalar (r : ℝ) (z y : ℂ) :
+      inner ℂ ((r : ℂ) * z) y = inner ℂ z ((r : ℂ) * y) := by
+    simp [RCLike.inner_apply, mul_assoc, mul_comm]
+  have hnonnegScalar (r : ℝ) (hr : 0 ≤ r) (z : ℂ) :
+      0 ≤ RCLike.re (inner ℂ ((r : ℂ) * z) z) := by
+    have hinner :
+        inner ℂ ((r : ℂ) * z) z = ((r * ‖z‖ ^ 2 : ℝ) : ℂ) := by
+      simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
+      rw [show z * ((r : ℂ) * (starRingEnd ℂ) z) =
+        (r : ℂ) * (z * (starRingEnd ℂ) z) by ac_rfl, RCLike.mul_conj]
+      calc
+        (r : ℂ) * (‖z‖ : ℂ) ^ 2 =
+            (r : ℂ) * ((‖z‖ ^ 2 : ℝ) : ℂ) :=
+          congrArg (fun q : ℂ => (r : ℂ) * q) (Complex.ofReal_pow ‖z‖ 2).symm
+        _ = ((r * ‖z‖ ^ 2 : ℝ) : ℂ) :=
+          (Complex.ofReal_mul r (‖z‖ ^ 2)).symm
+    rw [hinner]
+    change 0 ≤ r * ‖z‖ ^ 2
+    exact mul_nonneg hr (sq_nonneg ‖z‖)
+  change T.IsPositive
+  rw [ContinuousLinearMap.isPositive_def]
+  constructor
+  · intro x y
+    rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
+    apply tsum_congr
+    intro c
+    calc
+      inner ℂ (T x c) (y c) =
+          inner ℂ ((w c : ℂ) * x c) (y c) := by
+            exact congrArg (fun z : ℂ => inner ℂ z (y c)) (hcoord x c)
+      _ = inner ℂ (x c) ((w c : ℂ) * y c) :=
+        hsymmScalar (w c) (x c) (y c)
+      _ = inner ℂ (x c) (T y c) := by
+        exact congrArg (fun z : ℂ => inner ℂ (x c) z) (hcoord y c).symm
+  · intro x
+    rw [ContinuousLinearMap.reApplyInnerSelf_apply, lp.inner_eq_tsum]
+    have hs : Summable fun c : Config => inner ℂ (T x c) (x c) :=
+      lp.summable_inner (T x) x
+    have hre :
+        RCLike.re (∑' c : Config, inner ℂ (T x c) (x c)) =
+          ∑' c : Config, RCLike.re (inner ℂ (T x c) (x c)) := by
+      exact RCLike.reCLM.map_tsum hs
+    rw [hre]
+    apply tsum_nonneg
+    intro c
+    rw [hcoord x c]
+    exact hnonnegScalar (w c) (hnonneg c) (x c)
 
 /-- The maximal diagonal operator is densely defined for every scalar configuration weight. -/
 theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
