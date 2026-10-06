@@ -2471,7 +2471,8 @@
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle.0.Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_shuffleIntegral",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
+      "intervalIntegral.Continuous.measurableLocallyBounded",
+      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -6009,7 +6010,6 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
     ],
     "dependencies": [],
@@ -6026,10 +6026,9 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6141,9 +6140,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
@@ -6153,7 +6152,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono"
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
@@ -6162,9 +6162,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono"
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6199,6 +6200,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap"
     ],
@@ -6207,10 +6209,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6732,7 +6735,8 @@
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.Pairing.sign_pairPerm",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -6742,9 +6746,10 @@
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.Pairing.sign_pairPerm",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30080,29 +30085,31 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "Exponentials of scalar multiples of one bounded operator form a one-parameter group. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventApproximationEvolution_add"
+      "LinearPMap.resolventApproximationEvolution_add",
+      "QuantumTheory.LinearResponse.freePropagator_add"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_add"
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_add"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolution_add"
+      "LinearPMap.resolventApproximationEvolution_add",
+      "QuantumTheory.LinearResponse.freePropagator_add"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30130,7 +30137,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_add_generator_of_commute",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "Evolutions generated by commuting bounded operators factor through the sum of generators. ",
     "directWrapperTargetModule": null,
@@ -30172,7 +30179,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "The bounded-generator differential equation after evaluating the propagator on a vector. ",
     "directWrapperTargetModule": null,
@@ -30218,7 +30225,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_apply_norm",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "A bounded self-adjoint exponential preserves the norm of every vector. ",
     "directWrapperTargetModule": null,
@@ -30230,7 +30237,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventApproximationEvolutionAtScale_apply_norm"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -30254,7 +30261,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (B : H →L[ℂ] H),\n  Continuous (LinearPMap.boundedUnitaryEvolution B)",
     "standardAxioms": [
       "Classical.choice",
@@ -30262,23 +30269,69 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_continuous",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "The bounded exponential group is continuous in operator norm, hence in particular strongly\ncontinuous on every vector. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.LinearResponse.continuous_freePropagator"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.continuous_freePropagator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (B : H →L[ℂ] H) (t : ℝ),\n  LinearPMap.boundedUnitaryEvolution B t = NormedSpace.exp (-(↑t * Complex.I) • B)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.boundedUnitaryEvolution_eq_exp",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+    "externalAxioms": [],
+    "docString": "Unfold the bounded evolution to the explicit Schrödinger exponential. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30306,7 +30359,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "The operator-norm derivative of the bounded unitary evolution. ",
     "directWrapperTargetModule": null,
@@ -30348,14 +30401,14 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_mul_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "A bounded self-adjoint exponential has its adjoint as a right inverse. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -30374,7 +30427,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H),\n  IsSelfAdjoint B → ∀ (t : ℝ), star (LinearPMap.boundedUnitaryEvolution B t) = LinearPMap.boundedUnitaryEvolution B (-t)",
     "standardAxioms": [
       "Classical.choice",
@@ -30382,25 +30435,29 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_star",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "For self-adjoint `B`, the adjoint evolution is evolution at negative time. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient"
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30428,14 +30485,14 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_star_mul",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "A bounded self-adjoint exponential has its adjoint as a left inverse. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -30468,25 +30525,27 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.boundedUnitaryEvolution_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
-      "LinearPMap.resolventApproximationEvolution_zero"
+      "LinearPMap.resolventApproximationEvolution_zero",
+      "QuantumTheory.LinearResponse.freePropagator_zero"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
-      "LinearPMap.resolventApproximationEvolution_zero"
+      "LinearPMap.resolventApproximationEvolution_zero",
+      "QuantumTheory.LinearResponse.freePropagator_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -31737,7 +31796,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.norm_boundedUnitaryEvolution_apply_sub_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "externalAxioms": [],
     "docString": "The displacement under bounded self-adjoint evolution is controlled by the generator on the\ninitial vector. ",
     "directWrapperTargetModule": null,
@@ -32019,10 +32078,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.resolventApproximationEvolution_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "Each bounded resolvent approximation gives a one-parameter group. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_add",
     "dependents": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
@@ -32030,7 +32089,7 @@
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_add"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
@@ -32063,10 +32122,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.resolventApproximationEvolution_apply_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": "The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt",
     "dependents": [
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
@@ -32074,7 +32133,7 @@
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_apply_hasDerivAt"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero"
@@ -32107,10 +32166,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "LinearPMap.resolventApproximationEvolution_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_zero",
     "dependents": [
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
@@ -32120,7 +32179,7 @@
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_zero"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.stoneEvolution_apply_hasDerivAt_zero",
@@ -44629,7 +44688,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -44641,15 +44700,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.star_schrodingerGenerator"
+      "QuantumTheory.LinearResponse.star_schrodingerGenerator",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.star_schrodingerGenerator"
+      "QuantumTheory.LinearResponse.star_schrodingerGenerator",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46146,7 +46207,10 @@
     "dependents": [
       "QuantumTheory.LinearResponse.continuous_heisenbergEvolution"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "LinearPMap.boundedUnitaryEvolution_continuous",
+      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -47536,7 +47600,8 @@
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.timeScaledGenerator_add"
+      "LinearPMap.boundedUnitaryEvolution_add",
+      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -47591,6 +47656,56 @@
       "QuantumTheory.LinearResponse.inner_purePointBasis_heisenbergEvolution"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t =\n    LinearPMap.boundedUnitaryEvolution ((↑system.hbar)⁻¹ • ↑system.hamiltonian) t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+    "externalAxioms": [],
+    "docString": "The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled\nby `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic\nimplementation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.continuous_freePropagator",
+      "QuantumTheory.LinearResponse.freePropagator_add",
+      "QuantumTheory.LinearResponse.freePropagator_zero",
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "dependencies": [
+      "LinearPMap.boundedUnitaryEvolution_eq_exp"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.continuous_freePropagator",
+      "QuantumTheory.LinearResponse.freePropagator_add",
+      "QuantumTheory.LinearResponse.freePropagator_zero",
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47822,7 +47937,8 @@
       "QuantumTheory.LinearResponse.heisenbergEvolution_zero"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.timeScaledGenerator_zero"
+      "LinearPMap.boundedUnitaryEvolution_zero",
+      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52495,7 +52611,9 @@
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence.0.QuantumTheory.LinearResponse.inner_freePropagator_apply_eq_heisenbergEvolution"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.star_timeScaledGenerator"
+      "LinearPMap.boundedUnitaryEvolution_star",
+      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52762,7 +52880,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  star (QuantumTheory.LinearResponse.timeScaledGenerator system t) =\n    QuantumTheory.LinearResponse.timeScaledGenerator system (-t)",
     "standardAxioms": [
       "Classical.choice",
@@ -52770,7 +52888,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52781,18 +52899,14 @@
     "docString": "Taking the adjoint of the time-scaled generator reverses time. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.star_freePropagator"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.star_schrodingerGenerator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.star_freePropagator"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53558,7 +53672,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t s : ℝ),\n  QuantumTheory.LinearResponse.timeScaledGenerator system (t + s) =\n    QuantumTheory.LinearResponse.timeScaledGenerator system t +\n      QuantumTheory.LinearResponse.timeScaledGenerator system s",
     "standardAxioms": [
       "Classical.choice",
@@ -53566,7 +53680,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53577,16 +53691,12 @@
     "docString": "Scaling the free generator is additive in time. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_add"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_add"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53600,7 +53710,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H),\n  QuantumTheory.LinearResponse.timeScaledGenerator system 0 = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -53608,7 +53718,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53619,16 +53729,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_zero"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_zero"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95174,6 +95280,86 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.completedBasisState n ∈ SecondQuantization.Bosonic.completedFreeHamiltonianDomain ε",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedBasisState_mem_completedFreeHamiltonianDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "Every occupation-basis vector lies in the completed free-Hamiltonian domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.completedBasisState n ∈ SecondQuantization.Bosonic.completedNumberOperatorDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedBasisState_mem_completedNumberOperatorDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "Every occupation-basis vector lies in the completed single-mode number-operator domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hβ hε).op\n      (SecondQuantization.Bosonic.completedBasisState n) =\n    ↑(QuantumTheory.purePointGibbsProbability (SecondQuantization.Bosonic.freeEigenvalue ε) β n) •\n      SecondQuantization.Bosonic.completedBasisState n",
     "standardAxioms": [
       "Classical.choice",
@@ -95197,6 +95383,126 @@
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
       "SecondQuantization.Common.completedHilbertBasis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  ↑(SecondQuantization.Bosonic.completedFreeHamiltonian ε) ⟨SecondQuantization.Bosonic.completedBasisState n, ⋯⟩ =\n    ↑(SecondQuantization.Bosonic.freeEigenvalue ε n) • SecondQuantization.Bosonic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeHamiltonian_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "Occupation-basis vectors diagonalize the completed free Hamiltonian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ),\n  ((SecondQuantization.Bosonic.completedFreeHamiltonian ε).toFun ∘ₗ\n      SecondQuantization.Common.algebraicToCompletedDiagonalDomain fun n =>\n        ↑(SecondQuantization.Bosonic.freeEigenvalue ε n)) =\n    SecondQuantization.Bosonic.algebraicToCompleted ∘ₗ SecondQuantization.Bosonic.freeHamiltonian ε",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeHamiltonian_comp_algebraicCore",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "On the finite-support core, the completed free Hamiltonian agrees with the existing algebraic\nfree bosonic Hamiltonian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ), IsSelfAdjoint (SecondQuantization.Bosonic.completedFreeHamiltonian ε)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeHamiltonian_isSelfAdjoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
+    "externalAxioms": [],
+    "docString": "The completed free bosonic Hamiltonian is self-adjoint for arbitrary real one-particle\nenergies. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_isSelfAdjoint_of_star"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -95337,6 +95643,127 @@
       "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
       "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_purePointPartitionFunction"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  ↑(SecondQuantization.Bosonic.completedNumberOperator i) ⟨SecondQuantization.Bosonic.completedBasisState n, ⋯⟩ =\n    ↑(n i) • SecondQuantization.Bosonic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedNumberOperator_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "Occupation-basis vectors diagonalize the completed single-mode number operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  ((SecondQuantization.Bosonic.completedNumberOperator i).toFun ∘ₗ\n      SecondQuantization.Common.algebraicToCompletedDiagonalDomain fun n => ↑(n i)) =\n    SecondQuantization.Bosonic.algebraicToCompleted ∘ₗ SecondQuantization.Bosonic.numberOperator i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedNumberOperator_comp_algebraicCore",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "On the finite-support core, the completed single-mode number operator agrees with the algebraic\noperator `aᵢ† aᵢ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
+      "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode), IsSelfAdjoint (SecondQuantization.Bosonic.completedNumberOperator i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedNumberOperator_isSelfAdjoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
+    "externalAxioms": [],
+    "docString": "The completed single-mode bosonic number operator is self-adjoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_isSelfAdjoint_of_star"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -99240,7 +99667,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.numberOperator i) (SecondQuantization.Bosonic.basisState n) =\n    ↑(n i) • SecondQuantization.Bosonic.basisState n",
     "standardAxioms": [
       "Classical.choice",
@@ -99248,7 +99675,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -99259,14 +99686,64 @@
     "docString": "The number-operator eigenvalue equation `N_i |n⟩ = n_i |n⟩`. ",
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
     "directWrapperOf": "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.create_annihilate_basisState_same"
     ],
     "crossModuleDirectWrapper": true,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.numberOperator i = SecondQuantization.Common.diagonalOperator fun n => ↑(n i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator",
+    "externalAxioms": [],
+    "docString": "The single-mode number operator is the basis-diagonal operator with occupation weight\n`n ↦ n i`. This is the canonical bridge from `aᵢ† aᵢ` to the common diagonal-operator API. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedNumberOperator_comp_algebraicCore"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.numberOperator_basisState",
+      "SecondQuantization.Common.diagonalOperator_basisState",
+      "SecondQuantization.Common.linearMap_ext_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedNumberOperator_comp_algebraicCore"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109176,6 +109653,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedBasisState_mem_completedFreeHamiltonianDomain",
+      "SecondQuantization.Bosonic.completedBasisState_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
@@ -109188,12 +109667,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedBasisState_mem_completedFreeHamiltonianDomain",
+      "SecondQuantization.Bosonic.completedBasisState_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109835,6 +110316,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHamiltonian_basisState",
+      "SecondQuantization.Bosonic.completedNumberOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
@@ -109848,11 +110331,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHamiltonian_basisState",
+      "SecondQuantization.Bosonic.completedNumberOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109866,7 +110351,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (w : Config → ℂ),\n  (SecondQuantization.Common.completedDiagonalOperator w).toFun ∘ₗ\n      SecondQuantization.Common.algebraicToCompletedDiagonalDomain w =\n    SecondQuantization.Common.algebraicToCompleted ∘ₗ SecondQuantization.Common.diagonalOperator w",
     "standardAxioms": [
       "Classical.choice",
@@ -109885,7 +110370,10 @@
     "docString": "On the finite-support core, the maximal completed diagonal operator agrees with the algebraic\nconfiguration-diagonal operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHamiltonian_comp_algebraicCore",
+      "SecondQuantization.Bosonic.completedNumberOperator_comp_algebraicCore"
+    ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain",
@@ -109895,8 +110383,11 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHamiltonian_comp_algebraicCore",
+      "SecondQuantization.Bosonic.completedNumberOperator_comp_algebraicCore"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110057,6 +110548,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHamiltonian_isSelfAdjoint",
+      "SecondQuantization.Bosonic.completedNumberOperator_isSelfAdjoint",
       "SecondQuantization.Fermionic.completedFreeHamiltonian_isSelfAdjoint",
       "SecondQuantization.Fermionic.completedTotalNumberOperator_isSelfAdjoint"
     ],
@@ -110066,10 +110559,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHamiltonian_isSelfAdjoint",
+      "SecondQuantization.Bosonic.completedNumberOperator_isSelfAdjoint",
       "SecondQuantization.Fermionic.completedFreeHamiltonian_isSelfAdjoint",
       "SecondQuantization.Fermionic.completedTotalNumberOperator_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112192,6 +112687,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.freeHamiltonian_basisState",
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.diagonalEvolution_basisState",
       "SecondQuantization.Common.diagonalOperator_apply",
@@ -112209,6 +112705,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.freeHamiltonian_basisState",
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.diagonalEvolution_basisState",
       "SecondQuantization.Common.diagonalOperator_apply",
@@ -112219,7 +112716,7 @@
       "SecondQuantization.Fermionic.totalNumberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116055,6 +116552,7 @@
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
@@ -116080,6 +116578,7 @@
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
+      "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
@@ -116098,7 +116597,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 20,
+    "compiledConsumerCount": 21,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147610,6 +148109,182 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H), IsSelfAdjoint B → ∀ (t : ℝ), LinearPMap.boundedUnitaryEvolution B t ∈ unitary (H →L[ℂ] H)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+    "externalAxioms": [],
+    "docString": "A bounded self-adjoint exponential is unitary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "LinearPMap.boundedUnitaryEvolution_mul_star",
+      "LinearPMap.boundedUnitaryEvolution_star_mul"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.boundedUnitaryEvolution_apply_norm",
+      "LinearPMap.boundedUnitaryEvolution_mul_star",
+      "LinearPMap.boundedUnitaryEvolution_star_mul"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (t : ℝ), star (LinearPMap.unitaryTimeCoefficient✝ t) = LinearPMap.unitaryTimeCoefficient✝ (-t)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.boundedUnitaryEvolution_star",
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.boundedUnitaryEvolution_star",
+      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (t s : ℝ),\n  LinearPMap.unitaryTimeCoefficient✝ (t + s) =\n    LinearPMap.unitaryTimeCoefficient✝ t + LinearPMap.unitaryTimeCoefficient✝ s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_add",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.boundedUnitaryEvolution_add"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.boundedUnitaryEvolution_add"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "LinearPMap.unitaryTimeCoefficient✝ 0 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.boundedUnitaryEvolution_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.boundedUnitaryEvolution_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} (d : HilbertBasis ι ℂ H)\n  (B : H →L[ℂ] H) {T : H →L[ℂ] H},\n  ContinuousLinearMap.IsHilbertSchmidtWrt d T → ContinuousLinearMap.IsHilbertSchmidtWrt d (B * T)",
     "standardAxioms": [
       "Classical.choice",
@@ -149118,182 +149793,6 @@
       "LinearPMap.norm_nonrealShiftInverseDomain_le"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (B : H →L[ℂ] H), IsSelfAdjoint B → ∀ (t : ℝ), LinearPMap.boundedUnitaryEvolution B t ∈ unitary (H →L[ℂ] H)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": "A bounded self-adjoint exponential is unitary. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_apply_norm",
-      "LinearPMap.boundedUnitaryEvolution_mul_star",
-      "LinearPMap.boundedUnitaryEvolution_star_mul"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (t : ℝ), star (LinearPMap.unitaryTimeCoefficient✝ t) = LinearPMap.unitaryTimeCoefficient✝ (-t)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.star_unitaryTimeCoefficient",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_star",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_star",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.boundedUnitaryEvolution_mem_unitary"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (t s : ℝ),\n  LinearPMap.unitaryTimeCoefficient✝ (t + s) =\n    LinearPMap.unitaryTimeCoefficient✝ t + LinearPMap.unitaryTimeCoefficient✝ s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_add"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_add"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "LinearPMap.unitaryTimeCoefficient✝ 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159178,55 +159677,10 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {m : ℕ} (e : Combinatorics.SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m),\n  Combinatorics.sidePair✝ e σ i ∈ (Combinatorics.sidePairing✝ e σ).pairs",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
-    "module": "LeanCondensedMatter.Permutation.PairingBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.mem_pairs_iff",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePartner_inl",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePartner_inr",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sideSplitting_inl_ne_inr"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairEquiv"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {m : ℕ} {e : Combinatorics.SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m},\n  e (Sum.inr (σ i)) < e (Sum.inl i) → Combinatorics.sidePair✝ e σ i = (e (Sum.inr (σ i)), e (Sum.inl i))",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -159245,7 +159699,11 @@
     "dependents": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.pairs_normalized",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -159253,6 +159711,7 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -159267,7 +159726,9 @@
     "terminal": false,
     "statement": "∀ {m : ℕ} {e : Combinatorics.SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m},\n  e (Sum.inl i) < e (Sum.inr (σ i)) → Combinatorics.sidePair✝ e σ i = (e (Sum.inl i), e (Sum.inr (σ i)))",
     "standardAxioms": [
-      "Quot.sound"
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
     ],
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
@@ -159284,7 +159745,10 @@
     "dependents": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -159292,7 +159756,9 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
-      "Quot.sound"
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
     ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -159321,7 +159787,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
@@ -159329,12 +159794,57 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m : ℕ} (e : Combinatorics.SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m),\n  (Combinatorics.sidePairing✝ e σ).partner (e ((Combinatorics.sideEndpointEquiv✝ σ) (i, 0))) =\n    e ((Combinatorics.sideEndpointEquiv✝ σ) (i, 1))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint",
+    "module": "LeanCondensedMatter.Permutation.PairingBridge",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePartner_inl"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -159463,7 +159973,7 @@
     "dependents": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.isBipartite_sidePairing",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.isPairing_sidePartner",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sum_pairings_eq_sum_perm_of_inl_vanishing"
@@ -159474,7 +159984,7 @@
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.isBipartite_sidePairing",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.isPairing_sidePartner",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sum_pairings_eq_sum_perm_of_inl_vanishing"
@@ -159512,7 +160022,6 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.isPairing_sidePartner",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
     "dependencies": [],
@@ -159520,10 +160029,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.isPairing_sidePartner",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -159542,8 +160050,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -159555,17 +160063,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -161730,6 +162236,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.gibbsOp_spectralTraceClass"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H), IsSelfAdjoint ((↑system.hbar)⁻¹ • ↑system.hamiltonian)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.BoundedFreeSystem.hamiltonian_selfAdjoint"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -183567,10 +184117,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
     "dependencies": [
       "intervalIntegral.measurableLocallyBounded_of_finite_continuous_selection"
@@ -183578,10 +184128,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -184750,51 +185300,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  Continuous f →\n    Continuous g →\n      intervalIntegral.orderedSimplexShuffleIntegral m n β f g =\n        intervalIntegral.orderedSimplexIntegral m β f * intervalIntegral.orderedSimplexIntegral n β g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
-    "externalAxioms": [],
-    "docString": "Binary shuffle identity: the recursively accumulated contribution of all order-preserving\ninterleavings equals the product of the two component ordered-simplex integrals. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul"
-    ],
-    "dependencies": [
-      "intervalIntegral.Continuous.measurableLocallyBounded",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  intervalIntegral.MeasurableLocallyBounded f →\n    intervalIntegral.MeasurableLocallyBounded g →\n      intervalIntegral.orderedSimplexShuffleIntegral m n β f g =\n        intervalIntegral.orderedSimplexIntegral m β f * intervalIntegral.orderedSimplexIntegral n β g",
     "standardAxioms": [
       "Classical.choice",
@@ -184814,15 +185319,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
+      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul"
+      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded"
     ],
     "compiledConsumerCount": 2,
     "axioms": [

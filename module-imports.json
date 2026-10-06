@@ -318,6 +318,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/BoundedUnitaryEvolution.lean",
+      "imports": [],
+      "externalImportCount": 7
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.Compact",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Compact.lean",
       "imports": [],
@@ -690,14 +696,6 @@
       "externalImportCount": 4
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/BoundedUnitaryEvolution.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation"
-      ],
-      "externalImportCount": 7
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/CayleyTransform.lean",
       "imports": [
@@ -733,7 +731,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventEvolution.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
+        "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence"
       ],
@@ -774,6 +772,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.BerryGeometry",
+        "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
         "LeanCondensedMatter.Analysis.Operator.Compact",
         "LeanCondensedMatter.Analysis.Operator.Diagonal",
         "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
@@ -872,7 +871,6 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/ShuffleIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Calculus",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit"
       ],
       "externalImportCount": 0
@@ -2576,6 +2574,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/FreeDynamics.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
         "LeanCondensedMatter.QuantumTheory.Postulates"
       ],
       "externalImportCount": 3
@@ -2948,10 +2947,32 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/Diagonal.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/DiagonalAnalytic.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic"
       ],
       "externalImportCount": 0
     },
