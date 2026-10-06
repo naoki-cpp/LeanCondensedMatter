@@ -194,78 +194,6 @@ theorem completedBasisState_mem_completedAnnihilateDomain (i : Mode) (n : Occupa
   exact Common.completedBasisState_mem_completedDiagonalDomain
     (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n
 
-private theorem completedCreateExtension_basisState (i : Mode) (n : Occupation Mode) :
-    completedCreateExtension i (completedBasisState n) =
-      completedBasisState (createOccupation i n) := by
-  classical
-  ext m
-  by_cases hm : m ∈ Set.range (createOccupation i)
-  · rcases hm with ⟨k, rfl⟩
-    change
-      Function.extend (createOccupation i)
-          (fun q => completedBasisState n q) 0 (createOccupation i k) =
-        completedBasisState (createOccupation i n) (createOccupation i k)
-    rw [(createOccupation_injective i).extend_apply]
-    by_cases hkn : k = n
-    · subst k
-      rw [completedBasisState_apply_self, completedBasisState_apply_self]
-    · have hshift :
-          createOccupation i k ≠ createOccupation i n :=
-        (createOccupation_injective i).ne hkn
-      rw [completedBasisState_apply_of_ne hkn,
-        completedBasisState_apply_of_ne hshift]
-  · change
-      Function.extend (createOccupation i)
-          (fun q => completedBasisState n q) 0 m =
-        completedBasisState (createOccupation i n) m
-    have hne : m ≠ createOccupation i n := by
-      intro h
-      apply hm
-      exact ⟨n, h.symm⟩
-    rw [Function.extend_apply']
-    · simp [completedBasisState_apply_of_ne hne]
-    · intro h
-      exact hm h
-
-private theorem completedAnnihilatePullback_basisState_of_pos
-    (i : Mode) {n : Occupation Mode} (hni : n i ≠ 0) :
-    completedAnnihilatePullback i (completedBasisState n) =
-      completedBasisState (removeOccupation i n) := by
-  classical
-  ext m
-  change
-    completedBasisState n (createOccupation i m) =
-      completedBasisState (removeOccupation i n) m
-  by_cases hm : m = removeOccupation i n
-  · subst m
-    rw [createOccupation_removeOccupation_of_pos hni,
-      completedBasisState_apply_self, completedBasisState_apply_self]
-  · have hcreate : createOccupation i m ≠ n := by
-      intro h
-      apply hm
-      have h' := congrArg (removeOccupation i) h
-      simpa only [removeOccupation_createOccupation] using h'
-    rw [completedBasisState_apply_of_ne hcreate,
-      completedBasisState_apply_of_ne hm]
-
-private theorem completedCreateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
-    Common.completedDiagonalOperator
-        (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
-        ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ =
-      (Real.sqrt (n i + 1 : ℝ) : ℂ) • completedBasisState n := by
-  simpa [completedBasisState] using
-    (Common.completedDiagonalOperator_basisState
-      (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) n)
-
-private theorem completedAnnihilateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
-    Common.completedDiagonalOperator
-        (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
-        ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ =
-      (Real.sqrt (n i : ℝ) : ℂ) • completedBasisState n := by
-  simpa [completedBasisState] using
-    (Common.completedDiagonalOperator_basisState
-      (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n)
-
 /-- Occupation-basis action of completed bosonic creation. -/
 @[simp]
 theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
@@ -273,14 +201,44 @@ theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
     completedCreate i ⟨completedBasisState n, h⟩ =
       (Real.sqrt (n i + 1 : ℝ) : ℂ) •
         completedBasisState (createOccupation i n) := by
-  change
-    completedCreateExtension i
-        (Common.completedDiagonalOperator
-          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
-          ⟨completedBasisState n, h⟩) =
-      _
-  rw [completedCreateDiagonal_basisState, map_smul,
-    completedCreateExtension_basisState]
+  classical
+  ext m
+  rw [completedCreate_apply]
+  by_cases hmi : m i = 0
+  · rw [ite_eq_left hmi]
+    have hne : m ≠ createOccupation i n := by
+      intro hm
+      have hcoord := congrArg (fun q : Occupation Mode => q i) hm
+      rw [createOccupation_apply_same, hmi] at hcoord
+      omega
+    simpa [completedBasisState] using
+      congrArg
+        (fun z : ℂ => (Real.sqrt (n i + 1 : ℝ) : ℂ) * z)
+        (Common.completedBasisState_apply_of_ne
+          (Config := Occupation Mode) hne)
+  · rw [ite_eq_right hmi]
+    by_cases hm : m = createOccupation i n
+    · subst m
+      rw [removeOccupation_createOccupation]
+      simp [completedBasisState, createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
+    · have hremove : removeOccupation i m ≠ n := by
+        intro hr
+        apply hm
+        calc
+          m = createOccupation i (removeOccupation i m) :=
+            (createOccupation_removeOccupation_of_pos hmi).symm
+          _ = createOccupation i n := congrArg (createOccupation i) hr
+      have hleft :
+          completedBasisState n (removeOccupation i m) = 0 := by
+        simpa [completedBasisState] using
+          (Common.completedBasisState_apply_of_ne
+            (Config := Occupation Mode) hremove)
+      have hright :
+          completedBasisState (createOccupation i n) m = 0 := by
+        simpa [completedBasisState] using
+          (Common.completedBasisState_apply_of_ne
+            (Config := Occupation Mode) hm)
+      simp [hleft, hright]
 
 /-- Occupation-basis action of completed bosonic annihilation. -/
 @[simp]
@@ -289,16 +247,47 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
     completedAnnihilate i ⟨completedBasisState n, h⟩ =
       (Real.sqrt (n i : ℝ) : ℂ) •
         completedBasisState (removeOccupation i n) := by
-  change
-    completedAnnihilatePullback i
-        (Common.completedDiagonalOperator
-          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
-          ⟨completedBasisState n, h⟩) =
-      _
-  rw [completedAnnihilateDiagonal_basisState, map_smul]
+  classical
+  ext m
+  rw [completedAnnihilate_apply]
   by_cases hni : n i = 0
-  · simp [hni]
-  · rw [completedAnnihilatePullback_basisState_of_pos i hni]
+  · have hne : createOccupation i m ≠ n := by
+      intro hm
+      have hcoord := congrArg (fun q : Occupation Mode => q i) hm
+      rw [createOccupation_apply_same, hni] at hcoord
+      omega
+    have hleft :
+        completedBasisState n (createOccupation i m) = 0 := by
+      simpa [completedBasisState] using
+        (Common.completedBasisState_apply_of_ne
+          (Config := Occupation Mode) hne)
+    simp [hni, hleft]
+  · by_cases hm : m = removeOccupation i n
+    · subst m
+      rw [createOccupation_removeOccupation_of_pos hni]
+      have hcoord : (removeOccupation i n) i + 1 = n i := by
+        rw [removeOccupation_apply_same]
+        omega
+      have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
+        exact_mod_cast hcoord
+      rw [hcoord_real]
+      simp [completedBasisState]
+    · have hcreate : createOccupation i m ≠ n := by
+        intro hc
+        apply hm
+        have h' := congrArg (removeOccupation i) hc
+        simpa only [removeOccupation_createOccupation] using h'
+      have hleft :
+          completedBasisState n (createOccupation i m) = 0 := by
+        simpa [completedBasisState] using
+          (Common.completedBasisState_apply_of_ne
+            (Config := Occupation Mode) hcreate)
+      have hright :
+          completedBasisState (removeOccupation i n) m = 0 := by
+        simpa [completedBasisState] using
+          (Common.completedBasisState_apply_of_ne
+            (Config := Occupation Mode) hm)
+      simp [hleft, hright]
 
 private noncomputable def algebraicToCompletedCreateDomain (i : Mode) :
     FockSpace Mode →ₗ[ℂ] (completedCreate i).domain := by
