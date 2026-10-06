@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
+import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import Mathlib.Analysis.Normed.Operator.Completeness
 import Mathlib.Analysis.Calculus.Deriv.Slope
 import Mathlib.Topology.MetricSpace.Cauchy
@@ -25,6 +25,33 @@ open Complex Filter
 open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- The unitary group obtained by exponentiating the bounded resolvent approximation `Aᵣ`. -/
+noncomputable def resolventApproximationEvolution
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) : H →L[ℂ] H :=
+  boundedUnitaryEvolution (boundedSelfAdjointApproximation A hA r hr) t
+
+@[simp]
+theorem resolventApproximationEvolution_zero
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) :
+    resolventApproximationEvolution A hA r hr 0 = 1 := by
+  exact boundedUnitaryEvolution_zero _
+
+/-- Each bounded resolvent approximation gives a one-parameter group. -/
+theorem resolventApproximationEvolution_add
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t s : ℝ) :
+    resolventApproximationEvolution A hA r hr (t + s) =
+      resolventApproximationEvolution A hA r hr t *
+        resolventApproximationEvolution A hA r hr s := by
+  exact boundedUnitaryEvolution_add _ t s
+
+/-- The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. -/
+theorem resolventApproximationEvolution_apply_hasDerivAt
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : H) :
+    HasDerivAt (fun τ : ℝ => resolventApproximationEvolution A hA r hr τ x)
+      ((resolventApproximationEvolution A hA r hr t *
+        ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr)) x) t := by
+  exact boundedUnitaryEvolution_apply_hasDerivAt _ t x
 
 /-- Difference estimate for the bounded resolvent-approximation evolutions. -/
 private theorem norm_resolventApproximationEvolution_sub_le
