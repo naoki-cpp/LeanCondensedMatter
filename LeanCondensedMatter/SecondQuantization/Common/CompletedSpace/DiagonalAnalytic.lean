@@ -49,7 +49,6 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     rw [hinner]
     change 0 ≤ r * ‖z‖ ^ 2
     exact mul_nonneg hr (sq_nonneg ‖z‖)
-    exact mul_nonneg hr (sq_nonneg ‖z‖)
   change T.IsPositive
   rw [ContinuousLinearMap.isPositive_def]
   constructor
