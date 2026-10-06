@@ -35,7 +35,11 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
       Common.diagonalOperator (fun n : Occupation Mode => (n i : ℂ)) := by
   apply Common.linearMap_ext_basisState
   intro n
-  rw [numberOperator_basisState, Common.diagonalOperator_basisState]
+  change numberOperator i (basisState n) =
+    Common.diagonalOperator (fun m : Occupation Mode => (m i : ℂ)) (basisState n)
+  rw [numberOperator_basisState]
+  simpa [basisState] using
+    (Common.diagonalOperator_basisState (fun m : Occupation Mode => (m i : ℂ)) n)
 
 /-- The single-mode bosonic exchange commutator is the identity. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
