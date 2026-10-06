@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval
+import LeanCondensedMatter.Analysis.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 
