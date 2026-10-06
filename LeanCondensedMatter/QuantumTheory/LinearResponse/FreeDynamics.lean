@@ -77,13 +77,6 @@ private theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
   congr 1
   ring
 
-private theorem scaledHamiltonian_selfAdjoint :
-    IsSelfAdjoint (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1) := by
-  apply IsSelfAdjoint.smul
-  · rw [isSelfAdjoint_iff, Complex.star_def]
-    simp
-  · exact system.hamiltonian_selfAdjoint
-
 @[simp]
 theorem freePropagator_zero : freePropagator system 0 = 1 := by
   rw [freePropagator_eq_boundedUnitaryEvolution]
@@ -94,8 +87,11 @@ theorem star_freePropagator (t : ℝ) :
     star (freePropagator system t) = freePropagator system (-t) := by
   rw [freePropagator_eq_boundedUnitaryEvolution system t,
     freePropagator_eq_boundedUnitaryEvolution system (-t)]
-  exact LinearPMap.boundedUnitaryEvolution_star _
-    (scaledHamiltonian_selfAdjoint system) t
+  exact LinearPMap.boundedUnitaryEvolution_star _ (by
+    apply IsSelfAdjoint.smul
+    · rw [isSelfAdjoint_iff, Complex.star_def]
+      simp
+    · exact system.hamiltonian_selfAdjoint) t
 
 /-- Free propagators form a one-parameter multiplicative group. -/
 theorem freePropagator_add (t s : ℝ) :
