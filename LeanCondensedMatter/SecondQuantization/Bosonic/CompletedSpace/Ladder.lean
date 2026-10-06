@@ -305,7 +305,6 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
             (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n⟩ := by
     exact Subtype.ext (Common.algebraicToCompleted_basisState n)
   rw [hdomain, Common.completedDiagonalOperator_basisState, map_smul]
-  have hshift := completedAnnihilatePullback_basisState_of_pos
   rw [annihilate_basisState_eq, map_smul, algebraicToCompleted_basisState]
   by_cases hni : n i = 0
   · simp [hni]
