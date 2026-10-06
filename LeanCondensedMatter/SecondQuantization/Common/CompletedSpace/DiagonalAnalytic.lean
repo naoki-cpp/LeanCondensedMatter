@@ -35,18 +35,14 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
     simp [RCLike.inner_apply, mul_assoc, mul_comm]
   have hnonnegScalar (r : ℝ) (hr : 0 ≤ r) (z : ℂ) :
       0 ≤ RCLike.re (inner ℂ ((r : ℂ) * z) z) := by
-    have hvalue :
-        RCLike.re (inner ℂ ((r : ℂ) * z) z) = r * ‖z‖ ^ 2 := by
-      calc
-        RCLike.re (inner ℂ ((r : ℂ) * z) z) =
-            RCLike.re ((r : ℂ) * (z * (starRingEnd ℂ) z)) := by
-              simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
-              congr 1
-              ac_rfl
-        _ = r * ‖z‖ ^ 2 := by
-          rw [RCLike.mul_conj]
-          norm_num [Complex.mul_re]
-    rw [hvalue]
+    have hinner :
+        inner ℂ ((r : ℂ) * z) z = ((r * ‖z‖ ^ 2 : ℝ) : ℂ) := by
+      simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
+      rw [show z * ((r : ℂ) * (starRingEnd ℂ) z) =
+        (r : ℂ) * (z * (starRingEnd ℂ) z) by ac_rfl, RCLike.mul_conj]
+      norm_cast
+    rw [hinner]
+    simpa using mul_nonneg hr (sq_nonneg ‖z‖)
     exact mul_nonneg hr (sq_nonneg ‖z‖)
   change T.IsPositive
   rw [ContinuousLinearMap.isPositive_def]
