@@ -167,7 +167,6 @@ theorem createOccupation_injective (i : Mode) :
   have h' := congrArg (removeOccupation i) h
   simpa only [removeOccupation_createOccupation] using h'
 
-
 theorem particleNumber_removeOccupation_of_pos {i : Mode} {n : Occupation Mode} (h : n i ≠ 0) :
     particleNumber (removeOccupation i n) + 1 = particleNumber n := by
   conv_rhs => rw [← createOccupation_removeOccupation_of_pos h]
