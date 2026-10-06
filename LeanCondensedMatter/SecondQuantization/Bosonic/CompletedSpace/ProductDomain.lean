@@ -169,6 +169,121 @@ theorem completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOper
       (fun z : ℂ => z * (ψ : CompletedFockSpace Mode) (removeOccupation i n))
       (by exact_mod_cast hcoord)
 
+private theorem mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain
+    (i : Mode) {ψ : CompletedFockSpace Mode} (hψ : ψ ∈ completedAnnihilateDomain i)
+    (hout :
+      completedAnnihilate i ⟨ψ, hψ⟩ ∈ completedCreateDomain i) :
+    ψ ∈ completedNumberOperatorDomain i := by
+  rw [Common.mem_completedDiagonalDomain_iff]
+  let y : (completedCreate i).domain :=
+    ⟨completedAnnihilate i ⟨ψ, hψ⟩, hout⟩
+  have hmem :=
+    lp.memℓp
+      (Common.completedCoordinateEmbedding
+        (createOccupation i) (createOccupation_injective i)
+        (Common.completedDiagonalOperator
+          (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) y))
+  convert hmem using 1
+  funext n
+  rw [Common.completedCoordinateEmbedding_apply]
+  by_cases hni : n i = 0
+  · rw [hni]
+    simp only [Nat.cast_zero, zero_mul]
+    rw [Function.extend_apply']
+    · rfl
+    · intro h
+      rcases h with ⟨m, hm⟩
+      have hcoord := congrArg (fun q : Occupation Mode => q i) hm
+      rw [createOccupation_apply_same, hni] at hcoord
+      omega
+  · have hrepr : createOccupation i (removeOccupation i n) = n :=
+      createOccupation_removeOccupation_of_pos hni
+    have hcoord : (removeOccupation i n) i + 1 = n i := by
+      have h := congrArg (fun q : Occupation Mode => q i) hrepr
+      simpa only [createOccupation_apply_same] using h
+    conv_rhs => rw [← hrepr]
+    rw [(createOccupation_injective i).extend_apply]
+    change
+      (n i : ℂ) * ψ n =
+        (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) *
+          ((Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) *
+            ψ (createOccupation i (removeOccupation i n)))
+    rw [hrepr, ← mul_assoc]
+    have hsqrt := sqrt_natCast_mul_self (n i)
+    rw [show (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) *
+        (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) = (n i : ℂ) by
+          rw [show ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) by
+            exact_mod_cast hcoord]
+          exact hsqrt]
+
+private theorem mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain
+    (i : Mode) {ψ : CompletedFockSpace Mode} (hψ : ψ ∈ completedCreateDomain i)
+    (hout :
+      completedCreate i ⟨ψ, hψ⟩ ∈ completedAnnihilateDomain i) :
+    ψ ∈ completedNumberOperatorDomain i := by
+  have hplus :
+      ψ ∈ Common.completedDiagonalDomain
+        (fun n : Occupation Mode => (n i : ℂ) + 1) := by
+    rw [Common.mem_completedDiagonalDomain_iff]
+    let y : (completedAnnihilate i).domain :=
+      ⟨completedCreate i ⟨ψ, hψ⟩, hout⟩
+    have hmem :=
+      lp.memℓp
+        (Common.completedCoordinatePullback
+          (createOccupation i) (createOccupation_injective i)
+          (Common.completedDiagonalOperator
+            (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) y))
+    convert hmem using 1
+    funext n
+    rw [Common.completedCoordinatePullback_apply]
+    change
+      ((n i : ℂ) + 1) * ψ n =
+        (Real.sqrt (createOccupation i n i : ℝ) : ℂ) *
+          (completedCreate i ⟨ψ, hψ⟩) (createOccupation i n)
+    rw [completedCreate_apply]
+    have hpos : createOccupation i n i ≠ 0 := by
+      rw [createOccupation_apply_same]
+      omega
+    rw [ite_eq_right hpos, removeOccupation_createOccupation,
+      createOccupation_apply_same, ← mul_assoc]
+    have hsqrt := sqrt_natCast_mul_self (n i + 1)
+    simpa [Nat.cast_add, Nat.cast_one] using
+      congrArg (fun z : ℂ => z * ψ n) hsqrt
+  have hback :=
+    Common.mem_completedDiagonalDomain_add_const
+      (fun n : Occupation Mode => (n i : ℂ) + 1) (-1) hplus
+  simpa only [add_neg_cancel_right] using hback
+
+/-- The maximal domain of `aᵢ† aᵢ` is exactly the number-operator domain. -/
+theorem mem_completedNumberOperatorDomain_iff_annihilate_mem_createDomain
+    (i : Mode) (ψ : CompletedFockSpace Mode) :
+    ψ ∈ completedNumberOperatorDomain i ↔
+      ∃ hψ : ψ ∈ completedAnnihilateDomain i,
+        completedAnnihilate i ⟨ψ, hψ⟩ ∈ completedCreateDomain i := by
+  constructor
+  · intro hψ
+    let x : completedNumberOperatorDomain i := ⟨ψ, hψ⟩
+    exact
+      ⟨completedNumberOperatorDomain_le_completedAnnihilateDomain i hψ,
+        completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain i x⟩
+  · rintro ⟨hψ, hout⟩
+    exact mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain i hψ hout
+
+/-- The maximal domain of `aᵢ aᵢ†` is exactly the number-operator domain. -/
+theorem mem_completedNumberOperatorDomain_iff_create_mem_annihilateDomain
+    (i : Mode) (ψ : CompletedFockSpace Mode) :
+    ψ ∈ completedNumberOperatorDomain i ↔
+      ∃ hψ : ψ ∈ completedCreateDomain i,
+        completedCreate i ⟨ψ, hψ⟩ ∈ completedAnnihilateDomain i := by
+  constructor
+  · intro hψ
+    let x : completedNumberOperatorDomain i := ⟨ψ, hψ⟩
+    exact
+      ⟨completedNumberOperatorDomain_le_completedCreateDomain i hψ,
+        completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain i x⟩
+  · rintro ⟨hψ, hout⟩
+    exact mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain i hψ hout
+
 /-- Annihilation restricted from `Dom(Nᵢ)` to its natural domain. -/
 private noncomputable def completedAnnihilateFromNumberDomain (i : Mode) :
     completedNumberOperatorDomain i →ₗ[ℂ] (completedAnnihilate i).domain :=
