@@ -274,8 +274,8 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
         ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ := by
     apply Subtype.ext
     exact algebraicToCompleted_basisState n
-  rw [hdomain, completedCreate_basisState, create_basisState_eq,
-    map_smul, algebraicToCompleted_basisState]
+  rw [hdomain, create_basisState_eq, map_smul, algebraicToCompleted_basisState]
+  simpa only [completedCreate] using (completedCreate_basisState i n)
 
 /-- On the finite-support core, completed bosonic annihilation agrees with the algebraic
 annihilation operator. -/
@@ -293,8 +293,8 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
         ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ := by
     apply Subtype.ext
     exact algebraicToCompleted_basisState n
-  rw [hdomain, completedAnnihilate_basisState, annihilate_basisState_eq,
-    map_smul, algebraicToCompleted_basisState]
+  rw [hdomain, annihilate_basisState_eq, map_smul, algebraicToCompleted_basisState]
+  simpa only [completedAnnihilate] using (completedAnnihilate_basisState i n)
 
 end
 end Bosonic
