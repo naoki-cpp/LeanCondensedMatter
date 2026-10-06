@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry
 
 set_option linter.style.header false
 
@@ -42,80 +42,13 @@ noncomputable abbrev completedAnnihilateDomain (i : Mode) :
   Common.completedDiagonalDomain
     (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
 
-/-- Zero-extension of a completed coefficient sequence along the injective creation occupation map. -/
-private noncomputable def completedCreateExtension (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun ψ := by
-    refine ⟨Function.extend (createOccupation i) (fun n => ψ n) 0, ?_⟩
-    apply memℓp_gen
-    refine ((createOccupation_injective i).summable_iff ?_).mp ?_
-    · intro m hm
-      rw [Function.extend_apply']
-      · simp
-      · intro h
-        exact hm h
-    · have hsum :=
-        (lp.memℓp ψ).summable (by norm_num : 0 < (2 : ℝ≥0∞).toReal)
-      exact hsum.congr fun n => by
-        simp only [Function.comp_apply]
-        rw [(createOccupation_injective i).extend_apply]
-  map_add' ψ φ := by
-    apply Subtype.ext
-    funext m
-    change
-      Function.extend (createOccupation i) (fun n => (ψ + φ) n) 0 m =
-        Function.extend (createOccupation i) (fun n => ψ n) 0 m +
-          Function.extend (createOccupation i) (fun n => φ n) 0 m
-    by_cases hm : m ∈ Set.range (createOccupation i)
-    · rcases hm with ⟨n, rfl⟩
-      rw [(createOccupation_injective i).extend_apply,
-        (createOccupation_injective i).extend_apply,
-        (createOccupation_injective i).extend_apply]
-      rfl
-    · have hnot : ¬ ∃ n, createOccupation i n = m := hm
-      rw [Function.extend_apply' _ _ _ hnot,
-        Function.extend_apply' _ _ _ hnot,
-        Function.extend_apply' _ _ _ hnot]
-      simp
-  map_smul' a ψ := by
-    apply Subtype.ext
-    funext m
-    change
-      Function.extend (createOccupation i) (fun n => (a • ψ) n) 0 m =
-        a • Function.extend (createOccupation i) (fun n => ψ n) 0 m
-    by_cases hm : m ∈ Set.range (createOccupation i)
-    · rcases hm with ⟨n, rfl⟩
-      rw [(createOccupation_injective i).extend_apply,
-        (createOccupation_injective i).extend_apply]
-      rfl
-    · have hnot : ¬ ∃ n, createOccupation i n = m := hm
-      rw [Function.extend_apply' _ _ _ hnot,
-        Function.extend_apply' _ _ _ hnot]
-      simp
-
-/-- Pullback of a completed coefficient sequence along the injective creation occupation map. -/
-private noncomputable def completedAnnihilatePullback (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun ψ := by
-    refine ⟨fun n => ψ (createOccupation i n), ?_⟩
-    apply memℓp_gen
-    have hsum :=
-      (lp.memℓp ψ).summable (by norm_num : 0 < (2 : ℝ≥0∞).toReal)
-    simpa [Function.comp_def] using
-      hsum.comp_injective (createOccupation_injective i)
-  map_add' ψ φ := by
-    ext n
-    rfl
-  map_smul' a ψ := by
-    ext n
-    rfl
-
 /-- Completed bosonic creation on its maximal weighted `ℓ²` domain. -/
 noncomputable def completedCreate (i : Mode) :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode where
   domain := completedCreateDomain i
   toFun :=
-    (completedCreateExtension i).comp
+    (Common.completedCoordinateEmbedding
+        (createOccupation i) (createOccupation_injective i)).toLinearMap.comp
       (Common.completedDiagonalOperator
         (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))).toFun
 
@@ -124,7 +57,8 @@ noncomputable def completedAnnihilate (i : Mode) :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode where
   domain := completedAnnihilateDomain i
   toFun :=
-    (completedAnnihilatePullback i).comp
+    (Common.completedCoordinatePullback
+        (createOccupation i) (createOccupation_injective i)).toLinearMap.comp
       (Common.completedDiagonalOperator
         (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))).toFun
 
@@ -139,13 +73,15 @@ theorem completedCreate_apply (i : Mode) (ψ : (completedCreate i).domain)
       else (Real.sqrt (n i : ℝ) : ℂ) *
         (ψ : CompletedFockSpace Mode) (removeOccupation i n) := by
   classical
+  change
+    Common.completedCoordinateEmbedding
+        (createOccupation i) (createOccupation_injective i)
+        (Common.completedDiagonalOperator
+          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) ψ) n =
+      _
+  rw [Common.completedCoordinateEmbedding_apply]
   by_cases hni : n i = 0
-  · rw [ite_eq_left hni]
-    change
-      Function.extend (createOccupation i)
-          (fun m => (Real.sqrt (m i + 1 : ℝ) : ℂ) *
-            (ψ : CompletedFockSpace Mode) m) 0 n = 0
-    rw [Function.extend_apply']
+  · rw [ite_eq_left hni, Function.extend_apply']
     · rfl
     · intro h
       rcases h with ⟨m, hm⟩
@@ -160,14 +96,9 @@ theorem completedCreate_apply (i : Mode) (ψ : (completedCreate i).domain)
       simpa only [createOccupation_apply_same] using h
     have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
       exact_mod_cast hcoord
-    change
-      Function.extend (createOccupation i)
-          (fun m => (Real.sqrt (m i + 1 : ℝ) : ℂ) *
-            (ψ : CompletedFockSpace Mode) m) 0 n =
-        (Real.sqrt (n i : ℝ) : ℂ) *
-          (ψ : CompletedFockSpace Mode) (removeOccupation i n)
     conv_lhs => rw [← hrepr]
-    rw [(createOccupation_injective i).extend_apply, hcoord_real]
+    rw [(createOccupation_injective i).extend_apply,
+      Common.completedDiagonalOperator_apply, hcoord_real]
 
 /-- Coordinate action of completed bosonic annihilation. -/
 @[simp]
@@ -177,10 +108,14 @@ theorem completedAnnihilate_apply (i : Mode) (ψ : (completedAnnihilate i).domai
       (Real.sqrt (n i + 1 : ℝ) : ℂ) *
         (ψ : CompletedFockSpace Mode) (createOccupation i n) := by
   change
-    (Real.sqrt ((createOccupation i n) i : ℝ) : ℂ) *
-        (ψ : CompletedFockSpace Mode) (createOccupation i n) =
+    Common.completedCoordinatePullback
+        (createOccupation i) (createOccupation_injective i)
+        (Common.completedDiagonalOperator
+          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) ψ) n =
       _
-  rw [createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
+  rw [Common.completedCoordinatePullback_apply,
+    Common.completedDiagonalOperator_apply,
+    createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
 
 /-- Every occupation-basis vector belongs to the completed creation domain. -/
 theorem completedBasisState_mem_completedCreateDomain (i : Mode) (n : Occupation Mode) :
@@ -194,47 +129,15 @@ theorem completedBasisState_mem_completedAnnihilateDomain (i : Mode) (n : Occupa
   exact Common.completedBasisState_mem_completedDiagonalDomain
     (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n
 
-private theorem completedCreateExtension_basisState (i : Mode) (n : Occupation Mode) :
-    completedCreateExtension i (completedBasisState n) =
-      completedBasisState (createOccupation i n) := by
-  classical
-  ext m
-  by_cases hm : m ∈ Set.range (createOccupation i)
-  · rcases hm with ⟨k, rfl⟩
-    change
-      Function.extend (createOccupation i)
-          (fun q => completedBasisState n q) 0 (createOccupation i k) =
-        completedBasisState (createOccupation i n) (createOccupation i k)
-    rw [(createOccupation_injective i).extend_apply]
-    by_cases hkn : k = n
-    · subst k
-      simp [completedBasisState]
-    · have hshift :
-          createOccupation i k ≠ createOccupation i n :=
-        (createOccupation_injective i).ne hkn
-      simp [completedBasisState, hkn, hshift]
-  · change
-      Function.extend (createOccupation i)
-          (fun q => completedBasisState n q) 0 m =
-        completedBasisState (createOccupation i n) m
-    have hne : m ≠ createOccupation i n := by
-      intro h
-      apply hm
-      exact ⟨n, h.symm⟩
-    rw [Function.extend_apply']
-    · simp [completedBasisState, hne]
-    · intro h
-      exact hm h
-
 private theorem completedAnnihilatePullback_basisState_of_pos
     (i : Mode) {n : Occupation Mode} (hni : n i ≠ 0) :
-    completedAnnihilatePullback i (completedBasisState n) =
+    Common.completedCoordinatePullback
+        (createOccupation i) (createOccupation_injective i)
+        (completedBasisState n) =
       completedBasisState (removeOccupation i n) := by
   classical
   ext m
-  change
-    completedBasisState n (createOccupation i m) =
-      completedBasisState (removeOccupation i n) m
+  rw [Common.completedCoordinatePullback_apply]
   by_cases hm : m = removeOccupation i n
   · subst m
     rw [createOccupation_removeOccupation_of_pos hni]
@@ -272,13 +175,14 @@ theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
       (Real.sqrt (n i + 1 : ℝ) : ℂ) •
         completedBasisState (createOccupation i n) := by
   change
-    completedCreateExtension i
+    Common.completedCoordinateEmbedding
+        (createOccupation i) (createOccupation_injective i)
         (Common.completedDiagonalOperator
           (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
           ⟨completedBasisState n, h⟩) =
       _
   rw [completedCreateDiagonal_basisState, map_smul,
-    completedCreateExtension_basisState]
+    Common.completedCoordinateEmbedding_basisState]
 
 /-- Occupation-basis action of completed bosonic annihilation. -/
 @[simp]
@@ -288,7 +192,8 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
       (Real.sqrt (n i : ℝ) : ℂ) •
         completedBasisState (removeOccupation i n) := by
   change
-    completedAnnihilatePullback i
+    Common.completedCoordinatePullback
+        (createOccupation i) (createOccupation_injective i)
         (Common.completedDiagonalOperator
           (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
           ⟨completedBasisState n, h⟩) =
