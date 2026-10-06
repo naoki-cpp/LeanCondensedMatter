@@ -249,7 +249,6 @@
       "forbiddenPrefixes": [
         "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
-        "LeanCondensedMatter.Permutation.Cumulant",
         "LeanCondensedMatter.Combinatorics.SetPartition.Mobius",
         "Mathlib.Data.Complex",
         "Mathlib.LinearAlgebra.Matrix.Determinant",

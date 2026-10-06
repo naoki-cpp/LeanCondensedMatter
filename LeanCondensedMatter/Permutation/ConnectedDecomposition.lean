@@ -512,6 +512,22 @@ noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
     (ζ : R) (K : α → α → R) (S : Finset α) : R :=
   (permutationMultiplicativeWeight (α := α) ζ K).connectedContribution S
 
+/-- The exchange weight of a connected permutation factors universally from the
+kernel-dependent contribution. -/
+theorem singleCycleContribution_factor_exchangeWeight
+    {R : Type*} [CommSemiring R] (ζ : R) (K : α → α → R) (S : Finset α) :
+    singleCycleContribution ζ K S =
+      ζ ^ (S.card - 1) * singleCycleContribution (1 : R) K S := by
+  classical
+  rw [singleCycleContribution, singleCycleContribution,
+    MultiplicativeWeight.connectedContribution, MultiplicativeWeight.connectedContribution,
+    Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro d _
+  change ζ ^ (S.card - 1) * _ =
+    ζ ^ (S.card - 1) * (1 ^ (S.card - 1) * _)
+  simp
+
 /-- Finiteness of full-cycle permutations used by the semantic connected endpoint. -/
 noncomputable local instance fullCycleFintype :
     Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=

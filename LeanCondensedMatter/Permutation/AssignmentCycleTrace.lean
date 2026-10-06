@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Permutation.SingleCycleKernel
+import LeanCondensedMatter.Permutation.ConnectedDecomposition
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.GroupTheory.Perm.Centralizer
@@ -22,19 +22,32 @@ open Finset
 
 variable {ι R : Type*} [Fintype ι]
 
-private noncomputable def assignmentSingleCycleKernelSum [CommSemiring R]
+private noncomputable def assignmentSingleCycleContributionOne [CommSemiring R]
     (K : Matrix ι ι R) (m : ℕ) : R :=
   ∑ x : Fin m → ι,
-    singleCycleKernelSum (fun a b : Fin m => K (x a) (x b)) Finset.univ
+    singleCycleContribution (1 : R) (fun a b : Fin m => K (x a) (x b)) Finset.univ
 
-private theorem sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleKernelSum
+private theorem sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleContributionOne
     [CommSemiring R] (ζ : R) (K : Matrix ι ι R) (m : ℕ) :
     (∑ x : Fin m → ι,
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
-      ζ ^ (m - 1) * assignmentSingleCycleKernelSum K m := by
+      ζ ^ (m - 1) * assignmentSingleCycleContributionOne K m := by
   classical
-  simp_rw [singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum]
-  simp [assignmentSingleCycleKernelSum, Finset.mul_sum]
+  rw [assignmentSingleCycleContributionOne]
+  calc
+    (∑ x : Fin m → ι,
+        singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
+        ∑ x : Fin m → ι,
+          ζ ^ ((Finset.univ : Finset (Fin m)).card - 1) *
+            singleCycleContribution (1 : R) (fun a b : Fin m => K (x a) (x b)) Finset.univ := by
+      apply Finset.sum_congr rfl
+      intro x _
+      exact singleCycleContribution_factor_exchangeWeight ζ
+        (fun a b : Fin m => K (x a) (x b)) Finset.univ
+    _ = ζ ^ (m - 1) *
+        ∑ x : Fin m → ι,
+          singleCycleContribution (1 : R) (fun a b : Fin m => K (x a) (x b)) Finset.univ := by
+      simp [Finset.mul_sum]
 
 private noncomputable def cycleAssignmentKernelSum [CommSemiring R]
     (K : Matrix ι ι R) {m : ℕ} (σ : Equiv.Perm (Fin m)) : R :=
@@ -251,31 +264,31 @@ private theorem fullCycle_card_one :
         omega }
   exact Fintype.card_unique
 
-private theorem assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum [CommSemiring R]
+private theorem assignmentSingleCycleContributionOne_eq_sum_cycleAssignmentKernelSum [CommSemiring R]
     (K : Matrix ι ι R) (m : ℕ) :
-    assignmentSingleCycleKernelSum K m =
+    assignmentSingleCycleContributionOne K m =
       ∑ σ : {σ : Equiv.Perm (Fin m) // σ.IsCycleOn (Set.univ : Set (Fin m))},
         cycleAssignmentKernelSum K σ.1 := by
   classical
-  rw [assignmentSingleCycleKernelSum]
-  simp_rw [singleCycleKernelSum_univ_eq_sum_isCycleOn]
+  rw [assignmentSingleCycleContributionOne]
+  simp_rw [singleCycleContribution_univ_eq_sum_isCycleOn, one_pow, one_mul]
   rw [Finset.sum_comm]
   rfl
 
-private theorem assignmentSingleCycleKernelSum_eq_factorial_mul_trace [CommSemiring R] [DecidableEq ι]
+private theorem assignmentSingleCycleContributionOne_eq_factorial_mul_trace [CommSemiring R] [DecidableEq ι]
     (K : Matrix ι ι R) (m : ℕ) (hm : 0 < m) :
-    assignmentSingleCycleKernelSum K m =
+    assignmentSingleCycleContributionOne K m =
       (Nat.factorial (m - 1) : R) * Matrix.trace (K ^ m) := by
   cases m with
   | zero => omega
   | succ m =>
       cases m with
       | zero =>
-          rw [assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum]
+          rw [assignmentSingleCycleContributionOne_eq_sum_cycleAssignmentKernelSum]
           simp_rw [cycleAssignmentKernelSum_fullCycle_one]
           simp [fullCycle_card_one]
       | succ n =>
-          rw [assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum]
+          rw [assignmentSingleCycleContributionOne_eq_sum_cycleAssignmentKernelSum]
           simp_rw [cycleAssignmentKernelSum_fullCycle_add_two]
           simp [fullCycle_card_add_two]
 
@@ -288,7 +301,7 @@ theorem sum_singleCycleContribution_assignments_eq_factorial_mul_trace
     (∑ x : Fin m → ι,
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
       ζ ^ (m - 1) * ((Nat.factorial (m - 1) : R) * Matrix.trace (K ^ m)) := by
-  rw [sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleKernelSum]
-  rw [assignmentSingleCycleKernelSum_eq_factorial_mul_trace K m hm]
+  rw [sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleContributionOne]
+  rw [assignmentSingleCycleContributionOne_eq_factorial_mul_trace K m hm]
 
 end Combinatorics
