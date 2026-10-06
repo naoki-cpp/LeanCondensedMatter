@@ -68,13 +68,15 @@ private noncomputable def completedCreateExtension (i : Mode) :
           Function.extend (createOccupation i) (fun n => φ n) 0 m
     by_cases hm : m ∈ Set.range (createOccupation i)
     · rcases hm with ⟨n, rfl⟩
-      simp
-    · have hnot : ¬ ∃ n, createOccupation i n = m := by
-        exact hm
+      rw [(createOccupation_injective i).extend_apply,
+        (createOccupation_injective i).extend_apply,
+        (createOccupation_injective i).extend_apply]
+      rfl
+    · have hnot : ¬ ∃ n, createOccupation i n = m := hm
       rw [Function.extend_apply' _ _ _ hnot,
         Function.extend_apply' _ _ _ hnot,
         Function.extend_apply' _ _ _ hnot]
-      rfl
+      simp
   map_smul' a ψ := by
     apply Subtype.ext
     funext m
@@ -83,12 +85,13 @@ private noncomputable def completedCreateExtension (i : Mode) :
         a • Function.extend (createOccupation i) (fun n => ψ n) 0 m
     by_cases hm : m ∈ Set.range (createOccupation i)
     · rcases hm with ⟨n, rfl⟩
-      simp
-    · have hnot : ¬ ∃ n, createOccupation i n = m := by
-        exact hm
+      rw [(createOccupation_injective i).extend_apply,
+        (createOccupation_injective i).extend_apply]
+      rfl
+    · have hnot : ¬ ∃ n, createOccupation i n = m := hm
       rw [Function.extend_apply' _ _ _ hnot,
         Function.extend_apply' _ _ _ hnot]
-      rfl
+      simp
 
 /-- Pullback of a completed coefficient sequence along the injective creation occupation map. -/
 private noncomputable def completedAnnihilatePullback (i : Mode) :
@@ -243,73 +246,49 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode) :
   · simp [hni]
   · rw [completedAnnihilatePullback_basisState_of_pos i hni]
 
+private noncomputable def algebraicToCompletedCreateDomain (i : Mode) :
+    FockSpace Mode →ₗ[ℂ] (completedCreate i).domain := by
+  change FockSpace Mode →ₗ[ℂ] completedCreateDomain i
+  exact Common.algebraicToCompletedDiagonalDomain
+    (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+
+private noncomputable def algebraicToCompletedAnnihilateDomain (i : Mode) :
+    FockSpace Mode →ₗ[ℂ] (completedAnnihilate i).domain := by
+  change FockSpace Mode →ₗ[ℂ] completedAnnihilateDomain i
+  exact Common.algebraicToCompletedDiagonalDomain
+    (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
+
 /-- On the finite-support core, completed bosonic creation agrees with the algebraic creation
 operator. -/
 theorem completedCreate_comp_algebraicCore (i : Mode) :
-    (completedCreate i).toFun.comp
-        (Common.algebraicToCompletedDiagonalDomain
-          (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))) =
+    (completedCreate i).toFun.comp (algebraicToCompletedCreateDomain i) =
       algebraicToCompleted.comp (create i) := by
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
-  change
-    completedCreateExtension i
-        ((Common.completedDiagonalOperator
-          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))).toFun
-          (Common.algebraicToCompletedDiagonalDomain
-            (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
-            (Common.basisState n))) =
-      algebraicToCompleted (create i (basisState n))
-  have hdiag := congrArg
-    (fun L => L (Common.basisState n))
-    (Common.completedDiagonalOperator_comp_algebraicCore
-      (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)))
-  simp only [LinearMap.comp_apply] at hdiag
-  rw [Common.diagonalOperator_basisState, map_smul,
-    Common.algebraicToCompleted_basisState] at hdiag
-  rw [hdiag, map_smul]
-  have hshift := completedCreateExtension_basisState i n
-  rw [show completedCreateExtension i (Common.completedBasisState n) =
-      Common.completedBasisState (createOccupation i n) by
-        simpa [completedBasisState] using hshift]
-  rw [create_basisState_eq, map_smul, algebraicToCompleted_basisState]
-  rfl
+  have hdomain :
+      algebraicToCompletedCreateDomain i (basisState n) =
+        ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ := by
+    apply Subtype.ext
+    exact algebraicToCompleted_basisState n
+  rw [hdomain, completedCreate_basisState, create_basisState_eq,
+    map_smul, algebraicToCompleted_basisState]
 
 /-- On the finite-support core, completed bosonic annihilation agrees with the algebraic
 annihilation operator. -/
 theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
-    (completedAnnihilate i).toFun.comp
-        (Common.algebraicToCompletedDiagonalDomain
-          (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))) =
+    (completedAnnihilate i).toFun.comp (algebraicToCompletedAnnihilateDomain i) =
       algebraicToCompleted.comp (annihilate i) := by
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
-  change
-    completedAnnihilatePullback i
-        ((Common.completedDiagonalOperator
-          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))).toFun
-          (Common.algebraicToCompletedDiagonalDomain
-            (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
-            (Common.basisState n))) =
-      algebraicToCompleted (annihilate i (basisState n))
-  have hdiag := congrArg
-    (fun L => L (Common.basisState n))
-    (Common.completedDiagonalOperator_comp_algebraicCore
-      (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)))
-  simp only [LinearMap.comp_apply] at hdiag
-  rw [Common.diagonalOperator_basisState, map_smul,
-    Common.algebraicToCompleted_basisState] at hdiag
-  rw [hdiag, map_smul]
-  rw [annihilate_basisState_eq, map_smul, algebraicToCompleted_basisState]
-  by_cases hni : n i = 0
-  · simp [hni]
-  · have hpull := completedAnnihilatePullback_basisState_of_pos i hni
-    rw [show completedAnnihilatePullback i (Common.completedBasisState n) =
-        Common.completedBasisState (removeOccupation i n) by
-          simpa [completedBasisState] using hpull]
-    rfl
+  have hdomain :
+      algebraicToCompletedAnnihilateDomain i (basisState n) =
+        ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ := by
+    apply Subtype.ext
+    exact algebraicToCompleted_basisState n
+  rw [hdomain, completedAnnihilate_basisState, annihilate_basisState_eq,
+    map_smul, algebraicToCompleted_basisState]
 
 end
 end Bosonic
