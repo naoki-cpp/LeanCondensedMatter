@@ -22,16 +22,17 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*} [Finite Mode]
 
 /-- Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. -/
 theorem purePointGibbsSummable_freeEigenvalue
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     PurePointGibbsSummable (freeEigenvalue ε) β := by
+  letI := Fintype.ofFinite Mode
   unfold PurePointGibbsSummable
   have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
   simpa [purePointBoltzmannWeight, boltzmannWeight, Real.norm_eq_abs,
-    abs_of_nonneg (Real.exp_nonneg _)] using hsum
+    abs_of_nonneg (Real.exp_nonneg _), neg_mul] using hsum
 
 /-- The convergence-aware algebraic bosonic partition function is the canonical pure-point
 partition function for the free occupation energies. -/
@@ -39,11 +40,9 @@ theorem freeGibbsPartition_eq_coe_purePointPartitionFunction
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     freeGibbsPartition ε β =
       (purePointPartitionFunction (freeEigenvalue ε) β : ℂ) := by
+  letI := Fintype.ofFinite Mode
   rw [freeGibbsPartition_eq_tsum ε β (fun i => mul_pos hβ (hε i))]
   congr 1
-  apply tsum_congr
-  intro n
-  rfl
 
 end
 end Bosonic
