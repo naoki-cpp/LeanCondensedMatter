@@ -97,8 +97,13 @@ theorem completedCreate_apply (i : Mode) (ψ : (completedCreate i).domain)
     have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
       exact_mod_cast hcoord
     conv_lhs => rw [← hrepr]
-    rw [(createOccupation_injective i).extend_apply,
-      Common.completedDiagonalOperator_apply, hcoord_real]
+    rw [(createOccupation_injective i).extend_apply]
+    change
+      (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) *
+          (ψ : CompletedFockSpace Mode) (removeOccupation i n) =
+        (Real.sqrt (n i : ℝ) : ℂ) *
+          (ψ : CompletedFockSpace Mode) (removeOccupation i n)
+    rw [hcoord_real]
 
 /-- Coordinate action of completed bosonic annihilation. -/
 @[simp]
@@ -113,9 +118,13 @@ theorem completedAnnihilate_apply (i : Mode) (ψ : (completedAnnihilate i).domai
         (Common.completedDiagonalOperator
           (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) ψ) n =
       _
-  rw [Common.completedCoordinatePullback_apply,
-    Common.completedDiagonalOperator_apply,
-    createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
+  rw [Common.completedCoordinatePullback_apply]
+  change
+    (Real.sqrt ((createOccupation i n) i : ℝ) : ℂ) *
+        (ψ : CompletedFockSpace Mode) (createOccupation i n) =
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) *
+        (ψ : CompletedFockSpace Mode) (createOccupation i n)
+  rw [createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
 
 /-- Every occupation-basis vector belongs to the completed creation domain. -/
 theorem completedBasisState_mem_completedCreateDomain (i : Mode) (n : Occupation Mode) :
@@ -181,8 +190,12 @@ theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
           (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
           ⟨completedBasisState n, h⟩) =
       _
-  rw [completedCreateDiagonal_basisState, map_smul,
-    Common.completedCoordinateEmbedding_basisState]
+  rw [completedCreateDiagonal_basisState, map_smul]
+  exact congrArg
+    (fun z : CompletedFockSpace Mode =>
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) • z)
+    (Common.completedCoordinateEmbedding_basisState
+      (createOccupation i) (createOccupation_injective i) n)
 
 /-- Occupation-basis action of completed bosonic annihilation. -/
 @[simp]
