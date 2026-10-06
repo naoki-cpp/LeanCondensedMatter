@@ -93,15 +93,18 @@ Gibbs density operator. The quartic vertex-sequence expansion separately proves 
 membership of every finite Dyson coefficient, and the coefficientwise formal linked-cluster theorem
 identifies its formal logarithm with connected physical diagrams.
 
-The remaining analytic problem is therefore the unbounded interacting completed-space theory and
-all-order Dyson/Taylor convergence (or an explicitly weaker asymptotic/Borel notion where
-appropriate), not the free Gibbs state or finite-order coefficient summability.
+The completed bosonic diagonal sector now also realizes each single-mode number operator and the
+free Hamiltonian as self-adjoint maximal-domain `LinearPMap` operators, with agreement on the
+finite-support algebraic core. The remaining operator-domain problem starts with non-diagonal
+creation/annihilation weighted shifts and their products, followed by the interacting completed-space
+theory and all-order Dyson/Taylor convergence (or an explicitly weaker asymptotic/Borel notion where
+appropriate).
 
 ## Research directions
 
 - pre-normalized time-ordered insertions, higher Green functions, and source derivatives;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;
-- completed bosonic unbounded ladder/number and interacting operator-domain theory;
+- completed bosonic ladder weighted-shift and interacting product-domain theory;
 - interacting completed-space fermionic perturbation theory;
 - infinite-mode and thermodynamic limits under explicit topological and uniform-estimate hypotheses;
 - low-order examples only where they clarify the general theorem rather than create wrapper APIs.
