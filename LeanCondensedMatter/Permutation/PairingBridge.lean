@@ -223,27 +223,6 @@ private theorem sidePairing_presentsPairs (e : SideSplitting m) (σ : Equiv.Perm
 private noncomputable def baseListingPerm (e : SideSplitting m) : Equiv.Perm (Fin (2 * m)) :=
   (sideListingEquiv m).trans e
 
-private noncomputable def sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
-    Equiv.Perm (Fin (2 * m)) :=
-  (sideListingEquiv m).trans
-    ((Equiv.sumCongr (Equiv.refl (Fin m)) σ).trans (sideListingEquiv m).symm)
-
-private theorem sideListingPerm_eq (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
-    sideListingPerm e σ = (sumCongrListingPerm m σ).trans (baseListingPerm e) := by
-  apply Equiv.ext
-  intro x
-  simp only [sideListingPerm, sumCongrListingPerm, baseListingPerm, sideListingEquiv,
-    Equiv.trans_apply, Equiv.apply_symm_apply]
-
-private theorem sign_sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
-    Equiv.Perm.sign (sumCongrListingPerm m σ) = Equiv.Perm.sign σ := by
-  have h := Equiv.Perm.sign_eq_sign_of_equiv (Equiv.sumCongr (Equiv.refl (Fin m)) σ)
-    (sumCongrListingPerm m σ) (sideListingEquiv m).symm
-    (fun x => by
-      simp only [sumCongrListingPerm, Equiv.trans_apply, Equiv.apply_symm_apply])
-  rw [← h, Equiv.Perm.sign_sumCongr]
-  simp
-
 private noncomputable def sideReversedCount (e : SideSplitting m)
     (σ : Equiv.Perm (Fin m)) : ℕ :=
   ∑ k : Fin m, if e (Sum.inr (σ k)) < e (Sum.inl k) then 1 else 0
@@ -259,7 +238,12 @@ private theorem neg_one_pow_crossingCount_eq_of_sidePairing (e : SideSplitting m
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [blockPair_sideListingPerm]
   rw [hreversed] at hsign
-  rw [sideListingPerm_eq, Equiv.Perm.sign_trans, sign_sumCongrListingPerm] at hsign
+  have hlisting :
+      Equiv.Perm.sign (sideListingPerm e σ) =
+        Equiv.Perm.sign (baseListingPerm e) * Equiv.Perm.sign σ := by
+    rw [sideListingPerm, baseListingPerm]
+    simp [Equiv.Perm.sign_trans_trans, mul_comm]
+  rw [hlisting] at hsign
   have hsq : ((-1 : ℤˣ) ^ sideReversedCount e σ) * ((-1 : ℤˣ) ^ sideReversedCount e σ) = 1 :=
     Int.units_mul_self _
   calc
