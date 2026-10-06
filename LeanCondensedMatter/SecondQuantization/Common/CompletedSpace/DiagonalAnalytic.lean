@@ -39,9 +39,15 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
         inner ℂ ((r : ℂ) * z) z = ((r * ‖z‖ ^ 2 : ℝ) : ℂ) := by
       simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
       rw [show z * ((r : ℂ) * (starRingEnd ℂ) z) =
-        (r : ℂ) * (z * (starRingEnd ℂ) z) by ac_rfl, RCLike.mul_conj,
-        ← Complex.ofReal_pow, ← Complex.ofReal_mul]
-    rw [hinner, Complex.ofReal_re]
+        (r : ℂ) * (z * (starRingEnd ℂ) z) by ac_rfl, RCLike.mul_conj]
+      calc
+        (r : ℂ) * (‖z‖ : ℂ) ^ 2 =
+            (r : ℂ) * ((‖z‖ ^ 2 : ℝ) : ℂ) :=
+          congrArg (fun q : ℂ => (r : ℂ) * q) (Complex.ofReal_pow ‖z‖ 2).symm
+        _ = ((r * ‖z‖ ^ 2 : ℝ) : ℂ) :=
+          (Complex.ofReal_mul r (‖z‖ ^ 2)).symm
+    rw [hinner]
+    change 0 ≤ r * ‖z‖ ^ 2
     exact mul_nonneg hr (sq_nonneg ‖z‖)
     exact mul_nonneg hr (sq_nonneg ‖z‖)
   change T.IsPositive
