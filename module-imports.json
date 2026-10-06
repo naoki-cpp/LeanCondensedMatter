@@ -2939,6 +2939,23 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/Basic.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FockSpace",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Interaction.lean",
       "imports": [
@@ -3300,6 +3317,25 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/Completed/FreeGibbs.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/Completed.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean",
       "imports": [
@@ -3357,6 +3393,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/PurePointSummability.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/QuadraticParticleNumberWeightSummable.lean",
       "imports": [
@@ -3377,12 +3422,14 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeConnectedCycleSeries",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeTwoPointCoefficient",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable"
       ],
@@ -3393,6 +3440,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation",

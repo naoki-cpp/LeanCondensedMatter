@@ -89562,7 +89562,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (htrace : K.IsTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    htrace.trace = ↑(QuantumTheory.purePointPartitionFunction E β)",
     "standardAxioms": [
       "Classical.choice",
@@ -89570,7 +89570,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -89581,14 +89581,18 @@
     "docString": "If supplied trace-class heat data act diagonally by the Boltzmann weights, their canonical\ncomplex trace is the pure-point partition function embedded in `ℂ`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition"
+    ],
     "dependencies": [
       "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89782,7 +89786,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable E β),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    (↑(QuantumTheory.purePointPartitionFunction E β))⁻¹ • K =\n      (QuantumTheory.purePointGibbsDensityOperator b E β hsum).op",
     "standardAxioms": [
       "Classical.choice",
@@ -89790,7 +89794,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -89801,14 +89805,18 @@
     "docString": "Pure-point Boltzmann heat data normalize directly to the canonical Gibbs density\noperator at the operator level. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
     "dependencies": [
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89955,7 +89963,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    (K.IsTraceClass ↔ QuantumTheory.PurePointGibbsSummable E β)",
     "standardAxioms": [
       "Classical.choice",
@@ -89963,7 +89971,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -89974,7 +89982,9 @@
     "docString": "For heat data diagonalized by the Boltzmann weights, trace-classness is exactly\nfiniteness of the pure-point partition sum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass"
+    ],
     "dependencies": [
       "HilbertBasis.diagonalOp_apply_basis",
       "HilbertBasis.diagonalOp_isTraceClass",
@@ -89983,8 +89993,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90612,6 +90624,7 @@
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator",
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
@@ -90626,9 +90639,10 @@
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator",
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95159,6 +95173,236 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hβ hε).op\n      (SecondQuantization.Bosonic.completedBasisState n) =\n    ↑(QuantumTheory.purePointGibbsProbability (SecondQuantization.Bosonic.freeEigenvalue ε) β n) •\n      SecondQuantization.Bosonic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
+      "SecondQuantization.Common.completedHilbertBasis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ hε) (SecondQuantization.Bosonic.completedBasisState n) =\n    ↑(Real.exp (-β * SecondQuantization.Bosonic.freeEigenvalue ε n)) • SecondQuantization.Bosonic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
+      "SecondQuantization.Common.completedDiagonalHeatOperator_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i),\n  (SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ ⋯).IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+    "externalAxioms": [],
+    "docString": "The completed free heat operator is trace class under positive mode energies. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition"
+    ],
+    "dependencies": [
+      "QuantumTheory.isTraceClass_iff_purePointGibbsSummable_of_basis_action",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
+      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i),\n  ⋯.trace = SecondQuantization.Bosonic.freeGibbsPartition ε β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+    "externalAxioms": [],
+    "docString": "The trace of the completed free heat operator is the existing free bosonic partition\nfunction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.heatTrace_eq_purePointPartitionFunction_of_basis_action",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_purePointPartitionFunction"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.completedOccupationHilbertBasis n = SecondQuantization.Bosonic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.completedHilbertBasis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (V : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n      PowerSeries.constantCoeff (SecondQuantization.Bosonic.freeGibbsDysonSeries ε β V) = 1",
     "standardAxioms": [
@@ -96236,6 +96480,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ),\n  (∀ (i : Mode), 0 ≤ ε i) →\n    ∀ (n : SecondQuantization.Bosonic.Occupation Mode), 0 ≤ SecondQuantization.Bosonic.freeEigenvalue ε n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+    "externalAxioms": [],
+    "docString": "Nonnegative one-particle energies give a nonnegative many-boson free energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
+      "SecondQuantization.Bosonic.norm_completedFreeHeatOperator_le_one"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
+      "SecondQuantization.Bosonic.norm_completedFreeHeatOperator_le_one"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {ε : Mode → ℝ} {i : Mode} {n : SecondQuantization.Bosonic.Occupation Mode},\n  n i ≠ 0 →\n    SecondQuantization.Bosonic.freeEigenvalue ε (SecondQuantization.Bosonic.removeOccupation i n) =\n      SecondQuantization.Bosonic.freeEigenvalue ε n - ε i",
     "standardAxioms": [
       "Classical.choice",
@@ -97243,6 +97532,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 < β →\n    (∀ (i : Mode), 0 < ε i) →\n      SecondQuantization.Bosonic.freeGibbsPartition ε β =\n        ↑(QuantumTheory.purePointPartitionFunction (SecondQuantization.Bosonic.freeEigenvalue ε) β)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_purePointPartitionFunction",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
+    "externalAxioms": [],
+    "docString": "The convergence-aware algebraic bosonic partition function is the canonical pure-point\npartition function for the free occupation energies. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_tsum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    SecondQuantization.Bosonic.freeGibbsPartition ε β =\n      ↑(∑' (n : SecondQuantization.Bosonic.Occupation Mode), SecondQuantization.Bosonic.boltzmannWeight ε β n)",
     "standardAxioms": [
       "Classical.choice",
@@ -97250,7 +97585,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -97262,6 +97597,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_purePointPartitionFunction",
       "SecondQuantization.Bosonic.freeGibbsPartition_ne_zero"
     ],
     "dependencies": [
@@ -97272,9 +97608,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_purePointPartitionFunction",
       "SecondQuantization.Bosonic.freeGibbsPartition_ne_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98239,6 +98576,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i),\n  (SecondQuantization.Bosonic.freeGibbsPartition ε β)⁻¹ •\n      SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ ⋯ =\n    (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hβ hε).op",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+    "externalAxioms": [],
+    "docString": "Normalizing the completed free heat operator by the bosonic partition function gives the\ncanonical completed Gibbs density operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
+      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_purePointPartitionFunction",
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) → LinearMap.id ∈ SecondQuantization.Bosonic.freeGibbsDomain ε β",
     "standardAxioms": [
@@ -98710,6 +99091,47 @@
       "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain"
     ],
     "compiledConsumerCount": 8,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i),\n  ‖SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ hε‖ ≤ 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.norm_completedFreeHeatOperator_le_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
+    "externalAxioms": [],
+    "docString": "The completed free heat operator has norm at most one for nonnegative one-particle energies. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
+      "SecondQuantization.Common.norm_completedDiagonalHeatOperator_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99299,6 +99721,55 @@
       "SecondQuantization.Bosonic.factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 < β → (∀ (i : Mode), 0 < ε i) → QuantumTheory.PurePointGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
+    "externalAxioms": [],
+    "docString": "Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.summable_boltzmannWeight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator",
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
+      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100031,6 +100502,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.freeGibbsSummable_annihilate_comp_create",
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
       "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
     ],
     "dependencies": [
@@ -100040,9 +100512,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.freeGibbsSummable_annihilate_comp_create",
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
       "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109078,7 +109551,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -109090,6 +109563,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
       "SecondQuantization.Common.completedDiagonalHeatOperator_ne_zero"
     ],
     "dependencies": [
@@ -109099,9 +109573,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
       "SecondQuantization.Common.completedDiagonalHeatOperator_ne_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109760,6 +110235,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_finitePurePointGibbsDensity",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
     ],
@@ -109767,10 +110244,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_finitePurePointGibbsDensity",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117667,7 +118146,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β E₀ : ℝ) (hβ : 0 < β) (hlower : ∀ (c : Config), E₀ ≤ energy c),\n  ‖SecondQuantization.Common.completedDiagonalHeatOperator energy β E₀ hβ hlower‖ ≤ Real.exp (-β * E₀)",
     "standardAxioms": [
       "Classical.choice",
@@ -117675,7 +118154,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117686,15 +118165,19 @@
     "docString": "The heat-operator norm is bounded by the Boltzmann factor at the supplied lower energy bound. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.norm_completedFreeHeatOperator_le_one"
+    ],
     "dependencies": [
       "SecondQuantization.Common.norm_completedBoundedDiagonalOperator_le",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat.0.SecondQuantization.Common.completedDiagonalHeatWeight_bound"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.norm_completedFreeHeatOperator_le_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151139,94 +151622,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [CompleteSpace E] {f : ℝ → E} {a b : ℝ},\n  IntervalIntegrable f MeasureTheory.volume a b →\n    ∀ᵐ (x : ℝ), x ∈ Set.uIcc a b → ∀ c ∈ Set.uIcc a b, HasDerivAt (fun x => ∫ (t : ℝ) in c..x, f t) (f x) x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_intervalIntegrable",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
-    "externalAxioms": [],
-    "docString": "Local Banach-valued Lebesgue differentiation theorem for an interval-integrable function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_norm_le",
-      "intervalIntegral.orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_locallyIntegrable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_norm_le",
-      "intervalIntegral.orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [CompleteSpace E] {f : ℝ → E},\n  MeasureTheory.LocallyIntegrable f MeasureTheory.volume →\n    ∀ᵐ (x : ℝ), ∀ (c : ℝ), HasDerivAt (fun x => ∫ (t : ℝ) in c..x, f t) (f x) x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_locallyIntegrable",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
-    "externalAxioms": [],
-    "docString": "Banach-valued Lebesgue differentiation for indefinite interval integrals.  Mathlib v4.31.0 only\nexports the real-valued specialization of this statement; the underlying Vitali differentiation\nresult is already Banach-valued. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_intervalIntegrable"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_intervalIntegrable"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {F F' : ℝ → ℂ} {a b C : ℝ},\n  AbsolutelyContinuousOnInterval F a b →\n    IntervalIntegrable F' MeasureTheory.volume a b →\n      0 ≤ C →\n        (∀ x ∈ Set.uIcc a b, ‖F' x‖ ≤ C) →\n          (∀ᵐ (x : ℝ), x ∈ Set.uIcc a b → HasDerivAt F (F' x) x) → ∫ (x : ℝ) in a..b, F' x = F b - F a",
     "standardAxioms": [
       "Classical.choice",
@@ -151249,8 +151644,7 @@
       "intervalIntegral.orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_intervalIntegrable"
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -184254,7 +184648,6 @@
     "dependents": [],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.ae_hasDerivAt_intervalIntegral_of_intervalIntegrable",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit.0.intervalIntegral.integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_norm_le",
       "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
       "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_boundary"
