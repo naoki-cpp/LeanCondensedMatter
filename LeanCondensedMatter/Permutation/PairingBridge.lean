@@ -151,20 +151,33 @@ private theorem sidePairing_partner_sideEndpoint
       e (sideEndpointEquiv σ (i, 1)) := by
   simp [sideEndpointEquiv, blockSideEquiv, sidePairing_partner, sidePartner_inl]
 
+private noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    Fin m ≃ (sidePairing e σ).NormalizedPair :=
+  Equiv.ofBijective
+    ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e)
+    ((sidePairing e σ).normalizedPairEquivOfEndpointEquiv
+      (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ)).bijective
+
 private noncomputable def sidePair (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     Fin (2 * m) × Fin (2 * m) :=
-  ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e i).1
+  (sidePairEquiv e σ i).1
 
 private theorem sidePair_of_lt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
     (h : e (Sum.inl i) < e (Sum.inr (σ i))) :
     sidePair e σ i = (e (Sum.inl i), e (Sum.inr (σ i))) := by
-  simpa [sidePair, sideEndpointEquiv, blockSideEquiv] using
+  change
+    ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e i).1 =
+      (e (Sum.inl i), e (Sum.inr (σ i)))
+  simpa [sideEndpointEquiv, blockSideEquiv] using
     (sidePairing e σ).normalizedPairOfEndpointEquiv_pair_eq_of_lt
       (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ) i h
 
 private theorem sidePair_of_gt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
     (h : e (Sum.inr (σ i)) < e (Sum.inl i)) :
     sidePair e σ i = (e (Sum.inr (σ i)), e (Sum.inl i)) := by
+  change
+    ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e i).1 =
+      (e (Sum.inr (σ i)), e (Sum.inl i))
   rcases (sidePairing e σ).normalizedPairOfEndpointEquiv_pair_eq_or_swap
       (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ) i with hpair | hpair
   · have hnormalized := (sidePairing e σ).pairs_normalized
@@ -173,14 +186,7 @@ private theorem sidePair_of_gt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {
     have hnormalized' : e (Sum.inl i) < e (Sum.inr (σ i)) := by
       simpa [sideEndpointEquiv, blockSideEquiv] using hnormalized
     exact (lt_asymm hnormalized' h).elim
-  · simpa [sidePair, sideEndpointEquiv, blockSideEquiv] using hpair
-
-private noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
-    Fin m ≃ (sidePairing e σ).NormalizedPair :=
-  Equiv.ofBijective
-    ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e)
-    ((sidePairing e σ).normalizedPairEquivOfEndpointEquiv
-      (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ)).bijective
+  · simpa [sideEndpointEquiv, blockSideEquiv] using hpair
 
 private theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplitting m)
     (σ : Equiv.Perm (Fin m)) (f : Fin (2 * m) → Fin (2 * m) → R) :
@@ -189,7 +195,7 @@ private theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplit
   classical
   rw [Finset.prod_subtype (sidePairing e σ).pairs (fun _ => Iff.rfl)
     (fun pr => f pr.1 pr.2)]
-  simpa [sidePairEquiv, sidePair] using
+  simpa [sidePair] using
     (Equiv.prod_comp (sidePairEquiv e σ) (fun pr => f pr.1.1 pr.1.2)).symm
 
 /-! ## Private side-listing sign machinery -/
