@@ -66,7 +66,7 @@ noncomputable def freePropagator (t : ℝ) : H →L[ℂ] H :=
 /-- The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled
 by `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic
 implementation. -/
-theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
+private theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
     freePropagator system t =
       LinearPMap.boundedUnitaryEvolution
         (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1) t := by
@@ -83,31 +83,6 @@ private theorem scaledHamiltonian_selfAdjoint :
   · rw [isSelfAdjoint_iff, Complex.star_def]
     simp
   · exact system.hamiltonian_selfAdjoint
-
-@[simp]
-theorem timeScaledGenerator_zero : timeScaledGenerator system 0 = 0 := by
-  simp [timeScaledGenerator]
-
-/-- Scaling the free generator is additive in time. -/
-theorem timeScaledGenerator_add (t s : ℝ) :
-    timeScaledGenerator system (t + s) =
-      timeScaledGenerator system t + timeScaledGenerator system s := by
-  simp [timeScaledGenerator, add_smul]
-
-/-- The Schrödinger generator is skew-adjoint. -/
-theorem star_schrodingerGenerator :
-    star (schrodingerGenerator system) = -schrodingerGenerator system := by
-  unfold schrodingerGenerator
-  rw [star_smul, system.hamiltonian_selfAdjoint.star_eq, ← neg_smul]
-  congr 1
-  rw [Complex.star_def]
-  simp
-  ring_nf
-
-/-- Taking the adjoint of the time-scaled generator reverses time. -/
-theorem star_timeScaledGenerator (t : ℝ) :
-    star (timeScaledGenerator system t) = timeScaledGenerator system (-t) := by
-  simp [timeScaledGenerator, star_schrodingerGenerator]
 
 @[simp]
 theorem freePropagator_zero : freePropagator system 0 = 1 := by
