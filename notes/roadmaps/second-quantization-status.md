@@ -104,18 +104,19 @@ Bosonic.Occupation Mode := Mode →₀ ℕ
 
 is infinite. The bosonic line therefore uses explicit summability domains. Algebraic CCR,
 imaginary-time evolution, convergent free thermal sums, a convergence-aware Gibbs functional, and
-reusable Common diagrammatics are available. For finite mode types and positive free Boltzmann
-exponents, every finite-order quartic Dyson coefficient is now proved to belong to the free-Gibbs
-domain through its finite thermal-field expansion, and the coefficientwise formal linked-cluster
-theorem is proved. A genuine interacting analytic partition-function theorem still requires
-completed-space/domain control and all-order convergence rather than an assumed Gibbs-sum/Dyson-
-integral interchange.
+reusable Common diagrammatics are available. The completed occupation representation
+`Bosonic.CompletedFockSpace Mode := ℓ²(Bosonic.Occupation Mode, ℂ)` is now available; under positive
+mode energies it carries the bounded free heat operator, its trace-class identification, and the
+canonical pure-point Gibbs density operator. For finite mode types, every finite-order quartic Dyson
+coefficient is also proved to belong to the free-Gibbs domain and the coefficientwise formal
+linked-cluster theorem is proved. A genuine interacting analytic partition-function theorem still
+requires unbounded interacting/operator-domain control and all-order convergence.
 
 ## Open work
 
 - pre-normalized higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
 - bosonic interacting Dyson convergence and analytic connected-diagram theory;
-- completed bosonic operator/domain theory;
+- completed bosonic unbounded ladder/number and interacting operator-domain theory;
 - interacting completed-space fermionic perturbation theory;
 - infinite-volume and thermodynamic limits with explicit analytic hypotheses;
 - continued removal of public declarations that serve only proof routing.
