@@ -147,6 +147,7 @@ private theorem completedCreate_adjoint_apply
           completedBasisState (createOccupation i n) := by
     exact completedCreate_basisState i n _
   rw [he] at h
+  dsimp [e] at h
   simpa [inner_smul_left] using h.symm
 
 private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
