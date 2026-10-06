@@ -80,7 +80,7 @@ private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
 
 /-- Positive coefficients of the formal trace-log series are
 `-ζ^m tr(K^m) / m`. -/
-theorem coeff_formalTraceLogOneSubSeries_of_pos
+private theorem coeff_formalTraceLogOneSubSeries_of_pos
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hm : 0 < m) :
     PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) =
       -(ζ ^ m * Matrix.trace (K ^ m) / (m : ℂ)) := by
@@ -115,7 +115,7 @@ private theorem trace_diagonal_pow (w : ι → ℂ) (m : ℕ) :
 
 /-- For a diagonal kernel, the formal trace-log decomposes into one scalar formal logarithm per
 mode, for arbitrary exchange weight `ζ`. -/
-theorem formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log
+private theorem formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log
     (ζ : ℂ) (w : ι → ℂ) :
     formalTraceLogOneSubSeries ζ (Matrix.diagonal w) =
       ∑ i : ι, PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ) := by
@@ -134,7 +134,7 @@ theorem formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log
 
 The statement is coefficientwise so the matrix algebra itself never becomes a power-series
 coefficient ring. -/
-theorem coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog
+private theorem coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hζ : ζ ≠ 0) :
     PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
       (-ζ⁻¹) * PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) := by
