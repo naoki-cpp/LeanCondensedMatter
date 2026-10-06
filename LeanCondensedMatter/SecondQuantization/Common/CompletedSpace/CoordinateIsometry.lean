@@ -6,9 +6,10 @@ set_option linter.style.header false
 /-!
 # Coordinate isometries on completed Fock space
 
-Configuration equivalences act on the generic completed Fock space by reindexing coordinates, and
-unit-modulus scalar functions act through bounded diagonal multiplication. Both constructions
-preserve the `ℓ²` norm and are bundled as linear isometries.
+Configuration equivalences act on the generic completed Fock space by reindexing coordinates.
+Injective configuration maps give isometric zero-extension embeddings, whose bounded adjoints are
+the corresponding coordinate pullbacks. Unit-modulus scalar functions act through bounded diagonal
+multiplication. The norm-preserving constructions are bundled as linear isometries.
 
 Statistics-specific completed-space operators should specialize these constructions and keep only
 their occupation, sign, or other model-specific semantics locally.
@@ -85,7 +86,6 @@ theorem completedReindex_basisState (e : Config ≃ Config) (c : Config) :
       apply h
       exact e.injective <| by simpa using he
     simp [completedBasisState_apply_of_ne h, completedBasisState_apply_of_ne hed]
-
 
 variable {Config' : Type*}
 
