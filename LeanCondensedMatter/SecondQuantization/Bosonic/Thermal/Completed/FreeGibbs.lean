@@ -52,7 +52,7 @@ theorem norm_completedFreeHeatOperator_le_one
     (Common.norm_completedDiagonalHeatOperator_le
       (freeEigenvalue ε) β 0 hβ (freeEigenvalue_nonneg ε hε))
 
-variable [Fintype Mode]
+variable [Finite Mode]
 
 /-- The completed free heat operator is trace class under positive mode energies. -/
 theorem completedFreeHeatOperator_isTraceClass
