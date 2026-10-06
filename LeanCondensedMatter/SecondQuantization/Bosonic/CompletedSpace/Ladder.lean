@@ -298,6 +298,18 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
   · simp [hni]
   · rw [completedAnnihilatePullback_basisState_of_pos i hni]
 
+private noncomputable def algebraicToCompletedCreateDomain (i : Mode) :
+    FockSpace Mode →ₗ[ℂ] (completedCreate i).domain := by
+  change FockSpace Mode →ₗ[ℂ] completedCreateDomain i
+  exact Common.algebraicToCompletedDiagonalDomain
+    (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+
+private noncomputable def algebraicToCompletedAnnihilateDomain (i : Mode) :
+    FockSpace Mode →ₗ[ℂ] (completedAnnihilate i).domain := by
+  change FockSpace Mode →ₗ[ℂ] completedAnnihilateDomain i
+  exact Common.algebraicToCompletedDiagonalDomain
+    (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
+
 /-- On the finite-support core, completed bosonic creation agrees with the algebraic creation
 operator. -/
 theorem completedCreate_comp_algebraicCore (i : Mode) :
@@ -305,13 +317,14 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
         (Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))) =
       algebraicToCompleted.comp (create i) := by
+  change
+    (completedCreate i).toFun.comp (algebraicToCompletedCreateDomain i) =
+      algebraicToCompleted.comp (create i)
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
   change
-    (completedCreate i).toFun
-        (Common.algebraicToCompletedDiagonalDomain
-          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) (basisState n)) =
+    (completedCreate i).toFun (algebraicToCompletedCreateDomain i (basisState n)) =
       algebraicToCompleted (create i (basisState n))
   have hbasis (m : Occupation Mode) :
       algebraicToCompleted (basisState m) = completedBasisState m := by
@@ -321,8 +334,7 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
     change completedBasisState n ∈ completedCreateDomain i
     exact completedBasisState_mem_completedCreateDomain i n
   have hdomain :
-      Common.algebraicToCompletedDiagonalDomain
-          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) (basisState n) =
+      algebraicToCompletedCreateDomain i (basisState n) =
         ⟨completedBasisState n, hmem⟩ := by
     apply Subtype.ext
     exact hbasis n
@@ -336,13 +348,14 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
         (Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))) =
       algebraicToCompleted.comp (annihilate i) := by
+  change
+    (completedAnnihilate i).toFun.comp (algebraicToCompletedAnnihilateDomain i) =
+      algebraicToCompleted.comp (annihilate i)
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
   change
-    (completedAnnihilate i).toFun
-        (Common.algebraicToCompletedDiagonalDomain
-          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) (basisState n)) =
+    (completedAnnihilate i).toFun (algebraicToCompletedAnnihilateDomain i (basisState n)) =
       algebraicToCompleted (annihilate i (basisState n))
   have hbasis (m : Occupation Mode) :
       algebraicToCompleted (basisState m) = completedBasisState m := by
@@ -352,8 +365,7 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
     change completedBasisState n ∈ completedAnnihilateDomain i
     exact completedBasisState_mem_completedAnnihilateDomain i n
   have hdomain :
-      Common.algebraicToCompletedDiagonalDomain
-          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) (basisState n) =
+      algebraicToCompletedAnnihilateDomain i (basisState n) =
         ⟨completedBasisState n, hmem⟩ := by
     apply Subtype.ext
     exact hbasis n
