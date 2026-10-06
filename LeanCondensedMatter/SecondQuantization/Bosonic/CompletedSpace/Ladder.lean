@@ -318,8 +318,13 @@ private theorem algebraicToCompleted_basisState' (n : Occupation Mode) :
 /-- On the finite-support core, completed bosonic creation agrees with the algebraic creation
 operator. -/
 theorem completedCreate_comp_algebraicCore (i : Mode) :
-    (completedCreate i).toFun.comp (algebraicToCompletedCreateDomain i) =
+    (completedCreate i).toFun.comp
+        (Common.algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))) =
       algebraicToCompleted.comp (create i) := by
+  change
+    (completedCreate i).toFun.comp (algebraicToCompletedCreateDomain i) =
+      algebraicToCompleted.comp (create i)
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
@@ -340,8 +345,13 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
 /-- On the finite-support core, completed bosonic annihilation agrees with the algebraic
 annihilation operator. -/
 theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
-    (completedAnnihilate i).toFun.comp (algebraicToCompletedAnnihilateDomain i) =
+    (completedAnnihilate i).toFun.comp
+        (Common.algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))) =
       algebraicToCompleted.comp (annihilate i) := by
+  change
+    (completedAnnihilate i).toFun.comp (algebraicToCompletedAnnihilateDomain i) =
+      algebraicToCompleted.comp (annihilate i)
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
