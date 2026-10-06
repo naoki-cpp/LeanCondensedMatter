@@ -130,19 +130,6 @@ private theorem sidePairing_sideMatching (e : SideSplitting m) {P : Pairing m}
       rw [Equiv.apply_symm_apply] at hi
       rw [← hi, P.partner_partner]
 
-
-private noncomputable def bipartitePairingEquivPerm (e : SideSplitting m) :
-    {P : Pairing m // P.IsBipartite e} ≃ Equiv.Perm (Fin m) where
-  toFun P := P.1.sideMatching e P.2
-  invFun σ := ⟨sidePairing e σ, isBipartite_sidePairing e σ⟩
-  left_inv P := Subtype.ext (sidePairing_sideMatching e P.2)
-  right_inv σ := by
-    apply Equiv.ext
-    intro i
-    have h := Pairing.partner_sideMatching e (isBipartite_sidePairing e σ) i
-    simp only [sidePairing_partner, sidePartner_inl] at h
-    exact (Sum.inr.inj (e.injective h)).symm
-
 private theorem sideSplitting_inl_ne_inr (e : SideSplitting m) (i j : Fin m) :
     e (Sum.inl i) ≠ e (Sum.inr j) := fun h => by simpa using e.injective h
 
@@ -338,27 +325,24 @@ private theorem sum_pairings_eq_sum_perm_of_inl_vanishing {R : Type*} [CommSemir
     intro P _ hP
     have hnb : ¬ P.IsBipartite e := by simpa using hP
     rw [prod_pairs_eq_zero_of_not_isBipartite e hnb pv hpv, mul_zero]
-  rw [← Finset.sum_subset (Finset.filter_subset _ _) hzero]
-  rw [Finset.sum_subtype
-    (p := fun P : Pairing m => P.IsBipartite e)
-    (Finset.univ.filter fun P : Pairing m => P.IsBipartite e)
-    (fun P => by simp)
-    (fun P => w P * ∏ pr ∈ P.pairs, pv pr.1 pr.2)]
-  calc
-    (∑ P : {P : Pairing m // P.IsBipartite e},
-        w P.1 * ∏ pr ∈ P.1.pairs, pv pr.1 pr.2) =
-      ∑ σ : Equiv.Perm (Fin m),
-        w (sidePairing e σ) *
-          ∏ pr ∈ (sidePairing e σ).pairs, pv pr.1 pr.2 := by
-      simpa [bipartitePairingEquivPerm] using
-        (Equiv.sum_comp (bipartitePairingEquivPerm e).symm
-          (fun P : {P : Pairing m // P.IsBipartite e} =>
-            w P.1 * ∏ pr ∈ P.1.pairs, pv pr.1 pr.2)).symm
-    _ = ∑ σ : Equiv.Perm (Fin m),
-        w (sidePairing e σ) * ∏ i : Fin m, pv (sidePair e σ i).1 (sidePair e σ i).2 := by
-      apply Finset.sum_congr rfl
-      intro σ _
-      rw [prod_sidePairing_pairs]
+  have himage : (Finset.univ.filter fun P : Pairing m => P.IsBipartite e) =
+      Finset.univ.image (fun σ : Equiv.Perm (Fin m) => sidePairing e σ) := by
+    ext P
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
+    constructor
+    · intro hP
+      exact ⟨P.sideMatching e hP, sidePairing_sideMatching e hP⟩
+    · rintro ⟨σ, rfl⟩
+      exact isBipartite_sidePairing e σ
+  have hinj : Set.InjOn (fun σ : Equiv.Perm (Fin m) => sidePairing e σ)
+      (Finset.univ : Finset (Equiv.Perm (Fin m))) := by
+    intro x _ y _ hxy
+    refine Equiv.ext fun i => ?_
+    have hp := congrArg (fun P : Pairing m => P.partner (e (Sum.inl i))) hxy
+    simp only [sidePairing_partner, sidePartner_inl] at hp
+    exact Sum.inr.inj (e.injective hp)
+  rw [← Finset.sum_subset (Finset.filter_subset _ _) hzero, himage, Finset.sum_image hinj]
+  exact Finset.sum_congr rfl fun σ _ => by rw [prod_sidePairing_pairs]
 
 /-- The side-oriented pair-value matrix for exchange scalar `ζ`. -/
 noncomputable def exchangeMatrix {R : Type*} [CommSemiring R]
