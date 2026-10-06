@@ -123,7 +123,7 @@ theorem freePropagator_apply_purePointBasis
       push_cast
       ring
     rw [← hcoeff]
-    simp only [smul_smul]
+    rw [← Complex.coe_smul t, smul_smul]
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
