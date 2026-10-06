@@ -8,10 +8,10 @@ set_option linter.style.header false
 /-!
 # Completed free-boson heat and Gibbs operators
 
-For finitely many bosonic modes with positive one-particle energies, the occupation basis remains
-infinite but the free Boltzmann weights are summable. This module combines that existing bosonic
-summability theorem with the statistics-independent completed diagonal heat operator and the generic
-pure-point Gibbs construction.
+For arbitrary bosonic mode types, nonnegative one-particle energies already define a bounded
+completed free heat operator because every occupation configuration has finite support. For finitely
+many modes with strictly positive energies, the free Boltzmann weights are summable; this upgrades
+the heat operator to trace class and connects it to the generic pure-point Gibbs construction.
 
 The resulting bounded heat operator is trace class, its trace is the existing convergence-aware
 bosonic partition function, and normalization gives the canonical completed Gibbs density operator.
@@ -25,14 +25,7 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
-
-/-- Nonnegative one-particle energies give a nonnegative many-boson free energy. -/
-theorem freeEigenvalue_nonneg (ε : Mode → ℝ) (hε : ∀ i, 0 ≤ ε i)
-    (n : Occupation Mode) :
-    0 ≤ freeEigenvalue ε n := by
-  rw [freeEigenvalue_eq_sum_univ]
-  exact Finset.sum_nonneg fun i _ => mul_nonneg (by positivity) (hε i)
+variable {Mode : Type*}
 
 /-- The bounded completed free-boson heat operator `exp (-β H₀)`. -/
 noncomputable def completedFreeHeatOperator
@@ -58,6 +51,8 @@ theorem norm_completedFreeHeatOperator_le_one
   simpa [completedFreeHeatOperator] using
     (Common.norm_completedDiagonalHeatOperator_le
       (freeEigenvalue ε) β 0 hβ (freeEigenvalue_nonneg ε hε))
+
+variable [Fintype Mode]
 
 /-- Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. -/
 theorem purePointGibbsSummable_freeEigenvalue
