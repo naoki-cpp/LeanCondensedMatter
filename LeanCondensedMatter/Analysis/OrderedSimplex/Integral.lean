@@ -1,4 +1,5 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.Prod
@@ -18,7 +19,8 @@ for every real `β`, which is a simplex volume only when `0 ≤ β`.
 Coordinate `0` is the latest and outermost time: the recursion integrates it over `[0, β]` and then
 recurses on the remaining coordinates with the current outer time as their bound. The module also
 provides joint continuity and joint measurability when the bound and integrand vary with a
-parameter, and finite-sum linearity under an explicit continuity hypothesis on each summand.
+parameter, endpoint differentiation for continuous integrands, and finite-sum linearity under an
+explicit continuity hypothesis on each summand.
 -/
 
 namespace intervalIntegral
@@ -128,6 +130,20 @@ theorem continuous_orderedSimplexIntegral_of_continuous {X : Type*} [Topological
     have hF := continuous_orderedSimplexIntegral_of_continuous n Prod.snd
       (fun (y : X × ℝ) (rest : Fin n → ℝ) => f y.1 (Fin.cons y.2 rest)) continuous_snd hf'
     exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous hF hbound
+
+/-- Fundamental theorem of calculus for an ordered-simplex integral: differentiating in the upper
+bound fixes the outermost time coordinate at that bound. -/
+theorem hasDerivAt_orderedSimplexIntegral_succ (n : ℕ)
+    (f : (Fin (n + 1) → ℝ) → ℂ) (hf : Continuous f) (β : ℝ) :
+    HasDerivAt (fun t : ℝ => orderedSimplexIntegral (n + 1) t f)
+      (orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) β := by
+  have hboundary : Continuous (fun t : ℝ =>
+      orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))) :=
+    continuous_orderedSimplexIntegral_of_continuous n id
+      (fun t rest => f (Fin.cons t rest)) continuous_id
+      (hf.comp (Continuous.finCons continuous_fst continuous_snd))
+  simpa only [orderedSimplexIntegral_succ] using
+    (hboundary.integral_hasStrictDerivAt 0 β).hasDerivAt
 
 /-- A jointly measurable integrand remains measurable after integration from `0` to a measurable
 parameter-dependent upper bound. -/
