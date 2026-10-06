@@ -39,10 +39,10 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
         inner ℂ ((r : ℂ) * z) z = ((r * ‖z‖ ^ 2 : ℝ) : ℂ) := by
       simp only [RCLike.inner_apply, map_mul, Complex.conj_ofReal]
       rw [show z * ((r : ℂ) * (starRingEnd ℂ) z) =
-        (r : ℂ) * (z * (starRingEnd ℂ) z) by ac_rfl, RCLike.mul_conj]
-      norm_cast
-    rw [hinner]
-    simpa using mul_nonneg hr (sq_nonneg ‖z‖)
+        (r : ℂ) * (z * (starRingEnd ℂ) z) by ac_rfl, RCLike.mul_conj,
+        ← Complex.ofReal_pow, ← Complex.ofReal_mul]
+    rw [hinner, Complex.ofReal_re]
+    exact mul_nonneg hr (sq_nonneg ‖z‖)
     exact mul_nonneg hr (sq_nonneg ‖z‖)
   change T.IsPositive
   rw [ContinuousLinearMap.isPositive_def]
