@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
 
 set_option linter.style.header false
@@ -7,9 +7,8 @@ set_option linter.style.header false
 # Explicit binary-shuffle ordered-simplex contributions
 
 Each `BinaryShuffle m n` recursively specifies whether the current outermost time belongs to the
-left or right factor. This module turns that combinatorial datum into one iterated integral,
-proves joint continuity in external parameters, and identifies the finite sum of all such
-contributions with the recursive shuffle integral from `OrderedSimplexShuffleIntegral.lean`.
+left or right factor. This module turns that combinatorial datum into one iterated integral, proves
+joint continuity in external parameters, and records the all-left and all-right boundary identities.
 -/
 
 namespace Combinatorics
@@ -112,73 +111,6 @@ theorem orderedSimplexContribution_allLeft :
       rw [allLeft, orderedSimplexContribution, orderedSimplexIntegral_succ]
       simp_rw [orderedSimplexContribution_allLeft m]
       rw [intervalIntegral.integral_mul_const]
-
-/-- The finite sum of explicit binary-shuffle contributions is the recursive analytic shuffle
-integral. -/
-private theorem sum_orderedSimplexContribution_eq_shuffleIntegral :
-    ∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
-      Continuous f → Continuous g →
-      (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
-        orderedSimplexShuffleIntegral m n β f g
-  | 0, n, β, f, g, _hf, _hg => by
-      rw [sum_zero_left, orderedSimplexContribution_allRight, orderedSimplexShuffleIntegral]
-  | m + 1, 0, β, f, g, _hf, _hg => by
-      rw [sum_zero_right, orderedSimplexContribution_allLeft, orderedSimplexShuffleIntegral]
-  | m + 1, n + 1, β, f, g, hf, hg => by
-      rw [sum_succ_succ]
-      simp_rw [orderedSimplexContribution]
-      rw [orderedSimplexShuffleIntegral]
-      have hleft : ∀ t : ℝ,
-          (∑ σ : BinaryShuffle m (n + 1),
-            orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g) =
-            orderedSimplexShuffleIntegral m (n + 1) t
-              (fun rest => f (Fin.cons t rest)) g := by
-        intro t
-        exact sum_orderedSimplexContribution_eq_shuffleIntegral m (n + 1) t
-          (fun rest => f (Fin.cons t rest)) g
-          (hf.comp (Continuous.finCons continuous_const continuous_id)) hg
-      have hright : ∀ t : ℝ,
-          (∑ σ : BinaryShuffle (m + 1) n,
-            orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))) =
-            orderedSimplexShuffleIntegral (m + 1) n t f
-              (fun rest => g (Fin.cons t rest)) := by
-        intro t
-        exact sum_orderedSimplexContribution_eq_shuffleIntegral (m + 1) n t f
-          (fun rest => g (Fin.cons t rest)) hf
-          (hg.comp (Continuous.finCons continuous_const continuous_id))
-      have hcontLeft : ∀ σ : BinaryShuffle m (n + 1), Continuous (fun t : ℝ =>
-          orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g) := by
-        intro σ
-        exact continuous_orderedSimplexContribution_of_continuous σ id
-          (fun t rest => f (Fin.cons t rest)) (fun _ => g) continuous_id
-          (hf.comp (Continuous.finCons continuous_fst continuous_snd)) (hg.comp continuous_snd)
-      have hcontRight : ∀ σ : BinaryShuffle (m + 1) n, Continuous (fun t : ℝ =>
-          orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))) := by
-        intro σ
-        exact continuous_orderedSimplexContribution_of_continuous σ id
-          (fun _ => f) (fun t rest => g (Fin.cons t rest)) continuous_id
-          (hf.comp continuous_snd) (hg.comp (Continuous.finCons continuous_fst continuous_snd))
-      simp_rw [← hleft, ← hright]
-      rw [intervalIntegral.integral_add]
-      · rw [intervalIntegral.integral_finsetSum, intervalIntegral.integral_finsetSum]
-        · intro σ _
-          exact (hcontRight σ).intervalIntegrable 0 β
-        · intro σ _
-          exact (hcontLeft σ).intervalIntegrable 0 β
-      · exact (continuous_finsetSum _ fun σ _ => hcontLeft σ).intervalIntegrable 0 β
-      · exact (continuous_finsetSum _ fun σ _ => hcontRight σ).intervalIntegrable 0 β
-
-/-- Explicit binary ordered-simplex shuffle identity. -/
-theorem sum_orderedSimplexContribution_eq_mul (m n : ℕ) (β : ℝ)
-    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
-    (hf : Continuous f) (hg : Continuous g) :
-    (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
-      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
-  rw [sum_orderedSimplexContribution_eq_shuffleIntegral m n β f g hf hg]
-  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded
-    m n β f g
-      (intervalIntegral.Continuous.measurableLocallyBounded hf)
-      (intervalIntegral.Continuous.measurableLocallyBounded hg)
 
 end BinaryShuffle
 end Combinatorics
