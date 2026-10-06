@@ -31,13 +31,13 @@ noncomputable section
 variable {Mode : Type*}
 
 /-- Natural maximal weighted `ℓ²` domain of completed bosonic creation at mode `i`. -/
-noncomputable def completedCreateDomain (i : Mode) :
+noncomputable abbrev completedCreateDomain (i : Mode) :
     Submodule ℂ (CompletedFockSpace Mode) :=
   Common.completedDiagonalDomain
     (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
 
 /-- Natural maximal weighted `ℓ²` domain of completed bosonic annihilation at mode `i`. -/
-noncomputable def completedAnnihilateDomain (i : Mode) :
+noncomputable abbrev completedAnnihilateDomain (i : Mode) :
     Submodule ℂ (CompletedFockSpace Mode) :=
   Common.completedDiagonalDomain
     (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
@@ -64,7 +64,16 @@ private noncomputable def completedCreateExtension (i : Mode) :
       rw [(createOccupation_injective i).extend_apply]
       rw [(createOccupation_injective i).extend_apply]
       rfl
-    · simp [Function.extend, hm]
+    · rw [Function.extend_apply']
+      · rw [Function.extend_apply']
+        · rw [Function.extend_apply']
+          rfl
+        · intro h
+          exact hm h
+      · intro h
+        exact hm h
+      · intro h
+        exact hm h
   map_smul' a ψ := by
     ext m
     by_cases hm : m ∈ Set.range (createOccupation i)
@@ -72,7 +81,13 @@ private noncomputable def completedCreateExtension (i : Mode) :
       rw [(createOccupation_injective i).extend_apply]
       rw [(createOccupation_injective i).extend_apply]
       rfl
-    · simp [Function.extend, hm]
+    · rw [Function.extend_apply']
+      · rw [Function.extend_apply']
+        rfl
+      · intro h
+        exact hm h
+      · intro h
+        exact hm h
 
 /-- Pullback of a completed coefficient sequence along the injective creation occupation map. -/
 private noncomputable def completedAnnihilatePullback (i : Mode) :
@@ -82,7 +97,7 @@ private noncomputable def completedAnnihilatePullback (i : Mode) :
     apply memℓp_gen
     have hsum :=
       (lp.memℓp ψ).summable (by norm_num : 0 < (2 : ℝ≥0∞).toReal)
-    simpa only [Function.comp_apply] using
+    simpa [Function.comp_def] using
       hsum.comp_injective (createOccupation_injective i)
   map_add' ψ φ := by
     ext n
@@ -135,11 +150,11 @@ private theorem completedCreateExtension_basisState (i : Mode) (n : Occupation M
     rw [(createOccupation_injective i).extend_apply]
     by_cases hkn : k = n
     · subst k
-      simp
+      rw [Common.completedBasisState_apply_self, Common.completedBasisState_apply_self]
     · have hshift :
           createOccupation i k ≠ createOccupation i n :=
         (createOccupation_injective i).ne hkn
-      simp [Common.completedBasisState_apply_of_ne hkn,
+      rw [Common.completedBasisState_apply_of_ne hkn,
         Common.completedBasisState_apply_of_ne hshift]
   · change
       Function.extend (createOccupation i)
@@ -149,7 +164,10 @@ private theorem completedCreateExtension_basisState (i : Mode) (n : Occupation M
       intro h
       apply hm
       exact ⟨n, h.symm⟩
-    simp [Function.extend, hm, Common.completedBasisState_apply_of_ne hne]
+    rw [Function.extend_apply']
+    · rw [Common.completedBasisState_apply_of_ne hne]
+    · intro h
+      exact hm h
 
 private theorem completedAnnihilatePullback_basisState_of_pos
     (i : Mode) {n : Occupation Mode} (hni : n i ≠ 0) :
@@ -162,14 +180,14 @@ private theorem completedAnnihilatePullback_basisState_of_pos
       completedBasisState (removeOccupation i n) m
   by_cases hm : m = removeOccupation i n
   · subst m
-    rw [createOccupation_removeOccupation_of_pos hni]
-    simp
+    rw [createOccupation_removeOccupation_of_pos hni,
+      Common.completedBasisState_apply_self, Common.completedBasisState_apply_self]
   · have hcreate : createOccupation i m ≠ n := by
       intro h
       apply hm
       have h' := congrArg (removeOccupation i) h
       simpa only [removeOccupation_createOccupation] using h'
-    simp [Common.completedBasisState_apply_of_ne hcreate,
+    rw [Common.completedBasisState_apply_of_ne hcreate,
       Common.completedBasisState_apply_of_ne hm]
 
 /-- Occupation-basis action of completed bosonic creation. -/
