@@ -1,6 +1,7 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
+import LeanCondensedMatter.Combinatorics.BinaryShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import Mathlib.Analysis.Complex.Basic
@@ -12,14 +13,50 @@ set_option linter.style.header false
 
 This module defines the shuffled product integrand associated with an order-preserving ambient
 `BinaryShuffle.SlotShuffle`, proves the measurable-local-boundedness needed for integration, and
-relates its ordered-simplex integral to recursive binary-shuffle contributions. The resulting finite
-shuffle sum is proved directly equal to the product of the two local ordered-simplex integrals.
+proves directly that the finite ambient shuffle sum equals the product of the two local
+ordered-simplex integrals. A recursive `BinaryShuffle` contribution is kept private as proof
+implementation only.
 -/
 
 namespace Combinatorics
 namespace BinaryShuffle
 
 open intervalIntegral MeasureTheory
+
+/-- Recursive contribution of one explicit binary shuffle. This representation is kept private:
+the public analytic API is the ambient `SlotShuffle.integrand` below. -/
+private noncomputable def orderedSimplexContribution :
+    {m n : ℕ} → BinaryShuffle m n → ℝ →
+      ((Fin m → ℝ) → ℂ) → ((Fin n → ℝ) → ℂ) → ℂ
+  | 0, 0, .nil, _β, f, g => f Fin.elim0 * g Fin.elim0
+  | _m + 1, _n, .consLeft σ, β, f, g =>
+      ∫ t in (0 : ℝ)..β,
+        orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g
+  | _m, _n + 1, .consRight σ, β, f, g =>
+      ∫ t in (0 : ℝ)..β,
+        orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))
+
+private theorem orderedSimplexContribution_allRight :
+    ∀ (n : ℕ) (β : ℝ) (f : (Fin 0 → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
+      orderedSimplexContribution (allRight n) β f g =
+        f Fin.elim0 * orderedSimplexIntegral n β g
+  | 0, β, f, g => by
+      rfl
+  | n + 1, β, f, g => by
+      rw [allRight, orderedSimplexContribution, orderedSimplexIntegral_succ]
+      simp_rw [orderedSimplexContribution_allRight n]
+      rw [intervalIntegral.integral_const_mul]
+
+private theorem orderedSimplexContribution_allLeft :
+    ∀ (m : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin 0 → ℝ) → ℂ),
+      orderedSimplexContribution (allLeft m) β f g =
+        orderedSimplexIntegral m β f * g Fin.elim0
+  | 0, β, f, g => by
+      rfl
+  | m + 1, β, f, g => by
+      rw [allLeft, orderedSimplexContribution, orderedSimplexIntegral_succ]
+      simp_rw [orderedSimplexContribution_allLeft m]
+      rw [intervalIntegral.integral_mul_const]
 
 /-- Product of two local integrands after their coordinates are embedded by an ambient slot
 shuffle. -/
