@@ -119,7 +119,7 @@ theorem freePropagator_apply_purePointBasis
     simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
     congr 1
     push_cast
-    ring
+    rfl
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
