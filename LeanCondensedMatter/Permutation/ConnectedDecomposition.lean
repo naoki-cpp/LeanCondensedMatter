@@ -514,7 +514,7 @@ noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
 
 /-- The exchange weight of a connected permutation factors universally from the
 kernel-dependent contribution. -/
-theorem singleCycleContribution_eq_pow_card_mul_one
+theorem singleCycleContribution_factor_exchangeWeight
     {R : Type*} [CommSemiring R] (ζ : R) (K : α → α → R) (S : Finset α) :
     singleCycleContribution ζ K S =
       ζ ^ (S.card - 1) * singleCycleContribution (1 : R) K S := by
