@@ -48,6 +48,20 @@ The completed free-fermion route includes:
 The last item is weak convergence against bounded observables, not a thermodynamic limit or a general
 trace-norm convergence theorem.
 
+## Completed bosonic free thermal representation
+
+`SecondQuantization.Bosonic.CompletedFockSpace Mode := ℓ²(Bosonic.Occupation Mode, ℂ)` specializes
+the same Common completed occupation-space infrastructure. For finite mode types with positive
+one-particle energies, `Bosonic.Thermal.Completed` now provides:
+
+- the bounded free heat operator `exp (-βH₀)` as a diagonal completed operator;
+- trace-classness from the existing bosonic Boltzmann summability theorem;
+- equality of its trace with the convergence-aware algebraic `freeGibbsPartition`;
+- the canonical pure-point Gibbs density operator and the operator normalization identity.
+
+This does not make bosonic creation, annihilation, number, or interacting Hamiltonians bounded.
+Those remain part of the unbounded-domain program.
+
 ## Finite-mode compatibility
 
 For finite `Mode`, the completed occupation space is finite dimensional and is canonically related to
@@ -61,7 +75,7 @@ needed for that representation-level statement.
 
 ## Open work
 
-- completed bosonic Fock-space operator theory, where ladder and number operators are unbounded;
+- completed bosonic unbounded ladder/number operator theory and its product domains;
 - interacting completed-space Dyson theory with all required product domains;
 - stronger convergence topologies for Gibbs truncations when justified;
 - infinite-volume or thermodynamic limits with an explicit directed system, observable algebra,
