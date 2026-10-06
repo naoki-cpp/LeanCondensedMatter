@@ -148,7 +148,6 @@ private theorem completedCreate_adjoint_apply
     exact completedCreate_basisState i n _
   rw [he] at h
   dsimp [e] at h
-  rw [inner_smul_left] at h
   have hleft :
       inner ℂ (completedBasisState (createOccupation i n))
           (y : CompletedFockSpace Mode) =
@@ -163,8 +162,22 @@ private theorem completedCreate_adjoint_apply
     simpa [completedBasisState] using
       (Common.inner_completedBasisState_left
         (Config := Occupation Mode) n ((completedCreate i).adjoint y))
-  rw [hleft, hright] at h
-  simpa using h.symm
+  calc
+    (completedCreate i).adjoint y n =
+        inner ℂ (completedBasisState n) ((completedCreate i).adjoint y) :=
+      hright.symm
+    _ = inner ℂ
+        ((Real.sqrt (n i + 1 : ℝ) : ℂ) •
+          completedBasisState (createOccupation i n))
+        (y : CompletedFockSpace Mode) := h.symm
+    _ = star (Real.sqrt (n i + 1 : ℝ) : ℂ) *
+        inner ℂ (completedBasisState (createOccupation i n))
+          (y : CompletedFockSpace Mode) := by
+      exact inner_smul_left _ _ _
+    _ = (Real.sqrt (n i + 1 : ℝ) : ℂ) *
+        (y : CompletedFockSpace Mode) (createOccupation i n) := by
+      rw [hleft]
+      simp
 
 private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
     (completedCreate i).adjoint.domain ≤ completedAnnihilateDomain i := by
@@ -235,7 +248,6 @@ private theorem completedAnnihilate_adjoint_apply
     exact completedAnnihilate_basisState i n _
   rw [he] at h
   dsimp [e] at h
-  rw [inner_smul_left] at h
   have hleft :
       inner ℂ (completedBasisState (removeOccupation i n))
           (y : CompletedFockSpace Mode) =
@@ -250,8 +262,22 @@ private theorem completedAnnihilate_adjoint_apply
     simpa [completedBasisState] using
       (Common.inner_completedBasisState_left
         (Config := Occupation Mode) n ((completedAnnihilate i).adjoint y))
-  rw [hleft, hright] at h
-  simpa using h.symm
+  calc
+    (completedAnnihilate i).adjoint y n =
+        inner ℂ (completedBasisState n) ((completedAnnihilate i).adjoint y) :=
+      hright.symm
+    _ = inner ℂ
+        ((Real.sqrt (n i : ℝ) : ℂ) •
+          completedBasisState (removeOccupation i n))
+        (y : CompletedFockSpace Mode) := h.symm
+    _ = star (Real.sqrt (n i : ℝ) : ℂ) *
+        inner ℂ (completedBasisState (removeOccupation i n))
+          (y : CompletedFockSpace Mode) := by
+      exact inner_smul_left _ _ _
+    _ = (Real.sqrt (n i : ℝ) : ℂ) *
+        (y : CompletedFockSpace Mode) (removeOccupation i n) := by
+      rw [hleft]
+      simp
 
 private theorem completedAnnihilate_adjoint_domain_le_createDomain (i : Mode) :
     (completedAnnihilate i).adjoint.domain ≤ completedCreateDomain i := by
