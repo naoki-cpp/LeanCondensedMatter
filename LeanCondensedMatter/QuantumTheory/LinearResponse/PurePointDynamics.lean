@@ -117,10 +117,13 @@ theorem freePropagator_apply_purePointBasis
     dsimp [T, c, v]
     rw [schrodingerGenerator]
     simp only [smul_apply, data.hamiltonian_apply_basis]
-    rw [smul_smul]
-    apply congrArg (fun z : ℂ => z • data.basis i)
-    push_cast
-    ring
+    have hcoeff :
+        (t : ℂ) * (-(Complex.I / (system.hbar : ℂ)) * (data.energy i : ℂ)) =
+          -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ)) := by
+      push_cast
+      ring
+    rw [← hcoeff]
+    simp only [smul_smul]
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
