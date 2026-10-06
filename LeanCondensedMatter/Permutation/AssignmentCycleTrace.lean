@@ -33,8 +33,21 @@ private theorem sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSin
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
       ζ ^ (m - 1) * assignmentSingleCycleContributionOne K m := by
   classical
-  simp_rw [singleCycleContribution_factor_exchangeWeight]
-  simp [assignmentSingleCycleContributionOne, Finset.mul_sum]
+  rw [assignmentSingleCycleContributionOne]
+  calc
+    (∑ x : Fin m → ι,
+        singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
+        ∑ x : Fin m → ι,
+          ζ ^ ((Finset.univ : Finset (Fin m)).card - 1) *
+            singleCycleContribution (1 : R) (fun a b : Fin m => K (x a) (x b)) Finset.univ := by
+      apply Finset.sum_congr rfl
+      intro x _
+      exact singleCycleContribution_factor_exchangeWeight ζ
+        (fun a b : Fin m => K (x a) (x b)) Finset.univ
+    _ = ζ ^ (m - 1) *
+        ∑ x : Fin m → ι,
+          singleCycleContribution (1 : R) (fun a b : Fin m => K (x a) (x b)) Finset.univ := by
+      simp [Finset.mul_sum]
 
 private noncomputable def cycleAssignmentKernelSum [CommSemiring R]
     (K : Matrix ι ι R) {m : ℕ} (σ : Equiv.Perm (Fin m)) : R :=
