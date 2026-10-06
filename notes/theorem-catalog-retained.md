@@ -349,11 +349,9 @@ or consumer structure changes.
   `cycleType.sum + cycleType.card`.
 - `Combinatorics.not_crosses_self` — canonical irreflexivity fact for the pairing-crossing
   relation: a normalized pair never crosses itself.
-- `Combinatorics.singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum` — A connected
-  permutation on `S` carries the common exchange factor `ζ ^ (|S| - 1)`.
-- `Combinatorics.singleCycleKernelSum_univ_eq_sum_isCycleOn` — On the full finite index type, the
-  pure connected kernel is the direct sum over permutations that are a single cycle on the whole
-  type.
+- `Combinatorics.singleCycleContribution_factor_exchangeWeight` — A connected
+  permutation on `S` carries the common exchange factor `ζ ^ (|S| - 1)`, factored from the
+  exchange-weight-one connected contribution.
 - `Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace` — canonical trace
   bridge identifying the assignment sum of connected single-cycle contributions with
   `ζ^(m-1) (m-1)! tr(K^m)` for positive label count.
