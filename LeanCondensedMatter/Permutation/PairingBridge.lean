@@ -193,6 +193,7 @@ private theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplit
     (∏ pr ∈ (sidePairing e σ).pairs, f pr.1 pr.2) =
       ∏ i : Fin m, f (sidePair e σ i).1 (sidePair e σ i).2 := by
   classical
+  letI : Fintype (sidePairing e σ).NormalizedPair := Fintype.ofFinite _
   rw [Finset.prod_subtype (sidePairing e σ).pairs (fun _ => Iff.rfl)
     (fun pr => f pr.1 pr.2)]
   simpa [sidePair] using
