@@ -110,12 +110,12 @@ theorem freePropagator_apply_purePointBasis
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) :
     freePropagator system t (data.basis i) =
       purePointSchrodingerPhase system data i t • data.basis i := by
-  let T : H →L[ℂ] H := timeScaledGenerator system t
+  let T : H →L[ℂ] H := (t : ℂ) • schrodingerGenerator system
   let c : ℂ := -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ))
   let v : H := data.basis i
   have hT : T v = c • v := by
     dsimp [T, c, v]
-    rw [timeScaledGenerator, schrodingerGenerator]
+    rw [schrodingerGenerator]
     simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
     congr 1
     push_cast
