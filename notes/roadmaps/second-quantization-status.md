@@ -106,19 +106,20 @@ is infinite. The bosonic line therefore uses explicit summability domains. Algeb
 imaginary-time evolution, convergent free thermal sums, a convergence-aware Gibbs functional, and
 reusable Common diagrammatics are available. The completed occupation representation
 `Bosonic.CompletedFockSpace Mode := ℓ²(Bosonic.Occupation Mode, ℂ)` now carries maximal-domain
-self-adjoint single-mode number operators and the free Hamiltonian, together with algebraic-core
-compatibility. Under positive mode energies it also carries the bounded free heat operator, its
-trace-class identification, and the canonical pure-point Gibbs density operator. For finite mode
-types, every finite-order quartic Dyson coefficient is proved to belong to the free-Gibbs domain and
-the coefficientwise formal linked-cluster theorem is proved. A genuine interacting analytic
-partition-function theorem still requires bosonic ladder/interacting product-domain control and
-all-order convergence.
+self-adjoint single-mode number operators and the free Hamiltonian, together with maximal-domain
+creation and annihilation weighted shifts. These completed operators agree with their algebraic
+counterparts on the finite-support core. Under positive mode energies the representation also carries
+the bounded free heat operator, its trace-class identification, and the canonical pure-point Gibbs
+density operator. For finite mode types, every finite-order quartic Dyson coefficient is proved to
+belong to the free-Gibbs domain and the coefficientwise formal linked-cluster theorem is proved. A
+genuine interacting analytic partition-function theorem still requires ladder closedness/adjoints,
+interacting product-domain control, and all-order convergence.
 
 ## Open work
 
 - pre-normalized higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
 - bosonic interacting Dyson convergence and analytic connected-diagram theory;
-- completed bosonic ladder weighted-shift and interacting product-domain theory;
+- completed bosonic ladder closedness/adjoint and interacting product-domain theory;
 - interacting completed-space fermionic perturbation theory;
 - infinite-volume and thermodynamic limits with explicit analytic hypotheses;
 - continued removal of public declarations that serve only proof routing.
