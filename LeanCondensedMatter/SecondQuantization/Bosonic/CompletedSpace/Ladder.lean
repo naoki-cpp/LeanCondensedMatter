@@ -140,18 +140,19 @@ theorem completedCreate_apply (i : Mode) (ψ : (completedCreate i).domain)
         (ψ : CompletedFockSpace Mode) (removeOccupation i n) := by
   classical
   by_cases hni : n i = 0
-  · rw [if_pos hni]
+  · rw [ite_eq_left hni]
     change
       Function.extend (createOccupation i)
           (fun m => (Real.sqrt (m i + 1 : ℝ) : ℂ) *
             (ψ : CompletedFockSpace Mode) m) 0 n = 0
     rw [Function.extend_apply']
-    intro h
-    rcases h with ⟨m, hm⟩
-    have hcoord := congrArg (fun q : Occupation Mode => q i) hm
-    rw [createOccupation_apply_same, hni] at hcoord
-    omega
-  · rw [if_neg hni]
+    · rfl
+    · intro h
+      rcases h with ⟨m, hm⟩
+      have hcoord := congrArg (fun q : Occupation Mode => q i) hm
+      rw [createOccupation_apply_same, hni] at hcoord
+      omega
+  · rw [ite_eq_right hni]
     have hrepr : createOccupation i (removeOccupation i n) = n :=
       createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
@@ -179,7 +180,7 @@ theorem completedAnnihilate_apply (i : Mode) (ψ : (completedAnnihilate i).domai
     (Real.sqrt ((createOccupation i n) i : ℝ) : ℂ) *
         (ψ : CompletedFockSpace Mode) (createOccupation i n) =
       _
-  rw [createOccupation_apply_same]
+  rw [createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
 
 /-- Every occupation-basis vector belongs to the completed creation domain. -/
 theorem completedBasisState_mem_completedCreateDomain (i : Mode) (n : Occupation Mode) :
