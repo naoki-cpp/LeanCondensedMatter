@@ -183,6 +183,12 @@
       "externalImportCount": 8
     },
     {
+      "name": "LeanCondensedMatter.Analysis.HilbertBasis",
+      "sourceFile": "LeanCondensedMatter/Analysis/HilbertBasis.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov",
       "sourceFile": "LeanCondensedMatter/Analysis/Inequalities/PeierlsBogoliubov.lean",
       "imports": [
@@ -234,12 +240,6 @@
         "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct"
       ],
       "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval",
-      "sourceFile": "LeanCondensedMatter/Analysis/InnerProductSpace/HilbertBasisParseval.lean",
-      "imports": [],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
@@ -356,8 +356,8 @@
       "name": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/Basic.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise",
-        "LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval"
+        "LeanCondensedMatter.Analysis.HilbertBasis",
+        "LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise"
       ],
       "externalImportCount": 1
     },
@@ -637,7 +637,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval",
+        "LeanCondensedMatter.Analysis.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic"
       ],
@@ -803,7 +803,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/BinarySlotShuffle.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
-        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots"
       ],
@@ -842,7 +842,7 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/Integral.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
@@ -858,7 +858,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
@@ -1666,7 +1666,7 @@
       "name": "LeanCondensedMatter.Permutation.AssignmentCycleTrace",
       "sourceFile": "LeanCondensedMatter/Permutation/AssignmentCycleTrace.lean",
       "imports": [
-        "LeanCondensedMatter.Permutation.SingleCycleKernel"
+        "LeanCondensedMatter.Permutation.ConnectedDecomposition"
       ],
       "externalImportCount": 5
     },
@@ -1689,15 +1689,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Permutation.Cumulant",
-      "sourceFile": "LeanCondensedMatter/Permutation/Cumulant.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
-        "LeanCondensedMatter.Permutation.ConnectedDecomposition"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Permutation.OrbitPartition",
       "sourceFile": "LeanCondensedMatter/Permutation/OrbitPartition.lean",
       "imports": [],
@@ -1716,14 +1707,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Permutation.SingleCycleKernel",
-      "sourceFile": "LeanCondensedMatter/Permutation/SingleCycleKernel.lean",
-      "imports": [
-        "LeanCondensedMatter.Permutation.ConnectedDecomposition"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Permutation.TraceLog",
       "sourceFile": "LeanCondensedMatter/Permutation/TraceLog.lean",
       "imports": [
@@ -1735,7 +1718,6 @@
       "name": "LeanCondensedMatter.Permutation",
       "sourceFile": "LeanCondensedMatter/Permutation.lean",
       "imports": [
-        "LeanCondensedMatter.Permutation.Cumulant",
         "LeanCondensedMatter.Permutation.PairingBridge",
         "LeanCondensedMatter.Permutation.TraceLog"
       ],
@@ -3105,9 +3087,10 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/DysonGibbsBoundary.lean",
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/DysonGibbsSeries.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion"
@@ -3115,36 +3098,11 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/DysonGibbsSeries.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/FirstDysonGibbsExpectation.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/FirstDysonGibbsSummable.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/GibbsInteractionPicture.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
       ],
       "externalImportCount": 0
@@ -3182,10 +3140,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable",
@@ -3570,6 +3525,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace/DiagonalAnalytic.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Positive",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
       ],
       "externalImportCount": 1
@@ -3593,6 +3549,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace/Heat.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace.lean",
       "imports": [
@@ -3602,7 +3566,8 @@
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility",
-        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteThermalCompatibility"
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteThermalCompatibility",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat"
       ],
       "externalImportCount": 0
     },
@@ -5333,7 +5298,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Analysis/DiagramRegularity.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
