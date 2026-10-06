@@ -43,6 +43,7 @@ theorem quarticVertexSequenceOperator_mem_freeGibbsDomain
     {n : ℕ} (q : Fin n → QuarticVertexLabel Mode) :
     Common.quarticVertexSequenceOperator create annihilate q ∈
       freeGibbsDomain ε β := by
+  letI := Fintype.ofFinite Mode
   rw [mem_freeGibbsDomain_iff, ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
   exact FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos _
 
@@ -63,14 +64,14 @@ theorem dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain
       (quarticVertexSequenceOperator_mem_freeGibbsDomain ε β hpos
         (fun i => (q i : QuarticVertexLabel Mode)))
 
+omit [Finite Mode] in
 /-- On a finite mode type, every finite Dyson coefficient of the full quartic interaction belongs to
 the free-Gibbs domain. -/
-theorem dysonCoeff_quarticInteraction_mem_freeGibbsDomain
+theorem dysonCoeff_quarticInteraction_mem_freeGibbsDomain [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ) :
     Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) n t ∈
       freeGibbsDomain ε β := by
-  letI := Fintype.ofFinite Mode
   classical
   rw [dysonCoeff_quarticInteraction_eq_sum ε g n t]
   exact Submodule.sum_mem (freeGibbsDomain ε β) fun q _ =>
