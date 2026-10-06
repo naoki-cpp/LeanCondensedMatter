@@ -50,7 +50,10 @@ private noncomputable def completedCreateExtension (i : Mode) :
     apply memℓp_gen
     refine ((createOccupation_injective i).summable_iff ?_).mp ?_
     · intro m hm
-      simp [Function.extend, hm]
+      rw [Function.extend_apply']
+      · simp
+      · intro h
+        exact hm h
     · have hsum :=
         (lp.memℓp ψ).summable (by norm_num : 0 < (2 : ℝ≥0∞).toReal)
       exact hsum.congr fun n => by
@@ -150,12 +153,12 @@ private theorem completedCreateExtension_basisState (i : Mode) (n : Occupation M
     rw [(createOccupation_injective i).extend_apply]
     by_cases hkn : k = n
     · subst k
-      rw [Common.completedBasisState_apply_self, Common.completedBasisState_apply_self]
+      rw [completedBasisState_apply_self, completedBasisState_apply_self]
     · have hshift :
           createOccupation i k ≠ createOccupation i n :=
         (createOccupation_injective i).ne hkn
-      rw [Common.completedBasisState_apply_of_ne hkn,
-        Common.completedBasisState_apply_of_ne hshift]
+      rw [completedBasisState_apply_of_ne hkn,
+        completedBasisState_apply_of_ne hshift]
   · change
       Function.extend (createOccupation i)
           (fun q => completedBasisState n q) 0 m =
@@ -165,7 +168,7 @@ private theorem completedCreateExtension_basisState (i : Mode) (n : Occupation M
       apply hm
       exact ⟨n, h.symm⟩
     rw [Function.extend_apply']
-    · rw [Common.completedBasisState_apply_of_ne hne]
+    · simp [completedBasisState_apply_of_ne hne]
     · intro h
       exact hm h
 
@@ -181,14 +184,32 @@ private theorem completedAnnihilatePullback_basisState_of_pos
   by_cases hm : m = removeOccupation i n
   · subst m
     rw [createOccupation_removeOccupation_of_pos hni,
-      Common.completedBasisState_apply_self, Common.completedBasisState_apply_self]
+      completedBasisState_apply_self, completedBasisState_apply_self]
   · have hcreate : createOccupation i m ≠ n := by
       intro h
       apply hm
       have h' := congrArg (removeOccupation i) h
       simpa only [removeOccupation_createOccupation] using h'
-    rw [Common.completedBasisState_apply_of_ne hcreate,
-      Common.completedBasisState_apply_of_ne hm]
+    rw [completedBasisState_apply_of_ne hcreate,
+      completedBasisState_apply_of_ne hm]
+
+private theorem completedCreateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
+    Common.completedDiagonalOperator
+        (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
+        ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ =
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) • completedBasisState n := by
+  simpa [completedBasisState] using
+    (Common.completedDiagonalOperator_basisState
+      (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) n)
+
+private theorem completedAnnihilateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
+    Common.completedDiagonalOperator
+        (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
+        ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ =
+      (Real.sqrt (n i : ℝ) : ℂ) • completedBasisState n := by
+  simpa [completedBasisState] using
+    (Common.completedDiagonalOperator_basisState
+      (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n)
 
 /-- Occupation-basis action of completed bosonic creation. -/
 @[simp]
@@ -203,7 +224,7 @@ theorem completedCreate_basisState (i : Mode) (n : Occupation Mode) :
           (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
           ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩) =
       _
-  rw [Common.completedDiagonalOperator_basisState, map_smul,
+  rw [completedCreateDiagonal_basisState, map_smul,
     completedCreateExtension_basisState]
 
 /-- Occupation-basis action of completed bosonic annihilation. -/
@@ -219,7 +240,7 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode) :
           (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
           ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩) =
       _
-  rw [Common.completedDiagonalOperator_basisState, map_smul]
+  rw [completedAnnihilateDiagonal_basisState, map_smul]
   by_cases hni : n i = 0
   · simp [hni]
   · rw [completedAnnihilatePullback_basisState_of_pos i hni]
@@ -233,18 +254,29 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
       algebraicToCompleted.comp (create i) := by
   apply Common.linearMap_ext_basisState
   intro n
+  simp only [LinearMap.comp_apply]
+  change
+    completedCreateExtension i
+        (Common.completedDiagonalOperator
+          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
+          (Common.algebraicToCompletedDiagonalDomain
+            (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
+            (basisState n))) =
+      algebraicToCompleted (create i (basisState n))
   have hdomain :
       Common.algebraicToCompletedDiagonalDomain
           (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
           (basisState n) =
-        ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ := by
+        ⟨Common.completedBasisState n,
+          Common.completedBasisState_mem_completedDiagonalDomain
+            (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) n⟩ := by
     exact Subtype.ext (Common.algebraicToCompleted_basisState n)
-  have hbasis (m : Occupation Mode) :
-      algebraicToCompleted (basisState m) = completedBasisState m := by
-    simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
-  simp only [LinearMap.comp_apply]
-  rw [hdomain, completedCreate_basisState, create_basisState_eq, map_smul, hbasis]
+  rw [hdomain, Common.completedDiagonalOperator_basisState, map_smul]
+  have hshift := completedCreateExtension_basisState i n
+  rw [show completedCreateExtension i (Common.completedBasisState n) =
+      Common.completedBasisState (createOccupation i n) by
+        simpa [completedBasisState] using hshift]
+  rw [create_basisState_eq, map_smul, algebraicToCompleted_basisState]
 
 /-- On the finite-support core, completed bosonic annihilation agrees with the algebraic
 annihilation operator. -/
@@ -255,18 +287,32 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
       algebraicToCompleted.comp (annihilate i) := by
   apply Common.linearMap_ext_basisState
   intro n
+  simp only [LinearMap.comp_apply]
+  change
+    completedAnnihilatePullback i
+        (Common.completedDiagonalOperator
+          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
+          (Common.algebraicToCompletedDiagonalDomain
+            (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
+            (basisState n))) =
+      algebraicToCompleted (annihilate i (basisState n))
   have hdomain :
       Common.algebraicToCompletedDiagonalDomain
           (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
           (basisState n) =
-        ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ := by
+        ⟨Common.completedBasisState n,
+          Common.completedBasisState_mem_completedDiagonalDomain
+            (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n⟩ := by
     exact Subtype.ext (Common.algebraicToCompleted_basisState n)
-  have hbasis (m : Occupation Mode) :
-      algebraicToCompleted (basisState m) = completedBasisState m := by
-    simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
-  simp only [LinearMap.comp_apply]
-  rw [hdomain, completedAnnihilate_basisState, annihilate_basisState_eq, map_smul, hbasis]
+  rw [hdomain, Common.completedDiagonalOperator_basisState, map_smul]
+  have hshift := completedAnnihilatePullback_basisState_of_pos
+  rw [annihilate_basisState_eq, map_smul, algebraicToCompleted_basisState]
+  by_cases hni : n i = 0
+  · simp [hni]
+  · have hpull := completedAnnihilatePullback_basisState_of_pos i hni
+    rw [show completedAnnihilatePullback i (Common.completedBasisState n) =
+        Common.completedBasisState (removeOccupation i n) by
+          simpa [completedBasisState] using hpull]
 
 end
 end Bosonic
