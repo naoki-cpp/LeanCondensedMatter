@@ -266,6 +266,9 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
+  change
+    (completedCreate i).toFun (algebraicToCompletedCreateDomain i (basisState n)) =
+      algebraicToCompleted (create i (basisState n))
   have hdomain :
       algebraicToCompletedCreateDomain i (basisState n) =
         ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ := by
@@ -282,6 +285,9 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
   apply Common.linearMap_ext_basisState
   intro n
   simp only [LinearMap.comp_apply]
+  change
+    (completedAnnihilate i).toFun (algebraicToCompletedAnnihilateDomain i (basisState n)) =
+      algebraicToCompleted (annihilate i (basisState n))
   have hdomain :
       algebraicToCompletedAnnihilateDomain i (basisState n) =
         ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ := by
