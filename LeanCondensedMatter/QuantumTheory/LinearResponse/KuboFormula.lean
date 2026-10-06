@@ -3,6 +3,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
+import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Analysis.Normed.Operator.Mul
 import Mathlib.Algebra.Lie.OfAssociative
 
