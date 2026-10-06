@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Algebra.Star.UnitaryStarAlgAut
@@ -62,6 +63,27 @@ noncomputable def timeScaledGenerator (t : ℝ) : H →L[ℂ] H :=
 noncomputable def freePropagator (t : ℝ) : H →L[ℂ] H :=
   NormedSpace.exp (timeScaledGenerator system t)
 
+/-- The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled
+by `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic
+implementation. -/
+theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
+    freePropagator system t =
+      LinearPMap.boundedUnitaryEvolution
+        (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1) t := by
+  unfold freePropagator
+  rw [LinearPMap.boundedUnitaryEvolution_eq_exp]
+  congr 1
+  simp only [timeScaledGenerator, schrodingerGenerator, smul_smul, div_eq_mul_inv]
+  congr 1
+  ring
+
+private theorem scaledHamiltonian_selfAdjoint :
+    IsSelfAdjoint (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1) := by
+  apply IsSelfAdjoint.smul
+  · rw [isSelfAdjoint_iff, Complex.star_def]
+    simp
+  · exact system.hamiltonian_selfAdjoint
+
 @[simp]
 theorem timeScaledGenerator_zero : timeScaledGenerator system 0 = 0 := by
   simp [timeScaledGenerator]
@@ -89,25 +111,25 @@ theorem star_timeScaledGenerator (t : ℝ) :
 
 @[simp]
 theorem freePropagator_zero : freePropagator system 0 = 1 := by
-  simp [freePropagator]
+  rw [freePropagator_eq_boundedUnitaryEvolution]
+  exact LinearPMap.boundedUnitaryEvolution_zero _
 
 /-- The adjoint of the free propagator is the negative-time propagator. -/
 theorem star_freePropagator (t : ℝ) :
     star (freePropagator system t) = freePropagator system (-t) := by
-  simp [freePropagator, NormedSpace.star_exp, star_timeScaledGenerator]
+  rw [freePropagator_eq_boundedUnitaryEvolution system t,
+    freePropagator_eq_boundedUnitaryEvolution system (-t)]
+  exact LinearPMap.boundedUnitaryEvolution_star _
+    (scaledHamiltonian_selfAdjoint system) t
 
 /-- Free propagators form a one-parameter multiplicative group. -/
 theorem freePropagator_add (t s : ℝ) :
     freePropagator system (t + s) =
       freePropagator system t * freePropagator system s := by
-  have hcomm :
-      Commute (timeScaledGenerator system t) (timeScaledGenerator system s) := by
-    simpa [timeScaledGenerator] using
-      ((Commute.refl (schrodingerGenerator system)).smul_left (t : ℂ)).smul_right (s : ℂ)
-  rw [freePropagator, timeScaledGenerator_add]
-  exact NormedSpace.exp_add_of_commute_of_mem_ball (𝕂 := ℂ) hcomm
-    ((NormedSpace.expSeries_radius_eq_top ℂ (H →L[ℂ] H)).symm ▸ edist_lt_top _ _)
-    ((NormedSpace.expSeries_radius_eq_top ℂ (H →L[ℂ] H)).symm ▸ edist_lt_top _ _)
+  rw [freePropagator_eq_boundedUnitaryEvolution system (t + s),
+    freePropagator_eq_boundedUnitaryEvolution system t,
+    freePropagator_eq_boundedUnitaryEvolution system s]
+  exact LinearPMap.boundedUnitaryEvolution_add _ t s
 
 /-- The negative-time propagator is a left inverse. -/
 theorem freePropagator_neg_mul (t : ℝ) :
@@ -236,13 +258,10 @@ theorem norm_heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) :
 
 /-- The free propagator depends continuously on real time in operator norm. -/
 theorem continuous_freePropagator : Continuous (freePropagator system) := by
-  have hcomplex : Continuous (fun z : ℂ =>
-      NormedSpace.exp (z • schrodingerGenerator system)) :=
-    (differentiable_exp_smul_const ℂ (schrodingerGenerator system)).continuous
-  change Continuous
-    ((fun z : ℂ => NormedSpace.exp (z • schrodingerGenerator system)) ∘
-      Complex.ofReal)
-  exact hcomplex.comp Complex.continuous_ofReal
+  change Continuous (fun t : ℝ => freePropagator system t)
+  simpa only [freePropagator_eq_boundedUnitaryEvolution] using
+    (LinearPMap.boundedUnitaryEvolution_continuous
+      (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1))
 
 /-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
 theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
