@@ -393,23 +393,13 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Trace",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/Trace.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/HilbertSchmidt.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Trace"
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm"
       ],
       "externalImportCount": 0
     },
@@ -802,8 +792,8 @@
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/BinarySlotShuffle.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
-        "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots"
       ],
@@ -861,14 +851,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
-      "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/ShuffleIntegral.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/StrictAntiCongr.lean",
       "imports": [
@@ -884,7 +866,6 @@
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
-        "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
         "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr"
       ],
       "externalImportCount": 0
@@ -2959,12 +2940,23 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/Ladder.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder"
       ],
       "externalImportCount": 0
     },
