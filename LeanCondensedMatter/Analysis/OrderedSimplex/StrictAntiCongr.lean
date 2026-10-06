@@ -62,13 +62,4 @@ theorem orderedSimplexIntegral_congr_of_strictAnti :
       · simpa using hlt
       · simpa using lt_trans (hbound j) hlt
 
-/-- The form the relabel covariance layer consumes: a strictly decreasing assignment is injective,
-so an identity available only at injective interaction times still determines the integral. -/
-theorem orderedSimplexIntegral_congr_of_injective (n : ℕ) (β : ℝ) (hβ : 0 ≤ β)
-    (f g : (Fin n → ℝ) → ℂ)
-    (h : ∀ τ : Fin n → ℝ, Function.Injective τ → f τ = g τ) :
-    orderedSimplexIntegral n β f = orderedSimplexIntegral n β g :=
-  orderedSimplexIntegral_congr_of_strictAnti n β hβ f g
-    fun τ hanti _ => h τ hanti.injective
-
 end intervalIntegral
