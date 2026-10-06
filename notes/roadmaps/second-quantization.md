@@ -85,21 +85,23 @@ and thermodynamic limits remain open.
 ## Bosonic line
 
 The bosonic occupation basis is infinite even for finite mode types. Existing results therefore keep
-summability and admissible domains explicit. Algebraic CCR structure, free thermal sums, a
-convergence-aware Gibbs functional, and reusable diagrammatic infrastructure are available. For
-finite mode types with positive free Boltzmann exponents, the quartic vertex-sequence expansion now
-proves free-Gibbs-domain membership of every finite Dyson coefficient, and the coefficientwise
-formal linked-cluster theorem identifies its formal logarithm with connected physical diagrams.
+summability and admissible domains explicit. The completed occupation Hilbert space is now exposed as
+`Bosonic.CompletedFockSpace Mode`. For finite mode types with positive one-particle energies, the
+generic diagonal heat operator is specialized to the free bosonic Hamiltonian, proved trace class,
+identified with the existing free partition function, and normalized to the canonical pure-point
+Gibbs density operator. The quartic vertex-sequence expansion separately proves free-Gibbs-domain
+membership of every finite Dyson coefficient, and the coefficientwise formal linked-cluster theorem
+identifies its formal logarithm with connected physical diagrams.
 
-The remaining analytic problem is not finite-order Gibbs summability: it is construction and
-control of the interacting completed-space theory together with all-order Dyson/Taylor convergence
-(or an explicitly weaker asymptotic/Borel notion where appropriate).
+The remaining analytic problem is therefore the unbounded interacting completed-space theory and
+all-order Dyson/Taylor convergence (or an explicitly weaker asymptotic/Borel notion where
+appropriate), not the free Gibbs state or finite-order coefficient summability.
 
 ## Research directions
 
 - pre-normalized time-ordered insertions, higher Green functions, and source derivatives;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;
-- completed bosonic Fock/operator-domain theory;
+- completed bosonic unbounded ladder/number and interacting operator-domain theory;
 - interacting completed-space fermionic perturbation theory;
 - infinite-mode and thermodynamic limits under explicit topological and uniform-estimate hypotheses;
 - low-order examples only where they clarify the general theorem rather than create wrapper APIs.
