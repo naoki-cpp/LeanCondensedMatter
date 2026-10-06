@@ -44,8 +44,8 @@ theorem completedBoundedDiagonalOperator_isPositive_of_nonneg
               congr 1
               ac_rfl
         _ = r * ‖z‖ ^ 2 := by
-          rw [RCLike.mul_conj, ← RCLike.ofReal_pow, ← RCLike.ofReal_mul,
-            RCLike.ofReal_re]
+          rw [RCLike.mul_conj]
+          norm_num [Complex.mul_re]
     rw [hvalue]
     exact mul_nonneg hr (sq_nonneg ‖z‖)
   change T.IsPositive
