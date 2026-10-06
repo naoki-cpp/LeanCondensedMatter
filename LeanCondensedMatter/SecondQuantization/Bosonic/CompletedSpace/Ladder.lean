@@ -269,9 +269,12 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
   change
     (completedCreate i).toFun (algebraicToCompletedCreateDomain i (basisState n)) =
       algebraicToCompleted (create i (basisState n))
+  have hmem : completedBasisState n ∈ (completedCreate i).domain := by
+    change completedBasisState n ∈ completedCreateDomain i
+    exact completedBasisState_mem_completedCreateDomain i n
   have hdomain :
       algebraicToCompletedCreateDomain i (basisState n) =
-        ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ := by
+        ⟨completedBasisState n, hmem⟩ := by
     apply Subtype.ext
     exact algebraicToCompleted_basisState n
   rw [hdomain, LinearPMap.toFun_eq_coe, completedCreate_basisState,
@@ -288,9 +291,12 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
   change
     (completedAnnihilate i).toFun (algebraicToCompletedAnnihilateDomain i (basisState n)) =
       algebraicToCompleted (annihilate i (basisState n))
+  have hmem : completedBasisState n ∈ (completedAnnihilate i).domain := by
+    change completedBasisState n ∈ completedAnnihilateDomain i
+    exact completedBasisState_mem_completedAnnihilateDomain i n
   have hdomain :
       algebraicToCompletedAnnihilateDomain i (basisState n) =
-        ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ := by
+        ⟨completedBasisState n, hmem⟩ := by
     apply Subtype.ext
     exact algebraicToCompleted_basisState n
   rw [hdomain, LinearPMap.toFun_eq_coe, completedAnnihilate_basisState,
