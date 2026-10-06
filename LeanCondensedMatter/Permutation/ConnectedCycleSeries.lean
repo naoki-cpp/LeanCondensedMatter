@@ -93,22 +93,5 @@ theorem coeff_permutationConnectedCycleSeries_of_pos
   rw [coeff_permutationConnectedCycleSeries]
   exact connectedCycleCoeff_eq_pow_mul_trace_div ζ K m hm
 
-/-- The `ζ = 0` boundary is handled coefficientwise without dividing by `ζ`: only the linear
-coefficient survives. -/
-theorem coeff_permutationConnectedCycleSeries_zero_exchange
-    (K : Matrix ι ι ℂ) (m : ℕ) :
-    PowerSeries.coeff m (permutationConnectedCycleSeries 0 K) =
-      if m = 1 then Matrix.trace K else 0 := by
-  classical
-  cases m with
-  | zero => simp [coeff_permutationConnectedCycleSeries, connectedCycleCoeff_zero]
-  | succ n =>
-      cases n with
-      | zero =>
-          rw [coeff_permutationConnectedCycleSeries_of_pos (0 : ℂ) K 1 (by omega)]
-          simp
-      | succ n =>
-          rw [coeff_permutationConnectedCycleSeries_of_pos (0 : ℂ) K (n + 2) (by omega)]
-          simp
 
 end Combinatorics
