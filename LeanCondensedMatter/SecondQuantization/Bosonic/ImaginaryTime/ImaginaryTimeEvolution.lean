@@ -40,6 +40,14 @@ local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Class
 def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
   n.sum fun i k => (k : ℝ) * ε i
 
+/-- Nonnegative one-particle energies give a nonnegative many-boson free energy. -/
+theorem freeEigenvalue_nonneg (ε : Mode → ℝ) (hε : ∀ i, 0 ≤ ε i)
+    (n : Occupation Mode) :
+    0 ≤ freeEigenvalue ε n := by
+  classical
+  unfold freeEigenvalue Finsupp.sum
+  exact Finset.sum_nonneg fun i _ => mul_nonneg (by positivity) (hε i)
+
 theorem freeEigenvalue_add (ε : Mode → ℝ) (m n : Occupation Mode) :
     freeEigenvalue ε (m + n) = freeEigenvalue ε m + freeEigenvalue ε n :=
   Finsupp.sum_add_index' (fun i => by simp) (fun i k1 k2 => by push_cast; ring)
