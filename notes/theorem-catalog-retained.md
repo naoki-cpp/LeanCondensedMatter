@@ -193,8 +193,6 @@ or consumer structure changes.
   zero-temperature occupation statement that every state in an empty band has zero occupation.
 - `SecondQuantization.Bosonic.annihilate_fockVacuum` — canonical `[simp]` vacuum identity stating that
   every bosonic annihilation operator kills the Fock vacuum.
-- `SecondQuantization.Bosonic.freeGibbsDysonCoeff_succ` — canonical recursive scalar-integral equation
-  for the named Gibbs-evaluated Dyson coefficient under its explicit analytic boundary.
 - `SecondQuantization.Bosonic.particleNumber_vacuum` — canonical `[simp]` statement that the bosonic
   vacuum has zero total occupation number.
 - `SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator` — deliberate
