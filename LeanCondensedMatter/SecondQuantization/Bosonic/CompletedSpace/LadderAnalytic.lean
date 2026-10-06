@@ -139,11 +139,21 @@ private theorem completedCreate_adjoint_apply
   have h :=
     ((completedCreate i).adjoint_isFormalAdjoint
       (completedCreate_denseDomain i)).symm e y
-  dsimp [e] at h
-  rw [completedCreate_basisState, inner_smul_left,
-    Common.inner_completedBasisState_left,
+  have he :
+      completedCreate i e =
+        (Real.sqrt (n i + 1 : ℝ) : ℂ) •
+          completedBasisState (createOccupation i n) := by
+    exact completedCreate_basisState i n _
+  rw [he] at h
+  change
+    inner ℂ
+        ((Real.sqrt (n i + 1 : ℝ) : ℂ) •
+          completedBasisState (createOccupation i n))
+        (y : CompletedFockSpace Mode) =
+      inner ℂ (completedBasisState n) ((completedCreate i).adjoint y) at h
+  rw [inner_smul_left, Common.inner_completedBasisState_left,
     Common.inner_completedBasisState_left] at h
-  simpa using h.symm
+  exact h.symm
 
 private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
     (completedCreate i).adjoint.domain ≤ completedAnnihilateDomain i := by
@@ -207,11 +217,21 @@ private theorem completedAnnihilate_adjoint_apply
   have h :=
     ((completedAnnihilate i).adjoint_isFormalAdjoint
       (completedAnnihilate_denseDomain i)).symm e y
-  dsimp [e] at h
-  rw [completedAnnihilate_basisState, inner_smul_left,
-    Common.inner_completedBasisState_left,
+  have he :
+      completedAnnihilate i e =
+        (Real.sqrt (n i : ℝ) : ℂ) •
+          completedBasisState (removeOccupation i n) := by
+    exact completedAnnihilate_basisState i n _
+  rw [he] at h
+  change
+    inner ℂ
+        ((Real.sqrt (n i : ℝ) : ℂ) •
+          completedBasisState (removeOccupation i n))
+        (y : CompletedFockSpace Mode) =
+      inner ℂ (completedBasisState n) ((completedAnnihilate i).adjoint y) at h
+  rw [inner_smul_left, Common.inner_completedBasisState_left,
     Common.inner_completedBasisState_left] at h
-  simpa using h.symm
+  exact h.symm
 
 private theorem completedAnnihilate_adjoint_domain_le_createDomain (i : Mode) :
     (completedAnnihilate i).adjoint.domain ≤ completedCreateDomain i := by
