@@ -175,7 +175,10 @@ theorem sum_orderedSimplexContribution_eq_mul (m n : ℕ) (β : ℝ)
     (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
       orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
   rw [sum_orderedSimplexContribution_eq_shuffleIntegral m n β f g hf hg]
-  exact orderedSimplexShuffleIntegral_eq_mul m n β f g hf hg
+  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded
+    m n β f g
+      (intervalIntegral.Continuous.measurableLocallyBounded hf)
+      (intervalIntegral.Continuous.measurableLocallyBounded hg)
 
 end BinaryShuffle
 end Combinatorics

@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit
 
 set_option linter.style.header false
@@ -66,17 +65,5 @@ theorem orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded :
         (orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
           m n β f g hf hg).symm
 termination_by m n => m + n
-
-/-- Binary shuffle identity: the recursively accumulated contribution of all order-preserving
-interleavings equals the product of the two component ordered-simplex integrals. -/
-theorem orderedSimplexShuffleIntegral_eq_mul
-    (m n : ℕ) (β : ℝ)
-    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
-    (hf : Continuous f) (hg : Continuous g) :
-    orderedSimplexShuffleIntegral m n β f g =
-      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g :=
-  orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded
-    m n β f g (intervalIntegral.Continuous.measurableLocallyBounded hf)
-      (intervalIntegral.Continuous.measurableLocallyBounded hg)
 
 end intervalIntegral
