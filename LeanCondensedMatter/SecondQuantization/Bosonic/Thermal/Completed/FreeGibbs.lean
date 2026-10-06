@@ -132,7 +132,7 @@ theorem completedFreeGibbsDensityOperator_apply_basis
 
 /-- Normalizing the completed free heat operator by the bosonic partition function gives the
 canonical completed Gibbs density operator. -/
-theorem inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_gibbs
+theorem inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     (freeGibbsPartition ε β)⁻¹ •
         completedFreeHeatOperator ε β hβ (fun i => (hε i).le) =
