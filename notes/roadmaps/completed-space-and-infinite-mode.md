@@ -60,7 +60,11 @@ one-particle energies, `Bosonic.Thermal.Completed` now provides:
 - the canonical pure-point Gibbs density operator and the operator normalization identity.
 
 This does not make bosonic creation, annihilation, number, or interacting Hamiltonians bounded.
-Those remain part of the unbounded-domain program.
+The single-mode number operator and free Hamiltonian are now represented separately as maximal
+diagonal `LinearPMap` operators on their natural weighted `ℓ²` domains. Their finite-support
+algebraic core agrees with the existing algebraic operators, and the real diagonal weights make both
+operators self-adjoint through the Common diagonal analytic theory. Creation and annihilation remain
+the next genuinely non-diagonal unbounded-domain problem.
 
 ## Finite-mode fermionic compatibility
 
@@ -75,7 +79,7 @@ needed for that representation-level statement.
 
 ## Open work
 
-- completed bosonic unbounded ladder/number operator theory and its product domains;
+- completed bosonic creation/annihilation weighted-shift domains and their product domains;
 - interacting completed-space Dyson theory with all required product domains;
 - stronger convergence topologies for Gibbs truncations when justified;
 - infinite-volume or thermodynamic limits with an explicit directed system, observable algebra,

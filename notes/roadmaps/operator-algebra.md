@@ -190,7 +190,7 @@ The following remain open or only partially covered:
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;
-- completed bosonic ladder/number operator domains and analytic closure;
+- completed bosonic creation/annihilation weighted-shift domains and analytic closure;
 - general interacting completed-space Dyson theory;
 - infinite-volume and thermodynamic limits.
 
