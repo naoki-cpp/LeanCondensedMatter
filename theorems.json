@@ -46029,7 +46029,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation",
     "externalAxioms": [],
     "docString": "Under the sufficient physical condition `V(t)† = V(t)`, the first density variation is the\nLiouville commutator `[K_V(t), ρ₀]`. ",
     "directWrapperTargetModule": null,
@@ -184510,8 +184510,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "intervalIntegral.hasDerivAt_orderedSimplexIntegral_succ",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
@@ -184841,8 +184841,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "intervalIntegral.orderedSimplexIntegral_const",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
@@ -184962,46 +184962,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ),\n  (intervalIntegral.orderedSimplexIntegral n β fun τ => -f τ) = -intervalIntegral.orderedSimplexIntegral n β f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "intervalIntegral.orderedSimplexIntegral_neg",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "intervalIntegral.orderedSimplexIntegral_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (n : ℕ) (β : ℝ) (c : ℂ) (f : (Fin n → ℝ) → ℂ),\n  (intervalIntegral.orderedSimplexIntegral n β fun τ => c * f τ) = c * intervalIntegral.orderedSimplexIntegral n β f",
     "standardAxioms": [
@@ -185025,8 +184985,7 @@
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
-      "intervalIntegral.orderedSimplexIntegral_neg"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
     ],
     "dependencies": [
       "intervalIntegral.orderedSimplexIntegral_succ"
@@ -185037,10 +184996,9 @@
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
-      "intervalIntegral.orderedSimplexIntegral_neg"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

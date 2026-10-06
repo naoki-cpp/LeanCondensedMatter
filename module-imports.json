@@ -2508,7 +2508,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/DensityFirstVariation.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation"
       ],
       "externalImportCount": 3
     },
@@ -2572,7 +2572,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/HermitianPerturbation.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation"
       ],
       "externalImportCount": 2
     },
@@ -2592,7 +2592,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
