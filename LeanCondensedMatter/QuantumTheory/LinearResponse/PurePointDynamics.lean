@@ -117,9 +117,9 @@ theorem freePropagator_apply_purePointBasis
     dsimp [T, c, v]
     rw [schrodingerGenerator]
     simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
-    congr 1
+    apply congrArg (fun z : ℂ => z • data.basis i)
     push_cast
-    rfl
+    ring
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
