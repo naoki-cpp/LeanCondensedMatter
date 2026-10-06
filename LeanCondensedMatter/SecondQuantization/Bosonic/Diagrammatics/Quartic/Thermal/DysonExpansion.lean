@@ -36,6 +36,47 @@ variable {Mode : Type*} [Finite Mode]
 /-- File-local classical equality matches the concrete free-thermal pair kernel. -/
 local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
 
+/-- Every finite bare quartic vertex sequence has a summable free-Gibbs numerator under the
+positive one-mode Boltzmann hypothesis. -/
+theorem quarticVertexSequenceOperator_mem_freeGibbsDomain
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    {n : ℕ} (q : Fin n → QuarticVertexLabel Mode) :
+    Common.quarticVertexSequenceOperator create annihilate q ∈
+      freeGibbsDomain ε β := by
+  rw [mem_freeGibbsDomain_iff, ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
+  exact FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos _
+
+/-- Every finite Dyson coefficient of a finitely supported quartic interaction belongs to the
+free-Gibbs domain. This is proved coefficientwise from the finite vertex-sequence expansion and does
+not exchange the infinite Gibbs sum with the recursive Dyson integral. -/
+theorem dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain
+    (support : Finset (QuarticVertexLabel Mode))
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ) :
+    Common.dysonCoeff (freeEigenvalue ε) (quarticInteractionOn support g) n t ∈
+      freeGibbsDomain ε β := by
+  letI := Fintype.ofFinite Mode
+  classical
+  rw [dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
+  exact Submodule.sum_mem (freeGibbsDomain ε β) fun q _ =>
+    (freeGibbsDomain ε β).smul_mem _
+      (quarticVertexSequenceOperator_mem_freeGibbsDomain ε β hpos
+        (fun i => (q i : QuarticVertexLabel Mode)))
+
+/-- On a finite mode type, every finite Dyson coefficient of the full quartic interaction belongs to
+the free-Gibbs domain. -/
+theorem dysonCoeff_quarticInteraction_mem_freeGibbsDomain
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ) :
+    Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) n t ∈
+      freeGibbsDomain ε β := by
+  letI := Fintype.ofFinite Mode
+  classical
+  rw [dysonCoeff_quarticInteraction_eq_sum ε g n t]
+  exact Submodule.sum_mem (freeGibbsDomain ε β) fun q _ =>
+    (freeGibbsDomain ε β).smul_mem _
+      (quarticVertexSequenceOperator_mem_freeGibbsDomain ε β hpos q)
+
 /-- The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite
 sum over support-valued vertex sequences and bosonic pairings. The scalar
 `quarticDysonSequenceCoeff` carries the full ordered-simplex imaginary-time integration, while the
