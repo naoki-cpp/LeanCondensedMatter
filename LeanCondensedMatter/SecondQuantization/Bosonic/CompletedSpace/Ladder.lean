@@ -60,37 +60,35 @@ private noncomputable def completedCreateExtension (i : Mode) :
         simp only [Function.comp_apply]
         rw [(createOccupation_injective i).extend_apply]
   map_add' ψ φ := by
-    ext m
+    apply Subtype.ext
+    funext m
+    change
+      Function.extend (createOccupation i) (fun n => (ψ + φ) n) 0 m =
+        Function.extend (createOccupation i) (fun n => ψ n) 0 m +
+          Function.extend (createOccupation i) (fun n => φ n) 0 m
     by_cases hm : m ∈ Set.range (createOccupation i)
     · rcases hm with ⟨n, rfl⟩
-      rw [(createOccupation_injective i).extend_apply]
-      rw [(createOccupation_injective i).extend_apply]
-      rw [(createOccupation_injective i).extend_apply]
+      simp
+    · have hnot : ¬ ∃ n, createOccupation i n = m := by
+        exact hm
+      rw [Function.extend_apply' _ _ _ hnot,
+        Function.extend_apply' _ _ _ hnot,
+        Function.extend_apply' _ _ _ hnot]
       rfl
-    · rw [Function.extend_apply']
-      · rw [Function.extend_apply']
-        · rw [Function.extend_apply']
-          rfl
-        · intro h
-          exact hm h
-      · intro h
-        exact hm h
-      · intro h
-        exact hm h
   map_smul' a ψ := by
-    ext m
+    apply Subtype.ext
+    funext m
+    change
+      Function.extend (createOccupation i) (fun n => (a • ψ) n) 0 m =
+        a • Function.extend (createOccupation i) (fun n => ψ n) 0 m
     by_cases hm : m ∈ Set.range (createOccupation i)
     · rcases hm with ⟨n, rfl⟩
-      rw [(createOccupation_injective i).extend_apply]
-      rw [(createOccupation_injective i).extend_apply]
+      simp
+    · have hnot : ¬ ∃ n, createOccupation i n = m := by
+        exact hm
+      rw [Function.extend_apply' _ _ _ hnot,
+        Function.extend_apply' _ _ _ hnot]
       rfl
-    · rw [Function.extend_apply']
-      · rw [Function.extend_apply']
-        rfl
-      · intro h
-        exact hm h
-      · intro h
-        exact hm h
 
 /-- Pullback of a completed coefficient sequence along the injective creation occupation map. -/
 private noncomputable def completedAnnihilatePullback (i : Mode) :
@@ -257,26 +255,26 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
   simp only [LinearMap.comp_apply]
   change
     completedCreateExtension i
-        (Common.completedDiagonalOperator
-          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
+        ((Common.completedDiagonalOperator
+          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))).toFun
           (Common.algebraicToCompletedDiagonalDomain
             (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
-            (basisState n))) =
+            (Common.basisState n))) =
       algebraicToCompleted (create i (basisState n))
-  have hdomain :
-      Common.algebraicToCompletedDiagonalDomain
-          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
-          (basisState n) =
-        ⟨Common.completedBasisState n,
-          Common.completedBasisState_mem_completedDiagonalDomain
-            (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) n⟩ := by
-    exact Subtype.ext (Common.algebraicToCompleted_basisState n)
-  rw [hdomain, Common.completedDiagonalOperator_basisState, map_smul]
+  have hdiag := congrArg
+    (fun L => L (Common.basisState n))
+    (Common.completedDiagonalOperator_comp_algebraicCore
+      (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)))
+  simp only [LinearMap.comp_apply] at hdiag
+  rw [Common.diagonalOperator_basisState, map_smul,
+    Common.algebraicToCompleted_basisState] at hdiag
+  rw [hdiag, map_smul]
   have hshift := completedCreateExtension_basisState i n
   rw [show completedCreateExtension i (Common.completedBasisState n) =
       Common.completedBasisState (createOccupation i n) by
         simpa [completedBasisState] using hshift]
   rw [create_basisState_eq, map_smul, algebraicToCompleted_basisState]
+  rfl
 
 /-- On the finite-support core, completed bosonic annihilation agrees with the algebraic
 annihilation operator. -/
@@ -290,21 +288,20 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
   simp only [LinearMap.comp_apply]
   change
     completedAnnihilatePullback i
-        (Common.completedDiagonalOperator
-          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
+        ((Common.completedDiagonalOperator
+          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))).toFun
           (Common.algebraicToCompletedDiagonalDomain
             (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
-            (basisState n))) =
+            (Common.basisState n))) =
       algebraicToCompleted (annihilate i (basisState n))
-  have hdomain :
-      Common.algebraicToCompletedDiagonalDomain
-          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
-          (basisState n) =
-        ⟨Common.completedBasisState n,
-          Common.completedBasisState_mem_completedDiagonalDomain
-            (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n⟩ := by
-    exact Subtype.ext (Common.algebraicToCompleted_basisState n)
-  rw [hdomain, Common.completedDiagonalOperator_basisState, map_smul]
+  have hdiag := congrArg
+    (fun L => L (Common.basisState n))
+    (Common.completedDiagonalOperator_comp_algebraicCore
+      (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)))
+  simp only [LinearMap.comp_apply] at hdiag
+  rw [Common.diagonalOperator_basisState, map_smul,
+    Common.algebraicToCompleted_basisState] at hdiag
+  rw [hdiag, map_smul]
   rw [annihilate_basisState_eq, map_smul, algebraicToCompleted_basisState]
   by_cases hni : n i = 0
   · simp [hni]
@@ -312,6 +309,7 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
     rw [show completedAnnihilatePullback i (Common.completedBasisState n) =
         Common.completedBasisState (removeOccupation i n) by
           simpa [completedBasisState] using hpull]
+    rfl
 
 end
 end Bosonic
