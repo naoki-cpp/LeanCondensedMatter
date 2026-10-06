@@ -144,27 +144,6 @@ theorem evolvePureState_ofStateVector (ψ : StateVector H) (t : ℝ) :
   apply Subtype.ext
   exact evolveDensityOperator_pure system ψ t
 
-/-- The free propagator as a linear isometric equivalence of the Hilbert space. -/
-noncomputable def freePropagatorLinearIsometryEquiv (t : ℝ) : H ≃ₗᵢ[ℂ] H :=
-  Unitary.linearIsometryEquiv
-    (ContinuousLinearMap.unitaryOfAdjointInverse (freePropagator system t)
-      (star_mul_freePropagator system t) (freePropagator_mul_star system t))
-
-/-- Transport a Hilbert basis through the free propagator. -/
-noncomputable def evolveHilbertBasis {ι : Type*}
-    (b : HilbertBasis ι ℂ H) (t : ℝ) : HilbertBasis ι ℂ H :=
-  HilbertBasis.ofRepr ((freePropagatorLinearIsometryEquiv system t).symm.trans b.repr)
-
-@[simp]
-theorem evolveHilbertBasis_apply {ι : Type*}
-    (b : HilbertBasis ι ℂ H) (t : ℝ) (i : ι) :
-    evolveHilbertBasis system b t i = freePropagator system t (b i) := by
-  classical
-  change (freePropagatorLinearIsometryEquiv system t)
-      (b.repr.symm (lp.single 2 i 1)) = freePropagator system t (b i)
-  rw [b.repr_symm_single]
-  rfl
-
 /-- The complex density-state expectation is identical in the Schrödinger and Heisenberg
 pictures for every bounded operator. -/
 theorem expectation_evolveDensityOperator_eq_heisenberg
@@ -173,7 +152,14 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
       ρ.expectation (heisenbergEvolution system A t) := by
   classical
   obtain ⟨ι, b, w, hρ⟩ := ρ.exists_diagonal_hilbertBasis
-  let b' : HilbertBasis ι ℂ H := evolveHilbertBasis system b t
+  let U : H ≃ₗᵢ[ℂ] H :=
+    Unitary.linearIsometryEquiv (freePropagatorUnitary system t)
+  let b' : HilbertBasis ι ℂ H :=
+    HilbertBasis.ofRepr (U.symm.trans b.repr)
+  have hb' (i : ι) : b' i = freePropagator system t (b i) := by
+    change U (b.repr.symm (lp.single 2 i 1)) = freePropagator system t (b i)
+    rw [b.repr_symm_single]
+    rfl
   have hρ' : ∀ i,
       (evolveDensityOperator system ρ t).op (b' i) = (w i : ℂ) • b' i := by
     intro i
@@ -195,8 +181,7 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
   apply tsum_congr
   intro i
   apply congrArg (fun z : ℂ => (w i : ℂ) * z)
-  rw [show b' i = freePropagator system t (b i) from
-    evolveHilbertBasis_apply system b t i]
+  rw [hb' i]
   exact inner_freePropagator_apply_eq_heisenbergEvolution system A (b i) t
 
 /-- The lossless real density-state observable expectation is identical in the Schrödinger and
