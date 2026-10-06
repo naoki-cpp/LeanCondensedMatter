@@ -67,6 +67,7 @@ theorem FamilySlotShuffle.cons_integrand {k : ℕ}
     simp [FamilySlotShuffleTo.timeAssignment]
 
 /-- Coordinate restriction to one local block is continuous. -/
+omit [Fintype ι] in
 private theorem FamilySlotShuffleTo.continuous_timeAssignment {size : ι → ℕ} {total : ℕ}
     (shuffle : FamilySlotShuffleTo size total) (i : ι) :
     Continuous (fun τ : Fin total → ℝ => shuffle.timeAssignment τ i) := by
