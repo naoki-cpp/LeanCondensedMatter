@@ -13,6 +13,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
 import LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.MeasuredObservableLinearity
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FrequencyDomain
@@ -37,5 +38,6 @@ set_option linter.style.header false
 
 Generic linear-response theory from time-dependent perturbations to physical response formulas:
 expectation dynamics, first variations, Kubo response, source coupling, retarded susceptibility,
-frequency-domain and adiabatic limits, Lehmann representations, and pure-point specializations.
+linearity in the measured observable, frequency-domain and adiabatic limits, Lehmann
+representations, and pure-point specializations.
 -/
