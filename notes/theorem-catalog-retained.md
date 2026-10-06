@@ -59,12 +59,12 @@ or consumer structure changes.
 - `Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm` — canonical `[simp]` inverse-evaluation rule for the equivalence between a partition part and its occupied ambient-slot subtype.
 - `Finpartition.partGlobalSlot_partOrderOfOrder` — canonical `[simp]` computation rule relating the induced local part order to the increasing enumeration of its ambient slots.
 - `Combinatorics.FamilySlotShuffle.cons_slotEquiv_zero` — canonical `[simp]` computation rule for the head-block coordinates of the recursive family-shuffle constructor.
-- `Combinatorics.FamilySlotShuffle.continuous_integrand` — general closure theorem that a finite product of continuous local integrands remains continuous after a family shuffle; this is a reusable ordered-simplex analysis API.
+- `Combinatorics.FamilySlotShuffleTo.continuous_ambientIntegrand` — general closure theorem that a finite product of continuous local integrands remains continuous after embedding into an arbitrary ambient total; this is a reusable ordered-simplex analysis API.
 - `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_succ` — canonical `[simp]` normalization rule for the tail branch of the dependent head/tail local-slot equivalence.
 - `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inl` — canonical `[simp]` inverse-evaluation rule sending a head local slot back to the zero-index sigma fiber.
 - `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_symm_inr` — canonical `[simp]` inverse-evaluation rule sending a tail local slot back to the successor sigma fiber.
 - `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_zero` — canonical `[simp]` normalization rule for the head branch of the dependent head/tail local-slot equivalence.
-- `Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand` — general closure theorem that measurable locally bounded local integrands remain so after a finite family shuffle; it is the regularity input used by the recursive shuffle-integral proof.
+- `Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand` — general closure theorem that measurable locally bounded local integrands remain so after embedding into an arbitrary ambient total; it supplies the regularity input for finite-family shuffle factorization.
 - `Combinatorics.FamilySlotShuffle.mem_headSlots_iff` — canonical `[simp]` membership characterization of the ambient head-slot subset in terms of the family-shuffle slot equivalence.
 - `Combinatorics.FamilySlotShuffle.mem_tailSlots_iff` — canonical `[simp]` membership characterization of the ambient tail-slot subset in terms of the head/tail local-slot decomposition.
 - `Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons` — public recursion law identifying the ordered-simplex integral of a constructed family shuffle with the corresponding binary head-versus-tail shuffled integral.

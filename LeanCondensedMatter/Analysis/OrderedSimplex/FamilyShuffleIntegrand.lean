@@ -10,7 +10,8 @@ set_option linter.style.header false
 # Integrands associated with finite-family slot shuffles
 
 Coordinate restriction, shuffled products, continuity, and measurable local boundedness belong to the
-ordered-simplex analysis layer. The underlying `FamilySlotShuffle` remains pure finite combinatorics.
+ordered-simplex analysis layer. The canonical integrand API is defined on `FamilySlotShuffleTo`,
+with `FamilySlotShuffle` using it directly as the canonical-total abbreviation.
 -/
 
 namespace Combinatorics
@@ -41,13 +42,6 @@ noncomputable def FamilySlotShuffleTo.ambientIntegrand {size : ι → ℕ} {tota
     (τ : Fin total → ℝ) : ℂ :=
   ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
 
-/-- Product of local integrands after all local coordinates are embedded by a family shuffle. -/
-noncomputable def FamilySlotShuffle.integrand {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (τ : Fin (∑ i, size i) → ℝ) : ℂ :=
-  ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
-
 /-- The integrand of a family shuffle assembled from an outer head/tail shuffle is the binary
 integrand of the head block and its shuffled tail. -/
 theorem FamilySlotShuffle.cons_integrand {k : ℕ}
@@ -56,11 +50,11 @@ theorem FamilySlotShuffle.cons_integrand {k : ℕ}
     (tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size))
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (τ : Fin (size 0 + FamilySlotShuffle.tailTotal size) → ℝ) :
-    (FamilySlotShuffle.cons size outer tail).integrand localIntegrand
+    (FamilySlotShuffle.cons size outer tail).ambientIntegrand localIntegrand
         (fun j => τ (Fin.cast (Fin.sum_univ_succ size) j)) =
       outer.integrand (localIntegrand 0)
-        (tail.integrand (fun i => localIntegrand i.succ)) τ := by
-  unfold FamilySlotShuffle.integrand BinaryShuffle.SlotShuffle.integrand
+        (tail.ambientIntegrand (fun i => localIntegrand i.succ)) τ := by
+  unfold FamilySlotShuffleTo.ambientIntegrand BinaryShuffle.SlotShuffle.integrand
   rw [Fin.prod_univ_succ]
   apply congrArg₂ (· * ·)
   · apply congrArg (localIntegrand 0)
@@ -73,31 +67,33 @@ theorem FamilySlotShuffle.cons_integrand {k : ℕ}
     simp [FamilySlotShuffleTo.timeAssignment]
 
 /-- Coordinate restriction to one local block is continuous. -/
-private theorem FamilySlotShuffle.continuous_timeAssignment {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size) (i : ι) :
-    Continuous (fun τ : Fin (∑ i, size i) → ℝ => shuffle.timeAssignment τ i) := by
+private theorem FamilySlotShuffleTo.continuous_timeAssignment {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    Continuous (fun τ : Fin total → ℝ => shuffle.timeAssignment τ i) := by
   exact continuous_pi fun j => continuous_apply (shuffle.slotEquiv ⟨i, j⟩)
 
-/-- A finite product of continuous local integrands remains continuous after shuffling. -/
-theorem FamilySlotShuffle.continuous_integrand {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size)
+/-- A finite product of continuous local integrands remains continuous after embedding their
+coordinates by an arbitrary-total family shuffle. -/
+theorem FamilySlotShuffleTo.continuous_ambientIntegrand {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, Continuous (localIntegrand i)) :
-    Continuous (shuffle.integrand localIntegrand) := by
-  unfold FamilySlotShuffle.integrand
+    Continuous (shuffle.ambientIntegrand localIntegrand) := by
+  unfold FamilySlotShuffleTo.ambientIntegrand
   exact continuous_finsetProd _ fun i _ =>
     (hlocal i).comp (shuffle.continuous_timeAssignment i)
 
 /-- A finite product of measurable locally bounded local integrands remains measurable locally
-bounded after a family shuffle. -/
-theorem FamilySlotShuffle.measurableLocallyBounded_integrand {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size)
+bounded after embedding their coordinates by an arbitrary-total family shuffle. -/
+theorem FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand
+    {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (hlocal : ∀ i, intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) :
-    intervalIntegral.MeasurableLocallyBounded (shuffle.integrand localIntegrand) := by
+    intervalIntegral.MeasurableLocallyBounded (shuffle.ambientIntegrand localIntegrand) := by
   classical
   change intervalIntegral.MeasurableLocallyBounded
-    (fun τ : Fin (∑ i, size i) → ℝ =>
+    (fun τ : Fin total → ℝ =>
       ∏ i, localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩)))
   simpa using
     intervalIntegral.MeasurableLocallyBounded.finsetProd Finset.univ
