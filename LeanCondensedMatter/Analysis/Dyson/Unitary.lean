@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
-import Mathlib.Analysis.CStarAlgebra.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
 
 set_option linter.style.header false
 
