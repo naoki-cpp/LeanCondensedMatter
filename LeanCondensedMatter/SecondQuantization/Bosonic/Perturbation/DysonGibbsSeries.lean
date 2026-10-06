@@ -1,13 +1,22 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 
 set_option linter.style.header false
 
 /-!
 # Bosonic Dyson Gibbs formal series
 
-The convergence-aware bosonic Dyson coefficient is already normalized by the free Gibbs partition
-function. This file packages those physical finite-order coefficients into a formal power series.
+A finite-order bosonic Dyson coefficient can be evaluated in the convergence-aware free Gibbs
+functional without asserting any all-order analytic convergence. This file packages those normalized
+finite-order coefficients into a formal power series.
+
+For quartic interactions, downstream diagrammatic theorems prove Gibbs-domain membership at every
+finite Dyson order by expanding each coefficient into a finite sum of thermal-field products. No
+interchange of an infinite Gibbs sum with the recursive operator-valued Dyson integral is built into
+this definition.
+
 Unlike the finite-dimensional fermionic trace series, no interacting bosonic partition function or
 analytic convergence statement is asserted here.
 -/
@@ -18,6 +27,23 @@ namespace Bosonic
 noncomputable section
 
 variable {Mode : Type*}
+
+/-- Normalized free Gibbs expectation of an arbitrary-configuration finite-order Dyson coefficient. -/
+noncomputable def freeGibbsDysonCoeff
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (order : ℕ) (t : ℝ) : ℂ :=
+  freeGibbsExpectation ε β (Common.dysonCoeff (freeEigenvalue ε) V order t)
+
+set_option linter.unusedFintypeInType false in
+/-- The zeroth normalized bosonic Dyson coefficient is one under the explicit positive Gibbs
+hypothesis. -/
+@[simp]
+theorem freeGibbsDysonCoeff_zero [Fintype Mode]
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (t : ℝ) :
+    freeGibbsDysonCoeff ε β V 0 t = 1 := by
+  rw [freeGibbsDysonCoeff, Common.dysonCoeff_zero]
+  exact freeGibbsExpectation_id ε β hpos
 
 /-- Formal series whose coefficients are the convergence-aware normalized free-Gibbs Dyson
 coefficients evaluated at imaginary time `β`. -/

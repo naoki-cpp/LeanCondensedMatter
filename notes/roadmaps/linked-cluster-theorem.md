@@ -57,8 +57,9 @@ iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWick
 ```
 
 for the local normalized logarithm of the interacting finite-temperature partition function. The
-analytic/formal coefficient bridge remains in `Fermionic.Perturbation.AnalyticLinkedCluster`; the
-concrete connected-diagram endpoint is owned by `Fermionic.Diagrammatics.LinkedCluster.Analytic`.
+generic analytic/formal logarithm bridge is owned by `Analysis.PowerSeries.AnalyticLog`, its
+finite-configuration Dyson specialization by `SecondQuantization.Common.Perturbation.AnalyticLinkedCluster`,
+and the concrete connected-diagram endpoint by `Fermionic.Diagrammatics.LinkedCluster.Analytic`.
 
 ## Two-point theorem
 
@@ -92,9 +93,12 @@ the forward coefficient identity needed by the replica polynomial proof. Both ro
 same formal-log coefficient with the connected-object contribution.
 
 The bosonic coefficientwise connected theorem uses the same normalized finite-set and
-`MultiplicativeWeight` machinery directly. Statistics enter only in concrete moment realizations,
-pairing weights, and amplitudes. No source-functional wrapper is part of the current zero-source LCT
-API. A source-functional abstraction should be introduced only when pre-normalized external
+`MultiplicativeWeight` machinery directly. Its finite-mode quartic Dyson coefficients are
+Gibbs-summable at every fixed perturbation order through finite thermal-field expansions. Statistics
+enter only in concrete moment realizations, pairing weights, and amplitudes. This does not yet give a
+genuine analytic bosonic partition function: the missing step is all-order interacting convergence
+on the infinite occupation space. No source-functional wrapper is part of the current zero-source
+LCT API. A source-functional abstraction should be introduced only when pre-normalized external
 insertions and higher-point source consumers give it independent semantics.
 
 ## Low-order identities
@@ -149,6 +153,6 @@ depend on the other.
 
 - pre-normalized arbitrary higher-point source moments and their vacuum normalization;
 - arbitrary higher-point and source-insertion connected expansions, including a source-functional layer if required by concrete consumers;
-- convergence-aware bosonic Dyson and linked-cluster theory;
+- bosonic interacting Dyson convergence and analytic linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;
 - infinite-mode and thermodynamic limits under explicit analytic hypotheses.

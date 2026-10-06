@@ -1,10 +1,7 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsExpectation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion
 
 set_option linter.style.header false
@@ -12,18 +9,13 @@ set_option linter.style.header false
 /-!
 # Bosonic perturbation theory
 
-The convergence-aware finite-order bosonic perturbation layer records the Gibbs-domain closure and
-sum/integral interchange needed to turn the algebraic Dyson recursion into normalized thermal
-coefficients.
-
-For first order, invariance of diagonal free-Gibbs matrix coefficients under interaction-picture
-conjugation reduces Gibbs summability to summability of the bare interaction. Finite quartic
-interactions satisfy a uniform quadratic particle-number bound, so free Boltzmann moments imply the
-required Gibbs-domain membership. Their first Dyson coefficients are therefore Gibbs-summable, and
-their normalized Gibbs expectations satisfy the corresponding interval recursion.
+The convergence-aware finite-order bosonic perturbation layer keeps free-Gibbs summability
+explicit on the genuinely infinite occupation space while avoiding any assumed interchange of the
+infinite Gibbs sum with the recursive operator-valued Dyson integral.
 
 For finitely supported quartic interactions, the free interaction-picture evolution of each vertex
 is a scalar energy-shift factor times the bare vertex operator. This gives a finite vertex-sequence
-expansion of the physical Dyson coefficient before taking an infinite bosonic Gibbs expectation,
-without requiring the ambient mode type itself to be finite.
+expansion of every finite-order Dyson coefficient before taking a Gibbs expectation. The downstream
+thermal diagrammatic layer proves Gibbs-domain membership for those coefficients at all finite
+orders from summability of finite thermal-field products.
 -/

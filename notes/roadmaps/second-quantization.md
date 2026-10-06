@@ -86,15 +86,19 @@ and thermodynamic limits remain open.
 
 The bosonic occupation basis is infinite even for finite mode types. Existing results therefore keep
 summability and admissible domains explicit. Algebraic CCR structure, free thermal sums, a
-convergence-aware Gibbs functional, and reusable diagrammatic infrastructure are available.
+convergence-aware Gibbs functional, and reusable diagrammatic infrastructure are available. For
+finite mode types with positive free Boltzmann exponents, the quartic vertex-sequence expansion now
+proves free-Gibbs-domain membership of every finite Dyson coefficient, and the coefficientwise
+formal linked-cluster theorem identifies its formal logarithm with connected physical diagrams.
 
-A full bosonic perturbative line still needs product-domain closure, summability-aware KMS/cyclicity,
-operator integration, Dyson convergence, and connected-diagram specialization.
+The remaining analytic problem is not finite-order Gibbs summability: it is construction and
+control of the interacting completed-space theory together with all-order Dyson/Taylor convergence
+(or an explicitly weaker asymptotic/Borel notion where appropriate).
 
 ## Research directions
 
 - pre-normalized time-ordered insertions, higher Green functions, and source derivatives;
-- convergence-aware bosonic Dyson and linked-cluster theory;
+- bosonic interacting Dyson convergence and analytic linked-cluster theory;
 - completed bosonic Fock/operator-domain theory;
 - interacting completed-space fermionic perturbation theory;
 - infinite-mode and thermodynamic limits under explicit topological and uniform-estimate hypotheses;
