@@ -122,8 +122,8 @@ theorem freePropagator_apply_purePointBasis
           -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ)) := by
       push_cast
       ring
-    rw [← hcoeff]
-    rw [← Complex.coe_smul t, smul_smul]
+    simpa only [Complex.coe_smul, smul_eq_mul] using
+      congrArg (fun z : ℂ => z • data.basis i) hcoeff
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
