@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Algebra.Lie.OfAssociative
@@ -102,6 +102,16 @@ theorem densityOperatorFirstVariation_eq_lie_of_star_eq_neg
       ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ := by
   rw [LieRing.of_associative_ring_bracket]
   simp only [densityOperatorFirstVariation, hK, mul_neg, sub_eq_add_neg]
+
+/-- Under the sufficient physical condition `V(t)† = V(t)`, the first density variation is the
+Liouville commutator `[K_V(t), ρ₀]`. -/
+theorem densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint
+    (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H))
+    (hV : ∀ s, IsSelfAdjoint (V s)) (t : ℝ) :
+    densityOperatorFirstVariation system ρ V t =
+      ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ :=
+  densityOperatorFirstVariation_eq_lie_of_star_eq_neg system ρ V t
+    (star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint system V hV t)
 
 end
 end LinearResponse
