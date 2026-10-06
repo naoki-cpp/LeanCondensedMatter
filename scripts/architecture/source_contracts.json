@@ -237,10 +237,7 @@
       "id": "quantumTheoryPublicUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse"
       ]
     },
     {
