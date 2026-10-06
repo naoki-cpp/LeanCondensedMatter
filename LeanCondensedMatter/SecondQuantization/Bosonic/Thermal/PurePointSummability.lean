@@ -31,8 +31,9 @@ theorem purePointGibbsSummable_freeEigenvalue
   letI := Fintype.ofFinite Mode
   unfold PurePointGibbsSummable
   have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
-  simpa [purePointBoltzmannWeight, boltzmannWeight, Real.norm_eq_abs,
-    abs_of_nonneg (Real.exp_nonneg _), neg_mul] using hsum
+  exact hsum.congr fun n => by
+    simp [boltzmannWeight, purePointBoltzmannWeight, Real.norm_eq_abs,
+      abs_of_nonneg (Real.exp_nonneg _)]
 
 /-- The convergence-aware algebraic bosonic partition function is the canonical pure-point
 partition function for the free occupation energies. -/
