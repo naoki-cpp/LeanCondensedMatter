@@ -809,14 +809,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Analysis.OrderedSimplex.Calculus",
-      "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/Calculus.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral"
-      ],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/FamilyShuffle.lean",
       "imports": [
@@ -841,7 +833,7 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/Integral.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
@@ -889,7 +881,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Calculus",
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
         "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
