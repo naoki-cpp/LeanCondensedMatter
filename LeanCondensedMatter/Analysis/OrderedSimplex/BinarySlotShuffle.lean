@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
@@ -12,8 +12,8 @@ set_option linter.style.header false
 
 This module defines the shuffled product integrand associated with an order-preserving ambient
 `BinaryShuffle.SlotShuffle`, proves the measurable-local-boundedness needed for integration, and
-relates its ordered-simplex integral to recursive binary-shuffle contributions.
-It then transports the binary shuffle product identity to the ambient `SlotShuffle` presentation.
+relates its ordered-simplex integral to recursive binary-shuffle contributions. The resulting finite
+shuffle sum is proved directly equal to the product of the two local ordered-simplex integrals.
 -/
 
 namespace Combinatorics
@@ -186,36 +186,35 @@ private theorem intervalIntegrable_orderedSimplexContribution_consRight {m n : �
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consRight_boundary] using hInt
 
-/-- The finite sum of explicit binary-shuffle contributions is the recursive shuffle integral under
-measurable local boundedness. -/
-private theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded :
+/-- The finite sum of explicit binary-shuffle contributions equals the product of the two local
+ordered-simplex integrals under measurable local boundedness. -/
+private theorem sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded :
     ∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
       MeasurableLocallyBounded f → MeasurableLocallyBounded g →
       (∑ σ : BinaryShuffle m n, orderedSimplexContribution σ β f g) =
-        orderedSimplexShuffleIntegral m n β f g
+        orderedSimplexIntegral m β f * orderedSimplexIntegral n β g
   | 0, n, β, f, g, _hf, _hg => by
-      rw [sum_zero_left, orderedSimplexContribution_allRight, orderedSimplexShuffleIntegral]
+      rw [sum_zero_left, orderedSimplexContribution_allRight, orderedSimplexIntegral_zero]
   | m + 1, 0, β, f, g, _hf, _hg => by
-      rw [sum_zero_right, orderedSimplexContribution_allLeft, orderedSimplexShuffleIntegral]
+      rw [sum_zero_right, orderedSimplexContribution_allLeft, orderedSimplexIntegral_zero]
   | m + 1, n + 1, β, f, g, hf, hg => by
       rw [sum_succ_succ]
       simp_rw [orderedSimplexContribution]
-      rw [orderedSimplexShuffleIntegral]
       have hleft : ∀ t : ℝ,
           (∑ σ : BinaryShuffle m (n + 1),
             orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g) =
-            orderedSimplexShuffleIntegral m (n + 1) t
-              (fun rest => f (Fin.cons t rest)) g := by
+            orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest)) *
+              orderedSimplexIntegral (n + 1) t g := by
         intro t
-        exact sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
+        exact sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded
           m (n + 1) t (fun rest => f (Fin.cons t rest)) g (hf.finCons t) hg
       have hright : ∀ t : ℝ,
           (∑ σ : BinaryShuffle (m + 1) n,
             orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))) =
-            orderedSimplexShuffleIntegral (m + 1) n t f
-              (fun rest => g (Fin.cons t rest)) := by
+            orderedSimplexIntegral (m + 1) t f *
+              orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest)) := by
         intro t
-        exact sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
+        exact sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded
           (m + 1) n t f (fun rest => g (Fin.cons t rest)) hf (hg.finCons t)
       have hIntLeft : ∀ σ : BinaryShuffle m (n + 1), IntervalIntegrable (fun t : ℝ =>
           orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g) volume 0 β := by
@@ -225,6 +224,7 @@ private theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableL
           orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))) volume 0 β := by
         intro σ
         exact intervalIntegrable_orderedSimplexContribution_consRight σ β f g hf hg
+      rw [orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded m n β f g hf hg]
       simp_rw [← hleft, ← hright]
       rw [intervalIntegral.integral_add]
       · rw [intervalIntegral.integral_finsetSum, intervalIntegral.integral_finsetSum]
@@ -248,21 +248,7 @@ theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLoc
       orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
   rw [sum_slotShuffle]
   simp_rw [← orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
-  rw [sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBounded
-    m n β f g hf hg]
-  exact orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded m n β f g hf hg
-
-/-- Ambient-slot form of the explicit binary ordered-simplex shuffle identity. -/
-theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul (m n : ℕ) (β : ℝ)
-    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
-    (hf : Continuous f) (hg : Continuous g) :
-    (∑ shuffle : SlotShuffle m n,
-      orderedSimplexIntegral (m + n) β (shuffle.integrand f g)) =
-      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g :=
-  sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
-    m n β f g
-      (intervalIntegral.Continuous.measurableLocallyBounded hf)
-      (intervalIntegral.Continuous.measurableLocallyBounded hg)
+  exact sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded m n β f g hf hg
 
 end BinaryShuffle
 end Combinatorics
