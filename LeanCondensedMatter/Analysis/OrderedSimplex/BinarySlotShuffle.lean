@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
@@ -257,10 +258,11 @@ theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul (m n : ℕ) (β 
     (hf : Continuous f) (hg : Continuous g) :
     (∑ shuffle : SlotShuffle m n,
       orderedSimplexIntegral (m + n) β (shuffle.integrand f g)) =
-      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g := by
-  rw [sum_slotShuffle]
-  simp_rw [← orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
-  exact sum_orderedSimplexContribution_eq_mul m n β f g hf hg
+      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g :=
+  sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
+    m n β f g
+      (intervalIntegral.Continuous.measurableLocallyBounded hf)
+      (intervalIntegral.Continuous.measurableLocallyBounded hg)
 
 end BinaryShuffle
 end Combinatorics
