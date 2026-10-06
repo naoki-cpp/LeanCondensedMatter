@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Permutation.PairingBridge
-import LeanCondensedMatter.Permutation.Cumulant
 import LeanCondensedMatter.Permutation.TraceLog
 
 set_option linter.style.header false
