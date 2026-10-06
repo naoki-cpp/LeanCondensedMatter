@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import Mathlib.Analysis.Complex.Basic

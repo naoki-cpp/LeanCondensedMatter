@@ -14,14 +14,6 @@ namespace intervalIntegral
 
 open MeasureTheory Set
 
-/-- Enlarging the radius enlarges the centered ordered-simplex coordinate cube. -/
-theorem orderedSimplexTimeCube_mono {n : ℕ} {R S : ℝ} (hRS : R ≤ S) :
-    orderedSimplexTimeCube n R ⊆ orderedSimplexTimeCube n S := by
-  intro x hx
-  rw [orderedSimplexTimeCube, Set.mem_Icc] at hx ⊢
-  exact ⟨fun i => (neg_le_neg hRS).trans (hx.1 i),
-    fun i => (hx.2 i).trans hRS⟩
-
 private theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
     {rest : Fin n → ℝ} (ht : |t| ≤ R)
     (hrest : rest ∈ orderedSimplexTimeCube n R) :
@@ -29,29 +21,15 @@ private theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
   rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
   constructor
   · intro i
-    induction i using Fin.cases with
-    | zero => exact (neg_le_neg ht).trans (neg_abs_le t)
-    | succ i => exact hrest.1 i
+    refine Fin.cases ((neg_le_neg ht).trans (neg_abs_le t)) (fun j => ?_) i
+    exact hrest.1 j
   · intro i
-    induction i using Fin.cases with
-    | zero => exact (le_abs_self t).trans ht
-    | succ i => exact hrest.2 i
-
-/-- Every point of the unoriented closed interval between `0` and `β` has absolute value at most
-`|β|`. -/
-theorem abs_le_abs_of_mem_uIcc_zero {β t : ℝ} (ht : t ∈ Set.uIcc (0 : ℝ) β) :
-    |t| ≤ |β| := by
-  rcases le_total (0 : ℝ) β with hβ | hβ
-  · rw [uIcc_of_le hβ] at ht
-    rw [abs_of_nonneg hβ, abs_of_nonneg ht.1]
-    exact ht.2
-  · rw [uIcc_of_ge hβ] at ht
-    rw [abs_of_nonpos hβ, abs_of_nonpos ht.2]
-    exact neg_le_neg ht.1
+    refine Fin.cases ((le_abs_self t).trans ht) (fun j => ?_) i
+    exact hrest.2 j
 
 /-- A uniform norm bound on the centered cube gives a rough `|β|^n` bound for the recursively
 oriented ordered-simplex integral. -/
-theorem norm_orderedSimplexIntegral_le_of_cube_bound :
+private theorem norm_orderedSimplexIntegral_le_of_cube_bound :
     ∀ (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) (C : ℝ),
       0 ≤ C →
       (∀ x ∈ orderedSimplexTimeCube n |β|, ‖f x‖ ≤ C) →
@@ -67,14 +45,15 @@ theorem norm_orderedSimplexIntegral_le_of_cube_bound :
           ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
             C * |β| ^ n := by
         intro t ht
-        have htAbs : |t| ≤ |β| :=
-          abs_le_abs_of_mem_uIcc_zero (uIoc_subset_uIcc ht)
+        have htAbs : |t| ≤ |β| := by
+          simpa using abs_sub_left_of_mem_uIcc (uIoc_subset_uIcc ht)
         have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
             ‖f (Fin.cons t rest)‖ ≤ C := by
           intro rest hrest
           apply hbound
-          exact finCons_mem_orderedSimplexTimeCube htAbs
-            (orderedSimplexTimeCube_mono htAbs hrest)
+          apply finCons_mem_orderedSimplexTimeCube htAbs
+          rw [orderedSimplexTimeCube] at hrest ⊢
+          exact Set.Icc_subset_Icc (fun _ => neg_le_neg htAbs) (fun _ => htAbs) hrest
         have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
           (fun rest => f (Fin.cons t rest)) C hC hslice
         calc
@@ -102,13 +81,15 @@ theorem MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_bounda
   have hD : 0 ≤ D := mul_nonneg hC0 (pow_nonneg (abs_nonneg β) n)
   refine ⟨D, hD, ?_⟩
   intro t ht
-  have htAbs : |t| ≤ |β| := abs_le_abs_of_mem_uIcc_zero ht
+  have htAbs : |t| ≤ |β| := by
+    simpa using abs_sub_left_of_mem_uIcc ht
   have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
       ‖f (Fin.cons t rest)‖ ≤ C := by
     intro rest hrest
     apply hC
-    exact finCons_mem_orderedSimplexTimeCube htAbs
-      (orderedSimplexTimeCube_mono htAbs hrest)
+    apply finCons_mem_orderedSimplexTimeCube htAbs
+    rw [orderedSimplexTimeCube] at hrest ⊢
+    exact Set.Icc_subset_Icc (fun _ => neg_le_neg htAbs) (fun _ => htAbs) hrest
   have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
     (fun rest => f (Fin.cons t rest)) C hC0 hslice
   calc
