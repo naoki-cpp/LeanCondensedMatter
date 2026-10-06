@@ -50,8 +50,8 @@ private theorem star_unitaryTimeCoefficient (t : ℝ) :
 noncomputable def boundedUnitaryEvolution (B : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
   NormedSpace.exp (unitaryTimeCoefficient t • B)
 
-/-- Unfold the bounded evolution to the explicit Schrödinger exponential. -/
 omit [CompleteSpace H] in
+/-- Unfold the bounded evolution to the explicit Schrödinger exponential. -/
 theorem boundedUnitaryEvolution_eq_exp (B : H →L[ℂ] H) (t : ℝ) :
     boundedUnitaryEvolution B t = NormedSpace.exp (-((t : ℂ) * I) • B) := by
   rfl
