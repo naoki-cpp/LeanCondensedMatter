@@ -148,7 +148,23 @@ private theorem completedCreate_adjoint_apply
     exact completedCreate_basisState i n _
   rw [he] at h
   dsimp [e] at h
-  simpa [inner_smul_left] using h.symm
+  rw [inner_smul_left] at h
+  have hleft :
+      inner ℂ (completedBasisState (createOccupation i n))
+          (y : CompletedFockSpace Mode) =
+        (y : CompletedFockSpace Mode) (createOccupation i n) := by
+    simpa [completedBasisState] using
+      (Common.inner_completedBasisState_left
+        (Config := Occupation Mode) (createOccupation i n)
+        (y : CompletedFockSpace Mode))
+  have hright :
+      inner ℂ (completedBasisState n) ((completedCreate i).adjoint y) =
+        (completedCreate i).adjoint y n := by
+    simpa [completedBasisState] using
+      (Common.inner_completedBasisState_left
+        (Config := Occupation Mode) n ((completedCreate i).adjoint y))
+  rw [hleft, hright] at h
+  simpa using h.symm
 
 private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
     (completedCreate i).adjoint.domain ≤ completedAnnihilateDomain i := by
@@ -219,7 +235,23 @@ private theorem completedAnnihilate_adjoint_apply
     exact completedAnnihilate_basisState i n _
   rw [he] at h
   dsimp [e] at h
-  simpa [inner_smul_left] using h.symm
+  rw [inner_smul_left] at h
+  have hleft :
+      inner ℂ (completedBasisState (removeOccupation i n))
+          (y : CompletedFockSpace Mode) =
+        (y : CompletedFockSpace Mode) (removeOccupation i n) := by
+    simpa [completedBasisState] using
+      (Common.inner_completedBasisState_left
+        (Config := Occupation Mode) (removeOccupation i n)
+        (y : CompletedFockSpace Mode))
+  have hright :
+      inner ℂ (completedBasisState n) ((completedAnnihilate i).adjoint y) =
+        (completedAnnihilate i).adjoint y n := by
+    simpa [completedBasisState] using
+      (Common.inner_completedBasisState_left
+        (Config := Occupation Mode) n ((completedAnnihilate i).adjoint y))
+  rw [hleft, hright] at h
+  simpa using h.symm
 
 private theorem completedAnnihilate_adjoint_domain_le_createDomain (i : Mode) :
     (completedAnnihilate i).adjoint.domain ≤ completedCreateDomain i := by
