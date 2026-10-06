@@ -128,6 +128,59 @@ noncomputable def completedAnnihilate (i : Mode) :
       (Common.completedDiagonalOperator
         (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))).toFun
 
+/-- Coordinate action of completed bosonic creation.  A configuration with no particle in
+mode `i` has no predecessor; otherwise the coefficient is shifted down by one occupation and
+multiplied by the usual square-root factor. -/
+@[simp]
+theorem completedCreate_apply (i : Mode) (ψ : (completedCreate i).domain)
+    (n : Occupation Mode) :
+    completedCreate i ψ n =
+      if n i = 0 then 0
+      else (Real.sqrt (n i : ℝ) : ℂ) *
+        (ψ : CompletedFockSpace Mode) (removeOccupation i n) := by
+  classical
+  by_cases hni : n i = 0
+  · rw [if_pos hni]
+    change
+      Function.extend (createOccupation i)
+          (fun m => (Real.sqrt (m i + 1 : ℝ) : ℂ) *
+            (ψ : CompletedFockSpace Mode) m) 0 n = 0
+    rw [Function.extend_apply']
+    intro h
+    rcases h with ⟨m, hm⟩
+    have hcoord := congrArg (fun q : Occupation Mode => q i) hm
+    rw [createOccupation_apply_same, hni] at hcoord
+    omega
+  · rw [if_neg hni]
+    have hrepr : createOccupation i (removeOccupation i n) = n :=
+      createOccupation_removeOccupation_of_pos hni
+    have hcoord : (removeOccupation i n) i + 1 = n i := by
+      have h := congrArg (fun q : Occupation Mode => q i) hrepr
+      simpa only [createOccupation_apply_same] using h
+    have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
+      exact_mod_cast hcoord
+    change
+      Function.extend (createOccupation i)
+          (fun m => (Real.sqrt (m i + 1 : ℝ) : ℂ) *
+            (ψ : CompletedFockSpace Mode) m) 0 n =
+        (Real.sqrt (n i : ℝ) : ℂ) *
+          (ψ : CompletedFockSpace Mode) (removeOccupation i n)
+    conv_lhs => rw [← hrepr]
+    rw [(createOccupation_injective i).extend_apply, hcoord_real]
+
+/-- Coordinate action of completed bosonic annihilation. -/
+@[simp]
+theorem completedAnnihilate_apply (i : Mode) (ψ : (completedAnnihilate i).domain)
+    (n : Occupation Mode) :
+    completedAnnihilate i ψ n =
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) *
+        (ψ : CompletedFockSpace Mode) (createOccupation i n) := by
+  change
+    (Real.sqrt ((createOccupation i n) i : ℝ) : ℂ) *
+        (ψ : CompletedFockSpace Mode) (createOccupation i n) =
+      _
+  rw [createOccupation_apply_same]
+
 /-- Every occupation-basis vector belongs to the completed creation domain. -/
 theorem completedBasisState_mem_completedCreateDomain (i : Mode) (n : Occupation Mode) :
     completedBasisState n ∈ completedCreateDomain i := by
