@@ -792,7 +792,7 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/BinaryShuffle.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
         "LeanCondensedMatter.Combinatorics.BinaryShuffle"
       ],
       "externalImportCount": 0
@@ -803,6 +803,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots"
       ],

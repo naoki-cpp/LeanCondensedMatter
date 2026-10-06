@@ -2448,7 +2448,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  Continuous f →\n    Continuous g →\n      ∑ σ, σ.orderedSimplexContribution β f g =\n        intervalIntegral.orderedSimplexIntegral m β f * intervalIntegral.orderedSimplexIntegral n β g",
+    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (m n : ℕ) (F : Combinatorics.BinaryShuffle.SlotShuffle m n → M),\n  ∑ shuffle, F shuffle = ∑ σ, F σ.toSlotShuffle",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2460,52 +2460,6 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
-    "externalAxioms": [],
-    "docString": "Explicit binary ordered-simplex shuffle identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle.0.Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_shuffleIntegral",
-      "intervalIntegral.Continuous.measurableLocallyBounded",
-      "intervalIntegral.orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (m n : ℕ) (F : Combinatorics.BinaryShuffle.SlotShuffle m n → M),\n  ∑ shuffle, F shuffle = ∑ σ, F σ.toSlotShuffle",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.sum_slotShuffle",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
     "externalAxioms": [],
@@ -2513,17 +2467,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
       "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
       "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2558,8 +2510,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
-      "Combinatorics.BinaryShuffle.sum_slotShuffle"
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded",
+      "intervalIntegral.Continuous.measurableLocallyBounded"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -2586,7 +2538,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -2598,6 +2550,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
     ],
     "dependencies": [
@@ -2608,9 +2561,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30310,7 +30264,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -30323,13 +30277,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -44566,7 +44520,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -44578,17 +44532,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.star_schrodingerGenerator",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint"
+      "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.star_schrodingerGenerator",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint"
+      "QuantumTheory.LinearResponse.star_freePropagator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46087,7 +46039,7 @@
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_continuous",
-      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -47479,7 +47431,7 @@
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_add",
-      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -47534,56 +47486,6 @@
       "QuantumTheory.LinearResponse.inner_purePointBasis_heisenbergEvolution"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t =\n    LinearPMap.boundedUnitaryEvolution ((↑system.hbar)⁻¹ • ↑system.hamiltonian) t",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
-    "externalAxioms": [],
-    "docString": "The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled\nby `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic\nimplementation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.continuous_freePropagator",
-      "QuantumTheory.LinearResponse.freePropagator_add",
-      "QuantumTheory.LinearResponse.freePropagator_zero",
-      "QuantumTheory.LinearResponse.star_freePropagator"
-    ],
-    "dependencies": [
-      "LinearPMap.boundedUnitaryEvolution_eq_exp"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.continuous_freePropagator",
-      "QuantumTheory.LinearResponse.freePropagator_add",
-      "QuantumTheory.LinearResponse.freePropagator_zero",
-      "QuantumTheory.LinearResponse.star_freePropagator"
-    ],
-    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47816,7 +47718,7 @@
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_zero",
-      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52490,8 +52392,8 @@
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_star",
-      "QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint"
+      "QuantumTheory.LinearResponse.BoundedFreeSystem.hamiltonian_selfAdjoint",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52623,50 +52525,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H),\n  star (QuantumTheory.LinearResponse.schrodingerGenerator system) =\n    -QuantumTheory.LinearResponse.schrodingerGenerator system",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.star_schrodingerGenerator",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
-    "externalAxioms": [],
-    "docString": "The Schrödinger generator is skew-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.star_timeScaledGenerator"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.BoundedFreeSystem.hamiltonian_selfAdjoint"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.star_timeScaledGenerator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (lam : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) =\n    -QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam",
     "standardAxioms": [
       "Classical.choice",
@@ -52745,46 +52603,6 @@
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  star (QuantumTheory.LinearResponse.timeScaledGenerator system t) =\n    QuantumTheory.LinearResponse.timeScaledGenerator system (-t)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.star_timeScaledGenerator",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
-    "externalAxioms": [],
-    "docString": "Taking the adjoint of the time-scaled generator reverses time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.star_schrodingerGenerator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53537,82 +53355,6 @@
       "QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional_zero_coupling_apply_of_stationary"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t s : ℝ),\n  QuantumTheory.LinearResponse.timeScaledGenerator system (t + s) =\n    QuantumTheory.LinearResponse.timeScaledGenerator system t +\n      QuantumTheory.LinearResponse.timeScaledGenerator system s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.timeScaledGenerator_add",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
-    "externalAxioms": [],
-    "docString": "Scaling the free generator is additive in time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H),\n  QuantumTheory.LinearResponse.timeScaledGenerator system 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.timeScaledGenerator_zero",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151376,48 +151118,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  Continuous f →\n    Continuous g → ∑ σ, σ.orderedSimplexContribution β f g = intervalIntegral.orderedSimplexShuffleIntegral m n β f g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle.0.Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_shuffleIntegral",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
-    "externalAxioms": [],
-    "docString": "The finite sum of explicit binary-shuffle contributions is the recursive analytic shuffle\nintegral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle m n) (β : ℝ) (f : (Fin (m + 1) → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  intervalIntegral.MeasurableLocallyBounded f →\n    intervalIntegral.MeasurableLocallyBounded g →\n      IntervalIntegrable (fun t => σ.orderedSimplexContribution t (fun rest => f (Fin.cons t rest)) g)\n        MeasureTheory.volume 0 β",
     "standardAxioms": [
@@ -161988,36 +161688,42 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H), IsSelfAdjoint ((↑system.hbar)⁻¹ • ↑system.hamiltonian)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t =\n    LinearPMap.boundedUnitaryEvolution ((↑system.hbar)⁻¹ • ↑system.hamiltonian) t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.scaledHamiltonian_selfAdjoint",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled\nby `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic\nimplementation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.continuous_freePropagator",
+      "QuantumTheory.LinearResponse.freePropagator_add",
+      "QuantumTheory.LinearResponse.freePropagator_zero",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.BoundedFreeSystem.hamiltonian_selfAdjoint"
+      "LinearPMap.boundedUnitaryEvolution_eq_exp"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.continuous_freePropagator",
+      "QuantumTheory.LinearResponse.freePropagator_add",
+      "QuantumTheory.LinearResponse.freePropagator_zero",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -183853,7 +183559,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
@@ -183864,7 +183570,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
@@ -184995,7 +184701,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -185007,17 +184713,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
       "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.sum_orderedSimplexContribution_eq_mul",
       "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
