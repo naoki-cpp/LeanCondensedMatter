@@ -242,8 +242,12 @@ theorem completedCoordinatePullback_apply
     inner ℂ (completedBasisState c)
         (ContinuousLinearMap.adjoint
           (completedCoordinateEmbedding f hf).toContinuousLinearMap ψ) = _
-  rw [ContinuousLinearMap.adjoint_inner_right,
-    completedCoordinateEmbedding_basisState,
+  rw [ContinuousLinearMap.adjoint_inner_right]
+  change
+    inner ℂ
+        (completedCoordinateEmbedding f hf (completedBasisState c)) ψ =
+      ψ (f c)
+  rw [completedCoordinateEmbedding_basisState,
     inner_completedBasisState_left]
 
 @[simp]
