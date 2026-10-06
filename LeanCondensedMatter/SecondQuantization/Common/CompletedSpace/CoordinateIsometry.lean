@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 set_option linter.style.header false
 
@@ -108,6 +109,10 @@ private noncomputable def completedCoordinateEmbeddingLinear
   map_add' ψ φ := by
     apply Subtype.ext
     funext c
+    change
+      Function.extend f (fun d => (ψ + φ) d) 0 c =
+        Function.extend f (fun d => ψ d) 0 c +
+          Function.extend f (fun d => φ d) 0 c
     by_cases hc : c ∈ Set.range f
     · rcases hc with ⟨d, rfl⟩
       simp only [hf.extend_apply]
@@ -120,6 +125,9 @@ private noncomputable def completedCoordinateEmbeddingLinear
   map_smul' a ψ := by
     apply Subtype.ext
     funext c
+    change
+      Function.extend f (fun d => (a • ψ) d) 0 c =
+        a • Function.extend f (fun d => ψ d) 0 c
     by_cases hc : c ∈ Set.range f
     · rcases hc with ⟨d, rfl⟩
       simp only [hf.extend_apply]
