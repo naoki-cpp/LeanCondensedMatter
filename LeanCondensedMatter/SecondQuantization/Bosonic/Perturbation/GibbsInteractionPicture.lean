@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
 
 set_option linter.style.header false
@@ -6,13 +7,11 @@ set_option linter.style.header false
 /-!
 # Free Gibbs summability and interaction-picture evolution
 
-At first Dyson order, the recursive product is the interaction-picture interaction itself. Its free
-Gibbs numerator has the same diagonal coefficients as the original interaction because free
-diagonal conjugation contributes inverse factors on the same occupation state.
+Free interaction-picture conjugation leaves diagonal free-Gibbs numerators unchanged because the
+two diagonal evolution factors cancel on the same occupation state.
 
-This module proves that ordinary free-Gibbs summability of the interaction implies the
-interaction-picture Gibbs-domain condition on the infinite bosonic occupation space, without a
-finite occupation-basis assumption.
+This module records the resulting summability and expectation invariance on the genuinely infinite
+bosonic occupation space, without a finite occupation-basis assumption.
 -/
 
 namespace SecondQuantization
@@ -57,17 +56,6 @@ theorem freeGibbsExpectation_interactionPicture
   congr 1
   exact tsum_congr fun n => matrixCoeff_freeGibbs_interactionPicture_self ε β σ V n
 
-omit [Fintype Mode] in
-/-- At first Dyson order, summability of the bare interaction automatically supplies the recursive
-Gibbs-domain closure condition because the zeroth Dyson coefficient is the identity. -/
-theorem firstDysonIntegrand_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β σ : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hV : V ∈ freeGibbsDomain ε β) :
-    (interactionPicture ε V σ).comp
-        (Common.dysonCoeff (freeEigenvalue ε) V 0 σ) ∈ freeGibbsDomain ε β := by
-  rw [Common.dysonCoeff_zero, LinearMap.comp_id, mem_freeGibbsDomain_iff]
-  exact (freeGibbsSummable_interactionPicture_iff ε β σ V).2
-    ((mem_freeGibbsDomain_iff ε β V).1 hV)
 
 end
 end Bosonic
