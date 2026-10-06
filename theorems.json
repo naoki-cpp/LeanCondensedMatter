@@ -159433,9 +159433,7 @@
     "dependencies": [
       "Combinatorics.Pairing.sign_eq_of_presentsPairs",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.blockPair_sideListingPerm",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sideListingPerm_eq",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sign_sumCongrListingPerm"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -159620,48 +159618,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sum_pairings_eq_sum_perm_of_inl_vanishing"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m : ℕ} (e : Combinatorics.SideSplitting m) (σ : Equiv.Perm (Fin m)),\n  Combinatorics.sideListingPerm✝ e σ =\n    Equiv.trans (Combinatorics.sumCongrListingPerm✝ m σ) (Combinatorics.baseListingPerm✝ e)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sideListingPerm_eq",
-    "module": "LeanCondensedMatter.Permutation.PairingBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.neg_one_pow_crossingCount_eq_of_sidePairing"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.neg_one_pow_crossingCount_eq_of_sidePairing"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -160073,48 +160029,6 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (m : ℕ) (σ : Equiv.Perm (Fin m)), Equiv.Perm.sign (Combinatorics.sumCongrListingPerm✝ m σ) = Equiv.Perm.sign σ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sign_sumCongrListingPerm",
-    "module": "LeanCondensedMatter.Permutation.PairingBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.neg_one_pow_crossingCount_eq_of_sidePairing"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.neg_one_pow_crossingCount_eq_of_sidePairing"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
