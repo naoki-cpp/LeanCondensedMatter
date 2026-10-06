@@ -115,9 +115,10 @@ the analytic proof wiring.
 ## Domain-aware and completed-space analysis
 
 Domain-aware unbounded infrastructure is no longer wholly absent. The repository contains
-`LinearPMap`-based unbounded operator tools, and the completed fermionic line provides explicit
-maximal diagonal domains, dense-domain/closedness/adjoint/self-adjointness results for real diagonal
-weights, bounded completed CAR operators, and product-domain/free-Hamiltonian relations.
+`LinearPMap`-based unbounded operator tools. Completed-space second quantization provides explicit
+maximal diagonal domains with dense-domain/closedness/adjoint/self-adjointness results for real
+weights, bounded completed CAR operators, and densely defined closed bosonic weighted shifts whose
+creation and annihilation maps are mutual adjoints.
 
 These results do not amount to a general unbounded spectral theory. A 2026-10-05 re-survey of
 the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612` confirms that
@@ -190,7 +191,7 @@ The following remain open or only partially covered:
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;
-- completed bosonic creation/annihilation weighted-shift domains and analytic closure;
+- completed bosonic ladder product-domain theory;
 - general interacting completed-space Dyson theory;
 - infinite-volume and thermodynamic limits.
 

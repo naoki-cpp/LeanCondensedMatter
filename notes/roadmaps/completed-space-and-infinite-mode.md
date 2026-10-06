@@ -65,8 +65,9 @@ diagonal `LinearPMap` operators on their natural weighted `ℓ²` domains. Their
 algebraic core agrees with the existing algebraic operators, and the real diagonal weights make both
 operators self-adjoint through the Common diagonal analytic theory. Creation and annihilation are
 represented as maximal weighted-shift `LinearPMap` operators on the natural square-root occupation
-domains, and agree with the algebraic ladder operators on the finite-support core. Closedness,
-adjoint formulas, and products of these unbounded ladder operators remain separate analytic work.
+domains, are densely defined and closed, and are mutual adjoints. They agree with the algebraic
+ladder operators on the finite-support core. Explicit products of these unbounded ladder operators
+remain separate analytic work.
 
 ## Finite-mode fermionic compatibility
 
@@ -81,7 +82,7 @@ needed for that representation-level statement.
 
 ## Open work
 
-- completed bosonic ladder closedness/adjoint theory and explicit product domains;
+- completed bosonic ladder product domains and their operator identities;
 - interacting completed-space Dyson theory with all required product domains;
 - stronger convergence topologies for Gibbs truncations when justified;
 - infinite-volume or thermodynamic limits with an explicit directed system, observable algebra,
