@@ -28,6 +28,15 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     numberOperator i (basisState n) = (n i : ℂ) • basisState n :=
   create_annihilate_basisState_same i n
 
+/-- The single-mode number operator is the basis-diagonal operator with occupation weight
+`n ↦ n i`. This is the canonical bridge from `aᵢ† aᵢ` to the common diagonal-operator API. -/
+theorem numberOperator_eq_diagonalOperator (i : Mode) :
+    numberOperator i =
+      Common.diagonalOperator (fun n : Occupation Mode => (n i : ℂ)) := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  rw [numberOperator_basisState, Common.diagonalOperator_basisState]
+
 /-- The single-mode bosonic exchange commutator is the identity. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
     Common.exchangeCommutator Common.Statistics.boson (annihilate i) (create i) =
