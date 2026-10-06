@@ -22,6 +22,7 @@ namespace SecondQuantization
 namespace Bosonic
 
 open QuantumTheory
+open ContinuousLinearMap
 
 noncomputable section
 
@@ -73,15 +74,14 @@ theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     (completedFreeHeatOperator_isTraceClass ε β hβ hε).trace =
       freeGibbsPartition ε β := by
-  have htrace := heatTrace_eq_purePointPartitionFunction_of_basis_action
+  rw [freeGibbsPartition_eq_coe_purePointPartitionFunction ε β hβ hε]
+  exact heatTrace_eq_purePointPartitionFunction_of_basis_action
     (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
     (completedFreeHeatOperator_isTraceClass ε β hβ hε)
     completedOccupationHilbertBasis (freeEigenvalue ε) β
     (fun n => by
       rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
       rfl)
-  rw [freeGibbsPartition_eq_coe_purePointPartitionFunction ε β hβ hε]
-  exact htrace
 
 /-- The canonical completed free-boson Gibbs density operator. -/
 noncomputable def completedFreeGibbsDensityOperator
