@@ -19,9 +19,13 @@ private theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
     (hrest : rest ∈ orderedSimplexTimeCube n R) :
     Fin.cons t rest ∈ orderedSimplexTimeCube (n + 1) R := by
   rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
-  constructor <;> simp only [Fin.forall_fin_succ, Fin.cons_zero, Fin.cons_succ]
-  · exact ⟨(neg_le_neg ht).trans (neg_abs_le t), hrest.1⟩
-  · exact ⟨(le_abs_self t).trans ht, hrest.2⟩
+  constructor
+  · intro i
+    refine Fin.cases ((neg_le_neg ht).trans (neg_abs_le t)) (fun j => ?_) i
+    exact hrest.1 j
+  · intro i
+    refine Fin.cases ((le_abs_self t).trans ht) (fun j => ?_) i
+    exact hrest.2 j
 
 /-- A uniform norm bound on the centered cube gives a rough `|β|^n` bound for the recursively
 oriented ordered-simplex integral. -/
