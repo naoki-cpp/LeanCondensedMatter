@@ -62,8 +62,8 @@ noncomputable def algebraicToCompleted :
 @[simp]
 theorem algebraicToCompleted_basisState (n : Occupation Mode) :
     algebraicToCompleted (basisState n) = completedBasisState n := by
-  simpa [algebraicToCompleted, completedBasisState] using
-    (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
+  change Common.algebraicToCompleted (Common.basisState n) = Common.completedBasisState n
+  exact Common.algebraicToCompleted_basisState n
 
 end
 end Bosonic
