@@ -116,7 +116,8 @@ theorem freePropagator_apply_purePointBasis
   have hT : T v = c • v := by
     dsimp [T, c, v]
     rw [schrodingerGenerator]
-    simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
+    simp only [smul_apply, data.hamiltonian_apply_basis]
+    rw [smul_smul]
     apply congrArg (fun z : ℂ => z • data.basis i)
     push_cast
     ring
