@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 
@@ -53,27 +53,6 @@ theorem norm_completedFreeHeatOperator_le_one
       (freeEigenvalue ε) β 0 hβ (freeEigenvalue_nonneg ε hε))
 
 variable [Fintype Mode]
-
-/-- Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. -/
-theorem purePointGibbsSummable_freeEigenvalue
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
-    PurePointGibbsSummable (freeEigenvalue ε) β := by
-  unfold PurePointGibbsSummable
-  have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
-  simpa [purePointBoltzmannWeight, boltzmannWeight, Real.norm_eq_abs,
-    abs_of_nonneg (Real.exp_nonneg _)] using hsum
-
-/-- The convergence-aware algebraic bosonic partition function is the canonical pure-point
-partition function of the completed occupation representation. -/
-theorem freeGibbsPartition_eq_coe_purePointPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
-    freeGibbsPartition ε β =
-      (purePointPartitionFunction (freeEigenvalue ε) β : ℂ) := by
-  rw [freeGibbsPartition_eq_tsum ε β (fun i => mul_pos hβ (hε i))]
-  congr 1
-  apply tsum_congr
-  intro n
-  rfl
 
 /-- The completed free heat operator is trace class under positive mode energies. -/
 theorem completedFreeHeatOperator_isTraceClass
