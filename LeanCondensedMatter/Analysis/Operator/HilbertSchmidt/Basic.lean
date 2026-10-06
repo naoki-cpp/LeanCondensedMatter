@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
-import LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval
+import LeanCondensedMatter.Analysis.HilbertBasis
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
