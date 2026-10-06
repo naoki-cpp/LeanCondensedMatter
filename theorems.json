@@ -2823,7 +2823,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size))\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ)\n  (τ : Fin (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) → ℝ),\n  ((Combinatorics.FamilySlotShuffle.cons size outer tail).integrand localIntegrand fun j => τ (Fin.cast ⋯ j)) =\n    outer.integrand (localIntegrand 0) (tail.integrand fun i => localIntegrand i.succ) τ",
+    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size))\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ)\n  (τ : Fin (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) → ℝ),\n  (Combinatorics.FamilySlotShuffleTo.ambientIntegrand (Combinatorics.FamilySlotShuffle.cons size outer tail)\n      localIntegrand fun j => τ (Fin.cast ⋯ j)) =\n    outer.integrand (localIntegrand 0)\n      (Combinatorics.FamilySlotShuffleTo.ambientIntegrand tail fun i => localIntegrand i.succ) τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2967,46 +2967,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size)\n  (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), Continuous (localIntegrand i)) → Continuous (shuffle.integrand localIntegrand)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.continuous_integrand",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
-    "externalAxioms": [],
-    "docString": "A finite product of continuous local integrands remains continuous after shuffling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffle.continuous_timeAssignment"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -3257,47 +3217,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size)\n  (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    intervalIntegral.MeasurableLocallyBounded (shuffle.integrand localIntegrand)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
-    "externalAxioms": [],
-    "docString": "A finite product of measurable locally bounded local integrands remains measurable locally\nbounded after a family shuffle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
-      "intervalIntegral.MeasurableLocallyBounded.finsetProd"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {k : ℕ} {size : Fin (k + 1) → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size) (x : Fin (∑ i, size i)),\n  x ∈ shuffle.headSlots ↔ ∃ j, shuffle.slotEquiv ⟨0, j⟩ = x",
     "standardAxioms": [
       "Classical.choice",
@@ -3418,7 +3337,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (β : ℝ)\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ),\n  intervalIntegral.orderedSimplexIntegral (∑ i, size i) β\n      ((Combinatorics.FamilySlotShuffle.cons size outer tail).integrand localIntegrand) =\n    intervalIntegral.orderedSimplexIntegral (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) β\n      (outer.integrand (localIntegrand 0) (tail.integrand fun i => localIntegrand i.succ))",
+    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (β : ℝ)\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ),\n  intervalIntegral.orderedSimplexIntegral (∑ i, size i) β\n      (Combinatorics.FamilySlotShuffleTo.ambientIntegrand (Combinatorics.FamilySlotShuffle.cons size outer tail)\n        localIntegrand) =\n    intervalIntegral.orderedSimplexIntegral (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) β\n      (outer.integrand (localIntegrand 0)\n        (Combinatorics.FamilySlotShuffleTo.ambientIntegrand tail fun i => localIntegrand i.succ))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3721,6 +3640,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total)\n  (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), Continuous (localIntegrand i)) → Continuous (shuffle.ambientIntegrand localIntegrand)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.continuous_ambientIntegrand",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "externalAxioms": [],
+    "docString": "A finite product of continuous local integrands remains continuous after embedding their\ncoordinates by an arbitrary-total family shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffleTo.continuous_timeAssignment"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} {σ τ : Combinatorics.FamilySlotShuffleTo size total},\n  σ.slotEquiv = τ.slotEquiv → σ = τ",
     "standardAxioms": [
@@ -3791,6 +3750,47 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total)\n  (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    intervalIntegral.MeasurableLocallyBounded (shuffle.ambientIntegrand localIntegrand)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "externalAxioms": [],
+    "docString": "A finite product of measurable locally bounded local integrands remains measurable locally\nbounded after embedding their coordinates by an arbitrary-total family shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
+      "intervalIntegral.MeasurableLocallyBounded.finsetProd"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -151784,7 +151784,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (size : ι → ℕ) (β : ℝ) (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (size : ι → ℕ) (β : ℝ) (localIntegrand : (i : ι) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : ι), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle,\n        intervalIntegral.orderedSimplexIntegral (∑ i, size i) β\n          (Combinatorics.FamilySlotShuffleTo.ambientIntegrand shuffle localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151830,7 +151830,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ) (localIntegrand : (i : Fin k) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : Fin k), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle, intervalIntegral.orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
+    "statement": "∀ (k : ℕ) (size : Fin k → ℕ) (β : ℝ) (localIntegrand : (i : Fin k) → (Fin (size i) → ℝ) → ℂ),\n  (∀ (i : Fin k), intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) →\n    ∑ shuffle,\n        intervalIntegral.orderedSimplexIntegral (∑ i, size i) β\n          (Combinatorics.FamilySlotShuffleTo.ambientIntegrand shuffle localIntegrand) =\n      ∏ i, intervalIntegral.orderedSimplexIntegral (size i) β (localIntegrand i)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151872,7 +151872,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size) (i : ι),\n  Continuous fun τ => Combinatorics.FamilySlotShuffleTo.timeAssignment shuffle τ i",
+    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total) (i : ι),\n  Continuous fun τ => shuffle.timeAssignment τ i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151884,20 +151884,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffle.continuous_timeAssignment",
+    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffleTo.continuous_timeAssignment",
     "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
     "externalAxioms": [],
     "docString": "Coordinate restriction to one local block is continuous. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.continuous_integrand"
+      "Combinatorics.FamilySlotShuffleTo.continuous_ambientIntegrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.continuous_integrand"
+      "Combinatorics.FamilySlotShuffleTo.continuous_ambientIntegrand"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -184189,7 +184189,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
+      "Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_slotShuffleIntegrand"
@@ -184198,7 +184198,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
+      "Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_slotShuffleIntegrand"
@@ -184326,7 +184326,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
+      "Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "dependencies": [
@@ -184336,7 +184336,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
+      "Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "compiledConsumerCount": 2,
@@ -184786,46 +184786,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (n : ℕ) (β : ℝ),\n  0 ≤ β →\n    ∀ (f g : (Fin n → ℝ) → ℂ),\n      (∀ (τ : Fin n → ℝ), Function.Injective τ → f τ = g τ) →\n        intervalIntegral.orderedSimplexIntegral n β f = intervalIntegral.orderedSimplexIntegral n β g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "intervalIntegral.orderedSimplexIntegral_congr_of_injective",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
-    "externalAxioms": [],
-    "docString": "The form the relabel covariance layer consumes: a strictly decreasing assignment is injective,\nso an identity available only at injective interaction times still determines the integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (n : ℕ) (β : ℝ),\n  0 ≤ β →\n    ∀ (f g : (Fin n → ℝ) → ℂ),\n      (∀ (τ : Fin n → ℝ), StrictAnti τ → (∀ (i : Fin n), τ i < β) → f τ = g τ) →\n        intervalIntegral.orderedSimplexIntegral n β f = intervalIntegral.orderedSimplexIntegral n β g",
     "standardAxioms": [
@@ -184834,7 +184794,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -184846,8 +184806,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "intervalIntegral.orderedSimplexIntegral_congr_of_injective"
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr.0.intervalIntegral.strictAnti_cons",
@@ -184856,10 +184815,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "intervalIntegral.orderedSimplexIntegral_congr_of_injective"
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

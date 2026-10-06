@@ -2763,6 +2763,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.MeasuredObservableLinearity",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
@@ -2823,10 +2824,6 @@
         "LeanCondensedMatter.QuantumTheory.Entropy.Finite",
         "LeanCondensedMatter.QuantumTheory.Gibbs",
         "LeanCondensedMatter.QuantumTheory.LinearResponse",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics",
         "LeanCondensedMatter.QuantumTheory.Postulates",
         "LeanCondensedMatter.QuantumTheory.SpinHalf"
       ],
