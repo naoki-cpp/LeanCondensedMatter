@@ -31,6 +31,12 @@ theorem FamilySlotShuffleTo.timeAssignment_apply {size : ι → ℕ} {total : �
     shuffle.timeAssignment τ i j = τ (shuffle.slotEquiv ⟨i, j⟩) :=
   rfl
 
+/-- Coordinate restriction to one local block is continuous. -/
+private theorem FamilySlotShuffleTo.continuous_timeAssignment {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    Continuous (fun τ : Fin total → ℝ => shuffle.timeAssignment τ i) := by
+  exact continuous_pi fun j => continuous_apply (shuffle.slotEquiv ⟨i, j⟩)
+
 variable [Fintype ι]
 
 /-- Product of local integrands after embedding their coordinates into an arbitrary ambient total.
@@ -65,13 +71,6 @@ theorem FamilySlotShuffle.cons_integrand {k : ℕ}
     apply congrArg (localIntegrand i.succ)
     funext j
     simp [FamilySlotShuffleTo.timeAssignment]
-
-/-- Coordinate restriction to one local block is continuous. -/
-omit [Fintype ι] in
-private theorem FamilySlotShuffleTo.continuous_timeAssignment {size : ι → ℕ} {total : ℕ}
-    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
-    Continuous (fun τ : Fin total → ℝ => shuffle.timeAssignment τ i) := by
-  exact continuous_pi fun j => continuous_apply (shuffle.slotEquiv ⟨i, j⟩)
 
 /-- A finite product of continuous local integrands remains continuous after embedding their
 coordinates by an arbitrary-total family shuffle. -/
