@@ -1029,7 +1029,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2607 | [feat(set-partition): count blocks by Stirling numbers](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2607) | Closed without merge. Its Stirling enumeration proposal was later landed in #2610 after resolving the SetPartition/Cumulant dependency and public-routing concerns; defer ADR evidence to that merged PR. |
 
-| PR 2608 | [docs(conventions): require iterative review](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2608) | Adds an implementation review/fix loop to `notes/conventions.md`. This is a development-process convention rather than a repository architecture decision, so no ADR change. |
+| PR 2608 | [docs(conventions): require iterative review](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2608) | Adds an implementation review/fix loop to `docs/conventions.md`. This is a development-process convention rather than a repository architecture decision, so no ADR change. |
 
 | PR 2609 | [refactor(set-partition): decouple distinguished blocks from cumulants](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2609) | Makes the distinguished-block API structural, moves only the moment-specific factorization to `Cumulant.Moment`, and preserves the public moment theorem statement. Recorded in ADR 0008. |
 

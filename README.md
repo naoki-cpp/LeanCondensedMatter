@@ -10,8 +10,8 @@ Formalizing results in condensed matter physics as machine-checked theorems in L
 - [Documentation guide](docs/README.md) — find models, architecture, examples, roadmaps, and contributor references.
 - [Declaration Explorer](https://naoki-cpp.github.io/LeanCondensedMatter/) — browse the public API.
 - [PROJECT.md](PROJECT.md) — project structure and contribution guidance.
-- [notes/roadmap.md](notes/roadmap.md) — current targets and status.
-- [Architecture decisions](doc/adr/README.md) — rationale for the current design.
+- [docs/roadmap.md](docs/roadmap.md) — current targets and status.
+- [Architecture decisions](docs/adr/README.md) — rationale for the current design.
 
 ## Building
 

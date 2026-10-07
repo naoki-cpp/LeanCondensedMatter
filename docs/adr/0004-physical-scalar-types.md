@@ -10,7 +10,7 @@ Taking an arbitrary complex expression's real part would silently discard inform
 
 The canonical APIs include real observable expectations, `probNNReal` and `bornPMF` for discrete measurements, and `vonNeumannEntropy : ENNReal`. Their codomains express different guarantees; finite entropy requires a separate finiteness result.
 
-Evidence: [physical scalar policy](../../notes/architecture/physical-real-scalar-boundary.md), [observable definitions](../../LeanCondensedMatter/QuantumTheory/Postulates.lean), [entropy definition](../../LeanCondensedMatter/QuantumTheory/Entropy/Basic.lean), and [measurement architecture](../../notes/architecture/quantum-density-theory.md).
+Evidence: [physical scalar policy](../architecture/physical-real-scalar-boundary.md), [observable definitions](../../LeanCondensedMatter/QuantumTheory/Postulates.lean), [entropy definition](../../LeanCondensedMatter/QuantumTheory/Entropy/Basic.lean), and [measurement architecture](../architecture/quantum-density-theory.md).
 
 ## Historical evidence
 

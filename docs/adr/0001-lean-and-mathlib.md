@@ -10,7 +10,7 @@ This makes general algebra and analysis available through one shared vocabulary 
 
 Physical assumptions remain explicit in definitions or hypotheses, with provenance recorded where a modeling choice enters. Kernel checking establishes the stated mathematical implication; it does not establish that its physical hypotheses describe a particular experiment.
 
-Evidence: [dependency configuration](../../lakefile.toml), [pinned dependencies](../../lake-manifest.json), [toolchain](../../lean-toolchain), and [conventions](../../notes/conventions.md).
+Evidence: [dependency configuration](../../lakefile.toml), [pinned dependencies](../../lake-manifest.json), [toolchain](../../lean-toolchain), and [conventions](../conventions.md).
 
 ## Historical evidence
 
