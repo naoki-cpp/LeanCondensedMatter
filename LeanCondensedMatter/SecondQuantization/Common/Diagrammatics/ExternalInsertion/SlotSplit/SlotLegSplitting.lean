@@ -30,9 +30,9 @@ leg, together with the quartic legs of `S \ T`. -/
 noncomputable def externalInsertionSlotLegSplitting
     {S T : Finset (Fin N)} (h : T ⊆ S) :
     Combinatorics.PositionSplitting
-      (2 * (2 * T.card + E))
-      (2 * (2 * (S \ T).card))
-      (2 * (2 * S.card + E)) :=
+      (2 * T.card + E)
+      (2 * (S \ T).card)
+      (2 * S.card + E) :=
   (Equiv.sumCongr (externalInsertionLegEquiv E T) (quarticLegEquiv (S \ T))).trans
     (((Equiv.sumAssoc (Fin (2 * E)) (↥T × Fin 4) (↥(S \ T) × Fin 4)).trans
       (Equiv.sumCongr (Equiv.refl (Fin (2 * E)))
