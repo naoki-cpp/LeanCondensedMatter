@@ -3158,7 +3158,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
     },
@@ -3179,7 +3179,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
     },
@@ -3217,7 +3217,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ConcreteMixedTwoPoint.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
     },
@@ -3300,7 +3300,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
     },
@@ -3311,7 +3311,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff",
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint"
       ],
       "externalImportCount": 0
@@ -3378,7 +3378,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
     },
@@ -4248,14 +4248,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/DiagonalCompositionMatrixCoeff.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/DiagonalEvolution.lean",
       "imports": [
@@ -4312,15 +4304,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber"
       ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/MixedOrderWallMeasure.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber"
-      ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
@@ -4375,7 +4359,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
@@ -5192,6 +5175,18 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/DysonSeries.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedOrderData",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/MixedOrderData.lean",
       "imports": [
@@ -5227,6 +5222,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField"
       ],
       "externalImportCount": 0

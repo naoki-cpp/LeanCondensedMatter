@@ -110926,46 +110926,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ), ∀ᵐ (σ : Fin n → ℝ), σ ∉ SecondQuantization.Common.twoPointMixedOrderWallSet τ τ'",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ae_not_mem_twoPointMixedOrderWallSet",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.volume_twoPointMixedOrderWallSet_eq_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} (x : SecondQuantization.Common.AlgebraicFock Config) (c : Config),\n  ↑(SecondQuantization.Common.algebraicToCompleted x) c = x c",
     "standardAxioms": [
       "Classical.choice",
@@ -119382,7 +119342,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
     "externalAxioms": [],
     "docString": "Left composition by a diagonal evolution rescales a matrix coefficient by the output\nconfiguration's exponential weight. ",
     "directWrapperTargetModule": null,
@@ -119871,8 +119831,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurableSet_twoPointEventStrictComparisonSet",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.twoPointOrderSignatureFiber_eq_iInter"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -120188,48 +120147,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  (a, b) ∈ SecondQuantization.Common.twoPointOrderSignature τ τ' σ ↔\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a <\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.mem_twoPointOrderSignature_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -121844,7 +121761,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -122842,44 +122759,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ ↔\n    (∀ (v w : Fin n), σ v < σ w ↔ υ v < υ w) ∧\n      (∀ (v : Fin n) (e : Fin 2),\n          σ v < SecondQuantization.Common.twoPointExternalTimes τ τ' e ↔\n            υ v < SecondQuantization.Common.twoPointExternalTimes τ τ' e) ∧\n        ∀ (e : Fin 2) (v : Fin n),\n          SecondQuantization.Common.twoPointExternalTimes τ τ' e < σ v ↔\n            SecondQuantization.Common.twoPointExternalTimes τ τ' e < υ v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.sameTwoPointOrderChamber_iff_interaction_comparisons",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ ↔\n    SecondQuantization.Common.twoPointOrderSignature τ τ' σ = SecondQuantization.Common.twoPointOrderSignature τ τ' υ",
     "standardAxioms": [
@@ -122902,9 +122781,7 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.mem_twoPointOrderSignature_iff"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -125039,94 +124916,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' υ a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventTime_eq_iff_of_sameOrderChamber"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' υ a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  Function.Injective f → Function.Injective (SecondQuantization.Common.twoPointTimedEventMap f)",
     "standardAxioms": [
       "propext"
@@ -125635,51 +125424,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ), MeasureTheory.volume (SecondQuantization.Common.twoPointMixedOrderWallSet τ τ') = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.volume_twoPointMixedOrderWallSet_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ae_not_mem_twoPointMixedOrderWallSet"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointExternalTimeWalls_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWalls_eq_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ae_not_mem_twoPointMixedOrderWallSet"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173730,13 +173474,101 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b ↔\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b",
+    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' υ a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventTime_eq_iff_of_sameOrderChamber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' υ a b",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b ↔\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -173749,13 +173581,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173791,13 +173623,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurableSet_twoPointEventStrictComparisonSet"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurableSet_twoPointEventStrictComparisonSet"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173814,7 +173646,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  MeasurableSet (SecondQuantization.Common.twoPointEventStrictComparisonSet τ τ' a b)",
+    "statement": "∀ {n : ℕ} (τ τ' : ℝ), Measurable (SecondQuantization.Common.twoPointOrderSignature τ τ')",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173826,7 +173658,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurableSet_twoPointEventStrictComparisonSet",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
     "externalAxioms": [],
     "docString": null,
@@ -173842,311 +173674,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (s : SecondQuantization.Common.TwoPointOrderSignature n),\n  SecondQuantization.Common.twoPointOrderSignatureFiber τ τ' s =\n    ⋂ p,\n      if p ∈ s then SecondQuantization.Common.twoPointEventStrictComparisonSet τ τ' p.1 p.2\n      else (SecondQuantization.Common.twoPointEventStrictComparisonSet τ τ' p.1 p.2)ᶜ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.twoPointOrderSignatureFiber_eq_iInter",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (v w : Fin n) (σ : Fin n → ℝ),\n  σ ∈ SecondQuantization.Common.twoPointInteractionCoincidenceSubmodule✝ v w ↔ σ v = σ w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.mem_twoPointInteractionCoincidenceSubmodule_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.twoPointInteractionCoincidenceSubmodule_ne_top",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWall_eq_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.twoPointInteractionCoincidenceSubmodule_ne_top",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWall_eq_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {v w : Fin n}, v ≠ w → SecondQuantization.Common.twoPointInteractionCoincidenceSubmodule✝ v w ≠ ⊤",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.twoPointInteractionCoincidenceSubmodule_ne_top",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWall_eq_zero"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.mem_twoPointInteractionCoincidenceSubmodule_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWall_eq_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (v : Fin n) (t : ℝ), MeasureTheory.volume (SecondQuantization.Common.twoPointExternalTimeWall✝ v t) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointExternalTimeWall_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointExternalTimeWalls_eq_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointExternalTimeWalls_eq_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (t : ℝ), MeasureTheory.volume (SecondQuantization.Common.twoPointExternalTimeWalls✝ t) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointExternalTimeWalls_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.volume_twoPointMixedOrderWallSet_eq_zero"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointExternalTimeWall_eq_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.volume_twoPointMixedOrderWallSet_eq_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {v w : Fin n},\n  v ≠ w → MeasureTheory.volume (SecondQuantization.Common.twoPointInteractionCoincidenceWall✝ v w) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWall_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWalls_eq_zero"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.mem_twoPointInteractionCoincidenceSubmodule_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.twoPointInteractionCoincidenceSubmodule_ne_top"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWalls_eq_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ}, MeasureTheory.volume SecondQuantization.Common.twoPointInteractionCoincidenceWalls✝ = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWalls_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.volume_twoPointMixedOrderWallSet_eq_zero"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure.0.SecondQuantization.Common.volume_twoPointInteractionCoincidenceWall_eq_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.volume_twoPointMixedOrderWallSet_eq_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
