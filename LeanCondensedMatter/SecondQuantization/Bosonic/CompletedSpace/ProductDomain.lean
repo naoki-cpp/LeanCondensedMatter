@@ -171,7 +171,7 @@ theorem completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOper
     rw [← mul_assoc, sqrt_natCast_mul_self]
     exact congrArg
       (fun z : ℂ => z * (ψ : CompletedFockSpace Mode) (removeOccupation i n))
-      (by exact_mod_cast hcoord)
+      (by exact_mod_cast hcoord.symm)
 
 private theorem mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain
     (i : Mode) {ψ : CompletedFockSpace Mode} (hψ : ψ ∈ completedAnnihilateDomain i)
@@ -208,7 +208,10 @@ private theorem mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain
       have h := congrArg (fun q : Occupation Mode => q i) hrepr
       simpa only [createOccupation_apply_same] using h
     conv_rhs => rw [← hrepr]
-    rw [(createOccupation_injective i).extend_apply]
+    rw [(createOccupation_injective i).extend_apply,
+      Common.completedDiagonalOperator_apply]
+    dsimp [y]
+    rw [completedAnnihilate_apply]
     change
       (n i : ℂ) * ψ n =
         (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) *
