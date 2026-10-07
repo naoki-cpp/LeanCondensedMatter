@@ -134,7 +134,7 @@ theorem freePropagator_apply_purePointBasis
         rw [mul_assoc, mul_assoc]
       _ = Complex.I * ((t : ℂ) * ((system.hbar : ℂ)⁻¹ * (data.energy i : ℂ))) := by
         exact congrArg (fun z : ℂ => Complex.I * z)
-          (mul_assoc (t : ℂ) (system.hbar : ℂ)⁻¹ (data.energy i : ℂ))
+          (mul_assoc (t : ℂ) (system.hbar : ℂ)⁻¹ (data.energy i : ℂ)).symm
       _ = Complex.I * ((t : ℂ) * ((data.energy i : ℂ) * (system.hbar : ℂ)⁻¹)) := by
         rw [mul_comm (system.hbar : ℂ)⁻¹ (data.energy i : ℂ)]
       _ = Complex.I * (((t : ℂ) * (data.energy i : ℂ)) * (system.hbar : ℂ)⁻¹) := by
