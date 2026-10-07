@@ -6,29 +6,29 @@ This repository formalizes condensed-matter physics in Lean. Here, a context mea
 
 ### Mathematical foundations and combinatorics
 
-Reusable operator analysis, finite combinatorics, permutations, orderings, pairings, and connected decompositions belong here. Their mathematical meaning is stated in Lean and Mathlib declarations; project-level boundaries are summarized in [the conventions](notes/conventions.md), [order-decomposition architecture](notes/architecture/combinatorics-order-decomposition.md), [ADR 0001](doc/adr/0001-lean-and-mathlib.md), and [ADR 0002](doc/adr/0002-semantic-ownership.md). Physical assumptions do not belong in this context.
+Reusable operator analysis, finite combinatorics, permutations, orderings, pairings, and connected decompositions belong here. Their mathematical meaning is stated in Lean and Mathlib declarations; project-level boundaries are summarized in [the conventions](docs/conventions.md), [order-decomposition architecture](docs/architecture/combinatorics-order-decomposition.md), [ADR 0001](docs/adr/0001-lean-and-mathlib.md), and [ADR 0002](docs/adr/0002-semantic-ownership.md). Physical assumptions do not belong in this context.
 
 ### Quantum theory
 
-This context owns state, observable, measurement, equilibrium, entropy, and general response-channel concepts. Use the [quantum density-state architecture](notes/architecture/quantum-density-theory.md), [models and assumptions](notes/model-and-assumptions.md), [ADR 0003](doc/adr/0003-density-backed-states.md), [ADR 0004](doc/adr/0004-physical-scalar-types.md), [ADR 0015](doc/adr/0015-countable-discrete-povms.md), and [ADR 0016](doc/adr/0016-heat-operator-first-gibbs-states.md) for current definitions and boundaries.
+This context owns state, observable, measurement, equilibrium, entropy, and general response-channel concepts. Use the [quantum density-state architecture](docs/architecture/quantum-density-theory.md), [models and assumptions](docs/model-and-assumptions.md), [ADR 0003](docs/adr/0003-density-backed-states.md), [ADR 0004](docs/adr/0004-physical-scalar-types.md), [ADR 0015](docs/adr/0015-countable-discrete-povms.md), and [ADR 0016](docs/adr/0016-heat-operator-first-gibbs-states.md) for current definitions and boundaries.
 
 ### Second quantization
 
-This context covers occupation data and Fock representations, field operators, thermal expectations, diagrammatics, and linked-cluster results. The [second-quantization terminology reference](notes/glossary/second-quantization-terminology.md) records preferred wording alongside implementation pointers; the [architecture note](notes/architecture/second-quantization.md) records ownership and dependency direction. The enduring boundaries are recorded in [ADR 0005](doc/adr/0005-fock-representations.md), [ADR 0006](doc/adr/0006-thermal-expectation-recursion.md), [ADR 0007](doc/adr/0007-bosonic-summability-domains.md), and [ADR 0008](doc/adr/0008-diagrammatics-and-analysis.md).
+This context covers occupation data and Fock representations, field operators, thermal expectations, diagrammatics, and linked-cluster results. The [second-quantization terminology reference](docs/glossary/second-quantization-terminology.md) records preferred wording alongside implementation pointers; the [architecture note](docs/architecture/second-quantization.md) records ownership and dependency direction. The enduring boundaries are recorded in [ADR 0005](docs/adr/0005-fock-representations.md), [ADR 0006](docs/adr/0006-thermal-expectation-recursion.md), [ADR 0007](docs/adr/0007-bosonic-summability-domains.md), and [ADR 0008](docs/adr/0008-diagrammatics-and-analysis.md).
 
 ### Transport
 
-This context covers generic resolvent and response representations, disorder methods, and the boundary where physical conductivity is normalized. The [transport architecture](notes/architecture/transport.md), [models and assumptions](notes/model-and-assumptions.md), and [ADR 0009](doc/adr/0009-response-and-conductivity.md) define the current scope.
+This context covers generic resolvent and response representations, disorder methods, and the boundary where physical conductivity is normalized. The [transport architecture](docs/architecture/transport.md), [models and assumptions](docs/model-and-assumptions.md), and [ADR 0009](docs/adr/0009-response-and-conductivity.md) define the current scope.
 
 The root [CONTEXT.md](CONTEXT.md) is a narrower subcontext: it defines terms for finite-cutoff MassiveDirac transport and its current-response construction. Its terms do not define generic transport vocabulary for the whole repository.
 
 ### Crystal structure
 
-This context derives periodic structure, reciprocal-lattice conventions, and the Brillouin quotient from atomic configurations. See [ADR 0017](doc/adr/0017-crystal-from-atomic-configurations.md) and the Crystal declarations linked there.
+This context derives periodic structure, reciprocal-lattice conventions, and the Brillouin quotient from atomic configurations. See [ADR 0017](docs/adr/0017-crystal-from-atomic-configurations.md) and the Crystal declarations linked there.
 
 ### Spectral and Berry geometry
 
-The generic finite-band layer provides pointwise spectral and Berry geometry. Global lattice topology and physical response belong to downstream model consumers with their own assumptions; pointwise identities alone establish neither. See [ADR 0018](doc/adr/0018-finite-band-berry-geometry.md) and its linked declarations.
+The generic finite-band layer provides pointwise spectral and Berry geometry. Global lattice topology and physical response belong to downstream model consumers with their own assumptions; pointwise identities alone establish neither. See [ADR 0018](docs/adr/0018-finite-band-berry-geometry.md) and its linked declarations.
 
 ## Relationships
 

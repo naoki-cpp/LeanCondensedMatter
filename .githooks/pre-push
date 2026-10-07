@@ -2,7 +2,7 @@
 # Pre-push hook: builds every changed .lean file being pushed and blocks the
 # push if any Lean warning survives. `unused section variable(s)` warnings
 # are fixed mechanically (an `omit ... in` is inserted at the affected
-# declaration) rather than ignored; see notes/conventions.md and
+# declaration) rather than ignored; see docs/conventions.md and
 # scripts/check_and_fix_warnings.py. Any other warning blocks the push for
 # manual review. `linter.unusedSectionVars` is never disabled.
 #

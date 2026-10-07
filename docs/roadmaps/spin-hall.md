@@ -76,7 +76,7 @@ specializations.
 
 * Keep the referent table for every new name before opening a PR.
 * Add primary citations for the intrinsic, vertex, proper-current, and skew
-  claims to `notes/references.md`.
+  claims to `docs/references.md`.
 * Mark Kato, Kimura, Ando, and related device papers as validation boundaries,
   not as proofs of a finite Lean response.
 

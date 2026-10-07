@@ -31,7 +31,7 @@ and mention an identifier only when the implementation matters.
 | Normalized finite-set moment function | A finite-set function normalized to `1` on the empty set; its cumulant is the canonical connected transform. Factorial-normalized formal-series coefficients use this representation directly. | `Combinatorics.NormalizedSetFunction`, `Combinatorics.powerSeriesMomentSetFunction` |
 | Pure-state density embedding | `ψ ↦ |ψ⟩⟨ψ|`. This is not purification of a mixed state on a larger Hilbert space. | `QuantumTheory.pure` |
 | Von Neumann entropy | `ENNReal`-valued density-state entropy. It may be infinite outside finite-dimensional or summability-controlled settings. | `QuantumTheory.vonNeumannEntropy` |
-| Boltzmann’s principle | Physical identification of `k_B` times von Neumann entropy with thermodynamic entropy. The equality is not formalized. | `notes/model-and-assumptions.md` |
+| Boltzmann’s principle | Physical identification of `k_B` times von Neumann entropy with thermodynamic entropy. The equality is not formalized. | `docs/model-and-assumptions.md` |
 
 ## Naming rules
 

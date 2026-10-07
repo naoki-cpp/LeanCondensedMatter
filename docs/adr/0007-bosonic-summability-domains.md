@@ -12,7 +12,7 @@ This lets algebraic thermal results proceed before a completed bosonic operator 
 
 Finite-mode polynomial occupation majorants are owned by a general weighted-monomial summability layer; quadratic and total-particle-number bounds are specializations that consume it. Exact particle-number sum formulas remain separately available where KMS arguments need the value, rather than only convergence.
 
-Evidence: [domain and totalization](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean), [occupation algebra](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/Occupation.lean), [quartic coefficient bound](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticVertexBound.lean), [quartic Gibbs adapter](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticGibbsSummable.lean), and [bosonic thermal boundary](../../notes/roadmaps/thermal-expectation-architecture.md).
+Evidence: [domain and totalization](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean), [occupation algebra](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/Occupation.lean), [quartic coefficient bound](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticVertexBound.lean), [quartic Gibbs adapter](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticGibbsSummable.lean), and [bosonic thermal boundary](../roadmaps/thermal-expectation-architecture.md).
 
 ## Historical evidence
 

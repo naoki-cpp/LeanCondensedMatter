@@ -15,7 +15,11 @@ Formalize results in condensed matter physics as machine-checked theorems in Lea
 PROJECT.md                  — this index: purpose, tree, and pointers (keep slim)
 AGENTS.md / CLAUDE.md       — thin pointers to this file, for harness discovery
 README.md                   — public repository entry point
-notes/
+docs/
+  README.md                 — purpose-based documentation guide
+  adr/                      — architecture decisions and rationale
+  agents/                   — domain navigation and issue guidance
+  analysis-mathlib-audit.md  — analysis inventory against pinned Mathlib
   roadmap.md                — repository-wide target/status index
   completed.md              — major targets that have reached `proved`
   conventions.md            — project-wide coding, refactoring, proof, workflow, and commit rules
@@ -45,6 +49,6 @@ notes/
     impurity-vertex-correction.md
 ```
 
-The theorem catalog keeps structural audit attributes on every declaration; entries listed in `notes/theorem-catalog-retained.md` remain in the full catalog but are omitted from unresolved review queues.
+The theorem catalog keeps structural audit attributes on every declaration; entries listed in `docs/theorem-catalog-retained.md` remain in the full catalog but are omitted from unresolved review queues.
 
-Project-wide implementation, documentation, refactoring, proof, dependency, workflow, and commit rules live in [`notes/conventions.md`](notes/conventions.md). Topic-specific details belong in `notes/`; do not add long content sections to this file.
+Project-wide implementation, documentation, refactoring, proof, dependency, workflow, and commit rules live in [`docs/conventions.md`](docs/conventions.md). Topic-specific details belong in `docs/`; do not add long content sections to this file.

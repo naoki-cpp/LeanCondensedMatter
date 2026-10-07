@@ -2,7 +2,7 @@
 """Build changed .lean files, mechanically fix `unused section variable(s)`
 warnings by inserting `omit [...] in`, and report any other warnings.
 
-Used by .githooks/pre-push. See notes/conventions.md ("Proof style") for the
+Used by .githooks/pre-push. See docs/conventions.md ("Proof style") for the
 project's policy: never disable linter.unusedSectionVars globally; prefer
 narrowing the `variable` scope by hand when a warning recurs across many
 declarations in the same block (this script only ever applies the mechanical
@@ -144,7 +144,7 @@ def fix_unused_var_warnings(warnings: list[tuple[str, int, str, str]]) -> list[s
                 f"note: {file} has {len(entries)} declarations with the same "
                 f"unused section variable(s) ({entries[0][2]}). Consider narrowing "
                 "the surrounding `variable` scope instead of relying on "
-                "per-declaration `omit ... in` -- see notes/conventions.md.",
+                "per-declaration `omit ... in` -- see docs/conventions.md.",
                 file=sys.stderr,
             )
     return modified

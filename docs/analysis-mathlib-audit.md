@@ -147,7 +147,7 @@ compatibility results and is not used as the infinite-dimensional definition.
 
 A general Fredholm determinant still requires trace-class approximation/completeness and a
 convergent presentation-independent determinant construction. The scoped dependency graph is
-recorded in `notes/roadmaps/fredholm-determinant.md`.
+recorded in `docs/roadmaps/fredholm-determinant.md`.
 
 ## Ordered-simplex and Dyson analysis
 

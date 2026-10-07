@@ -11,7 +11,7 @@ Minimal formalization of the standard (Dirac–von Neumann) axiomatic quantum th
 the state-vector representation postulate, the definition of an observable, and the expectation
 value they jointly define.
 
-See `notes/model-and-assumptions.md` for the physics-to-Lean correspondence and
+See `docs/model-and-assumptions.md` for the physics-to-Lean correspondence and
 scope notes.
 -/
 
