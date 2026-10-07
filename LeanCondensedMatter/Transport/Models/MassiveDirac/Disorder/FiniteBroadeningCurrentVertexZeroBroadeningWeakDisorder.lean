@@ -32,28 +32,6 @@ private def boundaryRAWidth
       finiteCutoffContinuumBornBoundaryRealRenormalization
         v m probeEnergy disorderStrength hbar pMax * (probeEnergy ^ 2 - m ^ 2))
 
-private theorem star_boundaryIntegral
-    (side : SpectralSide) (v m probeEnergy pMax : ℝ) :
-    star (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-      side v m probeEnergy pMax) =
-      finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-        side.opposite v m probeEnergy pMax := by
-  cases side <;>
-    apply Complex.ext <;>
-    simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue,
-      pauliGreenDenominator, SpectralSide.regulator, SpectralSide.opposite]
-
-private theorem star_boundaryDysonDenominator
-    (side : SpectralSide)
-    (v m p probeEnergy disorderStrength hbar pMax : ℝ) :
-    star (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-      side v m p probeEnergy disorderStrength hbar pMax) =
-      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-        side.opposite v m p probeEnergy disorderStrength hbar pMax := by
-  simp [finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary,
-    finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
-    finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary, star_boundaryIntegral]
-
 private theorem boundaryRetardedDenominator_im_eq_width
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
@@ -97,7 +75,7 @@ private theorem boundaryRAProduct_eq
       .advanced v m p probeEnergy disorderStrength hbar pMax := by
     dsimp [D]
     simpa [SpectralSide.opposite] using
-      (star_boundaryDysonDenominator
+      (star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
         .retarded v m p probeEnergy disorderStrength hbar pMax)
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
   change D * _ = _
