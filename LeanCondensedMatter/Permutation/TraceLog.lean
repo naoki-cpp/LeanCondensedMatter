@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Permutation.ConnectedCycleSeries
 import Mathlib.Data.Rat.Cast.Lemmas
 import Mathlib.RingTheory.PowerSeries.Log
-import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -13,9 +12,10 @@ noncommutative matrix algebra. Mathlib's scalar `PowerSeries.log` and `PowerSeri
 the sole logarithm and scalar-substitution implementations. The rescaled scalar logarithm is then
 paired coefficientwise with the matrix power trace `tr(K^m)`.
 
-The resulting scalar series is the coefficientwise meaning of `tr log(1 - ζ t K)`. For `ζ ≠ 0`,
-the connected-cycle series is `-(1/ζ)` times this trace-log series. The already-established
-`ζ = 0` boundary remains coefficientwise and requires no division by `ζ`.
+The resulting scalar series is the coefficientwise meaning of `tr log(1 - ζ t K)`. The canonical
+identity is division-free: multiplying the connected-cycle series by `ζ` gives the negative
+trace-log series for every exchange weight, including `ζ = 0`. Division by `ζ` appears only in
+nonzero-weight specializations.
 -/
 
 namespace Combinatorics
@@ -78,35 +78,18 @@ private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
         _ = (-ζ ^ m) * ζ := by rw [ih]; ring
         _ = -ζ ^ (m + 1) := by rw [pow_succ]; ring
 
-private theorem diagonal_pow (w : ι → ℂ) (m : ℕ) :
-    Matrix.diagonal w ^ m = Matrix.diagonal (fun i => w i ^ m) := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      calc
-        Matrix.diagonal w ^ (m + 1) =
-            Matrix.diagonal w ^ m * Matrix.diagonal w := by
-          rw [pow_succ]
-        _ = Matrix.diagonal (fun i => w i ^ m) * Matrix.diagonal w := by
-          rw [ih]
-        _ = Matrix.diagonal (fun i => w i ^ m * w i) :=
-          Matrix.diagonal_mul_diagonal _ _
-        _ = Matrix.diagonal (fun i => w i ^ (m + 1)) := by
-          simp only [pow_succ]
+/-- Division-free formal trace-log identity for arbitrary exchange weight.
 
-private theorem trace_diagonal_pow (w : ι → ℂ) (m : ℕ) :
-    Matrix.trace (Matrix.diagonal w ^ m) = ∑ i : ι, w i ^ m := by
-  rw [diagonal_pow, Matrix.trace_diagonal]
-
-/-- Formal series form of the trace-log identity for `ζ ≠ 0`. -/
-theorem permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog
-    (ζ : ℂ) (K : Matrix ι ι ℂ) (hζ : ζ ≠ 0) :
-    permutationConnectedCycleSeries ζ K =
-      (-ζ⁻¹) • formalTraceLogOneSubSeries ζ K := by
+Multiplying the connected-cycle series by `ζ` gives the negative coefficientwise trace-log
+series, including at the `ζ = 0` boundary. -/
+theorem smul_permutationConnectedCycleSeries_eq_neg_traceLog
+    (ζ : ℂ) (K : Matrix ι ι ℂ) :
+    ζ • permutationConnectedCycleSeries ζ K =
+      -formalTraceLogOneSubSeries ζ K := by
   ext m
-  rw [PowerSeries.coeff_smul]
-  change PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
-    (-ζ⁻¹) * PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K)
+  rw [PowerSeries.coeff_smul, map_neg]
+  change ζ * PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
+    -PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K)
   by_cases hm : m = 0
   · subst m
     rw [PowerSeries.coeff_zero_eq_constantCoeff,
@@ -133,7 +116,6 @@ theorem permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog
     rw [htrace]
     simp only [Nat.succ_sub_one]
     rw [pow_succ]
-    field_simp [hζ]
     ring
 
 /-- For a diagonal kernel and nonzero exchange weight, the connected-cycle series is the scaled sum
@@ -142,15 +124,29 @@ theorem permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log
     (ζ : ℂ) (w : ι → ℂ) (hζ : ζ ≠ 0) :
     permutationConnectedCycleSeries ζ (Matrix.diagonal w) =
       (-ζ⁻¹) • ∑ i : ι, PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ) := by
-  rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog ζ (Matrix.diagonal w) hζ]
-  apply congrArg (fun f : PowerSeries ℂ => (-ζ⁻¹) • f)
-  ext m
-  rw [coeff_formalTraceLogOneSubSeries, trace_diagonal_pow]
-  simp only [map_sum, PowerSeries.coeff_rescale]
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [mul_pow]
-  ring
+  have htrace :
+      formalTraceLogOneSubSeries ζ (Matrix.diagonal w) =
+        ∑ i : ι, PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ) := by
+    ext m
+    rw [coeff_formalTraceLogOneSubSeries, Matrix.diagonal_pow, Matrix.trace_diagonal]
+    simp only [Pi.pow_apply, map_sum, PowerSeries.coeff_rescale]
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [mul_pow]
+    ring
+  have hscaled :=
+    smul_permutationConnectedCycleSeries_eq_neg_traceLog ζ (Matrix.diagonal w)
+  rw [htrace] at hscaled
+  calc
+    permutationConnectedCycleSeries ζ (Matrix.diagonal w) =
+        ζ⁻¹ • (ζ • permutationConnectedCycleSeries ζ (Matrix.diagonal w)) := by
+      simp [smul_smul, hζ]
+    _ = ζ⁻¹ • (-∑ i : ι,
+        PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ)) := by
+      rw [hscaled]
+    _ = (-ζ⁻¹) • ∑ i : ι,
+        PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ) := by
+      simp
 
 end Combinatorics
