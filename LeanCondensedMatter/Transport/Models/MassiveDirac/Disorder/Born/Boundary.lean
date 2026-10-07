@@ -63,6 +63,27 @@ theorem star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
     simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue,
       pauliGreenDenominator, SpectralSide.regulator, SpectralSide.opposite]
 
+/-- The retarded/advanced finite-cutoff Born denominator boundary values differ only by the
+orientation-sensitive imaginary jump. -/
+theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_retarded_sub_advanced
+    (v m probeEnergy pMax : ℝ) (hvelocity : v ≠ 0) :
+    finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+        .retarded v m probeEnergy pMax -
+      finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+        .advanced v m probeEnergy pMax =
+      -Complex.I * (((Real.pi / v ^ 2 : ℝ) : ℂ)) := by
+  have hnegIMul (r : ℝ) :
+      -Complex.I * (r : ℂ) = (⟨0, -r⟩ : ℂ) := by
+    apply Complex.ext <;> simp
+  rw [hnegIMul]
+  apply Complex.ext
+  · simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue,
+      pauliGreenDenominator, pauliGreenDenominatorOfRegulator, energySq,
+      spectralParameterOfRegulator, SpectralSide.regulator]
+  · simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
+    field_simp [hvelocity]
+    norm_num
+
 /-- At fixed finite cutoff beyond the on-shell circle, the full complex denominator integral has a
 side-indexed metallic `η → 0⁺` boundary value. This is the complex owner of the paired finite real
 part and damping-generating imaginary part. -/
