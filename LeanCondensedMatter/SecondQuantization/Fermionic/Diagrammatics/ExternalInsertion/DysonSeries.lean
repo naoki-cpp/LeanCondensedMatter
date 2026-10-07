@@ -25,7 +25,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Arbitrary external-insertion Wick diagrams with the external field labels fixed. -/
 abbrev FixedExternalInsertionWickDiagram
-    (Mode : Type*) [LinearOrder Mode] (E n : ℕ)
+    (Mode : Type*) (E n : ℕ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode) : Type _ :=
   {d : ExternalInsertionWickDiagram Mode E n // d.externalLabel = externalLabel}
 
@@ -33,7 +33,7 @@ abbrev FixedExternalInsertionWickDiagram
 
 Several disconnected components meeting the external sector remain allowed. -/
 abbrev VacuumFreeFixedExternalInsertionWickDiagram
-    (Mode : Type*) [LinearOrder Mode] (E n : ℕ)
+    (Mode : Type*) (E n : ℕ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode) : Type _ :=
   {d : FixedExternalInsertionWickDiagram Mode E n externalLabel //
     HasNoVacuumComponent d.1.vertexGraph}
