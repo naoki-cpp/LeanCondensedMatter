@@ -33,31 +33,17 @@ or consumer structure changes.
 - `Combinatorics.Pairing.splitRight_ofSplit` — canonical `[simp]` right inverse law for assembling then restricting a split pairing.
 - `Combinatorics.Pairing.sum_eq_sum_sum_insertFirstPair` — general additive reindexing theorem decomposing a sum over larger pairings by the partner of zero and the erased smaller pairing.
 - `Combinatorics.Pairing.vertexGraph_componentBlockOn_partner` — semantic finite-subtype endpoint stating that paired legs occupy the same ambient connected-component block in the induced vertex graph.
-- `Combinatorics.Pairing.crossingCount_eraseZeroPair` — canonical recursion splitting the total crossing count into the erased pairing contribution plus crossings with the first pair.
-- `Combinatorics.Pairing.crossingsWithFirstPair_mod_two` — canonical parity bridge from first-pair crossings to the number of intervening positions, used by pairing-weight recursion.
-- `Combinatorics.Pairing.eraseZeroOrderIso_partner` — canonical `[simp]` compatibility of the erased pairing partner map with the increasing order isomorphism onto undeleted positions.
 - `Combinatorics.Pairing.eraseZeroPair_insertFirstPair` — canonical inverse law showing that erasing a freshly inserted first pair recovers the original pairing.
 - `Combinatorics.Pairing.even_card_of_partner_mem` — general parity theorem stating that any finite partner-closed subset of pairing positions has even cardinality.
-- `Combinatorics.Pairing.insertFirstPair_partner_zero` — canonical `[simp]` computation rule identifying the partner of the newly inserted zero position.
-- `Combinatorics.Pairing.isSplit_inr` — structural theorem that right-side closure follows automatically from left-side split closure by involutivity of the partner map.
-- `Combinatorics.Pairing.isSplit_ofSplit` — canonical constructor law asserting that a pairing assembled with `ofSplit` is split by the assembling position splitting.
-- `Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions` — structural lemma showing that every non-first normalized pair lies entirely in the undeleted position set.
 - `Combinatorics.Pairing.mem_pairs_map_iff` — canonical membership equivalence for normalized pairs under a partner-intertwining order embedding.
-- `Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff` — canonical crossing-preservation theorem for partner-intertwining order embeddings of pairings.
-- `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt` — canonical ordered-endpoint specialization of normalized-pair transport: increasing transported endpoints are not swapped.
 - `Combinatorics.NormalizedSetFunction.moment_apply` — retain public `[simp]`: canonical evaluation rule for the bundled moment transform.
 - `Combinatorics.NormalizedSetFunction.moment_cumulant` — retain public: one half of the moment–cumulant inverse laws and the right-inverse theorem used to build `momentCumulantEquiv`.
-- `Combinatorics.Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter` — retain public: canonical decomposition of the global crossing count into component-internal and inter-component contributions.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_self` — canonical `[simp]` boundary for the inter-block inversion count, recording that the diagonal block contribution is zero.
-- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — canonical expansion of the inter-block inversion count for distinct blocks; downstream crossing/parity proofs use this explicit counting formula.
 - `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq` — reusable transport theorem lifting pairwise modular agreement of block inversion counts to the total ordered inversion count.
 - `Combinatorics.FamilySlotShuffleTo.timeAssignment_apply` — canonical `[simp]` evaluation rule for restricting an ambient time assignment to one local shuffled block; it is an established simplification boundary used by diagrammatic consumers.
 - `Finpartition.partOrdersCompatible_assembleOrder` — canonical compatibility law for a global order assembled from part-local orders and a partition shuffle.
-- `Finpartition.partGlobalSlot_injective` — core structural property of the public map sending elements of one partition part to their ambient slots.
 - `Finpartition.partGlobalSlot_mem_partGlobalSlots` — canonical `[simp]` membership rule stating that every part element lands in that part's ambient-slot subset.
-- `Finpartition.card_partGlobalSlots` — canonical cardinality theorem identifying the number of ambient slots occupied by a part with the cardinality of that part.
 - `Finpartition.partGlobalSlot_partGlobalSlotEquiv_symm` — canonical `[simp]` inverse-evaluation rule for the equivalence between a partition part and its occupied ambient-slot subtype.
-- `Finpartition.partGlobalSlot_partOrderOfOrder` — canonical `[simp]` computation rule relating the induced local part order to the increasing enumeration of its ambient slots.
 - `Combinatorics.FamilySlotShuffle.cons_slotEquiv_zero` — canonical `[simp]` computation rule for the head-block coordinates of the recursive family-shuffle constructor.
 - `Combinatorics.FamilySlotShuffleTo.continuous_ambientIntegrand` — general closure theorem that a finite product of continuous local integrands remains continuous after embedding into an arbitrary ambient total; this is a reusable ordered-simplex analysis API.
 - `Combinatorics.FamilySlotShuffle.headTailLocalSlotEquiv_succ` — canonical `[simp]` normalization rule for the tail branch of the dependent head/tail local-slot equivalence.
@@ -108,7 +94,6 @@ or consumer structure changes.
 - `QuantumTheory.Transport.Models.RashbaExchange.spinHamiltonian_mul_self` — canonical spectral identity that the traceless Rashba-exchange spin Hamiltonian squares to `E² I`.
 - `QuantumTheory.Transport.Models.RashbaExchange.sum_bandProjectorOperator_eq_one` — canonical resolution-of-identity theorem for the Rashba-exchange band projectors.
 - `QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum` — physical finite-system endpoint identifying the causal susceptibility with the Kubo–Bastin spectral vertex sum at positive switching rate.
-- `SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum` — deliberate bosonic specialization of the Common quartic Dyson expansion; the statistics-specific API is useful even though its current consumer is private.
 - `SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq` — canonical equivalence between the geometric mixed-order chamber relation and the finite signature used for measurable chamber decomposition.
 - `SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedExternalInsertionLegField_componentOrderedLeg` — canonical compatibility of component-local and ambient timed fields under the component leg embedding.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
@@ -362,8 +347,6 @@ or consumer structure changes.
   Explicit physical expansion of the minimally coupled Schrödinger right-hand side.
 - `QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue_eq_coordinates` —
   Coordinate expansion of the probability-density time derivative.
-- `QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum` — structure-level
-  invariant recording normalization of the pure-point probability weights as a convergent sum.
 - `QuantumTheory.finiteDimensional_of_gibbsOp_isCompact` — bounded-Gibbs obstruction theorem:
   compactness of the invertible Gibbs exponential forces finite dimensionality, documenting why the
   bounded Gibbs API is explicitly finite-dimensional.
