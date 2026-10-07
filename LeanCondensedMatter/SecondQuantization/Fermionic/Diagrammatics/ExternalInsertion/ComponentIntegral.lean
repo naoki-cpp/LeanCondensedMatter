@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
 
 set_option linter.style.header false
@@ -37,6 +38,20 @@ noncomputable def ExternalInsertionWickDiagram.dysonAmplitude
     (externalTime : Fin (2 * E) → ℝ) : ℂ :=
   (-1 : ℂ) ^ n * d.orderedSimplexContribution ε β g externalTime
 
+
+/-- Dyson amplitude with the interaction vertices assigned to the ordered-simplex slots by an
+explicit global interaction order. -/
+noncomputable def ExternalInsertionWickDiagram.orderedDysonAmplitude
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin n))) : ℂ :=
+  intervalIntegral.orderedSimplexIntegral
+    (Finset.univ : Finset (Fin n)).card β
+    (fun τ =>
+      d.dysonFixedTimeAmplitude ε β g externalTime
+        (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩)))
+
 /-- Integrating the Dyson-signed fixed-time amplitude is the integrated Dyson amplitude. -/
 theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
@@ -51,10 +66,43 @@ theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplit
   exact intervalIntegral.orderedSimplexIntegral_smul n β
     ((-1 : ℂ) ^ n) (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
 
-/-- Summing the ordered-simplex Dyson contribution over all order-preserving interleavings of the
-component interaction slots gives the external regrouping sign times the product of the standalone
-component Dyson amplitudes. -/
-theorem ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- Pulling an assembled global interaction order back to one component gives exactly that
+component's shuffle coordinates when the local component orders are canonical. -/
+private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (shuffle : d.ComponentInteractionOrderShuffle)
+    (τ : Fin (Finset.univ : Finset (Fin n)).card → ℝ)
+    (B : d.vertexGraph.componentPartition.parts) :
+    d.componentInteractionTime
+        (fun v =>
+          τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+            ⟨v, Finset.mem_univ v⟩))
+        B =
+      shuffle.timeAssignment τ B := by
+  funext j
+  unfold ExternalInsertionWickDiagram.componentInteractionTime
+    FamilySlotShuffleTo.timeAssignment
+  change
+    τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+      ⟨((interactionSector
+        (B : Finset (ExternalInsertionVertex E
+          (Finset.univ : Finset (Fin n))))).orderIsoOfFin rfl j).1,
+        Finset.mem_univ _⟩) =
+      τ (shuffle.slotEquiv ⟨B, j⟩)
+  apply congrArg τ
+  have hslot :=
+    d.assembleInteractionOrder_symm_apply
+      d.canonicalComponentInteractionOrders shuffle B j
+  rw [← hslot]
+  apply congrArg
+    (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+  apply Subtype.ext
+  rfl
+
+/-- The interaction-order shuffle orbit of an arbitrary external-insertion diagram factors into
+the fixed external regrouping sign times the product of the standalone component amplitudes. -/
+theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ)
@@ -65,19 +113,9 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegr
         (fun localσ =>
           (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
             (d.componentExternalTime externalTime B) localσ)) :
-    (∑ shuffle : FamilySlotShuffleTo
-        (fun B : d.vertexGraph.componentPartition.parts =>
-          (interactionSector
-            (B : Finset (ExternalInsertionVertex E
-              (Finset.univ : Finset (Fin n))))).card)
-        n,
-      intervalIntegral.orderedSimplexIntegral n β
-        (fun σ =>
-          componentExternalOrderSign d blockOrder *
-            shuffle.ambientIntegrand
-              (fun B localσ =>
-                (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
-                  (d.componentExternalTime externalTime B) localσ) σ)) =
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
           (d.componentWickDiagram B).dysonAmplitude ε β g
@@ -93,23 +131,56 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegr
     fun B localσ =>
       (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
         (d.componentExternalTime externalTime B) localσ
-  have hTotal : (∑ B, size B) = n := by
+  have hfactor (shuffle : d.ComponentInteractionOrderShuffle) :
+      (fun τ =>
+        d.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v =>
+            τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+              ⟨v, Finset.mem_univ v⟩))) =
+        (fun τ =>
+          componentExternalOrderSign d blockOrder *
+            shuffle.ambientIntegrand localIntegrand τ) := by
+    funext τ
+    rw [d.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components
+      ε β g externalTime _ blockOrder]
+    apply congrArg (fun z : ℂ => componentExternalOrderSign d blockOrder * z)
+    unfold FamilySlotShuffleTo.ambientIntegrand
+    apply Finset.prod_congr rfl
+    intro B _
+    change
+      (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime
+            (fun v =>
+              τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+                ⟨v, Finset.mem_univ v⟩))
+            B) =
+        (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+          (d.componentExternalTime externalTime B)
+          (shuffle.timeAssignment τ B)
+    rw [d.componentInteractionTime_assembleInteractionOrder shuffle τ B]
+  have hTotal : (∑ B, size B) = (Finset.univ : Finset (Fin n)).card := by
     simpa [size] using
       (sum_interactionSector_card_eq d.vertexGraph)
   have hshuffle :=
-    FamilySlotShuffleTo.sum_integral_eq_prod size n hTotal β localIntegrand
+    FamilySlotShuffleTo.sum_integral_eq_prod
+      size (Finset.univ : Finset (Fin n)).card hTotal β localIntegrand
       (fun B => by simpa [size, localIntegrand] using hlocal B)
   change
-    (∑ shuffle : FamilySlotShuffleTo size n,
-      intervalIntegral.orderedSimplexIntegral n β
-        (fun σ =>
-          componentExternalOrderSign d blockOrder *
-            shuffle.ambientIntegrand localIntegrand σ)) =
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      intervalIntegral.orderedSimplexIntegral
+        (Finset.univ : Finset (Fin n)).card β
+        (fun τ =>
+          d.dysonFixedTimeAmplitude ε β g externalTime
+            (fun v =>
+              τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+                ⟨v, Finset.mem_univ v⟩)))) =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
           (d.componentWickDiagram B).dysonAmplitude ε β g
             (d.componentExternalTime externalTime B)
-  simp_rw [intervalIntegral.orderedSimplexIntegral_smul]
+  rw [Finset.sum_congr rfl fun shuffle _ => by
+    rw [hfactor shuffle, intervalIntegral.orderedSimplexIntegral_smul]]
   rw [← Finset.mul_sum, hshuffle]
   apply congrArg (fun z : ℂ => componentExternalOrderSign d blockOrder * z)
   apply Finset.prod_congr rfl
