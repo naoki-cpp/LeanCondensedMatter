@@ -291,10 +291,7 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     d.atomicLegPartner_componentOrderedLeg B localLeg,
     hLocal]
 
-/-- Component-local transport from mixed-time atomic positions back to the canonical fixed
-flattened positions. This is the local permutation used when comparing component shuffles with the
-ambient mixed-time ordering permutation. -/
-noncomputable def ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv
+private noncomputable def ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
