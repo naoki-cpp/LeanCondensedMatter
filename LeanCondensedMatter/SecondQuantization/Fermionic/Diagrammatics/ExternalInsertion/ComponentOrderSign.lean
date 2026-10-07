@@ -66,7 +66,7 @@ private theorem sign_sigmaCongrRight_mulSingle
         ⟨i, (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i p) i x⟩ =
           (p.extendDomain (sigmaFiberEquiv i)) ((sigmaFiberEquiv i x).1)
       rw [Equiv.Perm.extendDomain_apply_image]
-      simp [sigmaFiberEquiv, Pi.mulSingle_apply]
+      simp [sigmaFiberEquiv]
     · rw [Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simpa using hji)]
       simp [hji]
   rw [hperm, Equiv.Perm.sign_extendDomain]
