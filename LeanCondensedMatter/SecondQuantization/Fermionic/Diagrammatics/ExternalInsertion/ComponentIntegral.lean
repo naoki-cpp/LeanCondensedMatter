@@ -65,7 +65,7 @@ private noncomputable def ExternalInsertionWickDiagram.componentInteractionShuff
       n :=
   FamilySlotShuffleTo.castTotalEquiv (by simp) d.componentInteractionShuffle
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The canonical component interaction shuffle pulls an ambient time assignment back to the
 canonical component interaction times. -/
 private theorem ExternalInsertionWickDiagram.componentInteractionShuffleToFin_timeAssignment
