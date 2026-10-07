@@ -238,7 +238,7 @@ theorem berryCurvatureComplex_isSelfAdjoint {Lstar : Submodule ℤ K}
 
 /-- Projector Berry curvature, transported losslessly from its self-adjoint complex expression to
 a real scalar. -/
-noncomputable def berryCurvatureSelfAdjoint {Lstar : Submodule ℤ K}
+private noncomputable def berryCurvatureSelfAdjoint {Lstar : Submodule ℤ K}
     (data : PeriodicBlochProjector (H := H) Lstar) (k u v : K) : selfAdjoint ℂ :=
   ⟨data.berryCurvatureComplex k u v, data.berryCurvatureComplex_isSelfAdjoint k u v⟩
 
