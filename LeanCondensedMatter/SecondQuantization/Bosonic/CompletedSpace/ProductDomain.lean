@@ -361,9 +361,7 @@ theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
       exact_mod_cast hcoord
     rw [hcoord_real, ← mul_assoc, sqrt_natCast_mul_self, hrepr]
 
-/-- On the common product domain, `aᵢ aᵢ† = aᵢ† aᵢ + 1`. Combined with
-`completedCreateAfterAnnihilate_eq_numberOperator`, this is `aᵢ aᵢ† = Nᵢ + 1`. -/
-theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (i : Mode) :
+private theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (i : Mode) :
     completedAnnihilateAfterCreate i =
       completedCreateAfterAnnihilate i + (completedNumberOperatorDomain i).subtype := by
   apply LinearMap.ext
@@ -399,11 +397,20 @@ theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (i : Mode
         simpa [Nat.cast_add, Nat.cast_one] using hsqrt]
   ring
 
+/-- On the common product domain, `aᵢ aᵢ† = 1 + Nᵢ`. -/
+theorem completedAnnihilateAfterCreate_eq_id_add_numberOperator (i : Mode) :
+    completedAnnihilateAfterCreate i =
+      (completedNumberOperatorDomain i).subtype + (completedNumberOperator i).toFun := by
+  rw [completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id,
+    completedCreateAfterAnnihilate_eq_numberOperator]
+  abel
+
 /-- Equal-mode completed bosonic CCR on the explicit common product domain `Dom(Nᵢ)`. -/
 theorem completedComm_annihilate_create_self (i : Mode) :
     completedAnnihilateAfterCreate i - completedCreateAfterAnnihilate i =
       (completedNumberOperatorDomain i).subtype := by
-  rw [completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id]
+  rw [completedAnnihilateAfterCreate_eq_id_add_numberOperator,
+    completedCreateAfterAnnihilate_eq_numberOperator]
   abel
 
 end
