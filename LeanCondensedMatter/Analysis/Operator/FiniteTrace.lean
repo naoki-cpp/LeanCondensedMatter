@@ -1,6 +1,7 @@
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Trace
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 
 set_option linter.style.header false
