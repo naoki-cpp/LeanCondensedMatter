@@ -61,16 +61,6 @@ def twoPointTimedEventBefore {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
   twoPointTimedEventBeforeOrEqual τ τ' σ a b ∧ a ≠ b
 
-/-- Stable comparison of two fixed events is unchanged when their two event times are unchanged. -/
-theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : TwoPointTimedEvent n)
-    (ha : twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' υ a)
-    (hb : twoPointTimedEventTime τ τ' σ b = twoPointTimedEventTime τ τ' υ b) :
-    twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
-      twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual]
-  rw [ha, hb]
-
 /-- Interaction events in their canonical supplied slot order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
@@ -121,15 +111,16 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
     (orderedTwoPointTimedEvents τ τ' σ).Pairwise
       (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
   classical
-  letI : Std.Total (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-    ⟨fun a b =>
-      stableTimedEventBeforeOrEqual_total
-        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b⟩
-  letI : IsTrans (TwoPointTimedEvent n) (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-    ⟨fun a b c hab hbc =>
-      stableTimedEventBeforeOrEqual_trans
-        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank hab hbc⟩
-  exact List.pairwise_insertionSort _ _
+  rw [orderedTwoPointTimedEvents]
+  change
+    (List.insertionSort
+      (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
+      ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)).Pairwise
+        (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
+  exact
+    pairwise_insertionSort_stableTimedEventBeforeOrEqual
+      (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
+      ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)
 
 /-- The fully ordered mixed-event list contains no duplicate events. -/
 theorem orderedTwoPointTimedEvents_nodup {n : ℕ}
@@ -239,8 +230,9 @@ theorem orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq {n : ℕ}
         orderedTwoPointTimedEventPosition τ τ' υ b) := by
   rw [orderedTwoPointTimedEventPosition_lt_iff,
     orderedTwoPointTimedEventPosition_lt_iff]
-  unfold twoPointTimedEventBefore
-  rw [twoPointTimedEventBeforeOrEqual_congr τ τ' σ υ a b ha hb]
+  simp only [twoPointTimedEventBefore, twoPointTimedEventBeforeOrEqual,
+    stableTimedEventBeforeOrEqual_iff]
+  rw [ha, hb]
 
 
 /-! ## Monotone interaction-slot transport -/
@@ -278,7 +270,7 @@ private theorem twoPointTimedEventBeforeOrEqual_map_iff
     twoPointTimedEventBeforeOrEqual τ τ' σ
         (twoPointTimedEventMap f a) (twoPointTimedEventMap f b) ↔
       twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
+  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
     twoPointTimedEventTime_map]
   have hrank :
       twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
