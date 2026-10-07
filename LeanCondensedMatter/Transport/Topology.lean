@@ -98,8 +98,6 @@ structure GappedBlochSystem (Lstar : Submodule ℤ K) [FiniteDimensional ℂ H] 
 
 namespace PeriodicBlochProjector
 
-variable [FiniteDimensional ℂ H]
-
 /-- Directional derivative of a smooth projector family on the covering momentum space. -/
 noncomputable def directionalDerivative {Lstar : Submodule ℤ K}
     (data : PeriodicBlochProjector (H := H) Lstar) (k direction : K) :
@@ -129,19 +127,25 @@ theorem directionalDerivative_isSelfAdjoint {Lstar : Submodule ℤ K}
 theorem fderiv_projector_periodic {Lstar : Submodule ℤ K}
     (data : PeriodicBlochProjector (H := H) Lstar) (G : Lstar) (k : K) :
     fderiv ℝ data.projector (G +ᵥ k) = fderiv ℝ data.projector k := by
-  let shift : K → K := fun q => (G : K) + q
+  let shift : K → K := fun q => G +ᵥ q
+  have hshift_eq : shift = fun q : K => (G : K) + q := by
+    funext q
+    simp [shift, Submodule.vadd_def, vadd_eq_add]
   have hdiff : Differentiable ℝ data.projector :=
     data.smooth.differentiable (by simp)
   have hshift : DifferentiableAt ℝ shift k := by
-    dsimp [shift]
+    rw [hshift_eq]
     fun_prop
   have hcomp := fderiv_comp (𝕜 := ℝ) (x := k)
     (f := shift) (g := data.projector) (hdiff (shift k)) hshift
   have hperiodic : data.projector ∘ shift = data.projector := by
     funext q
-    simpa [shift, Function.comp_def, vadd_eq_add] using data.periodic G q
-  rw [hperiodic] at hcomp
-  simpa [shift, vadd_eq_add] using hcomp.symm
+    exact data.periodic G q
+  have hshiftDeriv : fderiv ℝ shift k = .id ℝ K := by
+    rw [hshift_eq]
+    simp
+  rw [hperiodic, hshiftDeriv] at hcomp
+  simpa [shift] using hcomp.symm
 
 /-- Directional projector derivatives inherit reciprocal-lattice periodicity. -/
 theorem directionalDerivative_periodic {Lstar : Submodule ℤ K}
@@ -151,6 +155,8 @@ theorem directionalDerivative_periodic {Lstar : Submodule ℤ K}
       data.directionalDerivative k direction := by
   rw [directionalDerivative, directionalDerivative,
     data.fderiv_projector_periodic G k]
+
+variable [FiniteDimensional ℂ H]
 
 /-- Complex projector-curvature expression
 `i Tr(P [∂_u P, ∂_v P])`.
@@ -228,7 +234,7 @@ theorem berryCurvatureComplex_isSelfAdjoint {Lstar : Submodule ℤ K}
       (Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H) (P * C)) =
     Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H) (P * C)
   rw [star_mul, htrace]
-  simp
+  simp [mul_comm]
 
 /-- Projector Berry curvature, transported losslessly from its self-adjoint complex expression to
 a real scalar. -/
