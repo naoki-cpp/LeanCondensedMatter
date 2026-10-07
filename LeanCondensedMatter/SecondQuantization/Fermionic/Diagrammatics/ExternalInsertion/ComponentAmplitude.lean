@@ -22,7 +22,7 @@ namespace Fermionic
 open Common
 open scoped BigOperators
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*}
 
 private theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexWeight_eq_restrictComponent
     {E n : ℕ}
@@ -52,6 +52,8 @@ private theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexWeight_e
       simpa using
         (Equiv.prod_comp (T.orderIsoOfFin rfl).toEquiv
           (fun v : ↥T => g (r.vertexLabel v)))
+
+variable [LinearOrder Mode] [Fintype Mode]
 
 private theorem ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components
     {E n : ℕ}
@@ -179,7 +181,7 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
               (d.componentWickDiagram B).mixedPairingValue ε β
                 (d.componentExternalTime externalTime B)
                 (d.componentInteractionTime σ B)) := by
-      rw [Finset.prod_mul_distrib]
+      rw [← Finset.prod_mul_distrib]
     _ = _ := by
       apply congrArg (fun z : ℂ => componentExternalOrderSign d blockOrder * z)
       apply Finset.prod_congr rfl
