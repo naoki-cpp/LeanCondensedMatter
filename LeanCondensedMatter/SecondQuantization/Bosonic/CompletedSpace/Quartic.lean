@@ -112,7 +112,6 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
       (completedAnnihilate q.annihilate₁)
   let p2 :=
     (completedCreate q.create₂).compOnDomain p1
-
   have h1 :
       algebraicToCompleted x ∈ (completedAnnihilate q.annihilate₁).domain :=
     algebraicToCompleted_mem_completedAnnihilateDomain q.annihilate₁ x
@@ -121,7 +120,6 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
         algebraicToCompleted x1 := by
     simpa [x1] using
       completedAnnihilate_algebraicToCompleted q.annihilate₁ x h1
-
   have h2core :
       algebraicToCompleted x1 ∈ (completedAnnihilate q.annihilate₂).domain :=
     algebraicToCompleted_mem_completedAnnihilateDomain q.annihilate₂ x1
@@ -155,7 +153,6 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
     rw [hinner]
     simpa [x2] using
       completedAnnihilate_algebraicToCompleted q.annihilate₂ x1 h2core
-
   have h3core :
       algebraicToCompleted x2 ∈ (completedCreate q.create₂).domain :=
     algebraicToCompleted_mem_completedCreateDomain q.create₂ x2
@@ -184,7 +181,6 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
     rw [hinner]
     simpa [x3] using
       completedCreate_algebraicToCompleted q.create₂ x2 h3core
-
   have h4core :
       algebraicToCompleted x3 ∈ (completedCreate q.create₁).domain :=
     algebraicToCompleted_mem_completedCreateDomain q.create₁ x3
