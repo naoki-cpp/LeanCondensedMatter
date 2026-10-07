@@ -7,16 +7,24 @@ import LeanCondensedMatter.Crystal.Lattice
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.MeasureTheory.Group.FundamentalDomain
 
 /-!
-# Brillouin quotient and Bloch phase
+# Brillouin quotient, integration, and Bloch phase
 
 The Brillouin torus is the additive quotient of momentum space by a reciprocal lattice. The
-quotient itself is Mathlib's `QuotientAddGroup`; this file adds only the physical name and the
-Bloch-phase bridge implied by the `2π` reciprocal-lattice convention from `Crystal.Lattice`.
+quotient itself is Mathlib's `QuotientAddGroup`; this file adds only the physical name, the
+fundamental-domain integration seam, and the Bloch-phase bridge implied by the `2π`
+reciprocal-lattice convention from `Crystal.Lattice`.
+
+Brillouin-zone integration uses Mathlib's ordinary set integral on the covering momentum space.
+For lattice-periodic integrands, `brillouinZone_integral_eq` proves that the value is independent
+of the chosen fundamental domain; no competing integral construction is introduced.
 -/
 
 namespace LeanCondensedMatter.Crystal
+
+open MeasureTheory
 
 variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℝ K]
 
@@ -24,6 +32,20 @@ variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℝ K]
 additive quotient, so all quotient-group structure is inherited directly from `QuotientAddGroup`. -/
 abbrev BrillouinTorus (Lstar : Submodule ℤ K) :=
   K ⧸ Lstar.toAddSubgroup
+
+/-- A lattice-periodic integrand has the same integral over any two fundamental domains of the
+reciprocal-lattice action. This is the covering-space definition of Brillouin-zone integration:
+the integral itself is Mathlib's set integral, and only its domain independence is specialized here. -/
+theorem brillouinZone_integral_eq
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace K] {Lstar : Submodule ℤ K} [Countable Lstar]
+    [MeasurableConstVAdd Lstar K] {μ : Measure K}
+    [VAddInvariantMeasure Lstar K μ] {s t : Set K}
+    (hs : IsAddFundamentalDomain Lstar s μ)
+    (ht : IsAddFundamentalDomain Lstar t μ) {f : K → E}
+    (hf : ∀ (G : Lstar) (k : K), f (G +ᵥ k) = f k) :
+    ∫ k in s, f k ∂μ = ∫ k in t, f k ∂μ :=
+  hs.setIntegral_eq ht hf
 
 /-- The Bloch phase `exp (i k · R)` for wave vector `k` and real-space translation `R`. -/
 noncomputable def blochPhase (k R : K) : ℂ :=
