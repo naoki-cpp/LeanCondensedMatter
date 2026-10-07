@@ -121,6 +121,8 @@ theorem directionalDerivative_isSelfAdjoint {Lstar : Submodule ℤ K}
   rw [fderiv_star] at hderiv
   have hdir := congrArg
     (fun D : K →L[ℝ] (H →L[ℂ] H) => D direction) hderiv
+  change star (data.directionalDerivative k direction) =
+    data.directionalDerivative k direction
   simpa [directionalDerivative] using hdir
 
 /-- The Fréchet derivative of a reciprocal-lattice-periodic smooth projector family is periodic. -/
@@ -133,7 +135,8 @@ theorem fderiv_projector_periodic {Lstar : Submodule ℤ K}
   have hshift : DifferentiableAt ℝ shift k := by
     dsimp [shift]
     fun_prop
-  have hcomp := fderiv_comp (hdiff (shift k)) hshift
+  have hcomp := fderiv_comp (𝕜 := ℝ) (x := k)
+    (f := shift) (g := data.projector) (hdiff (shift k)) hshift
   have hperiodic : data.projector ∘ shift = data.projector := by
     funext q
     simpa [shift, Function.comp_def, vadd_eq_add] using data.periodic G q
@@ -203,7 +206,7 @@ theorem berryCurvatureComplex_isSelfAdjoint {Lstar : Submodule ℤ K}
   have hB : IsSelfAdjoint B := data.directionalDerivative_isSelfAdjoint k v
   have hC : star C = -C := by
     dsimp [C]
-    rw [map_sub, star_mul, star_mul, hA, hB]
+    rw [star_sub, star_mul, star_mul, hA, hB]
     noncomm_ring
   have hstarPC : star (P * C) = -(C * P) := by
     rw [star_mul, hC, hP]
@@ -224,7 +227,8 @@ theorem berryCurvatureComplex_isSelfAdjoint {Lstar : Submodule ℤ K}
   change star
       (Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H) (P * C)) =
     Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H) (P * C)
-  simp [map_mul, htrace]
+  rw [star_mul, htrace]
+  simp
 
 /-- Projector Berry curvature, transported losslessly from its self-adjoint complex expression to
 a real scalar. -/
