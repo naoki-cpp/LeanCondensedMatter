@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
+import LeanCondensedMatter.Combinatorics.SumEquivPartition
 
 set_option linter.style.header false
 
@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 A *position splitting* presents the ambient positions of a pairing of `Fin (2 * n)` as two labelled
 parts carrying `a` and `b` pairs. A pairing is *split* by it when no pair crosses between the parts;
-such a pairing restricts to a pairing of each part.
+such a pairing restricts to a pairing of each part through `PairingOn.restrictAlongEquiv`.
 
 This is the decomposition a connected-component factorization uses: the pairs of a Wick diagram
 never join two different connected components, so the diagram's pairing restricts to each component.
@@ -50,42 +50,43 @@ theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P
         rw [hy, P.partner_partner]
       exact absurd (hback.symm.trans hj) (fun h => by simpa using e.injective h)
 
+private theorem splitLeftInvariant (e : PositionSplitting a b n) {P : Pairing n}
+    (h : P.IsSplit e) (i : Fin (2 * n)) :
+    i ∈ SumEquiv.leftImage e ↔ P.partner i ∈ SumEquiv.leftImage e := by
+  have hclosed : ∀ j, j ∈ SumEquiv.leftImage e →
+      P.partner j ∈ SumEquiv.leftImage e := by
+    intro j hj
+    obtain ⟨k, rfl⟩ := (SumEquiv.mem_leftImage_iff e j).1 hj
+    obtain ⟨l, hl⟩ := h k
+    exact (SumEquiv.mem_leftImage_iff e _).2 ⟨l, hl.symm⟩
+  constructor
+  · exact hclosed i
+  · intro hi
+    simpa only [P.partner_partner] using hclosed (P.partner i) hi
+
+private theorem splitRightInvariant (e : PositionSplitting a b n) {P : Pairing n}
+    (h : P.IsSplit e) (i : Fin (2 * n)) :
+    i ∈ SumEquiv.rightImage e ↔ P.partner i ∈ SumEquiv.rightImage e := by
+  rw [SumEquiv.mem_rightImage_iff_not_mem_leftImage,
+    SumEquiv.mem_rightImage_iff_not_mem_leftImage]
+  exact not_congr (splitLeftInvariant e h i)
+
 section Left
 
 variable (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
 
-/-- The partner of a left position, read back in the left part. -/
-private noncomputable def splitLeftMap (i : Fin (2 * a)) : Fin (2 * a) :=
-  Classical.choose (h i)
-
-private theorem splitLeftMap_spec (i : Fin (2 * a)) :
-    P.partner (e (Sum.inl i)) = e (Sum.inl (splitLeftMap e h i)) :=
-  Classical.choose_spec (h i)
-
-private theorem splitLeftMap_involutive : Function.Involutive (splitLeftMap e h) := by
-  intro i
-  have h1 := splitLeftMap_spec e h i
-  have h2 := splitLeftMap_spec e h (splitLeftMap e h i)
-  have : e (Sum.inl i) = e (Sum.inl (splitLeftMap e h (splitLeftMap e h i))) := by
-    rw [← h2, ← h1, P.partner_partner]
-  exact (Sum.inl.inj (e.injective this)).symm
-
-private theorem splitLeftMap_ne_self (i : Fin (2 * a)) : splitLeftMap e h i ≠ i := by
-  intro hi
-  have := splitLeftMap_spec e h i
-  rw [hi] at this
-  exact absurd this (P.partner_ne _)
-
-/-- The pairing induced on the left part. -/
+/-- The pairing induced on the left part by restricting to its invariant image. -/
 noncomputable def Pairing.splitLeft : Pairing a :=
-  PairingOn.ofPartner (Function.Involutive.toPerm _ (splitLeftMap_involutive e h))
-    ⟨splitLeftMap_involutive e h, splitLeftMap_ne_self e h⟩
+  P.restrictAlongEquiv (fun i => i ∈ SumEquiv.leftImage e) (splitLeftInvariant e h)
+    (SumEquiv.leftSubtypeEquiv e).symm
 
 /-- The induced left pairing is read off the ambient partner map. -/
 @[simp]
 theorem Pairing.partner_splitLeft (i : Fin (2 * a)) :
-    P.partner (e (Sum.inl i)) = e (Sum.inl ((P.splitLeft e h).partner i)) :=
-  splitLeftMap_spec e h i
+    P.partner (e (Sum.inl i)) = e (Sum.inl ((P.splitLeft e h).partner i)) := by
+  simpa only [Pairing.splitLeft, SumEquiv.leftSubtypeEquiv_val] using
+    (P.restrictAlongEquiv_partner_symm_val (fun j => j ∈ SumEquiv.leftImage e)
+      (splitLeftInvariant e h) (SumEquiv.leftSubtypeEquiv e).symm i).symm
 
 end Left
 
@@ -93,38 +94,18 @@ section Right
 
 variable (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
 
-/-- The partner of a right position, read back in the right part. -/
-private noncomputable def splitRightMap (i : Fin (2 * b)) : Fin (2 * b) :=
-  Classical.choose (P.isSplit_inr e h i)
-
-private theorem splitRightMap_spec (i : Fin (2 * b)) :
-    P.partner (e (Sum.inr i)) = e (Sum.inr (splitRightMap e h i)) :=
-  Classical.choose_spec (P.isSplit_inr e h i)
-
-private theorem splitRightMap_involutive : Function.Involutive (splitRightMap e h) := by
-  intro i
-  have h1 := splitRightMap_spec e h i
-  have h2 := splitRightMap_spec e h (splitRightMap e h i)
-  have : e (Sum.inr i) = e (Sum.inr (splitRightMap e h (splitRightMap e h i))) := by
-    rw [← h2, ← h1, P.partner_partner]
-  exact (Sum.inr.inj (e.injective this)).symm
-
-private theorem splitRightMap_ne_self (i : Fin (2 * b)) : splitRightMap e h i ≠ i := by
-  intro hi
-  have := splitRightMap_spec e h i
-  rw [hi] at this
-  exact absurd this (P.partner_ne _)
-
-/-- The pairing induced on the right part. -/
+/-- The pairing induced on the right part by restricting to its invariant image. -/
 noncomputable def Pairing.splitRight : Pairing b :=
-  PairingOn.ofPartner (Function.Involutive.toPerm _ (splitRightMap_involutive e h))
-    ⟨splitRightMap_involutive e h, splitRightMap_ne_self e h⟩
+  P.restrictAlongEquiv (fun i => i ∈ SumEquiv.rightImage e) (splitRightInvariant e h)
+    (SumEquiv.rightSubtypeEquiv e).symm
 
 /-- The induced right pairing is read off the ambient partner map. -/
 @[simp]
 theorem Pairing.partner_splitRight (i : Fin (2 * b)) :
-    P.partner (e (Sum.inr i)) = e (Sum.inr ((P.splitRight e h).partner i)) :=
-  splitRightMap_spec e h i
+    P.partner (e (Sum.inr i)) = e (Sum.inr ((P.splitRight e h).partner i)) := by
+  simpa only [Pairing.splitRight, SumEquiv.rightSubtypeEquiv_val] using
+    (P.restrictAlongEquiv_partner_symm_val (fun j => j ∈ SumEquiv.rightImage e)
+      (splitRightInvariant e h) (SumEquiv.rightSubtypeEquiv e).symm i).symm
 
 end Right
 
