@@ -703,6 +703,12 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/Composition.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/ResolventApproximation.lean",
       "imports": [
@@ -752,6 +758,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution"
       ],
       "externalImportCount": 0
@@ -2963,6 +2970,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/Quartic.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
+        "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace.lean",
       "imports": [
@@ -2971,7 +2988,8 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic"
       ],
       "externalImportCount": 0
     },

@@ -30612,6 +30612,82 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {R : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup E]\n  [inst_2 : _root_.Module R E] [inst_3 : AddCommGroup F] [inst_4 : _root_.Module R F] [inst_5 : AddCommGroup G]\n  [inst_6 : _root_.Module R G] (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) {x : E} (hx : x ∈ (g.compOnDomain f).domain)\n  (hxf : x ∈ f.domain) (hgf : ↑f ⟨x, hxf⟩ ∈ g.domain), ↑(g.compOnDomain f) ⟨x, hx⟩ = ↑g ⟨↑f ⟨x, hxf⟩, hgf⟩",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.compOnDomain_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+    "externalAxioms": [],
+    "docString": "Evaluation of a natural-domain composition on any witnesses of the two domain conditions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {R : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup E]\n  [inst_2 : _root_.Module R E] [inst_3 : AddCommGroup F] [inst_4 : _root_.Module R F] [inst_5 : AddCommGroup G]\n  [inst_6 : _root_.Module R G] (g : F →ₗ.[R] G) (f : E →ₗ.[R] F), (g.compOnDomain f).domain = g.naturalCompDomain f",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.compOnDomain_domain",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {A : H →ₗ.[ℂ] H}\n  [inst_2 : CompleteSpace H], IsSelfAdjoint A → ∀ (z : ℂ) (x : ↥A.domain), |z.im| * ‖↑x‖ ≤ ‖↑A x - z • ↑x‖",
     "standardAxioms": [
       "Classical.choice",
@@ -31007,6 +31083,90 @@
     "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup E]\n  [inst_2 : _root_.Module R E] [inst_3 : AddCommGroup F] [inst_4 : _root_.Module R F] [inst_5 : AddCommGroup G]\n  [inst_6 : _root_.Module R G] (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x : E),\n  x ∈ (g.compOnDomain f).domain ↔ ∃ (hx : x ∈ f.domain), ↑f ⟨x, hx⟩ ∈ g.domain",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.mem_compOnDomain_domain_iff",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+    "externalAxioms": [],
+    "docString": "Membership in the domain of natural-domain composition is exactly the usual operator-product\ncondition. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+    "directWrapperOf": "LinearPMap.mem_naturalCompDomain_iff",
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "dependencies": [
+      "LinearPMap.mem_naturalCompDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup E]\n  [inst_2 : _root_.Module R E] [inst_3 : AddCommGroup F] [inst_4 : _root_.Module R F] [inst_5 : AddCommGroup G]\n  [inst_6 : _root_.Module R G] (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x : E),\n  x ∈ g.naturalCompDomain f ↔ ∃ (hx : x ∈ f.domain), ↑f ⟨x, hx⟩ ∈ g.domain",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.mem_naturalCompDomain_iff",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+    "externalAxioms": [],
+    "docString": "Membership in the natural composition domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.mem_compOnDomain_domain_iff",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.Composition.0.LinearPMap.naturalCompDomain_le_right"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.mem_compOnDomain_domain_iff",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.Composition.0.LinearPMap.naturalCompDomain_le_right"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
       "Quot.sound",
       "propext"
     ],
@@ -93944,6 +94104,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.algebraicToCompleted x ∈\n    (SecondQuantization.Bosonic.completedQuarticVertexOperator q).domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticVertexOperator_domain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "Every finite-support algebraic bosonic Fock vector lies in the exact domain of every completed\nquartic vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.basisState n) =\n    SecondQuantization.Bosonic.annihilateBasis i n",
     "standardAxioms": [
       "Classical.choice",
@@ -94954,15 +95158,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  ((SecondQuantization.Bosonic.completedAnnihilate i).toFun ∘ₗ\n      SecondQuantization.Common.algebraicToCompletedDiagonalDomain fun n => ↑√↑(n i)) =\n    SecondQuantization.Bosonic.algebraicToCompleted ∘ₗ SecondQuantization.Bosonic.annihilate i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -94973,7 +95177,9 @@
     "docString": "On the finite-support core, completed bosonic annihilation agrees with the algebraic\nannihilation operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedAnnihilate_algebraicToCompleted"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.completedAnnihilate_basisState",
@@ -94983,8 +95189,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedAnnihilate_algebraicToCompleted"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95611,15 +95819,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  ((SecondQuantization.Bosonic.completedCreate i).toFun ∘ₗ\n      SecondQuantization.Common.algebraicToCompletedDiagonalDomain fun n => ↑√(↑(n i) + 1)) =\n    SecondQuantization.Bosonic.algebraicToCompleted ∘ₗ SecondQuantization.Bosonic.create i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -95630,7 +95838,9 @@
     "docString": "On the finite-support core, completed bosonic creation agrees with the algebraic creation\noperator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedCreate_algebraicToCompleted"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.completedBasisState_mem_completedCreateDomain",
       "SecondQuantization.Bosonic.completedCreate_basisState",
@@ -95640,8 +95850,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedCreate_algebraicToCompleted"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96409,6 +96621,87 @@
       "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  ↑(SecondQuantization.Bosonic.completedQuarticVertexOperator q)\n      ⟨SecondQuantization.Bosonic.algebraicToCompleted x, ⋯⟩ =\n    SecondQuantization.Bosonic.algebraicToCompleted\n      ((SecondQuantization.Common.quarticVertexOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q)\n        x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "The completed quartic vertex agrees with the algebraic quartic vertex on the finite-support\ncore. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode),\n  Dense ↑(SecondQuantization.Bosonic.completedQuarticVertexOperator q).domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "The exact domain of every completed quartic vertex is dense. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticVertexOperator_domain",
+      "SecondQuantization.Common.algebraicToCompleted_denseRange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109623,6 +109916,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
@@ -109633,11 +109927,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109710,7 +110005,9 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain",
-      "SecondQuantization.Common.completedDiagonalOperator_denseDomain"
+      "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedCreateDomain"
     ],
     "dependencies": [
       "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
@@ -109720,9 +110017,11 @@
     "compiledConsumers": [
       "SecondQuantization.Common.algebraicToCompletedDiagonalDomain",
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain",
-      "SecondQuantization.Common.completedDiagonalOperator_denseDomain"
+      "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedCreateDomain"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150959,6 +151258,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {R : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup E]\n  [inst_2 : _root_.Module R E] [inst_3 : AddCommGroup F] [inst_4 : _root_.Module R F] [inst_5 : AddCommGroup G]\n  [inst_6 : _root_.Module R G] (g : F →ₗ.[R] G) (f : E →ₗ.[R] F), g.naturalCompDomain f ≤ f.domain",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.Composition.0.LinearPMap.naturalCompDomain_le_right",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LinearPMap.mem_naturalCompDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.compOnDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (r : ℝ), (LinearPMap.imaginaryParameter✝ r).im = r",
     "standardAxioms": [
@@ -164778,6 +165117,233 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.algebraicToCompleted x ∈ (SecondQuantization.Bosonic.completedAnnihilate i).domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedAnnihilateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_mem_completedDiagonalDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.algebraicToCompleted x ∈ (SecondQuantization.Bosonic.completedCreate i).domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedCreateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_mem_completedDiagonalDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (h : SecondQuantization.Bosonic.algebraicToCompleted x ∈ (SecondQuantization.Bosonic.completedAnnihilate i).domain),\n  ↑(SecondQuantization.Bosonic.completedAnnihilate i) ⟨SecondQuantization.Bosonic.algebraicToCompleted x, h⟩ =\n    SecondQuantization.Bosonic.algebraicToCompleted ((SecondQuantization.Bosonic.annihilate i) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedAnnihilate_algebraicToCompleted",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (h : SecondQuantization.Bosonic.algebraicToCompleted x ∈ (SecondQuantization.Bosonic.completedCreate i).domain),\n  ↑(SecondQuantization.Bosonic.completedCreate i) ⟨SecondQuantization.Bosonic.algebraicToCompleted x, h⟩ =\n    SecondQuantization.Bosonic.algebraicToCompleted ((SecondQuantization.Bosonic.create i) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedCreate_algebraicToCompleted",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedCreate_comp_algebraicCore"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  ∃ (h :\n    SecondQuantization.Bosonic.algebraicToCompleted x ∈\n      (SecondQuantization.Bosonic.completedQuarticVertexOperator q).domain),\n    ↑(SecondQuantization.Bosonic.completedQuarticVertexOperator q)\n        ⟨SecondQuantization.Bosonic.algebraicToCompleted x, h⟩ =\n      SecondQuantization.Bosonic.algebraicToCompleted\n        ((SecondQuantization.Common.quarticVertexOperator SecondQuantization.Bosonic.create\n            SecondQuantization.Bosonic.annihilate q)\n          x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticVertexOperator_domain",
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore"
+    ],
+    "dependencies": [
+      "LinearPMap.compOnDomain_apply",
+      "LinearPMap.mem_compOnDomain_domain_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedCreateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedAnnihilate_algebraicToCompleted",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedCreate_algebraicToCompleted"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticVertexOperator_domain",
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
