@@ -48,6 +48,48 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadening
           .advanced v m probeEnergy disorderStrength hbar pMax))
   inPlaneRotationMatrix rung i j
 
+/-- The zero-broadening transverse yx angular numerator is exactly linear in the disorder
+strength. This is a fixed-disorder boundary identity, not a weak-disorder limit. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) (hvelocity : v ≠ 0) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
+        1 0 v m probeEnergy disorderStrength hbar pMax =
+      (disorderStrength : ℂ) *
+        (((2 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
+          v ^ 2 : ℝ) : ℂ)) := by
+  let a : ℂ := ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ)
+  let jR := finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+    .retarded v m probeEnergy pMax
+  let jA := finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+    .advanced v m probeEnergy pMax
+  have hj : jR - jA = -Complex.I * (((Real.pi / v ^ 2 : ℝ) : ℂ)) := by
+    simpa [jR, jA] using
+      finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_retarded_sub_advanced
+        v m probeEnergy pMax hvelocity
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
+  simp only [inPlaneRotationMatrix_apply_y_x, inPlaneCoefficientVector]
+  unfold finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+    finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
+  change Complex.I *
+      (((probeEnergy : ℂ) - a * ((probeEnergy : ℂ) * jA)) *
+          ((m : ℂ) + a * ((m : ℂ) * jR)) -
+        ((probeEnergy : ℂ) - a * ((probeEnergy : ℂ) * jR)) *
+          ((m : ℂ) + a * ((m : ℂ) * jA))) = _
+  rw [show Complex.I *
+      (((probeEnergy : ℂ) - a * ((probeEnergy : ℂ) * jA)) *
+          ((m : ℂ) + a * ((m : ℂ) * jR)) -
+        ((probeEnergy : ℂ) - a * ((probeEnergy : ℂ) * jR)) *
+          ((m : ℂ) + a * ((m : ℂ) * jA))) =
+      2 * Complex.I * a * (probeEnergy : ℂ) * (m : ℂ) * (jR - jA) by ring]
+  rw [hj]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
+  dsimp [a]
+  push_cast
+  field_simp [hvelocity]
+  rw [hI]
+  ring
+
 /-- Every RA angular numerator entry converges at fixed disorder strength. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero
     (i j : Fin 2)
