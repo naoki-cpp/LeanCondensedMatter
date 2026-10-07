@@ -44,6 +44,6 @@ All records in this set have status **accepted**, meaning implemented in the cur
 
 [Historical review coverage](history-review.md) tracks the issue-focused sequential review, records PR-only number gaps as skips, and identifies the next issue to inspect. Historical evidence sections distinguish recorded motivations from current implementation constraints.
 
-Lean declarations are authoritative for mathematical meaning. [Architecture notes](../../notes/architecture/) describe the current subsystem layout, [roadmaps](../../notes/roadmap.md) describe targets and remaining work, and these ADRs explain why the enduring boundaries exist. An ADR is not a proof milestone or a replacement for those documents.
+Lean declarations are authoritative for mathematical meaning. [Architecture notes](../architecture/) describe the current subsystem layout, [roadmaps](../roadmap.md) describe targets and remaining work, and these ADRs explain why the enduring boundaries exist. An ADR is not a proof milestone or a replacement for those documents.
 
 Add a new sequentially numbered record when a consequential design decision changes these boundaries. Mark a replaced decision as superseded and link its successor; keep the active decision and current architecture notes consistent. Do not add retrospective timestamps or implementation logs.

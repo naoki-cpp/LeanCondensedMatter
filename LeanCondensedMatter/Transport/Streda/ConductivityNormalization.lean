@@ -13,7 +13,7 @@ Current vertices are assumed to carry their physical charge normalization alread
 convention, the traced static response receives the standard factor `ℏ/(2π)`; see Bastin et al.,
 *J. Phys. Chem. Solids* **32**, 1811–1824 (1971),
 [doi:10.1016/S0022-3697(71)80147-6](https://doi.org/10.1016/S0022-3697(71)80147-6), and the
-Smrčka–Středa/Středa formulation cited in `notes/references.md`. Continuum measure normalization
+Smrčka–Středa/Středa formulation cited in `docs/references.md`. Continuum measure normalization
 is attached separately so response layers can make its provenance explicit and avoid
 double-counting it. Dimension-specific continuum conventions deliberately live outside this
 generic Středa module.

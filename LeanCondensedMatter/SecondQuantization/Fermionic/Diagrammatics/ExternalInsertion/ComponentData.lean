@@ -282,10 +282,18 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     have hPartner :=
       (d.componentWickDiagram B).pairingInMixedOrder_partner_legPosition
         localExternalTime localInteractionTime localLeg
+    have hPosition :
+        externalInsertionMixedTimeOrderedAtomicLegPosition
+            localExternalTime localInteractionTime localLeg = p := by
+      dsimp [localLeg, externalInsertionMixedTimeOrderedAtomicLegPosition]
+      exact
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          localExternalTime localInteractionTime).symm_apply_apply p
+    rw [hPosition] at hPartner
     have h := congrArg
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
-        localExternalTime localInteractionTime) hPartner
-    simpa [localLeg] using h.symm
+        localExternalTime localInteractionTime) hPartner.symm
+    simpa [localLeg] using h
   unfold ExternalInsertionWickDiagram.componentMixedPosition
   rw [d.pairingInMixedOrder_partner_legPosition,
     d.atomicLegPartner_componentOrderedLeg B localLeg,

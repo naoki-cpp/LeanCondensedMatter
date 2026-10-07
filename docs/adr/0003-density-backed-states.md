@@ -10,7 +10,7 @@ Equality of physical pure states is then equality of density operators; unit-mod
 
 Keep the state type dimension-independent and introduce finite-dimensional assumptions only at results that need them. The current spectral model is not an arbitrary non-self-adjoint trace-class or unbounded-observable theory; those extensions require their own analytic foundations. Finite matrix formulas specialize the same state type.
 
-Evidence: [density-state definition](../../LeanCondensedMatter/QuantumTheory/DensityOperator/Basic.lean), [pure states and phase equivalence](../../LeanCondensedMatter/QuantumTheory/DensityOperator/PureState.lean), and [density architecture](../../notes/architecture/quantum-density-theory.md).
+Evidence: [density-state definition](../../LeanCondensedMatter/QuantumTheory/DensityOperator/Basic.lean), [pure states and phase equivalence](../../LeanCondensedMatter/QuantumTheory/DensityOperator/PureState.lean), and [density architecture](../architecture/quantum-density-theory.md).
 
 ## Historical evidence
 
