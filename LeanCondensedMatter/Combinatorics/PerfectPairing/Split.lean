@@ -84,7 +84,8 @@ noncomputable def Pairing.splitLeft : Pairing a :=
 @[simp]
 theorem Pairing.partner_splitLeft (i : Fin (2 * a)) :
     P.partner (e (Sum.inl i)) = e (Sum.inl ((P.splitLeft e h).partner i)) := by
-  simpa only [Pairing.splitLeft, SumEquiv.leftSubtypeEquiv_val] using
+  have he : (SumEquiv.leftSubtypeEquiv e).symm.symm = SumEquiv.leftSubtypeEquiv e := rfl
+  simpa only [Pairing.splitLeft, he, SumEquiv.leftSubtypeEquiv_val] using
     (P.restrictAlongEquiv_partner_symm_val (fun j => j ∈ SumEquiv.leftImage e)
       (splitLeftInvariant e h) (SumEquiv.leftSubtypeEquiv e).symm i).symm
 
@@ -103,7 +104,8 @@ noncomputable def Pairing.splitRight : Pairing b :=
 @[simp]
 theorem Pairing.partner_splitRight (i : Fin (2 * b)) :
     P.partner (e (Sum.inr i)) = e (Sum.inr ((P.splitRight e h).partner i)) := by
-  simpa only [Pairing.splitRight, SumEquiv.rightSubtypeEquiv_val] using
+  have he : (SumEquiv.rightSubtypeEquiv e).symm.symm = SumEquiv.rightSubtypeEquiv e := rfl
+  simpa only [Pairing.splitRight, he, SumEquiv.rightSubtypeEquiv_val] using
     (P.restrictAlongEquiv_partner_symm_val (fun j => j ∈ SumEquiv.rightImage e)
       (splitRightInvariant e h) (SumEquiv.rightSubtypeEquiv e).symm i).symm
 
