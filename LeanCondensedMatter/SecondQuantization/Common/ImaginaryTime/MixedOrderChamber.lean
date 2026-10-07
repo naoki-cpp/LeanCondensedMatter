@@ -67,7 +67,7 @@ private theorem twoPointTimedEventTime_eq_iff_of_sameOrderChamber
       rw [hab] at huv
       exact (lt_irrefl _ huv)
 
-theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
+private theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
     {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
     (h : SameTwoPointOrderChamber τ τ' σ υ)
     (a b : TwoPointTimedEvent n) :
@@ -76,7 +76,7 @@ theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
   simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff]
   rw [h b a, twoPointTimedEventTime_eq_iff_of_sameOrderChamber h a b]
 
-theorem twoPointTimedEventBefore_iff_of_sameOrderChamber
+private theorem twoPointTimedEventBefore_iff_of_sameOrderChamber
     {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
     (h : SameTwoPointOrderChamber τ τ' σ υ)
     (a b : TwoPointTimedEvent n) :
@@ -96,37 +96,6 @@ theorem orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
   rw [orderedTwoPointTimedEventPosition_lt_iff,
     orderedTwoPointTimedEventPosition_lt_iff]
   exact twoPointTimedEventBefore_iff_of_sameOrderChamber h a b
-
-theorem sameTwoPointOrderChamber_iff_interaction_comparisons
-    {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
-    SameTwoPointOrderChamber τ τ' σ υ ↔
-      (∀ v w, σ v < σ w ↔ υ v < υ w) ∧
-      (∀ v e, σ v < twoPointExternalTimes τ τ' e ↔
-        υ v < twoPointExternalTimes τ τ' e) ∧
-      (∀ e v, twoPointExternalTimes τ τ' e < σ v ↔
-        twoPointExternalTimes τ τ' e < υ v) := by
-  constructor
-  · intro h
-    refine ⟨?_, ?_, ?_⟩
-    · intro v w
-      simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inr v) (Sum.inr w)
-    · intro v e
-      simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inr v) (Sum.inl e)
-    · intro e v
-      simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inl e) (Sum.inr v)
-  · rintro ⟨hii, hie, hei⟩ a b
-    cases a with
-    | inl a =>
-        cases b with
-        | inl b => rfl
-        | inr b => simpa [twoPointTimedEventTime] using hei a b
-    | inr a =>
-        cases b with
-        | inl b => simpa [twoPointTimedEventTime] using hie a b
-        | inr b => simpa [twoPointTimedEventTime] using hii a b
 
 end Common
 end SecondQuantization
