@@ -142,9 +142,10 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation`
   — canonical reindexing theorem converting the full fixed-order Wick-diagram sum into the
   vertex-label/pairing double sum used by the Dyson-to-Wick expansion.
-- `Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog` — canonical
-  statistics-independent trace-log identity for a finite kernel at nonzero exchange weight; the
-  remaining diagonal-kernel consumer is a specialization of this reusable formal-series boundary.
+- `Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog` — canonical
+  division-free statistics-independent trace-log identity for a finite kernel at arbitrary exchange
+  weight, including `ζ = 0`; the nonzero diagonal endpoint is derived from this reusable
+  formal-series boundary by scalar cancellation.
 - `Finset.card_filter_product_eq_sum_card_filter` — canonical generic double-counting identity for a
   filtered finite self-product. Its remaining crossing-count consumer is a domain specialization,
   while the theorem itself is independent of pairing or crossing structure.
