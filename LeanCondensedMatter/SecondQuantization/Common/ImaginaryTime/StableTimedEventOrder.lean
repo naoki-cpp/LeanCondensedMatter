@@ -1,5 +1,6 @@
 import Mathlib.Basic.Real.Basic
 import Mathlib.Logic.Equiv.Fin.Basic
+import Mathlib.Order.Prod.Lex.Basic
 
 set_option linter.style.header false
 
@@ -53,53 +54,65 @@ theorem finSumFinEquiv_map_val_le_iff
           simp [finSumRank] at h ⊢
           omega
 
+/-- Lexicographic key for stable event ordering: later times come first, then lower ranks. -/
+private def stableTimedEventKey {α : Type*} (time : α → ℝ) (rank : α → ℕ)
+    (a : α) : OrderDual ℝ ×ₗ ℕ :=
+  toLex (OrderDual.toDual (time a), rank a)
+
 /-- Stable non-strict precedence: later times come first, and rank breaks equal-time ties. -/
 def stableTimedEventBeforeOrEqual {α : Type*} (time : α → ℝ) (rank : α → ℕ)
     (a b : α) : Prop :=
-  time b < time a ∨ (time a = time b ∧ rank a ≤ rank b)
+  stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b
+
+/-- Explicit logical form of the lexicographic stable event order. -/
+theorem stableTimedEventBeforeOrEqual_iff {α : Type*} (time : α → ℝ) (rank : α → ℕ)
+    (a b : α) :
+    stableTimedEventBeforeOrEqual time rank a b ↔
+      time b < time a ∨ (time a = time b ∧ rank a ≤ rank b) := by
+  simp [stableTimedEventBeforeOrEqual, stableTimedEventKey, Prod.Lex.toLex_le_toLex]
 
 theorem stableTimedEventBeforeOrEqual_total {α : Type*} (time : α → ℝ) (rank : α → ℕ)
     (a b : α) :
     stableTimedEventBeforeOrEqual time rank a b ∨
       stableTimedEventBeforeOrEqual time rank b a := by
-  rcases lt_trichotomy (time a) (time b) with hab | hab | hab
-  · right
-    exact Or.inl hab
-  · rcases le_total (rank a) (rank b) with hr | hr
-    · left
-      exact Or.inr ⟨hab, hr⟩
-    · right
-      exact Or.inr ⟨hab.symm, hr⟩
-  · left
-    exact Or.inl hab
+  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b ∨
+    stableTimedEventKey time rank b ≤ stableTimedEventKey time rank a
+  exact le_total _ _
 
 theorem stableTimedEventBeforeOrEqual_trans {α : Type*} (time : α → ℝ) (rank : α → ℕ)
     {a b c : α}
     (hab : stableTimedEventBeforeOrEqual time rank a b)
     (hbc : stableTimedEventBeforeOrEqual time rank b c) :
     stableTimedEventBeforeOrEqual time rank a c := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hbc with hbc | ⟨hbcTime, _⟩
-    · exact Or.inl (lt_trans hbc hab)
-    · exact Or.inl (hbcTime ▸ hab)
-  · rcases hbc with hbc | ⟨hbcTime, hbcRank⟩
-    · exact Or.inl (habTime ▸ hbc)
-    · exact Or.inr ⟨habTime.trans hbcTime, habRank.trans hbcRank⟩
+  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b at hab
+  change stableTimedEventKey time rank b ≤ stableTimedEventKey time rank c at hbc
+  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank c
+  exact hab.trans hbc
 
 theorem stableTimedEventBeforeOrEqual_antisymm {α : Type*} (time : α → ℝ)
     (rank : α → ℕ) (rank_injective : Function.Injective rank) {a b : α}
     (hab : stableTimedEventBeforeOrEqual time rank a b)
     (hba : stableTimedEventBeforeOrEqual time rank b a) :
     a = b := by
-  rcases hab with hab | ⟨habTime, habRank⟩
-  · rcases hba with hba | ⟨hbaTime, _⟩
-    · exact (lt_asymm hab hba).elim
-    · rw [hbaTime] at hab
-      exact (lt_irrefl _ hab).elim
-  · rcases hba with hba | ⟨_, hbaRank⟩
-    · rw [habTime] at hba
-      exact (lt_irrefl _ hba).elim
-    · exact rank_injective (Nat.le_antisymm habRank hbaRank)
+  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b at hab
+  change stableTimedEventKey time rank b ≤ stableTimedEventKey time rank a at hba
+  have hkey : stableTimedEventKey time rank a = stableTimedEventKey time rank b :=
+    le_antisymm hab hba
+  apply rank_injective
+  have hrank :=
+    congrArg (fun x : OrderDual ℝ ×ₗ ℕ => (ofLex x).2) hkey
+  simpa [stableTimedEventKey] using hrank
+
+/-- Insertion sort by stable timed-event precedence is pairwise ordered. -/
+theorem pairwise_insertionSort_stableTimedEventBeforeOrEqual {α : Type*}
+    (time : α → ℝ) (rank : α → ℕ) (l : List α) :
+    (List.insertionSort (stableTimedEventBeforeOrEqual time rank) l).Pairwise
+      (stableTimedEventBeforeOrEqual time rank) := by
+  letI : Std.Total (stableTimedEventBeforeOrEqual time rank) :=
+    ⟨fun a b => stableTimedEventBeforeOrEqual_total time rank a b⟩
+  letI : IsTrans α (stableTimedEventBeforeOrEqual time rank) :=
+    ⟨fun a b c hab hbc => stableTimedEventBeforeOrEqual_trans time rank hab hbc⟩
+  exact List.pairwise_insertionSort _ _
 
 end Common
 end SecondQuantization
