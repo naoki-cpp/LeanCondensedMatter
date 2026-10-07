@@ -124,7 +124,9 @@ theorem freePropagator_apply_purePointBasis
     push_cast
     simp only [div_eq_mul_inv, neg_mul, mul_neg]
     apply congrArg (fun z : ℂ => -z)
-    ring
+    simpa only [mul_assoc] using
+      (mul_comm (t : ℂ)
+        (Complex.I * (system.hbar : ℂ)⁻¹ * (data.energy i : ℂ)))
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
