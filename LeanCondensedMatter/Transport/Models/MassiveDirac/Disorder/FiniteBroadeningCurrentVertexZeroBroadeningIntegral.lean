@@ -475,7 +475,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
   exact
     finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero
       v m p probeEnergy disorderStrength hbar pMax
-      hvelocity hhbar hdisorder hmetal hrenorm
+      hvelocity hhbar hdisorder hmetal hcutoff hrenorm
 
 /-- The finite-`η` canonical current-rung vector converges to its fixed-disorder zero-broadening
 boundary. -/
