@@ -400,7 +400,9 @@ private theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (
 /-- On the common product domain, `aᵢ aᵢ† = 1 + Nᵢ`. -/
 theorem completedAnnihilateAfterCreate_eq_id_add_numberOperator (i : Mode) :
     completedAnnihilateAfterCreate i =
-      (completedNumberOperatorDomain i).subtype + (completedNumberOperator i).toFun := by
+      (completedNumberOperatorDomain i).subtype +
+        (show completedNumberOperatorDomain i →ₗ[ℂ] CompletedFockSpace Mode from
+          (completedNumberOperator i).toFun) := by
   rw [completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id,
     completedCreateAfterAnnihilate_eq_numberOperator]
   abel
