@@ -52,18 +52,18 @@ private theorem sign_sigmaCongrRight_mulSingle
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     {β : ι → Type*} [∀ i, Fintype (β i)] [∀ i, DecidableEq (β i)]
     (i : ι) (p : Equiv.Perm (β i)) :
-    Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle i p)) =
+    Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i p)) =
       Equiv.Perm.sign p := by
   classical
   have hperm :
-      Equiv.sigmaCongrRight (Pi.mulSingle i p) =
+      Equiv.sigmaCongrRight (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i p) =
         p.extendDomain (sigmaFiberEquiv i) := by
     apply Equiv.ext
     rintro ⟨j, x⟩
     by_cases hji : j = i
     · subst j
       change
-        ⟨i, (Pi.mulSingle i p) i x⟩ =
+        ⟨i, (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i p) i x⟩ =
           (p.extendDomain (sigmaFiberEquiv i)) ((sigmaFiberEquiv i x).1)
       rw [Equiv.Perm.extendDomain_apply_image]
       simp [sigmaFiberEquiv, Pi.mulSingle_apply]
@@ -89,8 +89,8 @@ private theorem sign_sigmaCongrRight_eq_prod
       Equiv.Perm.sign.comp (Equiv.Perm.sigmaCongrRightHom β) = rhs := by
     apply MonoidHom.pi_ext
     intro i q
-    change Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle i q)) =
-      rhs (Pi.mulSingle i q)
+    change Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i q)) =
+      rhs (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i q)
     rw [sign_sigmaCongrRight_mulSingle i q]
     simp [rhs, MonoidHom.noncommPiCoprod_mulSingle]
   have hp := congrArg (fun h : (∀ i, Equiv.Perm (β i)) →* ℤˣ => h p) hhom
