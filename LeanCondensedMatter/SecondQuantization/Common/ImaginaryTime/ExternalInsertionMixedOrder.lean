@@ -252,7 +252,7 @@ private theorem externalInsertionTimedEventAtomicLegs_map
     externalInsertionTimedEventAtomicLegs (Sum.map fExternal fInteraction event) =
       (externalInsertionTimedEventAtomicLegs event).map
         (orderedExternalInsertionLegMap fExternal fInteraction) := by
-  cases event <;> simp [externalInsertionTimedEventAtomicLegs]
+  cases event <;> simp [externalInsertionTimedEventAtomicLegs, orderedExternalInsertionLegMap]
 
 /-- Atomic leg identities in mixed-time event order. -/
 private noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
