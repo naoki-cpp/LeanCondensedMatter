@@ -1,7 +1,5 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
@@ -47,30 +45,6 @@ noncomputable def FamilySlotShuffleTo.ambientIntegrand {size : ι → ℕ} {tota
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (τ : Fin total → ℝ) : ℂ :=
   ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
-
-/-- The integrand of a family shuffle assembled from an outer head/tail shuffle is the binary
-integrand of the head block and its shuffled tail. -/
-theorem FamilySlotShuffle.cons_integrand {k : ℕ}
-    (size : Fin (k + 1) → ℕ)
-    (outer : BinaryShuffle.SlotShuffle (size 0) (FamilySlotShuffle.tailTotal size))
-    (tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size))
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (τ : Fin (size 0 + FamilySlotShuffle.tailTotal size) → ℝ) :
-    (FamilySlotShuffle.cons size outer tail).ambientIntegrand localIntegrand
-        (fun j => τ (Fin.cast (Fin.sum_univ_succ size) j)) =
-      outer.integrand (localIntegrand 0)
-        (tail.ambientIntegrand (fun i => localIntegrand i.succ)) τ := by
-  unfold FamilySlotShuffleTo.ambientIntegrand BinaryShuffle.SlotShuffle.integrand
-  rw [Fin.prod_univ_succ]
-  apply congrArg₂ (· * ·)
-  · apply congrArg (localIntegrand 0)
-    funext j
-    simp [FamilySlotShuffleTo.timeAssignment]
-  · apply congrArg (fun h : Fin k → ℂ => ∏ i, h i)
-    funext i
-    apply congrArg (localIntegrand i.succ)
-    funext j
-    simp [FamilySlotShuffleTo.timeAssignment]
 
 /-- A finite product of continuous local integrands remains continuous after embedding their
 coordinates by an arbitrary-total family shuffle. -/
