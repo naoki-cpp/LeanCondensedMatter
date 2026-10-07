@@ -36,11 +36,6 @@ noncomputable def completedQuarticVertexOperator (q : Common.QuarticVertexLabel 
       ((completedAnnihilate q.annihilate₂).comp
         (completedAnnihilate q.annihilate₁)))
 
-/-- Natural exact domain of a completed bosonic quartic vertex. -/
-noncomputable abbrev completedQuarticVertexDomain (q : Common.QuarticVertexLabel Mode) :
-    Submodule ℂ (CompletedFockSpace Mode) :=
-  (completedQuarticVertexOperator q).domain
-
 end
 end Bosonic
 end SecondQuantization
