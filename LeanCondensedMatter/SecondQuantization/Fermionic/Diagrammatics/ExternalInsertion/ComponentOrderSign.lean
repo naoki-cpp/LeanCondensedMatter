@@ -38,16 +38,19 @@ private noncomputable def sigmaFiberEquiv
   toFun x := ⟨⟨i, x⟩, rfl⟩
   invFun x := by
     rcases x with ⟨⟨j, x⟩, h⟩
+    have hji : j = i := h
     subst j
     exact x
   left_inv _ := rfl
   right_inv x := by
     rcases x with ⟨⟨j, x⟩, h⟩
+    have hji : j = i := h
     subst j
     rfl
 
 private theorem sign_sigmaCongrRight_mulSingle
-    {ι : Type*} [Fintype ι] {β : ι → Type*} [∀ i, Fintype (β i)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {β : ι → Type*} [∀ i, Fintype (β i)] [∀ i, DecidableEq (β i)]
     (i : ι) (p : Equiv.Perm (β i)) :
     Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle i p)) =
       Equiv.Perm.sign p := by
@@ -55,18 +58,19 @@ private theorem sign_sigmaCongrRight_mulSingle
   have hperm :
       Equiv.sigmaCongrRight (Pi.mulSingle i p) =
         p.extendDomain (sigmaFiberEquiv i) := by
-    ext x
-    rcases x with ⟨j, x⟩
+    apply Equiv.ext
+    rintro ⟨j, x⟩
     by_cases hji : j = i
     · subst j
       rw [Equiv.Perm.extendDomain_apply_subtype _ _ rfl]
       simp [sigmaFiberEquiv, Pi.mulSingle_apply]
-    · rw [Equiv.Perm.extendDomain_apply_not_subtype _ _ hji]
+    · rw [Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simpa using hji)]
       simp [Pi.mulSingle_apply, hji]
   rw [hperm, Equiv.Perm.sign_extendDomain]
 
 private theorem sign_sigmaCongrRight_eq_prod
-    {ι : Type*} [Fintype ι] {β : ι → Type*} [∀ i, Fintype (β i)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {β : ι → Type*} [∀ i, Fintype (β i)] [∀ i, DecidableEq (β i)]
     (p : ∀ i, Equiv.Perm (β i)) :
     Equiv.Perm.sign (Equiv.sigmaCongrRight p) =
       ∏ i, Equiv.Perm.sign (p i) := by
@@ -88,6 +92,7 @@ private theorem sign_sigmaCongrRight_eq_prod
     simp [rhs, MonoidHom.noncommPiCoprod_mulSingle]
   have hp := congrArg (fun h : (∀ i, Equiv.Perm (β i)) →* ℤˣ => h p) hhom
   change Equiv.Perm.sign (Equiv.sigmaCongrRight p) = rhs p at hp
+  dsimp [rhs] at hp
   rw [MonoidHom.noncommPiCoprod_apply, Finset.noncommProd_eq_prod] at hp
   exact hp
 
