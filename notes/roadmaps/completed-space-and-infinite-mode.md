@@ -66,8 +66,8 @@ algebraic core agrees with the existing algebraic operators, and the real diagon
 operators self-adjoint through the Common diagonal analytic theory. Creation and annihilation are
 represented as maximal weighted-shift `LinearPMap` operators on the natural square-root occupation
 domains, are densely defined and closed, and are mutual adjoints. They agree with the algebraic
-ladder operators on the finite-support core. Explicit products of these unbounded ladder operators
-remain separate analytic work.
+ladder operators on the finite-support core. For each mode, both mixed products have maximal domain
+`Dom(Nᵢ)` and satisfy `aᵢ† aᵢ = Nᵢ`, `aᵢ aᵢ† = Nᵢ + 1`, and the equal-mode completed CCR there.
 
 ## Finite-mode fermionic compatibility
 
@@ -82,7 +82,7 @@ needed for that representation-level statement.
 
 ## Open work
 
-- completed bosonic ladder product domains and their operator identities;
+- mixed-mode bosonic ladder product domains and their operator identities;
 - interacting completed-space Dyson theory with all required product domains;
 - stronger convergence topologies for Gibbs truncations when justified;
 - infinite-volume or thermodynamic limits with an explicit directed system, observable algebra,
