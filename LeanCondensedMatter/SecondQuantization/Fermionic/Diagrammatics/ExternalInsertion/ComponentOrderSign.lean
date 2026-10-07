@@ -151,27 +151,6 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
   simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
 
 
-private theorem ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv_sign
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts) :
-    Equiv.Perm.sign (d.componentMixedToFixedPositionEquiv externalTime σ B) =
-      Equiv.Perm.sign
-        (externalInsertionStandardToMixedAtomicPositionEquiv
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)) := by
-  have hperm :
-      d.componentMixedToFixedPositionEquiv externalTime σ B =
-        (externalInsertionStandardToMixedAtomicPositionEquiv
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).symm := by
-    apply Equiv.ext
-    intro p
-    apply Fin.ext
-    rfl
-  rw [hperm, Equiv.Perm.sign_symm]
-
 /-- The relative component shuffle sign is the ambient mixed-time ordering sign times the product
 of the component-local mixed-time ordering signs. This is the final permutation-sign bridge needed
 to turn mixed-pairing factorization into a fixed-time amplitude factorization. -/
@@ -195,7 +174,10 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomi
   let globalPerm :=
     externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ
   let localPerm := fun B : d.vertexGraph.componentPartition.parts =>
-    d.componentMixedToFixedPositionEquiv externalTime σ B
+    (externalInsertionMixedTimeAmbientPositionEquiv
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)).trans
+      (finCongr (by simp))
   have hmixed :
       (d.componentMixedPositionShuffle externalTime σ).slotEquiv =
         (Equiv.sigmaCongrRight localPerm).trans
@@ -227,7 +209,16 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomi
   congr 1
   apply Finset.prod_congr rfl
   intro B _
-  exact d.componentMixedToFixedPositionEquiv_sign externalTime σ B
+  have hperm :
+      localPerm B =
+        (externalInsertionStandardToMixedAtomicPositionEquiv
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B)).symm := by
+    apply Equiv.ext
+    intro p
+    apply Fin.ext
+    rfl
+  rw [hperm, Equiv.Perm.sign_symm]
 
 
 end Fermionic
