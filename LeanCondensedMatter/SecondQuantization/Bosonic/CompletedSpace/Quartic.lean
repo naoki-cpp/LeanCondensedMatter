@@ -61,12 +61,12 @@ private theorem completedCreate_algebraicToCompleted
   have hcore :=
     congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedCreate_comp_algebraicCore i)
-  have hcore' :
-      (completedCreate i).toFun
-          (Common.algebraicToCompletedDiagonalDomain
-            (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x) =
-        algebraicToCompleted (create i x) := by
-    simpa only [LinearMap.comp_apply] using hcore
+  change
+    (completedCreate i).toFun
+        (Common.algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x) =
+      algebraicToCompleted (create i x) at hcore
+  have hcore' := hcore
   have hdomain :
       Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x =
@@ -84,12 +84,12 @@ private theorem completedAnnihilate_algebraicToCompleted
   have hcore :=
     congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedAnnihilate_comp_algebraicCore i)
-  have hcore' :
-      (completedAnnihilate i).toFun
-          (Common.algebraicToCompletedDiagonalDomain
-            (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x) =
-        algebraicToCompleted (annihilate i x) := by
-    simpa only [LinearMap.comp_apply] using hcore
+  change
+    (completedAnnihilate i).toFun
+        (Common.algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x) =
+      algebraicToCompleted (annihilate i x) at hcore
+  have hcore' := hcore
   have hdomain :
       Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x =
@@ -239,11 +239,11 @@ theorem completedQuarticVertexOperator_denseDomain
     (q : Common.QuarticVertexLabel Mode) :
     Dense (((completedQuarticVertexOperator q).domain :
       Submodule ℂ (CompletedFockSpace Mode)) : Set (CompletedFockSpace Mode)) := by
-  apply Dense.mono ?_ (by
-    simpa [algebraicToCompleted] using
-      (Common.algebraicToCompleted_denseRange (Config := Occupation Mode)))
+  apply Dense.mono ?_
+    (Common.algebraicToCompleted_denseRange (Config := Occupation Mode))
   rintro _ ⟨x, rfl⟩
-  exact algebraicToCompleted_mem_completedQuarticVertexOperator_domain q x
+  simpa [algebraicToCompleted] using
+    algebraicToCompleted_mem_completedQuarticVertexOperator_domain q x
 
 end
 end Bosonic
