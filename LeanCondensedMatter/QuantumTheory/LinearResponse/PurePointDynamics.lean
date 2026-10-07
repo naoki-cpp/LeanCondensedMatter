@@ -117,6 +117,9 @@ theorem freePropagator_apply_purePointBasis
     dsimp [T, c, v]
     rw [schrodingerGenerator]
     simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
+    rw [RCLike.real_smul_eq_coe_smul (K := ℂ) t
+      ((-(Complex.I / (system.hbar : ℂ)) * (data.energy i : ℂ)) • data.basis i)]
+    rw [smul_smul]
     apply congrArg (fun z : ℂ => z • data.basis i)
     push_cast
     ring
