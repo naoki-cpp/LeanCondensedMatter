@@ -276,7 +276,7 @@ noncomputable def completedQuarticInteractionOn
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode where
   domain := completedQuarticInteractionDomain support
   toFun :=
-    ∑ q in support.attach, g q.1 • completedQuarticVertexOnInteractionDomain support q
+    ∑ q ∈ support.attach, g q.1 • completedQuarticVertexOnInteractionDomain support q
 
 @[simp]
 theorem completedQuarticInteractionOn_domain
@@ -317,7 +317,7 @@ theorem completedQuarticInteractionOn_algebraicCore
       algebraicToCompleted (Common.quarticInteractionOn support create annihilate g x) := by
   classical
   change
-    (∑ q in support.attach, g q.1 •
+    (∑ q ∈ support.attach, g q.1 •
       completedQuarticVertexOnInteractionDomain support q)
         ⟨algebraicToCompleted x,
           algebraicToCompleted_mem_completedQuarticInteractionDomain support x⟩ =
