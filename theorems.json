@@ -6244,9 +6244,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
@@ -6256,6 +6256,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_slotSplit"
     ],
     "dependencies": [
@@ -6268,9 +6269,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_slotSplit"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6896,9 +6898,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.splitLeft_ofSplit",
@@ -6908,6 +6910,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitExternal_ofSlotSplit"
     ],
     "dependencies": [
@@ -6919,9 +6922,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitExternal_ofSlotSplit"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6943,9 +6947,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.splitRight_ofSplit",
@@ -6955,6 +6959,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuum_ofSlotSplit"
     ],
     "dependencies": [
@@ -6966,9 +6971,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuum_ofSlotSplit"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10108,7 +10114,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -10120,15 +10126,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10188,7 +10196,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -10200,15 +10208,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62642,48 +62652,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar *\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n          probeEnergy pMax).re =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n      disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
-    "externalAxioms": [],
-    "docString": "The real Born renormalization is independent of the retarded/advanced side used to read the\nreal part of the common complex boundary value. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n        probeEnergy pMax).im =\n    -(2 * v ^ 2)⁻¹ * (side.sign * Real.pi)",
     "standardAxioms": [
       "Classical.choice",
@@ -62948,7 +62916,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < probeEnergy →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                probeEnergy disorderStrength hbar pMax <\n              1 →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n                side v m p probeEnergy disorderStrength hbar pMax ≠\n              0",
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < probeEnergy →\n          probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                  probeEnergy disorderStrength hbar pMax <\n                1 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n                  side v m p probeEnergy disorderStrength hbar pMax ≠\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62971,8 +62939,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.fullAngleMomentumMeasurePrefactor_pos"
     ],
@@ -65134,7 +65102,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < probeEnergy →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                probeEnergy disorderStrength hbar pMax <\n              1 →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                v m p probeEnergy disorderStrength hbar pMax ≠\n              0",
+    "statement": "∀ (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < probeEnergy →\n          probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                  probeEnergy disorderStrength hbar pMax <\n                1 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                  v m p probeEnergy disorderStrength hbar pMax ≠\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71459,6 +71427,95 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  star\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n        probeEnergy pMax) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side.opposite\n      v m probeEnergy pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary",
+    "externalAxioms": [],
+    "docString": "Complex conjugation exchanges the retarded/advanced finite-cutoff Born denominator boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary",
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary",
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  star\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side\n        v m p probeEnergy disorderStrength hbar pMax) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n      side.opposite v m p probeEnergy disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": "Complex conjugation exchanges the retarded/advanced Born-Dyson denominator boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRAProduct_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary",
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRAProduct_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m px py probeEnergy\n          broadening disorderStrength hbar pMax ≠\n        0 →\n      star\n          (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator side v m px py\n            probeEnergy broadening disorderStrength hbar pMax) =\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator side.opposite v m px py\n          probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
@@ -71537,6 +71594,94 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator.0.QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonShiftMatrix"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  star\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary side v\n        m probeEnergy disorderStrength hbar pMax) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary\n      side.opposite v m probeEnergy disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": "Complex conjugation exchanges the retarded/advanced effective-energy boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  star\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary side v m\n        probeEnergy disorderStrength hbar pMax) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary\n      side.opposite v m probeEnergy disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": "Complex conjugation exchanges the retarded/advanced effective-mass boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105384,7 +105529,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -105396,15 +105541,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105625,6 +105774,335 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (e : Fin (2 * E)),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).externalLabel e = ext.externalLabel e",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_externalLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing =\n    Combinatorics.Pairing.ofSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting h) ext.pairing\n      vac.pairing",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (hd : Combinatorics.Pairing.IsSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting h) d.pairing),\n  SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal h d hd)\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum h d hd) =\n    d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "Taking a split diagram apart and reassembling it returns the original diagram. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (v : ↥S) (hv : ↑v ∈ T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel v = ext.vertexLabel ⟨↑v, hv⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (v : ↥S) (hv : ↑v ∉ T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel v = vac.vertexLabel ⟨↑v, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (hd :\n    Combinatorics.Pairing.IsSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting h)\n      (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing),\n  SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal h\n      (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac) hd =\n    ext",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "Reassembling and reading off the external-bearing piece returns that piece. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.splitLeft_ofSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (hd :\n    Combinatorics.Pairing.IsSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting h)\n      (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing),\n  SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum h\n      (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac) hd =\n    vac",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "Reassembling and reading off the quartic complementary piece returns that piece. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.splitRight_ofSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem",
+      "SecondQuantization.Common.QuarticDiagram.ext"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} [inst : Fintype ExternalLabel]\n  [inst_1 : Fintype InternalLabel] (h : T ⊆ S) {M : Type u_3} [inst_2 : AddCommMonoid M]\n  (F : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S → M),\n  ∑ d, F ↑d = ∑ ext, ∑ vac, F (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.sum_slotSplit",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "Summing over split diagrams is summing independently over the external-insertion and quartic\npieces. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106273,6 +106751,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit",
       "SecondQuantization.Common.QuarticDiagram.ext_iff",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble",
@@ -106282,12 +106761,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit",
       "SecondQuantization.Common.QuarticDiagram.ext_iff",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuum_ofSlotSplit"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116208,6 +116688,124 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPosition_strictMono"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (e : Fin (2 * E)),\n  (SecondQuantization.Common.externalInsertionSlotLegSplitting h)\n      (Sum.inl ((SecondQuantization.Common.externalInsertionLegEquiv E T).symm (Sum.inl e))) =\n    (SecondQuantization.Common.externalInsertionLegEquiv E S).symm (Sum.inl e)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionSlotLegSplitting_external",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "External legs land on the left side unchanged. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (v : ↥T) (l : Fin 4),\n  (SecondQuantization.Common.externalInsertionSlotLegSplitting h)\n      (Sum.inl ((SecondQuantization.Common.externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) =\n    (SecondQuantization.Common.externalInsertionLegEquiv E S).symm (Sum.inr (⟨↑v, ⋯⟩, l))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "A left interaction leg lands on the corresponding ambient interaction leg. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.subsetSumSdiffEquiv_inl_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (v : ↥(S \\ T)) (l : Fin 4),\n  (SecondQuantization.Common.externalInsertionSlotLegSplitting h)\n      (Sum.inr ((SecondQuantization.Common.quarticLegEquiv (S \\ T)).symm (v, l))) =\n    (SecondQuantization.Common.externalInsertionLegEquiv E S).symm (Sum.inr (⟨↑v, ⋯⟩, l))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "A right quartic leg lands on the corresponding ambient interaction leg. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.subsetSumSdiffEquiv_inr_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -183630,6 +184228,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar *\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n          probeEnergy pMax).re =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n      disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": "The real Born renormalization is independent of the retarded/advanced side used to read the\nreal part of the common complex boundary value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v m\n        p probeEnergy disorderStrength hbar pMax).im =\n    -2 * (disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n            probeEnergy pMax).im *\n      (probeEnergy ^ 2 + m ^ 2 -\n        disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar *\n            (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side\n                v m probeEnergy pMax).re *\n          (probeEnergy ^ 2 - m ^ 2))",
     "standardAxioms": [
       "Classical.choice",
@@ -184037,8 +184677,8 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.currentRungBoundary_eq_lorentzianIntegral"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRetardedDenominator_im_eq_width",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.star_boundaryDysonDenominator"
+      "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRetardedDenominator_im_eq_width"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -184133,92 +184773,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  star\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side\n        v m p probeEnergy disorderStrength hbar pMax) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n      side.opposite v m p probeEnergy disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.star_boundaryDysonDenominator",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRAProduct_eq"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.star_boundaryIntegral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRAProduct_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  star\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n        probeEnergy pMax) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side.opposite\n      v m probeEnergy pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.star_boundaryIntegral",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.star_boundaryDysonDenominator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.star_boundaryDysonDenominator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

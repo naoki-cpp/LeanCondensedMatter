@@ -3765,6 +3765,18 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/SlotLegSplitting.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
+        "LeanCondensedMatter.Combinatorics.SubsetSplit",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion.lean",
       "imports": [
@@ -3777,7 +3789,8 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting"
       ],
       "externalImportCount": 0
     },
