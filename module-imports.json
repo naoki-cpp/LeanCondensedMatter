@@ -779,21 +779,13 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
-      "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/BinaryShuffle.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
-        "LeanCondensedMatter.Combinatorics.BinaryShuffle"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/BinarySlotShuffle.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
+        "LeanCondensedMatter.Combinatorics.BinaryShuffle",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
         "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots"
       ],
@@ -862,7 +854,6 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
@@ -2942,9 +2933,18 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
-        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/LadderAnalytic.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
@@ -2953,7 +2953,8 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic"
       ],
       "externalImportCount": 0
     },
@@ -3553,7 +3554,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
