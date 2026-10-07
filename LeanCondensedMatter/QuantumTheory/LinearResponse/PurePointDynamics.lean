@@ -125,11 +125,19 @@ theorem freePropagator_apply_purePointBasis
     simp only [div_eq_mul_inv, neg_mul, mul_neg]
     apply congrArg (fun z : ℂ => -z)
     calc
-      (t : ℂ) * (Complex.I * ((system.hbar : ℂ)⁻¹ * (data.energy i : ℂ))) =
-          Complex.I * ((t : ℂ) * ((system.hbar : ℂ)⁻¹ * (data.energy i : ℂ))) := by
-        rw [← mul_assoc, mul_comm (t : ℂ) Complex.I, mul_assoc]
+      (t : ℂ) * ((Complex.I * (system.hbar : ℂ)⁻¹) * (data.energy i : ℂ)) =
+          (((t : ℂ) * Complex.I) * (system.hbar : ℂ)⁻¹) * (data.energy i : ℂ) := by
+        rw [← mul_assoc, ← mul_assoc]
+      _ = ((Complex.I * (t : ℂ)) * (system.hbar : ℂ)⁻¹) * (data.energy i : ℂ) := by
+        rw [mul_comm (t : ℂ) Complex.I]
+      _ = Complex.I * (((t : ℂ) * (system.hbar : ℂ)⁻¹) * (data.energy i : ℂ)) := by
+        rw [mul_assoc, mul_assoc]
+      _ = Complex.I * ((t : ℂ) * ((system.hbar : ℂ)⁻¹ * (data.energy i : ℂ))) := by
+        rw [mul_assoc (t : ℂ) (system.hbar : ℂ)⁻¹ (data.energy i : ℂ)]
       _ = Complex.I * ((t : ℂ) * ((data.energy i : ℂ) * (system.hbar : ℂ)⁻¹)) := by
         rw [mul_comm (system.hbar : ℂ)⁻¹ (data.energy i : ℂ)]
+      _ = Complex.I * (((t : ℂ) * (data.energy i : ℂ)) * (system.hbar : ℂ)⁻¹) := by
+        rw [← mul_assoc (t : ℂ) (data.energy i : ℂ) (system.hbar : ℂ)⁻¹]
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
