@@ -62,7 +62,10 @@ private theorem sign_sigmaCongrRight_mulSingle
     rintro ⟨j, x⟩
     by_cases hji : j = i
     · subst j
-      rw [Equiv.Perm.extendDomain_apply_subtype _ _ rfl]
+      change
+        ⟨i, (Pi.mulSingle i p) i x⟩ =
+          (p.extendDomain (sigmaFiberEquiv i)) ((sigmaFiberEquiv i x).1)
+      rw [Equiv.Perm.extendDomain_apply_image]
       simp [sigmaFiberEquiv, Pi.mulSingle_apply]
     · rw [Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simpa using hji)]
       simp [Pi.mulSingle_apply, hji]
