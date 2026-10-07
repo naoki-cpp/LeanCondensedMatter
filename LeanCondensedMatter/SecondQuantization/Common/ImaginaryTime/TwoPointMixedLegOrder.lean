@@ -36,6 +36,11 @@ def twoPointTimedEventAtomicLegs {n : ℕ} :
       Sum.inr (⟨v, Finset.mem_univ v⟩, l)
 
 @[simp]
+private theorem twoPointTimedEventAtomicLegs_external {n : ℕ} (e : Fin 2) :
+    twoPointTimedEventAtomicLegs (n := n) (Sum.inl e) = [Sum.inl e] :=
+  rfl
+
+@[simp]
 theorem twoPointTimedEventAtomicLegs_interaction {n : ℕ} (v : Fin n) :
     twoPointTimedEventAtomicLegs (Sum.inr v) =
       List.ofFn (fun l : Fin 4 => Sum.inr (⟨v, Finset.mem_univ v⟩, l)) :=
@@ -286,6 +291,10 @@ variable {m n : ℕ} {f : Fin m → Fin n}
 /-- Transport a standard two-point leg along a reindexing of the interaction slots. -/
 def orderedTwoPointLegMap (f : Fin m → Fin n) : OrderedTwoPointLeg m → OrderedTwoPointLeg n :=
   Sum.map id <| Prod.map (fun v => ⟨f (v : Fin m), Finset.mem_univ _⟩) id
+
+@[simp]
+private theorem orderedTwoPointLegMap_inl (f : Fin m → Fin n) (e : Fin 2) :
+    orderedTwoPointLegMap f (Sum.inl e) = Sum.inl e := rfl
 
 @[simp]
 theorem orderedTwoPointLegMap_inr (f : Fin m → Fin n)
