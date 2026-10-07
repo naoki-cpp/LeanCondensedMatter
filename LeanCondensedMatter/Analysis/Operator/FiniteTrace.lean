@@ -73,6 +73,21 @@ theorem finiteDimensionalOperatorTrace_mul_comm
   simp only [finiteDimensionalOperatorTrace_apply]
   exact LinearMap.trace_mul_comm ℂ (left : H →ₗ[ℂ] H) (right : H →ₗ[ℂ] H)
 
+/-- Ordinary finite-dimensional trace intertwines the operator adjoint with complex conjugation. -/
+theorem finiteDimensionalOperatorTrace_star
+    (operator : H →L[ℂ] H) :
+    finiteDimensionalOperatorTrace (H := H) (star operator) =
+      star (finiteDimensionalOperatorTrace (H := H) operator) := by
+  let b := stdOrthonormalBasis ℂ H
+  rw [finiteDimensionalOperatorTrace_apply, finiteDimensionalOperatorTrace_apply,
+    LinearMap.trace_eq_sum_inner _ b, LinearMap.trace_eq_sum_inner _ b]
+  simp only [map_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [ContinuousLinearMap.star_eq_adjoint,
+    ContinuousLinearMap.adjoint_inner_right]
+  exact inner_conj_symm _ _
+
 /-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
 its derivative. -/
 theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
