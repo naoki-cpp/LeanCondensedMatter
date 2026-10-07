@@ -274,7 +274,7 @@ theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
     (v m p probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (_hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
     (hrenorm :
       finiteCutoffContinuumBornBoundaryRealRenormalization
         v m probeEnergy disorderStrength hbar pMax < 1) :
