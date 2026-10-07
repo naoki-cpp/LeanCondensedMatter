@@ -79,8 +79,16 @@ private theorem ExternalInsertionWickDiagram.componentInteractionShuffleToFin_ti
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
         rfl v).1
   rw [ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply]
-  congr 1
+  apply congrArg σ
   apply Fin.ext
+  change
+    (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).symm
+      ⟨((interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
+          rfl v).1, Finset.mem_univ _⟩).val =
+      ((interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
+          rfl v).1.val
   rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
 
 /-- The pointwise Dyson amplitude is the external regrouping sign times the canonical component
