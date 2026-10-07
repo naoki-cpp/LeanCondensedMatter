@@ -38,7 +38,7 @@ theorem mem_compDomain_iff (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x : E) :
   · rintro ⟨hx, hg⟩
     exact ⟨⟨x, hx⟩, hg, rfl⟩
 
-theorem compDomain_le_right (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
+private theorem compDomain_le_right (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
     compDomain g f ≤ f.domain := by
   intro x hx
   rcases (mem_compDomain_iff g f x).1 hx with ⟨hxf, _⟩
