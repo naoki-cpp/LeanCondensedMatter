@@ -162,8 +162,7 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
         apply b'.repr.injective
         rw [b'.repr_self]
         dsimp [b']
-        rw [LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.symm_apply_apply,
-          b.repr_self]
+        rw [LinearIsometryEquiv.symm_apply_apply, b.repr_self]
       _ = freePropagator system t (b i) := by
         rfl
   have hρ' : ∀ i,
