@@ -18,8 +18,9 @@ fundamental-domain integration seam, and the Bloch-phase bridge implied by the `
 reciprocal-lattice convention from `Crystal.Lattice`.
 
 Brillouin-zone integration uses Mathlib's ordinary set integral on the covering momentum space.
-For lattice-periodic integrands, `brillouinZone_integral_eq` proves that the value is independent
-of the chosen fundamental domain; no competing integral construction is introduced.
+`brillouinZoneIntegral` is the physical boundary for a chosen fundamental domain, and
+`brillouinZoneIntegral_eq_of_periodic` proves that lattice-periodic integrands give the same value
+for any two fundamental domains.
 -/
 
 namespace LeanCondensedMatter.Crystal
@@ -33,10 +34,17 @@ additive quotient, so all quotient-group structure is inherited directly from `Q
 abbrev BrillouinTorus (Lstar : Submodule ℤ K) :=
   K ⧸ Lstar.toAddSubgroup
 
-/-- A lattice-periodic integrand has the same integral over any two fundamental domains of the
-reciprocal-lattice action. This is the covering-space definition of Brillouin-zone integration:
-the integral itself is Mathlib's set integral, and only its domain independence is specialized here. -/
-theorem brillouinZone_integral_eq
+/-- Brillouin-zone integral of a covering-space integrand over a chosen fundamental domain.
+
+Physical normalization factors are deliberately kept outside this definition. -/
+noncomputable def brillouinZoneIntegral
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace K] (μ : Measure K) (fundamentalDomain : Set K) (f : K → E) : E :=
+  ∫ k in fundamentalDomain, f k ∂μ
+
+/-- A lattice-periodic integrand has the same Brillouin-zone integral over any two fundamental
+domains of the reciprocal-lattice action. -/
+theorem brillouinZoneIntegral_eq_of_periodic
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace K] {Lstar : Submodule ℤ K} [Countable Lstar]
     [MeasurableConstVAdd Lstar K] {μ : Measure K}
@@ -44,8 +52,8 @@ theorem brillouinZone_integral_eq
     (hs : IsAddFundamentalDomain Lstar s μ)
     (ht : IsAddFundamentalDomain Lstar t μ) {f : K → E}
     (hf : ∀ (G : Lstar) (k : K), f (G +ᵥ k) = f k) :
-    ∫ k in s, f k ∂μ = ∫ k in t, f k ∂μ :=
-  hs.setIntegral_eq ht hf
+    brillouinZoneIntegral μ s f = brillouinZoneIntegral μ t f := by
+  simpa [brillouinZoneIntegral] using hs.setIntegral_eq ht hf
 
 variable [InnerProductSpace ℝ K]
 
