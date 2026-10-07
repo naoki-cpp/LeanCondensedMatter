@@ -107,7 +107,8 @@ theorem stableTimedEventBeforeOrEqual_antisymm {α : Type*} (time : α → ℝ)
 
 /-- Insertion sort by stable timed-event precedence is pairwise ordered. -/
 theorem pairwise_insertionSort_stableTimedEventBeforeOrEqual {α : Type*}
-    (time : α → ℝ) (rank : α → ℕ) (l : List α) :
+    (time : α → ℝ) (rank : α → ℕ) (l : List α)
+    [DecidableRel (stableTimedEventBeforeOrEqual time rank)] :
     (List.insertionSort (stableTimedEventBeforeOrEqual time rank) l).Pairwise
       (stableTimedEventBeforeOrEqual time rank) := by
   letI : Std.Total (stableTimedEventBeforeOrEqual time rank) :=
