@@ -63,7 +63,8 @@ private theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
   have hset : twoPointInteractionCoincidenceWall v w =
       (twoPointInteractionCoincidenceSubmodule v w : Set (Fin n → ℝ)) := by
     ext σ
-    simp [twoPointInteractionCoincidenceWall]
+    simpa [twoPointInteractionCoincidenceWall] using
+      (mem_twoPointInteractionCoincidenceSubmodule_iff v w σ).symm
   rw [hset]
   exact MeasureTheory.Measure.addHaar_submodule
     (volume : Measure (Fin n → ℝ))
