@@ -75,8 +75,9 @@ theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) :
     MeasurableSet (twoPointOrderSignatureFiber τ τ' s) := by
   classical
-  have h := measurable_twoPointOrderSignature (n := n) τ τ' (MeasurableSet.singleton s)
-  simpa [twoPointOrderSignatureFiber] using h
+  change MeasurableSet
+    (twoPointOrderSignature τ τ' ⁻¹' ({s} : Set (TwoPointOrderSignature n)))
+  exact measurable_twoPointOrderSignature (n := n) τ τ' (MeasurableSet.singleton s)
 
 end Common
 end SecondQuantization
