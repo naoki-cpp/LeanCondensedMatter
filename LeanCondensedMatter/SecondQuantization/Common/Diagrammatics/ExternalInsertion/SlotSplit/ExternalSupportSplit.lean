@@ -115,16 +115,23 @@ private theorem ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff
         rw [hx] at hi
         rw [hi, externalInsertionSlotLegSplitting_external]
         change ComponentMeetsExternal
-          (d.vertexGraph.componentBlock (Sum.inl e))
-        exact ⟨e, d.vertexGraph.self_mem_componentBlock (Sum.inl e)⟩
+          (d.vertexGraph.componentBlock
+            (externalInsertionVertexOfLeg (externalInsertionExternalLeg E S e)))
+        simpa using
+          (show ComponentMeetsExternal
+              (d.vertexGraph.componentBlock (Sum.inl e)) from
+            ⟨e, d.vertexGraph.self_mem_componentBlock (Sum.inl e)⟩)
     | inr p =>
         obtain ⟨v, l⟩ := p
         rw [hx] at hi
         rw [hi, externalInsertionSlotLegSplitting_left_interaction]
         let vS : ↥S := ⟨v.1, hT v.2⟩
         change ComponentMeetsExternal
-          (d.vertexGraph.componentBlock (Sum.inr vS))
-        exact (d.mem_externallySupportedInteractionPart vS).1 v.2
+          (d.vertexGraph.componentBlock
+            (externalInsertionVertexOfLeg
+              (externalInsertionInteractionLeg (E := E) vS l)))
+        simpa using
+          ((d.mem_externallySupportedInteractionPart vS).1 v.2)
   · intro hmeet
     let x := externalInsertionLegEquiv E S leg
     cases hx : x with
