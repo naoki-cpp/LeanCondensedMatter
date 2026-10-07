@@ -8,7 +8,8 @@ set_option linter.style.header false
 # Shared stable order for timed events
 
 This module provides the common order relation used to sort finite event families by decreasing
-time, with a natural-number rank breaking ties. It also records how the rank induced by
+time, with a natural-number rank breaking ties. The relation is the pullback of Mathlib's
+lexicographic order on `OrderDual ℝ ×ₗ ℕ`. It also records how the rank induced by
 `finSumFinEquiv` is preserved by strictly monotone reindexings of both summands. Event types and
 their rank definitions remain with their domain-specific ordering modules.
 -/
