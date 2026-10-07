@@ -36,33 +36,15 @@ def twoPointTimedEventAtomicLegs {n : ℕ} :
       Sum.inr (⟨v, Finset.mem_univ v⟩, l)
 
 @[simp]
-theorem twoPointTimedEventAtomicLegs_external {n : ℕ} (e : Fin 2) :
-    twoPointTimedEventAtomicLegs (n := n) (Sum.inl e) = [Sum.inl e] :=
-  rfl
-
-@[simp]
 theorem twoPointTimedEventAtomicLegs_interaction {n : ℕ} (v : Fin n) :
     twoPointTimedEventAtomicLegs (Sum.inr v) =
       List.ofFn (fun l : Fin 4 => Sum.inr (⟨v, Finset.mem_univ v⟩, l)) :=
   rfl
 
-/-- The canonical event order expanded to standard two-point leg identities. -/
-def canonicalTwoPointAtomicLegs (n : ℕ) : List (OrderedTwoPointLeg n) :=
-  ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).flatMap
-    twoPointTimedEventAtomicLegs
-
 /-- The leg identities parallel to the mixed-time event order. -/
 noncomputable def mixedTimeOrderedAtomicLegs {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List (OrderedTwoPointLeg n) :=
   (orderedTwoPointTimedEvents τ τ' σ).flatMap twoPointTimedEventAtomicLegs
-
-/-- Mixed time ordering only permutes the complete standard two-point leg list. -/
-theorem mixedTimeOrderedAtomicLegs_perm_canonical {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    List.Perm (mixedTimeOrderedAtomicLegs τ τ' σ) (canonicalTwoPointAtomicLegs n) := by
-  simpa [mixedTimeOrderedAtomicLegs, canonicalTwoPointAtomicLegs] using
-    (orderedTwoPointTimedEvents_perm τ τ' σ).flatMap
-      (fun event _ => List.Perm.refl (twoPointTimedEventAtomicLegs event))
 
 private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
     (event : TwoPointTimedEvent n) :
@@ -299,31 +281,11 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff {n : �
       mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' υ x y hxy]
     exact hEvent
 
-/-- The relative flattened positions of two standard legs depend only on the times of their two
-supporting events and on their fixed local leg coordinates. -/
-theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq {n : ℕ}
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
-    (hxTime : twoPointTimedEventTime τ τ' σ (orderedTwoPointLegEvent x) =
-      twoPointTimedEventTime τ τ' υ (orderedTwoPointLegEvent x))
-    (hyTime : twoPointTimedEventTime τ τ' σ (orderedTwoPointLegEvent y) =
-      twoPointTimedEventTime τ τ' υ (orderedTwoPointLegEvent y)) :
-    (mixedTimeOrderedAtomicLegPosition τ τ' σ x <
-        mixedTimeOrderedAtomicLegPosition τ τ' σ y) ↔
-      (mixedTimeOrderedAtomicLegPosition τ τ' υ x <
-        mixedTimeOrderedAtomicLegPosition τ τ' υ y) :=
-  mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff τ τ' σ υ x y
-    (orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq
-      τ τ' σ υ (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y) hxTime hyTime)
-
 variable {m n : ℕ} {f : Fin m → Fin n}
 
 /-- Transport a standard two-point leg along a reindexing of the interaction slots. -/
 def orderedTwoPointLegMap (f : Fin m → Fin n) : OrderedTwoPointLeg m → OrderedTwoPointLeg n :=
   Sum.map id <| Prod.map (fun v => ⟨f (v : Fin m), Finset.mem_univ _⟩) id
-
-@[simp]
-theorem orderedTwoPointLegMap_inl (f : Fin m → Fin n) (e : Fin 2) :
-    orderedTwoPointLegMap f (Sum.inl e) = Sum.inl e := rfl
 
 @[simp]
 theorem orderedTwoPointLegMap_inr (f : Fin m → Fin n)
@@ -332,7 +294,7 @@ theorem orderedTwoPointLegMap_inr (f : Fin m → Fin n)
       Sum.inr (⟨f (v : Fin m), Finset.mem_univ _⟩, l) := rfl
 
 /-- An injective reindexing of the slots transports distinct legs to distinct legs. -/
-theorem orderedTwoPointLegMap_injective (hf : Function.Injective f) :
+private theorem orderedTwoPointLegMap_injective (hf : Function.Injective f) :
     Function.Injective (orderedTwoPointLegMap f) := by
   unfold orderedTwoPointLegMap
   apply Function.Injective.sumMap
@@ -344,7 +306,7 @@ theorem orderedTwoPointLegMap_injective (hf : Function.Injective f) :
 
 /-- The transported leg is supported on the transported event. -/
 @[simp]
-theorem orderedTwoPointLegEvent_orderedTwoPointLegMap (f : Fin m → Fin n)
+private theorem orderedTwoPointLegEvent_orderedTwoPointLegMap (f : Fin m → Fin n)
     (leg : OrderedTwoPointLeg m) :
     orderedTwoPointLegEvent (orderedTwoPointLegMap f leg) =
       twoPointTimedEventMap f (orderedTwoPointLegEvent leg) := by
@@ -353,7 +315,7 @@ theorem orderedTwoPointLegEvent_orderedTwoPointLegMap (f : Fin m → Fin n)
   | inr p => rfl
 
 /-- The leg list of an event is relabeled, not reordered. -/
-theorem twoPointTimedEventAtomicLegs_map (f : Fin m → Fin n) (event : TwoPointTimedEvent m) :
+private theorem twoPointTimedEventAtomicLegs_map (f : Fin m → Fin n) (event : TwoPointTimedEvent m) :
     twoPointTimedEventAtomicLegs (twoPointTimedEventMap f event) =
       (twoPointTimedEventAtomicLegs event).map (orderedTwoPointLegMap f) := by
   cases event with
