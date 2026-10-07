@@ -20,30 +20,29 @@ namespace Common
 open MeasureTheory
 
 /-- Hyperplane where one interaction-time coordinate equals a fixed external time. -/
-def twoPointExternalTimeWall {n : ℕ} (v : Fin n) (t : ℝ) : Set (Fin n → ℝ) :=
+private def twoPointExternalTimeWall {n : ℕ} (v : Fin n) (t : ℝ) : Set (Fin n → ℝ) :=
   {σ | σ v = t}
 
-theorem volume_twoPointExternalTimeWall_eq_zero {n : ℕ} (v : Fin n) (t : ℝ) :
+private theorem volume_twoPointExternalTimeWall_eq_zero {n : ℕ} (v : Fin n) (t : ℝ) :
     volume (twoPointExternalTimeWall v t) = 0 := by
   rw [volume_pi]
   exact MeasureTheory.Measure.pi_hyperplane
     (fun _ : Fin n => (volume : Measure ℝ)) v t
 
 /-- Linear subspace where two interaction-time coordinates coincide. -/
-def twoPointInteractionCoincidenceSubmodule {n : ℕ} (v w : Fin n) :
+private def twoPointInteractionCoincidenceSubmodule {n : ℕ} (v w : Fin n) :
     Submodule ℝ (Fin n → ℝ) :=
   ((LinearMap.proj v : (Fin n → ℝ) →ₗ[ℝ] ℝ) -
     (LinearMap.proj w : (Fin n → ℝ) →ₗ[ℝ] ℝ)).ker
 
-@[simp]
-theorem mem_twoPointInteractionCoincidenceSubmodule_iff {n : ℕ}
+private theorem mem_twoPointInteractionCoincidenceSubmodule_iff {n : ℕ}
     (v w : Fin n) (σ : Fin n → ℝ) :
     σ ∈ twoPointInteractionCoincidenceSubmodule v w ↔ σ v = σ w := by
   change σ v - σ w = 0 ↔ σ v = σ w
   exact sub_eq_zero
 
 /-- Coincidence wall where two interaction-time coordinates are equal. -/
-def twoPointInteractionCoincidenceWall {n : ℕ} (v w : Fin n) : Set (Fin n → ℝ) :=
+private def twoPointInteractionCoincidenceWall {n : ℕ} (v w : Fin n) : Set (Fin n → ℝ) :=
   {σ | σ v = σ w}
 
 private theorem twoPointInteractionCoincidenceSubmodule_ne_top {n : ℕ}
@@ -58,7 +57,7 @@ private theorem twoPointInteractionCoincidenceSubmodule_ne_top {n : ℕ}
   have hwv : w ≠ v := hvw.symm
   simpa [σ, hwv] using hσ
 
-theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
+private theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
     {v w : Fin n} (hvw : v ≠ w) :
     volume (twoPointInteractionCoincidenceWall v w) = 0 := by
   have hset : twoPointInteractionCoincidenceWall v w =
@@ -72,20 +71,20 @@ theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
     (twoPointInteractionCoincidenceSubmodule_ne_top hvw)
 
 /-- Union of the walls where any interaction time equals one fixed external time. -/
-def twoPointExternalTimeWalls {n : ℕ} (t : ℝ) : Set (Fin n → ℝ) :=
+private def twoPointExternalTimeWalls {n : ℕ} (t : ℝ) : Set (Fin n → ℝ) :=
   ⋃ v : Fin n, twoPointExternalTimeWall v t
 
-theorem volume_twoPointExternalTimeWalls_eq_zero {n : ℕ} (t : ℝ) :
+private theorem volume_twoPointExternalTimeWalls_eq_zero {n : ℕ} (t : ℝ) :
     volume (twoPointExternalTimeWalls (n := n) t) = 0 := by
   unfold twoPointExternalTimeWalls
   exact measure_iUnion_null fun v => volume_twoPointExternalTimeWall_eq_zero v t
 
 /-- Union of all coincidence walls for distinct interaction-time coordinates. -/
-def twoPointInteractionCoincidenceWalls {n : ℕ} : Set (Fin n → ℝ) :=
+private def twoPointInteractionCoincidenceWalls {n : ℕ} : Set (Fin n → ℝ) :=
   ⋃ v : Fin n, ⋃ w : Fin n,
     if v = w then ∅ else twoPointInteractionCoincidenceWall v w
 
-theorem volume_twoPointInteractionCoincidenceWalls_eq_zero {n : ℕ} :
+private theorem volume_twoPointInteractionCoincidenceWalls_eq_zero {n : ℕ} :
     volume (twoPointInteractionCoincidenceWalls (n := n)) = 0 := by
   unfold twoPointInteractionCoincidenceWalls
   apply measure_iUnion_null
