@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
+import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 
 set_option linter.style.header false
 
@@ -24,14 +25,6 @@ noncomputable def twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) (σ : Fin n �
   Finset.univ.filter fun p =>
     twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2
 
-@[simp]
-theorem mem_twoPointOrderSignature_iff {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (a b : TwoPointTimedEvent n) :
-    (a, b) ∈ twoPointOrderSignature τ τ' σ ↔
-      twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b := by
-  classical
-  simp [twoPointOrderSignature]
-
 /-- Two interaction-time assignments lie in the same mixed-order chamber exactly when
 they determine the same finite strict-comparison signature. -/
 theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
@@ -43,25 +36,13 @@ theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
   · intro h
     ext p
     rcases p with ⟨a, b⟩
-    simpa only [mem_twoPointOrderSignature_iff] using h a b
+    simpa [twoPointOrderSignature] using h a b
   · intro h a b
-    constructor
-    · intro hab
-      have hm : (a, b) ∈ twoPointOrderSignature τ τ' σ :=
-        (mem_twoPointOrderSignature_iff τ τ' σ a b).2 hab
-      rw [h] at hm
-      exact (mem_twoPointOrderSignature_iff τ τ' υ a b).1 hm
-    · intro hab
-      have hm : (a, b) ∈ twoPointOrderSignature τ τ' υ :=
-        (mem_twoPointOrderSignature_iff τ τ' υ a b).2 hab
-      rw [← h] at hm
-      exact (mem_twoPointOrderSignature_iff τ τ' σ a b).1 hm
-
-/-- Locus of interaction-time assignments for which one fixed mixed event is strictly earlier than
-another in physical time. -/
-def twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
-    (a b : TwoPointTimedEvent n) : Set (Fin n → ℝ) :=
-  {σ | twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b}
+    have hp :
+        ((a, b) ∈ twoPointOrderSignature τ τ' σ) ↔
+          ((a, b) ∈ twoPointOrderSignature τ τ' υ) := by
+      rw [h]
+    simpa [twoPointOrderSignature] using hp
 
 private theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
     (a : TwoPointTimedEvent n) :
@@ -74,77 +55,28 @@ private theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
       change Continuous (fun σ : Fin n → ℝ => σ v)
       exact continuous_apply v
 
-private theorem measurableSet_twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
-    (a b : TwoPointTimedEvent n) :
-    MeasurableSet (twoPointEventStrictComparisonSet τ τ' a b) := by
-  exact measurableSet_lt
-    (continuous_twoPointTimedEventTime τ τ' a).measurable
-    (continuous_twoPointTimedEventTime τ τ' b).measurable
+private theorem measurable_twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) :
+    Measurable (twoPointOrderSignature τ τ' :
+      (Fin n → ℝ) → TwoPointOrderSignature n) := by
+  rw [measurable_finset_iff_measurable_set, measurable_set_iff]
+  rintro ⟨a, b⟩
+  apply measurable_to_prop
+  simpa [twoPointOrderSignature] using
+    (measurableSet_lt
+      (continuous_twoPointTimedEventTime τ τ' a).measurable
+      (continuous_twoPointTimedEventTime τ τ' b).measurable)
 
 /-- Fiber of the finite mixed-order signature map over a prescribed signature. -/
 def twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) : Set (Fin n → ℝ) :=
   {σ | twoPointOrderSignature τ τ' σ = s}
 
-private theorem twoPointOrderSignatureFiber_eq_iInter {n : ℕ} (τ τ' : ℝ)
-    (s : TwoPointOrderSignature n) :
-    twoPointOrderSignatureFiber τ τ' s =
-      ⋂ p : TwoPointTimedEvent n × TwoPointTimedEvent n,
-        if p ∈ s then twoPointEventStrictComparisonSet τ τ' p.1 p.2
-        else (twoPointEventStrictComparisonSet τ τ' p.1 p.2)ᶜ := by
-  classical
-  ext σ
-  simp only [twoPointOrderSignatureFiber, Set.mem_ofPred_eq, Set.mem_iInter]
-  constructor
-  · intro h p
-    have hp : p ∈ twoPointOrderSignature τ τ' σ ↔ p ∈ s := by
-      rw [h]
-    by_cases hps : p ∈ s
-    · have hmem : p ∈ twoPointOrderSignature τ τ' σ := hp.mpr hps
-      have hlt :
-          twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
-        rcases p with ⟨a, b⟩
-        simpa only [mem_twoPointOrderSignature_iff] using hmem
-      simpa [hps, twoPointEventStrictComparisonSet] using hlt
-    · have hnot : p ∉ twoPointOrderSignature τ τ' σ := by
-        intro hmem
-        exact hps (hp.mp hmem)
-      have hnlt :
-          ¬ twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
-        rcases p with ⟨a, b⟩
-        simpa only [mem_twoPointOrderSignature_iff] using hnot
-      simpa [hps, twoPointEventStrictComparisonSet] using hnlt
-  · intro h
-    apply Finset.ext
-    intro p
-    have hp := h p
-    by_cases hps : p ∈ s
-    · have hlt :
-          twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
-        simpa [hps, twoPointEventStrictComparisonSet] using hp
-      have hmem : p ∈ twoPointOrderSignature τ τ' σ := by
-        rcases p with ⟨a, b⟩
-        simpa only [mem_twoPointOrderSignature_iff] using hlt
-      exact iff_of_true hmem hps
-    · have hnlt :
-          ¬ twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
-        simpa [hps, twoPointEventStrictComparisonSet] using hp
-      have hnot : p ∉ twoPointOrderSignature τ τ' σ := by
-        rcases p with ⟨a, b⟩
-        simpa only [mem_twoPointOrderSignature_iff] using hnlt
-      exact iff_of_false hnot hps
-
 theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) :
     MeasurableSet (twoPointOrderSignatureFiber τ τ' s) := by
   classical
-  rw [twoPointOrderSignatureFiber_eq_iInter]
-  apply MeasurableSet.iInter
-  intro p
-  by_cases hps : p ∈ s
-  · simpa [hps] using measurableSet_twoPointEventStrictComparisonSet τ τ' p.1 p.2
-  · simpa [hps] using
-      (measurableSet_twoPointEventStrictComparisonSet τ τ' p.1 p.2).compl
+  have h := measurable_twoPointOrderSignature (n := n) τ τ' (MeasurableSet.singleton s)
+  simpa [twoPointOrderSignatureFiber] using h
 
 end Common
 end SecondQuantization
