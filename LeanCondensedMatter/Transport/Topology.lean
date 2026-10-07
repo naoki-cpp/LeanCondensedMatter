@@ -43,7 +43,7 @@ structure PeriodicBlochHamiltonian (Lstar : Submodule ℤ K) where
   /-- Reciprocal-lattice periodicity on the covering momentum space. -/
   periodic : ∀ (G : Lstar) (k : K), hamiltonian (G +ᵥ k) = hamiltonian k
   /-- Smooth momentum dependence. -/
-  smooth : ContDiff ℝ ∞ hamiltonian
+  smooth : ContDiff ℝ ⊤ hamiltonian
 
 namespace PeriodicBlochHamiltonian
 
@@ -69,7 +69,7 @@ structure PeriodicBlochProjector (Lstar : Submodule ℤ K) where
   /-- Reciprocal-lattice periodicity on the covering momentum space. -/
   periodic : ∀ (G : Lstar) (k : K), projector (G +ᵥ k) = projector k
   /-- Smooth momentum dependence. -/
-  smooth : ContDiff ℝ ∞ projector
+  smooth : ContDiff ℝ ⊤ projector
 
 /-- Finite-band clean Bloch data with an explicitly supplied occupied spectral projector.
 
