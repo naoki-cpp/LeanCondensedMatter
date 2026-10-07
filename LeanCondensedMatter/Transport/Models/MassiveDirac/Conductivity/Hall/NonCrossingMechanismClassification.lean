@@ -74,39 +74,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
   have hraw :=
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenance_disorder_zero
       e v m probeEnergy hbar pMax hvelocity hhbarNe hmetal hcutoff
-  have h0 :
-      Tendsto
-        (fun disorderStrength : ℝ =>
-          let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-          let pref : ℂ :=
-            (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
-          let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax
-          let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax
-          (-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 1 * solved 0))
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
-            (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) := by
-    simpa [inPlaneCoefficientVector] using tendsto_pi_nhds.mp hraw (0 : Fin 2)
-  have h1 :
-      Tendsto
-        (fun disorderStrength : ℝ =>
-          let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-          let pref : ℂ :=
-            (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
-          let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax
-          let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax
-          (-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
-            (probeEnergy ^ 2 - m ^ 2) /
-            (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ))) := by
-    simpa [inPlaneCoefficientVector] using tendsto_pi_nhds.mp hraw (1 : Fin 2)
   let normalization : ℂ := ((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ)
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
@@ -138,15 +105,26 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
     ring
-  have h0Normalized := h0.const_mul normalization
-  have h1Normalized := h1.const_mul normalization
-  rw [htarget0] at h0Normalized
-  rw [htarget1] at h1Normalized
-  apply tendsto_pi_nhds.mpr
-  intro i
-  fin_cases i
-  · simpa [inPlaneCoefficientVector, normalization] using h0Normalized
-  · simpa [inPlaneCoefficientVector, normalization] using h1Normalized
+  have hnormalized := hraw.const_smul normalization
+  have htarget :
+      normalization •
+          inPlaneCoefficientVector
+            (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
+              (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))
+            (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
+              (probeEnergy ^ 2 - m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) =
+        inPlaneCoefficientVector
+          (((-e ^ 2 * probeEnergy * m /
+            (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)) : ℝ) : ℂ))
+          (((-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+            (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
+    ext i
+    fin_cases i
+    · simpa [inPlaneCoefficientVector] using htarget0
+    · simpa [inPlaneCoefficientVector] using htarget1
+  rw [htarget] at hnormalized
+  simpa [inPlaneCoefficientVector, normalization] using hnormalized
 
 /-- The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms
 from I. A. Ado et al., *EPL* **111**, 37004 (2015),
