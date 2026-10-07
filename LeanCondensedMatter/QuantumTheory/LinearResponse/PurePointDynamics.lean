@@ -127,7 +127,7 @@ theorem freePropagator_apply_purePointBasis
     rw [smul_smul]
     apply congrArg (fun z : ℂ => z • data.basis i)
     push_cast
-    ring
+    ring_nf
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
