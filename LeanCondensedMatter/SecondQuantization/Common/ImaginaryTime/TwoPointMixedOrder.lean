@@ -61,16 +61,6 @@ def twoPointTimedEventBefore {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
   twoPointTimedEventBeforeOrEqual τ τ' σ a b ∧ a ≠ b
 
-/-- Stable comparison of two fixed events is unchanged when their two event times are unchanged. -/
-theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : TwoPointTimedEvent n)
-    (ha : twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' υ a)
-    (hb : twoPointTimedEventTime τ τ' σ b = twoPointTimedEventTime τ τ' υ b) :
-    twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
-      twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff]
-  rw [ha, hb]
-
 /-- Interaction events in their canonical supplied slot order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
@@ -240,8 +230,9 @@ theorem orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq {n : ℕ}
         orderedTwoPointTimedEventPosition τ τ' υ b) := by
   rw [orderedTwoPointTimedEventPosition_lt_iff,
     orderedTwoPointTimedEventPosition_lt_iff]
-  unfold twoPointTimedEventBefore
-  rw [twoPointTimedEventBeforeOrEqual_congr τ τ' σ υ a b ha hb]
+  simp only [twoPointTimedEventBefore, twoPointTimedEventBeforeOrEqual,
+    stableTimedEventBeforeOrEqual_iff]
+  rw [ha, hb]
 
 
 /-! ## Monotone interaction-slot transport -/
