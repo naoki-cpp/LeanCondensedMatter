@@ -413,7 +413,7 @@ theorem completedComm_annihilate_create_self (i : Mode) :
       (completedNumberOperatorDomain i).subtype := by
   rw [completedAnnihilateAfterCreate_eq_id_add_numberOperator,
     completedCreateAfterAnnihilate_eq_numberOperator]
-  abel
+  exact add_sub_cancel_right _ _
 
 end
 end Bosonic
