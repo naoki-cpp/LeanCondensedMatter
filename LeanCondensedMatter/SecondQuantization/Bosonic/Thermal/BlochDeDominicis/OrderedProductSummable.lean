@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
