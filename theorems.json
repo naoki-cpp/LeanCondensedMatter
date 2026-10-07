@@ -3797,6 +3797,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
@@ -3808,10 +3809,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115240,14 +115242,14 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -120627,9 +120629,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "A strictly monotone slot reindexing preserves the relative positions of the transported mixed\nevents. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -120637,7 +120639,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -122260,7 +122262,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -122272,15 +122274,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components"
+      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components"
+      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123917,51 +123921,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ (SecondQuantization.Common.twoPointTimedEventMap f a)\n          (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' (σ ∘ f) a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBefore_map_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointTimedEventMap_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  Function.Injective f → Function.Injective (SecondQuantization.Common.twoPointTimedEventMap f)",
     "standardAxioms": [
       "propext"
@@ -123973,21 +123932,21 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.twoPointTimedEventMap_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Injective slot reindexings induce injective event reindexings. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -124011,7 +123970,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.twoPointTimedEventMap_inl",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -124041,7 +124000,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.twoPointTimedEventMap_inr",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -124053,48 +124012,6 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fin n → ℝ) (a : SecondQuantization.Common.TwoPointTimedEvent m),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.twoPointTimedEventMap f a) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' (σ ∘ f) a",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventTime_map",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0,
@@ -127859,6 +127776,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n  (intervalIntegral.orderedSimplexIntegral n β fun σ => d.dysonFixedTimeAmplitude ε β g externalTime σ) =\n    d.dysonAmplitude ε β g externalTime",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+    "externalAxioms": [],
+    "docString": "Integrating the Dyson-signed fixed-time amplitude is the integrated Dyson amplitude. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
+    ],
+    "dependencies": [
+      "intervalIntegral.orderedSimplexIntegral_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).crossingCount =\n    ∑ B,\n        (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder (d.componentWickDiagram B)\n            (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).crossingCount +\n      (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime\n            σ).interComponentCrossingCount\n        (d.componentMixedPairEquiv externalTime σ)",
     "standardAxioms": [
       "Classical.choice",
@@ -128166,6 +128127,49 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  (∀ (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n      intervalIntegral.MeasurableLocallyBounded fun localσ =>\n        (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g (d.componentExternalTime externalTime B) localσ) →\n    (∑ shuffle,\n        intervalIntegral.orderedSimplexIntegral n β fun σ =>\n          SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n            shuffle.ambientIntegrand\n              (fun B localσ =>\n                (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g (d.componentExternalTime externalTime B)\n                  localσ)\n              σ) =\n      SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n        ∏ B, (d.componentWickDiagram B).dysonAmplitude ε β g (d.componentExternalTime externalTime B)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+    "externalAxioms": [],
+    "docString": "Summing the ordered-simplex Dyson contribution over all order-preserving interleavings of the\ncomponent interaction slots gives the external regrouping sign times the product of the standalone\ncomponent Dyson amplitudes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
+      "SecondQuantization.Common.sum_interactionSector_card_eq",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+      "intervalIntegral.orderedSimplexIntegral_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172468,51 +172472,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ\n          (SecondQuantization.Common.twoPointTimedEventMap f a) (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.finSumFinEquiv_map_val_le_iff",
-      "SecondQuantization.Common.twoPointTimedEventTime_map"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b ↔\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b",
     "standardAxioms": [
       "Classical.choice",
@@ -173162,6 +173121,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ\n          (SecondQuantization.Common.twoPointTimedEventMap f a) (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.finSumFinEquiv_map_val_le_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventTime_map"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBefore_map_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) {a b : SecondQuantization.Common.TwoPointTimedEvent n},\n  SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b →\n    SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b",
     "standardAxioms": [
       "Classical.choice",
@@ -173193,6 +173197,93 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ (SecondQuantization.Common.twoPointTimedEventMap f a)\n          (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' (σ ∘ f) a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBefore_map_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.twoPointTimedEventMap_injective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fin n → ℝ) (a : SecondQuantization.Common.TwoPointTimedEvent m),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.twoPointTimedEventMap f a) =\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' (σ ∘ f) a",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventTime_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_map_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -187463,6 +187554,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
@@ -187474,11 +187567,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

@@ -4299,14 +4299,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/MixedEventSlotEmbedding.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/MixedOrderChamber.lean",
       "imports": [
@@ -4360,7 +4352,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.ListFlatMapOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder"
       ],
       "externalImportCount": 2
     },
@@ -4381,7 +4373,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure",
@@ -5142,6 +5133,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentIntegral.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentMixedCrossing.lean",
       "imports": [
@@ -5220,6 +5220,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
