@@ -75,7 +75,7 @@ private theorem orderedTwoPointTimedEvents_zero_of_gt (σ : Fin 0 → ℝ)
   have hnotle : ¬ τ ≤ τ' := not_le_of_gt h
   simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, List.insertionSort,
     List.orderedInsert, twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime,
-    stableTimedEventBeforeOrEqual, twoPointTimedEventRank, hnot, hne, hnotle]
+    stableTimedEventBeforeOrEqual_iff, twoPointTimedEventRank, hnot, hne, hnotle]
 
 set_option linter.unusedSimpArgs false in
 private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
@@ -83,7 +83,7 @@ private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
     orderedTwoPointTimedEvents τ τ' σ = [Sum.inl 1, Sum.inl 0] := by
   simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, List.insertionSort,
     List.orderedInsert, twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime,
-    stableTimedEventBeforeOrEqual, twoPointTimedEventRank, h, h.le, h.ne]
+    stableTimedEventBeforeOrEqual_iff, twoPointTimedEventRank, h, h.le, h.ne]
 
 theorem mixedTimeOrderedVertexComp_zero_of_gt (ε : Mode → ℝ) (i j : Mode)
     (q : Fin 0 → QuarticVertexLabel Mode) (σ : Fin 0 → ℝ) {τ τ' : ℝ} (h : τ' < τ) :
