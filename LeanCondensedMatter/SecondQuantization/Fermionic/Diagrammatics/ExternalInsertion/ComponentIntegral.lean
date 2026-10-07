@@ -66,6 +66,7 @@ theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplit
   exact intervalIntegral.orderedSimplexIntegral_smul n β
     ((-1 : ℂ) ^ n) (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
 
+omit [Fintype Mode] in
 /-- Pulling an assembled global interaction order back to one component gives exactly that
 component's shuffle coordinates when the local component orders are canonical. -/
 private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder
@@ -89,7 +90,9 @@ private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleIn
           (Finset.univ : Finset (Fin n))))).orderIsoOfFin rfl j).1,
         Finset.mem_univ _⟩) =
       τ (shuffle.slotEquiv ⟨B, j⟩)
-  rw [d.assembleInteractionOrder_symm_apply]
+  apply congrArg τ
+  convert d.assembleInteractionOrder_symm_apply
+    d.canonicalComponentInteractionOrders shuffle B j using 1
 
 /-- The interaction-order shuffle orbit of an arbitrary external-insertion diagram factors into
 the fixed external regrouping sign times the product of the standalone component amplitudes. -/
