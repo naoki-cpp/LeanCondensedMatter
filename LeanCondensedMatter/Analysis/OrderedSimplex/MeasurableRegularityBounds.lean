@@ -14,19 +14,6 @@ namespace intervalIntegral
 
 open MeasureTheory Set
 
-private theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
-    {rest : Fin n → ℝ} (ht : |t| ≤ R)
-    (hrest : rest ∈ orderedSimplexTimeCube n R) :
-    Fin.cons t rest ∈ orderedSimplexTimeCube (n + 1) R := by
-  rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
-  constructor
-  · intro i
-    refine Fin.cases ((neg_le_neg ht).trans (neg_abs_le t)) (fun j => ?_) i
-    exact hrest.1 j
-  · intro i
-    refine Fin.cases ((le_abs_self t).trans ht) (fun j => ?_) i
-    exact hrest.2 j
-
 /-- A uniform norm bound on the centered cube gives a rough `|β|^n` bound for the recursively
 oriented ordered-simplex integral. -/
 private theorem norm_orderedSimplexIntegral_le_of_cube_bound :
@@ -50,10 +37,7 @@ private theorem norm_orderedSimplexIntegral_le_of_cube_bound :
         have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
             ‖f (Fin.cons t rest)‖ ≤ C := by
           intro rest hrest
-          apply hbound
-          apply finCons_mem_orderedSimplexTimeCube htAbs
-          rw [orderedSimplexTimeCube] at hrest ⊢
-          exact Set.Icc_subset_Icc (fun _ => neg_le_neg htAbs) (fun _ => htAbs) hrest
+          exact hbound _ (finCons_mem_orderedSimplexTimeCube htAbs htAbs hrest)
         have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
           (fun rest => f (Fin.cons t rest)) C hC hslice
         calc
@@ -86,10 +70,7 @@ theorem MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_bounda
   have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
       ‖f (Fin.cons t rest)‖ ≤ C := by
     intro rest hrest
-    apply hC
-    apply finCons_mem_orderedSimplexTimeCube htAbs
-    rw [orderedSimplexTimeCube] at hrest ⊢
-    exact Set.Icc_subset_Icc (fun _ => neg_le_neg htAbs) (fun _ => htAbs) hrest
+    exact hC _ (finCons_mem_orderedSimplexTimeCube htAbs htAbs hrest)
   have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
     (fun rest => f (Fin.cons t rest)) C hC0 hslice
   calc

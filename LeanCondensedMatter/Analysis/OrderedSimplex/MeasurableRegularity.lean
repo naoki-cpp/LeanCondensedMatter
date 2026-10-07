@@ -53,6 +53,21 @@ coordinate preserves local boundedness even when later bounds have the opposite 
 def orderedSimplexTimeCube (n : ℕ) (R : ℝ) : Set (Fin n → ℝ) :=
   Set.Icc (fun _ => -R) (fun _ => R)
 
+/-- Prepending one coordinate sends a smaller centered cube into a larger one whenever the
+new coordinate also lies within the larger radius. -/
+theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R S t : ℝ}
+    {rest : Fin n → ℝ} (hRS : R ≤ S) (ht : |t| ≤ S)
+    (hrest : rest ∈ orderedSimplexTimeCube n R) :
+    Fin.cons t rest ∈ orderedSimplexTimeCube (n + 1) S := by
+  rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
+  constructor
+  · intro i
+    refine Fin.cases ((neg_le_neg ht).trans (neg_abs_le t)) (fun j => ?_) i
+    exact (neg_le_neg hRS).trans (hrest.1 j)
+  · intro i
+    refine Fin.cases ((le_abs_self t).trans ht) (fun j => ?_) i
+    exact (hrest.2 j).trans hRS
+
 /-- A measurable function that is uniformly bounded on every centered coordinate cube. -/
 def MeasurableLocallyBounded {n : ℕ} (f : (Fin n → ℝ) → ℂ) : Prop :=
   Measurable f ∧
@@ -141,22 +156,7 @@ theorem MeasurableLocallyBounded.finCons {n : ℕ}
   obtain ⟨C, hC0, hC⟩ := hf.2 R' hR'
   refine ⟨C, hC0, ?_⟩
   intro rest hrest
-  apply hC
-  rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
-  constructor
-  · intro i
-    induction i using Fin.cases with
-    | zero =>
-        have ht : |t| ≤ R' := le_max_right _ _
-        exact (neg_le_neg ht).trans (neg_abs_le t)
-    | succ i =>
-        exact (neg_le_neg (le_max_left R |t|)).trans (hrest.1 i)
-  · intro i
-    induction i using Fin.cases with
-    | zero =>
-        have ht : |t| ≤ R' := le_max_right _ _
-        exact (le_abs_self t).trans ht
-    | succ i =>
-        exact (hrest.2 i).trans (le_max_left R |t|)
+  exact hC _ (finCons_mem_orderedSimplexTimeCube
+    (le_max_left R |t|) (le_max_right R |t|) hrest)
 
 end intervalIntegral
