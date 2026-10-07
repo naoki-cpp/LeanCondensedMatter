@@ -125,11 +125,17 @@ theorem timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
           timeDependentInteractionPropagator system V lam t = 1 ∧
       timeDependentInteractionPropagator system V lam t *
           star (timeDependentInteractionPropagator system V lam t) = 1 := by
-  exact ⟨
-    star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
-      system hVself lam hβ hM hVcont hVbound ht,
-    mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
-      system hVself lam hβ hM hVcont hVbound ht⟩
+  apply Dyson.evolution_unitary_relations_of_star_eq
+    (V := timeDependentInteractionPerturbation system V)
+    (lam := timeDependentPhysicalDysonCoupling system lam)
+    (β := β) (M := M) (t := t)
+  · intro s
+    exact (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
+      system V hVself s).star_eq
+  · exact star_timeDependentPhysicalDysonCoupling_eq_neg system lam
+  · exact hβ
+  · exact continuousTimeDependentDysonInteraction system hM hVcont hVbound
+  · exact ht
 
 /-- For a pointwise Hermitian perturbation, the finite-coupling observable map preserves the
 identity. This is the exact hypothesis needed to pull back a normalized expectation. -/
