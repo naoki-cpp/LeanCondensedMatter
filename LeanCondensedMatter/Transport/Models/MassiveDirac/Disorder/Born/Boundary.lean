@@ -51,6 +51,18 @@ theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im
       -(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi) := by
   rfl
 
+/-- Complex conjugation exchanges the retarded/advanced finite-cutoff Born denominator boundary. -/
+theorem star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+    (side : SpectralSide) (v m probeEnergy pMax : ℝ) :
+    star (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+      side v m probeEnergy pMax) =
+      finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+        side.opposite v m probeEnergy pMax := by
+  cases side <;>
+    apply Complex.ext <;>
+    simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue,
+      pauliGreenDenominator, SpectralSide.regulator, SpectralSide.opposite]
+
 /-- At fixed finite cutoff beyond the on-shell circle, the full complex denominator integral has a
 side-indexed metallic `η → 0⁺` boundary value. This is the complex owner of the paired finite real
 part and damping-generating imaginary part. -/
