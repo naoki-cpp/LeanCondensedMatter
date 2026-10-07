@@ -173,11 +173,17 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomi
       (n := 2 * (2 * n + E)) (by simp) d.componentLegShuffle
   let globalPerm :=
     externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ
-  let localPerm := fun B : d.vertexGraph.componentPartition.parts =>
-    (externalInsertionMixedTimeAmbientPositionEquiv
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B)).trans
-      (finCongr (by simp))
+  let localPerm :
+      ∀ B : d.vertexGraph.componentPartition.parts,
+        Equiv.Perm
+          (Fin (2 * (2 * (interactionSector
+            (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+              d.externalPairCount B))) :=
+    fun B =>
+      (externalInsertionMixedTimeAmbientPositionEquiv
+        (d.componentExternalTime externalTime B)
+        (d.componentInteractionTime σ B)).trans
+        (finCongr (by simp))
   have hmixed :
       (d.componentMixedPositionShuffle externalTime σ).slotEquiv =
         (Equiv.sigmaCongrRight localPerm).trans
