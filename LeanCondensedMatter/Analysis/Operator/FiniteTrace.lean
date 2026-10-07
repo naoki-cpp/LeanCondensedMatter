@@ -1,6 +1,8 @@
+import Mathlib.Algebra.Star.BigOperators
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Trace
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 
 set_option linter.style.header false
@@ -72,6 +74,29 @@ theorem finiteDimensionalOperatorTrace_mul_comm
       finiteDimensionalOperatorTrace (H := H) (right * left) := by
   simp only [finiteDimensionalOperatorTrace_apply]
   exact LinearMap.trace_mul_comm ℂ (left : H →ₗ[ℂ] H) (right : H →ₗ[ℂ] H)
+
+section
+
+local instance : CompleteSpace H := FiniteDimensional.complete ℂ H
+
+/-- Ordinary finite-dimensional trace intertwines the operator adjoint with complex conjugation. -/
+theorem finiteDimensionalOperatorTrace_star
+    (operator : H →L[ℂ] H) :
+    finiteDimensionalOperatorTrace (H := H) (star operator) =
+      star (finiteDimensionalOperatorTrace (H := H) operator) := by
+  let b := stdOrthonormalBasis ℂ H
+  rw [finiteDimensionalOperatorTrace_apply, finiteDimensionalOperatorTrace_apply,
+    LinearMap.trace_eq_sum_inner _ b, LinearMap.trace_eq_sum_inner _ b]
+  rw [star_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [ContinuousLinearMap.star_eq_adjoint]
+  change inner ℂ (b i) (operator.adjoint (b i)) =
+    star (inner ℂ (b i) (operator (b i)))
+  rw [ContinuousLinearMap.adjoint_inner_right]
+  exact (inner_conj_symm _ _).symm
+
+end
 
 /-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
 its derivative. -/

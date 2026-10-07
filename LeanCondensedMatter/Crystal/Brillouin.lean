@@ -7,23 +7,55 @@ import LeanCondensedMatter.Crystal.Lattice
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.MeasureTheory.Group.FundamentalDomain
 
 /-!
-# Brillouin quotient and Bloch phase
+# Brillouin quotient, integration, and Bloch phase
 
 The Brillouin torus is the additive quotient of momentum space by a reciprocal lattice. The
-quotient itself is Mathlib's `QuotientAddGroup`; this file adds only the physical name and the
-Bloch-phase bridge implied by the `2π` reciprocal-lattice convention from `Crystal.Lattice`.
+quotient itself is Mathlib's `QuotientAddGroup`; this file adds only the physical name, the
+fundamental-domain integration seam, and the Bloch-phase bridge implied by the `2π`
+reciprocal-lattice convention from `Crystal.Lattice`.
+
+Brillouin-zone integration uses Mathlib's ordinary set integral on the covering momentum space.
+`brillouinZoneIntegral` is the physical boundary for a chosen fundamental domain, and
+`brillouinZoneIntegral_eq_of_periodic` proves that lattice-periodic integrands give the same value
+for any two fundamental domains.
 -/
 
 namespace LeanCondensedMatter.Crystal
 
-variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℝ K]
+open MeasureTheory
+
+variable {K : Type*} [NormedAddCommGroup K]
 
 /-- The Brillouin torus associated with a reciprocal lattice. This is a thin alias for Mathlib's
 additive quotient, so all quotient-group structure is inherited directly from `QuotientAddGroup`. -/
 abbrev BrillouinTorus (Lstar : Submodule ℤ K) :=
   K ⧸ Lstar.toAddSubgroup
+
+/-- Brillouin-zone integral of a covering-space integrand over a chosen fundamental domain.
+
+Physical normalization factors are deliberately kept outside this definition. -/
+noncomputable def brillouinZoneIntegral
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace K] (μ : Measure K) (fundamentalDomain : Set K) (f : K → E) : E :=
+  ∫ k in fundamentalDomain, f k ∂μ
+
+/-- A lattice-periodic integrand has the same Brillouin-zone integral over any two fundamental
+domains of the reciprocal-lattice action. -/
+theorem brillouinZoneIntegral_eq_of_periodic
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace K] {Lstar : Submodule ℤ K} [Countable Lstar]
+    [MeasurableConstVAdd Lstar K] {μ : Measure K}
+    [VAddInvariantMeasure Lstar K μ] {s t : Set K}
+    (hs : IsAddFundamentalDomain Lstar s μ)
+    (ht : IsAddFundamentalDomain Lstar t μ) {f : K → E}
+    (hf : ∀ (G : Lstar) (k : K), f (G +ᵥ k) = f k) :
+    brillouinZoneIntegral μ s f = brillouinZoneIntegral μ t f := by
+  simpa [brillouinZoneIntegral] using hs.setIntegral_eq ht hf
+
+variable [InnerProductSpace ℝ K]
 
 /-- The Bloch phase `exp (i k · R)` for wave vector `k` and real-space translation `R`. -/
 noncomputable def blochPhase (k R : K) : ℂ :=
