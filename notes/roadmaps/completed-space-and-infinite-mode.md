@@ -69,9 +69,11 @@ domains, are densely defined and closed, and are mutual adjoints. They agree wit
 ladder operators on the finite-support core. For each mode, both mixed products have maximal domain
 `Dom(Nᵢ)` and satisfy `aᵢ† aᵢ = Nᵢ`, `aᵢ aᵢ† = Nᵢ + 1`, and the equal-mode completed CCR there.
 An ordered number-conserving quartic vertex is also defined as the exact domain-aware composition
-`a† a† a a` of four completed ladder `LinearPMap` operators. This establishes the operator
-product itself without yet replacing its iterated composition domain by a closed-form weighted
-`ℓ²` domain.
+`a† a† a a` of four completed ladder `LinearPMap` operators. A finite family of such vertices now
+has the canonical common intersection domain, which contains the algebraic finite-support core and
+is therefore dense. The corresponding finite completed quartic interaction is a `LinearPMap` sum on
+that domain and agrees there on the algebraic core with `Common.quarticInteractionOn`. These exact
+domains have not yet been replaced by closed-form weighted `ℓ²` descriptions.
 
 ## Finite-mode fermionic compatibility
 
@@ -88,7 +90,7 @@ needed for that representation-level statement.
 
 - explicit weighted-domain characterizations and identities for mixed-mode and quartic bosonic
   ladder products;
-- finite completed quartic interaction sums on a proved common domain;
+- completed interacting-Hamiltonian domain/control beyond the finite quartic interaction itself;
 - interacting completed-space Dyson theory with all required product domains;
 - stronger convergence topologies for Gibbs truncations when justified;
 - infinite-volume or thermodynamic limits with an explicit directed system, observable algebra,

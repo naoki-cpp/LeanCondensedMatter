@@ -122,7 +122,8 @@ creation and annihilation maps are mutual adjoints. Equal-mode mixed bosonic lad
 identified on the maximal single-mode number-operator domain. The project also supplies exact
 domain-aware composition of two `LinearPMap` operators; the completed bosonic quartic vertex uses
 this composition to form the ordered four-ladder monomial without suppressing intermediate domain
-conditions.
+conditions. Finite quartic interactions are also defined on the common intersection of their vertex
+domains, with a dense algebraic core and algebraic/completed compatibility.
 
 These results do not amount to a general unbounded spectral theory. A 2026-10-05 re-survey of
 the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612` confirms that
@@ -200,7 +201,7 @@ The following remain open or only partially covered:
 - compact-resolvent criteria implying trace-class heat operators;
 - closed-form mixed-mode and quartic bosonic weighted-domain characterizations beyond exact
   partial-map composition;
-- common-domain finite sums for completed bosonic interactions;
+- completed interacting-Hamiltonian domain and analytic control beyond finite interaction sums;
 - general interacting completed-space Dyson theory;
 - infinite-volume and thermodynamic limits.
 

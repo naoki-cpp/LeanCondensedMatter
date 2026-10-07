@@ -15,9 +15,10 @@ a genuine meaning on completed bosonic Fock space.  The four unbounded ladder op
 with the exact `LinearPMap.compOnDomain` domain at every stage, so no operator product is formed outside the
 domain on which the preceding result lies in the next operator's domain.
 
-This is the first completed-space interacting operator.  The present file deliberately does not
-replace the exact composition domain by a closed-form weighted `ℓ²` description, nor does it yet
-form finite sums of quartic vertices.
+Finite families of completed quartic vertices are combined on the intersection of their exact
+domains, producing a densely defined quartic-interaction `LinearPMap` that agrees with the existing
+algebraic interaction on the finite-support core. The present file deliberately does not replace
+these exact domains by closed-form weighted `ℓ²` descriptions.
 -/
 
 namespace SecondQuantization
@@ -240,6 +241,103 @@ theorem completedQuarticVertexOperator_denseDomain
   rintro _ ⟨x, rfl⟩
   simpa [algebraicToCompleted] using
     algebraicToCompleted_mem_completedQuarticVertexOperator_domain q x
+
+/-- Common domain of a finite family of completed quartic vertices. -/
+noncomputable def completedQuarticInteractionDomain
+    (support : Finset (Common.QuarticVertexLabel Mode)) :
+    Submodule ℂ (CompletedFockSpace Mode) :=
+  ⨅ q : support, (completedQuarticVertexOperator q.1).domain
+
+/-- Membership in the finite common quartic-interaction domain means membership in every supported
+quartic-vertex domain. -/
+theorem mem_completedQuarticInteractionDomain_iff
+    (support : Finset (Common.QuarticVertexLabel Mode))
+    (ψ : CompletedFockSpace Mode) :
+    ψ ∈ completedQuarticInteractionDomain support ↔
+      ∀ q : support, ψ ∈ (completedQuarticVertexOperator q.1).domain := by
+  simp [completedQuarticInteractionDomain, Submodule.mem_iInf]
+
+private theorem completedQuarticInteractionDomain_le
+    (support : Finset (Common.QuarticVertexLabel Mode)) (q : support) :
+    completedQuarticInteractionDomain support ≤
+      (completedQuarticVertexOperator q.1).domain := by
+  intro ψ hψ
+  exact (mem_completedQuarticInteractionDomain_iff support ψ).1 hψ q
+
+private noncomputable def completedQuarticVertexOnInteractionDomain
+    (support : Finset (Common.QuarticVertexLabel Mode)) (q : support) :
+    completedQuarticInteractionDomain support →ₗ[ℂ] CompletedFockSpace Mode :=
+  (completedQuarticVertexOperator q.1).toFun.comp
+    (Submodule.inclusion (completedQuarticInteractionDomain_le support q))
+
+/-- Finite completed bosonic quartic interaction on the common domain of its supported vertices. -/
+noncomputable def completedQuarticInteractionOn
+    (support : Finset (Common.QuarticVertexLabel Mode))
+    (g : Common.QuarticVertexLabel Mode → ℂ) :
+    CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode where
+  domain := completedQuarticInteractionDomain support
+  toFun :=
+    ∑ q ∈ support.attach, g q.1 • completedQuarticVertexOnInteractionDomain support q
+
+@[simp]
+theorem completedQuarticInteractionOn_domain
+    (support : Finset (Common.QuarticVertexLabel Mode))
+    (g : Common.QuarticVertexLabel Mode → ℂ) :
+    (completedQuarticInteractionOn support g).domain =
+      completedQuarticInteractionDomain support :=
+  rfl
+
+/-- Every algebraic finite-support bosonic Fock vector lies in the common domain of every finite
+completed quartic interaction. -/
+theorem algebraicToCompleted_mem_completedQuarticInteractionDomain
+    (support : Finset (Common.QuarticVertexLabel Mode)) (x : FockSpace Mode) :
+    algebraicToCompleted x ∈ completedQuarticInteractionDomain support := by
+  rw [mem_completedQuarticInteractionDomain_iff]
+  intro q
+  exact algebraicToCompleted_mem_completedQuarticVertexOperator_domain q.1 x
+
+/-- The domain of every finite completed quartic interaction is dense. -/
+theorem completedQuarticInteractionDomain_dense
+    (support : Finset (Common.QuarticVertexLabel Mode)) :
+    Dense ((completedQuarticInteractionDomain support :
+      Submodule ℂ (CompletedFockSpace Mode)) : Set (CompletedFockSpace Mode)) := by
+  apply Dense.mono ?_
+    (Common.algebraicToCompleted_denseRange (Config := Occupation Mode))
+  rintro _ ⟨x, rfl⟩
+  simpa [algebraicToCompleted] using
+    algebraicToCompleted_mem_completedQuarticInteractionDomain support x
+
+/-- The finite completed quartic interaction agrees with the algebraic quartic interaction on the
+finite-support core. -/
+theorem completedQuarticInteractionOn_algebraicCore
+    (support : Finset (Common.QuarticVertexLabel Mode))
+    (g : Common.QuarticVertexLabel Mode → ℂ) (x : FockSpace Mode) :
+    completedQuarticInteractionOn support g
+        ⟨algebraicToCompleted x,
+          algebraicToCompleted_mem_completedQuarticInteractionDomain support x⟩ =
+      algebraicToCompleted (Common.quarticInteractionOn support create annihilate g x) := by
+  classical
+  change
+    (∑ q ∈ support.attach, g q.1 •
+      completedQuarticVertexOnInteractionDomain support q)
+        ⟨algebraicToCompleted x,
+          algebraicToCompleted_mem_completedQuarticInteractionDomain support x⟩ =
+      _
+  simp only [LinearMap.sum_apply, LinearMap.smul_apply]
+  rw [Common.quarticInteractionOn, LinearMap.sum_apply, map_sum]
+  conv_rhs => rw [← Finset.sum_attach]
+  apply Finset.sum_congr rfl
+  intro q hq
+  simp only [LinearMap.smul_apply, map_smul]
+  congr 1
+  change
+    completedQuarticVertexOperator q.1
+        ⟨algebraicToCompleted x,
+          completedQuarticInteractionDomain_le support q
+            (algebraicToCompleted_mem_completedQuarticInteractionDomain support x)⟩ =
+      algebraicToCompleted
+        (Common.quarticVertexOperator create annihilate q.1 x)
+  simpa using completedQuarticVertexOperator_algebraicCore q.1 x
 
 end
 end Bosonic

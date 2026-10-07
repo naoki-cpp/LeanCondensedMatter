@@ -18,5 +18,8 @@ annihilation are likewise realized as closed, densely defined `LinearPMap` weigh
 natural square-root occupation domains. They are mutual adjoints and agree with the algebraic ladder
 operators on the finite-support core. Equal-mode mixed ladder products have maximal domain
 `Dom(Nᵢ)`, where they recover `Nᵢ`, `Nᵢ + 1`, and the completed equal-mode CCR. Ordered quartic
-vertices are defined as exact domain-aware compositions of four completed ladder operators.
+vertices are defined as exact domain-aware compositions of four completed ladder operators. Finite
+quartic interactions are `LinearPMap` sums on the common intersection of their vertex domains; this
+common domain is dense and the interaction agrees with the algebraic finite-support operator on the
+algebraic core.
 -/

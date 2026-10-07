@@ -110,20 +110,21 @@ self-adjoint single-mode number operators and the free Hamiltonian, together wit
 creation and annihilation weighted shifts. The ladder maps are densely defined, closed, and mutual
 adjoints, and they agree with their algebraic counterparts on the finite-support core. Equal-mode
 mixed ladder products have maximal domain `Dom(Nᵢ)` and satisfy the completed number-operator and
-CCR identities. Ordered quartic vertices are now genuine completed-space `LinearPMap` operators
-on their exact iterated ladder-composition domains. Under positive mode energies the representation
-also carries
+CCR identities. Ordered quartic vertices are genuine completed-space `LinearPMap` operators on
+their exact iterated ladder-composition domains. Finite quartic interactions are now `LinearPMap`
+sums on the common intersection of the supported vertex domains; that domain is dense and the
+interaction agrees with the existing algebraic quartic interaction on the finite-support core.
+Under positive mode energies the representation also carries
 the bounded free heat operator, its trace-class identification, and the canonical pure-point Gibbs
 density operator. For finite mode types, every finite-order quartic Dyson coefficient is proved to
-belong to the free-Gibbs domain and the coefficientwise formal linked-cluster theorem is proved. A
-genuine interacting analytic partition-function theorem still requires explicit/common-domain
-control for finite quartic interaction sums and all-order convergence.
+belong to the free-Gibbs domain and the coefficientwise formal linked-cluster theorem is proved. A genuine interacting analytic partition-function theorem still requires interacting-Hamiltonian
+analytic control and all-order convergence.
 
 ## Open work
 
 - pre-normalized higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
 - bosonic interacting Dyson convergence and analytic connected-diagram theory;
-- explicit mixed-mode/quartic weighted domains and common-domain completed interaction sums;
+- explicit mixed-mode/quartic weighted-domain characterizations and interacting-Hamiltonian control;
 - interacting completed-space fermionic perturbation theory;
 - infinite-volume and thermodynamic limits with explicit analytic hypotheses;
 - continued removal of public declarations that serve only proof routing.
