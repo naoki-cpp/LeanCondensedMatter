@@ -5,6 +5,7 @@ Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Brillouin
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
 import Mathlib.Algebra.Star.StarProjection
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Star
@@ -269,6 +270,75 @@ theorem berryCurvature_periodic {Lstar : Submodule ℤ K}
   apply Complex.ofReal_injective
   rw [coe_berryCurvature, coe_berryCurvature,
     data.berryCurvatureComplex_periodic G k u v]
+
+private theorem rankOneProjectorCurvature_eq
+    (φ du dv : H)
+    (hnorm : inner ℂ φ φ = 1)
+    (hu : inner ℂ du φ + inner ℂ φ du = 0)
+    (hv : inner ℂ dv φ + inner ℂ φ dv = 0) :
+    Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace
+      (InnerProductSpace.rankOne ℂ φ φ *
+        ((InnerProductSpace.rankOne ℂ du φ + InnerProductSpace.rankOne ℂ φ du) *
+            (InnerProductSpace.rankOne ℂ dv φ + InnerProductSpace.rankOne ℂ φ dv) -
+          (InnerProductSpace.rankOne ℂ dv φ + InnerProductSpace.rankOne ℂ φ dv) *
+            (InnerProductSpace.rankOne ℂ du φ + InnerProductSpace.rankOne ℂ φ du))) =
+      ((-2 * (inner ℂ du dv).im : ℝ) : ℂ) := by
+  have hu' : inner ℂ du φ = -inner ℂ φ du := by
+    linear_combination hu
+  have hv' : inner ℂ dv φ = -inner ℂ φ dv := by
+    linear_combination hv
+  have htrace (T : H →L[ℂ] H) :
+      ContinuousLinearMap.finiteDimensionalOperatorTrace
+          (InnerProductSpace.rankOne ℂ φ φ * T) =
+        inner ℂ φ (T φ) := by
+    rw [show
+        InnerProductSpace.rankOne ℂ φ φ * T =
+          InnerProductSpace.rankOne ℂ φ (T.adjoint φ) by
+      simp [ContinuousLinearMap.mul_def, InnerProductSpace.rankOne_comp]]
+    simp [ContinuousLinearMap.finiteDimensionalOperatorTrace_apply,
+      InnerProductSpace.trace_rankOne, ContinuousLinearMap.adjoint_inner_left]
+  rw [htrace]
+  simp [ContinuousLinearMap.mul_def, InnerProductSpace.rankOne_apply, hnorm, hu', hv']
+  apply Complex.ext
+  · simp [Complex.mul_re]
+  · simp [Complex.mul_im, inner_conj_symm]
+
+/-- For a rank-one band projector with the derivative supplied by a local differentiated
+eigenvector, the gauge-invariant projector curvature agrees exactly with the existing pointwise
+Berry-curvature API.
+
+The hypotheses are local identities for `P` and `∂P`; no global eigenvector gauge is assumed. -/
+theorem berryCurvature_eq_pointwiseBerryCurvature_of_rankOne
+    {ι : Type*} [Fintype ι] {Lstar : Submodule ℤ K}
+    (projectorData : PeriodicBlochProjector (H := H) Lstar)
+    (spectralData : BerryGeometry.PointwiseEigenbasisData K ι H)
+    (k u v : K) (n : ι)
+    (hprojector :
+      projectorData.projector k =
+        InnerProductSpace.rankOne ℂ (spectralData.eigenbasis n) (spectralData.eigenbasis n))
+    (hderiv_u :
+      projectorData.directionalDerivative k u =
+        InnerProductSpace.rankOne ℂ (spectralData.eigenvectorDerivative u n)
+            (spectralData.eigenbasis n) +
+          InnerProductSpace.rankOne ℂ (spectralData.eigenbasis n)
+            (spectralData.eigenvectorDerivative u n))
+    (hderiv_v :
+      projectorData.directionalDerivative k v =
+        InnerProductSpace.rankOne ℂ (spectralData.eigenvectorDerivative v n)
+            (spectralData.eigenbasis n) +
+          InnerProductSpace.rankOne ℂ (spectralData.eigenbasis n)
+            (spectralData.eigenvectorDerivative v n)) :
+    projectorData.berryCurvature k u v =
+      spectralData.berryCurvature u v n := by
+  apply Complex.ofReal_injective
+  rw [coe_berryCurvature, berryCurvatureComplex, hprojector, hderiv_u, hderiv_v]
+  exact rankOneProjectorCurvature_eq
+    (spectralData.eigenbasis n)
+    (spectralData.eigenvectorDerivative u n)
+    (spectralData.eigenvectorDerivative v n)
+    (spectralData.eigenbasis.inner_eq_one n)
+    (spectralData.differentiatedOrthonormality u n n)
+    (spectralData.differentiatedOrthonormality v n n)
 
 end PeriodicBlochProjector
 
