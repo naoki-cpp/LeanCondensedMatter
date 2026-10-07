@@ -119,13 +119,19 @@ Domain-aware unbounded infrastructure is no longer wholly absent. The repository
 maximal diagonal domains with dense-domain/closedness/adjoint/self-adjointness results for real
 weights, bounded completed CAR operators, and densely defined closed bosonic weighted shifts whose
 creation and annihilation maps are mutual adjoints. Equal-mode mixed bosonic ladder products are
-identified on the maximal single-mode number-operator domain.
+identified on the maximal single-mode number-operator domain. The project also supplies exact
+domain-aware composition of two `LinearPMap` operators; the completed bosonic quartic vertex uses
+this composition to form the ordered four-ladder monomial without suppressing intermediate domain
+conditions.
 
 These results do not amount to a general unbounded spectral theory. A 2026-10-05 re-survey of
 the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612` confirms that
 `LinearPMap` still provides the domain-aware adjoint, dense-domain consequences of
-self-adjointness, and closedness of self-adjoint operators, but no general unbounded self-adjoint
-spectral or functional calculus. The pinned API also does not provide a `LinearPMap` semibounded
+self-adjointness, and closedness of self-adjoint operators, but no composition constructor that
+shrinks two partial maps to the natural operator-product domain and no general unbounded
+self-adjoint spectral or functional calculus. Mathlib's `LinearPMap.comp` instead requires the
+entire inner domain to map into the outer domain and retains that inner domain; the exact restricted
+composition used by interacting completed-space operators remains project-local. The pinned API also does not provide a `LinearPMap` semibounded
 quadratic-form package, positivity package, general resolvent calculus, projection-valued spectral
 measure calculus, or strongly continuous positive heat-semigroup construction. Comparing the
 previous v4.33.1 pin with v4.34.1 reveals no new unbounded functional-calculus layer that closes
@@ -192,7 +198,9 @@ The following remain open or only partially covered:
 - the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
 - unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
 - compact-resolvent criteria implying trace-class heat operators;
-- completed bosonic mixed-mode ladder product-domain theory;
+- closed-form mixed-mode and quartic bosonic weighted-domain characterizations beyond exact
+  partial-map composition;
+- common-domain finite sums for completed bosonic interactions;
 - general interacting completed-space Dyson theory;
 - infinite-volume and thermodynamic limits.
 

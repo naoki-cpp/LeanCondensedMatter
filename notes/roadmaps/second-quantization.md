@@ -99,8 +99,10 @@ also realized as densely defined closed maximal weighted-shift `LinearPMap` oper
 natural square-root occupation domains, with creation and annihilation proved to be mutual adjoints.
 Both sectors agree with the algebraic operators on the finite-support core. Equal-mode mixed
 ladder products have maximal domain `Dom(Nᵢ)` and recover the number operator, its unit shift, and
-the completed equal-mode CCR. The remaining operator-domain work starts with mixed-mode products,
-followed by the interacting completed-space theory
+the completed equal-mode CCR. Ordered quartic vertices are defined on completed Fock space by exact
+domain-aware composition of their four ladder operators. The remaining operator-domain work is to
+identify useful explicit mixed-mode/quartic weighted domains and a common domain for finite
+interaction sums, followed by the interacting completed-space theory
 and all-order Dyson/Taylor convergence (or an explicitly weaker asymptotic/Borel notion where
 appropriate).
 
@@ -108,7 +110,7 @@ appropriate).
 
 - pre-normalized time-ordered insertions, higher Green functions, and source derivatives;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;
-- completed bosonic mixed-mode ladder and interacting product-domain theory;
+- explicit bosonic mixed-mode/quartic weighted domains and common-domain interaction sums;
 - interacting completed-space fermionic perturbation theory;
 - infinite-mode and thermodynamic limits under explicit topological and uniform-estimate hypotheses;
 - low-order examples only where they clarify the general theorem rather than create wrapper APIs.
