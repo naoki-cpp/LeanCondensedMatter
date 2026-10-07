@@ -255,7 +255,7 @@ private theorem mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain
   simpa only [add_neg_cancel_right] using hback
 
 /-- The maximal domain of `aᵢ† aᵢ` is exactly the number-operator domain. -/
-theorem mem_completedNumberOperatorDomain_iff_annihilate_mem_createDomain
+theorem mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain
     (i : Mode) (ψ : CompletedFockSpace Mode) :
     ψ ∈ completedNumberOperatorDomain i ↔
       ∃ hψ : ψ ∈ completedAnnihilateDomain i,
@@ -270,7 +270,7 @@ theorem mem_completedNumberOperatorDomain_iff_annihilate_mem_createDomain
     exact mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain i hψ hout
 
 /-- The maximal domain of `aᵢ aᵢ†` is exactly the number-operator domain. -/
-theorem mem_completedNumberOperatorDomain_iff_create_mem_annihilateDomain
+theorem mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain
     (i : Mode) (ψ : CompletedFockSpace Mode) :
     ψ ∈ completedNumberOperatorDomain i ↔
       ∃ hψ : ψ ∈ completedCreateDomain i,
@@ -351,7 +351,7 @@ theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
           rw [show ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) by
             exact_mod_cast hcoord]
           exact hsqrt]
-    
+
 /-- On its product domain, `aᵢ aᵢ† = Nᵢ + 1`. -/
 theorem completedAnnihilateAfterCreate_eq_numberOperator_add_id (i : Mode) :
     completedAnnihilateAfterCreate i =
@@ -382,7 +382,7 @@ theorem completedAnnihilateAfterCreate_eq_numberOperator_add_id (i : Mode) :
   ring
 
 /-- Equal-mode completed bosonic CCR on the explicit common product domain `Dom(Nᵢ)`. -/
-theorem completed_annihilate_create_commutator (i : Mode) :
+theorem completedComm_annihilate_create_self (i : Mode) :
     completedAnnihilateAfterCreate i - completedCreateAfterAnnihilate i =
       (completedNumberOperatorDomain i).subtype := by
   rw [completedAnnihilateAfterCreate_eq_numberOperator_add_id,
