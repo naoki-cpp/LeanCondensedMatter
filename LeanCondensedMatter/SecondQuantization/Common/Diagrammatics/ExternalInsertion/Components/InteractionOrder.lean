@@ -33,6 +33,15 @@ abbrev ExternalInsertionDiagram.ComponentInteractionOrders
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card)
 
+/-- Canonical increasing interaction-vertex order on every connected component. -/
+noncomputable def ExternalInsertionDiagram.canonicalComponentInteractionOrders
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    d.ComponentInteractionOrders :=
+  fun B =>
+    ((interactionSector
+      (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).toEquiv
+
 /-- An order-preserving interleaving of component-local interaction slots into the ambient
 interaction-time slots. Zero-size component blocks are retained. -/
 abbrev ExternalInsertionDiagram.ComponentInteractionOrderShuffle
