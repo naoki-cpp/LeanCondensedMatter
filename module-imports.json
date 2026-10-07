@@ -155,6 +155,14 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Dyson.Unitary",
+      "sourceFile": "LeanCondensedMatter/Analysis/Dyson/Unitary.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Dyson.Uniqueness"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Dyson.Volterra",
       "sourceFile": "LeanCondensedMatter/Analysis/Dyson/Volterra.lean",
       "imports": [
@@ -172,6 +180,7 @@
         "LeanCondensedMatter.Analysis.Dyson.FirstVariation",
         "LeanCondensedMatter.Analysis.Dyson.Hypotheses",
         "LeanCondensedMatter.Analysis.Dyson.Uniqueness",
+        "LeanCondensedMatter.Analysis.Dyson.Unitary",
         "LeanCondensedMatter.Analysis.Dyson.Volterra"
       ],
       "externalImportCount": 0
@@ -805,10 +814,8 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
-        "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
-        "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition"
+        "LeanCondensedMatter.Combinatorics.FamilySlotShuffle"
       ],
       "externalImportCount": 1
     },
@@ -2727,7 +2734,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/UnitaryPerturbation.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Dyson.Uniqueness",
+        "LeanCondensedMatter.Analysis.Dyson.Unitary",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula"
       ],
       "externalImportCount": 0

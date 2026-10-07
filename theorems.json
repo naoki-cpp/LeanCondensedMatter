@@ -2708,48 +2708,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size))\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ)\n  (τ : Fin (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) → ℝ),\n  (Combinatorics.FamilySlotShuffleTo.ambientIntegrand (Combinatorics.FamilySlotShuffle.cons size outer tail)\n      localIntegrand fun j => τ (Fin.cast ⋯ j)) =\n    outer.integrand (localIntegrand 0)\n      (Combinatorics.FamilySlotShuffleTo.ambientIntegrand tail fun i => localIntegrand i.succ) τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffle.cons_integrand",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
-    "externalAxioms": [],
-    "docString": "The integrand of a family shuffle assembled from an outer head/tail shuffle is the binary\nintegrand of the head block and its shuffled tail. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {k : ℕ} {size : Fin (k + 1) → ℕ} (shuffle : Combinatorics.FamilySlotShuffle size),\n  Combinatorics.FamilySlotShuffle.cons size shuffle.outerShuffle shuffle.tailShuffle = shuffle",
     "standardAxioms": [
@@ -3243,7 +3201,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.FamilySlotShuffle.cons_integrand",
       "intervalIntegral.orderedSimplexIntegral_cast",
       "intervalIntegral.orderedSimplexIntegral_congr"
     ],
@@ -18903,6 +18860,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.eqOn_evolution_of_volterra_of_bound",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
       "Dyson.norm_coeff_le_of_bound",
       "Dyson.norm_integrand_le_of_bound"
     ],
@@ -18911,10 +18869,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.eqOn_evolution_of_volterra_of_bound",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
       "Dyson.norm_coeff_le_of_bound",
       "Dyson.norm_integrand_le_of_bound"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18992,7 +18951,9 @@
     "dependents": [
       "Dyson.continuousOn_evolution_of_bound",
       "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "Dyson.hasSum_intervalIntegral_integrand_of_bound"
+      "Dyson.hasSum_intervalIntegral_integrand_of_bound",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -19000,9 +18961,11 @@
     "compiledConsumers": [
       "Dyson.continuousOn_evolution_of_bound",
       "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "Dyson.hasSum_intervalIntegral_integrand_of_bound"
+      "Dyson.hasSum_intervalIntegral_integrand_of_bound",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19040,6 +19003,7 @@
       "Dyson.eqOn_evolution_of_volterra_of_bound",
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "Dyson.hasSum_intervalIntegral_integrand_of_bound",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
       "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
     "dependencies": [],
@@ -19050,9 +19014,10 @@
       "Dyson.eqOn_evolution_of_volterra_of_bound",
       "Dyson.evolution_eq_one_sub_integral_of_bound",
       "Dyson.hasSum_intervalIntegral_integrand_of_bound",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
       "SecondQuantization.Common.hasSum_dysonTraceCoeff"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19308,8 +19273,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
     ],
     "dependencies": [
       "Dyson.ContinuousBoundedInteraction.interaction_continuous",
@@ -19321,8 +19286,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -19674,8 +19639,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound"
     ],
     "dependencies": [
@@ -19687,8 +19652,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.eqOn_evolution_of_volterra_of_bound",
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_eq_one_sub_integral_of_bound"
     ],
     "compiledConsumerCount": 4,
@@ -19750,6 +19715,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : CStarAlgebra A] {V : ℝ → A},\n  (∀ (s : ℝ), star (V s) = V s) →\n    ∀ (lam : ℂ),\n      star lam = -lam →\n        ∀ {β M t : ℝ},\n          0 ≤ β →\n            Dyson.ContinuousBoundedInteraction V β M →\n              t ∈ Set.Icc 0 β →\n                star (Dyson.evolution V lam t) * Dyson.evolution V lam t = 1 ∧\n                  Dyson.evolution V lam t * star (Dyson.evolution V lam t) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Dyson.evolution_unitary_relations_of_star_eq",
+    "module": "LeanCondensedMatter.Analysis.Dyson.Unitary",
+    "externalAxioms": [],
+    "docString": "The two unitary identities for a self-adjoint Dyson interaction with skew-adjoint coupling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {A : Type u_1} [inst : NormedRing A] [inst_1 : NormedAlgebra ℂ A] (V : ℝ → A) (lam : ℂ), Dyson.evolution V lam 0 = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -19769,8 +19779,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_zero_time"
     ],
     "dependencies": [
@@ -19779,8 +19789,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_zero_time"
     ],
     "compiledConsumerCount": 3,
@@ -19996,16 +20006,16 @@
     "directWrapperOf": null,
     "dependents": [
       "Dyson.eqOn_of_volterra_of_bound",
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.eqOn_of_volterra_of_bound",
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -20509,6 +20519,58 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : CStarAlgebra A] {V : ℝ → A},\n  (∀ (s : ℝ), star (V s) = V s) →\n    ∀ (lam : ℂ),\n      star lam = -lam →\n        ∀ {β M t : ℝ},\n          0 ≤ β →\n            Dyson.ContinuousBoundedInteraction V β M →\n              t ∈ Set.Icc 0 β → Dyson.evolution V lam t * star (Dyson.evolution V lam t) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Dyson.mul_star_evolution_eq_one_of_star_eq",
+    "module": "LeanCondensedMatter.Analysis.Dyson.Unitary",
+    "externalAxioms": [],
+    "docString": "A Dyson evolution with self-adjoint interaction and skew-adjoint scalar coupling satisfies\n`U(t) U(t)† = 1`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Dyson.evolution_unitary_relations_of_star_eq",
+      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "Dyson.BoundedInteraction.interaction_norm_le",
+      "Dyson.ContinuousBoundedInteraction.interaction_continuous",
+      "Dyson.ContinuousBoundedInteraction.toBoundedInteraction",
+      "Dyson.continuousOn_evolution_of_bound",
+      "Dyson.evolution_eq_one_sub_integral_of_bound",
+      "Dyson.evolution_zero",
+      "Dyson.hasDerivWithinAt_of_volterra"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Dyson.evolution_unitary_relations_of_star_eq",
+      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {A : Type u_1} [inst : NormedRing A] [inst_1 : NormedAlgebra ℂ A] {V : ℝ → A} {β M : ℝ},\n  Dyson.BoundedInteraction V β M → ∀ (n : ℕ) {τ : ℝ}, τ ∈ Set.Icc 0 β → ‖Dyson.coeff V n τ‖ ≤ Dyson.majorant M τ n",
     "standardAxioms": [
       "Classical.choice",
@@ -20739,6 +20801,56 @@
       "Dyson.summable_term_of_bound"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : CStarAlgebra A] {V : ℝ → A},\n  (∀ (s : ℝ), star (V s) = V s) →\n    ∀ (lam : ℂ),\n      star lam = -lam →\n        ∀ {β M t : ℝ},\n          0 ≤ β →\n            Dyson.ContinuousBoundedInteraction V β M →\n              t ∈ Set.Icc 0 β → star (Dyson.evolution V lam t) * Dyson.evolution V lam t = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Dyson.star_mul_evolution_eq_one_of_star_eq",
+    "module": "LeanCondensedMatter.Analysis.Dyson.Unitary",
+    "externalAxioms": [],
+    "docString": "A Dyson evolution with self-adjoint interaction and skew-adjoint scalar coupling satisfies\n`U(t)† U(t) = 1`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Dyson.evolution_unitary_relations_of_star_eq",
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "Dyson.ContinuousBoundedInteraction.interaction_continuous",
+      "Dyson.continuousOn_evolution_of_bound",
+      "Dyson.evolution_eq_one_sub_integral_of_bound",
+      "Dyson.evolution_zero",
+      "Dyson.hasDerivWithinAt_of_volterra"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Dyson.evolution_unitary_relations_of_star_eq",
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46162,48 +46274,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {ι : Type u_2} (b : HilbertBasis ι ℂ H) (t : ℝ) (i : ι),\n  (QuantumTheory.LinearResponse.evolveHilbertBasis system b t) i =\n    (QuantumTheory.LinearResponse.freePropagator system t) (b i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.evolveHilbertBasis_apply",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ψ : QuantumTheory.StateVector H) (t : ℝ),\n  QuantumTheory.LinearResponse.evolvePureState system (QuantumTheory.PureState.ofStateVector ψ) t =\n    QuantumTheory.PureState.ofStateVector (QuantumTheory.LinearResponse.evolveState system ψ t)",
     "standardAxioms": [
@@ -46723,7 +46793,6 @@
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
       "QuantumTheory.LinearResponse.evolveDensityOperator_op",
-      "QuantumTheory.LinearResponse.evolveHilbertBasis_apply",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence.0.QuantumTheory.LinearResponse.inner_freePropagator_apply_eq_heisenbergEvolution"
     ],
@@ -47399,7 +47468,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -47420,10 +47489,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv",
       "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49477,7 +49545,8 @@
     "dependents": [
       "QuantumTheory.LinearResponse.isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.isSelfAdjoint_heisenbergEvolution"
@@ -49487,9 +49556,10 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49903,7 +49973,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (lam : ℝ) {β M t : ℝ},\n      0 ≤ β →\n        0 ≤ M →\n          Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) →\n            (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n              t ∈ Set.Icc 0 β →\n                QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t *\n                    star (QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t) =\n                  1",
     "standardAxioms": [
       "Classical.choice",
@@ -49911,7 +49981,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -49922,24 +49992,17 @@
     "docString": "For a pointwise Hermitian perturbation, the interaction-picture Dyson propagator also satisfies\n`U(t) U(t)† = 1`. The proof applies Grönwall to the right-product defect, whose derivative is a\nhomogeneous commutator with `V_I(t)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
-    ],
+    "dependents": [],
     "dependencies": [
-      "Dyson.continuousOn_evolution_of_bound",
-      "Dyson.evolution_eq_one_sub_integral_of_bound",
-      "Dyson.evolution_zero",
-      "Dyson.hasDerivWithinAt_of_volterra",
+      "Dyson.mul_star_evolution_eq_one_of_star_eq",
       "QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.star_timeDependentPhysicalDysonCoupling_eq_neg",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation.0.QuantumTheory.LinearResponse.continuousTimeDependentDysonInteraction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52251,11 +52314,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv",
       "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.norm_freePropagator_apply"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52277,7 +52339,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52289,14 +52351,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
     ],
     "dependencies": [
-      "Dyson.continuousOn_evolution_of_bound",
-      "Dyson.evolution_eq_one_sub_integral_of_bound",
-      "Dyson.evolution_zero",
-      "Dyson.hasDerivWithinAt_of_volterra",
+      "Dyson.star_mul_evolution_eq_one_of_star_eq",
       "QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.star_timeDependentPhysicalDysonCoupling_eq_neg",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation.0.QuantumTheory.LinearResponse.continuousTimeDependentDysonInteraction"
@@ -52304,10 +52362,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52342,16 +52399,18 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52741,8 +52800,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "Dyson.evolution_unitary_relations_of_star_eq",
+      "QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.star_timeDependentPhysicalDysonCoupling_eq_neg",
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation.0.QuantumTheory.LinearResponse.continuousTimeDependentDysonInteraction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -152593,48 +152654,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {R t : ℝ} {rest : Fin n → ℝ},\n  |t| ≤ R →\n    rest ∈ intervalIntegral.orderedSimplexTimeCube n R →\n      Fin.cons t rest ∈ intervalIntegral.orderedSimplexTimeCube (n + 1) R",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds.0.intervalIntegral.finCons_mem_orderedSimplexTimeCube",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) (C : ℝ),\n  0 ≤ C →\n    (∀ x ∈ intervalIntegral.orderedSimplexTimeCube n |β|, ‖f x‖ ≤ C) →\n      ‖intervalIntegral.orderedSimplexIntegral n β f‖ ≤ C * |β| ^ n",
     "standardAxioms": [
       "Classical.choice",
@@ -163076,16 +163095,18 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185085,8 +185106,8 @@
       "intervalIntegral.orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds.0.intervalIntegral.finCons_mem_orderedSimplexTimeCube",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds.0.intervalIntegral.norm_orderedSimplexIntegral_le_of_cube_bound"
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds.0.intervalIntegral.norm_orderedSimplexIntegral_le_of_cube_bound",
+      "intervalIntegral.finCons_mem_orderedSimplexTimeCube"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -185130,7 +185151,9 @@
     "dependents": [
       "intervalIntegral.orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "intervalIntegral.finCons_mem_orderedSimplexTimeCube"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -185331,6 +185354,50 @@
       "intervalIntegral.orderedSimplexIntegral_finsetSum"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {R S t : ℝ} {rest : Fin n → ℝ},\n  R ≤ S →\n    |t| ≤ S →\n      rest ∈ intervalIntegral.orderedSimplexTimeCube n R →\n        Fin.cons t rest ∈ intervalIntegral.orderedSimplexTimeCube (n + 1) S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "intervalIntegral.finCons_mem_orderedSimplexTimeCube",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
+    "externalAxioms": [],
+    "docString": "Prepending one coordinate sends a smaller centered cube into a larger one whenever the\nnew coordinate also lies within the larger radius. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
+      "intervalIntegral.MeasurableLocallyBounded.finCons"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "intervalIntegral.MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary",
+      "intervalIntegral.MeasurableLocallyBounded.finCons"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
