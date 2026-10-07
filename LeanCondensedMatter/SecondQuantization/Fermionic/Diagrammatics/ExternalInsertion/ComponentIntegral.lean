@@ -91,8 +91,14 @@ private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleIn
         Finset.mem_univ _⟩) =
       τ (shuffle.slotEquiv ⟨B, j⟩)
   apply congrArg τ
-  convert d.assembleInteractionOrder_symm_apply
-    d.canonicalComponentInteractionOrders shuffle B j using 1
+  have hslot :=
+    d.assembleInteractionOrder_symm_apply
+      d.canonicalComponentInteractionOrders shuffle B j
+  rw [← hslot]
+  apply congrArg
+    (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+  apply Subtype.ext
+  rfl
 
 /-- The interaction-order shuffle orbit of an arbitrary external-insertion diagram factors into
 the fixed external regrouping sign times the product of the standalone component amplitudes. -/
