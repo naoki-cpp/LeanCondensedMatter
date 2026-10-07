@@ -208,9 +208,11 @@ private theorem mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain
       have h := congrArg (fun q : Occupation Mode => q i) hrepr
       simpa only [createOccupation_apply_same] using h
     conv_rhs => rw [← hrepr]
-    rw [(createOccupation_injective i).extend_apply,
-      Common.completedDiagonalOperator_apply]
-    dsimp [y]
+    rw [(createOccupation_injective i).extend_apply]
+    change
+      (n i : ℂ) * ψ n =
+        (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) *
+          (completedAnnihilate i ⟨ψ, hψ⟩) (removeOccupation i n)
     rw [completedAnnihilate_apply]
     change
       (n i : ℂ) * ψ n =
