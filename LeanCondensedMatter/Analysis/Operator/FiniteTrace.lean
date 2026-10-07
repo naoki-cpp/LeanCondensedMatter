@@ -75,7 +75,7 @@ theorem finiteDimensionalOperatorTrace_mul_comm
   exact LinearMap.trace_mul_comm ℂ (left : H →ₗ[ℂ] H) (right : H →ₗ[ℂ] H)
 
 /-- Ordinary finite-dimensional trace intertwines the operator adjoint with complex conjugation. -/
-theorem finiteDimensionalOperatorTrace_star
+theorem finiteDimensionalOperatorTrace_star [CompleteSpace H]
     (operator : H →L[ℂ] H) :
     finiteDimensionalOperatorTrace (H := H) (star operator) =
       star (finiteDimensionalOperatorTrace (H := H) operator) := by
