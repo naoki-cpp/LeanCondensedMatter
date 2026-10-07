@@ -55,13 +55,9 @@ theorem BoundedFreeSystem.hamiltonian_selfAdjoint :
 noncomputable def schrodingerGenerator : H →L[ℂ] H :=
   (-(Complex.I / (system.hbar : ℂ))) • system.hamiltonian.1
 
-/-- The generator scaled by a real time parameter. -/
-noncomputable def timeScaledGenerator (t : ℝ) : H →L[ℂ] H :=
-  (t : ℂ) • schrodingerGenerator system
-
 /-- The free Schrödinger propagator `U₀(t) = exp (-(i t / ℏ) H₀)`. -/
 noncomputable def freePropagator (t : ℝ) : H →L[ℂ] H :=
-  NormedSpace.exp (timeScaledGenerator system t)
+  NormedSpace.exp ((t : ℂ) • schrodingerGenerator system)
 
 /-- The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled
 by `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic
@@ -73,7 +69,7 @@ private theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
   unfold freePropagator
   rw [LinearPMap.boundedUnitaryEvolution_eq_exp]
   congr 1
-  simp only [timeScaledGenerator, schrodingerGenerator, smul_smul, div_eq_mul_inv]
+  simp only [schrodingerGenerator, smul_smul, div_eq_mul_inv]
   congr 1
   ring
 

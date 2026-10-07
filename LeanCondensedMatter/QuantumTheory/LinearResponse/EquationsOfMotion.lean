@@ -38,7 +38,7 @@ theorem hasDerivAt_freePropagator (t : ℝ) :
   have h := hasDerivAt_exp_smul_const' (schrodingerGenerator system) t
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at h
-  simpa only [freePropagator, timeScaledGenerator, Complex.coe_smul] using h
+  simpa only [freePropagator, Complex.coe_smul] using h
 
 /-- The negative-time propagator is differentiable with generator `-G`, where
 `G = -(i/ℏ) H₀`. -/
@@ -48,7 +48,7 @@ theorem hasDerivAt_freePropagator_neg (t : ℝ) :
   have h := hasDerivAt_exp_smul_const' (-schrodingerGenerator system) t
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at h
-  simpa only [freePropagator, timeScaledGenerator, Complex.coe_smul, smul_neg,
+  simpa only [freePropagator, Complex.coe_smul, smul_neg,
     neg_smul] using h
 
 /-- The constant Schrödinger generator commutes with every free propagator. -/
@@ -57,7 +57,7 @@ theorem schrodingerGenerator_commute_freePropagator (t : ℝ) :
   have h : Commute (schrodingerGenerator system)
       ((t : ℂ) • schrodingerGenerator system) :=
     (Commute.refl (schrodingerGenerator system)).smul_right (t : ℂ)
-  simpa [freePropagator, timeScaledGenerator] using h.exp_right
+  simpa [freePropagator] using h.exp_right
 
 /-- Explicit bounded Schrödinger equation
 `dψ/dt = -(i/ℏ) H₀ ψ`. -/
