@@ -41,7 +41,8 @@ theorem mem_compDomain_iff (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x : E) :
 theorem compDomain_le_right (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
     compDomain g f ≤ f.domain := by
   intro x hx
-  exact ((mem_compDomain_iff g f x).1 hx).1
+  rcases (mem_compDomain_iff g f x).1 hx with ⟨hxf, _⟩
+  exact hxf
 
 private def compIntoDomain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
     compDomain g f →ₗ[R] g.domain :=
