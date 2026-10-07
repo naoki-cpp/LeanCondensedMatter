@@ -90,7 +90,7 @@ theorem ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInt
       exact v.2
     obtain ⟨e, he⟩ := (d.mem_externallySupportedInteractionPart v).1 hv
     refine ⟨e, ?_⟩
-    exact ((d.vertexGraph.mem_componentBlock (Sum.inr v) (Sum.inl e)).1 he).symm
+    exact (d.vertexGraph.mem_componentBlock (Sum.inr v) (Sum.inl e)).1 he
 
 private theorem ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff
     {S : Finset (Fin N)}
@@ -112,12 +112,14 @@ private theorem ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff
       simp [x]
     cases hx : x with
     | inl e =>
+        rw [hx] at hi
         rw [hi, externalInsertionSlotLegSplitting_external]
         change ComponentMeetsExternal
           (d.vertexGraph.componentBlock (Sum.inl e))
         exact ⟨e, d.vertexGraph.self_mem_componentBlock (Sum.inl e)⟩
     | inr p =>
         obtain ⟨v, l⟩ := p
+        rw [hx] at hi
         rw [hi, externalInsertionSlotLegSplitting_left_interaction]
         let vS : ↥S := ⟨v.1, hT v.2⟩
         change ComponentMeetsExternal
@@ -172,8 +174,11 @@ theorem ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionP
       ComponentMeetsExternal
         (d.vertexGraph.componentBlock
           (externalInsertionVertexOfLeg (d.pairing.partner leg))) := by
+    change ComponentMeetsExternal
+      ((d.pairing.vertexGraph (externalInsertionVertexOfLeg (E := E))).componentBlock
+        (externalInsertionVertexOfLeg (d.pairing.partner leg)))
     rw [← hblock]
-    exact hmeet
+    simpa [ExternalInsertionDiagram.vertexGraph] using hmeet
   obtain ⟨j, hj⟩ :=
     (d.exists_externalSupportLeftSlot_iff (d.pairing.partner leg)).2 hpartner
   exact ⟨j, hj.symm⟩
