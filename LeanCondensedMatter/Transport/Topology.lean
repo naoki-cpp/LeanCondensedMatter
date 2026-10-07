@@ -71,6 +71,28 @@ structure PeriodicBlochProjector (Lstar : Submodule ℤ K) where
   /-- Smooth momentum dependence. -/
   smooth : ContDiff ℝ ∞ projector
 
+/-- Finite-band clean Bloch data with an explicitly supplied occupied spectral projector.
+
+The projector is characterized without a global eigenvector gauge: on every Hamiltonian
+eigenvector it acts as the identity below the Fermi level and as zero above it. The separate
+Fermi-gap field excludes the boundary case. This is the first vertical-slice boundary; constructing
+the projector from functional calculus can be added later without changing downstream topology. -/
+structure GappedBlochSystem (Lstar : Submodule ℤ K) [FiniteDimensional ℂ H] where
+  /-- Smooth periodic self-adjoint Bloch Hamiltonian. -/
+  blochHamiltonian : PeriodicBlochHamiltonian (H := H) Lstar
+  /-- Fermi energy separating occupied and unoccupied bands. -/
+  fermiLevel : ℝ
+  /-- The Fermi level lies in the resolvent set at every momentum. -/
+  fermiGap : blochHamiltonian.IsFermiGapped fermiLevel
+  /-- Smooth periodic occupied projector. -/
+  occupiedProjector : PeriodicBlochProjector (H := H) Lstar
+  /-- Spectral characterization of the occupied projector on Hamiltonian eigenvectors. -/
+  occupiedProjector_apply_eigenvector :
+    ∀ (k : K) (energy : ℝ) (x : H),
+      blochHamiltonian.hamiltonian k x = (energy : ℂ) • x →
+        occupiedProjector.projector k x =
+          if energy < fermiLevel then x else 0
+
 end
 
 end QuantumTheory.Transport.Topology
