@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
