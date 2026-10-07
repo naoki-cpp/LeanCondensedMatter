@@ -68,7 +68,7 @@ private theorem sign_sigmaCongrRight_mulSingle
       rw [Equiv.Perm.extendDomain_apply_image]
       simp [sigmaFiberEquiv, Pi.mulSingle_apply]
     · rw [Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simpa using hji)]
-      simp [Pi.mulSingle_apply, hji]
+      simp [hji]
   rw [hperm, Equiv.Perm.sign_extendDomain]
 
 private theorem sign_sigmaCongrRight_eq_prod
