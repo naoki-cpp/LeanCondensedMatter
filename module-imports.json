@@ -1681,7 +1681,7 @@
       "imports": [
         "LeanCondensedMatter.Permutation.ConnectedCycleSeries"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Permutation",
@@ -2954,6 +2954,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/ProductDomain.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace.lean",
       "imports": [
@@ -2961,7 +2970,8 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain"
       ],
       "externalImportCount": 0
     },

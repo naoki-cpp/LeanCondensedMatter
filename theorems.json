@@ -8459,7 +8459,7 @@
     "dependents": [
       "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
       "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_tracePowerTransform"
@@ -8469,7 +8469,7 @@
     "compiledConsumers": [
       "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
       "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -8505,7 +8505,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.coeff_permutationConnectedCycleSeries",
@@ -8514,7 +8514,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -8550,7 +8550,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [
       "Combinatorics.coeff_formalTraceLogOneSubSeries"
@@ -8558,7 +8558,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -8594,7 +8594,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.coeff_permutationConnectedCycleSeries",
@@ -8603,7 +8603,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -9588,62 +9588,12 @@
     ],
     "dependencies": [
       "Combinatorics.coeff_formalTraceLogOneSubSeries",
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog",
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.trace_diagonal_pow"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ),\n  ζ ≠ 0 → Combinatorics.permutationConnectedCycleSeries ζ K = -ζ⁻¹ • Combinatorics.formalTraceLogOneSubSeries ζ K",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog",
-    "module": "LeanCondensedMatter.Permutation.TraceLog",
-    "externalAxioms": [],
-    "docString": "Formal series form of the trace-log identity for `ζ ≠ 0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
-    ],
-    "dependencies": [
-      "Combinatorics.coeff_formalTraceLogOneSubSeries",
-      "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
-      "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
-      "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_log_complex_of_pos",
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.neg_pow_mul_neg_one_pow_succ"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -10042,6 +9992,55 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.assignmentSingleCycleContributionOne_eq_sum_cycleAssignmentKernelSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ),\n  ζ • Combinatorics.permutationConnectedCycleSeries ζ K = -Combinatorics.formalTraceLogOneSubSeries ζ K",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog",
+    "module": "LeanCondensedMatter.Permutation.TraceLog",
+    "externalAxioms": [],
+    "docString": "Division-free formal trace-log identity for arbitrary exchange weight.\n\nMultiplying the connected-cycle series by `ζ` gives the negative coefficientwise trace-log\nseries, including at the `ζ = 0` boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
+    ],
+    "dependencies": [
+      "Combinatorics.coeff_formalTraceLogOneSubSeries",
+      "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
+      "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
+      "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
+      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_log_complex_of_pos",
+      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.neg_pow_mul_neg_one_pow_succ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -94760,6 +94759,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.completedAnnihilateAfterCreate i =\n    (SecondQuantization.Bosonic.completedNumberOperatorDomain i).subtype +\n      have this := (SecondQuantization.Bosonic.completedNumberOperator i).toFun;\n      this",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "On the common product domain, `aᵢ aᵢ† = 1 + Nᵢ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedComm_annihilate_create_self"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedComm_annihilate_create_self"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  (SecondQuantization.Bosonic.completedAnnihilate i).adjoint = SecondQuantization.Bosonic.completedCreate i",
     "standardAxioms": [
       "Classical.choice",
@@ -94815,7 +94859,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -94827,7 +94871,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_same",
@@ -94837,9 +94885,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95080,6 +95132,59 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (ψ : ↥(SecondQuantization.Bosonic.completedNumberOperatorDomain i)),\n  ↑(SecondQuantization.Bosonic.completedAnnihilate i) ⟨↑ψ, ⋯⟩ ∈ SecondQuantization.Bosonic.completedCreateDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "On `Dom(Nᵢ)`, annihilation lands in the creation domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_injective",
+      "SecondQuantization.Bosonic.sqrt_natCast_mul_self",
+      "SecondQuantization.Common.completedCoordinatePullback_apply",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateIntoCreateDomain"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.completedBasisState n ∈ SecondQuantization.Bosonic.completedAnnihilateDomain i",
     "standardAxioms": [
       "Classical.choice",
@@ -95259,6 +95364,101 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.completedAnnihilateAfterCreate i -\n      SecondQuantization.Bosonic.completedCreateAfterAnnihilate i =\n    (SecondQuantization.Bosonic.completedNumberOperatorDomain i).subtype",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedComm_annihilate_create_self",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "Equal-mode completed bosonic CCR on the explicit common product domain `Dom(Nᵢ)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.completedCreateAfterAnnihilate i =\n    (SecondQuantization.Bosonic.completedNumberOperator i).toFun",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "On its product domain, `aᵢ† aᵢ = Nᵢ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator",
+      "SecondQuantization.Bosonic.completedComm_annihilate_create_self",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.sqrt_natCast_mul_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator",
+      "SecondQuantization.Bosonic.completedComm_annihilate_create_self",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  (SecondQuantization.Bosonic.completedCreate i).adjoint = SecondQuantization.Bosonic.completedAnnihilate i",
     "standardAxioms": [
@@ -95315,7 +95515,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -95327,7 +95527,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_same",
@@ -95338,9 +95542,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95572,6 +95780,62 @@
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (ψ : ↥(SecondQuantization.Bosonic.completedNumberOperatorDomain i)),\n  ↑(SecondQuantization.Bosonic.completedCreate i) ⟨↑ψ, ⋯⟩ ∈ SecondQuantization.Bosonic.completedAnnihilateDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "On `Dom(Nᵢ)`, creation lands in the annihilation domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_injective",
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.sqrt_natCast_mul_self",
+      "SecondQuantization.Common.completedCoordinateEmbedding_apply",
+      "SecondQuantization.Common.completedDiagonalOperator_apply",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedCreateIntoAnnihilateDomain"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95874,6 +96138,108 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.completedNumberOperatorDomain i ≤ SecondQuantization.Bosonic.completedAnnihilateDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "The number-operator domain lies in the annihilation domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateFromNumberDomain"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.completedNumberOperatorDomain i ≤ SecondQuantization.Bosonic.completedCreateDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "The number-operator domain lies in the creation domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_add_one_le_norm_natCast_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedCreateFromNumberDomain"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96215,7 +96581,10 @@
     "dependents": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
@@ -96229,6 +96598,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
@@ -96239,7 +96611,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
@@ -96253,11 +96628,14 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 19,
+    "compiledConsumerCount": 25,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96335,14 +96713,18 @@
     "dependents": [
       "SecondQuantization.Bosonic.completedAnnihilate_apply",
       "SecondQuantization.Bosonic.completedAnnihilate_basisState",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.completedCreate_apply",
       "SecondQuantization.Bosonic.completedCreate_basisState",
       "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.removeOccupation_createOccupation"
@@ -96353,17 +96735,21 @@
       "SecondQuantization.Bosonic.completedAnnihilate",
       "SecondQuantization.Bosonic.completedAnnihilate_apply",
       "SecondQuantization.Bosonic.completedAnnihilate_basisState",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.completedCreate",
       "SecondQuantization.Bosonic.completedCreate_apply",
       "SecondQuantization.Bosonic.completedCreate_basisState",
       "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96397,7 +96783,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
@@ -96405,6 +96793,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "dependencies": [
@@ -96416,7 +96805,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
@@ -96424,9 +96815,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99785,6 +100177,90 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)),\n  ψ ∈ SecondQuantization.Bosonic.completedNumberOperatorDomain i ↔\n    ∃ (hψ : ψ ∈ SecondQuantization.Bosonic.completedAnnihilateDomain i),\n      ↑(SecondQuantization.Bosonic.completedAnnihilate i) ⟨ψ, hψ⟩ ∈ SecondQuantization.Bosonic.completedCreateDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "The maximal domain of `aᵢ† aᵢ` is exactly the number-operator domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)),\n  ψ ∈ SecondQuantization.Bosonic.completedNumberOperatorDomain i ↔\n    ∃ (hψ : ψ ∈ SecondQuantization.Bosonic.completedCreateDomain i),\n      ↑(SecondQuantization.Bosonic.completedCreate i) ⟨ψ, hψ⟩ ∈ SecondQuantization.Bosonic.completedAnnihilateDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": "The maximal domain of `aᵢ aᵢ†` is exactly the number-operator domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  A ∈ SecondQuantization.Bosonic.freeGibbsDomain ε β ↔ SecondQuantization.Bosonic.freeGibbsSummable ε β A",
     "standardAxioms": [
@@ -101072,7 +101548,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -101091,9 +101569,11 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.createOccupationEquivPositive",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101250,17 +101730,29 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110223,18 +110715,22 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedCoordinateEmbedding_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedCoordinateEmbedding_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110421,10 +110917,12 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateEmbedding_basisState",
@@ -110434,12 +110932,14 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.completedAnnihilatePullback_basisState_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110777,6 +111277,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedDiagonalHeatOperator_apply_of_eigenvector",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
@@ -110790,6 +111291,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedDiagonalHeatOperator_apply_of_eigenvector",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
@@ -110799,7 +111301,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_isFormalAdjoint_conj",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118017,7 +118519,9 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain"
+      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [
       "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
@@ -118026,9 +118530,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain"
+      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118062,6 +118568,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
       "SecondQuantization.Common.algebraicToCompleted_mem_completedDiagonalDomain",
       "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
@@ -118069,6 +118579,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_domain_le_conj",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
     ],
@@ -118076,6 +118588,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
       "SecondQuantization.Common.algebraicToCompleted_mem_completedDiagonalDomain",
       "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
       "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
@@ -118083,10 +118599,12 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_domain_le_conj",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160513,13 +161031,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -160578,48 +161096,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (w : ι → ℂ) (m : ℕ),\n  Matrix.diagonal w ^ m = Matrix.diagonal fun i => w i ^ m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.diagonal_pow",
-    "module": "LeanCondensedMatter.Permutation.TraceLog",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.trace_diagonal_pow"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.trace_diagonal_pow"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (ζ : ℂ) (m : ℕ), (-ζ) ^ m * (-1) ^ (m + 1) = -ζ ^ m",
     "standardAxioms": [
       "Classical.choice",
@@ -160639,57 +161115,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (w : ι → ℂ) (m : ℕ),\n  (Matrix.diagonal w ^ m).trace = ∑ i, w i ^ m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.trace_diagonal_pow",
-    "module": "LeanCondensedMatter.Permutation.TraceLog",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.diagonal_pow"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
+      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -163972,6 +164404,378 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Bosonic.completedAnnihilateAfterCreate i =\n    SecondQuantization.Bosonic.completedCreateAfterAnnihilate i +\n      (SecondQuantization.Bosonic.completedNumberOperatorDomain i).subtype",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
+      "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "SecondQuantization.Bosonic.sqrt_natCast_mul_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) {ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)},\n  ψ ∈ SecondQuantization.Bosonic.completedNumberOperatorDomain i →\n    ψ ∈ SecondQuantization.Common.completedDiagonalDomain fun n => ↑(n i) + 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mem_completedDiagonalDomain_add_const"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain",
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) {ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)}\n  (hψ : ψ ∈ SecondQuantization.Bosonic.completedAnnihilateDomain i),\n  ↑(SecondQuantization.Bosonic.completedAnnihilate i) ⟨ψ, hψ⟩ ∈ SecondQuantization.Bosonic.completedCreateDomain i →\n    ψ ∈ SecondQuantization.Bosonic.completedNumberOperatorDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedAnnihilate_apply",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_injective",
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.sqrt_natCast_mul_self",
+      "SecondQuantization.Common.completedCoordinateEmbedding_apply",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_annihilate_mem_completedCreateDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) {ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)}\n  (hψ : ψ ∈ SecondQuantization.Bosonic.completedCreateDomain i),\n  ↑(SecondQuantization.Bosonic.completedCreate i) ⟨ψ, hψ⟩ ∈ SecondQuantization.Bosonic.completedAnnihilateDomain i →\n    ψ ∈ SecondQuantization.Bosonic.completedNumberOperatorDomain i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_injective",
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "SecondQuantization.Bosonic.sqrt_natCast_mul_self",
+      "SecondQuantization.Common.completedCoordinatePullback_apply",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k : ℕ), ‖↑√(↑k + 1)‖ ≤ ‖↑k + 1‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_add_one_le_norm_natCast_add_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_add_one_le_natCast_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k : ℕ), ‖↑√↑k‖ ≤ ‖↑k + 1‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_le_natCast_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k : ℕ), √(↑k + 1) ≤ ↑k + 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_add_one_le_natCast_add_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_add_one_le_norm_natCast_add_one"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_add_one_le_norm_natCast_add_one"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k : ℕ), √↑k ≤ ↑k + 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_le_natCast_add_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
