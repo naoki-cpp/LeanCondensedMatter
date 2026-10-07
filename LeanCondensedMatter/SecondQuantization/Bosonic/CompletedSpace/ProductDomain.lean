@@ -320,19 +320,9 @@ noncomputable def completedAnnihilateAfterCreate (i : Mode) :
     completedNumberOperatorDomain i →ₗ[ℂ] CompletedFockSpace Mode :=
   (completedAnnihilate i).toFun.comp (completedCreateIntoAnnihilateDomain i)
 
-/-- The number operator viewed as an ambient-valued map on its own domain. -/
-noncomputable def completedNumberOperatorFromDomain (i : Mode) :
-    completedNumberOperatorDomain i →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedNumberOperator i).toFun
-
-/-- The ambient inclusion of the number-operator domain. -/
-noncomputable def completedIdentityFromNumberDomain (i : Mode) :
-    completedNumberOperatorDomain i →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedNumberOperatorDomain i).subtype
-
 /-- On its product domain, `aᵢ† aᵢ = Nᵢ`. -/
 theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
-    completedCreateAfterAnnihilate i = completedNumberOperatorFromDomain i := by
+    completedCreateAfterAnnihilate i = (completedNumberOperator i).toFun := by
   apply LinearMap.ext
   intro ψ
   apply lp.ext
@@ -365,7 +355,7 @@ theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
 /-- On its product domain, `aᵢ aᵢ† = Nᵢ + 1`. -/
 theorem completedAnnihilateAfterCreate_eq_numberOperator_add_id (i : Mode) :
     completedAnnihilateAfterCreate i =
-      completedNumberOperatorFromDomain i + completedIdentityFromNumberDomain i := by
+      (completedNumberOperator i).toFun + (completedNumberOperatorDomain i).subtype := by
   apply LinearMap.ext
   intro ψ
   apply lp.ext
@@ -394,7 +384,7 @@ theorem completedAnnihilateAfterCreate_eq_numberOperator_add_id (i : Mode) :
 /-- Equal-mode completed bosonic CCR on the explicit common product domain `Dom(Nᵢ)`. -/
 theorem completed_annihilate_create_commutator (i : Mode) :
     completedAnnihilateAfterCreate i - completedCreateAfterAnnihilate i =
-      completedIdentityFromNumberDomain i := by
+      (completedNumberOperatorDomain i).subtype := by
   rw [completedAnnihilateAfterCreate_eq_numberOperator_add_id,
     completedCreateAfterAnnihilate_eq_numberOperator]
   abel
