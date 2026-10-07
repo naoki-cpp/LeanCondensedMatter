@@ -121,7 +121,7 @@ noncomputable def ExternalInsertionDiagram.componentInteractionOrderDecompositio
     (fun B : d.vertexGraph.componentPartition.parts =>
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card)
-    (fun B => Fintype.card_coe _)
+    (fun _ => Fintype.card_coe _)
     (interactionSectorComponentEquiv d.vertexGraph)
 
 end Common
