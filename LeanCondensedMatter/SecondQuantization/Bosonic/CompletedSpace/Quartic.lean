@@ -61,7 +61,20 @@ private theorem completedCreate_algebraicToCompleted
   have hcore :=
     congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedCreate_comp_algebraicCore i)
-  simpa only [LinearMap.comp_apply, LinearPMap.toFun_eq_coe] using hcore
+  have hcore' :
+      (completedCreate i).toFun
+          (Common.algebraicToCompletedDiagonalDomain
+            (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x) =
+        algebraicToCompleted (create i x) := by
+    simpa only [LinearMap.comp_apply] using hcore
+  have hdomain :
+      Common.algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x =
+        ⟨algebraicToCompleted x, h⟩ := by
+    apply Subtype.ext
+    rfl
+  rw [hdomain] at hcore'
+  exact hcore'
 
 private theorem completedAnnihilate_algebraicToCompleted
     (i : Mode) (x : FockSpace Mode)
@@ -71,7 +84,20 @@ private theorem completedAnnihilate_algebraicToCompleted
   have hcore :=
     congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedAnnihilate_comp_algebraicCore i)
-  simpa only [LinearMap.comp_apply, LinearPMap.toFun_eq_coe] using hcore
+  have hcore' :
+      (completedAnnihilate i).toFun
+          (Common.algebraicToCompletedDiagonalDomain
+            (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x) =
+        algebraicToCompleted (annihilate i x) := by
+    simpa only [LinearMap.comp_apply] using hcore
+  have hdomain :
+      Common.algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x =
+        ⟨algebraicToCompleted x, h⟩ := by
+    apply Subtype.ext
+    rfl
+  rw [hdomain] at hcore'
+  exact hcore'
 
 private theorem completedQuarticVertexOperator_algebraicCore_aux
     (q : Common.QuarticVertexLabel Mode) (x : FockSpace Mode) :
@@ -119,7 +145,14 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
     rw [LinearPMap.compOnDomain_apply
       (completedAnnihilate q.annihilate₂)
       (completedAnnihilate q.annihilate₁) hp1 h1 h2]
-    rw [h1_apply]
+    have hinner :
+        (⟨completedAnnihilate q.annihilate₁
+              ⟨algebraicToCompleted x, h1⟩, h2⟩ :
+            (completedAnnihilate q.annihilate₂).domain) =
+          ⟨algebraicToCompleted x1, h2core⟩ := by
+      apply Subtype.ext
+      exact h1_apply
+    rw [hinner]
     simpa [x2] using
       completedAnnihilate_algebraicToCompleted q.annihilate₂ x1 h2core
 
@@ -142,7 +175,13 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
           ⟨algebraicToCompleted x, hp2⟩ =
         algebraicToCompleted x3
     rw [LinearPMap.compOnDomain_apply (completedCreate q.create₂) p1 hp2 hp1 h3]
-    rw [hp1_apply]
+    have hinner :
+        (⟨p1 ⟨algebraicToCompleted x, hp1⟩, h3⟩ :
+            (completedCreate q.create₂).domain) =
+          ⟨algebraicToCompleted x2, h3core⟩ := by
+      apply Subtype.ext
+      exact hp1_apply
+    rw [hinner]
     simpa [x3] using
       completedCreate_algebraicToCompleted q.create₂ x2 h3core
 
@@ -167,7 +206,13 @@ private theorem completedQuarticVertexOperator_algebraicCore_aux
           ⟨algebraicToCompleted x, hq⟩ =
         algebraicToCompleted (Common.quarticVertexOperator create annihilate q x)
     rw [LinearPMap.compOnDomain_apply (completedCreate q.create₁) p2 hq hp2 h4]
-    rw [hp2_apply]
+    have hinner :
+        (⟨p2 ⟨algebraicToCompleted x, hp2⟩, h4⟩ :
+            (completedCreate q.create₁).domain) =
+          ⟨algebraicToCompleted x3, h4core⟩ := by
+      apply Subtype.ext
+      exact hp2_apply
+    rw [hinner]
     have h4_apply :=
       completedCreate_algebraicToCompleted q.create₁ x3 h4core
     simpa [Common.quarticVertexOperator, LinearMap.comp_apply, x1, x2, x3] using h4_apply
