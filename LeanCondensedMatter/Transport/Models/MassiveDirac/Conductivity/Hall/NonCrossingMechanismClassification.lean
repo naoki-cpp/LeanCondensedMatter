@@ -106,7 +106,25 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
     ring
   have hnormalized := hraw.const_smul normalization
-  simpa [inPlaneCoefficientVector, normalization, htarget0, htarget1] using hnormalized
+  have htarget :
+      normalization •
+          inPlaneCoefficientVector
+            (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
+              (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)
+            (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
+              (probeEnergy ^ 2 - m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ) =
+        inPlaneCoefficientVector
+          (((-e ^ 2 * probeEnergy * m /
+            (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)) : ℝ) : ℂ)
+          (((-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+            (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ) := by
+    ext i
+    fin_cases i
+    · simpa [inPlaneCoefficientVector] using htarget0
+    · simpa [inPlaneCoefficientVector] using htarget1
+  rw [htarget] at hnormalized
+  simpa [inPlaneCoefficientVector, normalization] using hnormalized
 
 /-- The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms
 from I. A. Ado et al., *EPL* **111**, 37004 (2015),
