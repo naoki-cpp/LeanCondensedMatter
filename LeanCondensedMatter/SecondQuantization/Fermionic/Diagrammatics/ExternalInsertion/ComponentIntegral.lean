@@ -53,15 +53,28 @@ theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplit
   exact intervalIntegral.orderedSimplexIntegral_smul n β
     ((-1 : ℂ) ^ n) (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
 
+/-- The canonical component interaction shuffle with the ambient `Finset.univ.card`
+transported to the definitional ambient slot type `Fin n`. -/
+private noncomputable def ExternalInsertionWickDiagram.componentInteractionShuffleToFin
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n) :
+    FamilySlotShuffleTo
+      (fun B : d.vertexGraph.componentPartition.parts =>
+        (interactionSector
+          (B : Finset (ExternalInsertionVertex E
+            (Finset.univ : Finset (Fin n))))).card)
+      n :=
+  FamilySlotShuffleTo.castTotalEquiv (by simp) d.componentInteractionShuffle
+
 /-- The canonical component interaction shuffle pulls an ambient time assignment back to the
 canonical component interaction times. -/
-private theorem ExternalInsertionWickDiagram.componentInteractionShuffle_timeAssignment
+private theorem ExternalInsertionWickDiagram.componentInteractionShuffleToFin_timeAssignment
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
-    d.componentInteractionShuffle.timeAssignment σ B =
+    d.componentInteractionShuffleToFin.timeAssignment σ B =
       d.componentInteractionTime σ B := by
   funext v
-  unfold FamilySlotShuffleTo.timeAssignment
+  unfold ExternalInsertionWickDiagram.componentInteractionShuffleToFin
+    FamilySlotShuffleTo.timeAssignment FamilySlotShuffleTo.castTotalEquiv
     ExternalInsertionWickDiagram.componentInteractionTime
   rw [ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply]
   congr 1
@@ -78,7 +91,7 @@ theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExterna
       Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
     d.dysonFixedTimeAmplitude ε β g externalTime σ =
       componentExternalOrderSign d blockOrder *
-        d.componentInteractionShuffle.ambientIntegrand
+        d.componentInteractionShuffleToFin.ambientIntegrand
           (fun B localσ =>
             (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
               (d.componentExternalTime externalTime B) localσ) σ := by
@@ -88,7 +101,7 @@ theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExterna
   unfold FamilySlotShuffleTo.ambientIntegrand
   apply Finset.prod_congr rfl
   intro B _
-  rw [d.componentInteractionShuffle_timeAssignment σ B]
+  rw [d.componentInteractionShuffleToFin_timeAssignment σ B]
 
 /-- Summing the ordered-simplex Dyson contribution over all order-preserving interleavings of the
 component interaction slots gives the external regrouping sign times the product of the standalone
