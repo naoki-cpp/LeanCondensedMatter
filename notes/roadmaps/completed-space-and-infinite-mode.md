@@ -68,6 +68,10 @@ represented as maximal weighted-shift `LinearPMap` operators on the natural squa
 domains, are densely defined and closed, and are mutual adjoints. They agree with the algebraic
 ladder operators on the finite-support core. For each mode, both mixed products have maximal domain
 `Dom(Nᵢ)` and satisfy `aᵢ† aᵢ = Nᵢ`, `aᵢ aᵢ† = Nᵢ + 1`, and the equal-mode completed CCR there.
+An ordered number-conserving quartic vertex is also defined as the exact domain-aware composition
+`a† a† a a` of four completed ladder `LinearPMap` operators. This establishes the operator
+product itself without yet replacing its iterated composition domain by a closed-form weighted
+`ℓ²` domain.
 
 ## Finite-mode fermionic compatibility
 
@@ -82,7 +86,9 @@ needed for that representation-level statement.
 
 ## Open work
 
-- mixed-mode bosonic ladder product domains and their operator identities;
+- explicit weighted-domain characterizations and identities for mixed-mode and quartic bosonic
+  ladder products;
+- finite completed quartic interaction sums on a proved common domain;
 - interacting completed-space Dyson theory with all required product domains;
 - stronger convergence topologies for Gibbs truncations when justified;
 - infinite-volume or thermodynamic limits with an explicit directed system, observable algebra,
