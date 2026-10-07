@@ -7,6 +7,7 @@ import LeanCondensedMatter.Crystal.Brillouin
 import Mathlib.Algebra.Star.StarProjection
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.InnerProductSpace.Adjoint
+import Mathlib.Analysis.CStarAlgebra.Spectrum
 
 set_option linter.style.header false
 
@@ -43,6 +44,17 @@ structure PeriodicBlochHamiltonian (Lstar : Submodule ℤ K) where
   periodic : ∀ (G : Lstar) (k : K), hamiltonian (G +ᵥ k) = hamiltonian k
   /-- Smooth momentum dependence. -/
   smooth : ContDiff ℝ ∞ hamiltonian
+
+namespace PeriodicBlochHamiltonian
+
+/-- The Fermi level lies outside the spectrum at every momentum. This is the clean band-gap
+condition used by the TKNN construction; no uniform numerical gap size is imposed until a
+downstream analytic argument requires one. -/
+def IsFermiGapped {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochHamiltonian (H := H) Lstar) (fermiLevel : ℝ) : Prop :=
+  ∀ k, (fermiLevel : ℂ) ∉ spectrum ℂ (data.hamiltonian k)
+
+end PeriodicBlochHamiltonian
 
 /-- A smooth periodic family of orthogonal projectors on the covering momentum space.
 
