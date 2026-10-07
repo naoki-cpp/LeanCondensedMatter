@@ -201,10 +201,14 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
           exact h)
         hab hba⟩
   letI : Std.Total ambientRel := by
-    dsimp [ambientRel, externalInsertionTimedEventBeforeOrEqual]
+    change Std.Total
+      (stableTimedEventBeforeOrEqual
+        (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank)
     infer_instance
   letI : IsTrans (ExternalInsertionTimedEvent E₂ n) ambientRel := by
-    dsimp [ambientRel, externalInsertionTimedEventBeforeOrEqual]
+    change IsTrans (ExternalInsertionTimedEvent E₂ n)
+      (stableTimedEventBeforeOrEqual
+        (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank)
     infer_instance
   simpa [orderedExternalInsertionTimedEvents, ambientRel] using
     (List.sublist_insertionSort' (r := ambientRel) hMappedPairwise hSubperm)
