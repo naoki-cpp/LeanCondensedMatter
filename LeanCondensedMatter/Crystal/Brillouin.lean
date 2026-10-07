@@ -36,6 +36,7 @@ abbrev BrillouinTorus (Lstar : Submodule ℤ K) :=
 /-- A lattice-periodic integrand has the same integral over any two fundamental domains of the
 reciprocal-lattice action. This is the covering-space definition of Brillouin-zone integration:
 the integral itself is Mathlib's set integral, and only its domain independence is specialized here. -/
+omit [InnerProductSpace ℝ K] in
 theorem brillouinZone_integral_eq
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace K] {Lstar : Submodule ℤ K} [Countable Lstar]
