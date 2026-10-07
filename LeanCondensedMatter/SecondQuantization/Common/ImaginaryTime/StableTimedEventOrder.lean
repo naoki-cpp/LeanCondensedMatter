@@ -1,6 +1,6 @@
 import Mathlib.Basic.Real.Basic
 import Mathlib.Logic.Equiv.Fin.Basic
-import Mathlib.Order.Prod.Lex.Basic
+import Mathlib.Data.Prod.Lex
 
 set_option linter.style.header false
 
