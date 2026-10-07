@@ -191,7 +191,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   have hden (side : SpectralSide) (p : ℝ) :=
     finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
       side v m p probeEnergy disorderStrength hbar pMax
-      hvelocity hhbar hdisorder hmetal hrenorm
+      hvelocity hhbar hdisorder hmetal hcutoff hrenorm
   have hRR := tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     .retarded v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
     (hden .retarded 0) (hden .retarded pMax)
