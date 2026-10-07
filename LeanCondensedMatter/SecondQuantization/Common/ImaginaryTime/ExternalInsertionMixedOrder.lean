@@ -121,7 +121,7 @@ private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
         (Sum.map fExternal fInteraction b) ↔
       externalInsertionTimedEventBeforeOrEqual
         (externalTime ∘ fExternal) (σ ∘ fInteraction) a b := by
-  simp only [externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
+  simp only [externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
     externalInsertionTimedEventTime_map, externalInsertionTimedEventRank]
   rw [finSumFinEquiv_map_val_le_iff hExternal hInteraction a b]
 
@@ -145,19 +145,13 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
   have hLocalPairwise :
       (orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).Pairwise localRel := by
-    letI : Std.Total localRel :=
-      ⟨fun a b =>
-        stableTimedEventBeforeOrEqual_total
-          (externalInsertionTimedEventTime
-            (externalTime ∘ fExternal) (σ ∘ fInteraction))
-          externalInsertionTimedEventRank a b⟩
-    letI : IsTrans (ExternalInsertionTimedEvent E₁ m) localRel :=
-      ⟨fun a b c hab hbc =>
-        stableTimedEventBeforeOrEqual_trans
-          (externalInsertionTimedEventTime
-            (externalTime ∘ fExternal) (σ ∘ fInteraction))
-          externalInsertionTimedEventRank hab hbc⟩
-    exact List.pairwise_insertionSort _ _
+    simpa [orderedExternalInsertionTimedEvents, localRel,
+      externalInsertionTimedEventBeforeOrEqual] using
+      (pairwise_insertionSort_stableTimedEventBeforeOrEqual
+        (externalInsertionTimedEventTime
+          (externalTime ∘ fExternal) (σ ∘ fInteraction))
+        externalInsertionTimedEventRank
+        (canonicalExternalInsertionTimedEvents E₁ m))
   have hMappedPairwise :
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
