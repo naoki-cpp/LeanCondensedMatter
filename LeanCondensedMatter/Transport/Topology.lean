@@ -123,6 +123,32 @@ theorem directionalDerivative_isSelfAdjoint {Lstar : Submodule ℤ K}
     (fun D : K →L[ℝ] (H →L[ℂ] H) => D direction) hderiv
   simpa [directionalDerivative] using hdir
 
+/-- The Fréchet derivative of a reciprocal-lattice-periodic smooth projector family is periodic. -/
+theorem fderiv_projector_periodic {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar) (G : Lstar) (k : K) :
+    fderiv ℝ data.projector (G +ᵥ k) = fderiv ℝ data.projector k := by
+  let shift : K → K := fun q => (G : K) + q
+  have hdiff : Differentiable ℝ data.projector :=
+    data.smooth.differentiable (by simp)
+  have hshift : DifferentiableAt ℝ shift k := by
+    dsimp [shift]
+    fun_prop
+  have hcomp := fderiv_comp (hdiff (shift k)) hshift
+  have hperiodic : data.projector ∘ shift = data.projector := by
+    funext q
+    simpa [shift, Function.comp_def, vadd_eq_add] using data.periodic G q
+  rw [hperiodic] at hcomp
+  simpa [shift, vadd_eq_add] using hcomp.symm
+
+/-- Directional projector derivatives inherit reciprocal-lattice periodicity. -/
+theorem directionalDerivative_periodic {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar)
+    (G : Lstar) (k direction : K) :
+    data.directionalDerivative (G +ᵥ k) direction =
+      data.directionalDerivative k direction := by
+  rw [directionalDerivative, directionalDerivative,
+    data.fderiv_projector_periodic G k]
+
 /-- Complex projector-curvature expression
 `i Tr(P [∂_u P, ∂_v P])`.
 
@@ -148,6 +174,17 @@ theorem berryCurvatureComplex_swap {Lstar : Submodule ℤ K}
             data.directionalDerivative k v * data.directionalDerivative k u)) := by
     noncomm_ring
   simp [berryCurvatureComplex, hcomm]
+
+/-- The complex projector-curvature expression is reciprocal-lattice periodic in momentum. -/
+theorem berryCurvatureComplex_periodic {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar)
+    (G : Lstar) (k u v : K) :
+    data.berryCurvatureComplex (G +ᵥ k) u v =
+      data.berryCurvatureComplex k u v := by
+  rw [berryCurvatureComplex, berryCurvatureComplex,
+    data.periodic G k,
+    data.directionalDerivative_periodic G k u,
+    data.directionalDerivative_periodic G k v]
 
 /-- The complex projector-curvature expression is self-adjoint as a complex scalar, hence real.
 
@@ -213,6 +250,15 @@ theorem berryCurvature_swap {Lstar : Submodule ℤ K}
   apply Complex.ofReal_injective
   rw [Complex.ofReal_neg, coe_berryCurvature, coe_berryCurvature,
     data.berryCurvatureComplex_swap]
+
+/-- Real projector Berry curvature is reciprocal-lattice periodic in momentum. -/
+theorem berryCurvature_periodic {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar)
+    (G : Lstar) (k u v : K) :
+    data.berryCurvature (G +ᵥ k) u v = data.berryCurvature k u v := by
+  apply Complex.ofReal_injective
+  rw [coe_berryCurvature, coe_berryCurvature,
+    data.berryCurvatureComplex_periodic G k u v]
 
 end PeriodicBlochProjector
 
