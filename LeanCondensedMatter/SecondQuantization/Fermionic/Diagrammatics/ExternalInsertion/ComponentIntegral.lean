@@ -67,15 +67,17 @@ private noncomputable def ExternalInsertionWickDiagram.componentInteractionShuff
 
 /-- The canonical component interaction shuffle pulls an ambient time assignment back to the
 canonical component interaction times. -/
+omit [Fintype Mode] in
 private theorem ExternalInsertionWickDiagram.componentInteractionShuffleToFin_timeAssignment
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.componentInteractionShuffleToFin.timeAssignment σ B =
       d.componentInteractionTime σ B := by
   funext v
-  unfold ExternalInsertionWickDiagram.componentInteractionShuffleToFin
-    FamilySlotShuffleTo.timeAssignment FamilySlotShuffleTo.castTotalEquiv
-    ExternalInsertionWickDiagram.componentInteractionTime
+  change σ (Fin.cast _ (d.componentInteractionShuffle.slotEquiv ⟨B, v⟩)) =
+    σ ((interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
+        rfl v).1
   rw [ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply]
   congr 1
   apply Fin.ext
