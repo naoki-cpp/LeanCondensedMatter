@@ -225,20 +225,6 @@ def orderedExternalInsertionLegMap {E₁ E₂ m n : ℕ}
   Sum.map fExternal <|
     Prod.map (fun v => ⟨fInteraction v.1, Finset.mem_univ _⟩) id
 
-@[simp]
-theorem orderedExternalInsertionLegMap_inl {E₁ E₂ m n : ℕ}
-    (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n)
-    (e : Fin (2 * E₁)) :
-    orderedExternalInsertionLegMap fExternal fInteraction (Sum.inl e) =
-      Sum.inl (fExternal e) := rfl
-
-@[simp]
-theorem orderedExternalInsertionLegMap_inr {E₁ E₂ m n : ℕ}
-    (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n)
-    (v : ↥(Finset.univ : Finset (Fin m))) (l : Fin 4) :
-    orderedExternalInsertionLegMap fExternal fInteraction (Sum.inr (v, l)) =
-      Sum.inr (⟨fInteraction v.1, Finset.mem_univ _⟩, l) := rfl
-
 /-- Injective slot reindexings induce an injective canonical-leg reindexing. -/
 theorem orderedExternalInsertionLegMap_injective {E₁ E₂ m n : ℕ}
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n}
@@ -266,7 +252,7 @@ private theorem externalInsertionTimedEventAtomicLegs_map
     externalInsertionTimedEventAtomicLegs (Sum.map fExternal fInteraction event) =
       (externalInsertionTimedEventAtomicLegs event).map
         (orderedExternalInsertionLegMap fExternal fInteraction) := by
-  cases event <;> simp [externalInsertionTimedEventAtomicLegs]
+  cases event <;> simp [externalInsertionTimedEventAtomicLegs, orderedExternalInsertionLegMap]
 
 /-- Atomic leg identities in mixed-time event order. -/
 private noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
@@ -387,14 +373,6 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicLegPosition {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (leg : OrderedExternalInsertionLeg E n) : Fin (2 * (2 * n + E)) :=
   (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm leg
-
-@[simp]
-theorem externalInsertionMixedTimeOrderedAtomicLegPosition_equiv {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n + E))) :
-    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p) = p :=
-  (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm_apply_apply p
 
 @[simp]
 theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_position {E n : ℕ}
