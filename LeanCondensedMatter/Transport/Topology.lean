@@ -309,7 +309,7 @@ private theorem rankOneProjectorCurvature_eq
         (inner ℂ du dv - inner ℂ dv du) • φ := by
     dsimp [U, V]
     simp [ContinuousLinearMap.mul_def, InnerProductSpace.rankOne_apply,
-      hnorm, hinner, hu', hv', inner_smul_right]
+      hnorm, hu', hv']
     module
   change Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace
       (InnerProductSpace.rankOne ℂ φ φ * (U * V - V * U)) =
@@ -317,9 +317,11 @@ private theorem rankOneProjectorCurvature_eq
   rw [htrace, hcommApply, inner_smul_right, hinner, mul_one]
   apply Complex.ext
   · simp [Complex.mul_re]
-    linarith [inner_im_symm (𝕜 := ℂ) du dv]
+    rw [inner_im_symm (𝕜 := ℂ) dv du]
+    ring
   · simp [Complex.mul_im]
-    linarith [inner_re_symm (𝕜 := ℂ) du dv]
+    rw [inner_re_symm (𝕜 := ℂ) dv du]
+    ring
 
 /-- For a rank-one band projector with the derivative supplied by a local differentiated
 eigenvector, the gauge-invariant projector curvature agrees exactly with the existing pointwise
