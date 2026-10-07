@@ -73,23 +73,20 @@ theorem stableTimedEventBeforeOrEqual_iff {α : Type*} (time : α → ℝ) (rank
       time b < time a ∨ (time a = time b ∧ rank a ≤ rank b) := by
   simp [stableTimedEventBeforeOrEqual, stableTimedEventKey, Prod.Lex.toLex_le_toLex]
 
-theorem stableTimedEventBeforeOrEqual_total {α : Type*} (time : α → ℝ) (rank : α → ℕ)
-    (a b : α) :
-    stableTimedEventBeforeOrEqual time rank a b ∨
-      stableTimedEventBeforeOrEqual time rank b a := by
-  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b ∨
-    stableTimedEventKey time rank b ≤ stableTimedEventKey time rank a
-  exact le_total _ _
+instance {α : Type*} (time : α → ℝ) (rank : α → ℕ) :
+    Std.Total (stableTimedEventBeforeOrEqual time rank) :=
+  ⟨fun a b => by
+    change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b ∨
+      stableTimedEventKey time rank b ≤ stableTimedEventKey time rank a
+    exact le_total _ _⟩
 
-theorem stableTimedEventBeforeOrEqual_trans {α : Type*} (time : α → ℝ) (rank : α → ℕ)
-    {a b c : α}
-    (hab : stableTimedEventBeforeOrEqual time rank a b)
-    (hbc : stableTimedEventBeforeOrEqual time rank b c) :
-    stableTimedEventBeforeOrEqual time rank a c := by
-  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b at hab
-  change stableTimedEventKey time rank b ≤ stableTimedEventKey time rank c at hbc
-  change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank c
-  exact hab.trans hbc
+instance {α : Type*} (time : α → ℝ) (rank : α → ℕ) :
+    IsTrans α (stableTimedEventBeforeOrEqual time rank) :=
+  ⟨fun a b c hab hbc => by
+    change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b at hab
+    change stableTimedEventKey time rank b ≤ stableTimedEventKey time rank c at hbc
+    change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank c
+    exact hab.trans hbc⟩
 
 theorem stableTimedEventBeforeOrEqual_antisymm {α : Type*} (time : α → ℝ)
     (rank : α → ℕ) (rank_injective : Function.Injective rank) {a b : α}
@@ -111,10 +108,6 @@ theorem pairwise_insertionSort_stableTimedEventBeforeOrEqual {α : Type*}
     [DecidableRel (stableTimedEventBeforeOrEqual time rank)] :
     (List.insertionSort (stableTimedEventBeforeOrEqual time rank) l).Pairwise
       (stableTimedEventBeforeOrEqual time rank) := by
-  letI : Std.Total (stableTimedEventBeforeOrEqual time rank) :=
-    ⟨fun a b => stableTimedEventBeforeOrEqual_total time rank a b⟩
-  letI : IsTrans α (stableTimedEventBeforeOrEqual time rank) :=
-    ⟨fun a b c hab hbc => stableTimedEventBeforeOrEqual_trans time rank hab hbc⟩
   exact List.pairwise_insertionSort _ _
 
 end Common
