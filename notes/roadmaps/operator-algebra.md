@@ -127,11 +127,11 @@ conditions.
 These results do not amount to a general unbounded spectral theory. A 2026-10-05 re-survey of
 the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612` confirms that
 `LinearPMap` still provides the domain-aware adjoint, dense-domain consequences of
-self-adjointness, and closedness of self-adjoint operators, but no composition of two partial maps
-with the natural operator-product domain and no general unbounded self-adjoint spectral or
-functional calculus. Mathlib's `compPMap` only composes a total linear map after a partial map, so
-the exact partial-partial composition used by interacting completed-space operators remains
-project-local. The pinned API also does not provide a `LinearPMap` semibounded
+self-adjointness, and closedness of self-adjoint operators, but no composition constructor that
+shrinks two partial maps to the natural operator-product domain and no general unbounded
+self-adjoint spectral or functional calculus. Mathlib's `LinearPMap.comp` instead requires the
+entire inner domain to map into the outer domain and retains that inner domain; the exact restricted
+composition used by interacting completed-space operators remains project-local. The pinned API also does not provide a `LinearPMap` semibounded
 quadratic-form package, positivity package, general resolvent calculus, projection-valued spectral
 measure calculus, or strongly continuous positive heat-semigroup construction. Comparing the
 previous v4.33.1 pin with v4.34.1 reveals no new unbounded functional-calculus layer that closes
