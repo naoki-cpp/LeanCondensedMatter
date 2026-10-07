@@ -113,21 +113,13 @@ theorem freePropagator_apply_purePointBasis
   let T : H →L[ℂ] H := (t : ℂ) • schrodingerGenerator system
   let c : ℂ := -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ))
   let v : H := data.basis i
-  have heig :
-      system.hamiltonian.1 (data.basis i) =
-        (data.energy i : ℂ) • data.basis i := by
-    rw [data.hamiltonian_apply_basis]
   have hT : T v = c • v := by
     dsimp [T, c, v]
     rw [schrodingerGenerator]
-    simp only [smul_apply]
-    rw [heig, smul_smul]
-    rw [RCLike.real_smul_eq_coe_smul (K := ℂ) t
-      ((-(Complex.I / (system.hbar : ℂ)) * (data.energy i : ℂ)) • data.basis i)]
-    rw [smul_smul]
-    apply congrArg (fun z : ℂ => z • data.basis i)
+    simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
+    congr 1
     push_cast
-    ring_nf
+    ring
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
     induction n with
     | zero => simp
