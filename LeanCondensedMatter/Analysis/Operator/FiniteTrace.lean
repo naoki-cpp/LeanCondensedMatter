@@ -86,8 +86,10 @@ theorem finiteDimensionalOperatorTrace_star [CompleteSpace H]
   rw [star_sum]
   apply Finset.sum_congr rfl
   intro i _
-  rw [ContinuousLinearMap.star_eq_adjoint,
-    ContinuousLinearMap.adjoint_inner_right]
+  rw [ContinuousLinearMap.star_eq_adjoint]
+  change inner ℂ (b i) (operator.adjoint (b i)) =
+    star (inner ℂ (b i) (operator (b i)))
+  rw [ContinuousLinearMap.adjoint_inner_right]
   exact (inner_conj_symm _ _).symm
 
 /-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
