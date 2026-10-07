@@ -57,12 +57,5 @@ theorem continuous_matrixCoeff_interactionPicture (energy : Config → ℝ)
   simp only [matrixCoeff_interactionPicture]
   fun_prop
 
-/-- Every interaction-picture matrix coefficient is interval-integrable. -/
-theorem intervalIntegrable_matrixCoeff_interactionPicture (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) (a b : ℝ) :
-    IntervalIntegrable (fun τ : ℝ => matrixCoeff (interactionPicture energy V τ) m n)
-      MeasureTheory.volume a b :=
-  (continuous_matrixCoeff_interactionPicture energy V m n).intervalIntegrable a b
-
 end Common
 end SecondQuantization
