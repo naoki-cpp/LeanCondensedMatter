@@ -86,7 +86,7 @@ theorem finiteDimensionalOperatorTrace_star
   intro i _
   rw [ContinuousLinearMap.star_eq_adjoint,
     ContinuousLinearMap.adjoint_inner_right]
-  exact inner_conj_symm _ _
+  exact (inner_conj_symm _ _).symm
 
 /-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
 its derivative. -/
