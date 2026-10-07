@@ -323,7 +323,8 @@ theorem completedQuarticInteractionOn_algebraicCore
           algebraicToCompleted_mem_completedQuarticInteractionDomain support x⟩ =
       _
   simp only [LinearMap.sum_apply, LinearMap.smul_apply]
-  rw [Common.quarticInteractionOn, LinearMap.sum_apply, map_sum, ← Finset.sum_attach]
+  rw [Common.quarticInteractionOn, LinearMap.sum_apply, map_sum]
+  conv_rhs => rw [← Finset.sum_attach]
   apply Finset.sum_congr rfl
   intro q hq
   simp only [LinearMap.smul_apply, map_smul]
