@@ -14,8 +14,8 @@ at fixed disorder strength and fixed cutoff, retaining the finite real self-ener
 explicitly.
 
 The same boundary owns the real Born renormalization and the denominator regularity it controls.
-Under positive disorder, nonzero velocity and `ℏ`, the metallic condition, and renormalization below
-one, every side-indexed zero-broadening denominator is nonzero; the retarded-advanced denominator
+Under positive disorder, nonzero velocity and `ℏ`, the metallic and on-shell-cutoff conditions,
+and renormalization below one, every side-indexed zero-broadening denominator is nonzero; the retarded-advanced denominator
 product is therefore nonzero as well.
 
 No disorder-strength limit, ultraviolet removal, limit interchange, Hall projection, mechanism
@@ -48,6 +48,28 @@ def finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
       ((m : ℂ) *
         finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
           side v m probeEnergy pMax)
+
+/-- Complex conjugation exchanges the retarded/advanced effective-energy boundary. -/
+theorem star_finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+    (side : SpectralSide)
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    star (finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+      side v m probeEnergy disorderStrength hbar pMax) =
+      finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+        side.opposite v m probeEnergy disorderStrength hbar pMax := by
+  simp [finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
+    star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
+
+/-- Complex conjugation exchanges the retarded/advanced effective-mass boundary. -/
+theorem star_finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
+    (side : SpectralSide)
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    star (finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
+      side v m probeEnergy disorderStrength hbar pMax) =
+      finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
+        side.opposite v m probeEnergy disorderStrength hbar pMax := by
+  simp [finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
+    star_finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
 
 /-- The finite-`η` effective spectral energy converges to its full complex fixed-cutoff boundary. -/
 theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero
@@ -118,6 +140,18 @@ def finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
     finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
       side v m probeEnergy disorderStrength hbar pMax ^ 2 -
     ((v ^ 2 * p ^ 2 : ℝ) : ℂ)
+
+/-- Complex conjugation exchanges the retarded/advanced Born-Dyson denominator boundary. -/
+theorem star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+    (side : SpectralSide)
+    (v m p probeEnergy disorderStrength hbar pMax : ℝ) :
+    star (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+      side v m p probeEnergy disorderStrength hbar pMax) =
+      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        side.opposite v m p probeEnergy disorderStrength hbar pMax := by
+  simp [finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary,
+    star_finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
+    star_finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary]
 
 /-- At fixed radial momentum, the finite-`η` Born-Dyson denominator converges to its explicit
 fixed-cutoff zero-broadening boundary at fixed disorder strength. -/
@@ -190,7 +224,7 @@ def finiteCutoffContinuumBornBoundaryRealRenormalization
 
 /-- The real Born renormalization is independent of the retarded/advanced side used to read the
 real part of the common complex boundary value. -/
-theorem finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side
+private theorem finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) :
     (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
@@ -240,6 +274,7 @@ theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
     (v m p probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
     (hrenorm :
       finiteCutoffContinuumBornBoundaryRealRenormalization
         v m probeEnergy disorderStrength hbar pMax < 1) :
@@ -299,6 +334,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroa
     (v m p probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
     (hrenorm :
       finiteCutoffContinuumBornBoundaryRealRenormalization
         v m probeEnergy disorderStrength hbar pMax < 1) :
@@ -308,10 +344,10 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroa
   exact mul_ne_zero
     (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
       .retarded v m p probeEnergy disorderStrength hbar pMax
-      hvelocity hhbar hdisorder hmetal hrenorm)
+      hvelocity hhbar hdisorder hmetal hcutoff hrenorm)
     (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
       .advanced v m p probeEnergy disorderStrength hbar pMax
-      hvelocity hhbar hdisorder hmetal hrenorm)
+      hvelocity hhbar hdisorder hmetal hcutoff hrenorm)
 
 end
 
