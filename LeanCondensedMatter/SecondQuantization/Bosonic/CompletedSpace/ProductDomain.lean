@@ -35,9 +35,10 @@ private theorem sqrt_natCast_le_natCast_add_one (k : ℕ) :
 
 private theorem sqrt_natCast_add_one_le_natCast_add_one (k : ℕ) :
     Real.sqrt ((k : ℝ) + 1) ≤ (k : ℝ) + 1 := by
-  rw [Real.sqrt_le_self_iff]
+  apply (Real.sqrt_le_self_iff).2
   right
-  positivity
+  have hk : (0 : ℝ) ≤ (k : ℝ) := by positivity
+  linarith
 
 private theorem norm_sqrt_natCast_le_norm_natCast_add_one (k : ℕ) :
     ‖(Real.sqrt (k : ℝ) : ℂ)‖ ≤ ‖(k : ℂ) + 1‖ := by
@@ -157,7 +158,10 @@ theorem completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOper
       have h := congrArg (fun q : Occupation Mode => q i) hrepr
       simpa only [createOccupation_apply_same] using h
     conv_rhs => rw [← hrepr]
-    rw [(createOccupation_injective i).extend_apply]
+    rw [(createOccupation_injective i).extend_apply,
+      completedCreate_apply, ite_eq_right hni,
+      Common.completedDiagonalOperator_apply]
+    dsimp [x]
     change
       (Real.sqrt (n i : ℝ) : ℂ) *
           ((Real.sqrt (n i : ℝ) : ℂ) *
@@ -174,6 +178,8 @@ private theorem mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain
     (hout :
       completedAnnihilate i ⟨ψ, hψ⟩ ∈ completedCreateDomain i) :
     ψ ∈ completedNumberOperatorDomain i := by
+  change ψ ∈ Common.completedDiagonalDomain
+    (fun n : Occupation Mode => (n i : ℂ))
   rw [Common.mem_completedDiagonalDomain_iff]
   let y : (completedCreate i).domain :=
     ⟨completedAnnihilate i ⟨ψ, hψ⟩, hout⟩
@@ -248,10 +254,12 @@ private theorem mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain
       createOccupation_apply_same, ← mul_assoc]
     have hsqrt := sqrt_natCast_mul_self (n i + 1)
     simpa [Nat.cast_add, Nat.cast_one] using
-      congrArg (fun z : ℂ => z * ψ n) hsqrt
+      (congrArg (fun z : ℂ => z * ψ n) hsqrt).symm
   have hback :=
     Common.mem_completedDiagonalDomain_add_const
       (fun n : Occupation Mode => (n i : ℂ) + 1) (-1) hplus
+  change ψ ∈ Common.completedDiagonalDomain
+    (fun n : Occupation Mode => (n i : ℂ))
   simpa only [add_neg_cancel_right] using hback
 
 /-- The maximal domain of `aᵢ† aᵢ` is exactly the number-operator domain. -/
@@ -344,22 +352,27 @@ theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
     have hcoord : (removeOccupation i n) i + 1 = n i := by
       have h := congrArg (fun q : Occupation Mode => q i) hrepr
       simpa only [createOccupation_apply_same] using h
-    rw [hrepr]
-    have hsqrt := sqrt_natCast_mul_self (n i)
-    rw [show (Real.sqrt (n i : ℝ) : ℂ) *
-        (Real.sqrt ((removeOccupation i n) i + 1 : ℝ) : ℂ) = (n i : ℂ) by
-          rw [show ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) by
-            exact_mod_cast hcoord]
-          exact hsqrt]
+    have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
+      exact_mod_cast hcoord
+    rw [hcoord_real, ← mul_assoc, sqrt_natCast_mul_self, hrepr]
 
-/-- On its product domain, `aᵢ aᵢ† = Nᵢ + 1`. -/
-theorem completedAnnihilateAfterCreate_eq_numberOperator_add_id (i : Mode) :
+/-- On the common product domain, `aᵢ aᵢ† = aᵢ† aᵢ + 1`. Combined with
+`completedCreateAfterAnnihilate_eq_numberOperator`, this is `aᵢ aᵢ† = Nᵢ + 1`. -/
+theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (i : Mode) :
     completedAnnihilateAfterCreate i =
-      (completedNumberOperator i).toFun + (completedNumberOperatorDomain i).subtype := by
+      completedCreateAfterAnnihilate i + (completedNumberOperatorDomain i).subtype := by
   apply LinearMap.ext
   intro ψ
   apply lp.ext
   funext n
+  change
+    completedAnnihilate i
+        ⟨completedCreate i
+            ⟨(ψ : CompletedFockSpace Mode),
+              completedNumberOperatorDomain_le_completedCreateDomain i ψ.2⟩,
+          completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain i ψ⟩ n =
+      completedCreateAfterAnnihilate i ψ n + (ψ : CompletedFockSpace Mode) n
+  rw [completedCreateAfterAnnihilate_eq_numberOperator]
   change
     completedAnnihilate i
         ⟨completedCreate i
@@ -385,8 +398,7 @@ theorem completedAnnihilateAfterCreate_eq_numberOperator_add_id (i : Mode) :
 theorem completedComm_annihilate_create_self (i : Mode) :
     completedAnnihilateAfterCreate i - completedCreateAfterAnnihilate i =
       (completedNumberOperatorDomain i).subtype := by
-  rw [completedAnnihilateAfterCreate_eq_numberOperator_add_id,
-    completedCreateAfterAnnihilate_eq_numberOperator]
+  rw [completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id]
   abel
 
 end
