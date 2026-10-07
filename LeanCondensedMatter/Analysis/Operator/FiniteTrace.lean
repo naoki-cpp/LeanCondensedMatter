@@ -1,3 +1,4 @@
+import Mathlib.Algebra.Star.BigOperators
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Trace
@@ -82,7 +83,7 @@ theorem finiteDimensionalOperatorTrace_star [CompleteSpace H]
   let b := stdOrthonormalBasis ℂ H
   rw [finiteDimensionalOperatorTrace_apply, finiteDimensionalOperatorTrace_apply,
     LinearMap.trace_eq_sum_inner _ b, LinearMap.trace_eq_sum_inner _ b]
-  simp only [map_sum]
+  rw [star_sum]
   apply Finset.sum_congr rfl
   intro i _
   rw [ContinuousLinearMap.star_eq_adjoint,
