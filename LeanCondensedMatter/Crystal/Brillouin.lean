@@ -26,7 +26,7 @@ namespace LeanCondensedMatter.Crystal
 
 open MeasureTheory
 
-variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℝ K]
+variable {K : Type*} [NormedAddCommGroup K]
 
 /-- The Brillouin torus associated with a reciprocal lattice. This is a thin alias for Mathlib's
 additive quotient, so all quotient-group structure is inherited directly from `QuotientAddGroup`. -/
@@ -36,7 +36,6 @@ abbrev BrillouinTorus (Lstar : Submodule ℤ K) :=
 /-- A lattice-periodic integrand has the same integral over any two fundamental domains of the
 reciprocal-lattice action. This is the covering-space definition of Brillouin-zone integration:
 the integral itself is Mathlib's set integral, and only its domain independence is specialized here. -/
-omit [InnerProductSpace ℝ K] in
 theorem brillouinZone_integral_eq
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace K] {Lstar : Submodule ℤ K} [Countable Lstar]
@@ -47,6 +46,8 @@ theorem brillouinZone_integral_eq
     (hf : ∀ (G : Lstar) (k : K), f (G +ᵥ k) = f k) :
     ∫ k in s, f k ∂μ = ∫ k in t, f k ∂μ :=
   hs.setIntegral_eq ht hf
+
+variable [InnerProductSpace ℝ K]
 
 /-- The Bloch phase `exp (i k · R)` for wave vector `k` and real-space translation `R`. -/
 noncomputable def blochPhase (k R : K) : ℂ :=
