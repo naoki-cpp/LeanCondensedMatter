@@ -118381,6 +118381,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} (time : α → ℝ) (rank : α → ℕ),\n  IsTrans α (SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.instIsTransStableTimedEventBeforeOrEqual",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} (time : α → ℝ) (rank : α → ℕ),\n  Std.Total (SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.instTotalStableTimedEventBeforeOrEqual",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.interactionPicture energy V 0 = V",
     "standardAxioms": [
       "Classical.choice",
@@ -121711,8 +121799,7 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq"
     ],
     "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
-      "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_congr"
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -121994,8 +122081,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
     ],
     "dependencies": [
-      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_total",
-      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_trans"
+      "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -122062,6 +122148,55 @@
     "mathlibDefinitionallyEquivalentTo": [],
     "mathlibReplacementCandidates": [],
     "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} (time : α → ℝ) (rank : α → ℕ) (l : List α)\n  [inst : DecidableRel (SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank)],\n  List.Pairwise (SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank)\n    (List.insertionSort (SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank) l)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
+    "externalAxioms": [],
+    "docString": "Insertion sort by stable timed-event precedence is pairwise ordered. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.instIsTransStableTimedEventBeforeOrEqual",
+      "SecondQuantization.Common.instTotalStableTimedEventBeforeOrEqual"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [
+      "List.pairwise_insertionSort"
+    ],
+    "mathlibReplacementCandidateCount": 1
   },
   {
     "terminal": true,
@@ -123239,8 +123374,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} (time : α → ℝ) (rank : α → ℕ) (a b : α),\n  SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank a b ∨\n    SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank b a",
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} (time : α → ℝ) (rank : α → ℕ) (a b : α),\n  SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank a b ↔\n    time b < time a ∨ time a = time b ∧ rank a ≤ rank b",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123252,68 +123387,18 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.stableTimedEventBeforeOrEqual_total",
+    "name": "SecondQuantization.Common.stableTimedEventBeforeOrEqual_iff",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Explicit logical form of the lexicographic stable event order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} (time : α → ℝ) (rank : α → ℕ) {a b c : α},\n  SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank a b →\n    SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank b c →\n      SecondQuantization.Common.stableTimedEventBeforeOrEqual time rank a c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.stableTimedEventBeforeOrEqual_trans",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124938,48 +125023,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a →\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b =\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b →\n      (SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' υ a b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_congr",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
-    "externalAxioms": [],
-    "docString": "Stable comparison of two fixed events is unchanged when their two event times are unchanged. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173568,9 +173611,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_map_sublist"
     ],
     "dependencies": [
+      "SecondQuantization.Common.instIsTransStableTimedEventBeforeOrEqual",
+      "SecondQuantization.Common.instTotalStableTimedEventBeforeOrEqual",
+      "SecondQuantization.Common.pairwise_insertionSort_stableTimedEventBeforeOrEqual",
       "SecondQuantization.Common.stableTimedEventBeforeOrEqual_antisymm",
-      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_total",
-      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_trans",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.canonicalExternalInsertionTimedEvents_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_map_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
