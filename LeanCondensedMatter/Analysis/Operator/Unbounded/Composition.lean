@@ -63,6 +63,14 @@ theorem comp_domain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
     (g.comp f).domain = compDomain g f :=
   rfl
 
+/-- Evaluation of a partial-map composition on any witnesses of the two domain
+conditions. -/
+theorem comp_apply (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) {x : E}
+    (hx : x ∈ (g.comp f).domain) (hxf : x ∈ f.domain)
+    (hgf : f ⟨x, hxf⟩ ∈ g.domain) :
+    g.comp f ⟨x, hx⟩ = g ⟨f ⟨x, hxf⟩, hgf⟩ := by
+  rfl
+
 /-- Membership in the domain of a partial-map composition is exactly the usual operator-product
 condition. -/
 theorem mem_comp_domain_iff (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x : E) :
