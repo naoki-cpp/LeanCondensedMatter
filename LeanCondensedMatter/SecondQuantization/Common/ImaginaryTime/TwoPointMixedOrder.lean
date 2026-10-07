@@ -68,7 +68,7 @@ theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
     (hb : twoPointTimedEventTime τ τ' σ b = twoPointTimedEventTime τ τ' υ b) :
     twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
       twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual]
+  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff]
   rw [ha, hb]
 
 /-- Interaction events in their canonical supplied slot order. -/
@@ -120,16 +120,10 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).Pairwise
       (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
-  classical
-  letI : Std.Total (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-    ⟨fun a b =>
-      stableTimedEventBeforeOrEqual_total
-        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b⟩
-  letI : IsTrans (TwoPointTimedEvent n) (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-    ⟨fun a b c hab hbc =>
-      stableTimedEventBeforeOrEqual_trans
-        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank hab hbc⟩
-  exact List.pairwise_insertionSort _ _
+  simpa [orderedTwoPointTimedEvents, twoPointTimedEventBeforeOrEqual] using
+    (pairwise_insertionSort_stableTimedEventBeforeOrEqual
+      (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
+      ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n))
 
 /-- The fully ordered mixed-event list contains no duplicate events. -/
 theorem orderedTwoPointTimedEvents_nodup {n : ℕ}
@@ -278,7 +272,7 @@ private theorem twoPointTimedEventBeforeOrEqual_map_iff
     twoPointTimedEventBeforeOrEqual τ τ' σ
         (twoPointTimedEventMap f a) (twoPointTimedEventMap f b) ↔
       twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual,
+  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
     twoPointTimedEventTime_map]
   have hrank :
       twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
