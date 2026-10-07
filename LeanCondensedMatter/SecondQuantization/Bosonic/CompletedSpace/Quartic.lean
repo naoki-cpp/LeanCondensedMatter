@@ -15,9 +15,10 @@ a genuine meaning on completed bosonic Fock space.  The four unbounded ladder op
 with the exact `LinearPMap.compOnDomain` domain at every stage, so no operator product is formed outside the
 domain on which the preceding result lies in the next operator's domain.
 
-This is the first completed-space interacting operator.  The present file deliberately does not
-replace the exact composition domain by a closed-form weighted `ℓ²` description, nor does it yet
-form finite sums of quartic vertices.
+Finite families of completed quartic vertices are combined on the intersection of their exact
+domains, producing a densely defined quartic-interaction `LinearPMap` that agrees with the existing
+algebraic interaction on the finite-support core. The present file deliberately does not replace
+these exact domains by closed-form weighted `ℓ²` descriptions.
 -/
 
 namespace SecondQuantization
