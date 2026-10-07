@@ -1,5 +1,7 @@
-import Mathlib
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.List.NodupEquivFin
+import Mathlib.Tactic.FinCases
 
 set_option linter.style.header false
 

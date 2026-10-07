@@ -24,11 +24,11 @@ namespace SecondQuantization
 namespace Common
 
 /-- Timed events for `2 * E` external insertions and `n` interaction vertices. -/
-abbrev ExternalInsertionTimedEvent (E n : ℕ) : Type :=
+private abbrev ExternalInsertionTimedEvent (E n : ℕ) : Type :=
   Fin (2 * E) ⊕ Fin n
 
 /-- The imaginary time carried by an external or interaction event. -/
-def externalInsertionTimedEventTime {E n : ℕ}
+private def externalInsertionTimedEventTime {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ExternalInsertionTimedEvent E n → ℝ
   | .inl e => externalTime e
@@ -69,7 +69,7 @@ private theorem canonicalExternalInsertionTimedEvents_all_mem (E n : ℕ) :
 
 /-- All external and interaction events sorted by decreasing imaginary time.
 Equal-time events use the fixed flattened external-first rank. -/
-noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
+private noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List (ExternalInsertionTimedEvent E n) := by
   classical
@@ -127,7 +127,7 @@ private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
 
 /-- Increasing external/interaction slot reindexings embed the locally ordered mixed events as a
 sublist of the ambient mixed-event order. -/
-theorem orderedExternalInsertionTimedEvents_map_sublist
+private theorem orderedExternalInsertionTimedEvents_map_sublist
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
@@ -245,7 +245,7 @@ theorem orderedExternalInsertionLegMap_injective {E₁ E₂ m n : ℕ}
   · exact Function.injective_id
 
 /-- Atomic legs contributed by one mixed event. -/
-def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
+private def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
     ExternalInsertionTimedEvent E n → List (OrderedExternalInsertionLeg E n)
   | .inl e => [Sum.inl e]
   | .inr v => List.ofFn fun l : Fin 4 =>
@@ -261,7 +261,7 @@ private theorem externalInsertionTimedEventAtomicLegs_map
   cases event <;> simp [externalInsertionTimedEventAtomicLegs]
 
 /-- Atomic leg identities in mixed-time event order. -/
-noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
+private noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List (OrderedExternalInsertionLeg E n) :=
   (orderedExternalInsertionTimedEvents externalTime σ).flatMap
@@ -269,7 +269,7 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
 
 /-- Increasing external/interaction slot reindexings embed the local mixed atomic-leg
 order as a sublist of the ambient mixed atomic-leg order. -/
-theorem externalInsertionMixedTimeOrderedAtomicLegs_map_sublist
+private theorem externalInsertionMixedTimeOrderedAtomicLegs_map_sublist
     {fExternal : Fin (2 * E₁) → Fin (2 * E₂)}
     {fInteraction : Fin m → Fin n}
     (hExternal : StrictMono fExternal) (hInteraction : StrictMono fInteraction)
