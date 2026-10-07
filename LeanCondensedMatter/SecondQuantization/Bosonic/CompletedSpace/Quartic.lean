@@ -12,7 +12,7 @@ This file gives the ordered number-conserving quartic monomial
 `a†_{create₁} a†_{create₂} a_{annihilate₂} a_{annihilate₁}`
 
 a genuine meaning on completed bosonic Fock space.  The four unbounded ladder operators are composed
-with the exact `LinearPMap.comp` domain at every stage, so no operator product is formed outside the
+with the exact `LinearPMap.compOnDomain` domain at every stage, so no operator product is formed outside the
 domain on which the preceding result lies in the next operator's domain.
 
 This is the first completed-space interacting operator.  The present file deliberately does not
@@ -31,9 +31,9 @@ variable {Mode : Type*}
 space.  Its domain is the exact iterated composition domain of the four ladder operators. -/
 noncomputable def completedQuarticVertexOperator (q : Common.QuarticVertexLabel Mode) :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode :=
-  (completedCreate q.create₁).comp
-    ((completedCreate q.create₂).comp
-      ((completedAnnihilate q.annihilate₂).comp
+  (completedCreate q.create₁).compOnDomain
+    ((completedCreate q.create₂).compOnDomain
+      ((completedAnnihilate q.annihilate₂).compOnDomain
         (completedAnnihilate q.annihilate₁)))
 
 end
