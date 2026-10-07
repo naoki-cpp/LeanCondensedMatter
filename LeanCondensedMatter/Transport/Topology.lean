@@ -143,7 +143,7 @@ theorem fderiv_projector_periodic {Lstar : Submodule ℤ K}
     exact data.periodic G q
   have hshiftDeriv : fderiv ℝ shift k = .id ℝ K := by
     rw [hshift_eq]
-    simp
+    exact ((hasFDerivAt_id (𝕜 := ℝ) k).const_add (G : K)).fderiv
   rw [hperiodic, hshiftDeriv] at hcomp
   simpa [shift] using hcomp.symm
 
