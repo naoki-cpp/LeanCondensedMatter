@@ -66,7 +66,7 @@ theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplit
   exact intervalIntegral.orderedSimplexIntegral_smul n β
     ((-1 : ℂ) ^ n) (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Pulling an assembled global interaction order back to one component gives exactly that
 component's shuffle coordinates when the local component orders are canonical. -/
 private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder
