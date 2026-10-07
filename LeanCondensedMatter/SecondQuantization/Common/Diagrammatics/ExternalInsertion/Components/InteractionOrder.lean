@@ -25,9 +25,13 @@ vertices contribute the unique order on an empty fiber. -/
 abbrev ExternalInsertionDiagram.ComponentInteractionOrders
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :=
-  FamilyOrders fun B : d.vertexGraph.componentPartition.parts =>
-    ↥(interactionSector
-      (B : Finset (ExternalInsertionVertex E S)))
+  FamilyOrdersOf
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      ↥(interactionSector
+        (B : Finset (ExternalInsertionVertex E S))))
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card)
 
 /-- An order-preserving interleaving of component-local interaction slots into the ambient
 interaction-time slots. Zero-size component blocks are retained. -/
@@ -36,8 +40,8 @@ abbrev ExternalInsertionDiagram.ComponentInteractionOrderShuffle
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :=
   FamilySlotShuffleTo
     (fun B : d.vertexGraph.componentPartition.parts =>
-      Fintype.card ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S))))
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card)
     S.card
 
 /-- Assemble an ambient interaction-vertex order from component-local interaction orders and an
@@ -48,10 +52,13 @@ noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
     (orders : d.ComponentInteractionOrders)
     (shuffle : d.ComponentInteractionOrderShuffle) :
     QuarticVertexOrder S :=
-  assembleFamilyOrder
+  assembleFamilyOrderOfSize
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card)
     (interactionSectorComponentEquiv d.vertexGraph) orders shuffle
 
 /-- A global interaction-vertex order is equivalent to component-local interaction orders together
@@ -62,10 +69,14 @@ noncomputable def ExternalInsertionDiagram.componentInteractionOrderDecompositio
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     QuarticVertexOrder S ≃
       d.ComponentInteractionOrders × d.ComponentInteractionOrderShuffle :=
-  familyOrderDecompositionEquiv
+  familyOrderDecompositionEquivOfSize
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card)
+    (fun B => Fintype.card_coe _)
     (interactionSectorComponentEquiv d.vertexGraph)
 
 end Common
