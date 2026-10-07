@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
