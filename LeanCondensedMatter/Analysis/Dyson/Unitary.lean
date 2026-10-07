@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
 import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.Calculus.Deriv.Star
 
 set_option linter.style.header false
 
