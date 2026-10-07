@@ -410,16 +410,18 @@
     "directWrapperOf": null,
     "dependents": [
       "BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero",
-      "BerryGeometry.PointwiseEigenbasisData.star_berryConnection"
+      "BerryGeometry.PointwiseEigenbasisData.star_berryConnection",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero",
-      "BerryGeometry.PointwiseEigenbasisData.star_berryConnection"
+      "BerryGeometry.PointwiseEigenbasisData.star_berryConnection",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3797,7 +3799,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
@@ -3809,7 +3811,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
@@ -8363,7 +8365,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -8375,15 +8377,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Finpartition.partOrdersCompatible_assembleOrder"
+      "Finpartition.partOrdersCompatible_assembleOrder",
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Finpartition.partOrdersCompatible_assembleOrder"
+      "Finpartition.partOrdersCompatible_assembleOrder",
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17097,6 +17101,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis"
     ],
@@ -17104,10 +17109,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17144,6 +17150,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_eq_currentBandBlockTrace",
       "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_swap",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
     ],
@@ -17154,10 +17161,56 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_eq_currentBandBlockTrace",
       "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_swap",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (operator : H →L[ℂ] H),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace (star operator) =\n    star (ContinuousLinearMap.finiteDimensionalOperatorTrace operator)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": "Ordinary finite-dimensional trace intertwines the operator adjoint with complex conjugation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
+      "ContinuousLinearMap.instCompleteSpace_leanCondensedMatter"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17716,6 +17769,50 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [FiniteDimensional ℂ H], CompleteSpace H",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.instCompleteSpace_leanCondensedMatter",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -29155,6 +29252,44 @@
       "LeanCondensedMatter.Crystal.blochPhase_add_eq_of_mem_reciprocalLattice"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} [inst : NormedAddCommGroup K] {E : Type u_2} [inst_1 : NormedAddCommGroup E] [inst_2 : NormedSpace ℝ E]\n  [inst_3 : MeasurableSpace K] {Lstar : Submodule ℤ K} [Countable ↥Lstar] [MeasurableConstVAdd (↥Lstar) K]\n  {μ : MeasureTheory.Measure K} [MeasureTheory.VAddInvariantMeasure (↥Lstar) K μ] {s t : Set K},\n  MeasureTheory.IsAddFundamentalDomain (↥Lstar) s μ →\n    MeasureTheory.IsAddFundamentalDomain (↥Lstar) t μ →\n      ∀ {f : K → E},\n        (∀ (G : ↥Lstar) (k : K), f (G +ᵥ k) = f k) →\n          Crystal.brillouinZoneIntegral μ s f = Crystal.brillouinZoneIntegral μ t f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.brillouinZoneIntegral_eq_of_periodic",
+    "module": "LeanCondensedMatter.Crystal.Brillouin",
+    "externalAxioms": [],
+    "docString": "A lattice-periodic integrand has the same Brillouin-zone integral over any two fundamental\ndomains of the reciprocal-lattice action. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -81177,6 +81312,762 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K} [inst_5 : FiniteDimensional ℂ H]\n  (self : QuantumTheory.Transport.Topology.GappedBlochSystem Lstar), self.blochHamiltonian.IsFermiGapped self.fermiLevel",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.GappedBlochSystem.fermiGap",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "The Fermi level lies in the resolvent set at every momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K} [inst_5 : FiniteDimensional ℂ H]\n  (self : QuantumTheory.Transport.Topology.GappedBlochSystem Lstar) (k : K) (energy : ℝ) (x : H),\n  (self.blochHamiltonian.hamiltonian k) x = ↑energy • x →\n    (self.occupiedProjector.projector k) x = if energy < self.fermiLevel then x else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.GappedBlochSystem.occupiedProjector_apply_eigenvector",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Spectral characterization of the occupied projector on Hamiltonian eigenvectors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (self : QuantumTheory.Transport.Topology.PeriodicBlochHamiltonian Lstar) (G : ↥Lstar) (k : K),\n  self.hamiltonian (G +ᵥ k) = self.hamiltonian k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochHamiltonian.periodic",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Reciprocal-lattice periodicity on the covering momentum space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (self : QuantumTheory.Transport.Topology.PeriodicBlochHamiltonian Lstar) (k : K), IsSelfAdjoint (self.hamiltonian k)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochHamiltonian.selfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Self-adjointness at every momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (self : QuantumTheory.Transport.Topology.PeriodicBlochHamiltonian Lstar), ContDiff ℝ ⊤ self.hamiltonian",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochHamiltonian.smooth",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Smooth momentum dependence. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (k u v : K),\n  IsSelfAdjoint (data.berryCurvatureComplex k u v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "The complex projector-curvature expression is self-adjoint as a complex scalar, hence real.\n\nThe proof uses self-adjointness of the projector and its directional derivatives, the resulting\nskew-adjointness of their commutator, cyclicity of the finite-dimensional trace, and\n`Tr(A⋆) = star (Tr A)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
+      "ContinuousLinearMap.instCompleteSpace_leanCondensedMatter",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_isSelfAdjoint",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.isStarProjection"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (G : ↥Lstar) (k u v : K),\n  data.berryCurvatureComplex (G +ᵥ k) u v = data.berryCurvatureComplex k u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_periodic",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "The complex projector-curvature expression is reciprocal-lattice periodic in momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_periodic"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.periodic"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_periodic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (k u v : K),\n  data.berryCurvatureComplex k v u = -data.berryCurvatureComplex k u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_swap",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Projector curvature is antisymmetric in its two momentum directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {ι : Type u_3}\n  [inst_6 : Fintype ι] {Lstar : Submodule ℤ K}\n  (projectorData : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar)\n  (spectralData : BerryGeometry.PointwiseEigenbasisData K ι H) (k u v : K) (n : ι),\n  projectorData.projector k = ((InnerProductSpace.rankOne ℂ) (spectralData.eigenbasis n)) (spectralData.eigenbasis n) →\n    projectorData.directionalDerivative k u =\n        ((InnerProductSpace.rankOne ℂ) (spectralData.eigenvectorDerivative u n)) (spectralData.eigenbasis n) +\n          ((InnerProductSpace.rankOne ℂ) (spectralData.eigenbasis n)) (spectralData.eigenvectorDerivative u n) →\n      projectorData.directionalDerivative k v =\n          ((InnerProductSpace.rankOne ℂ) (spectralData.eigenvectorDerivative v n)) (spectralData.eigenbasis n) +\n            ((InnerProductSpace.rankOne ℂ) (spectralData.eigenbasis n)) (spectralData.eigenvectorDerivative v n) →\n        projectorData.berryCurvature k u v = spectralData.berryCurvature u v n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "For a rank-one band projector with the derivative supplied by a local differentiated\neigenvector, the gauge-invariant projector curvature agrees exactly with the existing pointwise\nBerry-curvature API.\n\nThe hypotheses are local identities for `P` and `∂P`; no global eigenvector gauge is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "BerryGeometry.PointwiseEigenbasisData.differentiatedOrthonormality",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.coe_berryCurvature",
+      "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (G : ↥Lstar) (k u v : K),\n  data.berryCurvature (G +ᵥ k) u v = data.berryCurvature k u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_periodic",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Real projector Berry curvature is reciprocal-lattice periodic in momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.coe_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (k u v : K),\n  data.berryCurvature k v u = -data.berryCurvature k u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_swap",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Real projector Berry curvature is antisymmetric in its momentum directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_swap",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.coe_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] [inst_5 : FiniteDimensional ℂ H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (k u v : K),\n  ↑(data.berryCurvature k u v) = data.berryCurvatureComplex k u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.coe_berryCurvature",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Coercing the real projector curvature back to `ℂ` recovers the complex trace formula exactly. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_swap"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (k direction : K),\n  IsSelfAdjoint (data.directionalDerivative k direction)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Directional derivatives of a smooth orthogonal-projector family remain\nself-adjoint. This follows by differentiating the pointwise identity `P⋆ = P` over the real\nmomentum space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.isStarProjection"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (G : ↥Lstar) (k direction : K),\n  data.directionalDerivative (G +ᵥ k) direction = data.directionalDerivative k direction",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_periodic",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Directional projector derivatives inherit reciprocal-lattice periodicity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_periodic"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.fderiv_projector_periodic"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_periodic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (data : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (G : ↥Lstar) (k : K),\n  fderiv ℝ data.projector (G +ᵥ k) = fderiv ℝ data.projector k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.fderiv_projector_periodic",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "The Fréchet derivative of a reciprocal-lattice-periodic smooth projector family is periodic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_periodic"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.smooth"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_periodic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (self : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (k : K), IsStarProjection (self.projector k)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.isStarProjection",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Each operator is a self-adjoint idempotent. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_isSelfAdjoint"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.directionalDerivative_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (self : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar) (G : ↥Lstar) (k : K),\n  self.projector (G +ᵥ k) = self.projector k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.periodic",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Reciprocal-lattice periodicity on the covering momentum space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.fderiv_projector_periodic"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_periodic",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.fderiv_projector_periodic"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup K] [inst_1 : NormedSpace ℝ K] [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] [inst_4 : CompleteSpace H] {Lstar : Submodule ℤ K}\n  (self : QuantumTheory.Transport.Topology.PeriodicBlochProjector Lstar), ContDiff ℝ ⊤ self.projector",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Topology.PeriodicBlochProjector.smooth",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": "Smooth momentum dependence. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.fderiv_projector_periodic"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.fderiv_projector_periodic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    occupation upperEnergy *\n          QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace hamiltonian current₁ current₂ upperEnergy\n            broadening -\n        occupation lowerEnergy *\n          QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace hamiltonian current₁ current₂ lowerEnergy\n            broadening =\n      0",
     "standardAxioms": [
@@ -94106,6 +94997,53 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.algebraicToCompleted x ∈\n    SecondQuantization.Bosonic.completedQuarticInteractionDomain support",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "Every algebraic finite-support bosonic Fock vector lies in the common domain of every finite\ncompleted quartic interaction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionDomain_dense",
+      "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticVertexOperator_domain",
+      "SecondQuantization.Bosonic.mem_completedQuarticInteractionDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionDomain_dense",
+      "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.algebraicToCompleted x ∈\n    (SecondQuantization.Bosonic.completedQuarticVertexOperator q).domain",
     "standardAxioms": [
       "Classical.choice",
@@ -94113,7 +95051,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -94125,6 +95063,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
       "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain"
     ],
     "dependencies": [
@@ -94133,9 +95072,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
       "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96637,7 +97577,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  ↑(SecondQuantization.Bosonic.completedQuarticVertexOperator q)\n      ⟨SecondQuantization.Bosonic.algebraicToCompleted x, ⋯⟩ =\n    SecondQuantization.Bosonic.algebraicToCompleted\n      ((SecondQuantization.Common.quarticVertexOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q)\n        x)",
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)),\n  Dense ↑(SecondQuantization.Bosonic.completedQuarticInteractionDomain support)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96649,20 +97589,145 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedQuarticInteractionDomain_dense",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "The domain of every finite completed quartic interaction is dense. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
+      "SecondQuantization.Common.algebraicToCompleted_denseRange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (x : SecondQuantization.Bosonic.FockSpace Mode),\n  ↑(SecondQuantization.Bosonic.completedQuarticInteractionOn support g)\n      ⟨SecondQuantization.Bosonic.algebraicToCompleted x, ⋯⟩ =\n    SecondQuantization.Bosonic.algebraicToCompleted\n      ((SecondQuantization.Common.quarticInteractionOn support SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate g)\n        x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "The finite completed quartic interaction agrees with the algebraic quartic interaction on the\nfinite-support core. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
+      "SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticInteractionDomain_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n  (SecondQuantization.Bosonic.completedQuarticInteractionOn support g).domain =\n    SecondQuantization.Bosonic.completedQuarticInteractionDomain support",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedQuarticInteractionOn_domain",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  ↑(SecondQuantization.Bosonic.completedQuarticVertexOperator q)\n      ⟨SecondQuantization.Bosonic.algebraicToCompleted x, ⋯⟩ =\n    SecondQuantization.Bosonic.algebraicToCompleted\n      ((SecondQuantization.Common.quarticVertexOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q)\n        x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
     "externalAxioms": [],
     "docString": "The completed quartic vertex agrees with the algebraic quartic vertex on the finite-support\ncore. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOperator_algebraicCore_aux"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100557,6 +101622,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)),\n  ψ ∈ SecondQuantization.Bosonic.completedQuarticInteractionDomain support ↔\n    ∀ (q : ↥support), ψ ∈ (SecondQuantization.Bosonic.completedQuarticVertexOperator ↑q).domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.mem_completedQuarticInteractionDomain_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": "Membership in the finite common quartic-interaction domain means membership in every supported\nquartic-vertex domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticInteractionDomain_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.algebraicToCompleted_mem_completedQuarticInteractionDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticInteractionDomain_le"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  A ∈ SecondQuantization.Bosonic.freeGibbsDomain ε β ↔ SecondQuantization.Bosonic.freeGibbsSummable ε β A",
     "standardAxioms": [
       "Classical.choice",
@@ -103660,6 +104769,52 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (orders : d.ComponentInteractionOrders) (shuffle : d.ComponentInteractionOrderShuffle)\n  (B : ↥d.vertexGraph.componentPartition.parts) (j : Fin (SecondQuantization.Common.interactionSector ↑B).card),\n  (Equiv.symm (d.assembleInteractionOrder orders shuffle)) ⟨↑((orders B) j), ⋯⟩ = shuffle.slotEquiv ⟨B, j⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder",
+    "externalAxioms": [],
+    "docString": "Under an assembled interaction order, the ambient slot of a component-local vertex is exactly\nthe slot selected by the component shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder"
+    ],
+    "dependencies": [
+      "Combinatorics.assembleFamilyOrderOfSize_symm_apply",
+      "SecondQuantization.Common.interactionSectorComponentEquiv_symm_val",
+      "SecondQuantization.Common.interactionSector_subset"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -109924,6 +111079,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionDomain_dense",
       "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
@@ -109935,12 +111091,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionDomain_dense",
       "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117275,7 +118432,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117287,15 +118444,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117527,6 +118686,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -117537,7 +118697,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalSlotLegSplitting_interaction_externalPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder"
     ],
     "dependencies": [
       "SecondQuantization.Common.mem_interactionSector"
@@ -117545,6 +118706,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -117555,9 +118717,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalSlotLegSplitting_interaction_externalPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122275,14 +123438,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -127418,7 +128581,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  d.dysonFixedTimeAmplitude ε β g externalTime σ =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n      ∏ B,\n        (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g (d.componentExternalTime externalTime B)\n          (d.componentInteractionTime σ B)",
     "standardAxioms": [
       "Classical.choice",
@@ -127426,7 +128589,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -127437,15 +128600,19 @@
     "docString": "The Dyson-signed fixed-time amplitude factors into the fixed external regrouping sign and the\nproduct of the standalone Dyson-signed component amplitudes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+    ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127795,7 +128962,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
       "intervalIntegral.orderedSimplexIntegral_smul"
@@ -127803,7 +128970,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -128141,7 +129308,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  (∀ (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n      intervalIntegral.MeasurableLocallyBounded fun localσ =>\n        (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g (d.componentExternalTime externalTime B) localσ) →\n    (∑ shuffle,\n        intervalIntegral.orderedSimplexIntegral n β fun σ =>\n          SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n            shuffle.ambientIntegrand\n              (fun B localσ =>\n                (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g (d.componentExternalTime externalTime B)\n                  localσ)\n              σ) =\n      SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n        ∏ B, (d.componentWickDiagram B).dysonAmplitude ε β g (d.componentExternalTime externalTime B)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  (∀ (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n      intervalIntegral.MeasurableLocallyBounded fun localσ =>\n        (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g (d.componentExternalTime externalTime B) localσ) →\n    ∑ shuffle,\n        d.orderedDysonAmplitude ε β g externalTime\n          (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n            (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle) =\n      SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n        ∏ B, (d.componentWickDiagram B).dysonAmplitude ε β g (d.componentExternalTime externalTime B)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128153,17 +129320,19 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
     "externalAxioms": [],
-    "docString": "Summing the ordered-simplex Dyson contribution over all order-preserving interleavings of the\ncomponent interaction slots gives the external regrouping sign times the product of the standalone\ncomponent Dyson amplitudes. ",
+    "docString": "The interaction-order shuffle orbit of an arbitrary external-insertion diagram factors into\nthe fixed external regrouping sign times the product of the standalone component amplitudes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
       "SecondQuantization.Common.sum_interactionSector_card_eq",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder",
       "intervalIntegral.orderedSimplexIntegral_smul"
     ],
     "crossModuleDirectWrapper": false,
@@ -165024,6 +166193,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (q : ↥support),\n  SecondQuantization.Bosonic.completedQuarticInteractionDomain support ≤\n    (SecondQuantization.Bosonic.completedQuarticVertexOperator ↑q).domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticInteractionDomain_le",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.mem_completedQuarticInteractionDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedQuarticInteractionOn_algebraicCore",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.completedQuarticVertexOnInteractionDomain"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (x : SecondQuantization.Bosonic.FockSpace Mode),\n  ∃ (h :\n    SecondQuantization.Bosonic.algebraicToCompleted x ∈\n      (SecondQuantization.Bosonic.completedQuarticVertexOperator q).domain),\n    ↑(SecondQuantization.Bosonic.completedQuarticVertexOperator q)\n        ⟨SecondQuantization.Bosonic.algebraicToCompleted x, h⟩ =\n      SecondQuantization.Bosonic.algebraicToCompleted\n        ((SecondQuantization.Common.quarticVertexOperator SecondQuantization.Bosonic.create\n            SecondQuantization.Bosonic.annihilate q)\n          x)",
     "standardAxioms": [
       "Classical.choice",
@@ -175648,6 +176862,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (shuffle : SecondQuantization.Common.ExternalInsertionDiagram.ComponentInteractionOrderShuffle d)\n  (τ : Fin Finset.univ.card → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts),\n  d.componentInteractionTime\n      (fun v =>\n        τ\n          ((Equiv.symm\n              (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n                (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle))\n            ⟨v, ⋯⟩))\n      B =\n    Combinatorics.FamilySlotShuffleTo.timeAssignment shuffle τ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+    "externalAxioms": [],
+    "docString": "Pulling an assembled global interaction order back to one component gives exactly that\ncomponent's shuffle coordinates when the local component orders are canonical. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
+      "SecondQuantization.Common.interactionSector_subset"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] {size : ι → ℕ} {m n : ℕ} (h : m = n)\n  (shuffle : Combinatorics.FamilySlotShuffleTo size m) (blockOrder : ι ≃ Fin (Fintype.card ι)),\n  ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv h) shuffle).orderedBlockInversionCount blockOrder =\n    shuffle.orderedBlockInversionCount blockOrder",
     "standardAxioms": [
       "Classical.choice",
@@ -186200,6 +187459,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] (φ du dv : H),\n  ‖φ‖ = 1 →\n    inner ℂ du φ + inner ℂ φ du = 0 →\n      inner ℂ dv φ + inner ℂ φ dv = 0 →\n        Complex.I *\n            ContinuousLinearMap.finiteDimensionalOperatorTrace\n              (((InnerProductSpace.rankOne ℂ) φ) φ *\n                ((((InnerProductSpace.rankOne ℂ) du) φ + ((InnerProductSpace.rankOne ℂ) φ) du) *\n                    (((InnerProductSpace.rankOne ℂ) dv) φ + ((InnerProductSpace.rankOne ℂ) φ) dv) -\n                  (((InnerProductSpace.rankOne ℂ) dv) φ + ((InnerProductSpace.rankOne ℂ) φ) dv) *\n                    (((InnerProductSpace.rankOne ℂ) du) φ + ((InnerProductSpace.rankOne ℂ) φ) du))) =\n          ↑(-2 * (inner ℂ du dv).im)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq",
+    "module": "LeanCondensedMatter.Transport.Topology",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsSelfAdjoint T → ∀ {v : H} {c : ℝ}, ↑T v = ↑c • v → ∀ {f : ℝ → ℝ}, Continuous f → (cfc f T) v = ↑(f c) • v",
     "standardAxioms": [
       "Classical.choice",
@@ -187555,7 +188856,7 @@
     "dependents": [
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
@@ -187568,7 +188869,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.quarticDysonSequenceCoeff_cons",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionShuffle_dysonIntegral_eq_componentExternalOrderSign_mul_prod_dysonAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"

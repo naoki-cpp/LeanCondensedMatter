@@ -357,7 +357,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/FiniteTrace.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal",
@@ -1565,7 +1565,7 @@
       "imports": [
         "LeanCondensedMatter.Crystal.Lattice"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Crystal.Classification",
@@ -5137,6 +5137,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude"
       ],
       "externalImportCount": 0
@@ -8038,6 +8039,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.Topology",
+      "sourceFile": "LeanCondensedMatter/Transport/Topology.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+        "LeanCondensedMatter.Crystal.Brillouin"
+      ],
+      "externalImportCount": 6
+    },
+    {
       "name": "LeanCondensedMatter.Transport",
       "sourceFile": "LeanCondensedMatter/Transport.lean",
       "imports": [
@@ -8046,7 +8057,8 @@
         "LeanCondensedMatter.Transport.FiniteConductivityTable",
         "LeanCondensedMatter.Transport.KuboBastin",
         "LeanCondensedMatter.Transport.Resolvent",
-        "LeanCondensedMatter.Transport.Streda"
+        "LeanCondensedMatter.Transport.Streda",
+        "LeanCondensedMatter.Transport.Topology"
       ],
       "externalImportCount": 0
     },
