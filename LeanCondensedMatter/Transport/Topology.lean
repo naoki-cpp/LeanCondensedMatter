@@ -315,13 +315,19 @@ private theorem rankOneProjectorCurvature_eq
       (InnerProductSpace.rankOne ℂ φ φ * (U * V - V * U)) =
     ((-2 * (inner ℂ du dv).im : ℝ) : ℂ)
   rw [htrace, hcommApply, inner_smul_right, hinner, mul_one]
+  have him :
+      -(inner ℂ dv du).im = (inner ℂ du dv).im := by
+    have h := congrArg Complex.im (inner_conj_symm (𝕜 := ℂ) du dv)
+    simpa only [Complex.conj_im] using h
+  have hre :
+      (inner ℂ dv du).re = (inner ℂ du dv).re := by
+    have h := congrArg Complex.re (inner_conj_symm (𝕜 := ℂ) du dv)
+    simpa only [Complex.conj_re] using h
   apply Complex.ext
   · simp [Complex.mul_re]
-    rw [inner_im_symm (𝕜 := ℂ) dv du]
-    ring
+    linarith
   · simp [Complex.mul_im]
-    rw [inner_re_symm (𝕜 := ℂ) dv du]
-    ring
+    linarith
 
 /-- For a rank-one band projector with the derivative supplied by a local differentiated
 eigenvector, the gauge-invariant projector curvature agrees exactly with the existing pointwise
