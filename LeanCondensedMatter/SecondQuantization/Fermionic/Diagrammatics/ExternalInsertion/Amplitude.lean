@@ -37,5 +37,13 @@ noncomputable def ExternalInsertionWickDiagram.fixedTimeAmplitude {E n : ℕ}
     d.vertexWeight g *
       d.mixedPairingValue ε β externalTime σ
 
+/-- Dyson-signed fixed-time amplitude. The perturbative factor `(-1)^n` is kept separate from
+the mixed-time ordering sign carried by `fixedTimeAmplitude`. -/
+noncomputable def ExternalInsertionWickDiagram.dysonFixedTimeAmplitude {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) : ℂ :=
+  (-1 : ℂ) ^ n * d.fixedTimeAmplitude ε β g externalTime σ
+
 end Fermionic
 end SecondQuantization

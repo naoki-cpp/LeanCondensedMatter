@@ -188,5 +188,35 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
       intro B _
       ring
 
+/-- The Dyson-signed fixed-time amplitude factors into the fixed external regrouping sign and the
+product of the standalone Dyson-signed component amplitudes. -/
+theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components
+    {E n : ℕ}
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    d.dysonFixedTimeAmplitude ε β g externalTime σ =
+      componentExternalOrderSign d blockOrder *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+            (d.componentExternalTime externalTime B)
+            (d.componentInteractionTime σ B) := by
+  classical
+  have hdyson :
+      (-1 : ℂ) ^ n =
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (-1 : ℂ) ^ (interactionSector
+            (B : Finset (ExternalInsertionVertex E
+              (Finset.univ : Finset (Fin n))))).card := by
+    have h :=
+      d.dysonSign_mul_vertexWeight_eq_prod_components (fun _ => (1 : ℂ))
+    simpa [ExternalInsertionDiagram.vertexWeight] using h
+  unfold ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+  rw [d.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components
+    ε β g externalTime σ blockOrder, hdyson, Finset.prod_mul_distrib]
+  ring
+
 end Fermionic
 end SecondQuantization
