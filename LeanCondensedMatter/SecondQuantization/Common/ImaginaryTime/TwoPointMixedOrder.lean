@@ -120,6 +120,7 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).Pairwise
       (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
+  classical
   simpa [orderedTwoPointTimedEvents, twoPointTimedEventBeforeOrEqual] using
     (pairwise_insertionSort_stableTimedEventBeforeOrEqual
       (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
