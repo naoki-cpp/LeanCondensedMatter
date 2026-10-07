@@ -273,7 +273,7 @@ theorem berryCurvature_periodic {Lstar : Submodule ℤ K}
 
 private theorem rankOneProjectorCurvature_eq
     (φ du dv : H)
-    (hnorm : inner ℂ φ φ = 1)
+    (hnorm : ‖φ‖ = 1)
     (hu : inner ℂ du φ + inner ℂ φ du = 0)
     (hv : inner ℂ dv φ + inner ℂ φ dv = 0) :
     Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace
@@ -283,10 +283,17 @@ private theorem rankOneProjectorCurvature_eq
           (InnerProductSpace.rankOne ℂ dv φ + InnerProductSpace.rankOne ℂ φ dv) *
             (InnerProductSpace.rankOne ℂ du φ + InnerProductSpace.rankOne ℂ φ du))) =
       ((-2 * (inner ℂ du dv).im : ℝ) : ℂ) := by
-  have hu' : inner ℂ du φ = -inner ℂ φ du := by
+  have hinner : inner ℂ φ φ = 1 := by
+    rw [inner_self_eq_norm_sq_to_K, hnorm]
+    norm_num
+  have hu' : inner ℂ φ du = -inner ℂ du φ := by
     linear_combination hu
-  have hv' : inner ℂ dv φ = -inner ℂ φ dv := by
+  have hv' : inner ℂ φ dv = -inner ℂ dv φ := by
     linear_combination hv
+  let U :=
+    InnerProductSpace.rankOne ℂ du φ + InnerProductSpace.rankOne ℂ φ du
+  let V :=
+    InnerProductSpace.rankOne ℂ dv φ + InnerProductSpace.rankOne ℂ φ dv
   have htrace (T : H →L[ℂ] H) :
       ContinuousLinearMap.finiteDimensionalOperatorTrace
           (InnerProductSpace.rankOne ℂ φ φ * T) =
@@ -297,11 +304,22 @@ private theorem rankOneProjectorCurvature_eq
       simp [ContinuousLinearMap.mul_def, InnerProductSpace.rankOne_comp]]
     simp [ContinuousLinearMap.finiteDimensionalOperatorTrace_apply,
       InnerProductSpace.trace_rankOne, ContinuousLinearMap.adjoint_inner_left]
-  rw [htrace]
-  simp [ContinuousLinearMap.mul_def, InnerProductSpace.rankOne_apply, hnorm, hu', hv']
+  have hcommApply :
+      (U * V - V * U) φ =
+        (inner ℂ du dv - inner ℂ dv du) • φ := by
+    dsimp [U, V]
+    simp [ContinuousLinearMap.mul_def, InnerProductSpace.rankOne_apply,
+      hnorm, hinner, hu', hv', inner_smul_right]
+    module
+  change Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace
+      (InnerProductSpace.rankOne ℂ φ φ * (U * V - V * U)) =
+    ((-2 * (inner ℂ du dv).im : ℝ) : ℂ)
+  rw [htrace, hcommApply, inner_smul_right, hinner, mul_one]
   apply Complex.ext
   · simp [Complex.mul_re]
-  · simp [Complex.mul_im, inner_conj_symm]
+    linarith [inner_im_symm (𝕜 := ℂ) du dv]
+  · simp [Complex.mul_im]
+    linarith [inner_re_symm (𝕜 := ℂ) du dv]
 
 /-- For a rank-one band projector with the derivative supplied by a local differentiated
 eigenvector, the gauge-invariant projector curvature agrees exactly with the existing pointwise
@@ -336,7 +354,7 @@ theorem berryCurvature_eq_pointwiseBerryCurvature_of_rankOne
     (spectralData.eigenbasis n)
     (spectralData.eigenvectorDerivative u n)
     (spectralData.eigenvectorDerivative v n)
-    (spectralData.eigenbasis.inner_eq_one n)
+    (spectralData.eigenbasis.norm_eq_one n)
     (spectralData.differentiatedOrthonormality u n n)
     (spectralData.differentiatedOrthonormality v n n)
 
