@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Brillouin
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Algebra.Star.StarProjection
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.InnerProductSpace.Adjoint
@@ -92,6 +93,44 @@ structure GappedBlochSystem (Lstar : Submodule ℤ K) [FiniteDimensional ℂ H] 
       blochHamiltonian.hamiltonian k x = (energy : ℂ) • x →
         occupiedProjector.projector k x =
           if energy < fermiLevel then x else 0
+
+namespace PeriodicBlochProjector
+
+variable [FiniteDimensional ℂ H]
+
+/-- Directional derivative of a smooth projector family on the covering momentum space. -/
+noncomputable def directionalDerivative {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar) (k direction : K) :
+    H →L[ℂ] H :=
+  (fderiv ℝ data.projector k) direction
+
+/-- Complex projector-curvature expression
+`i Tr(P [∂_u P, ∂_v P])`.
+
+The later real-valued Berry-curvature API will identify this scalar as real. Keeping the complex
+expression explicit here avoids silently projecting with `.re`. -/
+noncomputable def berryCurvatureComplex {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar) (k u v : K) : ℂ :=
+  Complex.I * ContinuousLinearMap.finiteDimensionalOperatorTrace
+    (data.projector k *
+      (data.directionalDerivative k u * data.directionalDerivative k v -
+        data.directionalDerivative k v * data.directionalDerivative k u))
+
+/-- Projector curvature is antisymmetric in its two momentum directions. -/
+theorem berryCurvatureComplex_swap {Lstar : Submodule ℤ K}
+    (data : PeriodicBlochProjector (H := H) Lstar) (k u v : K) :
+    data.berryCurvatureComplex k v u = -data.berryCurvatureComplex k u v := by
+  have hcomm :
+      data.projector k *
+          (data.directionalDerivative k v * data.directionalDerivative k u -
+            data.directionalDerivative k u * data.directionalDerivative k v) =
+        -(data.projector k *
+          (data.directionalDerivative k u * data.directionalDerivative k v -
+            data.directionalDerivative k v * data.directionalDerivative k u)) := by
+    noncomm_ring
+  simp [berryCurvatureComplex, hcomm]
+
+end PeriodicBlochProjector
 
 end
 
