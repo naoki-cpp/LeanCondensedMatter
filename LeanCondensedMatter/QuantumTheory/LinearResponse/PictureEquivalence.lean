@@ -157,10 +157,15 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
   let b' : HilbertBasis ι ℂ H :=
     HilbertBasis.ofRepr (U.symm.trans b.repr)
   have hb' (i : ι) : b' i = freePropagator system t (b i) := by
-    rw [← b'.repr_symm_single i]
-    simp only [b', U, LinearIsometryEquiv.symm_trans_apply, b.repr_symm_single]
-    change (freePropagator system t) (b i) = freePropagator system t (b i)
-    rfl
+    calc
+      b' i = U (b i) := by
+        apply b'.repr.injective
+        rw [b'.repr_self]
+        dsimp [b']
+        rw [LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.symm_apply_apply,
+          b.repr_self]
+      _ = freePropagator system t (b i) := by
+        rfl
   have hρ' : ∀ i,
       (evolveDensityOperator system ρ t).op (b' i) = (w i : ℂ) • b' i := by
     intro i
