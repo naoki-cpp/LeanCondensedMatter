@@ -61,6 +61,42 @@ noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
         (B : Finset (ExternalInsertionVertex E S))).card)
     (interactionSectorComponentEquiv d.vertexGraph) orders shuffle
 
+/-- Under an assembled interaction order, the ambient slot of a component-local vertex is exactly
+the slot selected by the component shuffle. -/
+@[simp]
+theorem ExternalInsertionDiagram.assembleInteractionOrder_symm_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (orders : d.ComponentInteractionOrders)
+    (shuffle : d.ComponentInteractionOrderShuffle)
+    (B : d.vertexGraph.componentPartition.parts)
+    (j : Fin (interactionSector
+      (B : Finset (ExternalInsertionVertex E S))).card) :
+    (d.assembleInteractionOrder orders shuffle).symm
+        ⟨(orders B j).1,
+          interactionSector_subset
+            (B : Finset (ExternalInsertionVertex E S)) (orders B j).2⟩ =
+      shuffle.slotEquiv ⟨B, j⟩ := by
+  have h :=
+    assembleFamilyOrderOfSize_symm_apply
+      (fun B : d.vertexGraph.componentPartition.parts =>
+        ↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))))
+      (fun B : d.vertexGraph.componentPartition.parts =>
+        (interactionSector
+          (B : Finset (ExternalInsertionVertex E S))).card)
+      (interactionSectorComponentEquiv d.vertexGraph) orders shuffle B j
+  have hambient :
+      (⟨(orders B j).1,
+          interactionSector_subset
+            (B : Finset (ExternalInsertionVertex E S)) (orders B j).2⟩ : ↥S) =
+        (interactionSectorComponentEquiv d.vertexGraph).symm ⟨B, orders B j⟩ := by
+    apply Subtype.ext
+    exact (interactionSectorComponentEquiv_symm_val
+      d.vertexGraph ⟨B, orders B j⟩).symm
+  rw [hambient]
+  simpa [ExternalInsertionDiagram.assembleInteractionOrder] using h
+
 /-- A global interaction-vertex order is equivalent to component-local interaction orders together
 with an order-preserving component shuffle. Empty interaction sectors remain represented as
 zero-size shuffle blocks. -/
