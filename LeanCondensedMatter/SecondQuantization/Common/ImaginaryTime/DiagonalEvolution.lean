@@ -137,6 +137,17 @@ theorem matrixCoeff_diagonalEvolution_eq_ite (energy : Config → ℝ) (τ : ℝ
   simpa only [diagonalEvolution] using
     matrixCoeff_diagonalOperator (fun c => Complex.exp ((τ * energy c : ℝ) : ℂ)) m n
 
+/-- Left composition by a diagonal evolution rescales a matrix coefficient by the output
+configuration's exponential weight. -/
+theorem matrixCoeff_diagonalEvolution_comp
+    (energy : Config → ℝ) (τ : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (m n : Config) :
+    matrixCoeff ((diagonalEvolution energy τ).comp A) m n =
+      Complex.exp ((τ * energy m : ℝ) : ℂ) * matrixCoeff A m n := by
+  rw [matrixCoeff, LinearMap.comp_apply, diagonalEvolution, diagonalOperator_apply]
+  rfl
+
 /-- **`heisenbergEvolve`'s matrix coefficients**: `A(τ)`'s `(m, n)` entry is `A`'s own `(m, n)`
 entry, rescaled by `exp(τ(energy m - energy n))` — the interaction-picture matrix-coefficient
 formula, for an arbitrary configuration type. -/
