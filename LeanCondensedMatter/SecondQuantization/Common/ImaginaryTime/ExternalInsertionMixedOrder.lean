@@ -541,6 +541,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
   simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
     List.get_eq_getElem]
   simp only [hlegs]
+  rfl
 
 end Common
 end SecondQuantization
