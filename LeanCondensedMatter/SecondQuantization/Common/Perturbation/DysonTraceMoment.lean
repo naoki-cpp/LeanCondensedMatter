@@ -33,6 +33,16 @@ theorem normalizedDysonTraceCoeff_zero (energy : Config → ℝ) (β : ℝ)
   simp [normalizedDysonTraceCoeff, dysonTraceCoeff_zero,
     constantCoeff_dysonTraceSeries, hne]
 
+/-- The normalized finite-configuration Dyson coefficient is the free Gibbs expectation of the
+bare Dyson coefficient. This identity does not depend on particle statistics. -/
+theorem normalizedDysonTraceCoeff_eq_finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
+    normalizedDysonTraceCoeff energy β V n =
+      finiteGibbsExpectation energy β (dysonCoeff energy V n β) := by
+  rw [normalizedDysonTraceCoeff, dysonTraceCoeff, constantCoeff_dysonTraceSeries,
+    ← traceFock_diagonalEvolution_eq_weightSum]
+  exact (finiteGibbsExpectation_eq_trace_div energy β _).symm
+
 /-- The factorial-normalized Dyson coefficient indexed by an arbitrary finite vertex set. -/
 noncomputable def dysonTraceVertexMoment {α : Type*} (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (S : Finset α) : ℂ :=
