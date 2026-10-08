@@ -743,646 +743,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n), σ.leftSlots.card = m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.SumEquiv.card_leftImage"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet",
-      "SecondQuantization.Fermionic.connectedFixedExternalShuffleLeftEquiv",
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
-    ],
-    "compiledConsumerCount": 7,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n), σ.rightSlots.card = n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.card_rightSlots",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq"
-    ],
-    "dependencies": [
-      "Combinatorics.SumEquiv.card_rightImage"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n), (Finset.univ \\ σ.leftSlots).card = n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "The complement of the left slots has the right perturbation order. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_rightSlots",
-      "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} {σ τ : Combinatorics.BinaryShuffle.SlotShuffle m n}, σ.leftSlots = τ.leftSlots → σ = τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "A slot shuffle is uniquely determined by the ambient positions of its left slots. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet_injective",
-      "Combinatorics.FamilySlotShuffle.cons_injective"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_rightSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.ext",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft",
-      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoRight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet_injective",
-      "Combinatorics.FamilySlotShuffle.cons_injective"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} {σ τ : Combinatorics.BinaryShuffle.SlotShuffle m n}, σ.slotEquiv = τ.slotEquiv → σ = τ",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.ext",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "Two ambient slot shuffles are equal when their slot equivalences are equal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.ext_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.ext_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.instFintype"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {m n : ℕ} {σ τ : Combinatorics.BinaryShuffle.SlotShuffle m n}, σ = τ ↔ σ.slotEquiv = τ.slotEquiv",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.ext_iff",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.ext"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (i : Fin m),\n  (σ.leftSlots.orderEmbOfFin ⋯) i = σ.slotEquiv (Sum.inl i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "The increasing enumeration of the left slots is the left shuffle slot map. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (x : Fin (m + n)),\n  x ∈ σ.leftSlots ↔ ∃ i, σ.slotEquiv (Sum.inl i) = x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "Combinatorics.FamilySlotShuffle.cons_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "Combinatorics.FamilySlotShuffle.cons_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (x : Fin (m + n)),\n  x ∈ σ.rightSlots ↔ ∃ j, σ.slotEquiv (Sum.inr j) = x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (x : Fin (m + n)), x ∈ σ.rightSlots ↔ x ∉ σ.leftSlots",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "The right slots are precisely the complement of the left slots. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "dependencies": [
-      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (j : Fin n),\n  ((Finset.univ \\ σ.leftSlots).orderEmbOfFin ⋯) j = σ.slotEquiv (Sum.inr j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "The increasing enumeration of the complement of the left slots is the right slot map. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoRight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (self : Combinatorics.BinaryShuffle.SlotShuffle m n), StrictMono fun i => self.slotEquiv (Sum.inl i)",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (self : Combinatorics.BinaryShuffle.SlotShuffle m n), StrictMono fun j => self.slotEquiv (Sum.inr j)",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoRight",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ}, Function.Injective Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet_injective",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "The left-slot set determines the whole slot shuffle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (m n : ℕ), Fintype.card (Combinatorics.BinaryShuffle m n) = (m + n).choose m",
     "standardAxioms": [
       "Classical.choice",
@@ -1390,7 +751,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -1401,97 +762,8 @@
     "docString": "Recursive binary shuffles are counted by the same binomial coefficient. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (m n : ℕ), Fintype.card (Combinatorics.BinaryShuffle.LeftSlotSet m n) = (m + n).choose m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.card_leftSlotSet",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "The possible left-slot sets are counted by a binomial coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (m n : ℕ), Fintype.card (Combinatorics.BinaryShuffle.SlotShuffle m n) = (m + n).choose m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.card_slotShuffle",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "Ambient slot shuffles have the binomial cardinality. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet_injective",
-      "Combinatorics.BinaryShuffle.card_eq_choose",
-      "Combinatorics.BinaryShuffle.card_leftSlotSet",
-      "Combinatorics.BinaryShuffle.toSlotShuffle_injective"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -2214,44 +1486,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n),\n  (Combinatorics.BinaryShuffle.slotShuffleLeftSlotSetEquiv m n) σ = σ.toLeftSlotSet",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.slotShuffleLeftSlotSetEquiv_apply",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle m n), Function.Injective σ.slot",
     "standardAxioms": [
       "Classical.choice",
@@ -2294,49 +1528,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (m n : ℕ) (F : Combinatorics.BinaryShuffle.LeftSlotSet m n → M),\n  ∑ s, F s = ∑ σ, F σ.toLeftSlotSet",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.BinaryShuffle.sum_leftSlotSet",
-    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
-    "externalAxioms": [],
-    "docString": "Reindex a finite sum over left-slot sets by ambient slot shuffles. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (m n : ℕ) (F : Combinatorics.BinaryShuffle.SlotShuffle m n → M),\n  ∑ shuffle, F shuffle = ∑ σ, F σ.toSlotShuffle",
+    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (m n : ℕ) (F : Combinatorics.SlotShuffle m n → M),\n  ∑ shuffle, F shuffle = ∑ σ, F σ.toSlotShuffle",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2536,7 +1728,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {m n : ℕ}, Function.Injective Combinatorics.BinaryShuffle.toSlotShuffle",
     "standardAxioms": [
       "Classical.choice",
@@ -2544,7 +1736,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -2555,18 +1747,14 @@
     "docString": "Forgetting the recursive presentation is injective. ",
     "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
     "directWrapperOf": "Combinatorics.BinaryShuffle.slotEquiv_injective",
-    "dependents": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.BinaryShuffle.slotEquiv_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.card_slotShuffle"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2689,9 +1877,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-      "Combinatorics.FamilySlotShuffle.ext"
+      "Combinatorics.FamilySlotShuffle.ext",
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.mem_leftSlots_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -2755,7 +1943,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (i : Fin k)\n  (j : Fin (size i.succ)),\n  (Combinatorics.FamilySlotShuffle.cons size outer tail).slotEquiv ⟨i.succ, j⟩ =\n    (finCongr ⋯) (outer.slotEquiv (Sum.inr (tail.slotEquiv ⟨i, j⟩)))",
+    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (i : Fin k)\n  (j : Fin (size i.succ)),\n  (Combinatorics.FamilySlotShuffle.cons size outer tail).slotEquiv ⟨i.succ, j⟩ =\n    (finCongr ⋯) (outer.slotEquiv (Sum.inr (tail.slotEquiv ⟨i, j⟩)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2793,7 +1981,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (j : Fin (size 0)),\n  (Combinatorics.FamilySlotShuffle.cons size outer tail).slotEquiv ⟨0, j⟩ = (finCongr ⋯) (outer.slotEquiv (Sum.inl j))",
+    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (j : Fin (size 0)),\n  (Combinatorics.FamilySlotShuffle.cons size outer tail).slotEquiv ⟨0, j⟩ = (finCongr ⋯) (outer.slotEquiv (Sum.inl j))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3183,7 +2371,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.BinaryShuffle.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (β : ℝ)\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ),\n  intervalIntegral.orderedSimplexIntegral (∑ i, size i) β\n      (Combinatorics.FamilySlotShuffleTo.ambientIntegrand (Combinatorics.FamilySlotShuffle.cons size outer tail)\n        localIntegrand) =\n    intervalIntegral.orderedSimplexIntegral (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) β\n      (outer.integrand (localIntegrand 0)\n        (Combinatorics.FamilySlotShuffleTo.ambientIntegrand tail fun i => localIntegrand i.succ))",
+    "statement": "∀ {k : ℕ} (size : Fin (k + 1) → ℕ)\n  (outer : Combinatorics.SlotShuffle (size 0) (Combinatorics.FamilySlotShuffle.tailTotal size))\n  (tail : Combinatorics.FamilySlotShuffle (Combinatorics.FamilySlotShuffle.tailSize size)) (β : ℝ)\n  (localIntegrand : (i : Fin (k + 1)) → (Fin (size i) → ℝ) → ℂ),\n  intervalIntegral.orderedSimplexIntegral (∑ i, size i) β\n      (Combinatorics.FamilySlotShuffleTo.ambientIntegrand (Combinatorics.FamilySlotShuffle.cons size outer tail)\n        localIntegrand) =\n    intervalIntegral.orderedSimplexIntegral (size 0 + Combinatorics.FamilySlotShuffle.tailTotal size) β\n      (outer.integrand (localIntegrand 0)\n        (Combinatorics.FamilySlotShuffleTo.ambientIntegrand tail fun i => localIntegrand i.succ))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7983,6 +7171,683 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (m n : ℕ), Fintype.card (Combinatorics.SlotShuffle m n) = (m + n).choose m",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.card_eq_choose",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "Ambient slot shuffles have the binomial cardinality of their left-slot sets. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.card_leftSlotSet"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n), σ.leftSlots.card = m",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.card_leftSlots",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
+    ],
+    "dependencies": [
+      "Combinatorics.SumEquiv.card_leftImage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+      "Combinatorics.SlotShuffle.toLeftSlotSet",
+      "SecondQuantization.Fermionic.connectedFixedExternalShuffleLeftEquiv",
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
+    ],
+    "compiledConsumerCount": 7,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n), σ.rightSlots.card = n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.card_rightSlots",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.card_sdiff_leftSlots",
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq"
+    ],
+    "dependencies": [
+      "Combinatorics.SumEquiv.card_rightImage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.card_sdiff_leftSlots",
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n), (Finset.univ \\ σ.leftSlots).card = n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.card_sdiff_leftSlots",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "The complement of the left slots has the right perturbation order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
+    ],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.card_rightSlots",
+      "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} {σ τ : Combinatorics.SlotShuffle m n}, σ.leftSlots = τ.leftSlots → σ = τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "A slot shuffle is uniquely determined by the ambient positions of its left slots. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffle.cons_injective",
+      "Combinatorics.SlotShuffle.toLeftSlotSet_injective"
+    ],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.card_leftSlots",
+      "Combinatorics.SlotShuffle.card_rightSlots",
+      "Combinatorics.SlotShuffle.ext",
+      "Combinatorics.SlotShuffle.mem_leftSlots_iff",
+      "Combinatorics.SlotShuffle.mem_rightSlots_iff",
+      "Combinatorics.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
+      "Combinatorics.SlotShuffle.strictMonoLeft",
+      "Combinatorics.SlotShuffle.strictMonoRight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffle.cons_injective",
+      "Combinatorics.SlotShuffle.toLeftSlotSet_injective"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} {σ τ : Combinatorics.SlotShuffle m n}, σ.slotEquiv = τ.slotEquiv → σ = τ",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.ext",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "Two ambient slot shuffles are equal when their slot equivalences are equal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.ext_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.ext_iff",
+      "Combinatorics.SlotShuffle.instFintype"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} {σ τ : Combinatorics.SlotShuffle m n}, σ = τ ↔ σ.slotEquiv = τ.slotEquiv",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.ext_iff",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.ext"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n) (i : Fin m), (σ.leftSlots.orderEmbOfFin ⋯) i = σ.slotEquiv (Sum.inl i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "The increasing enumeration of the left slots is the left shuffle slot map. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.card_leftSlots",
+      "Combinatorics.SlotShuffle.mem_leftSlots_iff",
+      "Combinatorics.SlotShuffle.strictMonoLeft"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n) (x : Fin (m + n)), x ∈ σ.leftSlots ↔ ∃ i, σ.slotEquiv (Sum.inl i) = x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.mem_leftSlots_iff",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffle.cons_injective",
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+      "_private.LeanCondensedMatter.Combinatorics.SlotShuffle.0.Combinatorics.SlotShuffle.ofLeftSlotSet_leftSlots",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffle.cons_injective",
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+      "_private.LeanCondensedMatter.Combinatorics.SlotShuffle.0.Combinatorics.SlotShuffle.ofLeftSlotSet_leftSlots",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n) (x : Fin (m + n)), x ∈ σ.rightSlots ↔ ∃ j, σ.slotEquiv (Sum.inr j) = x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.mem_rightSlots_iff",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n) (x : Fin (m + n)), x ∈ σ.rightSlots ↔ x ∉ σ.leftSlots",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "The right slots are precisely the complement of the left slots. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "dependencies": [
+      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n) (j : Fin n),\n  ((Finset.univ \\ σ.leftSlots).orderEmbOfFin ⋯) j = σ.slotEquiv (Sum.inr j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "The increasing enumeration of the complement of the left slots is the right slot map. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
+    ],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.card_sdiff_leftSlots",
+      "Combinatorics.SlotShuffle.mem_rightSlots_iff",
+      "Combinatorics.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
+      "Combinatorics.SlotShuffle.strictMonoRight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (self : Combinatorics.SlotShuffle m n), StrictMono fun i => self.slotEquiv (Sum.inl i)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.strictMonoLeft",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (self : Combinatorics.SlotShuffle m n), StrictMono fun j => self.slotEquiv (Sum.inr j)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.strictMonoRight",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ}, Function.Injective Combinatorics.SlotShuffle.toLeftSlotSet",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.SlotShuffle.toLeftSlotSet_injective",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "The left-slot set determines the whole slot shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.eq_of_leftSlots_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : Fintype α] [inst_1 : DecidableEq γ] (e : α ⊕ β ≃ γ),\n  (Combinatorics.SumEquiv.leftImage e).card = Fintype.card α",
     "standardAxioms": [
@@ -8003,15 +7868,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.FamilySlotShuffle.card_headSlots"
+      "Combinatorics.FamilySlotShuffle.card_headSlots",
+      "Combinatorics.SlotShuffle.card_leftSlots"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.FamilySlotShuffle.card_headSlots"
+      "Combinatorics.FamilySlotShuffle.card_headSlots",
+      "Combinatorics.SlotShuffle.card_leftSlots"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -8047,15 +7912,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_rightSlots",
-      "Combinatorics.FamilySlotShuffle.card_tailSlots"
+      "Combinatorics.FamilySlotShuffle.card_tailSlots",
+      "Combinatorics.SlotShuffle.card_rightSlots"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_rightSlots",
-      "Combinatorics.FamilySlotShuffle.card_tailSlots"
+      "Combinatorics.FamilySlotShuffle.card_tailSlots",
+      "Combinatorics.SlotShuffle.card_rightSlots"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -8219,8 +8084,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots",
+      "Combinatorics.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
       "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
     ],
@@ -8231,8 +8096,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots",
+      "Combinatorics.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
       "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
     ],
@@ -8270,7 +8135,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots"
+      "Combinatorics.SlotShuffle.card_sdiff_leftSlots"
     ],
     "dependencies": [
       "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
@@ -8278,7 +8143,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots"
+      "Combinatorics.SlotShuffle.card_sdiff_leftSlots"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -8491,6 +8356,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.blockPair_sideListingPerm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (m n : ℕ), Fintype.card (Combinatorics.LeftSlotSet m n) = (m + n).choose m",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.card_leftSlotSet",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "The possible left-slot sets are counted by a binomial coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.SlotShuffle.card_eq_choose"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.SlotShuffle.card_eq_choose"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -10076,6 +9983,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.SlotShuffle m n), (Combinatorics.slotShuffleLeftSlotSetEquiv m n) σ = σ.toLeftSlotSet",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "Combinatorics.slotShuffleLeftSlotSetEquiv_apply",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ),\n  ζ • Combinatorics.permutationConnectedCycleSeries ζ K = -Combinatorics.formalTraceLogOneSubSeries ζ K",
     "standardAxioms": [
@@ -10276,6 +10221,48 @@
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (m n : ℕ) (F : Combinatorics.LeftSlotSet m n → M),\n  ∑ s, F s = ∑ σ, F σ.toLeftSlotSet",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.sum_leftSlotSet",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "Reindex a finite sum over left-slot sets by ambient slot shuffles. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65252,7 +65239,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -65265,7 +65252,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
@@ -65273,7 +65260,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -73296,7 +73283,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -74022,7 +74009,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -74035,110 +74022,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_finiteBroadeningBornCurrentRungRadialIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryBornDysonDenominator_ne_zero_of_product_ne_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (i j : Fin 2) (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n          i j regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          i j regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": "At fixed finite cutoff and fixed positive disorder strength, the normalized Born-Dyson current\nrung has its `η → 0⁺` integral boundary when the real Born renormalization remains below one. This\ncondition keeps the boundary retarded/advanced denominator off zero through its side-indexed damping\ncomponent, thereby discharging the compact nonvanishing hypothesis required by dominated\nconvergence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          (∀ p ∈ Set.Icc 0 pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                  v m p probeEnergy disorderStrength hbar pMax ≠\n                0) →\n            ∀ (bound : ℝ → ℝ),\n              (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                  MeasureTheory.AEStronglyMeasurable\n                    (fun p =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                        i j v m p probeEnergy broadening disorderStrength hbar pMax)\n                    (MeasureTheory.volume.restrict (Set.Icc 0 pMax))) →\n                (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                    ∀ᵐ (p : ℝ) ∂MeasureTheory.volume.restrict (Set.Icc 0 pMax),\n                      ‖QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                            i j v m p probeEnergy broadening disorderStrength hbar pMax‖ ≤\n                        bound p) →\n                  MeasureTheory.Integrable bound (MeasureTheory.volume.restrict (Set.Icc 0 pMax)) →\n                    Filter.Tendsto\n                      (fun broadening =>\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                          i j v m probeEnergy broadening disorderStrength hbar pMax)\n                      (nhdsWithin 0 (Set.Ioi 0))\n                      (nhds\n                        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                          i j v m probeEnergy disorderStrength hbar pMax))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": "Dominated convergence passes `η → 0⁺` through any normalized finite radial current-rung entry\nonce one integrable radial bound, eventual strong measurability, and nonvanishing of the boundary RA\ndenominator on the compact radial interval are supplied. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand_broadening_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -74161,7 +74059,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -74174,7 +74072,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
@@ -74184,7 +74082,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -105797,6 +105695,124 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S) (e : Fin (2 * E)),\n  d.externalSupportDiagram.externalLabel e = d.externalLabel e",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalSupportDiagram_externalLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+    "externalAxioms": [],
+    "docString": "The canonical external-bearing diagram preserves every external label. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (v : ↥d.externallySupportedInteractionPart), d.externalSupportDiagram.vertexLabel v = d.vertexLabel ⟨↑v, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalSupportDiagram_vertexLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+    "externalAxioms": [],
+    "docString": "Canonical external-bearing interaction labels agree with the ambient labels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ d.externalSupportDiagram d.vacuumComplementDiagram =\n    d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+    "externalAxioms": [],
+    "docString": "The canonical external-bearing and vacuum diagrams reconstruct the original diagram. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  d.externallySupportedInteractionPart ⊆ S",
     "standardAxioms": [
@@ -105817,6 +105833,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff"
@@ -105825,11 +105842,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart",
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumComplementDiagram",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106139,7 +106159,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (hd : Combinatorics.Pairing.IsSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting h) d.pairing),\n  SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal h d hd)\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum h d hd) =\n    d",
     "standardAxioms": [
       "Classical.choice",
@@ -106147,7 +106167,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -106158,7 +106178,9 @@
     "docString": "Taking a split diagram apart and reassembling it returns the original diagram. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction"
+    ],
     "dependencies": [
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "SecondQuantization.Common.ExternalInsertionDiagram.ext",
@@ -106167,8 +106189,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106270,7 +106294,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  Combinatorics.Pairing.IsSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯) d.pairing",
     "standardAxioms": [
       "Classical.choice",
@@ -106289,7 +106313,9 @@
     "docString": "The canonical divide between externally supported interaction slots and the remaining vacuum\nslots is respected by the ambient pairing. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction"
+    ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset",
@@ -106297,8 +106323,12 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumComplementDiagram"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106413,6 +106443,44 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
     "externalAxioms": [],
     "docString": "Summing over split diagrams is summing independently over the external-insertion and quartic\npieces. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (v : ↥(S \\ d.externallySupportedInteractionPart)), d.vacuumComplementDiagram.vertexLabel v = d.vertexLabel ⟨↑v, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.vacuumComplementDiagram_vertexLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+    "externalAxioms": [],
+    "docString": "Canonical vacuum interaction labels agree with the ambient labels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -122213,44 +122281,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (event : SecondQuantization.Common.TwoPointTimedEvent n),\n  (SecondQuantization.Common.orderedTwoPointTimedEventEquiv τ τ' σ)\n      (SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ event) =\n    event",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointTimedEventEquiv_position",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b ↔\n    SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b",
     "standardAxioms": [
@@ -122272,7 +122302,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
     ],
@@ -122284,51 +122313,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff"
     ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a →\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b =\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b →\n      (SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b ↔\n        SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
-    "externalAxioms": [],
-    "docString": "Relative ordered positions of two events depend only on the times of those two events. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122475,48 +122463,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
     ],
     "compiledConsumerCount": 7,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ), (SecondQuantization.Common.orderedTwoPointTimedEvents τ τ' σ).length = n + 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointTimedEvents_length",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142789,7 +142735,7 @@
       "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff"
     ],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.sum_leftSlotSet",
+      "Combinatorics.sum_leftSlotSet",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
@@ -142864,7 +142810,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) {m k : ℕ}\n      (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n      (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n      (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n      have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n      have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n      (↑d).dysonAmplitude ε β g τ τ' =\n        intervalIntegral.orderedSimplexIntegral (m + k) β\n          (shuffle.integrand (fun σ => (↑ext).dysonFixedTimeAmplitude ε β g τ τ' σ)\n            (SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g x))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) {m k : ℕ}\n      (shuffle : Combinatorics.SlotShuffle m k)\n      (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n      (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n      have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n      have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n      (↑d).dysonAmplitude ε β g τ τ' =\n        intervalIntegral.orderedSimplexIntegral (m + k) β\n          (shuffle.integrand (fun σ => (↑ext).dysonFixedTimeAmplitude ε β g τ τ' σ)\n            (SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g x))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142886,8 +142832,8 @@
       "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
     ],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
+      "Combinatorics.SlotShuffle.card_leftSlots",
+      "Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
       "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_externalPieceOfCardEq",
@@ -154110,7 +154056,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {m n : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m n) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  intervalIntegral.MeasurableLocallyBounded f →\n    intervalIntegral.MeasurableLocallyBounded g → intervalIntegral.MeasurableLocallyBounded (shuffle.integrand f g)",
+    "statement": "∀ {m n : ℕ} (shuffle : Combinatorics.SlotShuffle m n) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  intervalIntegral.MeasurableLocallyBounded f →\n    intervalIntegral.MeasurableLocallyBounded g → intervalIntegral.MeasurableLocallyBounded (shuffle.integrand f g)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158715,6 +158661,86 @@
     "completedMention": false,
     "compiledConsumers": [
       "SimpleGraph.mem_componentBlockOn"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} (s : Combinatorics.LeftSlotSet m n), (Combinatorics.SlotShuffle.ofLeftSlotSet✝ s).leftSlots = ↑s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.SlotShuffle.0.Combinatorics.SlotShuffle.ofLeftSlotSet_leftSlots",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.SlotShuffle.mem_leftSlots_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} (s : Combinatorics.LeftSlotSet m n), (Finset.univ \\ ↑s).card = n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.SlotShuffle.0.Combinatorics.card_leftSlotSet_complement",
+    "module": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.SlotShuffle.0.Combinatorics.SlotShuffle.ofLeftSlotSet"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -174522,6 +174548,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ), (SecondQuantization.Common.orderedTwoPointTimedEvents τ τ' σ).length = n + 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.orderedTwoPointTimedEvents_length",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent m),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ\n          (SecondQuantization.Common.twoPointTimedEventMap f a) (SecondQuantization.Common.twoPointTimedEventMap f b) ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b",
     "standardAxioms": [
       "Classical.choice",
@@ -174590,9 +174658,9 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_length",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_nodup",
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise"
+      "SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder.0.SecondQuantization.Common.orderedTwoPointTimedEvents_length"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178040,7 +178108,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  have hsize := ⋯;\n  (↑d).externalPieceOfCardEq hsize = ↑ext",
+    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  have hsize := ⋯;\n  (↑d).externalPieceOfCardEq hsize = ↑ext",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178062,7 +178130,7 @@
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
+      "Combinatorics.SlotShuffle.card_leftSlots",
       "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq"
     ],
     "crossModuleDirectWrapper": false,
@@ -178085,7 +178153,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k)\n  (σ : Fin (m + k) → ℝ),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  have hsize := ⋯;\n  SecondQuantization.Common.TwoPointDiagram.externalPieceTimesOfCardEq (↑↑d) hsize σ = fun q =>\n    σ (shuffle.slotEquiv (Sum.inl q))",
+    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k)\n  (σ : Fin (m + k) → ℝ),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  have hsize := ⋯;\n  SecondQuantization.Common.TwoPointDiagram.externalPieceTimesOfCardEq (↑↑d) hsize σ = fun q =>\n    σ (shuffle.slotEquiv (Sum.inl q))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178107,9 +178175,9 @@
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft"
+      "Combinatorics.SlotShuffle.card_leftSlots",
+      "Combinatorics.SlotShuffle.mem_leftSlots_iff",
+      "Combinatorics.SlotShuffle.strictMonoLeft"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178131,7 +178199,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  (SecondQuantization.Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv) p.2 = x",
+    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  (SecondQuantization.Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv) p.2 = x",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178215,7 +178283,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {m k : ℕ}\n  (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode (m + k) (Finset.univ \\ shuffle.leftSlots))\n  (σ : Fin (m + k) → ℝ),\n  SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData\n          (SecondQuantization.Common.slotSplitVacuumOrder shuffle.leftSlots))\n        vac)\n      (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot shuffle.leftSlots) =\n    SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv) vac) fun q =>\n      σ ↑(shuffle.sdiffLeftSlotsOrderEquiv q)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {m k : ℕ} (shuffle : Combinatorics.SlotShuffle m k)\n  (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode (m + k) (Finset.univ \\ shuffle.leftSlots))\n  (σ : Fin (m + k) → ℝ),\n  SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData\n          (SecondQuantization.Common.slotSplitVacuumOrder shuffle.leftSlots))\n        vac)\n      (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot shuffle.leftSlots) =\n    SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv) vac) fun q =>\n      σ ↑(shuffle.sdiffLeftSlotsOrderEquiv q)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178237,7 +178305,7 @@
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
+      "Combinatorics.SlotShuffle.card_sdiff_leftSlots",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_orderIsoOfFin"
     ],
     "crossModuleDirectWrapper": false,
@@ -184414,48 +184482,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  Continuous fun p =>\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v m\n      p probeEnergy disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_boundaryBornDysonDenominator_radial",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          (∀ p ∈ Set.Icc 0 pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n                  side v m p probeEnergy disorderStrength hbar pMax ≠\n                0) →\n            ∃ c,\n              0 < c ∧\n                ∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                  ∀ p ∈ Set.Icc 0 pMax,\n                    c ≤\n                      ‖QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p\n                          0 probeEnergy broadening disorderStrength hbar pMax‖",
     "standardAxioms": [
       "Classical.choice",
@@ -184478,9 +184504,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_boundaryBornDysonDenominator_radial",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_sub_boundary_eq_zeroMomentum"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -184502,32 +184526,79 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n        broadening disorderStrength hbar pMax -\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v\n        m p probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m 0 0 probeEnergy\n        broadening disorderStrength hbar pMax -\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v\n        m 0 probeEnergy disorderStrength hbar pMax",
+    "statement": "∀ (i j : Fin 2) (regime : QuantumTheory.Transport.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n          i j regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          i j regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_sub_boundary_eq_zeroMomentum",
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "At fixed finite cutoff and fixed positive disorder strength, the normalized Born-Dyson current\nrung has its `η → 0⁺` integral boundary when the real Born renormalization remains below one. This\ncondition keeps the boundary retarded/advanced denominator off zero through its side-indexed damping\ncomponent, thereby discharging the compact nonvanishing hypothesis required by dominated\nconvergence. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          (∀ p ∈ Set.Icc 0 pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                  v m p probeEnergy disorderStrength hbar pMax ≠\n                0) →\n            ∀ (bound : ℝ → ℝ),\n              (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                  MeasureTheory.AEStronglyMeasurable\n                    (fun p =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                        i j v m p probeEnergy broadening disorderStrength hbar pMax)\n                    (MeasureTheory.volume.restrict (Set.Icc 0 pMax))) →\n                (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                    ∀ᵐ (p : ℝ) ∂MeasureTheory.volume.restrict (Set.Icc 0 pMax),\n                      ‖QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                            i j v m p probeEnergy broadening disorderStrength hbar pMax‖ ≤\n                        bound p) →\n                  MeasureTheory.Integrable bound (MeasureTheory.volume.restrict (Set.Icc 0 pMax)) →\n                    Filter.Tendsto\n                      (fun broadening =>\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                          i j v m probeEnergy broadening disorderStrength hbar pMax)\n                      (nhdsWithin 0 (Set.Ioi 0))\n                      (nhds\n                        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                          i j v m probeEnergy disorderStrength hbar pMax))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
+    "externalAxioms": [],
+    "docString": "Dominated convergence passes `η → 0⁺` through any normalized finite radial current-rung entry\nonce one integrable radial bound, eventual strong measurability, and nonvanishing of the boundary RA\ndenominator on the compact radial interval are supplied. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand_broadening_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

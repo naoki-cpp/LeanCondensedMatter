@@ -1009,16 +1009,16 @@
       "name": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
       "sourceFile": "LeanCondensedMatter/Combinatorics/BinaryShuffleSlotEquiv.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
-        "LeanCondensedMatter.Combinatorics.SumEquivPartition"
+        "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlots",
       "sourceFile": "LeanCondensedMatter/Combinatorics/BinaryShuffleSlots.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.BinaryShuffle"
+        "LeanCondensedMatter.Combinatorics.BinaryShuffle",
+        "LeanCondensedMatter.Combinatorics.SlotShuffle"
       ],
       "externalImportCount": 1
     },
@@ -1141,8 +1141,8 @@
       "name": "LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition",
       "sourceFile": "LeanCondensedMatter/Combinatorics/FamilySlotShuffleDecomposition.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
+        "LeanCondensedMatter.Combinatorics.SlotShuffle",
         "LeanCondensedMatter.Combinatorics.SumEquivPartition"
       ],
       "externalImportCount": 3
@@ -1519,6 +1519,15 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.SlotShuffle",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/SlotShuffle.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.SubsetSplit",
+        "LeanCondensedMatter.Combinatorics.SumEquivPartition"
+      ],
+      "externalImportCount": 5
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.SubsetSplit",
       "sourceFile": "LeanCondensedMatter/Combinatorics/SubsetSplit.lean",
       "imports": [],
@@ -1549,6 +1558,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing",
         "LeanCondensedMatter.Combinatorics.SetPartition",
         "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+        "LeanCondensedMatter.Combinatorics.SlotShuffle",
         "LeanCondensedMatter.Combinatorics.SubsetSplit",
         "LeanCondensedMatter.Combinatorics.SumEquivPartition"
       ],
@@ -3766,6 +3776,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/ExternalSupportDecomposition.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/ExternalSupportSplit.lean",
       "imports": [
@@ -3800,6 +3818,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting"
       ],
@@ -5536,7 +5555,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/FiberShuffleIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
-        "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
+        "LeanCondensedMatter.Combinatorics.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleOrderedData"
@@ -5548,7 +5567,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/FiberShuffleOrderedData.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
-        "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
+        "LeanCondensedMatter.Combinatorics.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand",
