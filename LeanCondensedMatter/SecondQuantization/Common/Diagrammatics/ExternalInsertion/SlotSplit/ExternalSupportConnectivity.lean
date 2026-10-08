@@ -217,7 +217,8 @@ theorem ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit
     | inr w =>
         have heq : v = (w : Fin N) := by
           simpa [supportSlotVertex] using hy
-        exact heq ▸ w.2
+        rw [heq]
+        exact w.2
   · intro v hv
     let vT : ↥T := ⟨v, hv⟩
     let vS : ↥S := ⟨v, h hv⟩
