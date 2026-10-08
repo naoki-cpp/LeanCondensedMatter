@@ -55,41 +55,10 @@ private theorem im_inner_configurationGreenOfRegulator_apply_self
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) (v : H) :
     (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
       regulator * ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
-  let hamiltonian := (ensemble.configurationHamiltonian ω).1
-  let green := ensemble.configurationGreenOfRegulator energy regulator ω
-  let w := green v
-  have hshift :
-      (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) - hamiltonian) *
-          green = 1 := by
-    simpa [hamiltonian, green, FiniteDisorderEnsemble.configurationGreenOfRegulator] using
-      spectralShift_mul_resolvent_spectralParameterOfRegulator
-        (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator
-  have hshiftApply :
-      (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) - hamiltonian)
-          w = v := by
-    have h := congrArg (fun operator : H →L[ℂ] H => operator v) hshift
-    simpa [w] using h
-  have hshiftApply' :
-      spectralParameterOfRegulator energy regulator • w - hamiltonian w = v := by
-    simpa [Algebra.algebraMap_eq_smul_one] using hshiftApply
-  have hsymm : (hamiltonian : H →ₗ[ℂ] H).IsSymmetric :=
-    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp
-      (ensemble.configurationHamiltonian ω).2
-  have hinner :
-      inner ℂ w v =
-        inner ℂ w (spectralParameterOfRegulator energy regulator • w - hamiltonian w) :=
-    congrArg (fun x : H => inner ℂ w x) hshiftApply'.symm
-  have himHamiltonian : (inner ℂ w (hamiltonian w)).im = 0 :=
-    hsymm.im_inner_self_apply w
-  have himSelf : (inner ℂ w w).im = 0 := by
-    exact inner_self_im (𝕜 := ℂ) w
-  have hreSelf : (inner ℂ w w).re = ‖w‖ ^ 2 := by
-    exact (norm_sq_eq_re_inner (𝕜 := ℂ) w).symm
-  change (inner ℂ w v).im = regulator * ‖w‖ ^ 2
-  rw [hinner, inner_sub_right, inner_smul_right]
-  simp only [Complex.sub_im, Complex.mul_im, himHamiltonian, himSelf, hreSelf,
-    spectralParameterOfRegulator_im, sub_zero, mul_zero, zero_add]
+  simpa only [FiniteDisorderEnsemble.configurationGreenOfRegulator] using
+    im_inner_resolvent_spectralParameterOfRegulator_apply_self
+      (ensemble.configurationHamiltonian ω).1
+      (ensemble.configurationHamiltonian ω).2 energy regulator hregulator v
 
 /-- Taking an inner product after an exact finite operator average is the corresponding weighted
 finite average of inner products. -/
