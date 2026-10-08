@@ -98,6 +98,12 @@ theorem regularizedStredaResidualSeaTraceKernel_swap
       retardedAdvancedResolventDifference
       retardedAdvancedResolventDifferenceDerivative
     noncomm_ring
+  -- A four-factor cyclic rotation follows directly from the upstream two-factor identity.
+  have htraceRotate (P Q U V : H →L[ℂ] H) :
+      finiteDimensionalOperatorTrace (H := H) (P * Q * U * V) =
+        finiteDimensionalOperatorTrace (H := H) (U * V * P * Q) := by
+    simpa only [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm (H := H) (P * Q) (U * V))
   -- A cyclic trace commutator with a fixed propagator is skew in its two vertices.
   have hcyclicSkew : ∀ (T X Y : H →L[ℂ] H),
       (finiteDimensionalOperatorTrace (H := H) (X * T ^ 2 * Y * T) -
@@ -105,17 +111,7 @@ theorem regularizedStredaResidualSeaTraceKernel_swap
       -(finiteDimensionalOperatorTrace (H := H) (Y * T ^ 2 * X * T) -
         finiteDimensionalOperatorTrace (H := H) (Y * T * X * T ^ 2)) := by
     intro T X Y
-    have h₁ :
-        finiteDimensionalOperatorTrace (H := H) (X * T ^ 2 * Y * T) =
-          finiteDimensionalOperatorTrace (H := H) (Y * T * X * T ^ 2) := by
-      simpa [pow_two, mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm (H := H) (X * T * T) (Y * T))
-    have h₂ :
-        finiteDimensionalOperatorTrace (H := H) (X * T * Y * T ^ 2) =
-          finiteDimensionalOperatorTrace (H := H) (Y * T ^ 2 * X * T) := by
-      simpa [pow_two, mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm (H := H) (X * T) (Y * T * T))
-    rw [h₁, h₂]
+    rw [htraceRotate X (T ^ 2) Y T, htraceRotate X T Y (T ^ 2)]
     ring
   have hsea : ∀ X Y : H →L[ℂ] H,
       regularizedStredaResidualSeaTraceKernel
@@ -126,36 +122,13 @@ theorem regularizedStredaResidualSeaTraceKernel_swap
             finiteDimensionalOperatorTrace (H := H) (X * A * Y * A ^ 2) -
             finiteDimensionalOperatorTrace (H := H) (X * A ^ 2 * Y * A)) := by
     intro X Y
-    have hRA₁ :
-        finiteDimensionalOperatorTrace (H := H) (Y * A ^ 2 * X * R) =
-          finiteDimensionalOperatorTrace (H := H) (X * R * Y * A ^ 2) := by
-      simpa [pow_two, mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm
-          (H := H) (Y * A * A) (X * R))
-    have hRA₂ :
-        finiteDimensionalOperatorTrace (H := H) (Y * A * X * R ^ 2) =
-          finiteDimensionalOperatorTrace (H := H) (X * R ^ 2 * Y * A) := by
-      simpa [pow_two, mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm
-          (H := H) (Y * A) (X * R * R))
-    have hAA₁ :
-        finiteDimensionalOperatorTrace (H := H) (Y * A ^ 2 * X * A) =
-          finiteDimensionalOperatorTrace (H := H) (X * A * Y * A ^ 2) := by
-      simpa [pow_two, mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm
-          (H := H) (Y * A * A) (X * A))
-    have hAA₂ :
-        finiteDimensionalOperatorTrace (H := H) (Y * A * X * A ^ 2) =
-          finiteDimensionalOperatorTrace (H := H) (X * A ^ 2 * Y * A) := by
-      simpa [pow_two, mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm
-          (H := H) (Y * A) (X * A * A))
     unfold regularizedStredaResidualSeaTraceKernel
       regularizedStredaResidualSeaOperatorKernel
       regularizedStredaSurfacePrimitiveOperatorDerivative
     rw [hbastin X Y, hsurfaceDerivative X Y]
     simp only [map_sub, map_add, map_neg, map_smul, smul_eq_mul]
-    rw [hRA₁, hRA₂, hAA₁, hAA₂]
+    rw [htraceRotate Y (A ^ 2) X R, htraceRotate Y A X (R ^ 2),
+      htraceRotate Y (A ^ 2) X A, htraceRotate Y A X (A ^ 2)]
     ring
   rw [hsea current₁ current₂, hsea current₂ current₁]
   have hR := hcyclicSkew R current₁ current₂
