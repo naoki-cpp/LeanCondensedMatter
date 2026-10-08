@@ -93,8 +93,11 @@ the forward coefficient identity needed by the replica polynomial proof. Both ro
 same formal-log coefficient with the connected-object contribution.
 
 The bosonic physical Dyson connected theorem uses the same normalized finite-set and
-`MultiplicativeWeight` machinery directly. Its finite-mode quartic Dyson coefficients are
-Gibbs-summable at every fixed perturbation order through finite thermal-field expansions. Statistics
+`MultiplicativeWeight` machinery directly. Its Dyson-to-diagram expansion, component
+factorization, and series-to-object-moment identity are separated under
+`Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion` as `Pairing`, `Factorization`,
+and `Moment` modules. Its finite-mode quartic Dyson coefficients are Gibbs-summable at
+every fixed perturbation order through finite thermal-field expansions. Statistics
 enter only in concrete moment realizations, pairing weights, and amplitudes. This does not yet give a
 genuine analytic bosonic partition function: the missing step is all-order interacting convergence
 on the infinite occupation space. No source-functional wrapper is part of the current zero-source

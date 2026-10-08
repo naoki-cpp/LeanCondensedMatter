@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Moment
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
 
 set_option linter.style.header false
@@ -42,8 +42,8 @@ theorem factorial_mul_coeff_freeGibbsDysonFormalLog_eq_sum_connectedDysonThermal
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (freeGibbsDysonSeries ε β (quarticInteraction g)) hZ =
         W.normalizedObjectMoment := by
-    simpa only [W, quarticDysonThermalMoment] using
-      (powerSeriesMomentSetFunction_freeGibbsDysonSeries_eq_quarticDysonThermalMoment
+    simpa only [W] using
+      (powerSeriesMomentSetFunction_freeGibbsDysonSeries_eq_dysonThermalObjectMoment
         (N := n) ε β hpos g hZ)
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
