@@ -2,6 +2,7 @@ import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Sort
+import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Perm
 import Mathlib.Data.Fintype.Powerset
 
