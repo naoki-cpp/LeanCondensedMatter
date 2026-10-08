@@ -28,12 +28,10 @@ of the bundled factorial-normalized moment function with the normalized object m
 identifies the formal-log coefficient with the connected contribution using only the forward moment
 decomposition.
 The canonical fermionic theorem consumes this replica route; its model-specific obligation is the
-Dyson-moment/Wick-diagram identification. The inversion route exposes the distinct intermediate
-endpoint
-`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_quarticWickDiagramCumulant`,
-which factors through the bundled Dyson moment, Wick-diagram moment, and Wick-diagram cumulant APIs.
-The same module then kernel-checks the full inversion proof of the canonical connected-diagram
-statement as an `example`, avoiding a duplicate public theorem with an identical proposition.
+Dyson-moment/Wick-diagram identification. The independent inversion route applies
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` directly to the same bundled
+moment equality. It kernel-checks the canonical connected-diagram statement as an `example`,
+without introducing a fermionic cumulant definition or a duplicate public theorem.
 No source-functional wrapper is required for this formal partition-function endpoint.
 
 The normalized finite-configuration Dyson coefficients and labelled finite-set vertex moments are
@@ -92,8 +90,11 @@ finite-set cumulant inversion, while the replica route converts that bundled equ
 the forward coefficient identity needed by the replica polynomial proof. Both routes identify the
 same formal-log coefficient with the connected-object contribution.
 
-The bosonic coefficientwise connected theorem uses the same normalized finite-set and
-`MultiplicativeWeight` machinery directly. Its finite-mode quartic Dyson coefficients are
+The bosonic physical Dyson connected theorem uses the same normalized finite-set and
+`MultiplicativeWeight` machinery directly. Its static order-averaged thermal amplitudes are
+also multiplicative under connected components; their cumulants can be recovered from the
+generic connected-decomposition inversion theorem without a specialized bosonic cumulant API.
+Its finite-mode quartic Dyson coefficients are
 Gibbs-summable at every fixed perturbation order through finite thermal-field expansions. Statistics
 enter only in concrete moment realizations, pairing weights, and amplitudes. This does not yet give a
 genuine analytic bosonic partition function: the missing step is all-order interacting convergence
