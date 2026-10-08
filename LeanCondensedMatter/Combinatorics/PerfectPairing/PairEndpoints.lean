@@ -80,13 +80,6 @@ theorem Pairing.card_normalizedPair {n : ℕ} (pairing : Pairing n) :
   simp only [Fintype.card_prod, Fintype.card_fin] at h
   omega
 
-/-- Finset form of `Pairing.card_normalizedPair`. -/
-theorem Pairing.card_pairs {n : ℕ} (pairing : Pairing n) :
-    pairing.pairs.card = n := by
-  have h : Fintype.card pairing.NormalizedPair = pairing.pairs.card :=
-    Fintype.card_coe pairing.pairs
-  rw [← h, pairing.card_normalizedPair]
-
 /-- Normalize endpoint zero after transporting an abstract two-endpoint fiber into `pairing`. -/
 noncomputable def Pairing.normalizedPairOfEndpointEquiv
     {A P : Type*} {n : ℕ} (pairing : Pairing n)

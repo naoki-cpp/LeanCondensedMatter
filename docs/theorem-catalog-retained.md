@@ -291,9 +291,6 @@ or consumer structure changes.
   coefficients to Gibbs-expectation continuity.
 - `SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed` — reusable contraction
   estimate bounding truncation error by twice the distance to any fixed point of the truncation.
-- `Combinatorics.Pairing.card_pairs` — canonical cardinality theorem for perfect pairings:
-  a pairing of `Fin (2 * n)` has exactly `n` normalized pairs. This is an independently meaningful
-  combinatorial endpoint even without a current compiled consumer.
 - `Combinatorics.Pairing.sign_pairPerm` — canonical parity endpoint identifying the sign of the
   permutation that lists normalized pairs blockwise with `(-1)` raised to the pairing crossing
   count. It records the intrinsic bridge between crossing parity and permutation sign independently
