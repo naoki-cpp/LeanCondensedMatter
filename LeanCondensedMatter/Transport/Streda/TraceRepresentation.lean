@@ -127,12 +127,6 @@ noncomputable def TracedStredaKernelFacts.toRegularizedStredaIntegralData
       (continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy
         hamiltonian facts.hamiltonian_selfAdjoint current₁ current₂
         broadening facts.broadening_pos).continuousOn
-  surfaceProduct_intervalIntegrable :=
-    ContinuousOn.intervalIntegrable
-      (facts.occupation_continuous.mul
-        (continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy
-          hamiltonian facts.hamiltonian_selfAdjoint current₁ current₂
-          broadening facts.broadening_pos).continuousOn)
   seaProduct_intervalIntegrable :=
     ContinuousOn.intervalIntegrable
       (facts.occupation_continuous.mul
