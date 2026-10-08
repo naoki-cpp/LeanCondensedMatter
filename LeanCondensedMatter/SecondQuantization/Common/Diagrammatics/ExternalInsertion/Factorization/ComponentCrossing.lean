@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
-import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false
@@ -30,38 +29,6 @@ noncomputable def ExternalInsertionDiagram.interComponentCrossingCount
   d.pairing.interComponentCrossingCount d.componentPairEquiv
 
 
-/-- Number of ambient leg-order inversions from component `C` across component `B`.
-This is the generic block-inversion count of the canonical component-leg shuffle. -/
-noncomputable def ExternalInsertionDiagram.componentLegInversionCount
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
-  d.componentLegShuffle.blockInversionCount B C
-
-/-- For distinct components, the parity of the two oriented crossing counts is exactly the parity
-of the canonical ambient leg inversions between those components. -/
-theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
-    (d.pairing.componentCrossingCount d.componentPairEquiv B C +
-      d.pairing.componentCrossingCount d.componentPairEquiv C B) % 2 =
-      d.componentLegInversionCount B C % 2 := by
-  rw [← d.pairing.componentGeometricCrossingCount_eq_oriented_add d.componentPairEquiv B C,
-    ExternalInsertionDiagram.componentLegInversionCount,
-    d.componentLegShuffle.blockInversionCount_of_ne hBC]
-  simp only [ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply]
-  exact d.pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-    d.componentPairEquiv
-    (fun D => (d.restrictComponent D).pairing.pairEndpointEquiv)
-    (fun D p => d.componentDiagramLeg D p)
-    (fun D p k => by
-      fin_cases k <;>
-        simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
-          Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
-          d.componentPairEquiv_apply])
-    B C hBC
-
 /-- The residual inter-component crossing parity is the total block-inversion parity of the
 canonical component-leg shuffle, relative to any explicit ordering of the connected components. -/
 theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
@@ -71,23 +38,16 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
       d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
     d.interComponentCrossingCount % 2 =
       d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 := by
-  classical
-  let cross := fun B C : d.vertexGraph.componentPartition.parts =>
-    d.pairing.componentCrossingCount d.componentPairEquiv B C
-  let inv := fun B C : d.vertexGraph.componentPartition.parts =>
-    d.componentLegInversionCount B C
-  have hsum :=
-    finset_sum_offDiag_modEq_of_pair_add_modEq_of_order
-      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
-      (fun _ _ _ _ h => blockOrder.injective h) cross inv
-      (fun B _ C _ hBC => by
-        simpa [Nat.ModEq, inv, cross] using
-          d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC)
-  simpa [Nat.ModEq, ExternalInsertionDiagram.interComponentCrossingCount,
-    Combinatorics.Pairing.interComponentCrossingCount,
-    FamilySlotShuffleTo.orderedBlockInversionCount,
-    ExternalInsertionDiagram.componentLegInversionCount,
-    cross, inv] using hsum
+  exact d.pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+    d.componentPairEquiv
+    (fun B => (d.restrictComponent B).pairing.pairEndpointEquiv)
+    d.componentLegShuffle
+    (fun B p k => by
+      fin_cases k <;>
+        simp [ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply,
+          Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
+          d.componentPairEquiv_apply])
+    blockOrder
 
 /-- The ambient crossing count is the sum of all component-local crossing counts plus the residual
 crossing count between distinct connected components. -/
