@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiberSum
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardizationSum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 
@@ -126,6 +127,67 @@ theorem externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFib
     F]
   rw [Finset.sum_powerset]
   simp only [Finset.card_univ, Fintype.card_fin]
+
+open Classical in
+/-- Fixing external order `m` and vacuum order `k`, the integrated Dyson-amplitude
+support fibers can be summed in standard coordinates independent of the shuffle.
+
+The external-label constraint and the full integrated amplitude are retained; identifying
+the shuffle sum with a product of separate integrals is the subsequent analytic step. -/
+theorem externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSupportShuffle
+    {E : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) (m k : ℕ) :
+    (∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))),
+      ∑ p : {ext : ExternalInsertionDiagram
+            (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E (m + k) T //
+            HasNoVacuumComponent ext.vertexGraph} ×
+            QuarticDiagram (QuarticVertexLabel Mode) (m + k)
+              ((Finset.univ : Finset (Fin (m + k))) \ T),
+        if p.1.1.externalLabel = externalLabel then
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (((ExternalInsertionDiagram.externalSupportFiberEquiv
+                (Finset.subset_univ T)).symm p).1 :
+                ExternalInsertionWickDiagram Mode E (m + k))
+            ε β g externalTime
+        else 0) =
+      ∑ shuffle : Combinatorics.SlotShuffle m k,
+        ∑ q : {ext : ExternalInsertionDiagram
+              (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E m
+              (Finset.univ : Finset (Fin m)) //
+              HasNoVacuumComponent ext.vertexGraph} ×
+              OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
+          let d : ExternalInsertionWickDiagram Mode E (m + k) :=
+            ((ExternalInsertionDiagram.externalSupportFiberEquiv
+              (Finset.subset_univ shuffle.leftSlots)).symm
+              ((ExternalInsertionDiagram.standardizedSupportFiberDataEquiv
+                (E := E) shuffle).symm q)).1
+          if d.externalLabel = externalLabel then
+            d.dysonAmplitude ε β g externalTime
+          else 0 := by
+  classical
+  rw [← Finset.sum_subtype
+    (p := fun T : Finset (Fin (m + k)) => T.card = m)
+    (Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))))
+    (fun T => by simp)
+    (fun T =>
+      ∑ p : {ext : ExternalInsertionDiagram
+            (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E (m + k) T //
+            HasNoVacuumComponent ext.vertexGraph} ×
+            QuarticDiagram (QuarticVertexLabel Mode) (m + k)
+              ((Finset.univ : Finset (Fin (m + k))) \ T),
+        if p.1.1.externalLabel = externalLabel then
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (((ExternalInsertionDiagram.externalSupportFiberEquiv
+                (Finset.subset_univ T)).symm p).1 :
+                ExternalInsertionWickDiagram Mode E (m + k))
+            ε β g externalTime
+        else 0)]
+  exact ExternalInsertionDiagram.sum_leftSlotSet_standardizedSupportFiber
+    (F := fun d : ExternalInsertionWickDiagram Mode E (m + k) =>
+      if d.externalLabel = externalLabel then
+        d.dysonAmplitude ε β g externalTime else 0)
 
 end Fermionic
 end SecondQuantization
