@@ -99,6 +99,7 @@ rules, or empty/zero cases. In particular this covers the current simp API in:
 - `SubsetSplit`
 - `SumEquivPartition`
 - `BinaryShuffle`
+- `SlotShuffle`
 - `BinaryShuffleSlots`
 - `BinaryShuffleSlotEquiv`
 - `FamilySlotShuffle`

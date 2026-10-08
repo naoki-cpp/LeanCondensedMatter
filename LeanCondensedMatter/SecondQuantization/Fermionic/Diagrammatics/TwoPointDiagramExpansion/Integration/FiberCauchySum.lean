@@ -26,7 +26,7 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ)
     (m k : ℕ) :
-    (∑ T : BinaryShuffle.LeftSlotSet m k,
+    (∑ T : LeftSlotSet m k,
       ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) T.1 i j //
               ext.1.IsExternallyConnected} ×
             QuarticWickDiagram Mode (m + k)
@@ -34,22 +34,22 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
         ((fixedExternalFiberEquiv T.1).symm p).1.dysonAmplitude ε β g τ τ') =
       connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
-  rw [BinaryShuffle.sum_leftSlotSet]
+  rw [sum_leftSlotSet]
   change
-    (∑ shuffle : BinaryShuffle.SlotShuffle m k,
+    (∑ shuffle : SlotShuffle m k,
       ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
               ext.1.IsExternallyConnected} ×
             QuarticWickDiagram Mode (m + k)
               ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots),
         ((fixedExternalFiberEquiv shuffle.leftSlots).symm p).1.dysonAmplitude ε β g τ τ') = _
   calc
-    (∑ shuffle : BinaryShuffle.SlotShuffle m k,
+    (∑ shuffle : SlotShuffle m k,
       ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
               ext.1.IsExternallyConnected} ×
             QuarticWickDiagram Mode (m + k)
               ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots),
         ((fixedExternalFiberEquiv shuffle.leftSlots).symm p).1.dysonAmplitude ε β g τ τ') =
-      ∑ shuffle : BinaryShuffle.SlotShuffle m k,
+      ∑ shuffle : SlotShuffle m k,
         ∑ q : {ext : FixedExternalTwoPointWickDiagram Mode m i j //
                 ext.1.IsExternallyConnected} ×
               Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
@@ -61,7 +61,7 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
         exact (Equiv.sum_comp (fixedExternalShuffleFiberDataEquiv shuffle).symm
           (fun p => ((fixedExternalFiberEquiv shuffle.leftSlots).symm p).1.dysonAmplitude
             ε β g τ τ')).symm
-    _ = ∑ shuffle : BinaryShuffle.SlotShuffle m k,
+    _ = ∑ shuffle : SlotShuffle m k,
         ∑ ext : {ext : FixedExternalTwoPointWickDiagram Mode m i j //
             ext.1.IsExternallyConnected},
           ∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
@@ -71,7 +71,7 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
       apply Finset.sum_congr rfl
       intro shuffle _
       exact Fintype.sum_prod_type _
-    _ = ∑ shuffle : BinaryShuffle.SlotShuffle m k,
+    _ = ∑ shuffle : SlotShuffle m k,
         ∑ ext : {ext : FixedExternalTwoPointWickDiagram Mode m i j //
             ext.1.IsExternallyConnected},
           ∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
@@ -90,7 +90,7 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
     _ = ∑ ext : {ext : FixedExternalTwoPointWickDiagram Mode m i j //
             ext.1.IsExternallyConnected},
         ∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
-          ∑ shuffle : BinaryShuffle.SlotShuffle m k,
+          ∑ shuffle : SlotShuffle m k,
             intervalIntegral.orderedSimplexIntegral (m + k) β
               (shuffle.integrand
                 (fun σ => ext.1.dysonFixedTimeAmplitude ε β g τ τ' σ)

@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSumIntegral
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
-import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 
 set_option linter.style.header false
@@ -70,7 +70,7 @@ noncomputable def orderedVacuumDysonIntegrand
 
 /-- Standardize the connected external half of a shuffle fiber onto `Fin m`. -/
 noncomputable def connectedFixedExternalShuffleLeftEquiv {m k : ℕ}
-    (shuffle : BinaryShuffle.SlotShuffle m k) :
+    (shuffle : SlotShuffle m k) :
     {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
         ext.1.IsExternallyConnected} ≃
       {ext : FixedExternalTwoPointWickDiagram Mode m i j // ext.1.IsExternallyConnected} :=
@@ -80,7 +80,7 @@ noncomputable def connectedFixedExternalShuffleLeftEquiv {m k : ℕ}
 /-- A fixed-cardinality fiber has shuffle-independent local data: one connected order-`m` external
 diagram and one order-`k` vacuum label/pairing datum. -/
 noncomputable def fixedExternalShuffleFiberDataEquiv {m k : ℕ}
-    (shuffle : BinaryShuffle.SlotShuffle m k) :
+    (shuffle : SlotShuffle m k) :
     ({ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
         ext.1.IsExternallyConnected} ×
       QuarticWickDiagram Mode (m + k)
@@ -176,7 +176,7 @@ theorem sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
     (τ τ' : ℝ) {m k : ℕ}
     (ext : FixedExternalTwoPointWickDiagram Mode m i j)
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
-    (∑ shuffle : BinaryShuffle.SlotShuffle m k,
+    (∑ shuffle : SlotShuffle m k,
       intervalIntegral.orderedSimplexIntegral (m + k) β
         (shuffle.integrand
           (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ)

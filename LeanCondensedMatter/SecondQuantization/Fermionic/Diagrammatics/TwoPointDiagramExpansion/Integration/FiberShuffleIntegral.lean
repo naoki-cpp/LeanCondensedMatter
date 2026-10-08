@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
-import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleOrderedData
@@ -39,7 +39,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- After standardizing a shuffle fiber at its known left-slot count, the standalone external piece
 is exactly the chosen order-`m` connected diagram. -/
 private theorem fixedExternalShuffleFiber_externalPieceOfCardEq_eq
-    {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
+    {m k : ℕ} (shuffle : SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
     let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
@@ -68,7 +68,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- The inherited external-piece times at the known left-slot count are the left shuffle
 coordinates. -/
 private theorem fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq
-    {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
+    {m k : ℕ} (shuffle : SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k)
     (σ : Fin (m + k) → ℝ) :
@@ -99,7 +99,7 @@ private theorem fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
 private theorem fixedExternalShuffleFiber_vacuumOrderedData_eq
-    {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
+    {m k : ℕ} (shuffle : SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
     let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
@@ -127,7 +127,7 @@ private theorem orderedVacuumDysonIntegrand_orderIsoOfFin
 
 private theorem orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
+    {m k : ℕ} (shuffle : SlotShuffle m k)
     (vac : QuarticWickDiagram Mode (m + k)
       ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots))
     (σ : Fin (m + k) → ℝ) :
@@ -159,7 +159,7 @@ private theorem orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder
 theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ)
-    {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
+    {m k : ℕ} (shuffle : SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
     let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)

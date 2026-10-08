@@ -56,7 +56,7 @@ or consumer structure changes.
 - `Combinatorics.FamilySlotShuffle.orderedSimplexIntegral_cons` — public recursion law identifying the ordered-simplex integral of a constructed family shuffle with the corresponding binary head-versus-tail shuffled integral.
 - `intervalIntegral.orderedSimplexIntegral_const` — canonical closed-form evaluation of the ordered-simplex integral on constant integrands, giving the oriented simplex factor `β^n / n!`; retain as a mathematical endpoint even without a current code consumer.
 - `intervalIntegral.hasDerivAt_orderedSimplexIntegral_succ` — fundamental-theorem-of-calculus endpoint for ordered-simplex integrals: differentiation in the upper bound exposes the outermost time coordinate; retain as core analytic API even without a current code consumer.
-- `Combinatorics.BinaryShuffle.slotShuffleLeftSlotSetEquiv_apply` — canonical `[simp]` evaluation rule for the equivalence between ambient slot shuffles and their left-slot subsets; it exposes the semantic map rather than the `Equiv.ofBijective` implementation.
+- `Combinatorics.slotShuffleLeftSlotSetEquiv_apply` — canonical `[simp]` evaluation rule for the equivalence between ambient slot shuffles and their left-slot subsets; it exposes the semantic map rather than the equivalence construction.
 - `Combinatorics.BinaryShuffle.slot_injective` — core structural property of the public tagged-slot map `slot`; injectivity is independently useful and is the mathematical reason the tagged slots form an ambient-slot equivalence.
 - `Combinatorics.BinaryShuffle.sum_succ_succ` — canonical recursion splitting a finite binary-shuffle sum by the side supplying the outermost slot.
 - `Combinatorics.BinaryShuffle.sum_zero_left` — canonical boundary evaluation of a shuffle sum when the left family is empty.
@@ -77,8 +77,8 @@ or consumer structure changes.
 - `BerryGeometry.PointwiseEigenbasisData.berryCurvature_swap` — canonical antisymmetry of pointwise Berry curvature under exchange of parameter directions.
 - `BerryGeometry.PointwiseEigenbasisData.bornFock_berryConnection` — canonical Born–Fock off-diagonal Berry-connection formula relating eigenvector derivatives to Hamiltonian-derivative matrix elements and level spacings.
 - `BerryGeometry.PointwiseEigenbasisData.hellmannFeynman` — canonical Hellmann–Feynman theorem for the pointwise eigenbasis data.
-- `Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin` — canonical identification of the increasing enumeration of ambient left slots with the slot-shuffle embedding; it is used source-level by the two-point fiber shuffle integral even though the proof dependency is erased from compiled consumers.
-- `Combinatorics.BinaryShuffle.card_slotShuffle` — canonical binomial-cardinality theorem for ambient order-preserving slot shuffles; it is source-level input to the equivalence constructions with left-slot sets and recursive binary shuffles.
+- `Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin` — canonical identification of the increasing enumeration of ambient left slots with the slot-shuffle embedding; it is used source-level by the two-point fiber shuffle integral even though the proof dependency is erased from compiled consumers.
+- `Combinatorics.SlotShuffle.card_eq_choose` — canonical binomial-cardinality theorem for ambient order-preserving slot shuffles; it follows from the direct left-slot-set correspondence and supplies the recursive binary-shuffle equivalence.
 - `Combinatorics.BinaryShuffle.card_succ_succ` — natural Pascal recurrence for the recursively defined binary-shuffle type and the induction step underlying the closed binomial cardinality formula.
 - `Combinatorics.BinaryShuffle.card_zero_left` — canonical `[simp]` boundary stating uniqueness of a binary shuffle with no left slots.
 - `Combinatorics.BinaryShuffle.card_zero_right` — canonical `[simp]` boundary stating uniqueness of a binary shuffle with no right slots.

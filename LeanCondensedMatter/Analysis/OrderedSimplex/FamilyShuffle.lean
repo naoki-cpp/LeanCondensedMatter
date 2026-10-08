@@ -34,7 +34,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
     (Fin.sum_univ_succ size)]
   apply orderedSimplexIntegral_congr
   intro τ
-  unfold FamilySlotShuffleTo.ambientIntegrand BinaryShuffle.SlotShuffle.integrand
+  unfold FamilySlotShuffleTo.ambientIntegrand SlotShuffle.integrand
   rw [Fin.prod_univ_succ]
   apply congrArg₂ (· * ·)
   · apply congrArg (localIntegrand 0)

@@ -6,7 +6,7 @@ This repository formalizes condensed-matter physics in Lean. Here, a context mea
 
 ### Mathematical foundations and combinatorics
 
-Reusable operator analysis, finite combinatorics, permutations, orderings, pairings, and connected decompositions belong here. Their mathematical meaning is stated in Lean and Mathlib declarations; project-level boundaries are summarized in [the conventions](docs/conventions.md), [order-decomposition architecture](docs/architecture/combinatorics-order-decomposition.md), [ADR 0001](docs/adr/0001-lean-and-mathlib.md), and [ADR 0002](docs/adr/0002-semantic-ownership.md). Physical assumptions do not belong in this context.
+Reusable operator analysis, finite combinatorics, permutations, orderings, pairings, and connected decompositions belong here. Their mathematical meaning is stated in Lean and Mathlib declarations; project-level boundaries are summarized in [the conventions](docs/conventions.md), [order-decomposition architecture](docs/architecture/combinatorics-order-decomposition.md), [ADR 0001](docs/adr/0001-lean-and-mathlib.md), and [ADR 0002](docs/adr/0002-semantic-ownership.md). Physical assumptions do not belong in this context. The [finite-combinatorics glossary](docs/glossary/combinatorics/CONTEXT.md) defines ambient slot shuffles independently of their recursive presentation.
 
 ### Quantum theory
 
