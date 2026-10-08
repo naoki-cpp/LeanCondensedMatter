@@ -24,7 +24,8 @@ variable {Label : Type*}
 noncomputable def QuarticDiagram.fixedOrderComponentShuffle
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) : d.ComponentShuffle :=
-  d.shuffleOfVertexOrder order (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order)
+  d.vertexGraph.componentPartitionOn.shuffleOfOrder order
+    (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order)
     (d.vertexGraph.componentPartitionOn.partOrdersCompatible_partOrdersOfOrder order)
 
 @[simp]

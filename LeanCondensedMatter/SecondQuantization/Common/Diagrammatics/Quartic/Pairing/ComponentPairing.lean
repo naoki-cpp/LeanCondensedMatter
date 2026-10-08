@@ -102,8 +102,23 @@ theorem QuarticDiagram.assembleVertexOrder_componentSlot_val
     (B : d.vertexGraph.componentPartitionOn.parts) (i : Fin (B : Finset (Fin N)).card) :
     ((d.assembleVertexOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩) : ↥S) : Fin N) =
       ((orders B i : ↥(B : Finset (Fin N))) : Fin N) := by
-  simp [QuarticDiagram.assembleVertexOrder,
-    QuarticDiagram.componentVertexEquiv, Finpartition.equivSigmaParts]
+  let π := d.vertexGraph.componentPartitionOn
+  have hslot :
+      (π.assembleOrder orders shuffle).symm (π.partEquiv orders ⟨B, i⟩) =
+        shuffle.slotEquiv ⟨B, i⟩ := by
+    simpa [Finpartition.assembleOrder, Finpartition.partEquiv] using
+      (Combinatorics.assembleFamilyOrderOfSize_symm_apply
+        (F := fun C : π.parts => ↥(C : Finset (Fin N)))
+        (size := fun C : π.parts => (C : Finset (Fin N)).card)
+        π.equivSigmaParts orders shuffle B i)
+  have hvertex :
+      π.assembleOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩) =
+        π.partEquiv orders ⟨B, i⟩ := by
+    apply (π.assembleOrder orders shuffle).symm.injective
+    simpa using hslot.symm
+  change ((π.assembleOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩) : ↥S) : Fin N) = _
+  rw [hvertex]
+  simp [Finpartition.partEquiv, Finpartition.equivSigmaParts]
 
 /-- Vertex labels agree between the assembled global diagram and a restricted component. -/
 theorem QuarticDiagram.restrictComponent_vertexLabel_componentOrder
