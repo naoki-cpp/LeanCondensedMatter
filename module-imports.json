@@ -879,7 +879,7 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/AnalyticLog.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.Cumulant"
+        "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence"
       ],
       "externalImportCount": 4
     },
@@ -887,9 +887,7 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Cumulant.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
-        "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
+        "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
         "LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock"
@@ -918,6 +916,15 @@
         "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
+      "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/MomentCumulantRecurrence.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Normalization",

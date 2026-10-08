@@ -9776,7 +9776,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
     "externalAxioms": [],
     "docString": "The factorial-normalized moment and formal-log coefficients satisfy the triangular\nmoment-cumulant recurrence. ",
     "directWrapperTargetModule": null,
