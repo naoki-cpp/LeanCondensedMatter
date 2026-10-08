@@ -10,8 +10,9 @@ all externally supported interaction vertices and an ordinary quartic diagram co
 remaining vacuum interaction vertices. This module extracts the actual diagrams from the
 support-based split and records their exact reconstruction.
 
-The connectedness of the extracted external-bearing diagram is established separately, before
-reindexing the diagram sum by vacuum-free fibers.
+The extracted external-bearing diagram may have several disconnected externally supported
+components. Proving that it has no *vacuum* components is the next step, before reindexing the
+diagram sum by vacuum-free fibers.
 -/
 
 namespace SecondQuantization
@@ -39,7 +40,7 @@ noncomputable def ExternalInsertionDiagram.vacuumComplementDiagram
     d.pairing_isSplit_externallySupportedInteractionPart
 
 /-- The canonical external-bearing and vacuum diagrams reconstruct the original diagram. -/
-theorem ExternalInsertionDiagram.ofSlotSplit_externalSupportDiagram_vacuumComplementDiagram
+theorem ExternalInsertionDiagram.externalSupport_reconstruction
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     ExternalInsertionDiagram.ofSlotSplit
