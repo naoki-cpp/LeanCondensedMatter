@@ -34,28 +34,26 @@ noncomputable def normalizedAnalyticDysonPartitionFunction (energy : Config → 
     analyticDysonPartitionFunction energy β V) lam
 
 omit [Nonempty Config] in
-omit [Nonempty Config] in
 private theorem analyticDysonPartitionFunction_zero_eq_constantCoeff
-    (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     analyticDysonPartitionFunction energy β V 0 =
       PowerSeries.constantCoeff (dysonTraceSeries energy β V) := by
-  rw [analyticDysonPartitionFunction_zero energy hβ V,
+  rw [analyticDysonPartitionFunction_zero energy β V,
     constantCoeff_dysonTraceSeries]
   simpa [weightSum] using
     coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β
 
 @[simp]
 theorem normalizedAnalyticDysonPartitionFunction_zero
-    (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     normalizedAnalyticDysonPartitionFunction energy β V 0 = 1 := by
   change (PowerSeries.constantCoeff (dysonTraceSeries energy β V))⁻¹ *
     analyticDysonPartitionFunction energy β V 0 = 1
-  rw [analyticDysonPartitionFunction_zero_eq_constantCoeff energy hβ V]
+  rw [analyticDysonPartitionFunction_zero_eq_constantCoeff energy β V]
   exact inv_mul_cancel₀ (constantCoeff_dysonTraceSeries_ne_zero energy β V)
 
-omit [Nonempty Config] in
 omit [Nonempty Config] in
 private theorem hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
@@ -77,11 +75,11 @@ noncomputable def analyticNormalizedLogPartitionFunction (energy : Config → �
 
 @[simp]
 theorem analyticNormalizedLogPartitionFunction_zero
-    (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     analyticNormalizedLogPartitionFunction energy β V 0 = 0 := by
   rw [analyticNormalizedLogPartitionFunction,
-    normalizedAnalyticDysonPartitionFunction_zero energy hβ V]
+    normalizedAnalyticDysonPartitionFunction_zero energy β V]
   exact Complex.log_one
 
 /-- Derivatives of the normalized analytic log partition function agree with the
@@ -97,7 +95,7 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_co
   unfold analyticNormalizedLogPartitionFunction
   apply PowerSeries.iteratedDeriv_clog_eq_factorial_mul_coeff_logOf
     (hseries := hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction energy hβ V)
-    (hF0 := normalizedAnalyticDysonPartitionFunction_zero energy hβ V)
+    (hF0 := normalizedAnalyticDysonPartitionFunction_zero energy β V)
     (hcoeff := ?_)
     (hZ := PowerSeries.constantCoeff_normalizeByConstantCoeff
       (constantCoeff_dysonTraceSeries_ne_zero energy β V))

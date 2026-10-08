@@ -100,21 +100,21 @@ theorem hasFPowerSeriesAt_analyticDysonPartitionFunction
       (dysonTraceFPowerSeries energy β V) 0 :=
   (hasFPowerSeriesOnBall_analyticDysonPartitionFunction energy hβ V).hasFPowerSeriesAt
 
-/-- At zero coupling, the analytic partition function is the canonical finite pure-point partition
-function. -/
+/-- At zero coupling, the analytic partition function is the canonical finite pure-point
+partition function for any inverse temperature. -/
 @[simp]
 theorem analyticDysonPartitionFunction_zero
-    (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     analyticDysonPartitionFunction energy β V 0 =
       (QuantumTheory.purePointPartitionFunction energy β : ℂ) := by
-  rw [← (hasSum_dysonTraceCoeff_analyticDysonPartitionFunction
-    energy hβ V 0).tsum_eq, tsum_eq_single 0]
-  · rw [dysonTraceCoeff_zero]
-    simpa [weightSum] using
-      (coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β).symm
-  · intro n hn
-    simp [hn]
+  unfold analyticDysonPartitionFunction continuousInteractingHamiltonian
+  simp only [zero_smul, add_zero]
+  rw [← continuousDiagonalEvolution_eq_exp energy (-β)]
+  rw [continuousDiagonalEvolution, finiteOperatorTrace_finiteContinuousOperator,
+    traceFock_diagonalEvolution_eq_weightSum]
+  simpa only [weightSum] using
+    (coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β).symm
 
 end
 end Common
