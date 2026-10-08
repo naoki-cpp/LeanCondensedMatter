@@ -199,7 +199,7 @@ theorem ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit
     (ExternalInsertionDiagram.ofSlotSplit h ext vac).externallySupportedInteractionPart = T := by
   classical
   let d := ExternalInsertionDiagram.ofSlotSplit h ext vac
-  apply Finset.Subset.antisymm d.externallySupportedInteractionPart_subset
+  apply Finset.Subset.antisymm
   · intro v hv
     have hvS : v ∈ S := d.externallySupportedInteractionPart_subset hv
     let vS : ↥S := ⟨v, hvS⟩
