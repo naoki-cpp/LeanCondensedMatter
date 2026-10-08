@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 
 set_option linter.style.header false
 
@@ -55,36 +54,24 @@ theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
     (B : d.vertexGraph.componentPartitionOn.parts) :
     StrictMono (d.componentOrderedLeg shuffle B) := by
   intro a b hab
-  let pa := orderedQuarticLegEquiv (B : Finset (Fin N)).card a
-  let pb := orderedQuarticLegEquiv (B : Finset (Fin N)).card b
-  have hab' :
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm pa <
-        (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm pb := by
-    simpa [pa, pb] using hab
-  change (orderedQuarticLegEquiv S.card).symm
-      (shuffle.slotEquiv ⟨B, pa.1⟩, pa.2) <
-    (orderedQuarticLegEquiv S.card).symm
-      (shuffle.slotEquiv ⟨B, pb.1⟩, pb.2)
-  by_cases hslot : pa.1 = pb.1
-  · have hlocal : pa.2 < pb.2 :=
-      (FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
-        (by ring : 2 * (2 * (B : Finset (Fin N)).card) =
-          (B : Finset (Fin N)).card * 4) pa pb hslot).1 hab'
-    have hmap : shuffle.slotEquiv ⟨B, pa.1⟩ = shuffle.slotEquiv ⟨B, pb.1⟩ := by
-      rw [hslot]
-    exact (FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
-      (by ring : 2 * (2 * S.card) = S.card * 4)
-      (shuffle.slotEquiv ⟨B, pa.1⟩, pa.2)
-      (shuffle.slotEquiv ⟨B, pb.1⟩, pb.2) hmap).2 hlocal
-  · have hslotLt : pa.1 < pb.1 :=
-      (FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne
-        (by ring : 2 * (2 * (B : Finset (Fin N)).card) =
-          (B : Finset (Fin N)).card * 4)
-        pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
-    have hmapLt := shuffle.strictMono B hslotLt
-    exact (FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne
-      (by ring : 2 * (2 * S.card) = S.card * 4)
-      _ _ _ _ (ne_of_lt hmapLt)).2 hmapLt
+  have hab' :=
+    (FiniteIndex.blockEquiv_lt_iff
+      (by ring : 2 * (2 * (B : Finset (Fin N)).card) =
+        (B : Finset (Fin N)).card * 4) a b).mp hab
+  apply (FiniteIndex.blockEquiv_lt_iff
+    (by ring : 2 * (2 * S.card) = S.card * 4)
+    (d.componentOrderedLeg shuffle B a) (d.componentOrderedLeg shuffle B b)).2
+  change
+    (orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B a)).1 <
+        (orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B b)).1 ∨
+      ((orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B a)).1 =
+          (orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B b)).1 ∧
+        (orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B a)).2 <
+          (orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B b)).2)
+  simp only [d.orderedQuarticLegEquiv_componentOrderedLeg]
+  rcases hab' with hslot | ⟨hslot, hlocal⟩
+  · exact Or.inl (shuffle.strictMono B hslot)
+  · exact Or.inr ⟨congrArg (fun i => shuffle.slotEquiv ⟨B, i⟩) hslot, hlocal⟩
 
 /-- The canonical order embedding of one component's flattened legs into the assembled order. -/
 noncomputable def QuarticDiagram.componentOrderedLegOrderEmbedding {S : Finset (Fin N)}
@@ -224,7 +211,7 @@ theorem QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg
 
 /-- The restricted pairing partner, transported back to ambient fixed diagram-leg coordinates,
 agrees with the ambient diagram pairing partner. -/
-theorem QuarticDiagram.componentDiagramLeg_restrictedPairing_partner
+private theorem QuarticDiagram.componentDiagramLeg_restrictedPairing_partner
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (B : d.vertexGraph.componentPartitionOn.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
@@ -262,31 +249,6 @@ theorem QuarticDiagram.pairingInOrder_partner_componentOrderedLeg
     (d.componentDiagramLeg_restrictedPairing_partner B
       (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)).symm
 
-/-- A component-local normalized pair maps to, and is reflected by, the corresponding normalized
-pair of the assembled global ordered pairing. -/
-theorem QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.vertexGraph.componentPartitionOn.parts)
-    (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) ∈
-        (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs ↔
-      (a, b) ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs := by
-  let e := d.componentOrderedLegOrderEmbedding shuffle B
-  change (e a, e b) ∈
-      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs ↔
-    (a, b) ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
-  exact
-    ((d.restrictComponent B.2).pairingInOrder (orders B)).mem_pairs_map_iff
-      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)) e
-      (by
-        intro p
-        change (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
-            (d.componentOrderedLeg shuffle B p) =
-          d.componentOrderedLeg shuffle B
-            (((d.restrictComponent B.2).pairingInOrder (orders B)).partner p)
-        exact d.pairingInOrder_partner_componentOrderedLeg orders shuffle B p)
-      a b
 
 end Common
 end SecondQuantization
