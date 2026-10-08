@@ -96,7 +96,7 @@ theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
   classical
   change LinearMap.trace ℂ (FiniteAnalyticFock Config) A.toLinearMap = _
   rw [LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ Config)]
-  simp [Matrix.trace, LinearMap.toMatrix_apply, finiteAnalyticBasis, Pi.basisFun_apply]
+  simp [Matrix.trace, finiteAnalyticBasis, Pi.basisFun_apply]
 
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
 theorem finiteOperatorTrace_finiteContinuousOperator
