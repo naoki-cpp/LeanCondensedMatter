@@ -168,14 +168,16 @@ private theorem
   apply Nat.mod_eq_zero_of_dvd
   refine Finset.dvd_sum fun p _ => ?_
   simp_rw [hUniform p]
-  simpa only [Fintype.sum_prod_type] using
-    (Fintype.dvd_sum_equiv_fst_of_dvd_card
+  have h := Fintype.dvd_sum_equiv_fst_of_dvd_card
       (Equiv.refl
         (↥(interactionSector
           (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) × Fin 4))
       (fun v =>
         if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0)
-      (d := 2) (by decide))
+      (d := 2) (by decide)
+  rw [Fintype.sum_prod_type] at h
+  obtain ⟨k, hk⟩ := h
+  exact ⟨k, hk⟩
 
 private def mixedTimeOrderedInteractionLeg {n : ℕ} (v : Fin n) (l : Fin 4) :
     OrderedTwoPointLeg n :=
