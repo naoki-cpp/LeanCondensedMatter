@@ -167,33 +167,17 @@ private theorem
   rw [d.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks τ τ' σ B C hVac]
   apply Nat.mod_eq_zero_of_dvd
   refine Finset.dvd_sum fun p _ => ?_
-  let V := ↥(interactionSector
-    (C : Finset (TwoPointVertex
-      (Finset.univ : Finset (Fin n)))))
-  let f : V → ℕ := fun v =>
-    if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0
-  change 2 ∣ ∑ v : V, ∑ l : Fin 4,
-    if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 then 1 else 0
-  have hcount :
-      (∑ v : V, ∑ l : Fin 4,
-        if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 then 1 else 0) =
-        4 * ∑ v : V, f v := by
-    calc
-      (∑ v : V, ∑ l : Fin 4,
-          if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 then 1 else 0) =
-          ∑ v : V, ∑ _l : Fin 4, f v := by
-        apply Finset.sum_congr rfl
-        intro v _
-        apply Finset.sum_congr rfl
-        intro l _
-        simp [f, hUniform p v l]
-      _ = 4 * ∑ v : V, f v := by
-        simpa [Fintype.sum_prod_type] using
-          (Fintype.sum_equiv_fst_eq_card_mul_sum
-            (e := Equiv.refl (V × Fin 4)) (f := f))
-  rw [hcount]
-  refine ⟨2 * ∑ v : V, f v, ?_⟩
-  ring
+  simp_rw [hUniform p]
+  have h := Fintype.dvd_sum_equiv_fst_of_dvd_card
+      (Equiv.refl
+        (↥(interactionSector
+          (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) × Fin 4))
+      (fun v =>
+        if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0)
+      (d := 2) (by decide)
+  rw [Fintype.sum_prod_type] at h
+  obtain ⟨k, hk⟩ := h
+  exact ⟨k, hk⟩
 
 private def mixedTimeOrderedInteractionLeg {n : ℕ} (v : Fin n) (l : Fin 4) :
     OrderedTwoPointLeg n :=

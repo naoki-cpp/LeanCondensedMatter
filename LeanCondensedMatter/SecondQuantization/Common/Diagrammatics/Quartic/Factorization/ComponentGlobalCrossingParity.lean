@@ -76,18 +76,13 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
           ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
         shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
       ((orderedQuarticLegEquiv (B : Finset (Fin N)).card x).1)
-  rw [Fintype.sum_equiv_fst_eq_card_mul_sum
-    (e := orderedQuarticLegEquiv (B : Finset (Fin N)).card)
-    (f := fun i =>
+  exact Fintype.dvd_sum_equiv_fst_of_dvd_card
+    (orderedQuarticLegEquiv (B : Finset (Fin N)).card)
+    (fun i =>
       if shuffle.slotEquiv
             ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
-          shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)]
-  simp only [Fintype.card_fin]
-  refine ⟨2 * (∑ i : Fin (B : Finset (Fin N)).card,
-    if shuffle.slotEquiv
-          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
-        shuffle.slotEquiv ⟨B, i⟩ then 1 else 0), ?_⟩
-  ring
+          shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
+    (by decide)
 
 /-- Both orientations of the crossing count between two distinct components add up to an even
 number. -/

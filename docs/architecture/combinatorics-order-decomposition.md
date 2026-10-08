@@ -64,3 +64,12 @@ private to that owner.
 importing crossing geometry. `CrossingEraseZero` uses the same structure together with monotone
 crossing transport to derive the crossing-count decomposition. These laws apply also when the
 smaller pairing has no pairs.
+
+## Repeated-fiber counting
+
+`Common.FintypeProduct` owns finite-product reindexing and counting.
+`Fintype.dvd_sum_equiv_fst_of_dvd_card` derives divisibility of a first-coordinate sum from
+divisibility of the repeated fiber's cardinality, using the existing multiplicity formula.
+Quartic and TwoPoint crossing-parity proofs supply their own uniform comparisons; the common
+counting law handles the four-leg multiplicity and evenness. Vertex-slot geometry and mixed-time
+order geometry remain separate downstream responsibilities.
