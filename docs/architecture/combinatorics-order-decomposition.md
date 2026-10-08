@@ -38,3 +38,15 @@ by `Equiv.Set.sumDiffSubset`. No dependent recursion that removes the first slot
 it uses the ambient cardinality result. `FamilySlotShuffleDecomposition` consumes the ambient
 module directly. The ordered-simplex product proof still uses recursive binary shuffles internally,
 while its integrand is attached to the ambient `SlotShuffle`.
+
+## Component crossing parity and family shuffles
+
+`PerfectPairing.ComponentCrossing` owns the relation between a pairing's residual inter-component
+crossing parity and a compatible family shuffle's ordered block-inversion parity.
+`Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount` accepts the pair
+decomposition, local endpoint equivalences, the shuffle, their endpoint compatibility, and an
+explicit block order. It does not assume the residual parity is zero.
+
+The canonical-leg-order and mixed-time-order external-insertion modules supply their own endpoint
+data and compatibility proofs. Endpoint inversion reindexing and off-diagonal parity summation
+remain in generic combinatorics; time ordering and physical exchange weights remain downstream.

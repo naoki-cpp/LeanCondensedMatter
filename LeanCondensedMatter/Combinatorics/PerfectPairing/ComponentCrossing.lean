@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 
 set_option linter.style.header false
 
@@ -10,9 +11,9 @@ A decomposition of the normalized pairs of a pairing into components is an equiv
 `(Σ B, F B) ≃ pairing.NormalizedPair`. Reindexing the crossing count along it splits the count into
 oriented contributions from ordered pairs of components.
 
-Whenever the two orientations between distinct components cancel modulo two — which is what a block
-structure on the ambient positions supplies — only the component-internal contributions survive the
-parity. That statement is independent of what the components are, so it is stated here once.
+When component endpoints form a family shuffle, the residual crossing parity equals the ordered
+inter-block inversion parity. Only when the two orientations between distinct components cancel
+modulo two do the component-internal contributions alone determine the global parity.
 -/
 
 namespace Combinatorics
@@ -196,6 +197,37 @@ noncomputable def Pairing.interComponentCrossingCount [Fintype ι] (pairing : Pa
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) : ℕ :=
   ∑ BC ∈ (Finset.univ : Finset ι).offDiag,
     pairing.componentCrossingCount e BC.1 BC.2
+
+/-- The residual crossing parity of a pairing decomposition is the ordered block-inversion parity
+of any family shuffle that agrees with its pair endpoints. The block order remains explicit. -/
+theorem Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+    [Fintype ι] {size : ι → ℕ} (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
+    (endpointEquiv : ∀ B, F B × Fin 2 ≃ Fin (size B))
+    (shuffle : FamilySlotShuffleTo size (2 * n))
+    (hposition : ∀ B p k,
+      shuffle.slotEquiv ⟨B, endpointEquiv B (p, k)⟩ = pairEndpointAt (e ⟨B, p⟩).1 k)
+    (blockOrder : ι ≃ Fin (Fintype.card ι)) :
+    pairing.interComponentCrossingCount e % 2 =
+      shuffle.orderedBlockInversionCount blockOrder % 2 := by
+  classical
+  have hpair : ∀ B C : ι, B ≠ C →
+      Nat.ModEq 2
+        (pairing.componentCrossingCount e B C + pairing.componentCrossingCount e C B)
+        (shuffle.blockInversionCount B C) := by
+    intro B C hBC
+    change (pairing.componentCrossingCount e B C +
+      pairing.componentCrossingCount e C B) % 2 = shuffle.blockInversionCount B C % 2
+    rw [← pairing.componentGeometricCrossingCount_eq_oriented_add e B C,
+      shuffle.blockInversionCount_of_ne hBC]
+    exact pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+      e endpointEquiv (fun B p => shuffle.slotEquiv ⟨B, p⟩) hposition B C hBC
+  exact finset_sum_offDiag_modEq_of_pair_add_modEq_of_order
+    2 (Finset.univ : Finset ι) blockOrder
+    (fun _ _ _ _ h => blockOrder.injective h)
+    (fun B C => pairing.componentCrossingCount e B C)
+    (fun B C => shuffle.blockInversionCount B C)
+    (fun B _ C _ hBC => hpair B C hBC)
 
 /-- The global crossing count splits exactly into component-internal crossings and crossings between
 distinct components. -/

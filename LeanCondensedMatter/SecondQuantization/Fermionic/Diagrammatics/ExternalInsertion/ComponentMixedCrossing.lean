@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData
-import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
 
 set_option linter.style.header false
@@ -65,37 +64,6 @@ noncomputable def ExternalInsertionWickDiagram.mixedInterComponentCrossingCount
   (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
     (d.componentMixedPairEquiv externalTime σ)
 
-/-- For two distinct components, mixed-order geometric crossing parity is exactly the parity of
-ambient slot inversions between their mixed-position blocks. -/
-theorem ExternalInsertionWickDiagram.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
-    ((d.pairingInMixedOrder externalTime σ).componentCrossingCount
-        (d.componentMixedPairEquiv externalTime σ) B C +
-      (d.pairingInMixedOrder externalTime σ).componentCrossingCount
-        (d.componentMixedPairEquiv externalTime σ) C B) % 2 =
-      (d.componentMixedPositionShuffle externalTime σ).blockInversionCount B C % 2 := by
-  rw [← (d.pairingInMixedOrder externalTime σ).componentGeometricCrossingCount_eq_oriented_add
-    (d.componentMixedPairEquiv externalTime σ) B C,
-    (d.componentMixedPositionShuffle externalTime σ).blockInversionCount_of_ne hBC]
-  simp only [ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply]
-  exact
-    Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-      (d.pairingInMixedOrder externalTime σ)
-        (d.componentMixedPairEquiv externalTime σ)
-        (fun D =>
-          ((d.componentWickDiagram D).pairingInMixedOrder
-            (d.componentExternalTime externalTime D)
-            (d.componentInteractionTime σ D)).pairEndpointEquiv)
-        (fun D p => d.componentMixedPosition externalTime σ D p)
-        (fun D p k => by
-          fin_cases k <;>
-            simp [Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
-              d.componentMixedPairEquiv_apply externalTime σ])
-        B C hBC
-
 /-- The residual mixed-order inter-component crossing parity is the total inversion parity of the
 canonical mixed component-position shuffle. -/
 theorem ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
@@ -107,24 +75,20 @@ theorem ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq
         Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
     d.mixedInterComponentCrossingCount externalTime σ % 2 =
       (d.componentMixedPositionShuffle externalTime σ).orderedBlockInversionCount blockOrder % 2 := by
-  classical
-  let pairing := d.pairingInMixedOrder externalTime σ
-  let pairEquiv := d.componentMixedPairEquiv externalTime σ
-  let cross := fun B C : d.vertexGraph.componentPartition.parts =>
-    pairing.componentCrossingCount pairEquiv B C
-  let inv := fun B C : d.vertexGraph.componentPartition.parts =>
-    (d.componentMixedPositionShuffle externalTime σ).blockInversionCount B C
-  have hsum :=
-    finset_sum_offDiag_modEq_of_pair_add_modEq_of_order
-      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) blockOrder
-      (fun _ _ _ _ h => blockOrder.injective h) cross inv
-      (fun B _ C _ hBC => by
-        simpa [Nat.ModEq, inv, cross, pairing, pairEquiv] using
-          d.mixedComponentCrossingCount_add_swap_mod_two_eq_blockInversionCount
-            externalTime σ B C hBC)
-  simpa [Nat.ModEq, ExternalInsertionWickDiagram.mixedInterComponentCrossingCount,
-    Pairing.interComponentCrossingCount, FamilySlotShuffleTo.orderedBlockInversionCount,
-    cross, inv, pairing, pairEquiv] using hsum
+  exact Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+    (d.pairingInMixedOrder externalTime σ)
+    (d.componentMixedPairEquiv externalTime σ)
+    (fun B =>
+      ((d.componentWickDiagram B).pairingInMixedOrder
+        (d.componentExternalTime externalTime B)
+        (d.componentInteractionTime σ B)).pairEndpointEquiv)
+    (d.componentMixedPositionShuffle externalTime σ)
+    (fun B p k => by
+      fin_cases k <;>
+        simp [ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply,
+          Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
+          d.componentMixedPairEquiv_apply externalTime σ])
+    blockOrder
 
 end Fermionic
 end SecondQuantization
