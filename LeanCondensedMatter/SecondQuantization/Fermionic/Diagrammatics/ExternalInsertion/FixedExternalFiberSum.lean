@@ -21,6 +21,7 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+open Classical in
 /-- Reindex the integrated arbitrary-external Dyson coefficient by the externally supported
 interaction slots and the vacuum-free external / quartic diagram pair. Only the external
 factor carries the fixed-label constraint. -/
@@ -37,7 +38,9 @@ theorem externalInsertionDysonCoefficient_eq_sum_externalSupportFiber
               QuarticDiagram (QuarticVertexLabel Mode) n
                 ((Finset.univ : Finset (Fin n)) \ T.1),
           if p.1.1.externalLabel = externalLabel then
-            ((ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm p).1.dysonAmplitude
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (((ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm p).1 :
+                ExternalInsertionWickDiagram Mode E n)
               ε β g externalTime
           else 0 := by
   classical
