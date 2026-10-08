@@ -3051,19 +3051,36 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion.lean",
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion/Factorization.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Moment",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion/Moment.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion/Pairing.lean",
+      "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion"
       ],
       "externalImportCount": 0
     },
@@ -3072,7 +3089,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonLinkedCluster.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Moment",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries"
       ],
       "externalImportCount": 0
@@ -3095,7 +3112,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Moment",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonLinkedCluster",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField"
       ],
@@ -4381,6 +4398,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/MixedOrderSignature.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber"
       ],
       "externalImportCount": 2
