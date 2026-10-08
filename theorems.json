@@ -3408,7 +3408,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
     "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
@@ -5042,7 +5042,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
@@ -5140,7 +5140,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.crossingCount_eraseZeroPair",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
@@ -5238,7 +5238,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.crossingsWithFirstPair_mod_two",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
@@ -5286,7 +5286,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.eraseZeroOrderIso_partner",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
@@ -5566,7 +5566,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.insertFirstPair_partner_zero",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
@@ -5601,7 +5601,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n},\n  Combinatorics.Pairing.IsSplit e P → ∀ (i : Fin (2 * b)), ∃ j, P.partner (e (Sum.inr i)) = e (Sum.inr j)",
     "standardAxioms": [
       "Quot.sound",
@@ -5611,7 +5611,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.isSplit_inr",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
@@ -5619,19 +5619,14 @@
     "docString": "**The right part is closed automatically.** A right position paired to a left one would make\nthat left position paired to a right one, contradicting the left closure. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_spec"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.PairingOn.partner_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_spec"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -5655,7 +5650,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.isSplit_ofSplit",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
@@ -5701,7 +5696,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
@@ -5854,7 +5849,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
@@ -5900,7 +5895,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
@@ -6570,7 +6565,8 @@
     "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P) (i : Fin (2 * a)),\n  P.partner (e (Sum.inl i)) = e (Sum.inl ((Combinatorics.Pairing.splitLeft e h).partner i))",
     "standardAxioms": [
       "Classical.choice",
-      "Quot.sound"
+      "Quot.sound",
+      "propext"
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
@@ -6590,7 +6586,9 @@
       "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_spec"
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
+      "Combinatorics.SumEquiv.leftSubtypeEquiv_val",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -6602,7 +6600,8 @@
     "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
-      "Quot.sound"
+      "Quot.sound",
+      "propext"
     ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -6636,7 +6635,9 @@
       "Combinatorics.Pairing.splitRight_ofSplit"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_spec"
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
+      "Combinatorics.SumEquiv.rightSubtypeEquiv_val",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -7390,8 +7391,6 @@
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_ne_self",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_ne_self",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
     "dependencies": [],
@@ -7408,11 +7407,9 @@
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_ne_self",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_ne_self",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Quot.sound"
     ],
@@ -7448,8 +7445,7 @@
       "Combinatorics.Pairing.isSplit_inr",
       "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
@@ -7465,12 +7461,11 @@
       "Combinatorics.Pairing.isSplit_inr",
       "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Quot.sound"
     ],
@@ -7550,6 +7545,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.Pairing.partner_splitLeft",
+      "Combinatorics.Pairing.partner_splitRight",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner"
     ],
@@ -7560,10 +7557,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.partner_splitLeft",
+      "Combinatorics.Pairing.partner_splitRight",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8026,7 +8025,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : Fintype α] [inst_1 : DecidableEq γ] (e : α ⊕ β ≃ γ) (a : α),\n  ↑((Combinatorics.SumEquiv.leftSubtypeEquiv e) a) = e (Sum.inl a)",
     "standardAxioms": [
       "Classical.choice",
@@ -8034,7 +8033,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -8045,12 +8044,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.Pairing.partner_splitLeft"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.partner_splitLeft"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8072,7 +8075,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -8084,15 +8087,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
+      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
+      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8170,7 +8175,8 @@
     "dependents": [
       "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots",
-      "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage"
+      "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
     ],
     "dependencies": [
       "Combinatorics.SumEquiv.mem_leftImage_iff",
@@ -8181,9 +8187,10 @@
     "compiledConsumers": [
       "Combinatorics.BinaryShuffle.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots",
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots",
-      "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage"
+      "Combinatorics.SumEquiv.rightImage_eq_sdiff_leftImage",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8241,7 +8248,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : Fintype β] [inst_1 : DecidableEq γ] (e : α ⊕ β ≃ γ) (b : β),\n  ↑((Combinatorics.SumEquiv.rightSubtypeEquiv e) b) = e (Sum.inr b)",
     "standardAxioms": [
       "Classical.choice",
@@ -8249,7 +8256,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -8260,12 +8267,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.Pairing.partner_splitRight"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.partner_splitRight"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21464,7 +21475,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Finpartition.card_partGlobalSlots",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -22283,7 +22294,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Finpartition.partGlobalSlot_injective",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -22416,7 +22427,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "Finpartition.partGlobalSlot_partOrderOfOrder",
     "module": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
@@ -45120,7 +45131,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.PurePointLehmannData.probability_hasSum",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
@@ -62743,6 +62754,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy pMax : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy pMax -\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue\n          QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy pMax =\n      -Complex.I * ↑(Real.pi / v ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_retarded_sub_advanced",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary",
+    "externalAxioms": [],
+    "docString": "The retarded/advanced finite-cutoff Born denominator boundary values differ only by the\norientation-sensitive imaginary jump. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n              probeEnergy regulator pMax).re =\n          -(2 * v ^ 2)⁻¹ *\n            (Real.log\n                √((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * pMax ^ 2) ^ 2 +\n                    (2 * probeEnergy * regulator) ^ 2) -\n              Real.log √((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2) ^ 2 + (2 * probeEnergy * regulator) ^ 2))",
     "standardAxioms": [
@@ -65040,6 +65093,51 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        1 0 v m probeEnergy disorderStrength hbar pMax =\n      ↑disorderStrength *\n        ↑(2 * Real.pi * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m / v ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening",
+    "externalAxioms": [],
+    "docString": "The zero-broadening transverse yx angular numerator is exactly linear in the disorder\nstrength. This is a fixed-disorder boundary identity, not a weak-disorder limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_retarded_sub_advanced",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67881,10 +67979,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
@@ -67894,10 +67992,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
@@ -73101,10 +73199,10 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98777,7 +98875,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": true,
+    "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
@@ -116614,48 +116712,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + E))),\n  SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n      ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ) p) =\n    p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_equiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {E₁ E₂ m n : ℕ} {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n},\n  StrictMono fExternal →\n    StrictMono fInteraction →\n      ∀ (externalTime : Fin (2 * E₂) → ℝ) (σ : Fin n → ℝ),\n        StrictMono fun p =>\n          SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n            (SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction\n              ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv (externalTime ∘ fExternal)\n                  (σ ∘ fInteraction))\n                p))",
     "standardAxioms": [
       "Classical.choice",
@@ -120923,8 +120979,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -120936,7 +120992,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
     ],
     "dependencies": [
@@ -120949,51 +121004,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.orderedTwoPointLegEvent x) =\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' υ (SecondQuantization.Common.orderedTwoPointLegEvent x) →\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ (SecondQuantization.Common.orderedTwoPointLegEvent y) =\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ (SecondQuantization.Common.orderedTwoPointLegEvent y) →\n      (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ x <\n          SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ y ↔\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ x <\n          SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": "The relative flattened positions of two standard legs depend only on the times of their two\nsupporting events and on their fixed local leg coordinates. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121079,13 +121092,13 @@
       "List.idxOf_flatMap_block_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_orderedTwoPointLegMap",
-      "SecondQuantization.Common.orderedTwoPointLegMap_injective",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
-      "SecondQuantization.Common.twoPointTimedEventAtomicLegs_map",
-      "SecondQuantization.Common.twoPointTimedEventMap_injective"
+      "SecondQuantization.Common.twoPointTimedEventMap_injective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.orderedTwoPointLegEvent_orderedTwoPointLegMap",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.orderedTwoPointLegMap_injective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.twoPointTimedEventAtomicLegs_map"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -121296,46 +121309,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
     "compiledConsumerCount": 7,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ),\n  (SecondQuantization.Common.mixedTimeOrderedAtomicLegs τ τ' σ).Perm\n    (SecondQuantization.Common.canonicalTwoPointAtomicLegs n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_perm_canonical",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": "Mixed time ordering only permutes the complete standard two-point leg list. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_perm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121874,82 +121847,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {E₁ E₂ m n : ℕ} (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n) (e : Fin (2 * E₁)),\n  SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction (Sum.inl e) = Sum.inl (fExternal e)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedExternalInsertionLegMap_inl",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {E₁ E₂ m n : ℕ} (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n) (v : ↥Finset.univ)\n  (l : Fin 4),\n  SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction (Sum.inr (v, l)) =\n    Sum.inr (⟨fInteraction ↑v, ⋯⟩, l)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedExternalInsertionLegMap_inr",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (v : Fin n) (l : Fin 4),\n  SecondQuantization.Common.orderedQuarticLegToTwoPointLeg\n      ((SecondQuantization.Common.orderedQuarticLegEquiv n).symm (v, l)) =\n    Sum.inr (⟨v, ⋯⟩, l)",
     "standardAxioms": [
@@ -121979,128 +121876,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (leg : SecondQuantization.Common.OrderedTwoPointLeg m),\n  SecondQuantization.Common.orderedTwoPointLegEvent (SecondQuantization.Common.orderedTwoPointLegMap f leg) =\n    SecondQuantization.Common.twoPointTimedEventMap f (SecondQuantization.Common.orderedTwoPointLegEvent leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointLegEvent_orderedTwoPointLegMap",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": "The transported leg is supported on the transported event. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  Function.Injective f → Function.Injective (SecondQuantization.Common.orderedTwoPointLegMap f)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointLegMap_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": "An injective reindexing of the slots transports distinct legs to distinct legs. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (e : Fin 2), SecondQuantization.Common.orderedTwoPointLegMap f (Sum.inl e) = Sum.inl e",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedTwoPointLegMap_inl",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122291,7 +122066,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a →\n    SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b =\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b →\n      (SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b ↔\n        SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ b)",
     "standardAxioms": [
       "Classical.choice",
@@ -122299,7 +122074,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -122310,18 +122085,14 @@
     "docString": "Relative ordered positions of two events depend only on the times of those two events. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122637,7 +122408,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_perm_canonical",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_nodup",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents"
@@ -122646,12 +122416,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_perm_canonical",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_nodup",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125387,44 +125156,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (e : Fin 2), SecondQuantization.Common.twoPointTimedEventAtomicLegs (Sum.inl e) = [Sum.inl e]",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventAtomicLegs_external",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (v : Fin n),\n  SecondQuantization.Common.twoPointTimedEventAtomicLegs (Sum.inr v) = List.ofFn fun l => Sum.inr (⟨v, ⋯⟩, l)",
     "standardAxioms": [
@@ -125458,48 +125189,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (event : SecondQuantization.Common.TwoPointTimedEvent m),\n  SecondQuantization.Common.twoPointTimedEventAtomicLegs (SecondQuantization.Common.twoPointTimedEventMap f event) =\n    List.map (SecondQuantization.Common.orderedTwoPointLegMap f)\n      (SecondQuantization.Common.twoPointTimedEventAtomicLegs event)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointTimedEventAtomicLegs_map",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-    "externalAxioms": [],
-    "docString": "The leg list of an event is relabeled, not reordered. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129442,7 +129131,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
-      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_equiv",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
@@ -157918,52 +157606,12 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P), Function.Involutive (Combinatorics.splitLeftMap✝ e h)",
+    "terminal": false,
+    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n},\n  Combinatorics.Pairing.IsSplit e P →\n    ∀ (i : Fin (2 * n)), i ∈ Combinatorics.SumEquiv.leftImage e ↔ P.partner i ∈ Combinatorics.SumEquiv.leftImage e",
     "standardAxioms": [
       "Classical.choice",
-      "Quot.sound"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.partner_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_spec"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.splitLeft"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P) (i : Fin (2 * a)), Combinatorics.splitLeftMap✝ e h i ≠ i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound"
+      "Quot.sound",
+      "propext"
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
@@ -157971,24 +157619,32 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self",
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.Pairing.partner_splitLeft",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
+    ],
     "dependencies": [
-      "Combinatorics.PairingOn.partner_ne",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_spec"
+      "Combinatorics.PairingOn.partner_partner",
+      "Combinatorics.SumEquiv.mem_leftImage_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.partner_splitLeft",
+      "Combinatorics.Pairing.splitLeft",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
-      "Quot.sound"
+      "Quot.sound",
+      "propext"
     ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -157999,10 +157655,11 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P) (i : Fin (2 * a)),\n  P.partner (e (Sum.inl i)) = e (Sum.inl (Combinatorics.splitLeftMap✝ e h i))",
+    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n},\n  Combinatorics.Pairing.IsSplit e P →\n    ∀ (i : Fin (2 * n)), i ∈ Combinatorics.SumEquiv.rightImage e ↔ P.partner i ∈ Combinatorics.SumEquiv.rightImage e",
     "standardAxioms": [
       "Classical.choice",
-      "Quot.sound"
+      "Quot.sound",
+      "propext"
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
@@ -158010,157 +157667,26 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_spec",
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.Pairing.partner_splitLeft",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self"
+      "Combinatorics.Pairing.partner_splitRight"
     ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.partner_splitLeft",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P), Function.Involutive (Combinatorics.splitRightMap✝ e h)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
     "dependencies": [
-      "Combinatorics.PairingOn.partner_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_spec"
+      "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.partner_splitRight",
       "Combinatorics.Pairing.splitRight"
     ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P) (i : Fin (2 * b)), Combinatorics.splitRightMap✝ e h i ≠ i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_ne_self",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.partner_ne",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_spec"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n}\n  (h : Combinatorics.Pairing.IsSplit e P) (i : Fin (2 * b)),\n  P.partner (e (Sum.inr i)) = e (Sum.inr (Combinatorics.splitRightMap✝ e h i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_spec",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.partner_splitRight",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_ne_self"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.isSplit_inr"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.partner_splitRight",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_ne_self"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174336,6 +173862,128 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (leg : SecondQuantization.Common.OrderedTwoPointLeg m),\n  SecondQuantization.Common.orderedTwoPointLegEvent (SecondQuantization.Common.orderedTwoPointLegMap f leg) =\n    SecondQuantization.Common.twoPointTimedEventMap f (SecondQuantization.Common.orderedTwoPointLegEvent leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.orderedTwoPointLegEvent_orderedTwoPointLegMap",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": "The transported leg is supported on the transported event. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} {f : Fin m → Fin n},\n  Function.Injective f → Function.Injective (SecondQuantization.Common.orderedTwoPointLegMap f)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.orderedTwoPointLegMap_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": "An injective reindexing of the slots transports distinct legs to distinct legs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (e : Fin 2), SecondQuantization.Common.orderedTwoPointLegMap f (Sum.inl e) = Sum.inl e",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.orderedTwoPointLegMap_inl",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} {a b : SecondQuantization.Common.TwoPointTimedEvent n},\n  a ≠ b →\n    (SecondQuantization.Common.twoPointTimedEventAtomicLegs a).Disjoint\n      (SecondQuantization.Common.twoPointTimedEventAtomicLegs b)",
     "standardAxioms": [
       "Classical.choice",
@@ -174362,6 +174010,86 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {n : ℕ} (e : Fin 2), SecondQuantization.Common.twoPointTimedEventAtomicLegs (Sum.inl e) = [Sum.inl e]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.twoPointTimedEventAtomicLegs_external",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {m n : ℕ} (f : Fin m → Fin n) (event : SecondQuantization.Common.TwoPointTimedEvent m),\n  SecondQuantization.Common.twoPointTimedEventAtomicLegs (SecondQuantization.Common.twoPointTimedEventMap f event) =\n    List.map (SecondQuantization.Common.orderedTwoPointLegMap f)\n      (SecondQuantization.Common.twoPointTimedEventAtomicLegs event)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.twoPointTimedEventAtomicLegs_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": "The leg list of an event is relabeled, not reordered. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -184548,93 +184276,6 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero"
     ],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy pMax : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy pMax -\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue\n          QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy pMax =\n      -Complex.I * ↑(Real.pi / v ^ 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.denominatorBoundaryValue_retarded_sub_advanced",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        1 0 v m probeEnergy disorderStrength hbar pMax =\n      ↑disorderStrength *\n        ↑(2 * Real.pi * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m / v ^ 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.denominatorBoundaryValue_retarded_sub_advanced"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
