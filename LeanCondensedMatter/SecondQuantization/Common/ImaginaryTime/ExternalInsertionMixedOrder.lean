@@ -23,12 +23,12 @@ factorization proof needs them.
 namespace SecondQuantization
 namespace Common
 
-/-- Timed events for `2 * E` external insertions and `n` interaction vertices. -/
-private abbrev ExternalInsertionTimedEvent (E n : ℕ) : Type :=
+/-- External and interaction events in the arbitrary-external time-ordered family. -/
+abbrev ExternalInsertionTimedEvent (E n : ℕ) : Type :=
   Fin (2 * E) ⊕ Fin n
 
-/-- The imaginary time carried by an external or interaction event. -/
-private def externalInsertionTimedEventTime {E n : ℕ}
+/-- Imaginary time of an external or interaction event. -/
+def externalInsertionTimedEventTime {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ExternalInsertionTimedEvent E n → ℝ
   | .inl e => externalTime e
