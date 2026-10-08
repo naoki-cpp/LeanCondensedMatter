@@ -4027,7 +4027,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction"
       ],
