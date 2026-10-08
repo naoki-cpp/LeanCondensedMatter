@@ -87,7 +87,7 @@ theorem sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
 /-- Canonical direction of the Dyson-to-Wick-diagram expansion. -/
 theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude (ε : Mode → ℝ)
     (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) :
-    dysonVertexMoment ε β (quarticInteraction g) S =
+    Common.dysonTraceVertexMoment (fermionEnergy ε) β (quarticInteraction g) S =
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d := by
   symm
   rw [dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation]

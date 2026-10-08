@@ -1,16 +1,15 @@
-import LeanCondensedMatter.Analysis.PowerSeries.Moment
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
-import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 
 set_option linter.style.header false
 
 /-!
 # Dyson coefficients as `Finset`-indexed vertex moments
 
-This file is the seam between normalized fermionic Dyson partition coefficients, indexed by
-perturbation order `ℕ`, and labelled finite-set vertex moments used by diagrammatic consumers.
+The normalized finite-configuration vertex moments live in Common. This file identifies that
+generic moment with the fermionic free Gibbs density-state expectation.
 -/
 
 namespace SecondQuantization
@@ -34,56 +33,32 @@ private theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expect
     normalizedDysonPartitionCoeff, hZ]
   congr 1
 
-/-- The factorial-normalized Dyson vertex moment on a finite vertex set. -/
-noncomputable def dysonVertexMoment {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
-  (S.card.factorial : ℂ) * normalizedDysonPartitionCoeff ε β V S.card
-
-/-- Factorial-normalized fermionic Dyson coefficients bundled as normalized finite-set moment data. -/
-noncomputable def dysonVertexMomentSetFunction {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Combinatorics.NormalizedSetFunction α ℂ where
-  toFun := dysonVertexMoment ε β V
-  map_empty := by
-    simp [dysonVertexMoment]
-
-omit [LinearOrder Mode] in
-@[simp]
-theorem dysonVertexMomentSetFunction_apply {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
-    dysonVertexMomentSetFunction ε β V S = dysonVertexMoment ε β V S :=
+/-- The Common normalized finite-configuration coefficient specializes to the fermionic
+partition-function normalization. -/
+private theorem normalizedDysonTraceCoeff_eq_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β : ℝ) (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (n : ℕ) :
+    Common.normalizedDysonTraceCoeff (fermionEnergy ε) β V n =
+      normalizedDysonPartitionCoeff ε β V n := by
+  change Common.dysonTraceCoeff (fermionEnergy ε) β V n /
+      PowerSeries.constantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β V) =
+    dysonPartitionCoeff ε β V n / freePartitionFunction ε β
+  rw [← constantCoeff_dysonPartitionSeries ε β V]
   rfl
 
 omit [LinearOrder Mode] in
-/-- Factorial-normalized coefficients of the normalized fermionic Dyson partition series are
-exactly the bundled Dyson vertex moments. -/
-theorem powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
-    {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
-    (hZ :
-      PowerSeries.constantCoeff
-          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1) :
-    Combinatorics.powerSeriesMomentSetFunction (α := α)
-        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) hZ =
-      dysonVertexMomentSetFunction ε β V := by
-  rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
-  intro S
-  simp only [Combinatorics.powerSeriesMomentCoeff, dysonVertexMomentSetFunction_apply,
-    dysonVertexMoment,
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-
-omit [LinearOrder Mode] in
-/-- The Dyson vertex moment is the factorial times the canonical free Gibbs density-state
-expectation of the bare Dyson coefficient at the corresponding order. -/
-theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
+/-- The Common finite-configuration Dyson moment is the factorial times the fermionic free Gibbs
+density-state expectation of the bare Dyson coefficient. -/
+theorem dysonTraceVertexMoment_eq_freeGibbsDensityOperator_expectation
     {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
-    dysonVertexMoment ε β V S =
+    Common.dysonTraceVertexMoment (fermionEnergy ε) β V S =
       (S.card.factorial : ℂ) *
         (freeGibbsDensityOperator ε β).expectation
           (Common.finiteHilbertOperatorAlgEquiv
             (Common.dysonCoeff (fermionEnergy ε) V S.card β)) := by
-  rw [dysonVertexMoment,
+  rw [Common.dysonTraceVertexMoment,
+    normalizedDysonTraceCoeff_eq_normalizedDysonPartitionCoeff,
     normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation]
 
 end Fermionic
