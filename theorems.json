@@ -5085,6 +5085,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff"
     ],
@@ -5094,10 +5095,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8663,7 +8665,6 @@
       "Combinatorics.Pairing.componentCrossingCount_self_eq",
       "Combinatorics.Pairing.crossingCount_eraseZeroPair",
       "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart"
     ],
     "dependencies": [],
@@ -8673,10 +8674,9 @@
       "Combinatorics.Pairing.componentCrossingCount_self_eq",
       "Combinatorics.Pairing.crossingCount_eraseZeroPair",
       "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23376,6 +23376,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : Fintype α] [Finite β] [inst_2 : Fintype γ] (e : α ≃ β × γ)\n  (f : β → ℕ) {d : ℕ}, d ∣ Fintype.card γ → d ∣ ∑ x, f (e x).1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Fintype.dvd_sum_equiv_fst_of_dvd_card",
+    "module": "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
+    "externalAxioms": [],
+    "docString": "A first-coordinate sum is divisible by every divisor of the repeated fiber's cardinality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
+    ],
+    "dependencies": [
+      "Fintype.sum_equiv_fst_eq_card_mul_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {ι : Type u_2} {M : Type u_3} [inst : Fintype α] [inst_1 : Fintype ι] {F : ι → Type u_4}\n  [inst_2 : (i : ι) → Fintype (F i)] [inst_3 : CommMonoid M] (e : α ≃ (i : ι) × F i) (f : α → M),\n  ∏ x, f x = ∏ i, ∏ y, f (e.symm ⟨i, y⟩)",
     "standardAxioms": [
       "Classical.choice",
@@ -23433,7 +23479,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -23445,17 +23491,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
+      "Fintype.dvd_sum_equiv_fst_of_dvd_card"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
+      "Fintype.dvd_sum_equiv_fst_of_dvd_card"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106243,7 +106287,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} [inst : Fintype ExternalLabel]\n  [inst_1 : Fintype InternalLabel] (S : Finset (Fin N)) {M : Type u_3} [inst_2 : AddCommMonoid M]\n  (F : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S → M),\n  ∑ d, F d = ∑ T, ∑ p, F ↑((SecondQuantization.Common.ExternalInsertionDiagram.externalSupportFiberEquiv ⋯).symm p)",
     "standardAxioms": [
       "Classical.choice",
@@ -106251,7 +106295,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -106262,14 +106306,18 @@
     "docString": "Reindex a finite sum over arbitrary external-insertion diagrams by their externally\nsupported interaction slots and the corresponding vacuum-free / quartic diagram pair.\n\nThe supported slot subsets are indexed by a subtype rather than a dependent `Sigma`\nequivalence, so each fiber can be reindexed independently. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_externalSupportFiber"
+    ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_externalSupportFiber"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106620,7 +106668,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding",
       "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponent_partner"
     ],
     "dependencies": [
       "Finpartition.assembleOrder_shuffleOfOrder",
@@ -106631,7 +106679,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding",
       "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponent_partner"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -106796,7 +106844,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
     "dependencies": [
@@ -106809,10 +106856,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.componentOrderedLegOrderEmbedding",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106848,8 +106894,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
@@ -106861,10 +106906,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107087,9 +107131,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
     ],
     "dependencies": [
-      "Combinatorics.crosses_map_iff",
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponent_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -107596,7 +107639,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponent_partner"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner",
@@ -107607,9 +107651,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponent_partner"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114300,7 +114345,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (τ τ' : ℝ),\n  SecondQuantization.Common.continuousDiagonalEvolution energy τ ∘SL\n      SecondQuantization.Common.continuousDiagonalEvolution energy τ' =\n    SecondQuantization.Common.continuousDiagonalEvolution energy (τ + τ')",
     "standardAxioms": [
       "Classical.choice",
@@ -114319,14 +114364,20 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_comp_neg",
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp"
+    ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_add"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_comp_neg",
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114407,7 +114458,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_comp_neg"
+      "SecondQuantization.Common.continuousDiagonalEvolution_add",
+      "SecondQuantization.Common.continuousDiagonalEvolution_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114450,7 +114502,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousInteractionPicture_mul_dysonExponentialCandidate"
     ],
     "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_neg_comp"
+      "SecondQuantization.Common.continuousDiagonalEvolution_add",
+      "SecondQuantization.Common.continuousDiagonalEvolution_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114518,7 +114571,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ),\n  SecondQuantization.Common.continuousDiagonalEvolution energy 0 = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -114537,14 +114590,20 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_comp_neg",
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp"
+    ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.continuousDiagonalEvolution_comp_neg",
+      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115485,7 +115544,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -115497,7 +115556,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_comp_neg",
       "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
     ],
     "dependencies": [
@@ -115507,10 +115565,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_comp_neg",
       "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115583,7 +115640,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -115595,7 +115652,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp",
       "SecondQuantization.Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution"
     ],
     "dependencies": [
@@ -115605,10 +115661,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousDiagonalEvolution_neg_comp",
       "SecondQuantization.Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116126,6 +116181,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
+      "SecondQuantization.Common.matrixCoeffLinear_apply",
       "SecondQuantization.Common.matrixCoeff_ext",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
@@ -119891,6 +119947,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "dependencies": [],
@@ -119898,9 +119955,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141579,6 +141637,46 @@
       "SecondQuantization.Fermionic.timedFieldOperator_eq_smul"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (n : ℕ),\n  SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n =\n    ∑ T,\n      ∑ p,\n        if (↑p.1).externalLabel = externalLabel then\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n            (↑((SecondQuantization.Common.ExternalInsertionDiagram.externalSupportFiberEquiv ⋯).symm p)) ε β g\n            externalTime\n        else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_externalSupportFiber",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum",
+    "externalAxioms": [],
+    "docString": "Reindex the integrated arbitrary-external Dyson coefficient by the externally supported\ninteraction slots and the vacuum-free external / quartic diagram pair. Only the external\nfactor carries the fixed-label constraint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -170303,7 +170401,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
     ],
     "dependencies": [
-      "Fintype.sum_equiv_fst_eq_card_mul_sum",
+      "Fintype.dvd_sum_equiv_fst_of_dvd_card",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
     ],
     "crossModuleDirectWrapper": false,
@@ -170451,32 +170549,32 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {p q : Combinatorics.Pairing n} (h : p = q) (pr : p.NormalizedPair), ↑((Equiv.cast ⋯) pr) = ↑pr",
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (order : SecondQuantization.Common.QuarticVertexOrder S) (C : ↥d.vertexGraph.componentPartitionOn.parts)\n  (pr : d.LocalOrderedPair (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order) C),\n  ↑((d.fixedOrderComponentPairEmbedding order C) pr) =\n    (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C (↑pr).1,\n      d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C (↑pr).2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.Pairing.normalizedPair_cast_val",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -170493,7 +170591,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (order : SecondQuantization.Common.QuarticVertexOrder S) (C : ↥d.vertexGraph.componentPartitionOn.parts)\n  (pr : d.LocalOrderedPair (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order) C),\n  ↑((d.fixedOrderComponentPairEmbedding order C) pr) =\n    (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C (↑pr).1,\n      d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C (↑pr).2)",
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (order : SecondQuantization.Common.QuarticVertexOrder S) (C : ↥d.vertexGraph.componentPartitionOn.parts)\n  (i : Fin (2 * (2 * (↑C).card))),\n  (d.pairingInOrder order).partner ((d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C) i) =\n    (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C)\n      (((d.restrictComponent ⋯).pairingInOrder (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order C)).partner\n        i)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -170505,26 +170603,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponent_partner",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding"
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle",
-      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.Pairing.normalizedPair_cast_val"
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding"
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding",
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -171158,7 +171254,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "dependencies": [
-      "Fintype.sum_equiv_fst_eq_card_mul_sum",
+      "Fintype.dvd_sum_equiv_fst_of_dvd_card",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks"
     ],
     "crossModuleDirectWrapper": false,
