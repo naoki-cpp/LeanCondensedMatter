@@ -75,21 +75,13 @@ theorem continuousDiagonalEvolution_add (energy : Config → ℝ) (τ τ' : ℝ)
 theorem continuousDiagonalEvolution_comp_neg (energy : Config → ℝ) (τ : ℝ) :
     (continuousDiagonalEvolution energy τ).comp
         (continuousDiagonalEvolution energy (-τ)) = 1 := by
-  change
-    (finiteContinuousOperatorAlgEquiv (diagonalEvolution energy τ)).comp
-        (finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-τ))) = 1
-  rw [← ContinuousLinearMap.mul_def, ← map_mul, Module.End.mul_eq_comp,
-    diagonalEvolution_comp_neg, ← Module.End.one_eq_id, map_one]
+  rw [continuousDiagonalEvolution_add, add_neg_cancel, continuousDiagonalEvolution_zero]
 
 @[simp]
 theorem continuousDiagonalEvolution_neg_comp (energy : Config → ℝ) (τ : ℝ) :
     (continuousDiagonalEvolution energy (-τ)).comp
         (continuousDiagonalEvolution energy τ) = 1 := by
-  change
-    (finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-τ))).comp
-        (finiteContinuousOperatorAlgEquiv (diagonalEvolution energy τ)) = 1
-  rw [← ContinuousLinearMap.mul_def, ← map_mul, Module.End.mul_eq_comp,
-    diagonalEvolution_neg_comp, ← Module.End.one_eq_id, map_one]
+  rw [continuousDiagonalEvolution_add, neg_add_cancel, continuousDiagonalEvolution_zero]
 
 /-- The transported continuous interaction-picture operator. -/
 noncomputable def continuousInteractionPicture (energy : Config → ℝ)
