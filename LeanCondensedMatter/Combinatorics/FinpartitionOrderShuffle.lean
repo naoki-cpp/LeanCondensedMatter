@@ -84,140 +84,27 @@ theorem assembleOrder_shuffleOfOrder (π : Finpartition s) (order : Fin s.card �
   intro B j
   rfl
 
-/-- The ambient slot occupied by an element of part `B`. -/
-noncomputable def partGlobalSlot (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) (v : ↥(B : Finset α)) : Fin s.card :=
-  order.symm (π.equivSigmaParts.symm ⟨B, v⟩)
-
-/-- Distinct elements of one part occupy distinct ambient slots. -/
-theorem partGlobalSlot_injective (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) : Function.Injective (π.partGlobalSlot order B) := by
-  intro v w h
-  have h₁ := order.symm.injective h
-  have h₂ := π.equivSigmaParts.symm.injective h₁
-  cases h₂
-  rfl
-
-/-- The finite set of ambient slots occupied by one partition part. -/
-noncomputable def partGlobalSlots (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) : Finset (Fin s.card) :=
-  Finset.univ.image (π.partGlobalSlot order B)
-
-@[simp]
-theorem partGlobalSlot_mem_partGlobalSlots (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) (v : ↥(B : Finset α)) :
-    π.partGlobalSlot order B v ∈ π.partGlobalSlots order B :=
-  Finset.mem_image.2 ⟨v, Finset.mem_univ v, rfl⟩
-
-/-- A part occupies exactly as many ambient slots as it has elements. -/
-theorem card_partGlobalSlots (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) :
-    (π.partGlobalSlots order B).card = (B : Finset α).card := by
-  rw [Finpartition.partGlobalSlots,
-    Finset.card_image_of_injective _ (π.partGlobalSlot_injective order B)]
-  simp
-
-/-- Elements of a partition part are equivalent to the ambient slots occupied by that part. -/
-noncomputable def partGlobalSlotEquiv (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) : ↥(B : Finset α) ≃ ↥(π.partGlobalSlots order B) :=
-  (Equiv.ofInjective (π.partGlobalSlot order B)
-      (π.partGlobalSlot_injective order B)).trans
-    (Set.equivOfEq (by
-      ext x
-      simp [Finpartition.partGlobalSlots]))
-
-@[simp]
-theorem partGlobalSlot_partGlobalSlotEquiv_symm (π : Finpartition s)
-    (order : Fin s.card ≃ ↥s) (B : π.parts)
-    (slot : ↥(π.partGlobalSlots order B)) :
-    π.partGlobalSlot order B ((π.partGlobalSlotEquiv order B).symm slot) = slot := by
-  let hslots : Set.range (π.partGlobalSlot order B) =
-      ↑(π.partGlobalSlots order B) := by
-    ext x
-    simp [Finpartition.partGlobalSlots]
-  change
-    π.partGlobalSlot order B
-        ((Equiv.ofInjective (π.partGlobalSlot order B)
-          (π.partGlobalSlot_injective order B)).symm
-          ((Set.equivOfEq hslots).symm slot)) =
-      (slot : Fin s.card)
-  calc
-    π.partGlobalSlot order B
-        ((Equiv.ofInjective (π.partGlobalSlot order B)
-          (π.partGlobalSlot_injective order B)).symm
-          ((Set.equivOfEq hslots).symm slot)) =
-        ↑((Set.equivOfEq hslots).symm slot) :=
-      Equiv.apply_ofInjective_symm
-        (π.partGlobalSlot_injective order B)
-        ((Set.equivOfEq hslots).symm slot)
-    _ = (slot : Fin s.card) :=
-      congrArg Subtype.val (Set.equivOfEq_symm_apply hslots slot)
-
-/-- The canonical order on one part induced by its increasing ambient slots. -/
-noncomputable def partOrderOfOrder (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) : Fin (B : Finset α).card ≃ ↥(B : Finset α) :=
-  (π.partGlobalSlots order B).orderIsoOfFin
-      (π.card_partGlobalSlots order B) |>.toEquiv.trans
-    (π.partGlobalSlotEquiv order B).symm
-
-@[simp]
-theorem partGlobalSlot_partOrderOfOrder (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) (i : Fin (B : Finset α).card) :
-    π.partGlobalSlot order B (π.partOrderOfOrder order B i) =
-      ((π.partGlobalSlots order B).orderIsoOfFin
-        (π.card_partGlobalSlots order B) i : Fin s.card) := by
-  simp [Finpartition.partOrderOfOrder]
-
 /-- The canonical family of part-local orders induced by an ambient order. -/
 noncomputable def partOrdersOfOrder (π : Finpartition s) (order : Fin s.card ≃ ↥s) :
     π.PartOrders :=
-  fun B => π.partOrderOfOrder order B
-
-/-- The canonical local order on each part is strictly increasing in ambient slot number. -/
-theorem partOrderOfOrder_strictMono (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) :
-    StrictMono (fun i => π.partGlobalSlot order B (π.partOrderOfOrder order B i)) := by
-  intro i j hij
-  change π.partGlobalSlot order B (π.partOrderOfOrder order B i) <
-    π.partGlobalSlot order B (π.partOrderOfOrder order B j)
-  rw [π.partGlobalSlot_partOrderOfOrder, π.partGlobalSlot_partOrderOfOrder]
-  exact ((π.partGlobalSlots order B).orderIsoOfFin
-    (π.card_partGlobalSlots order B)).strictMono hij
+  Combinatorics.familyOrdersOfOrder
+    (F := fun B : π.parts => ↥(B : Finset α))
+    (size := fun B : π.parts => (B : Finset α).card)
+    (hcard := fun B => Fintype.card_coe (B : Finset α))
+    π.equivSigmaParts order
 
 /-- The canonical part-local orders are compatible with the ambient order. -/
 theorem partOrdersCompatible_partOrdersOfOrder (π : Finpartition s)
     (order : Fin s.card ≃ ↥s) :
     π.PartOrdersCompatible order (π.partOrdersOfOrder order) := by
   intro B
-  simpa [Finpartition.PartOrdersCompatible, Finpartition.partEquiv,
-    Finpartition.partOrdersOfOrder, Finpartition.partGlobalSlot] using
-    π.partOrderOfOrder_strictMono order B
-
-/-- A compatible order on one part must be its canonical increasing-slot order. -/
-theorem partOrder_eq_of_strictMono (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (B : π.parts) (localOrder : Fin (B : Finset α).card ≃ ↥(B : Finset α))
-    (hlocal : StrictMono (fun i => π.partGlobalSlot order B (localOrder i))) :
-    localOrder = π.partOrderOfOrder order B := by
-  apply Equiv.ext
-  intro i
-  apply π.partGlobalSlot_injective order B
-  have h := Finset.orderEmbOfFin_unique
-    (s := π.partGlobalSlots order B)
-    (h := π.card_partGlobalSlots order B)
-    (f := fun i => π.partGlobalSlot order B (localOrder i))
-    (fun i => π.partGlobalSlot_mem_partGlobalSlots order B (localOrder i)) hlocal
-  have hi := congrFun h i
-  rw [π.partGlobalSlot_partOrderOfOrder]
-  simpa only [Finset.coe_orderIsoOfFin_apply] using hi
-
-/-- A compatible family of part-local orders is uniquely determined by the ambient order. -/
-theorem partOrders_eq_of_compatible (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders) :
-    orders = π.partOrdersOfOrder order := by
-  funext B
-  apply π.partOrder_eq_of_strictMono order B
-  simpa [Finpartition.PartOrdersCompatible, Finpartition.partEquiv,
-    Finpartition.partGlobalSlot] using h B
+  simpa only [Finpartition.PartOrdersCompatible, Finpartition.partEquiv,
+    Finpartition.partOrdersOfOrder, Equiv.trans_apply, Equiv.sigmaCongrRight_apply] using
+    (Combinatorics.familyOrdersOfOrder_strictMono
+      (F := fun B : π.parts => ↥(B : Finset α))
+      (size := fun B : π.parts => (B : Finset α).card)
+      (hcard := fun B => Fintype.card_coe (B : Finset α))
+      π.equivSigmaParts order B)
 
 /-- A global finite-set order is equivalent to part-local orders together with an order-preserving
 shuffle of their slots. -/
