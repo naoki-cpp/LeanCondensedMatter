@@ -87,7 +87,7 @@ private theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config �
 
 /-- The continuous free evolution is the Banach-algebra exponential of the diagonal
 Hamiltonian. -/
-private theorem continuousDiagonalEvolution_eq_exp (energy : Config → ℝ) (τ : ℝ) :
+theorem continuousDiagonalEvolution_eq_exp (energy : Config → ℝ) (τ : ℝ) :
     continuousDiagonalEvolution energy τ =
       NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) := by
   apply finiteContinuousOperator_ext_basis
