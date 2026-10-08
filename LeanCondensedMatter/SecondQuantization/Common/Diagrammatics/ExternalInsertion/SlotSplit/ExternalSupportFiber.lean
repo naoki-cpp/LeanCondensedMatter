@@ -7,7 +7,7 @@ set_option linter.style.header false
 
 Fixing the ambient interaction slots `S` and the externally supported subset `T`, the diagrams
 with support exactly `T` are equivalent to a vacuum-free external-insertion diagram on `T`
-together with an arbitrary quartic diagram on the complement `S \\ T`.
+together with an arbitrary quartic diagram on the complement `S \ T`.
 
 Unlike a fully connected cumulant, the external-bearing diagram may have multiple disconnected
 components meeting different external insertions.
@@ -49,7 +49,7 @@ noncomputable def ExternalInsertionDiagram.externalSupportFiberEquiv
       d.externallySupportedInteractionPart = T} ≃
       {ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T //
         HasNoVacuumComponent ext.vertexGraph} ×
-        QuarticDiagram InternalLabel N (S \\ T) where
+        QuarticDiagram InternalLabel N (S \ T) where
   toFun d :=
     (⟨d.1.slotSplitExternal h
         (ExternalInsertionDiagram.pairing_isSplit_of_support_eq h d.2),
