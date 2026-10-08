@@ -118,18 +118,6 @@ theorem quarticVertexSequenceInteractionPicture_succ
         (quarticVertexSequenceInteractionPicture energy create annihilate n
           (fun i => q i.succ) (fun i => τ i.succ)) := rfl
 
-theorem quarticVertexSequenceInteractionPicture_cons
-    (energy : Config → ℝ)
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (n : ℕ) (q0 : QuarticVertexLabel Mode) (q : Fin n → QuarticVertexLabel Mode)
-    (σ : ℝ) (τ : Fin n → ℝ) :
-    quarticVertexSequenceInteractionPicture energy create annihilate (n + 1)
-        (Fin.cons q0 q) (Fin.cons σ τ) =
-      (interactionPicture energy (quarticVertexOperator create annihilate q0) σ).comp
-        (quarticVertexSequenceInteractionPicture energy create annihilate n q τ) := by
-  rw [quarticVertexSequenceInteractionPicture_succ]
-  simp
-
 /-- A quartic interaction-picture vertex sequence built from ladder eigenoperators is its bare
 ordered vertex product multiplied by the product of the scalar imaginary-time factors. -/
 theorem quarticVertexSequenceInteractionPicture_eq_smul
