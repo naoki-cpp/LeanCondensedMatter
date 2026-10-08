@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction
 
@@ -8,7 +9,8 @@ set_option linter.style.header false
 
 This module lifts generic mixed component-position transport to normalized pairs. Each full component
 is identified with the corresponding time-independent restricted pairing; normalized endpoint order
-may be preserved or swapped. No particle-statistics or operator data enter these constructions.
+may be preserved or swapped. Canonical comparisons across time assignments factor through these
+restricted pairings. No particle-statistics or operator data enter these constructions.
 -/
 
 namespace SecondQuantization
@@ -90,6 +92,22 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
     (fun pos => by
       simpa only [TwoPointDiagram.mixedRestrictedPartner] using
         d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac pos)
+
+/-- Canonical comparison of the mixed normalized pairs of one full component at two time assignments. -/
+noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
+    d.MixedComponentPair τ τ' σ B ≃ d.MixedComponentPair τ τ' υ B := by
+  classical
+  by_cases hB : B = d.externalComponentPart
+  · subst B
+    exact (d.mixedExternalComponentPairEquiv τ τ' σ).trans
+      (d.mixedExternalComponentPairEquiv τ τ' υ).symm
+  · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
+      (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
+    exact (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac).trans
+      (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac).symm
 
 end Common
 end SecondQuantization
