@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Disorder.Finite
 import LeanCondensedMatter.Transport.Resolvent.Basic
+import LeanCondensedMatter.Transport.Resolvent.SelfEnergy
 
 set_option linter.style.header false
 
@@ -66,6 +67,39 @@ theorem star_averagedGreenOfRegulator
     (ensemble.configurationHamiltonian ω).1
     (ensemble.configurationHamiltonian ω).2 energy regulator
 
+/-- The exact Green operator of each disorder configuration satisfies the canonical two-sided
+Dyson self-energy relation, with the configuration potential as the self-energy insertion. -/
+theorem configurationGreenOfRegulator_isSelfEnergy
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) :
+    IsSelfEnergy
+      (ensemble.freeGreenOfRegulator energy regulator)
+      (ensemble.configurationGreenOfRegulator energy regulator ω)
+      (ensemble.impurityPotential ω).1 := by
+  let shift₀ : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
+      ensemble.baseHamiltonian.1
+  let shiftω : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
+      (ensemble.configurationHamiltonian ω).1
+  refine IsSelfEnergy.of_shift (freeShift := shift₀) (dressedShift := shiftω)
+    ?_ ?_ ?_ ?_ ?_
+  · simpa [freeGreenOfRegulator, shift₀] using
+      (resolvent_spectralParameterOfRegulator_mul_spectralShift
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator)
+  · simpa [freeGreenOfRegulator, shift₀] using
+      (spectralShift_mul_resolvent_spectralParameterOfRegulator
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator)
+  · simpa [configurationGreenOfRegulator, shiftω] using
+      (spectralShift_mul_resolvent_spectralParameterOfRegulator
+        (ensemble.configurationHamiltonian ω).1
+        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator)
+  · simpa [configurationGreenOfRegulator, shiftω] using
+      (resolvent_spectralParameterOfRegulator_mul_spectralShift
+        (ensemble.configurationHamiltonian ω).1
+        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator)
+  · dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
+    noncomm_ring
+
 /-- Exact left-oriented configuration Dyson identity at an arbitrary nonzero signed regulator,
 `Gω = G₀ + G₀ Vω Gω`. -/
 theorem configurationGreenOfRegulator_eq_free_add_dyson_left
@@ -75,47 +109,8 @@ theorem configurationGreenOfRegulator_eq_free_add_dyson_left
         ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
             ensemble.configurationGreenOfRegulator energy regulator ω := by
-  let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
-      ensemble.baseHamiltonian.1
-  let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
-      (ensemble.configurationHamiltonian ω).1
-  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
-    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
-    noncomm_ring
-  have hfree : ensemble.freeGreenOfRegulator energy regulator * shift₀ = 1 := by
-    simpa [freeGreenOfRegulator, shift₀] using
-      resolvent_spectralParameterOfRegulator_mul_spectralShift
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  have hconfiguration :
-      shiftω * ensemble.configurationGreenOfRegulator energy regulator ω = 1 := by
-    simpa [configurationGreenOfRegulator, shiftω] using
-      spectralShift_mul_resolvent_spectralParameterOfRegulator
-        (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator
-  calc
-    ensemble.configurationGreenOfRegulator energy regulator ω =
-        ensemble.freeGreenOfRegulator energy regulator * shift₀ *
-          ensemble.configurationGreenOfRegulator energy regulator ω := by
-      rw [hfree]
-      simp
-    _ = ensemble.freeGreenOfRegulator energy regulator *
-          (shiftω + (ensemble.impurityPotential ω).1) *
-            ensemble.configurationGreenOfRegulator energy regulator ω := by
-      rw [hshift]
-    _ = ensemble.freeGreenOfRegulator energy regulator *
-          (shiftω * ensemble.configurationGreenOfRegulator energy regulator ω) +
-        ensemble.freeGreenOfRegulator energy regulator *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.configurationGreenOfRegulator energy regulator ω := by
-      noncomm_ring
-    _ = ensemble.freeGreenOfRegulator energy regulator +
-        ensemble.freeGreenOfRegulator energy regulator *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.configurationGreenOfRegulator energy regulator ω := by
-      rw [hconfiguration]
-      simp
+  exact (ensemble.configurationGreenOfRegulator_isSelfEnergy
+    energy regulator hregulator ω).leftDyson
 
 /-- Exact right-oriented configuration Dyson identity at an arbitrary nonzero signed regulator,
 `Gω = G₀ + Gω Vω G₀`. -/
@@ -126,51 +121,8 @@ theorem configurationGreenOfRegulator_eq_free_add_dyson_right
         ensemble.configurationGreenOfRegulator energy regulator ω *
           (ensemble.impurityPotential ω).1 *
             ensemble.freeGreenOfRegulator energy regulator := by
-  let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
-      ensemble.baseHamiltonian.1
-  let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
-      (ensemble.configurationHamiltonian ω).1
-  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
-    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
-    noncomm_ring
-  have hfree : shift₀ * ensemble.freeGreenOfRegulator energy regulator = 1 := by
-    simpa [freeGreenOfRegulator, shift₀] using
-      spectralShift_mul_resolvent_spectralParameterOfRegulator
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  have hconfiguration :
-      ensemble.configurationGreenOfRegulator energy regulator ω * shiftω = 1 := by
-    simpa [configurationGreenOfRegulator, shiftω] using
-      resolvent_spectralParameterOfRegulator_mul_spectralShift
-        (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator
-  calc
-    ensemble.configurationGreenOfRegulator energy regulator ω =
-        ensemble.configurationGreenOfRegulator energy regulator ω * shift₀ *
-          ensemble.freeGreenOfRegulator energy regulator := by
-      calc
-        ensemble.configurationGreenOfRegulator energy regulator ω =
-            ensemble.configurationGreenOfRegulator energy regulator ω * 1 := by simp
-        _ = ensemble.configurationGreenOfRegulator energy regulator ω *
-            (shift₀ * ensemble.freeGreenOfRegulator energy regulator) := by rw [hfree]
-        _ = _ := by rw [mul_assoc]
-    _ = ensemble.configurationGreenOfRegulator energy regulator ω *
-          (shiftω + (ensemble.impurityPotential ω).1) *
-            ensemble.freeGreenOfRegulator energy regulator := by
-      rw [hshift]
-    _ = (ensemble.configurationGreenOfRegulator energy regulator ω * shiftω) *
-          ensemble.freeGreenOfRegulator energy regulator +
-        ensemble.configurationGreenOfRegulator energy regulator ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreenOfRegulator energy regulator := by
-      noncomm_ring
-    _ = ensemble.freeGreenOfRegulator energy regulator +
-        ensemble.configurationGreenOfRegulator energy regulator ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreenOfRegulator energy regulator := by
-      rw [hconfiguration]
-      simp
+  exact (ensemble.configurationGreenOfRegulator_isSelfEnergy
+    energy regulator hregulator ω).rightDyson
 
 /-- Exact left-oriented second-order Dyson expansion at an arbitrary nonzero signed regulator. -/
 theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
