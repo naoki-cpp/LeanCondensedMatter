@@ -28,10 +28,12 @@ of the bundled factorial-normalized moment function with the normalized object m
 identifies the formal-log coefficient with the connected contribution using only the forward moment
 decomposition.
 The canonical fermionic theorem consumes this replica route; its model-specific obligation is the
-Dyson-moment/Wick-diagram identification. The independent inversion route applies
-`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` directly to the same bundled
-moment equality. It kernel-checks the canonical connected-diagram statement as an `example`,
-without introducing a fermionic cumulant definition or a duplicate public theorem.
+Dyson-moment/Wick-diagram identification, packaged once as
+`dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment` in
+`Fermionic.Diagrammatics.DysonDiagramExpansion.Moment`. The independent inversion route applies
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` to that same moment equality.
+It kernel-checks the canonical connected-diagram statement as an `example`, without introducing
+a fermionic cumulant definition or a duplicate public theorem.
 No source-functional wrapper is required for this formal partition-function endpoint.
 
 The normalized finite-configuration Dyson coefficients and labelled finite-set vertex moments are
