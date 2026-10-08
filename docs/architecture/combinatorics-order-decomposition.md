@@ -51,6 +51,14 @@ The canonical-leg-order and mixed-time-order external-insertion modules supply t
 data and compatibility proofs. Endpoint inversion reindexing and off-diagonal parity summation
 remain in generic combinatorics; time ordering and physical exchange weights remain downstream.
 
+## Component-pair embeddings
+
+`PerfectPairing.Embedding` owns normalized-pair embeddings induced by partner-intertwining order
+embeddings, including preservation and reflection of crossings. Quartic fixed-order component pairs
+use that construction with the canonical component-local vertex orders and component shuffle.
+The equality of the assembled vertex order with the fixed order supplies the partner compatibility;
+component assignment remains in the Quartic adapter.
+
 ## Removing the first pair
 
 `PerfectPairing.Core` owns the first pair, namely the pair containing position zero.
