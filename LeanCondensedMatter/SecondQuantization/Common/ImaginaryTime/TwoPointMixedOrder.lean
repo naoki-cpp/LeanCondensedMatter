@@ -92,7 +92,7 @@ noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin 
     ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)
 
 @[simp]
-theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+private theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).length = n + 2 := by
   classical
   rw [orderedTwoPointTimedEvents, List.length_insertionSort]
@@ -153,13 +153,6 @@ noncomputable def orderedTwoPointTimedEventPosition {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (event : TwoPointTimedEvent n) : Fin (n + 2) :=
   (orderedTwoPointTimedEventEquiv τ τ' σ).symm event
 
-@[simp]
-theorem orderedTwoPointTimedEventEquiv_position {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (event : TwoPointTimedEvent n) :
-    orderedTwoPointTimedEventEquiv τ τ' σ
-        (orderedTwoPointTimedEventPosition τ τ' σ event) = event :=
-  (orderedTwoPointTimedEventEquiv τ τ' σ).apply_symm_apply event
-
 private theorem twoPointTimedEventBeforeOrEqual_of_position_lt {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) {a b : TwoPointTimedEvent n}
     (h : orderedTwoPointTimedEventPosition τ τ' σ a <
@@ -218,22 +211,6 @@ theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
             apply Fin.ext
             exact h)
           hab hba)).elim
-
-/-- Relative ordered positions of two events depend only on the times of those two events. -/
-theorem orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq {n : ℕ}
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : TwoPointTimedEvent n)
-    (ha : twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' υ a)
-    (hb : twoPointTimedEventTime τ τ' σ b = twoPointTimedEventTime τ τ' υ b) :
-    (orderedTwoPointTimedEventPosition τ τ' σ a <
-        orderedTwoPointTimedEventPosition τ τ' σ b) ↔
-      (orderedTwoPointTimedEventPosition τ τ' υ a <
-        orderedTwoPointTimedEventPosition τ τ' υ b) := by
-  rw [orderedTwoPointTimedEventPosition_lt_iff,
-    orderedTwoPointTimedEventPosition_lt_iff]
-  simp only [twoPointTimedEventBefore, twoPointTimedEventBeforeOrEqual,
-    stableTimedEventBeforeOrEqual_iff]
-  rw [ha, hb]
-
 
 /-! ## Monotone interaction-slot transport -/
 
