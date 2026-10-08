@@ -175,7 +175,7 @@ theorem ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram
   let vS : ↥S := ⟨v.1, h v.2⟩
   obtain ⟨e, he⟩ := (d.mem_externallySupportedInteractionPart vS).1 v.2
   have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr vS) :=
-    ((d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).1 he).symm
+    (d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).1 he
   have hD : ExternalInsertionDiagram.ofSlotSplit h ext vac = d :=
     d.externalSupport_reconstruction
   have hreach' :
