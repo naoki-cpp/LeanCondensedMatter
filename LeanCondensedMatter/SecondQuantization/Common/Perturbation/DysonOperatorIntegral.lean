@@ -33,13 +33,8 @@ theorem dysonCoeff_succ (energy : Config → ℝ)
       (- operatorIntervalIntegral
         (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n'
   rw [dysonCoeff_succ_basisState_apply]
-  have hneg : matrixCoeff
-      (- operatorIntervalIntegral
-          (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n' =
-        - matrixCoeff (operatorIntervalIntegral
-          (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n' := by
-    simp [matrixCoeff]
-  rw [hneg, matrixCoeff_operatorIntervalIntegral]
+  simp only [← matrixCoeffLinear_apply, map_neg]
+  rw [matrixCoeffLinear_apply, matrixCoeff_operatorIntervalIntegral]
   congr 1
 
 omit [Fintype Config] in
