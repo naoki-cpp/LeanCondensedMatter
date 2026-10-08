@@ -74,33 +74,17 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     have hpeel := finiteGibbsExpectation_peel_indexed energy β (q 0) (s.zetaInt : ℂ) (C 0) l
       (hC 0) hcommL hne0
     rw [hlmap] at hpeel
-    have hreindex :
-        (∑ i : Fin l.length, (s.zetaInt : ℂ) ^ (i : ℕ) * l[(i : ℕ)].2 *
-            finiteGibbsExpectation energy β (List.prod ((l.eraseIdx (i : ℕ)).map Prod.fst))) =
-          ∑ j : Fin (2 * m + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
-            (l[(j : ℕ)]'(by rw [hlen]; exact j.isLt)).2 *
-              finiteGibbsExpectation energy β
-                (List.prod ((l.eraseIdx (j : ℕ)).map Prod.fst)) := by
-      rw [← Equiv.sum_comp (finCongr hlen.symm)]
-      apply Finset.sum_congr rfl
-      intro j _
-      simp only [finCongr_apply, Fin.val_cast]
-    rw [hreindex] at hpeel
     rw [hzl] at hpeel
+    rw [hl, List.sum_getElem_eraseIdx_ofFn] at hpeel
     rw [h1, hpeel, Finset.sum_div]
     refine Finset.sum_congr rfl fun j _ => ?_
-    have hljfst : (l.eraseIdx (j : ℕ)).map Prod.fst =
-        List.ofFn (fun i : Fin (2 * m) => C ((j.succAbove i).succ)) := by
-      rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove, List.map_ofFn]
-      rfl
-    have hljsnd : l[(j : ℕ)]'(by rw [hlen]; exact j.isLt) = (C j.succ, c 0 j.succ) := by
-      simp only [hl, List.getElem_ofFn]
     have h2 : finiteGibbsExpectation energy β ((C 0).comp (C j.succ)) =
         c 0 j.succ / (1 - (s.zetaInt : ℂ) * Complex.exp ((q 0 * β : ℝ) : ℂ)) :=
       finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β (q 0) (s.zetaInt : ℂ)
         (c 0 j.succ) (C 0) (C j.succ) (hC 0)
         (hcomm 0 j.succ (Ne.symm (Fin.succ_ne_zero j))) (hne 0)
-    rw [hljfst, hljsnd, h2]
+    simp only [List.map_ofFn]
+    rw [h2]
     ring
 
 end BlochDeDominicis

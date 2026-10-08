@@ -73,6 +73,14 @@ importing crossing geometry. `CrossingEraseZero` uses the same structure togethe
 crossing transport to derive the crossing-count decomposition. These laws apply also when the
 smaller pairing has no pairs.
 
+## List deletion and indexed sums
+
+`FiniteIndex.EraseIdxOfFn` owns the deletion coordinate law for `List.ofFn` and the finite-sum
+reindexing law `List.sum_getElem_eraseIdx_ofFn`. The latter transports a summand depending on the
+entry index, selected entry, and remaining list to the original finite coordinates. Common finite
+Gibbs, Bosonic free Gibbs, and completed Fermionic Gibbs pairing recursions use this law;
+summability, KMS rotation, and trace hypotheses remain with their respective thermal realizations.
+
 ## Repeated-fiber counting
 
 `Common.FintypeProduct` owns finite-product reindexing and counting.

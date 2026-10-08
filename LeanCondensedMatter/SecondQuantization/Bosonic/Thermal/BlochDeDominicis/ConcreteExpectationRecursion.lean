@@ -44,9 +44,6 @@ theorem freeGibbsExpectation_firstPair_recursion
   rw [List.ofFn_succ]
   set l : List (FreeThermalField Mode) :=
     List.ofFn (fun i : Fin (2 * n + 1) => C i.succ) with hl
-  have hlen : l.length = 2 * n + 1 := by
-    rw [hl]
-    simp
   calc
     freeGibbsExpectation ε β (orderedProduct (C 0 :: l)) =
         ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
@@ -59,22 +56,8 @@ theorem freeGibbsExpectation_firstPair_recursion
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
       rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l,
         Finset.mul_sum]
-      have hreindex :
-          (∑ i : Fin l.length,
-            ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
-              ((C 0).exchangeValue (l[(i : ℕ)]'i.isLt) *
-                freeGibbsExpectation ε β (orderedProduct (l.eraseIdx i)))) =
-            ∑ j : Fin (2 * n + 1),
-              ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
-                ((C 0).exchangeValue (C j.succ) *
-                  freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j))) := by
-        rw [← Equiv.sum_comp (finCongr hlen.symm)]
-        apply Finset.sum_congr rfl
-        intro j _
-        simp only [finCongr_apply, Fin.val_cast, hl, List.getElem_ofFn]
-      rw [hreindex]
+      rw [hl, List.sum_getElem_eraseIdx_ofFn]
       refine Finset.sum_congr rfl fun j _ => ?_
-      rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
       have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
         ε β hpos (C 0) (C j.succ)
       rw [← hpair]
