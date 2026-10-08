@@ -43,7 +43,7 @@ theorem reachableSupport_succ
 
 /-- Membership in the next reachable support is witnessed by an intermediate configuration in the
 previous support and a nonzero matrix column of `V`. -/
-theorem mem_reachableSupport_succ_iff
+private theorem mem_reachableSupport_succ_iff
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ) (m n : Config) :
     m ∈ reachableSupport V (order + 1) n ↔
       ∃ k ∈ reachableSupport V order n, m ∈ (V (basisState k)).support := by

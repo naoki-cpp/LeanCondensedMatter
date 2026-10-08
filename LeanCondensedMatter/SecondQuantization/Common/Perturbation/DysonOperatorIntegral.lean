@@ -42,16 +42,6 @@ theorem dysonCoeff_succ (energy : Config → ℝ)
   rw [hneg, matrixCoeff_operatorIntervalIntegral]
   congr 1
 
-/-- The first-order coefficient is the negative interval integral of the interaction-picture
-operator. -/
-theorem dysonCoeff_one (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
-    dysonCoeff energy V 1 τ = - operatorIntervalIntegral (interactionPicture energy V) 0 τ := by
-  rw [show 1 = 0 + 1 by omega, dysonCoeff_succ]
-  congr 2
-  funext σ
-  rw [dysonCoeff_zero, LinearMap.comp_id]
-
 omit [Fintype Config] in
 /-- In the time-independent case, each algebraic Dyson coefficient is the corresponding ordinary
 exponential-series coefficient. -/
