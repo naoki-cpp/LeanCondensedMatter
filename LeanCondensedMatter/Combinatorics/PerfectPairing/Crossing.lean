@@ -3,7 +3,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 set_option linter.style.header false
 
 /-!
-# Crossings, `crossingCount`, and `firstPair`
+# Crossings and crossing counts
 
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d`. The canonical public
 crossing representation uses `Pairing.NormalizedPair`; raw pairs with membership witnesses are
@@ -127,16 +127,6 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
       (fun x => by simp)
   rw [hcard]
   simp
-
-/-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
-def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
-    Fin (2 * (n + 1)) × Fin (2 * (n + 1)) :=
-  (0, pairing.partner 0)
-
-theorem Pairing.firstPair_mem_pairs {n : ℕ} (pairing : Pairing (n + 1)) :
-    pairing.firstPair ∈ pairing.pairs := by
-  apply (pairing.mem_pairs_iff 0 (pairing.partner 0)).2
-  exact ⟨lt_of_le_of_ne (Fin.zero_le _) (Ne.symm (pairing.partner_ne 0)), rfl⟩
 
 /-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=

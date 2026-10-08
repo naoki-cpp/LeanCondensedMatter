@@ -50,3 +50,17 @@ explicit block order. It does not assume the residual parity is zero.
 The canonical-leg-order and mixed-time-order external-insertion modules supply their own endpoint
 data and compatibility proofs. Endpoint inversion reindexing and off-diagonal parity summation
 remain in generic combinatorics; time ordering and physical exchange weights remain downstream.
+
+## Removing the first pair
+
+`PerfectPairing.Core` owns the first pair, namely the pair containing position zero.
+`PerfectPairing.EraseZero` owns the smaller pairing, its increasing position map, and the residual
+pair structure. `eraseZeroPairEmbedding` maps both endpoints back to ambient positions;
+`pairs_erase_firstPair_eq_image` identifies all ambient pairs other than the first pair with the
+image of the smaller pairing's pairs. Endpoint membership and inverse-coordinate proofs remain
+private to that owner.
+
+`PairsDecomposition` derives the product decomposition directly from that structure without
+importing crossing geometry. `CrossingEraseZero` uses the same structure together with monotone
+crossing transport to derive the crossing-count decomposition. These laws apply also when the
+smaller pairing has no pairs.
