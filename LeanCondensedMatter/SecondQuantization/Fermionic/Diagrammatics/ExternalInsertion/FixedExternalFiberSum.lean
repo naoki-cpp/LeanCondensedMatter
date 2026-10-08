@@ -119,7 +119,7 @@ theorem externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFib
     (∑ T : {T : Finset (Fin n) // T ⊆ Finset.univ}, F T.1) =
       ∑ m ∈ Finset.range (n + 1),
         ∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)), F T
-  rw [Finset.sum_subtype
+  rw [← Finset.sum_subtype
     (p := fun T : Finset (Fin n) => T ⊆ Finset.univ)
     ((Finset.univ : Finset (Fin n)).powerset)
     (fun T => by simp)
