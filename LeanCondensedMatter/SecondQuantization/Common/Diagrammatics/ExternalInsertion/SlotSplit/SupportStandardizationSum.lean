@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
 
 set_option linter.style.header false
 
@@ -20,9 +21,9 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
 
+open Classical in
 /-- Reindex a fixed-cardinality external-support sum by shuffles and standardized,
 shuffle-independent diagram data. -/
-open Classical in
 theorem ExternalInsertionDiagram.sum_leftSlotSet_standardizedSupportFiber
     [Fintype ExternalLabel] [Fintype InternalLabel]
     {E m k : ℕ} {R : Type*} [AddCommMonoid R]
