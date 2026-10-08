@@ -87,12 +87,12 @@ private theorem hasDerivAt_retardedAdvancedResolvents_energy
     HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
       (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
   constructor
-  · simpa only [retardedResolvent] using
-      (hasDerivAt_spectralResolvent_energy .retarded
-        hamiltonian hself energy broadening (ne_of_gt hbroadening))
-  · simpa only [advancedResolvent] using
-      (hasDerivAt_spectralResolvent_energy .advanced
-        hamiltonian hself energy broadening (ne_of_gt hbroadening))
+  · simpa [retardedResolvent, retardedSpectralParameter] using
+      hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself energy broadening (ne_of_gt hbroadening)
+  · simpa [advancedResolvent, advancedSpectralParameter] using
+      hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself energy (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
 
 /-- The retarded-minus-advanced resolvent difference has the expected real-energy derivative. -/
 private theorem hasDerivAt_retardedAdvancedResolventDifference
@@ -177,12 +177,12 @@ private theorem continuous_retardedAdvancedResolvents_energy
     Continuous (fun energy : ℝ => retardedResolvent hamiltonian energy broadening) ∧
     Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
   constructor
-  · simpa only [retardedResolvent] using
-      (continuous_spectralResolvent_energy .retarded
-        hamiltonian hself broadening (ne_of_gt hbroadening))
-  · simpa only [advancedResolvent] using
-      (continuous_spectralResolvent_energy .advanced
-        hamiltonian hself broadening (ne_of_gt hbroadening))
+  · simpa [retardedResolvent, retardedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself broadening (ne_of_gt hbroadening)
+  · simpa [advancedResolvent, advancedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
 
 private theorem continuous_retardedAdvancedResolventDifference_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
