@@ -295,19 +295,9 @@ theorem continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp
     change (continuousDiagonalEvolution energy (-β)).comp
       (continuousDiagonalEvolution energy β) = 1
     exact continuousDiagonalEvolution_neg_comp energy β
-  calc
-    continuousDiagonalEvolution energy (-β) *
-        (continuousDiagonalEvolution energy β *
-          NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam))) =
-      (continuousDiagonalEvolution energy (-β) *
-        continuousDiagonalEvolution energy β) *
-          NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam)) := by
-        rw [mul_assoc]
-    _ = NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam)) := by
-      rw [hinv, one_mul]
-    _ = NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) := by
-      congr 1
-      simp [smul_neg, neg_smul]
+  rw [← mul_assoc, hinv, one_mul]
+  congr 1
+  simp [smul_neg, neg_smul]
 
 
 end
