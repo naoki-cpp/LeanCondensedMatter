@@ -479,5 +479,66 @@ theorem externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv {E n : ℕ}
   apply Fin.ext
   rfl
 
+
+/-- The canonical mixed atomic-leg enumeration is unchanged if every strict comparison
+between external and interaction event times is unchanged. The fixed rank also resolves
+all equal-time ties identically. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ υ : Fin n → ℝ)
+    (h : ∀ a b : ExternalInsertionTimedEvent E n,
+      (externalInsertionTimedEventTime externalTime σ a <
+        externalInsertionTimedEventTime externalTime σ b) ↔
+      (externalInsertionTimedEventTime externalTime υ a <
+        externalInsertionTimedEventTime externalTime υ b)) :
+    externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ =
+      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime υ := by
+  have heq (a b : ExternalInsertionTimedEvent E n) :
+      (externalInsertionTimedEventTime externalTime σ a =
+        externalInsertionTimedEventTime externalTime σ b) ↔
+      (externalInsertionTimedEventTime externalTime υ a =
+        externalInsertionTimedEventTime externalTime υ b) := by
+    constructor
+    · intro hab
+      by_contra huv
+      rcases lt_or_gt_of_ne huv with huv | huv
+      · have hσ := (h a b).mpr huv
+        rw [hab] at hσ
+        exact lt_irrefl _ hσ
+      · have hσ := (h b a).mpr huv
+        rw [hab] at hσ
+        exact lt_irrefl _ hσ
+    · intro hab
+      by_contra hσ
+      rcases lt_or_gt_of_ne hσ with hσ | hσ
+      · have huv := (h a b).mp hσ
+        rw [hab] at huv
+        exact lt_irrefl _ huv
+      · have huv := (h b a).mp hσ
+        rw [hab] at huv
+        exact lt_irrefl _ huv
+  have hrel :
+      externalInsertionTimedEventBeforeOrEqual externalTime σ =
+        externalInsertionTimedEventBeforeOrEqual externalTime υ := by
+    funext a b
+    apply propext
+    simp only [externalInsertionTimedEventBeforeOrEqual,
+      stableTimedEventBeforeOrEqual_iff]
+    rw [h b a, heq a b]
+  have hordered :
+      orderedExternalInsertionTimedEvents externalTime σ =
+        orderedExternalInsertionTimedEvents externalTime υ := by
+    unfold orderedExternalInsertionTimedEvents
+    rw [hrel]
+  have hlegs :
+      externalInsertionMixedTimeOrderedAtomicLegs externalTime σ =
+        externalInsertionMixedTimeOrderedAtomicLegs externalTime υ := by
+    unfold externalInsertionMixedTimeOrderedAtomicLegs
+    rw [hordered]
+  apply Equiv.ext
+  intro i
+  unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
+  simp only [hlegs]
+
 end Common
 end SecondQuantization
