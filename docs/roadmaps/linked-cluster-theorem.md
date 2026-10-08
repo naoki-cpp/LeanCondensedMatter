@@ -91,10 +91,7 @@ the forward coefficient identity needed by the replica polynomial proof. Both ro
 same formal-log coefficient with the connected-object contribution.
 
 The bosonic physical Dyson connected theorem uses the same normalized finite-set and
-`MultiplicativeWeight` machinery directly. Its static order-averaged thermal amplitudes are
-also multiplicative under connected components; their cumulants can be recovered from the
-generic connected-decomposition inversion theorem without a specialized bosonic cumulant API.
-Its finite-mode quartic Dyson coefficients are
+`MultiplicativeWeight` machinery directly. Its finite-mode quartic Dyson coefficients are
 Gibbs-summable at every fixed perturbation order through finite thermal-field expansions. Statistics
 enter only in concrete moment realizations, pairing weights, and amplitudes. This does not yet give a
 genuine analytic bosonic partition function: the missing step is all-order interacting convergence

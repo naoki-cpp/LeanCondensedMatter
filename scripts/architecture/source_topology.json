@@ -277,16 +277,6 @@
         "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
         "LeanCondensedMatter.Combinatorics.Cumulant.Replica"
       ]
-    },
-    {
-      "id": "bosonicThermalConnectedForwardOnly",
-      "roots": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected"
-      ],
-      "forbiddenPrefixes": [
-        "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion"
-      ]
     }
   ]
 }

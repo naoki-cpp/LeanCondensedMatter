@@ -5,7 +5,6 @@ Major public theorem names were aligned with their mathematical conclusions. No 
 | Previous declaration | Canonical declaration |
 |---|---|
 | `SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected` | `SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components` |
-| `SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected` | `SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude_eq_prod_components` |
 | `SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected` | `SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components` |
 | `SecondQuantization.Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution` | `SecondQuantization.Common.hasSum_dysonTraceCoeff` |
 | `SecondQuantization.Fermionic.hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction` | `SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction` |
