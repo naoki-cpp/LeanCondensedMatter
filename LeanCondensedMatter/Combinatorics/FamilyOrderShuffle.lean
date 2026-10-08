@@ -131,7 +131,7 @@ private noncomputable def familyOrderOfOrder {total : ℕ} (size : ι → ℕ)
     (familyGlobalSlotEquiv F ambientEquiv order i).symm
 
 /-- Canonical family of local orders induced by a global order. -/
-private noncomputable def familyOrdersOfOrder {total : ℕ} (size : ι → ℕ)
+noncomputable def familyOrdersOfOrder {total : ℕ} (size : ι → ℕ)
     (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) : FamilyOrdersOf F size :=
@@ -165,6 +165,23 @@ private theorem familyOrderOfOrder_slot {total : ℕ} (size : ι → ℕ)
   rw [hval] at h
   exact h
 
+omit [Fintype ι] [Fintype α] in
+/-- The extracted local order of each fiber is strictly increasing in ambient slot number. -/
+theorem familyOrdersOfOrder_strictMono {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (order : Fin total ≃ α) (i : ι) :
+    StrictMono (fun j => order.symm
+      (ambientEquiv.symm ⟨i, familyOrdersOfOrder F size hcard ambientEquiv order i j⟩)) := by
+  intro a b hab
+  change
+    order.symm (ambientEquiv.symm ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i a⟩) <
+      order.symm (ambientEquiv.symm ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i b⟩)
+  rw [familyOrderOfOrder_slot F size hcard ambientEquiv order i a,
+    familyOrderOfOrder_slot F size hcard ambientEquiv order i b]
+  exact ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
+    ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i))).strictMono hab
+
 /-- Extract the order-preserving family shuffle induced by a global order. -/
 private noncomputable def familyShuffleOfOrder {total : ℕ} (size : ι → ℕ)
     (hcard : ∀ i, Fintype.card (F i) = size i)
@@ -174,19 +191,7 @@ private noncomputable def familyShuffleOfOrder {total : ℕ} (size : ι → ℕ)
   slotEquiv :=
     (familyOrderedEquiv F size (familyOrdersOfOrder F size hcard ambientEquiv order)).trans
     (ambientEquiv.symm.trans order.symm)
-  strictMono := by
-    intro i a b hab
-    change
-      order.symm
-          (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i a⟩) <
-        order.symm
-          (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i b⟩)
-    rw [familyOrderOfOrder_slot F size hcard ambientEquiv order i a,
-      familyOrderOfOrder_slot F size hcard ambientEquiv order i b]
-    exact ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-      ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i))).strictMono hab
+  strictMono := familyOrdersOfOrder_strictMono F size hcard ambientEquiv order
 
 omit [Fintype ι] [Fintype α] in
 private theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
