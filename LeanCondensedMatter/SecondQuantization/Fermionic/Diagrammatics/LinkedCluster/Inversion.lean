@@ -46,17 +46,6 @@ example
       (dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
         (N := n) ε β g hZ)
   calc
-      Combinatorics.powerSeriesMomentSetFunction (α := Fin n) Z hZ =
-          Common.dysonTraceVertexMomentSetFunction
-            (fermionEnergy ε) β (quarticInteraction g) := by
-        simpa only [Z, dysonPartitionSeries] using
-          (Common.powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonTraceSeries_eq_dysonTraceVertexMomentSetFunction
-            (α := Fin n) (fermionEnergy ε) β (quarticInteraction g) hZ)
-      _ = W.normalizedObjectMoment := by
-        simpa only [W, quarticWickDiagramMoment] using
-          (dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
-            (N := n) ε β g)
-  calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
           (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
