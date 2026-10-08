@@ -129,21 +129,16 @@ theorem toStaticStredaResponseMatrix_total_eq_tracedBastin
       regularizedTracedBastinEnergyIntegral
         hamiltonian (current i) (current j) broadening
         lowerEnergy upperEnergy occupation := by
-  unfold toStaticStredaResponseMatrix StaticStredaResponseMatrix.total
-    fermiSurfaceMatrix fermiSeaMatrix
-  calc
+  change
     regularizedStredaFermiSurface
-          (data.pairData i j).toRegularizedStredaIntegralData +
-        regularizedStredaFermiSea
-          (data.pairData i j).toRegularizedStredaIntegralData =
-      regularizedBastinEnergyIntegral
-        (data.pairData i j).toRegularizedStredaIntegralData :=
-      (regularizedBastinEnergyIntegral_eq_surface_add_sea
-        (data.pairData i j).toRegularizedStredaIntegralData).symm
-    _ = regularizedTracedBastinEnergyIntegral
+        (data.pairData i j).toRegularizedStredaIntegralData +
+      regularizedStredaFermiSea
+        (data.pairData i j).toRegularizedStredaIntegralData =
+      regularizedTracedBastinEnergyIntegral
         hamiltonian (current i) (current j) broadening
-        lowerEnergy upperEnergy occupation :=
-      (data.pairData i j).regularizedBastinEnergyIntegral_eq_traced
+        lowerEnergy upperEnergy occupation
+  rw [← regularizedBastinEnergyIntegral_eq_surface_add_sea]
+  exact (data.pairData i j).regularizedBastinEnergyIntegral_eq_traced
 
 end TracedStredaResponseMatrixAnalyticData
 
