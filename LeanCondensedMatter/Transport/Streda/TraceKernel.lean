@@ -98,6 +98,25 @@ theorem regularizedStredaResidualSeaTraceKernel_swap
       retardedAdvancedResolventDifference
       retardedAdvancedResolventDifferenceDerivative
     noncomm_ring
+  -- A cyclic trace commutator with a fixed propagator is skew in its two vertices.
+  have hcyclicSkew : ∀ (T X Y : H →L[ℂ] H),
+      (finiteDimensionalOperatorTrace (H := H) (X * T ^ 2 * Y * T) -
+        finiteDimensionalOperatorTrace (H := H) (X * T * Y * T ^ 2)) =
+      -(finiteDimensionalOperatorTrace (H := H) (Y * T ^ 2 * X * T) -
+        finiteDimensionalOperatorTrace (H := H) (Y * T * X * T ^ 2)) := by
+    intro T X Y
+    have h₁ :
+        finiteDimensionalOperatorTrace (H := H) (X * T ^ 2 * Y * T) =
+          finiteDimensionalOperatorTrace (H := H) (Y * T * X * T ^ 2) := by
+      simpa [pow_two, mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm (H := H) (X * T * T) (Y * T))
+    have h₂ :
+        finiteDimensionalOperatorTrace (H := H) (X * T * Y * T ^ 2) =
+          finiteDimensionalOperatorTrace (H := H) (Y * T ^ 2 * X * T) := by
+      simpa [pow_two, mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm (H := H) (X * T) (Y * T * T))
+    rw [h₁, h₂]
+    ring
   have hsea : ∀ X Y : H →L[ℂ] H,
       regularizedStredaResidualSeaTraceKernel
           hamiltonian X Y energy broadening =
@@ -138,33 +157,10 @@ theorem regularizedStredaResidualSeaTraceKernel_swap
     simp only [map_sub, map_add, map_neg, map_smul, smul_eq_mul]
     rw [hRA₁, hRA₂, hAA₁, hAA₂]
     ring
-  have hRR₁ :
-      finiteDimensionalOperatorTrace (H := H) (current₂ * R ^ 2 * current₁ * R) =
-        finiteDimensionalOperatorTrace (H := H) (current₁ * R * current₂ * R ^ 2) := by
-    simpa [pow_two, mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * R * R) (current₁ * R))
-  have hRR₂ :
-      finiteDimensionalOperatorTrace (H := H) (current₂ * R * current₁ * R ^ 2) =
-        finiteDimensionalOperatorTrace (H := H) (current₁ * R ^ 2 * current₂ * R) := by
-    simpa [pow_two, mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * R) (current₁ * R * R))
-  have hAA₁ :
-      finiteDimensionalOperatorTrace (H := H) (current₂ * A * current₁ * A ^ 2) =
-        finiteDimensionalOperatorTrace (H := H) (current₁ * A ^ 2 * current₂ * A) := by
-    simpa [pow_two, mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * A) (current₁ * A * A))
-  have hAA₂ :
-      finiteDimensionalOperatorTrace (H := H) (current₂ * A ^ 2 * current₁ * A) =
-        finiteDimensionalOperatorTrace (H := H) (current₁ * A * current₂ * A ^ 2) := by
-    simpa [pow_two, mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * A * A) (current₁ * A))
   rw [hsea current₁ current₂, hsea current₂ current₁]
-  rw [hRR₁, hRR₂, hAA₁, hAA₂]
-  ring
+  have hR := hcyclicSkew R current₁ current₂
+  have hA := hcyclicSkew A current₁ current₂
+  linear_combination (1 / 2 : ℂ) * hR - (1 / 2 : ℂ) * hA
 
 /-- The traced surface primitive has the traced operator derivative at every positive broadening. -/
 theorem hasDerivAt_regularizedStredaSurfacePrimitiveTrace
