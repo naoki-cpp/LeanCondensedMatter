@@ -2,9 +2,9 @@ import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Sort
-import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Perm
 import Mathlib.Data.Fintype.Powerset
+import Mathlib.Data.Fintype.Sum
 
 set_option linter.style.header false
 
