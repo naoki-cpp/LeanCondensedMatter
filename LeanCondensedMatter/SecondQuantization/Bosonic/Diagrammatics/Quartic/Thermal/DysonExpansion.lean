@@ -223,8 +223,8 @@ theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitu
 
 /-- Physical bosonic quartic Dyson diagram amplitude, summed over all global vertex orders.
 The ordered-simplex regions associated with these orders are the pieces that shuffle-factorize over
-connected components, so this physical amplitude is a sum rather than the static order average used
-by `QuarticDiagram.thermalAmplitude`. -/
+connected components, so this physical amplitude is a sum over orders, with no factorial
+averaging. -/
 noncomputable def QuarticDiagram.dysonThermalAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
