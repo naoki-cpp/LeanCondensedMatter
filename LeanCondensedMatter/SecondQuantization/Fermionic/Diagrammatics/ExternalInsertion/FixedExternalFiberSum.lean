@@ -75,7 +75,6 @@ theorem externalInsertionDysonCoefficient_eq_sum_externalSupportFiber
         p.1.1.externalLabel := rfl
   rw [hlabel]
 
-
 open Classical in
 /-- Group the external-support fibers by their number of interaction vertices.
 
@@ -93,7 +92,7 @@ theorem externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFib
                 (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E n T //
                 HasNoVacuumComponent ext.vertexGraph} ×
                 QuarticDiagram (QuarticVertexLabel Mode) n
-                  ((Finset.univ : Finset (Fin n)) \\ T),
+                  ((Finset.univ : Finset (Fin n)) \ T),
             if p.1.1.externalLabel = externalLabel then
               ExternalInsertionWickDiagram.dysonAmplitude
                 (((ExternalInsertionDiagram.externalSupportFiberEquiv
@@ -108,7 +107,7 @@ theorem externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFib
           (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E n T //
           HasNoVacuumComponent ext.vertexGraph} ×
           QuarticDiagram (QuarticVertexLabel Mode) n
-            ((Finset.univ : Finset (Fin n)) \\ T),
+            ((Finset.univ : Finset (Fin n)) \ T),
       if p.1.1.externalLabel = externalLabel then
         ExternalInsertionWickDiagram.dysonAmplitude
           (((ExternalInsertionDiagram.externalSupportFiberEquiv
