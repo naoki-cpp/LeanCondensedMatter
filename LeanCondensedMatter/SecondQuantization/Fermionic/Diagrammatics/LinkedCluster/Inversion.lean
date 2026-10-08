@@ -42,7 +42,10 @@ example
   have hMoment :
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n) Z hZ =
         W.normalizedObjectMoment := by
-    calc
+    simpa only [Z, W] using
+      (dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
+        (N := n) ε β g hZ)
+  calc
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n) Z hZ =
           Common.dysonTraceVertexMomentSetFunction
             (fermionEnergy ε) β (quarticInteraction g) := by
