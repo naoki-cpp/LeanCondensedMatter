@@ -9,7 +9,7 @@ set_option linter.style.header false
 # Zero-broadening finite-cutoff Born-Dyson current-rung integrals
 
 The fixed-radial-momentum `η → 0⁺` limits are owned upstream by
-`FiniteBroadeningCurrentVertexZeroBroadening`. This module owns the integrated boundary: the generic
+`FiniteBroadeningCurrentVertexZeroBroadening`. This module owns the integrated boundary: an internal
 dominated-convergence bridge and compact domination from a nonvanishing boundary denominator. The
 model-specific real-renormalization condition and the denominator nonvanishing result it protects
 are consumed from the zero-broadening Born-Dyson propagator boundary.
@@ -44,7 +44,7 @@ noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningB
 /-- Dominated convergence passes `η → 0⁺` through any normalized finite radial current-rung entry
 once one integrable radial bound, eventual strong measurability, and nonvanishing of the boundary RA
 denominator on the compact radial interval are supplied. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated
+private theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated
     (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax)
@@ -115,15 +115,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
   rw [hfinite, hboundary]
   exact hset
 
-private theorem continuous_boundaryBornDysonDenominator_radial
-    (side : SpectralSide)
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    Continuous (fun p : ℝ =>
-      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-        side v m p probeEnergy disorderStrength hbar pMax) := by
-  unfold finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-  fun_prop
-
 theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
     (i j : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
@@ -185,21 +176,6 @@ private theorem boundaryBornDysonDenominator_ne_zero_of_product_ne_zero
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
   cases side <;> simp [hzero]
 
-private theorem finiteCutoffContinuumBornDysonDenominator_sub_boundary_eq_zeroMomentum
-    (side : SpectralSide)
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax -
-        finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-          side v m p probeEnergy disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonDenominator
-          side v m 0 0 probeEnergy broadening disorderStrength hbar pMax -
-        finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-          side v m 0 probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonDenominator
-    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-  ring_nf
-
 private theorem eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
@@ -215,9 +191,9 @@ private theorem eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_
             side v m p 0 probeEnergy broadening disorderStrength hbar pMax‖ := by
   have hcont : Continuous (fun p : ℝ =>
       ‖finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-        side v m p probeEnergy disorderStrength hbar pMax‖) :=
-    (continuous_boundaryBornDysonDenominator_radial
-      side v m probeEnergy disorderStrength hbar pMax).norm
+        side v m p probeEnergy disorderStrength hbar pMax‖) := by
+    unfold finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+    fun_prop
   obtain ⟨pMin, hpMin, hmin⟩ :=
     isCompact_Icc.exists_isMinOn (nonempty_Icc.2 hpMax) hcont.continuousOn
   let δ : ℝ :=
@@ -252,8 +228,9 @@ private theorem eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_
           finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
             side v m 0 probeEnergy disorderStrength hbar pMax := by
     dsimp [D, D0]
-    exact finiteCutoffContinuumBornDysonDenominator_sub_boundary_eq_zeroMomentum
-      side v m p probeEnergy broadening disorderStrength hbar pMax
+    unfold finiteCutoffContinuumBornDysonDenominator
+      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+    ring_nf
   have herr : ‖D - D0‖ < c := by
     rw [hdiff]
     simpa [c, dist_eq_norm] using hcloseAt
@@ -450,7 +427,7 @@ rung has its `η → 0⁺` integral boundary when the real Born renormalization 
 condition keeps the boundary retarded/advanced denominator off zero through its side-indexed damping
 component, thereby discharging the compact nonvanishing hypothesis required by dominated
 convergence. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
+private theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
     (i j : Fin 2)
     (regime : FixedCutoffMetallicBornRegime)
     (hrenorm :
