@@ -16,7 +16,8 @@ is owned by `Analysis.Operator.Spectral.Resolvent`. The Středa energy integral 
 differentiates real-energy paths at fixed imaginary regulator. This module records that the
 signed-regulator spectral parameter `E ↦ E + iγ` has derivative one and proves the corresponding
 resolvent derivative and continuity directly for arbitrary nonzero `γ`. Physical retarded and
-advanced consumers specialize `γ` at their use sites.
+advanced consumers use the side-indexed derivative and continuity corollaries, which
+specialize the canonical signed-regulator results via `side.regulator`.
 
 The result remains dimension-independent and contains no trace, conductivity, zero-broadening,
 or thermodynamic-limit statement.
@@ -75,6 +76,34 @@ theorem continuous_resolvent_spectralParameterOfRegulator_energy
   exact
     (hasDerivAt_resolvent_spectralParameterOfRegulator_energy
       hamiltonian hself energy regulator hregulator).continuousAt
+
+
+/-- On either physical spectral side, the real-energy derivative of the resolvent is minus its
+square at fixed nonzero broadening. -/
+theorem hasDerivAt_spectralResolvent_energy
+    (side : SpectralSide)
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    HasDerivAt
+      (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
+      (-(spectralResolvent side hamiltonian energy broadening) ^ 2)
+      energy := by
+  simpa only [spectralResolvent, spectralParameter] using
+    (hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+      hamiltonian hself energy (side.regulator broadening)
+      (side.regulator_ne_zero hbroadening))
+
+/-- On either physical spectral side, the resolvent depends continuously on real energy at fixed
+nonzero broadening. -/
+theorem continuous_spectralResolvent_energy
+    (side : SpectralSide)
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) := by
+  simpa only [spectralResolvent, spectralParameter] using
+    (continuous_resolvent_spectralParameterOfRegulator_energy
+      hamiltonian hself (side.regulator broadening)
+      (side.regulator_ne_zero hbroadening))
 
 end
 
