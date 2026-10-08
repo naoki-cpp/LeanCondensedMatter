@@ -38,4 +38,14 @@ theorem sum_equiv_fst_eq_card_mul_sum {α β γ : Type*}
       simp
     _ = card γ * ∑ y : β, f y := by rw [Finset.mul_sum]
 
+/-- A first-coordinate sum is divisible by every divisor of the repeated fiber's cardinality. -/
+theorem dvd_sum_equiv_fst_of_dvd_card {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (e : α ≃ β × γ) (f : β → ℕ) {d : ℕ} (hcard : d ∣ card γ) :
+    d ∣ ∑ x : α, f (e x).1 := by
+  rw [sum_equiv_fst_eq_card_mul_sum e f]
+  obtain ⟨k, hk⟩ := hcard
+  refine ⟨k * ∑ y : β, f y, ?_⟩
+  rw [hk, Nat.mul_assoc]
+
 end Fintype
