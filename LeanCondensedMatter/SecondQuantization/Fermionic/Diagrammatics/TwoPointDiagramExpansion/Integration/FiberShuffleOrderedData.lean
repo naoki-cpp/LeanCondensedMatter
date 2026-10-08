@@ -164,7 +164,14 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
       have hfac : ((k.factorial : ℕ) : ℂ) ≠ 0 := by
         exact_mod_cast Nat.factorial_ne_zero k
       apply mul_left_cancel₀ hfac
-      simpa [dysonVertexMoment, mul_assoc] using hkey.symm
+      have hconst :
+          PowerSeries.constantCoeff
+            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) =
+            freePartitionFunction ε β :=
+        constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)
+      simpa [Common.dysonTraceVertexMoment, Common.normalizedDysonTraceCoeff,
+        normalizedDysonPartitionCoeff, dysonPartitionCoeff, hconst,
+        mul_assoc] using hkey.symm
 
 /-- The binary shuffle product theorem in ordered-data coordinates for the vacuum factor.
 

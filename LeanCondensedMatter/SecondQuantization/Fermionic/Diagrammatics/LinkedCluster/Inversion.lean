@@ -45,10 +45,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_quarticWickDiagra
         quarticWickDiagramMoment (N := n) ε β g := by
     calc
       powerSeriesMomentSetFunction (α := Fin n) Z hZ =
-          dysonVertexMomentSetFunction ε β (quarticInteraction g) := by
-        simpa only [Z] using
-          (powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonPartitionSeries_eq_dysonVertexMomentSetFunction
-            (α := Fin n) ε β (quarticInteraction g) hZ)
+          Common.dysonTraceVertexMomentSetFunction (fermionEnergy ε) β (quarticInteraction g) := by
+        simpa only [Z, dysonPartitionSeries] using
+          (Common.powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonTraceSeries_eq_dysonTraceVertexMomentSetFunction (α := Fin n) (fermionEnergy ε) β (quarticInteraction g) hZ)
       _ = quarticWickDiagramMoment (N := n) ε β g :=
         dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
           (N := n) ε β g

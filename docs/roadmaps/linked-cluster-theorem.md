@@ -36,10 +36,10 @@ The same module then kernel-checks the full inversion proof of the canonical con
 statement as an `example`, avoiding a duplicate public theorem with an identical proposition.
 No source-functional wrapper is required for this formal partition-function endpoint.
 
-The normalized coefficients themselves,
-`normalizedDysonPartitionCoeff`, belong to `Fermionic.Perturbation.DysonPartitionSeries` together
-with the normalized-series coefficient theorem and formal logarithm. `DysonVertexMoment` owns only
-the labelled finite-set moment boundary and its Gibbs expectation bridge used by diagrammatics.
+The normalized finite-configuration Dyson coefficients and labelled finite-set vertex moments are
+owned by `Common.Perturbation.DysonTraceMoment`. The fermionic `DysonPartitionSeries` retains
+its physical free-partition specialization and formal logarithm, while `DysonVertexMoment` supplies
+only the fermionic free Gibbs density-state expectation bridge.
 
 ## Analytic log-partition theorem
 

@@ -21,11 +21,11 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 quartic Wick-diagram moment. -/
 theorem dysonVertexMomentSetFunction_eq_quarticWickDiagramMoment
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} :
-    dysonVertexMomentSetFunction (α := Fin N) ε β (quarticInteraction g) =
+    Common.dysonTraceVertexMomentSetFunction (α := Fin N) (fermionEnergy ε) β (quarticInteraction g) =
       quarticWickDiagramMoment (N := N) ε β g := by
   ext S
   change
-    dysonVertexMoment ε β (quarticInteraction g) S =
+    Common.dysonTraceVertexMoment (fermionEnergy ε) β (quarticInteraction g) S =
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
   exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S
 
