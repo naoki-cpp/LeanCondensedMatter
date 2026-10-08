@@ -21,7 +21,6 @@ supported interaction slots and the corresponding vacuum-free / quartic diagram 
 
 The supported slot subsets are indexed by a subtype rather than a dependent `Sigma`
 equivalence, so each fiber can be reindexed independently. -/
-open Classical in
 theorem ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber
     [Fintype ExternalLabel] [Fintype InternalLabel]
     (S : Finset (Fin N)) {M : Type*} [AddCommMonoid M]
@@ -32,6 +31,7 @@ theorem ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber
             HasNoVacuumComponent ext.vertexGraph} ×
               QuarticDiagram InternalLabel N (S \ T.1),
           F ((ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm p).1 := by
+  classical
   rw [(Finset.sum_fiberwise_of_maps_to
     (s := (Finset.univ : Finset (ExternalInsertionDiagram
       ExternalLabel InternalLabel E N S)))
