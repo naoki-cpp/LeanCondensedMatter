@@ -24,6 +24,7 @@ theorem Pairing.prod_pairs_eq_firstPair_mul {n : ℕ} {M : Type*} [CommMonoid M]
   rw [← Finset.insert_erase pairing.firstPair_mem_pairs,
     pairing.pairs_erase_firstPair_eq_image]
   rw [Finset.prod_insert, Finset.prod_image]
+  · rfl
   · intro p _ q _ h
     exact pairing.eraseZeroPairEmbedding.injective h
   · rw [← pairing.pairs_erase_firstPair_eq_image]
