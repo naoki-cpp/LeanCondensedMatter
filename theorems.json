@@ -8310,16 +8310,18 @@
     "directWrapperOf": null,
     "dependents": [
       "Finpartition.partOrdersCompatible_assembleOrder",
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply"
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Finpartition.partOrdersCompatible_assembleOrder",
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply"
+      "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106732,7 +106734,9 @@
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.assembleFamilyOrderOfSize_symm_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
