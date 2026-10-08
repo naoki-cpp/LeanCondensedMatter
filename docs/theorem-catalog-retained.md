@@ -171,8 +171,6 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_isClosed`
   — physical real-scalar-potential closedness theorem for the named continuum Hamiltonian; the
   generic complex-multiplier proof does not make the real-potential endpoint redundant.
-- `QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_isEmptyBand` — canonical
-  zero-temperature occupation statement that every state in an empty band has zero occupation.
 - `SecondQuantization.Bosonic.annihilate_fockVacuum` — canonical `[simp]` vacuum identity stating that
   every bosonic annihilation operator kills the Fock vacuum.
 - `SecondQuantization.Bosonic.particleNumber_vacuum` — canonical `[simp]` statement that the bosonic
