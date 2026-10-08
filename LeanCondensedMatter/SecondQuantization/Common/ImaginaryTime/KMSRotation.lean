@@ -35,7 +35,7 @@ variable {Config : Type*}
 rearrangement of `diagonalEvolution_comp_eq_smul_comp_diagonalEvolution` needed by the rotation
 theorems below, obtained by multiplying both sides of that lemma by the (nonzero) reciprocal
 exponential factor. Config-general — no `[Fintype Config]` needed. -/
-theorem comp_diagonalEvolution_eq_smul_diagonalEvolution_comp
+private theorem comp_diagonalEvolution_eq_smul_diagonalEvolution_comp
     (energy : Config → ℝ) (τ q : ℝ) (C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC : heisenbergEvolve energy τ C = Complex.exp ((q * τ : ℝ) : ℂ) • C) :
     C.comp (diagonalEvolution energy τ) =
