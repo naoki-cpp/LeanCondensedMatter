@@ -216,7 +216,7 @@ theorem ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit
     | inl f => simp [supportSlotVertex] at hy
     | inr w =>
         have heq : v = (w : Fin N) := by
-          simpa [supportSlotVertex] using hy
+          exact congrArg Subtype.val (by simpa [supportSlotVertex] using hy)
         rw [heq]
         exact w.2
   · intro v hv
