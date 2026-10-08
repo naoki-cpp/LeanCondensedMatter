@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
-import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.Finset.Sort
@@ -16,8 +16,6 @@ recursion needed for the finite-family ordered-simplex product identity.
 -/
 
 namespace Combinatorics
-
-open BinaryShuffle
 
 variable {k : ℕ}
 

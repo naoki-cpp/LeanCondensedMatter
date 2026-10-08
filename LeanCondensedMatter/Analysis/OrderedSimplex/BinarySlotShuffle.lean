@@ -12,7 +12,7 @@ set_option linter.style.header false
 # Ambient-slot binary-shuffle ordered-simplex integrals
 
 This module defines the shuffled product integrand associated with an order-preserving ambient
-`BinaryShuffle.SlotShuffle`, proves the measurable-local-boundedness needed for integration, and
+`SlotShuffle`, proves the measurable-local-boundedness needed for integration, and
 proves directly that the finite ambient shuffle sum equals the product of the two local
 ordered-simplex integrals. A recursive `BinaryShuffle` contribution is kept private as proof
 implementation only.
@@ -58,6 +58,8 @@ private theorem orderedSimplexContribution_allLeft :
       simp_rw [orderedSimplexContribution_allLeft m]
       rw [intervalIntegral.integral_mul_const]
 
+end BinaryShuffle
+
 /-- Product of two local integrands after their coordinates are embedded by an ambient slot
 shuffle. -/
 noncomputable def SlotShuffle.integrand {m n : ℕ} (shuffle : SlotShuffle m n)
@@ -65,6 +67,10 @@ noncomputable def SlotShuffle.integrand {m n : ℕ} (shuffle : SlotShuffle m n)
     (τ : Fin (m + n) → ℝ) : ℂ :=
   f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
     g (fun j => τ (shuffle.slotEquiv (Sum.inr j)))
+
+namespace BinaryShuffle
+
+open intervalIntegral MeasureTheory
 
 /-- Measurable local boundedness is preserved by an ambient binary slot shuffle. -/
 private theorem measurableLocallyBounded_slotShuffleIntegrand {m n : ℕ}
