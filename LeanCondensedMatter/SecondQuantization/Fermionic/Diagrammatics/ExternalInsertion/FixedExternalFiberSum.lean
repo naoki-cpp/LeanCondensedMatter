@@ -167,7 +167,7 @@ theorem externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSuppor
             d.dysonAmplitude ε β g externalTime
           else 0 := by
   classical
-  rw [← Finset.sum_subtype
+  rw [Finset.sum_subtype
     (p := fun T : Finset (Fin (m + k)) => T.card = m)
     (Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))))
     (fun T => by simp)
