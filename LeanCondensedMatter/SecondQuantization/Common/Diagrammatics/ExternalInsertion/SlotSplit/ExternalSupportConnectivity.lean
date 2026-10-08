@@ -194,7 +194,7 @@ external components is assumed. -/
 theorem ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit
     (h : T ⊆ S)
     (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
-    (vac : QuarticDiagram InternalLabel N (S \\ T))
+    (vac : QuarticDiagram InternalLabel N (S \ T))
     (hext : HasNoVacuumComponent ext.vertexGraph) :
     (ExternalInsertionDiagram.ofSlotSplit h ext vac).externallySupportedInteractionPart = T := by
   classical
