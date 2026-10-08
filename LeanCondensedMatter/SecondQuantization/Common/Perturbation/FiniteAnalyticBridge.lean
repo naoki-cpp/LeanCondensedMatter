@@ -83,17 +83,20 @@ theorem finiteContinuousOperator_basis_apply
   rfl
 
 /-- The ordinary finite-dimensional trace, bundled as a continuous linear functional on the
-continuous-operator algebra. -/
+continuous-operator algebra. This is Mathlib's canonical linear trace, made continuous using
+finite dimensionality. -/
 noncomputable def finiteOperatorTrace :
     FiniteContinuousOperator Config →L[ℂ] ℂ :=
-  ∑ n : Config,
-    (ContinuousLinearMap.proj n : FiniteAnalyticFock Config →L[ℂ] ℂ).comp
-      (ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis n))
+  ((LinearMap.trace ℂ (FiniteAnalyticFock Config)).comp
+    (ContinuousLinearMap.coeLM ℂ)).toContinuousLinearMap
 
 @[simp]
 theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
     finiteOperatorTrace A = ∑ n : Config, A (finiteAnalyticBasis n) n := by
-  simp [finiteOperatorTrace]
+  classical
+  change LinearMap.trace ℂ (FiniteAnalyticFock Config) A.toLinearMap = _
+  rw [LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ Config)]
+  simp [Matrix.trace, finiteAnalyticBasis, Pi.basisFun_apply]
 
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
 theorem finiteOperatorTrace_finiteContinuousOperator
