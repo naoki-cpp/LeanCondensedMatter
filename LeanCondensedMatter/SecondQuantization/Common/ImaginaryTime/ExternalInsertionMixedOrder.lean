@@ -538,8 +538,9 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
   apply Equiv.ext
   intro i
   unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
-  simp only [Equiv.trans_apply]
-  rw [hlegs]
+  simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
+    List.get_eq_getElem]
+  simp only [hlegs]
 
 end Common
 end SecondQuantization
