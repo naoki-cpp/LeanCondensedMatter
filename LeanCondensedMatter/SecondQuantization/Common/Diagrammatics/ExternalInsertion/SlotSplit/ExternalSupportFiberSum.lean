@@ -16,6 +16,7 @@ namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
+open Classical in
 /-- Reindex a finite sum over arbitrary external-insertion diagrams by their externally
 supported interaction slots and the corresponding vacuum-free / quartic diagram pair.
 
