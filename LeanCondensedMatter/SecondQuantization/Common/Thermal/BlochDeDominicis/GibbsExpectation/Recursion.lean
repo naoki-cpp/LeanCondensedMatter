@@ -75,7 +75,10 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       (hC 0) hcommL hne0
     rw [hlmap] at hpeel
     rw [hzl] at hpeel
-    rw [hl, List.sum_getElem_eraseIdx_ofFn] at hpeel
+    rw [hl, List.sum_getElem_eraseIdx_ofFn
+      (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ))
+      (fun i p rest => (s.zetaInt : ℂ) ^ i * p.2 *
+        finiteGibbsExpectation energy β (List.prod (rest.map Prod.fst)))] at hpeel
     rw [h1, hpeel, Finset.sum_div]
     refine Finset.sum_congr rfl fun j _ => ?_
     have h2 : finiteGibbsExpectation energy β ((C 0).comp (C j.succ)) =

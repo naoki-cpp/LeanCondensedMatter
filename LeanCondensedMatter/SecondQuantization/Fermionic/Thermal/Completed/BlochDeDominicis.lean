@@ -633,7 +633,12 @@ noncomputable def completedFreeGibbsExpectationRecursion
               completedFreeGibbsExpectation ε β hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
         rw [completedFreeGibbsExpectation_peelSum_eq_sum, Finset.mul_sum]
-        rw [hl, List.sum_getElem_eraseIdx_ofFn]
+        rw [hl, List.sum_getElem_eraseIdx_ofFn
+          (fun i : Fin (2 * n + 1) => C i.succ)
+          (fun i field rest =>
+            ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
+              (((-1 : ℂ) ^ i) * (C 0).anticommutatorValue field *
+                completedFreeGibbsExpectation ε β hsum rest))]
         refine Finset.sum_congr rfl fun j _ => ?_
         have hpair := completedFreeGibbsExpectation_pair_eq
           ε β hsum (C 0) (C j.succ) (hC 0)

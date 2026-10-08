@@ -56,7 +56,11 @@ theorem freeGibbsExpectation_firstPair_recursion
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
       rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l,
         Finset.mul_sum]
-      rw [hl, List.sum_getElem_eraseIdx_ofFn]
+      rw [hl, List.sum_getElem_eraseIdx_ofFn
+        (fun i : Fin (2 * n + 1) => C i.succ)
+        (fun _ field rest =>
+          ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
+            ((C 0).exchangeValue field * freeGibbsExpectation ε β (orderedProduct rest)))]
       refine Finset.sum_congr rfl fun j _ => ?_
       have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
         ε β hpos (C 0) (C j.succ)
