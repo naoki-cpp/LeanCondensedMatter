@@ -86,7 +86,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β (q 0) (s.zetaInt : ℂ)
         (c 0 j.succ) (C 0) (C j.succ) (hC 0)
         (hcomm 0 j.succ (Ne.symm (Fin.succ_ne_zero j))) (hne 0)
-    simp only [List.map_ofFn]
+    simp only [List.map_ofFn, Function.comp_def]
     rw [h2]
     ring
 
