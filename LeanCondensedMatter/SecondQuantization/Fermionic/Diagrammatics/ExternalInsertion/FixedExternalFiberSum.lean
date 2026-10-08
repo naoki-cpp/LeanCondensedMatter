@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiberSum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
+import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 
 set_option linter.style.header false
 
@@ -73,6 +74,59 @@ theorem externalInsertionDysonCoefficient_eq_sum_externalSupportFiber
       ((ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm p).1.externalLabel =
         p.1.1.externalLabel := rfl
   rw [hlabel]
+
+
+open Classical in
+/-- Group the external-support fibers by their number of interaction vertices.
+
+This is the fixed-external coefficient in the cardinality coordinates needed for the binary
+external/vacuum slot-shuffle decomposition. No amplitude product is asserted here. -/
+theorem externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFiber
+    {E : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) (n : ℕ) :
+    externalInsertionDysonCoefficient ε β g externalLabel externalTime n =
+      ∑ m ∈ Finset.range (n + 1),
+        ∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)),
+          ∑ p : {ext : ExternalInsertionDiagram
+                (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E n T //
+                HasNoVacuumComponent ext.vertexGraph} ×
+                QuarticDiagram (QuarticVertexLabel Mode) n
+                  ((Finset.univ : Finset (Fin n)) \\ T),
+            if p.1.1.externalLabel = externalLabel then
+              ExternalInsertionWickDiagram.dysonAmplitude
+                (((ExternalInsertionDiagram.externalSupportFiberEquiv
+                    (Finset.subset_univ T)).symm p).1 :
+                    ExternalInsertionWickDiagram Mode E n)
+                ε β g externalTime
+            else 0 := by
+  classical
+  rw [externalInsertionDysonCoefficient_eq_sum_externalSupportFiber]
+  let F : Finset (Fin n) → ℂ := fun T =>
+    ∑ p : {ext : ExternalInsertionDiagram
+          (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E n T //
+          HasNoVacuumComponent ext.vertexGraph} ×
+          QuarticDiagram (QuarticVertexLabel Mode) n
+            ((Finset.univ : Finset (Fin n)) \\ T),
+      if p.1.1.externalLabel = externalLabel then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          (((ExternalInsertionDiagram.externalSupportFiberEquiv
+              (Finset.subset_univ T)).symm p).1 :
+              ExternalInsertionWickDiagram Mode E n)
+          ε β g externalTime
+      else 0
+  change
+    (∑ T : {T : Finset (Fin n) // T ⊆ Finset.univ}, F T.1) =
+      ∑ m ∈ Finset.range (n + 1),
+        ∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)), F T
+  rw [Finset.sum_subtype
+    (p := fun T : Finset (Fin n) => T ⊆ Finset.univ)
+    ((Finset.univ : Finset (Fin n)).powerset)
+    (fun T => by simp)
+    F]
+  rw [Finset.sum_powerset]
+  simp only [Finset.card_univ, Fintype.card_fin]
 
 end Fermionic
 end SecondQuantization
