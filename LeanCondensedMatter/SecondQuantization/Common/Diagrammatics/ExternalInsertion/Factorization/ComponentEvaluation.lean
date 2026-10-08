@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
 
 set_option linter.style.header false
 
@@ -9,7 +9,7 @@ set_option linter.style.header false
 The external-insertion component API already decomposes normalized pairs and factors the exchange
 weight into an explicit inter-component factor times component-local weights. This module combines
 those statistics-independent ingredients into the canonical scalar `Pairing.evaluation`
-factorization.
+factorization through the generic combinatorial evaluation theorem.
 
 Statistics-specific layers only need to identify the residual inter-component exchange factor with
 their physical ordering sign.
@@ -46,15 +46,14 @@ theorem ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components
             ((d.restrictComponent B).pairing.weight s)
             (localPairValue B) := by
   classical
-  simp only [Pairing.evaluation]
-  have hpair := Pairing.prod_pairs_eq_prod_components
-    d.pairing (fun B => (d.restrictComponent B).pairing)
-    d.componentPairEquiv pairValue localPairValue
+  exact Pairing.evaluation_eq_mul_prod_components
+    d.pairing (fun B => (d.restrictComponent B).pairing) d.componentPairEquiv
+    (d.pairing.weight s) ((s.zetaInt : ℂ) ^ d.interComponentCrossingCount)
+    (fun B => (d.restrictComponent B).pairing.weight s) pairValue localPairValue
+    (d.weight_eq_inter_mul_prod_components s)
     (fun B pr => by
       rw [d.componentPairEquiv_apply B pr]
       exact hvalue B pr.1.1 pr.1.2)
-  rw [d.weight_eq_inter_mul_prod_components s, hpair, Finset.prod_mul_distrib]
-  ring
 
 end Common
 end SecondQuantization

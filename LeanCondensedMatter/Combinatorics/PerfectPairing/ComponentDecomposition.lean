@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false
@@ -10,7 +11,8 @@ A global perfect pairing may be assembled from component-local pairings when the
 fibers partition the global positions and intertwine partner maps. Under those hypotheses, the
 dependent sum of local normalized pairs is equivalent to the normalized pairs of the global pairing.
 A local-order hypothesis is needed only when identifying transported normalized endpoints without a
-swap.
+swap. Scalar evaluation factors over the same decomposition when its global weight is a residual
+factor times the product of local weights.
 -/
 
 namespace Combinatorics
@@ -126,5 +128,26 @@ theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
       exact (Finset.prod_subtype
         (componentPairing B).pairs (fun _ => Iff.rfl)
         (fun pr => localPairValue B pr.1 pr.2)).symm
+
+/-- Scalar pairing evaluation factors into a residual factor and component evaluations when both
+its weight and its pair kernel respect the component-pair decomposition. -/
+theorem Pairing.evaluation_eq_mul_prod_components [Fintype ι]
+    {R : Type*} [CommMonoid R] (global : Pairing n)
+    (componentPairing : ∀ B, Pairing (m B))
+    (componentPairEquiv : (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair)
+    (weight factor : R) (localWeight : ι → R)
+    (pairValue : Fin (2 * n) → Fin (2 * n) → R)
+    (localPairValue : ∀ B, Fin (2 * m B) → Fin (2 * m B) → R)
+    (hweight : weight = factor * ∏ B, localWeight B)
+    (hvalue : ∀ B pr,
+      pairValue (componentPairEquiv ⟨B, pr⟩).1.1
+          (componentPairEquiv ⟨B, pr⟩).1.2 =
+        localPairValue B pr.1.1 pr.1.2) :
+    global.evaluation weight pairValue =
+      factor * ∏ B, (componentPairing B).evaluation (localWeight B) (localPairValue B) := by
+  classical
+  simp only [Pairing.evaluation, Finset.prod_mul_distrib]
+  rw [hweight, global.prod_pairs_eq_prod_components componentPairing componentPairEquiv
+    pairValue localPairValue hvalue, mul_assoc]
 
 end Combinatorics
