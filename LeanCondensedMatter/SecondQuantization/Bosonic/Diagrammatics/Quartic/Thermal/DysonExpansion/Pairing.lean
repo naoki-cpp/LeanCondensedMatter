@@ -224,9 +224,9 @@ noncomputable def QuarticDiagram.dysonThermalAmplitude
 
 omit [Finite Mode] in
 /-- The total physical quartic-diagram weight is the canonical vertex moment:
-`|S|!` times the convergence-aware bosonic Dyson coefficient. The factorial is the number of
-global vertex orders; unlike the static coefficientwise amplitude, it is not divided out because the
-ordered-simplex shuffle sum is exactly what later factorizes over connected components. -/
+`|S|!` times the convergence-aware bosonic Dyson coefficient. The factorial counts the global
+vertex orders; summing over them retains the ordered-simplex regions needed for subsequent
+connected-component factorization. -/
 theorem factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
     [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
