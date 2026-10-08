@@ -159,9 +159,6 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
-- `SecondQuantization.Common.dysonTraceCoeff_eq_weightedTrace` — canonical interpretation of the
-  named Dyson trace coefficient as the Boltzmann-weighted diagonal functional of the corresponding
-  bare Dyson coefficient.
 - `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
   for the named time-ordered external-field construction: swapping both fields and times produces
   the fermionic statistics sign.

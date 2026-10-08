@@ -31,13 +31,6 @@ noncomputable def dysonTraceCoeff (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) : ℂ :=
   traceFock ((diagonalEvolution energy (-β)).comp (dysonCoeff energy V n β))
 
-/-- A Dyson trace coefficient is the Boltzmann-weighted trace of the corresponding bare Dyson
-coefficient. -/
-theorem dysonTraceCoeff_eq_weightedTrace (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    dysonTraceCoeff energy β V n =
-      weightedTrace (boltzmannWeight energy β) (dysonCoeff energy V n β) :=
-  traceFock_diagonalEvolution_comp_eq_weightedTrace energy β (dysonCoeff energy V n β)
 
 /-- The formal power series whose coefficients are the finite Dyson trace coefficients. -/
 noncomputable def dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
