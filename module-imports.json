@@ -4526,6 +4526,16 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceMoment",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonTraceMoment.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
+        "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonTraceSeries.lean",
       "imports": [
@@ -4588,6 +4598,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceMoment",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
@@ -5968,10 +5979,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/DysonVertexMoment.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
-        "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceMoment",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
       ],
       "externalImportCount": 0
