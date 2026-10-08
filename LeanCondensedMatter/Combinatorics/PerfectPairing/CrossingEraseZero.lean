@@ -15,42 +15,6 @@ namespace Combinatorics
 
 open FiniteIndex
 
-/-- Every normalized pair other than `firstPair` has both endpoints away from `0` and its
-partner. -/
-theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pairing : Pairing (n + 1))
-    {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))} (hp : p ∈ pairing.pairs)
-    (hne : p ≠ pairing.firstPair) :
-    p.1 ∈ deletedPositions n (pairing.partner 0) ∧
-      p.2 ∈ deletedPositions n (pairing.partner 0) := by
-  obtain ⟨hlt, hpartner⟩ := (pairing.mem_pairs_iff p.1 p.2).1 (by simpa using hp)
-  have h10 : p.1 ≠ 0 := by
-    intro h
-    apply hne
-    have h2 : p.2 = pairing.partner 0 := by rw [← hpartner, h]
-    change p = pairing.firstPair
-    rw [Pairing.firstPair]
-    exact Prod.ext h h2
-  have h1j : p.1 ≠ pairing.partner 0 := by
-    intro h
-    apply h10
-    have hp2 : p.2 = 0 := by
-      have := hpartner
-      rw [h] at this
-      rw [pairing.partner_partner] at this
-      exact this.symm
-    have : (pairing.partner 0 : Fin (2 * (n + 1))) < 0 := by rw [← h]; exact hp2 ▸ hlt
-    exact absurd this (by simp)
-  have h20 : p.2 ≠ 0 := fun h => absurd (h ▸ hlt) (by simp)
-  have h2j : p.2 ≠ pairing.partner 0 := by
-    intro h
-    apply h10
-    have hinj : Function.Injective pairing.partner := pairing.partner.injective
-    apply hinj
-    rw [hpartner, h]
-  refine ⟨?_, ?_⟩
-  · simp [deletedPositions, Finset.mem_erase, h10, h1j]
-  · simp [deletedPositions, Finset.mem_erase, h20, h2j]
-
 /-- The crossing count splits along the pair containing position `0`. -/
 theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.crossingCount =
@@ -82,74 +46,36 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
       ((pairing.eraseZeroPair.pairs.product pairing.eraseZeroPair.pairs).filter
         (fun pp => Crosses pp.1 pp.2)).card =
       ((A.product A).filter (fun pp => Crosses pp.1 pp.2)).card := by
-    classical
-    let mapPair : Fin (2 * n) × Fin (2 * n) → Fin (2 * (n + 1)) × Fin (2 * (n + 1)) :=
-      fun P => (pairing.eraseZeroOrderIso P.1, pairing.eraseZeroOrderIso P.2)
-    have hmapPair_ne_zero : ∀ P : Fin (2 * n) × Fin (2 * n), (mapPair P).1 ≠ 0 := by
-      intro P
-      have := (pairing.eraseZeroOrderIso P.1).property
-      simp only [deletedPositions, Finset.mem_erase] at this
-      exact this.2.1
+    let mapPair := pairing.eraseZeroPairEmbedding
+    have hAimage : A = pairing.eraseZeroPair.pairs.image mapPair :=
+      pairing.pairs_erase_firstPair_eq_image
     apply Finset.card_bij
-      (i := fun (PQ : (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n))) _ =>
-        (mapPair PQ.1, mapPair PQ.2))
+      (i := fun PQ _ => (mapPair PQ.1, mapPair PQ.2))
     · rintro ⟨P, Q⟩ hPQ
       simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product] at hPQ ⊢
       obtain ⟨⟨hP, hQ⟩, hcross⟩ := hPQ
-      have hPmem : mapPair P ∈ S := by
-        rw [hS]
-        exact (pairing.eraseZeroPair_mem_pairs_iff P.1 P.2).1 (by simpa using hP)
-      have hQmem : mapPair Q ∈ S := by
-        rw [hS]
-        exact (pairing.eraseZeroPair_mem_pairs_iff Q.1 Q.2).1 (by simpa using hQ)
       refine ⟨⟨?_, ?_⟩, ?_⟩
-      · rw [hA]
-        exact Finset.mem_erase.2 ⟨fun h => hmapPair_ne_zero P (by rw [h]; rfl), hPmem⟩
-      · rw [hA]
-        exact Finset.mem_erase.2 ⟨fun h => hmapPair_ne_zero Q (by rw [h]; rfl), hQmem⟩
+      · rw [hAimage]
+        exact Finset.mem_image.2 ⟨P, hP, rfl⟩
+      · rw [hAimage]
+        exact Finset.mem_image.2 ⟨Q, hQ, rfl⟩
       · exact (crosses_map_iff
-          (fun i : Fin (2 * n) => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
-          (fun _ _ h => pairing.eraseZeroOrderIso.strictMono h)
-          P.1 P.2 Q.1 Q.2).2 (by simpa using hcross)
+          (fun i => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
+          pairing.eraseZeroOrderIso.strictMono P.1 P.2 Q.1 Q.2).2 hcross
     · rintro ⟨P, Q⟩ _ ⟨P', Q'⟩ _ h
-      simp only [Prod.mk.injEq] at h
-      obtain ⟨h1, h2⟩ := h
-      have hPeq : P = P' := by
-        apply Prod.ext
-        · exact pairing.eraseZeroOrderIso.injective (Subtype.ext (congrArg Prod.fst h1))
-        · exact pairing.eraseZeroOrderIso.injective (Subtype.ext (congrArg Prod.snd h1))
-      have hQeq : Q = Q' := by
-        apply Prod.ext
-        · exact pairing.eraseZeroOrderIso.injective (Subtype.ext (congrArg Prod.fst h2))
-        · exact pairing.eraseZeroOrderIso.injective (Subtype.ext (congrArg Prod.snd h2))
-      rw [hPeq, hQeq]
+      exact Prod.ext (mapPair.injective (congrArg Prod.fst h))
+        (mapPair.injective (congrArg Prod.snd h))
     · rintro ⟨p, q⟩ hpq
       simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product] at hpq
       obtain ⟨⟨hp, hq⟩, hcross⟩ := hpq
-      have hpS : p ∈ S := (Finset.mem_erase.mp (hA ▸ hp)).2
-      have hqS : q ∈ S := (Finset.mem_erase.mp (hA ▸ hq)).2
-      have hpF : p ≠ F := (Finset.mem_erase.mp (hA ▸ hp)).1
-      have hqF : q ≠ F := (Finset.mem_erase.mp (hA ▸ hq)).1
-      obtain ⟨hp1, hp2⟩ := pairing.mem_pairs_endpoints_mem_deletedPositions hpS hpF
-      obtain ⟨hq1, hq2⟩ := pairing.mem_pairs_endpoints_mem_deletedPositions hqS hqF
-      refine ⟨(⟨(pairing.eraseZeroOrderIso.symm ⟨p.1, hp1⟩ : Fin (2 * n)),
-          (pairing.eraseZeroOrderIso.symm ⟨p.2, hp2⟩ : Fin (2 * n))⟩,
-        ⟨(pairing.eraseZeroOrderIso.symm ⟨q.1, hq1⟩ : Fin (2 * n)),
-          (pairing.eraseZeroOrderIso.symm ⟨q.2, hq2⟩ : Fin (2 * n))⟩), ?_, ?_⟩
-      · simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
-        refine ⟨⟨?_, ?_⟩, ?_⟩
-        · rw [pairing.eraseZeroPair_mem_pairs_iff]
-          simp only [OrderIso.apply_symm_apply]
-          rwa [Prod.mk.eta]
-        · rw [pairing.eraseZeroPair_mem_pairs_iff]
-          simp only [OrderIso.apply_symm_apply]
-          rwa [Prod.mk.eta]
-        · rw [← crosses_map_iff
-            (fun i : Fin (2 * n) => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
-            (fun _ _ h => pairing.eraseZeroOrderIso.strictMono h)]
-          simp only [OrderIso.apply_symm_apply]
-          rwa [Prod.mk.eta, Prod.mk.eta]
-      · simp only [mapPair, OrderIso.apply_symm_apply, Prod.mk.eta]
+      rw [hAimage] at hp hq
+      obtain ⟨P, hP, rfl⟩ := Finset.mem_image.mp hp
+      obtain ⟨Q, hQ, rfl⟩ := Finset.mem_image.mp hq
+      refine ⟨(P, Q), ?_, rfl⟩
+      simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
+      exact ⟨⟨hP, hQ⟩, (crosses_map_iff
+        (fun i => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
+        pairing.eraseZeroOrderIso.strictMono P.1 P.2 Q.1 Q.2).1 hcross⟩
   rw [hsum', ← hAcross, Pairing.crossingCount, hbij]
   omega
 

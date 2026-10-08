@@ -155,4 +155,14 @@ theorem Pairing.pairs_normalized {n : ℕ} (pairing : Pairing n)
   rcases Finset.mem_image.mp hpair with ⟨i, hi, rfl⟩
   exact (Finset.mem_filter.mp hi).2
 
+/-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
+def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
+    Fin (2 * (n + 1)) × Fin (2 * (n + 1)) :=
+  (0, pairing.partner 0)
+
+theorem Pairing.firstPair_mem_pairs {n : ℕ} (pairing : Pairing (n + 1)) :
+    pairing.firstPair ∈ pairing.pairs := by
+  apply (pairing.mem_pairs_iff 0 (pairing.partner 0)).2
+  exact ⟨lt_of_le_of_ne (Fin.zero_le _) (Ne.symm (pairing.partner_ne 0)), rfl⟩
+
 end Combinatorics
