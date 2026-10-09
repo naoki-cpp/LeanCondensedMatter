@@ -113,15 +113,11 @@ private theorem slotSplitVacuumVertex_injective (h : T ⊆ S) :
 private theorem slotSplitVertex_ne_slotSplitVacuumVertex (h : T ⊆ S)
     (x : TwoPointVertex T) (v : ↥(S \ T)) :
     slotSplitVertex h x ≠ slotSplitVacuumVertex v := by
-  cases x with
-  | inl e => simp [slotSplitVertex, slotSplitVacuumVertex]
-  | inr w =>
-      intro heq
-      have hval : (w : Fin N) = (v : Fin N) := by
-        simpa only [slotSplitVertex, slotSplitVacuumVertex, Sum.inr.injEq,
-          Subtype.mk.injEq] using heq
-      have hvnot : (v : Fin N) ∉ T := (Finset.mem_sdiff.mp v.2).2
-      exact hvnot (hval ▸ w.2)
+  intro hEq
+  have hsplit : (Sum.inl x : TwoPointVertex T ⊕ ↥(S \ T)) = Sum.inr v :=
+    (slotSplitVertexEquiv h).injective
+      (by simpa only [slotSplitVertexEquiv_inl, slotSplitVertexEquiv_inr] using hEq)
+  cases hsplit
 
 /-- A right leg of the slot splitting carries the ambient image of the corresponding quartic
 vacuum-piece vertex. -/
