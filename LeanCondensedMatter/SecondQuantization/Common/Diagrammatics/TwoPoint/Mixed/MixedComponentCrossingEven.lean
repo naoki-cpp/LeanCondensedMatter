@@ -21,15 +21,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
 
-private noncomputable def TwoPointDiagram.mixedComponentPositionInversionCount
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
-  ∑ p : d.MixedComponentPosition τ τ' σ B,
-    ∑ q : d.MixedComponentPosition τ τ' σ C,
-      if q.1 < p.1 then 1 else 0
-
 private noncomputable def TwoPointDiagram.mixedVacuumPositionDataEquiv
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -54,72 +45,6 @@ private noncomputable def TwoPointDiagram.mixedVacuumInteractionPosition
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     d.MixedComponentPosition τ τ' σ C :=
   (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm (v, l)
-
-private theorem
-    TwoPointDiagram.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
-    d.mixedComponentPositionInversionCount τ τ' σ B C =
-      ∑ p : d.MixedComponentPosition τ τ' σ B,
-        ∑ v : ↥(interactionSector
-          (C : Finset (TwoPointVertex
-            (Finset.univ : Finset (Fin n))))),
-          ∑ l : Fin 4,
-            if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1
-            then 1 else 0 := by
-  classical
-  rw [TwoPointDiagram.mixedComponentPositionInversionCount]
-  apply Finset.sum_congr rfl
-  intro p _
-  calc
-    (∑ q : d.MixedComponentPosition τ τ' σ C,
-        if q.1 < p.1 then 1 else 0) =
-      ∑ x : ↥(interactionSector
-          (C : Finset (TwoPointVertex
-            (Finset.univ : Finset (Fin n))))) × Fin 4,
-        if ((d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm x).1 < p.1
-        then 1 else 0 :=
-      (Equiv.sum_comp (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm
-        (fun q => if q.1 < p.1 then 1 else 0)).symm
-    _ = ∑ v : ↥(interactionSector
-          (C : Finset (TwoPointVertex
-            (Finset.univ : Finset (Fin n))))),
-        ∑ l : Fin 4,
-          if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1
-          then 1 else 0 := by
-      rw [Fintype.sum_prod_type]
-      rfl
-
-private theorem
-    TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
-    (hUniform : ∀ p : d.MixedComponentPosition τ τ' σ B,
-      ∀ v : ↥(interactionSector
-        (C : Finset (TwoPointVertex
-          (Finset.univ : Finset (Fin n))))), ∀ l : Fin 4,
-        ((d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1) =
-          ((d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1)) :
-    d.mixedComponentPositionInversionCount τ τ' σ B C % 2 = 0 := by
-  classical
-  rw [d.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks τ τ' σ B C hVac]
-  apply Nat.mod_eq_zero_of_dvd
-  refine Finset.dvd_sum fun p _ => ?_
-  simp_rw [hUniform p]
-  have h := Fintype.dvd_sum_equiv_fst_of_dvd_card
-      (Equiv.refl
-        (↥(interactionSector
-          (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) × Fin 4))
-      (fun v =>
-        if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0)
-      (d := 2) (by decide)
-  rw [Fintype.sum_prod_type] at h
-  obtain ⟨k, hk⟩ := h
-  exact ⟨k, hk⟩
 
 private def mixedTimeOrderedInteractionLeg {n : ℕ} (v : Fin n) (l : Fin 4) :
     OrderedTwoPointLeg n :=
@@ -279,6 +204,7 @@ private theorem
     (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
         (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 = 0 := by
+  classical
   have endpointVal (D : d.vertexGraph.componentPartition.parts)
       (p : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
       (d.mixedComponentPairEndpointEquiv τ τ' σ D (p, k)).1 =
@@ -297,15 +223,33 @@ private theorem
         simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
           endpointVal D p k)
       B C hBC
-  have hcount :
-      (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
-          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 =
-        d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by
-    simpa only [TwoPointDiagram.mixedComponentPositionInversionCount] using hcross
-  rw [hcount]
-  exact d.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform
-    τ τ' σ B C hVac
-    (d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac)
+  rw [hcross]
+  apply Nat.mod_eq_zero_of_dvd
+  refine Finset.dvd_sum fun p _ => ?_
+  have hdiv := Fintype.dvd_sum_equiv_fst_of_dvd_card
+    (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac)
+    (fun v =>
+      if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0)
+    (d := 2) (by decide)
+  convert hdiv using 1
+  apply Finset.sum_congr rfl
+  intro q _
+  let vl := d.mixedVacuumPositionDataEquiv τ τ' σ C hVac q
+  have hq : d.mixedVacuumInteractionPosition τ τ' σ C hVac vl.1 vl.2 = q :=
+    (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm_apply_apply q
+  have huniform :=
+    d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac p vl.1 vl.2
+  rw [hq] at huniform
+  by_cases h : q.1 < p.1
+  · have h0 : (d.mixedVacuumInteractionPosition τ τ' σ C hVac
+        ((d.mixedVacuumPositionDataEquiv τ τ' σ C hVac) q).1 0).1 < p.1 :=
+      huniform ▸ h
+    simp [h, h0]
+  · have h0 : ¬ (d.mixedVacuumInteractionPosition τ τ' σ C hVac
+        ((d.mixedVacuumPositionDataEquiv τ τ' σ C hVac) q).1 0).1 < p.1 := by
+      intro hz
+      exact h (huniform.symm ▸ hz)
+    simp [h, h0]
 
 /-- For full quartic two-point diagrams, mixed-time pairing weights factor unconditionally into the
 external component and all vacuum components, for arbitrary exchange statistics. -/
