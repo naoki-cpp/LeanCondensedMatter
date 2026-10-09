@@ -36,8 +36,11 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
     C₁.operatorPeelSum l ∈ freeGibbsDomain ε β := by
-  have h := ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
-  simp only [one_pow, one_mul, ← orderedProduct] at h
+  have h : C₁.operatorPeelSum l =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
+      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
   rw [h, mem_freeGibbsDomain_iff]
   exact freeGibbsSummable_sum ε β
     (fun j : Fin l.length =>
@@ -53,8 +56,11 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
       ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
           freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
-  have h := ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
-  simp only [one_pow, one_mul, ← orderedProduct] at h
+  have h : C₁.operatorPeelSum l =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
+      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
   rw [h]
   calc
     freeGibbsExpectation ε β
