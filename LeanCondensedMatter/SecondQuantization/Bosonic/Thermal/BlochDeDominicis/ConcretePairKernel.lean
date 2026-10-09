@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false

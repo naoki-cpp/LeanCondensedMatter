@@ -95,6 +95,14 @@ on an explicit summability domain rather than pretending that finite-configurati
 `ConvergenceAwarePairingRecursion` records the corresponding domain and pair-deletion/KMS
 obligations and adapts them to the Common pairing theorem.
 
+`Bosonic/Thermal/FreeThermalField.lean` owns the free thermal field labels, ordered algebraic-Fock
+products, and normalized pair kernel independently of pairing recursion. KMS, product summability,
+and the kernel's equality to Gibbs two-field expectations consume these data directly.
+`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` constructs the
+convergence-aware recursion from those analytic proofs. Its explicit product-domain witness and
+conversion from the partial Gibbs functional to the canonical free-Gibbs expectation ensure that
+the pairing theorem evaluates only products in the genuine summability domain.
+
 ## Dependency boundary
 
 ```text

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
