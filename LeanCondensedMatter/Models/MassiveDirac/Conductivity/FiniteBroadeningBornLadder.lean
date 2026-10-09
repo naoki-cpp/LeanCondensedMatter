@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
 
 set_option linter.style.header false
 
@@ -20,7 +20,7 @@ thermodynamic, or simultaneous limit is taken, and the candidate is not identifi
 disorder average.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -39,4 +39,4 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCo
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

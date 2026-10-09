@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -12,9 +12,11 @@ by the spectator constant times the exact symmetric Lorentzian mass.  Since that
 `π`, the full interband Bastin pair receives a momentum- and broadening-independent bound.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory
 
@@ -116,4 +118,4 @@ theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

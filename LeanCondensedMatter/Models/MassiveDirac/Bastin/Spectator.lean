@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,9 +15,11 @@ side-indexed finite-broadening coefficient converges to that value on either spe
 square therefore converges to the inverse squared gap. No energy-limit interchange is performed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -63,4 +65,4 @@ theorem tendsto_oppositeBandCoefficient_sq_at_bandPole
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

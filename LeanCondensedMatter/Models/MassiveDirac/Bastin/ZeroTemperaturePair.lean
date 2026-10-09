@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUniformBound
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
 import Mathlib.Tactic
 
@@ -17,9 +17,11 @@ bound already proved for the unweighted pair.  This gives the domination input n
 occupation-weighted momentum DCT while keeping the exact Fermi-edge limit separate.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory QuantumTheory.Transport
 
@@ -172,4 +174,4 @@ theorem norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

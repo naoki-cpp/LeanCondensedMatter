@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
+import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic
 
@@ -24,9 +24,11 @@ Jacobian.  Mathlib's interval-integral change-of-variables theorem then identifi
 radial integrals without hiding the `p dp = E dE / v²` step.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory Set
 open scoped Interval
@@ -95,4 +97,4 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

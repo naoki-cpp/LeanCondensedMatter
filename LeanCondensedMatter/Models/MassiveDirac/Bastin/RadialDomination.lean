@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,9 +15,11 @@ records that input only as local proof data for the radial Bastin block consumed
 spectator and dominated-convergence bounds.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- The absolute interband gap is bounded below by `2|m|`, uniformly in momentum. -/
 theorem two_mul_abs_mass_le_abs_interbandEnergyGap
@@ -53,4 +55,4 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

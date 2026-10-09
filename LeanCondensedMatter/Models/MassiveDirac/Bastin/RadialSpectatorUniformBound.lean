@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorBound
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,9 +15,11 @@ The resulting bound is independent of radial momentum, energy offset inside the 
 broadening. It is the model-specific domination input used before integrating the Lorentzian pole.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Momentum-independent separation between a target-centered window and the opposite-band pole. -/
 def radialBastinMassWindowMargin (m radius : ℝ) : ℝ :=
@@ -140,4 +142,4 @@ theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

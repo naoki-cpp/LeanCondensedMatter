@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDomination
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUniformBound
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Tactic
@@ -20,9 +20,11 @@ integral of a jointly measurable radial/energy-offset integrand. The ultraviolet
 fixed throughout; no `pMax → ∞` limit is mixed with `η → 0⁺`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter MeasureTheory Set
 
@@ -268,4 +270,4 @@ theorem tendsto_finiteRadialInterbandBastinPairIntegral
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

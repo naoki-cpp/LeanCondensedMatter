@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,7 +15,7 @@ and records the elementary real-gap separation needed for later uniform estimate
 limit/interchange theorem is proved here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -39,4 +39,4 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
