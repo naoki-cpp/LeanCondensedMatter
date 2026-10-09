@@ -118,6 +118,32 @@ theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
     (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel v =
       vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ := dite_eq_right hv
 
+
+/-- Reassembling disjoint external-support and vacuum diagrams multiplies their local
+interaction-vertex weights, independently of the pairings or particle statistics. -/
+theorem ExternalInsertionDiagram.ofSlotSplit_vertexWeight
+    {M : Type*} [CommMonoid M]
+    {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T))
+    (w : InternalLabel → M) :
+    (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexWeight w =
+      ext.vertexWeight w * vac.vertexWeight w := by
+  classical
+  unfold ExternalInsertionDiagram.vertexWeight QuarticDiagram.vertexWeight
+  calc
+    (∏ v : ↥S, w ((ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel v)) =
+        ∏ v : ↥T ⊕ ↥(S \ T),
+          w ((ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel
+            (subsetSumSdiffEquiv h v)) :=
+      (Equiv.prod_comp (subsetSumSdiffEquiv h)
+        (fun v : ↥S =>
+          w ((ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel v))).symm
+    _ = (∏ v : ↥T, w (ext.vertexLabel v)) *
+        ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
+      simp [ExternalInsertionDiagram.ofSlotSplit,
+        subsetSumSdiffEquiv_inl_apply, subsetSumSdiffEquiv_inr_apply]
+
 section Decompose
 
 variable {S T : Finset (Fin N)}
