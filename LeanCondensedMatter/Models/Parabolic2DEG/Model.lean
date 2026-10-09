@@ -27,7 +27,7 @@ dispersion is the standard continuum benchmark convention; all normalization cho
 explicit rather than being inferred from that dispersion.
 -/
 
-namespace QuantumTheory.Transport.Models.Parabolic2DEG
+namespace QuantumTheory.Models.Parabolic2DEG
 
 noncomputable section
 
@@ -227,4 +227,4 @@ theorem continuous_greenScalar_radial
 
 end
 
-end QuantumTheory.Transport.Models.Parabolic2DEG
+end QuantumTheory.Models.Parabolic2DEG

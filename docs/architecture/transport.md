@@ -19,6 +19,9 @@ LeanCondensedMatter.Transport.Analysis   (opt-in analytical utilities)
 
 LeanCondensedMatter.Transport.Models
         ├── MassiveDirac
+        └── RashbaExchange
+
+LeanCondensedMatter.Models
         └── Parabolic2DEG
 ```
 
@@ -145,7 +148,7 @@ momentum measure is attached by the loop realization exactly once; the mean-pote
 separate. TMatrix is the package entry point for these two responsibilities.
 ## Concrete models
 
-`Transport.Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
+`Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
 normalization benchmark. It keeps effective mass, chemical potential, radial cutoff, positive
 spectral broadening, signed charge/current convention, reduced Planck constant, and momentum-measure
 normalization explicit. Its pointwise response consumes the common finite-broadening Středa surface
@@ -181,7 +184,9 @@ measures upstream, so a later crossed conductivity boundary must consume only th
 trace/current normalization rather than attach another momentum measure.
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
-transport infrastructure should be moved upstream rather than duplicated in the model subtree.
+transport infrastructure should be moved upstream rather than duplicated in a concrete model.
+The canonical top-level owner for newly organized concrete models is `Models`; the massive-Dirac
+and Rashba-exchange benchmarks remain under `Transport.Models` in the current source tree.
 
 ## Import boundaries
 

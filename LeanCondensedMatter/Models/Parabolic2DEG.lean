@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model
-import LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response
+import LeanCondensedMatter.Models.Parabolic2DEG.Model
+import LeanCondensedMatter.Models.Parabolic2DEG.Response
 
 set_option linter.style.header false
 

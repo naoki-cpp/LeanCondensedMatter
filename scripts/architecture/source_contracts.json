@@ -12,7 +12,8 @@
         "LeanCondensedMatter/Transport.lean",
         "LeanCondensedMatter/Transport/Models.lean",
         "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
-        "LeanCondensedMatter/Transport/Models/Parabolic2DEG.lean",
+        "LeanCondensedMatter/Models/Parabolic2DEG.lean",
+        "LeanCondensedMatter/Models.lean",
         "LeanCondensedMatter/SecondQuantization.lean"
       ]
     },
@@ -574,15 +575,15 @@
       "path": "LeanCondensedMatter/Transport/Models.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac",
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG"
+        "LeanCondensedMatter.Transport.Models.RashbaExchange"
       ]
     },
     {
       "id": "parabolic2DEGPublicUmbrella",
-      "path": "LeanCondensedMatter/Transport/Models/Parabolic2DEG.lean",
+      "path": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response"
+        "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Models.Parabolic2DEG.Response"
       ]
     },
     {
@@ -702,6 +703,7 @@
         "LeanCondensedMatter.QuantumMechanics",
         "LeanCondensedMatter.Transport",
         "LeanCondensedMatter.Transport.Models",
+        "LeanCondensedMatter.Models",
         "LeanCondensedMatter.SecondQuantization"
       ]
     },
@@ -717,6 +719,7 @@
       "path": "LeanCondensedMatter/Transport.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Models",
+        "LeanCondensedMatter.Models",
         "LeanCondensedMatter.Transport.AnomalousHall"
       ]
     },
