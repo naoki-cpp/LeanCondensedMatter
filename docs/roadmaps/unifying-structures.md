@@ -1,6 +1,10 @@
 # Unifying mathematical structures: candidate roadmap
 
-Status: `idea`. This is a design inventory, not an implemented API or a commitment to add
+Status: `idea`. The existing abstraction principle is recorded in
+[ADR 0021](../adr/0021-intrinsic-mathematical-structures.md); this roadmap lists prospective
+applications of that principle, not further accepted decisions.
+
+This is a design inventory, not an implemented API or a commitment to add
 a typeclass for every item. The aim is to discover mathematical structures that turn several
 physics-specific statements into specializations of one canonical theorem, in the same spirit as
 using the exchange scalar `ζ`, linear maps, and basis-independent operators.
