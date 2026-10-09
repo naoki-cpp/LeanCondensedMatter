@@ -332,7 +332,6 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
   unfold TwoPointDiagram.mixedComponentWeight
   congr 1
   unfold TwoPointDiagram.mixedComponentCrossingCount
-  unfold TwoPointDiagram.mixedComponentOrientedCrossingCount
   simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
