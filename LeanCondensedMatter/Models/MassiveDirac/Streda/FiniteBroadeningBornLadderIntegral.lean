@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -19,9 +19,11 @@ introduced here. Physical conductivity normalization remains downstream under
 `MassiveDirac.Conductivity`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory QuantumTheory.Transport
 open scoped Interval
@@ -56,4 +58,4 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMo
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

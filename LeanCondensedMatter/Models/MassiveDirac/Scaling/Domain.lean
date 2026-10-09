@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
 
 set_option linter.style.header false
 
@@ -14,9 +14,11 @@ No scaling law is asserted here. In particular, the ultraviolet cutoff condition
 metallic shell used by the finite-cutoff formulas.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Minimal physical domain for the Born-RTA longitudinal benchmark.
 
@@ -115,4 +117,4 @@ lemma AheScalingParameters.fermiEnergy_pos (params : AheScalingParameters) :
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

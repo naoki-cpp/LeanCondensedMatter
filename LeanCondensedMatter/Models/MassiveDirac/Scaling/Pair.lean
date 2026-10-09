@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossing
-import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
+import LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
+import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false
 
@@ -18,9 +18,11 @@ ordered `xy` component for the finite-broadening tensor. Broadening and weak-dis
 sequential. Scaling-only coordinates are owned by `AheScalingCoordinate` and are not required here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -228,4 +230,4 @@ theorem AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_z
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

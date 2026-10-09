@@ -1,7 +1,7 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 
 set_option linter.style.header false
@@ -32,7 +32,7 @@ conductivity prefactor, disorder/broadening limit, or exact disorder-average cla
 here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -103,4 +103,4 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

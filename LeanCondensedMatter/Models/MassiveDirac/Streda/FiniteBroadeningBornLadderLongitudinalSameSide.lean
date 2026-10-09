@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Tactic
 
@@ -16,9 +16,11 @@ The same-side remainder stays separate from the singular retarded-advanced ladde
 remains fixed throughout, and no physical conductivity normalization is attached here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter MeasureTheory QuantumTheory.Transport
 open scoped Interval
@@ -251,4 +253,4 @@ theorem tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disord
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

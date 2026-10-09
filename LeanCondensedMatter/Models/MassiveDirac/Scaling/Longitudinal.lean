@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime
+import LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -12,9 +12,11 @@ benchmark.  This exposes the Drude `1/W` law and its finite disorder-scaled coef
 same parameter package used by the later Hall and normalized-pair constructions.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter
 
@@ -110,4 +112,4 @@ theorem tendsto_disorderStrength_mul_bornRtaLongitudinalConductivityClosedForm
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
