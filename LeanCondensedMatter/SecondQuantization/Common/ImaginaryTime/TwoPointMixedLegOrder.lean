@@ -201,7 +201,7 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_uniform {n : ℕ}
     (orderedTwoPointTimedEvents τ τ' σ) event x y z
     (mixedTimeOrderedAtomicLegs_nodup τ τ' σ) hEvent hx hy hz hzOutside
   simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-      mixedTimeOrderedAtomicLegs] using h
+    mixedTimeOrderedAtomicLegs] using h
 
 private theorem mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
@@ -227,7 +227,7 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt {n : �
     (orderedTwoPointLeg_mem_eventAtomicLegs x)
     (orderedTwoPointLeg_mem_eventAtomicLegs y) hEventIdx
   simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-      mixedTimeOrderedAtomicLegs] using h
+    mixedTimeOrderedAtomicLegs] using h
 
 /-- For legs supported on distinct events, flattened atomic-leg order is exactly event order. -/
 theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt {n : ℕ}
@@ -285,12 +285,12 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff {n : �
         (twoPointTimedEventAtomicLegs event).idxOf x <
           (twoPointTimedEventAtomicLegs event).idxOf y := by
             simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-      mixedTimeOrderedAtomicLegs] using hσ
+              mixedTimeOrderedAtomicLegs] using hσ
       _ ↔ mixedTimeOrderedAtomicLegPosition τ τ' υ x <
           mixedTimeOrderedAtomicLegPosition τ τ' υ y := by
             symm
             simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-      mixedTimeOrderedAtomicLegs] using hυ
+              mixedTimeOrderedAtomicLegs] using hυ
   · rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' σ x y hxy,
       mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' υ x y hxy]
     exact hEvent
@@ -392,7 +392,7 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
             (twoPointTimedEventAtomicLegs (twoPointTimedEventMap f event)).idxOf
               (orderedTwoPointLegMap f y) := by
             simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-      mixedTimeOrderedAtomicLegs] using hAmbient
+              mixedTimeOrderedAtomicLegs] using hAmbient
       _ ↔ (twoPointTimedEventAtomicLegs event).idxOf x <
             (twoPointTimedEventAtomicLegs event).idxOf y := by
             rw [twoPointTimedEventAtomicLegs_map, hidx x, hidx y]
@@ -400,7 +400,7 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
             mixedTimeOrderedAtomicLegPosition τ τ' (σ ∘ f) y := by
             symm
             simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-      mixedTimeOrderedAtomicLegs] using hPiece
+              mixedTimeOrderedAtomicLegs] using hPiece
   · have hxyMap : orderedTwoPointLegEvent (orderedTwoPointLegMap f x) ≠
         orderedTwoPointLegEvent (orderedTwoPointLegMap f y) := by
       rw [orderedTwoPointLegEvent_orderedTwoPointLegMap,
