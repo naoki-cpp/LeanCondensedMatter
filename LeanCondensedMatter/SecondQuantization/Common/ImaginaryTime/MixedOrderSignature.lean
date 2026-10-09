@@ -153,6 +153,18 @@ private theorem measurable_externalInsertionOrderSignature {E n : ℕ}
       (continuous_externalInsertionTimedEventTime externalTime a).measurable
       (continuous_externalInsertionTimedEventTime externalTime b).measurable)
 
+/-- The mixed atomic-leg enumeration depends only on the finite strict-comparison
+signature, including the canonical resolution of equal-time ties. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_orderSignature_eq
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
+    (h : externalInsertionOrderSignature externalTime σ =
+      externalInsertionOrderSignature externalTime υ) :
+    externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ =
+      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime υ := by
+  apply externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
+  exact (sameExternalInsertionOrderChamber_iff_orderSignature_eq
+    externalTime σ υ).2 h
+
 /-- The interaction-time assignments realizing a fixed arbitrary-external order signature. -/
 def externalInsertionOrderSignatureFiber {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ)
