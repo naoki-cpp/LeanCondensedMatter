@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
 
 set_option linter.style.header false
 
@@ -21,9 +21,11 @@ zero-broadening or weak-disorder limit, closed `X` value, or `Psi = 0` conductiv
 claimed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Physically normalized finite-cutoff finite-broadening ordered-`xy` Gaussian crossed
 conductivity contribution.
@@ -92,4 +94,4 @@ partner is included upstream and the remaining physical normalization is real. -
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

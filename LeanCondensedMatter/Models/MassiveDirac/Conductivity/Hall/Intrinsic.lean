@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
 
 set_option linter.style.header false
 

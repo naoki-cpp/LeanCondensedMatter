@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -17,9 +17,11 @@ The resulting finite-cutoff quantity agrees with the independently normalized in
 conductivity, and its ultraviolet limit gives the clean metallic massive-Dirac benchmark.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -67,4 +69,4 @@ theorem tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

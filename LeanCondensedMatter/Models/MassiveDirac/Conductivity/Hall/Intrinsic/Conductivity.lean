@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
 import Mathlib.Topology.Algebra.Order.Field
 
 set_option linter.style.header false
@@ -35,9 +35,11 @@ uses may separately impose nonzero `ℏ` and Fermi energy. This file does not id
 regularized Středa calculation with the continuum limit.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -130,4 +132,4 @@ theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ) :
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

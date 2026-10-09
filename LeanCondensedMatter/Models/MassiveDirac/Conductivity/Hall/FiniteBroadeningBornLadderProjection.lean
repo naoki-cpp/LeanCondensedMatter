@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
 
 set_option linter.style.header false
 
@@ -21,9 +21,11 @@ fixed positive disorder, then `W → 0⁺`. No ultraviolet/thermodynamic/simulta
 `X/Ψ` contribution, mechanism decomposition, or exact disorder-average claim is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -61,4 +63,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

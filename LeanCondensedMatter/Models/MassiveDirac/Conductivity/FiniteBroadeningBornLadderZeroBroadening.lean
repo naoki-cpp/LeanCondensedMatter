@@ -1,8 +1,8 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalZeroBroadening
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
-import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
+import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -19,9 +19,11 @@ The Hall projection is deliberately downstream. It consumes this neutral tensor 
 owning the tensor boundary itself.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -100,4 +102,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

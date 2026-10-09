@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
-import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false
 
@@ -15,9 +15,11 @@ The disorder strength and cutoff remain fixed. No weak-disorder, ultraviolet, th
 simultaneous limit is taken here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -58,4 +60,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
