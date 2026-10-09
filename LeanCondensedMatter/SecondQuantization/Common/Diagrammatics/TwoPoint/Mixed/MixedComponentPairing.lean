@@ -84,25 +84,6 @@ private theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
   apply congrArg d.pairing.partner
   rfl
 
-/-- The canonical external split pairing partner is the transport of the mixed restricted partner. -/
-theorem TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : d.MixedComponentPosition τ τ' σ d.externalComponentPart) :
-    d.externalVacuumSplit.1.pairing.partner
-        (d.mixedExternalPositionEquiv τ τ' σ p) =
-      d.mixedExternalPositionEquiv τ τ' σ
-        (d.mixedRestrictedPartner τ τ' σ d.externalComponentPart p) := by
-  change d.externalVacuumSplit.1.pairing.partner
-      (d.externalComponentLegEquiv.symm
-        (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)) =
-    d.externalComponentLegEquiv.symm
-      (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart
-        (d.mixedRestrictedPartner τ τ' σ d.externalComponentPart p))
-  rw [← d.externalComponentLegEquiv_symm_restrictedPartner,
-    d.mixedComponentPositionEquiv_partner]
-
 /-- A vacuum restricted pairing partner is the transport of the corresponding mixed restricted
 partner. -/
 theorem TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv
