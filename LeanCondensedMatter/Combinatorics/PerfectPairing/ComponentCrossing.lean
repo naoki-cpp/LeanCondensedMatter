@@ -53,6 +53,15 @@ theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairi
     simp [hbc, hcb]
   · simp [hbc]
 
+/-- The geometric crossing count is symmetric in its two components. -/
+theorem Pairing.componentGeometricCrossingCount_comm (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
+    pairing.componentGeometricCrossingCount e B C =
+      pairing.componentGeometricCrossingCount e C B := by
+  rw [pairing.componentGeometricCrossingCount_eq_oriented_add e B C,
+    pairing.componentGeometricCrossingCount_eq_oriented_add e C B]
+  exact Nat.add_comm _ _
+
 /-- For distinct components, geometric crossing parity is the parity of endpoint-order inversions.
 
 The endpoint equivalences may identify each component's pair endpoints with any finite component
