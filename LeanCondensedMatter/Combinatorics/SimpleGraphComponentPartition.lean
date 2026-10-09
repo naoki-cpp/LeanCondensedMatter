@@ -72,7 +72,7 @@ theorem componentBlock_eq_iff_mem [Fintype V] (G : SimpleGraph V) {B : Finset V}
 /-- An ambient walk starting in the image of an adjacency-closed map lifts to a reachable source
 vertex, provided that adjacency between image vertices reflects to source adjacency. -/
 theorem exists_reachable_of_walk_of_adj_closed
-    (G : SimpleGraph V) (H : SimpleGraph W) (f : V → W)
+    {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) (f : V → W)
     (hclosed : ∀ x u, H.Adj (f x) u → ∃ y, u = f y)
     (hreflect : ∀ x y, H.Adj (f x) (f y) → G.Adj x y) :
     ∀ {u v : W}, H.Walk u v →
