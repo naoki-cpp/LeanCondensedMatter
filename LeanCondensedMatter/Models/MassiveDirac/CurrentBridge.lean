@@ -19,7 +19,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
 
 /-- The massive-Dirac charge-current vertex is the generic one-particle current for transported
 quantity `(-e) I`. -/
