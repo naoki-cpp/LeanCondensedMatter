@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -26,9 +26,11 @@ No claim about the continuum integral, weak-disorder scaling, or the eventual ma
 cancellation of the `psi` contribution is made here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- The two single-crossing Gaussian impurity topologies contributing at leading order to the
 massive-Dirac anomalous Hall response. -/
@@ -91,4 +93,4 @@ def gaussianCrossedTraceKernel {R : Type*} [Neg R]
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -17,9 +17,11 @@ Regularity remains a separate condition for interpreting the solved vector as th
 fixed point. No disorder, external-broadening, or ultraviolet limit is taken.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- The ordered `xx` finite-`η` dressed Středa angular coefficient in explicit denominator form. The
 first term is the dressed RA contribution; the second retains the bare RR/AA same-side remainder
@@ -149,4 +151,4 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIn
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

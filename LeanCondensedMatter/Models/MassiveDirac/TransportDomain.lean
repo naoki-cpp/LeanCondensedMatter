@@ -11,9 +11,11 @@ data such as the electric charge nor result-specific regularity conditions such 
 renormalization bound or the ladder determinant hypothesis.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Common fixed-cutoff metallic domain for Born-Dyson zero-broadening transport boundaries. -/
 structure FixedCutoffMetallicBornRegime where
@@ -67,4 +69,4 @@ def FixedCutoffMetallicBornRegime.ofScalarBoundaryData
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

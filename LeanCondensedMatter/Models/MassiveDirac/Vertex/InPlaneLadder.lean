@@ -23,9 +23,11 @@ rung, take any broadening/disorder limit, identify a transport lifetime, or inse
 conductivity.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter
 
@@ -299,4 +301,4 @@ theorem inPlaneLadderSolvedVector_zero_transverse
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

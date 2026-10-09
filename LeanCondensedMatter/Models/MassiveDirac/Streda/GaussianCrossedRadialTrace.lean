@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -19,7 +19,7 @@ integrals. No real-space angular integration, cutoff removal, broadening/disorde
 conductivity normalization is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -754,4 +754,4 @@ trace level. -/
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

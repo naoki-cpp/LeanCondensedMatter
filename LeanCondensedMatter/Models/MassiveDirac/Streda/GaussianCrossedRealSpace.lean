@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace
 
 set_option linter.style.header false
 
@@ -26,7 +26,7 @@ remain explicit; no cutoff removal, zero-broadening limit, weak-disorder reducti
 integration, or crossed conductivity value is claimed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -592,4 +592,4 @@ Hermitian-conjugate construction as the abstract crossed boundary. -/
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

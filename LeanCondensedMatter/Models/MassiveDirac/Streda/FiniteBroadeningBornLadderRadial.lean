@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
+import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -22,9 +22,11 @@ No radial antiderivative, conductivity normalization, disorder/broadening limit,
 removal, mechanism label, or exact-disorder-average claim is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory
 open ContinuousLinearMap
@@ -437,4 +439,4 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

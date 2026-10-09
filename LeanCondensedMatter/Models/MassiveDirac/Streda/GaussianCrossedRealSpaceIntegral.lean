@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
@@ -29,9 +29,11 @@ No infinite-radius limit, momentum-cutoff removal, zero-broadening or weak-disor
 Bessel-function reduction, or closed crossed conductivity is claimed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory
 open scoped Interval
@@ -113,4 +115,4 @@ identically at zero disorder strength. -/
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

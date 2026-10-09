@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -23,7 +23,7 @@ ordinary and Fourier-weighted angular reduction. Concrete propagators remain res
 supplying the radial coefficients.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -278,4 +278,4 @@ theorem integral_polarPauliOperator_inPlane_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
