@@ -30,8 +30,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- The two single-crossing Gaussian impurity topologies contributing at leading order to the
 massive-Dirac anomalous Hall response. -/
 inductive GaussianCrossedDiagram where
