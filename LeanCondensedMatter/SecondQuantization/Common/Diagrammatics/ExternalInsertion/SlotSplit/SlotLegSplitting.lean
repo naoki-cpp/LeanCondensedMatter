@@ -154,6 +154,27 @@ theorem ExternalInsertionDiagram.ofSlotSplit_vertexWeight
           h ext vac ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
             (Finset.mem_sdiff.mp v.2).2]
 
+
+/-- Dyson interaction signs and local vertex weights split multiplicatively along the
+external-support/vacuum slot partition. This statement does not concern the fermionic
+mixed-time permutation or pairing-crossing sign. -/
+theorem ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight
+    {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T))
+    (w : InternalLabel → ℂ) :
+    (-1 : ℂ) ^ S.card *
+        (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexWeight w =
+      ((-1 : ℂ) ^ T.card * ext.vertexWeight w) *
+        ((-1 : ℂ) ^ (S \ T).card * vac.vertexWeight w) := by
+  classical
+  have hcard : S.card = T.card + (S \ T).card := by
+    simpa only [Fintype.card_sum, Fintype.card_coe] using
+      (Fintype.card_congr (subsetSumSdiffEquiv h)).symm
+  rw [hcard, pow_add, ExternalInsertionDiagram.ofSlotSplit_vertexWeight]
+  ring
+
+
 section Decompose
 
 variable {S T : Finset (Fin N)}
