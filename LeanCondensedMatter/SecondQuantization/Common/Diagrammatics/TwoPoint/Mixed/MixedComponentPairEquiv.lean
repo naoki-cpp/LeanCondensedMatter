@@ -107,6 +107,68 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
       simpa only [TwoPointDiagram.mixedRestrictedPartner] using
         d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac pos)
 
+/-- Mixed-time coordinate transport intertwines the partners of the two ambient pairings. -/
+private theorem TwoPointDiagram.mixedTimePositionEquiv_partner
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
+    (d.pairingInMixedOrder τ τ' υ).partner
+        (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+          (mixedTimeAmbientPositionEquiv τ τ' υ).symm) p) =
+      ((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+        (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
+          ((d.pairingInMixedOrder τ τ' σ).partner p) := by
+  apply (mixedTimeAmbientPositionEquiv τ τ' υ).injective
+  calc
+    mixedTimeAmbientPositionEquiv τ τ' υ
+        ((d.pairingInMixedOrder τ τ' υ).partner
+          (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+            (mixedTimeAmbientPositionEquiv τ τ' υ).symm) p)) =
+      d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' υ
+        (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+          (mixedTimeAmbientPositionEquiv τ τ' υ).symm) p)) :=
+        d.mixedTimeAmbientPositionEquiv_partner τ τ' υ _
+    _ = d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by simp
+    _ = mixedTimeAmbientPositionEquiv τ τ' σ
+        ((d.pairingInMixedOrder τ τ' σ).partner p) :=
+      (d.mixedTimeAmbientPositionEquiv_partner τ τ' σ p).symm
+    _ = mixedTimeAmbientPositionEquiv τ τ' υ
+        (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+          (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
+          ((d.pairingInMixedOrder τ τ' σ).partner p)) := by simp
+
+/-- Transport ambient normalized pairs between time assignments through their common diagram legs. -/
+noncomputable def TwoPointDiagram.mixedPairTimeEquiv
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
+    (d.pairingInMixedOrder τ τ' σ).NormalizedPair ≃
+      (d.pairingInMixedOrder τ τ' υ).NormalizedPair :=
+  (d.pairingInMixedOrder τ τ' σ).normalizedPairEquivOfPartnerEquiv
+    (d.pairingInMixedOrder τ τ' υ)
+    ((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+      (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
+    (d.mixedTimePositionEquiv_partner τ τ' σ υ)
+
+/-- Ambient pair transport preserves the pair endpoints up to normalized orientation. -/
+theorem TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
+    let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
+      (mixedTimeAmbientPositionEquiv τ τ' υ).symm
+    (d.mixedPairTimeEquiv τ τ' σ υ pr).1 =
+      (f pr.1.1, f pr.1.2) ∨
+    (d.mixedPairTimeEquiv τ τ' σ υ pr).1 =
+      (f pr.1.2, f pr.1.1) := by
+  dsimp only
+  exact (d.pairingInMixedOrder τ τ' σ).normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap
+    (d.pairingInMixedOrder τ τ' υ)
+    ((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+      (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
+    (d.mixedTimePositionEquiv_partner τ τ' σ υ) pr
+
 /-- Canonical comparison of the mixed normalized pairs of one full component at two time assignments. -/
 noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
