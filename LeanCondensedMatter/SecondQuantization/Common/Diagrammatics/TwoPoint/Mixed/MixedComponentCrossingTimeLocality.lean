@@ -307,29 +307,25 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
         mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.2 := by
   classical
   let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-  have hEnds :
-      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
-        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := by
-    simpa [q] using
-      d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B
-        (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-          τ τ' σ υ B hChamber) pr
+  have hEnds := d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
+    τ τ' σ υ B
+    (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
+      τ τ' σ υ B hChamber) pr
   have hLeg (k : Fin 2) :
       mixedTimeOrderedAtomicLegEquiv τ τ' υ
           (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, k)).1 =
         mixedTimeOrderedAtomicLegEquiv τ τ' σ
           (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)).1 := by
-    have h := d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B
+    have hEndpoint :
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, k) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)) := by
+      fin_cases k
+      · simpa [q] using hEnds.1
+      · simpa [q] using hEnds.2
+    rw [hEndpoint]
+    exact d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B
       (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k))
-    fin_cases k
-    · rw [hEnds.1]
-      exact h
-    · rw [hEnds.2]
-      exact h
   constructor
   · simpa using hLeg 0
   · simpa using hLeg 1
