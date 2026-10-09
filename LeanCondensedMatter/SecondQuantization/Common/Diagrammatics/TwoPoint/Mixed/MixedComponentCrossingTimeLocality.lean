@@ -305,13 +305,6 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
   let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 1)
   let q0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (q, 0)
   let q1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (q, 1)
-  have endpointVal (ρ : Fin n → ℝ) (r : d.MixedComponentPair τ τ' ρ B) (k : Fin 2) :
-      (d.mixedComponentPairEndpointEquiv τ τ' ρ B (r, k)).1 =
-        (d.pairingInMixedOrder τ τ' ρ).pairEndpoint (r.1, k) := by
-    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
-      (d.pairingInMixedOrder τ τ' ρ)
-      (fun x => d.mixedPositionComponent τ τ' ρ x = B) _ r k
   have hpEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
           d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
@@ -328,20 +321,20 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
       d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B hOrder q
   have hp0Val :
       tp.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
-    simpa [tp, endpointVal] using congrArg Subtype.val hpEnds.1
+    simpa [tp] using congrArg Subtype.val hpEnds.1
   have hp1Val :
       tp.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-    simpa [tp, endpointVal] using congrArg Subtype.val hpEnds.2
+    simpa [tp] using congrArg Subtype.val hpEnds.2
   have hq0Val :
       tq.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
-    simpa [tq, endpointVal] using congrArg Subtype.val hqEnds.1
+    simpa [tq] using congrArg Subtype.val hqEnds.1
   have hq1Val :
       tq.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
-    simpa [tq, endpointVal] using congrArg Subtype.val hqEnds.2
+    simpa [tq] using congrArg Subtype.val hqEnds.2
   have hCross := and_congr (hOrder p0 q0)
     (and_congr (hOrder q0 p1) (hOrder p1 q1))
   rw [← hp0Val, ← hq0Val, ← hp1Val, ← hq1Val] at hCross
-  simpa [Crosses, p0, p1, q0, q1, endpointVal] using hCross
+  simpa [Crosses, p0, p1, q0, q1] using hCross
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
@@ -360,13 +353,6 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
   let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
   let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)
   let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
-  have endpointVal (ρ : Fin n → ℝ) (r : d.MixedComponentPair τ τ' ρ B) (k : Fin 2) :
-      (d.mixedComponentPairEndpointEquiv τ τ' ρ B (r, k)).1 =
-        (d.pairingInMixedOrder τ τ' ρ).pairEndpoint (r.1, k) := by
-    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
-      (d.pairingInMixedOrder τ τ' ρ)
-      (fun x => d.mixedPositionComponent τ τ' ρ x = B) _ r k
   have hEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
           d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
@@ -378,16 +364,16 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
           τ τ' σ υ B hChamber) pr
   have h0Pos :
       q.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
-    simpa [q, endpointVal] using congrArg Subtype.val hEnds.1
+    simpa [q] using congrArg Subtype.val hEnds.1
   have h1Pos :
       q.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-    simpa [q, endpointVal] using congrArg Subtype.val hEnds.2
+    simpa [q] using congrArg Subtype.val hEnds.2
   constructor
   · rw [h0Pos]
-    simpa [p0, endpointVal] using
+    simpa [p0] using
       d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
   · rw [h1Pos]
-    simpa [p1, endpointVal] using
+    simpa [p1] using
       d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
 
 /-- Component exchange-statistics weight is constant on one chamber. -/
