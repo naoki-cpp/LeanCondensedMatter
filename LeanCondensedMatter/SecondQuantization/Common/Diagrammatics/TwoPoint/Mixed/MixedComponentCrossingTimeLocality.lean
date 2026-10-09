@@ -145,33 +145,6 @@ private theorem pairEndpoints_eq_or_swap_of_equiv
   · obtain ⟨h1, h0⟩ := recover (hq.symm.trans (hpair.trans hp))
     exact Or.inl ⟨h0, h1⟩
 
-private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (p : d.MixedComponentPosition τ τ' σ d.externalComponentPart) :
-    d.mixedExternalPositionEquiv τ τ' υ
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p) =
-      d.mixedExternalPositionEquiv τ τ' σ p := by
-  change d.externalComponentLegEquiv.symm
-      (d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p)) =
-    d.externalComponentLegEquiv.symm
-      (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
-  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
-
-private theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
-    (p : d.MixedComponentPosition τ τ' σ B) :
-    d.mixedVacuumPositionEquiv τ τ' υ B hVac
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
-      d.mixedVacuumPositionEquiv τ τ' σ B hVac p := by
-  simp [TwoPointDiagram.mixedVacuumPositionEquiv,
-    TwoPointDiagram.mixedComponentPositionTimeEquiv]
-
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -211,7 +184,9 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
       (d.mixedExternalPositionEquiv τ τ' σ)
       (d.mixedExternalPositionEquiv τ τ' υ)
       (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart)
-      (d.mixedExternalPositionEquiv_positionTimeEquiv τ τ' σ υ)
+      (fun p => by
+        simp [TwoPointDiagram.mixedExternalPositionEquiv,
+          TwoPointDiagram.mixedComponentPositionTimeEquiv])
       (congrArg Subtype.val hlocal) hp hq
   · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
       (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
@@ -232,7 +207,9 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
       (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
       (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
       (d.mixedComponentPositionTimeEquiv τ τ' σ υ B)
-      (d.mixedVacuumPositionEquiv_positionTimeEquiv τ τ' σ υ B hVac)
+      (fun p => by
+        simp [TwoPointDiagram.mixedVacuumPositionEquiv,
+          TwoPointDiagram.mixedComponentPositionTimeEquiv])
       (congrArg Subtype.val hlocal) hp hq
 
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
