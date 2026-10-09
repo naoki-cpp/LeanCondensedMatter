@@ -129,35 +129,21 @@ private theorem pairEndpoints_eq_or_swap_of_equiv
     (hp : s = (e x₀, e x₁) ∨ s = (e x₁, e x₀))
     (hq : t = (e' y₀, e' y₁) ∨ t = (e' y₁, e' y₀)) :
     (y₀ = f x₀ ∧ y₁ = f x₁) ∨ (y₀ = f x₁ ∧ y₁ = f x₀) := by
+  have recover {a b : P} {c d : Q}
+      (h : (e' c, e' d) = (e a, e b)) :
+      c = f a ∧ d = f b := by
+    constructor
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.fst h
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.snd h
   rcases hp with hp | hp <;> rcases hq with hq | hq
-  · left
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-  · right
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
-  · right
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-  · left
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
+  · exact Or.inl (recover (hq.symm.trans (hpair.trans hp)))
+  · obtain ⟨h1, h0⟩ := recover (hq.symm.trans (hpair.trans hp))
+    exact Or.inr ⟨h0, h1⟩
+  · exact Or.inr (recover (hq.symm.trans (hpair.trans hp)))
+  · obtain ⟨h1, h0⟩ := recover (hq.symm.trans (hpair.trans hp))
+    exact Or.inl ⟨h0, h1⟩
 
 private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
