@@ -92,16 +92,17 @@ Bosonic.Occupation Mode := Mode →₀ ℕ
 
 is infinite. `Bosonic/Thermal/ConvergenceAwareGibbs.lean` therefore defines a normalized functional
 on an explicit summability domain rather than pretending that finite-configuration traces apply.
-`ConvergenceAwarePairingRecursion` records the corresponding domain and pair-deletion/KMS
-obligations and adapts them to the Common pairing theorem.
+The linear expectation is defined on the summable-operator submodule; additivity retains explicit summability hypotheses.
 
 `Bosonic/Thermal/FreeThermalField.lean` owns the free thermal field labels, ordered algebraic-Fock
 products, and normalized pair kernel independently of pairing recursion. KMS, product summability,
 and the kernel's equality to Gibbs two-field expectations consume these data directly.
-`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` constructs the
-convergence-aware recursion from those analytic proofs. Its explicit product-domain witness and
-conversion from the partial Gibbs functional to the canonical free-Gibbs expectation ensure that
-the pairing theorem evaluates only products in the genuine summability domain.
+`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` constructs the Common
+recursion directly with `freeGibbsExpectation`. Under explicit positive one-mode Boltzmann
+exponents, `FreeThermalField.freeGibbsSummable_orderedProduct` proves summability of every finite
+field product, including every remaining product after pair deletion. The first-pair recurrence
+uses those analytic results before the representation-independent pairing induction is applied.
+No additional zero-totalization of the domain expectation is needed.
 
 ## Dependency boundary
 
