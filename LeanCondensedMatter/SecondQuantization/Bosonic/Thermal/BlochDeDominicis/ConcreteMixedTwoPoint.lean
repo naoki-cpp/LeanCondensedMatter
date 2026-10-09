@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Exponential
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
@@ -25,23 +26,6 @@ local instance instDecidableEqConcreteMixedTwoPoint : DecidableEq Mode := Classi
 
 variable [Fintype Mode]
 
-omit [Fintype Mode] in
-/-- The Bose denominator is nonzero under the same positivity hypothesis that makes the partition
-series converge. -/
-theorem freeGibbs_boseDenominator_ne_zero
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i : Mode) :
-    1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 := by
-  intro hzero
-  have hexp : Complex.exp (((-(ε i) * β : ℝ) : ℂ)) = 1 := (sub_eq_zero.mp hzero).symm
-  have hnorm := congrArg norm hexp
-  rw [Complex.norm_exp, norm_one] at hnorm
-  have hre : (((-(ε i) * β : ℝ) : ℂ)).re = -(ε i) * β := rfl
-  rw [hre] at hnorm
-  have hlt : Real.exp (-(ε i) * β) < 1 := by
-    rw [Real.exp_lt_one_iff]
-    nlinarith [hpos i]
-  linarith
-
 /-- Concrete normalized annihilation/creation contraction. -/
 theorem freeGibbsExpectation_annihilate_comp_create_concrete
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
@@ -52,7 +36,10 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
       Module.End.mul_eq_comp] using
       (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
         [.annihilate i, .create j])
-  have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
+  have hden : 1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 :=
+    sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
+      change -(ε i) * β ≠ 0
+      nlinarith [hpos i])))
   rw [freeGibbsExpectation_annihilate_comp_create_eq ε β hpos i j hSumm hden]
   by_cases hij : i = j <;> simp [hij]
 
@@ -98,7 +85,10 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
     rw [hnegExpectation,
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i i]
     simp only [ite_true]
-    have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
+    have hden : 1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 :=
+      sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
+        change -(ε i) * β ≠ 0
+        nlinarith [hpos i])))
     have harg : (-(ε i) * β : ℝ) = -(ε i * β) := by ring
     rw [harg] at hden
     field_simp [hden]

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Exponential
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel
 
@@ -30,36 +31,6 @@ variable {Mode : Type*} [Fintype Mode]
 local instance instDecidableEqFreeFirstPair : DecidableEq Mode := Classical.decEq Mode
 
 namespace FreeThermalField
-
-omit [Fintype Mode] in
-/-- Positive one-mode Boltzmann exponents keep the bosonic KMS denominator away from zero. -/
-theorem kmsFactor_sub_one_ne_zero
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    (C : FreeThermalField Mode) :
-    C.kmsFactor ε β - 1 ≠ 0 := by
-  cases C with
-  | annihilate i =>
-      intro hzero
-      have hexp : Complex.exp ((β : ℂ) * (ε i : ℂ)) = 1 := sub_eq_zero.mp hzero
-      have hnorm := congrArg norm hexp
-      rw [Complex.norm_exp, norm_one] at hnorm
-      have hre : (((β : ℂ) * (ε i : ℂ))).re = β * ε i := by simp
-      rw [hre] at hnorm
-      have hgt : 1 < Real.exp (β * ε i) := by
-        rw [Real.one_lt_exp_iff]
-        exact hpos i
-      linarith
-  | create i =>
-      intro hzero
-      have hexp : Complex.exp (-(β : ℂ) * (ε i : ℂ)) = 1 := sub_eq_zero.mp hzero
-      have hnorm := congrArg norm hexp
-      rw [Complex.norm_exp, norm_one] at hnorm
-      have hre : ((-(β : ℂ) * (ε i : ℂ))).re = -(β * ε i) := by simp
-      rw [hre] at hnorm
-      have hlt : Real.exp (-(β * ε i)) < 1 := by
-        rw [Real.exp_lt_one_iff]
-        nlinarith [hpos i]
-      linarith
 
 omit [Fintype Mode] in
 /-- Appending a free thermal field on the right agrees with postcomposition by its operator. -/
@@ -98,9 +69,18 @@ theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
       C.kmsFactor ε β *
         freeGibbsExpectation ε β ((orderedProduct l).comp C.operator)
     exact C.freeGibbsExpectation_operator_comp_rotate ε β (orderedProduct l)
+  have hden : C.kmsFactor ε β - 1 ≠ 0 := by
+    apply sub_ne_zero.mpr
+    cases C with
+    | annihilate i =>
+        apply Complex.exp_ne_one_of_re_ne_zero
+        simpa using ne_of_gt (hpos i)
+    | create i =>
+        apply Complex.exp_ne_one_of_re_ne_zero
+        simpa using neg_ne_zero.mpr (ne_of_gt (hpos i))
   exact ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R 1 (C.kmsFactor ε β)
     (by simpa only [one_mul] using hpeel) hkms
-    (C.kmsFactor_sub_one_ne_zero ε β hpos)
+    hden
 
 /-- The KMS solution factor times the bare CCR exchange coefficient is exactly the canonical
 normalized two-field free thermal kernel. -/
