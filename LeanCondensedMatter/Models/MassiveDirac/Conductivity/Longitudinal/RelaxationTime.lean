@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import Mathlib.Tactic
@@ -35,7 +35,7 @@ identified with `τ_tr` in this module.  A finite-temperature extension must rep
 Fermi-surface factor by the appropriate energy integral weighted by the occupation derivative.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -157,4 +157,4 @@ theorem zeroTemperatureRelaxationTimeLongitudinalConductivity_pos
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

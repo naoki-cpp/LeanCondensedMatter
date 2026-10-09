@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 
 set_option linter.style.header false
 
@@ -14,7 +14,7 @@ Crossed real-space Fourier blocks already contain the momentum measure upstream,
 conductivity boundary must use the trace-only prefactor rather than the combined normalization.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -31,4 +31,4 @@ theorem disorder_mul_fullAngleMomentumMeasurePrefactor_eq_two_pi_mul_disorderMea
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

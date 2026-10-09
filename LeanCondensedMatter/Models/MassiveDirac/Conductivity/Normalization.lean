@@ -10,9 +10,11 @@ Static Bastin–Středa trace and continuum-measure normalization is model-indep
 Planck-constant notation used by closed conductivity formulas.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Planck's constant expressed through the reduced Planck constant, `h = 2πℏ`. -/
 def planckFromReduced (hbar : ℝ) : ℝ :=
@@ -20,4 +22,4 @@ def planckFromReduced (hbar : ℝ) : ℝ :=
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

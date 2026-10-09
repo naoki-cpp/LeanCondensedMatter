@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 
 set_option linter.style.header false
 
@@ -17,7 +17,7 @@ removal, renormalization prescription, simultaneous limit, or exact disorder-ave
 introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -269,4 +269,4 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossing
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -17,7 +17,7 @@ mechanism name. Those identifications require separate provenance theorems from 
 non-crossing derivation.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -72,4 +72,4 @@ theorem nonCrossingHallConductivity_sub_intrinsicHallConductivity_eq_ado_eq12bc
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

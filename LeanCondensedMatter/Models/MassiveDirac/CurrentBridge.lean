@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 
 set_option linter.style.header false
 
@@ -15,9 +15,11 @@ linear map, is exactly the generic symmetrized current for the scalar transporte
 `(-e) I`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- The massive-Dirac charge-current vertex is the generic one-particle current for transported
 quantity `(-e) I`. -/
@@ -33,4 +35,4 @@ theorem currentOperator_toLinearMap_eq_symmetrizedVelocityCurrent
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -26,9 +26,11 @@ No Kubo/Středa broadening limit, exact disorder average, SCBA/Ward statement, c
 ultraviolet/thermodynamic limit is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 private theorem continuumBornUpperBandTransportLifetime_eq_closed
     (v m fermiEnergy disorderStrength hbar : ℝ)
@@ -116,4 +118,4 @@ theorem disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivi
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
