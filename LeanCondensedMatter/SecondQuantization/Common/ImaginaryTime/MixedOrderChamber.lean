@@ -41,50 +41,6 @@ theorem SameTwoPointOrderChamber.trans {n : ℕ} {τ τ' : ℝ} {σ υ ξ : Fin 
   intro a b
   exact (hσυ a b).trans (hυξ a b)
 
-private theorem twoPointTimedEventTime_eq_iff_of_sameOrderChamber
-    {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
-    (h : SameTwoPointOrderChamber τ τ' σ υ)
-    (a b : TwoPointTimedEvent n) :
-    twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' σ b ↔
-      twoPointTimedEventTime τ τ' υ a = twoPointTimedEventTime τ τ' υ b := by
-  constructor
-  · intro hab
-    by_contra huv
-    rcases lt_or_gt_of_ne huv with huv | huv
-    · have hσ := (h a b).mpr huv
-      rw [hab] at hσ
-      exact (lt_irrefl _ hσ)
-    · have hσ := (h b a).mpr huv
-      rw [hab] at hσ
-      exact (lt_irrefl _ hσ)
-  · intro hab
-    by_contra hσ
-    rcases lt_or_gt_of_ne hσ with hσ | hσ
-    · have huv := (h a b).mp hσ
-      rw [hab] at huv
-      exact (lt_irrefl _ huv)
-    · have huv := (h b a).mp hσ
-      rw [hab] at huv
-      exact (lt_irrefl _ huv)
-
-private theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
-    {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
-    (h : SameTwoPointOrderChamber τ τ' σ υ)
-    (a b : TwoPointTimedEvent n) :
-    twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔
-      twoPointTimedEventBeforeOrEqual τ τ' υ a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff]
-  rw [h b a, twoPointTimedEventTime_eq_iff_of_sameOrderChamber h a b]
-
-private theorem twoPointTimedEventBefore_iff_of_sameOrderChamber
-    {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
-    (h : SameTwoPointOrderChamber τ τ' σ υ)
-    (a b : TwoPointTimedEvent n) :
-    twoPointTimedEventBefore τ τ' σ a b ↔
-      twoPointTimedEventBefore τ τ' υ a b := by
-  unfold twoPointTimedEventBefore
-  rw [twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber h a b]
-
 theorem orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
     {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
     (h : SameTwoPointOrderChamber τ τ' σ υ)
@@ -95,7 +51,13 @@ theorem orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
         orderedTwoPointTimedEventPosition τ τ' υ b := by
   rw [orderedTwoPointTimedEventPosition_lt_iff,
     orderedTwoPointTimedEventPosition_lt_iff]
-  exact twoPointTimedEventBefore_iff_of_sameOrderChamber h a b
+  change (stableTimedEventBeforeOrEqual
+      (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b ∧ a ≠ b) ↔
+    (stableTimedEventBeforeOrEqual
+      (twoPointTimedEventTime τ τ' υ) twoPointTimedEventRank a b ∧ a ≠ b)
+  rw [stableTimedEventBeforeOrEqual_congr
+    (twoPointTimedEventTime τ τ' σ)
+    (twoPointTimedEventTime τ τ' υ) twoPointTimedEventRank h a b]
 
 end Common
 end SecondQuantization
