@@ -34,11 +34,15 @@ theorem parityEigenvalue_one : parityEigenvalue 1 = -1 := by
 
 theorem parityEigenvalue_add (p q : ZMod 2) :
     parityEigenvalue (p + q) = parityEigenvalue p * parityEigenvalue q := by
-  fin_cases p <;> fin_cases q <;> norm_num [parityEigenvalue]
+  have htwo : (1 + 1 : ZMod 2) = 0 := by decide
+  have hone : (1 : ZMod 2) ≠ 0 := by decide
+  fin_cases p <;> fin_cases q <;>
+    simp [parityEigenvalue, htwo, hone]
 
 theorem parityEigenvalue_sq (p : ZMod 2) :
     parityEigenvalue p * parityEigenvalue p = 1 := by
-  fin_cases p <;> norm_num [parityEigenvalue]
+  have hone : (1 : ZMod 2) ≠ 0 := by decide
+  fin_cases p <;> simp [parityEigenvalue, hone]
 
 /-- The character of a natural-number parity is the usual number-parity sign. -/
 theorem parityEigenvalue_nat (n : ℕ) :
@@ -47,11 +51,13 @@ theorem parityEigenvalue_nat (n : ℕ) :
   | zero => simp
   | succ n ih =>
       rw [Nat.cast_succ, parityEigenvalue_add, ih, parityEigenvalue_one, pow_succ]
-      ring
 
 private theorem parityEigenvalue_mul_iff (i j p : ZMod 2) :
     parityEigenvalue i * parityEigenvalue j = parityEigenvalue p ↔ i = j + p := by
-  fin_cases i <;> fin_cases j <;> fin_cases p <;> norm_num [parityEigenvalue]
+  have htwo : (1 + 1 : ZMod 2) = 0 := by decide
+  have hone : (1 : ZMod 2) ≠ 0 := by decide
+  fin_cases i <;> fin_cases j <;> fin_cases p <;>
+    simp [parityEigenvalue, htwo, hone]
 
 /-- The parity involution associated with a parity grading of basis configurations. -/
 noncomputable def parityOperator {Config : Type*} (parity : Config → ZMod 2) :
