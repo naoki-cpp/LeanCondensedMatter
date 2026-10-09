@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 import Mathlib.Combinatorics.SimpleGraph.Sum
 
@@ -7,9 +8,9 @@ set_option linter.style.header false
 /-!
 # Connectivity across the slot split
 
-For a diagram reconstructed from a two-point piece and a quartic piece, no contraction joins the two
-leg sectors. Reachability between vertices of the two-point sector in the reconstructed diagram is
-therefore exactly reachability in the two-point piece itself.
+The vertex graph of a reassembled two-point diagram is the disjoint sum of the external and
+quartic vacuum vertex graphs. Mathlib graph-sum reachability transfers connectivity between these
+pieces and the reconstructed diagram.
 
 Consequently, the two-point piece is externally connected exactly when its interaction-slot set is
 the interaction part of the reconstructed diagram's external component. This identifies the fiber
