@@ -159,4 +159,52 @@ theorem MeasurableLocallyBounded.finCons {n : ℕ}
   exact hC _ (finCons_mem_orderedSimplexTimeCube
     (le_max_left R |t|) (le_max_right R |t|) hrest)
 
+/-- Pick a representative of a finite-dimensional signature fiber when it is inhabited.
+Unrealized fibers use the zero time assignment. -/
+noncomputable def finiteSignatureBase {n : ℕ} {ι : Type*}
+    (signature : (Fin n → ℝ) → ι) (s : ι) : Fin n → ℝ := by
+  classical
+  exact if h : ∃ σ : Fin n → ℝ, signature σ = s then
+    Classical.choose h
+  else
+    0
+
+/-- The chosen representative has the requested signature whenever its fiber is nonempty. -/
+theorem finiteSignatureBase_signature_eq_of_exists {n : ℕ} {ι : Type*}
+    (signature : (Fin n → ℝ) → ι) (s : ι)
+    (h : ∃ σ : Fin n → ℝ, signature σ = s) :
+    signature (finiteSignatureBase signature s) = s := by
+  classical
+  simp only [finiteSignatureBase, dite_eq_left h]
+  exact Classical.choose_spec h
+
+/-- Every assignment shares its signature with the representative of its own fiber. -/
+theorem finiteSignatureBase_signature_eq {n : ℕ} {ι : Type*}
+    (signature : (Fin n → ℝ) → ι) (σ : Fin n → ℝ) :
+    signature (finiteSignatureBase signature (signature σ)) = signature σ :=
+  finiteSignatureBase_signature_eq_of_exists signature (signature σ) ⟨σ, rfl⟩
+
+/-- A finite measurable signature selects one of finitely many continuous branches
+measurably, without assuming continuity across signature boundaries. -/
+theorem measurable_of_finite_continuous_signature
+    {ι : Type*} [Finite ι] {n : ℕ}
+    (signature : (Fin n → ℝ) → ι)
+    (hFiber : ∀ s : ι,
+      MeasurableSet {σ : Fin n → ℝ | signature σ = s})
+    (f : (Fin n → ℝ) → ℂ)
+    (branch : ι → (Fin n → ℝ) → ℂ)
+    (hContinuous : ∀ s, Continuous (branch s))
+    (hSelect : ∀ σ, f σ = branch (signature σ) σ) :
+    Measurable f := by
+  classical
+  letI : Fintype ι := Fintype.ofFinite ι
+  have hsum : f = fun σ : Fin n → ℝ =>
+      ∑ s : ι, if signature σ = s then branch s σ else 0 := by
+    funext σ
+    simp [hSelect σ]
+  rw [hsum]
+  apply Finset.measurable_sum
+  intro s _
+  exact Measurable.ite (hFiber s) (hContinuous s).measurable measurable_const
+
 end intervalIntegral
