@@ -132,13 +132,5 @@ theorem stableTimedEventBeforeOrEqual_antisymm {α : Type*} (time : α → ℝ)
     congrArg (fun x : OrderDual ℝ ×ₗ ℕ => (ofLex x).2) hkey
   simpa [stableTimedEventKey] using hrank
 
-/-- Insertion sort by stable timed-event precedence is pairwise ordered. -/
-theorem pairwise_insertionSort_stableTimedEventBeforeOrEqual {α : Type*}
-    (time : α → ℝ) (rank : α → ℕ) (l : List α)
-    [DecidableRel (stableTimedEventBeforeOrEqual time rank)] :
-    (List.insertionSort (stableTimedEventBeforeOrEqual time rank) l).Pairwise
-      (stableTimedEventBeforeOrEqual time rank) := by
-  exact List.pairwise_insertionSort _ _
-
 end Common
 end SecondQuantization
