@@ -128,14 +128,16 @@ private theorem TwoPointDiagram.mixedTimePositionEquiv_partner
         (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
           (mixedTimeAmbientPositionEquiv τ τ' υ).symm) p)) :=
         d.mixedTimeAmbientPositionEquiv_partner τ τ' υ _
-    _ = d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by simp
+    _ = d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by
+      simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
     _ = mixedTimeAmbientPositionEquiv τ τ' σ
         ((d.pairingInMixedOrder τ τ' σ).partner p) :=
       (d.mixedTimeAmbientPositionEquiv_partner τ τ' σ p).symm
     _ = mixedTimeAmbientPositionEquiv τ τ' υ
         (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
           (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
-          ((d.pairingInMixedOrder τ τ' σ).partner p)) := by simp
+          ((d.pairingInMixedOrder τ τ' σ).partner p)) := by
+      simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
 
 /-- Transport ambient normalized pairs between time assignments through their common diagram legs. -/
 noncomputable def TwoPointDiagram.mixedPairTimeEquiv
@@ -188,7 +190,7 @@ noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
         (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' υ (f p))) =
       d.vertexGraph.componentBlock
         (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
-    simp [f]
+    simp only [f, Equiv.trans_apply, Equiv.apply_symm_apply]
   have hcomp (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
       d.mixedPairComponent τ τ' υ (e pr) =
         d.mixedPairComponent τ τ' σ pr := by
