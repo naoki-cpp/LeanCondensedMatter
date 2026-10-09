@@ -144,3 +144,15 @@ same general trace peel theorem to a singleton coefficient-paired tail. The sing
 diagonal summability follows by multiplying the partition-function diagonal series by the exchange
 coefficient; rotation still requires its existing double-series summability. No separate two-point
 trace induction or additional analytic assumption is used.
+
+## Exponential denominators
+
+`Analysis/Exponential.lean` owns `Complex.exp_ne_one_of_re_ne_zero`: a complex exponential
+is different from one when its exponent has nonzero real part. The bosonic Bose and KMS denominator
+proofs use this fact directly, supplying positivity or negativity of the exponent from their
+explicit positive Boltzmann-exponent hypothesis. No representation-specific denominator theorem
+is needed.
+
+In pinned Mathlib `d13f23b723b8a846827a245b89c10fc7d3f11612`, `Complex.norm_exp` and
+`Real.exp_eq_one_iff` provide the norm and real-exponential steps. The shared theorem combines
+those existing results; it does not require a classification of complex exponential periods.
