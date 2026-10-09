@@ -70,6 +70,7 @@ theorem componentBlock_eq_iff_mem [Fintype V] (G : SimpleGraph V) {B : Finset V}
   change G.componentPartition.part v = B ↔ v ∈ B
   exact G.componentPartition.part_eq_iff_mem hB
 
+omit [DecidableEq V] in
 /-- An ambient walk starting in the image of an adjacency-closed map lifts to a reachable source
 vertex, provided that adjacency between image vertices reflects to source adjacency. -/
 theorem exists_reachable_of_walk_of_adj_closed
@@ -89,6 +90,7 @@ theorem exists_reachable_of_walk_of_adj_closed
       refine ⟨y, hy, SimpleGraph.Reachable.trans ?_ hreach⟩
       exact SimpleGraph.Adj.reachable (hreflect x x' (hx' ▸ hadj))
 
+omit [DecidableEq V] in
 /-- Reachability between right-side vertices of a graph sum is exactly reachability
 inside the right summand. -/
 theorem reachable_sum_inr_iff
