@@ -69,8 +69,10 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
         exact (e ⟨C, pr⟩).2⟩
     inj' := by
       intro p q hpq
+      have hval : (e ⟨C, p⟩).1 = (e ⟨C, q⟩).1 :=
+        congrArg (fun x : (d.pairingInOrder order).NormalizedPair => x.1) hpq
       have hpq' : e ⟨C, p⟩ = e ⟨C, q⟩ :=
-        Subtype.ext (congrArg Subtype.val hpq)
+        Subtype.ext hval
       have h : (⟨C, p⟩ : Σ B : d.vertexGraph.componentPartitionOn.parts,
           d.LocalOrderedPair orders B) = ⟨C, q⟩ := e.injective hpq'
       cases h
