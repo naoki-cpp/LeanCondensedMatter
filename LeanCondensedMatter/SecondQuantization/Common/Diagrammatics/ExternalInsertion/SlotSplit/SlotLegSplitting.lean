@@ -155,34 +155,6 @@ theorem ExternalInsertionDiagram.ofSlotSplit_vertexWeight
             (Finset.mem_sdiff.mp v.2).2]
 
 
-/-- Reassembly preserves the external-bearing pairing's partner map, under the canonical
-embedding of its leg positions into the ambient diagram. -/
-@[simp]
-theorem ExternalInsertionDiagram.ofSlotSplit_partner_left
-    {S T : Finset (Fin N)} (h : T ⊆ S)
-    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
-    (vac : QuarticDiagram InternalLabel N (S \ T))
-    (i : Fin (2 * (2 * T.card + E))) :
-    (ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing.partner
-        (externalInsertionSlotLegSplitting (E := E) h (Sum.inl i)) =
-      externalInsertionSlotLegSplitting (E := E) h
-        (Sum.inl (ext.pairing.partner i)) := by
-  simp only [ExternalInsertionDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl]
-
-/-- Reassembly preserves the vacuum pairing's partner map, under the canonical embedding
-of its quartic legs into the ambient external-insertion diagram. -/
-@[simp]
-theorem ExternalInsertionDiagram.ofSlotSplit_partner_right
-    {S T : Finset (Fin N)} (h : T ⊆ S)
-    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
-    (vac : QuarticDiagram InternalLabel N (S \ T))
-    (i : Fin (2 * (2 * (S \ T).card))) :
-    (ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing.partner
-        (externalInsertionSlotLegSplitting (E := E) h (Sum.inr i)) =
-      externalInsertionSlotLegSplitting (E := E) h
-        (Sum.inr (vac.pairing.partner i)) := by
-  simp only [ExternalInsertionDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr]
-
 /-- Dyson interaction signs and local vertex weights split multiplicatively along the
 external-support/vacuum slot partition. This statement does not concern the fermionic
 mixed-time permutation or pairing-crossing sign. -/
