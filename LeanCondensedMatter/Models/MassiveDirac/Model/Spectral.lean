@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
 set_option linter.style.header false
 
@@ -18,9 +18,11 @@ The algebraic spectral identities below are stated away from the degeneracy `E =
 eigenvector gauge is introduced.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Gauge-independent spectral projector candidate
 `P_s = 1/2 (I + s H₀/E)` for the massive-Dirac band with sign `s`. -/
@@ -215,4 +217,4 @@ theorem bandProjector_mul_oppositeBand
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

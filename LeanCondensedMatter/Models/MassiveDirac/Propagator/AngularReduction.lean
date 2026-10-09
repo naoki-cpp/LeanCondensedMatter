@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Symmetry
+import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -31,7 +31,7 @@ are actually needed. No radial integration, disorder normalization, UV limit, or
 limit is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -125,4 +125,4 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

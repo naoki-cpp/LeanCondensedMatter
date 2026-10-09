@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 
 set_option linter.style.header false
 
@@ -15,7 +15,7 @@ No integration measure, ultraviolet cutoff, disorder normalization, Born closure
 limit is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -84,4 +84,4 @@ theorem inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

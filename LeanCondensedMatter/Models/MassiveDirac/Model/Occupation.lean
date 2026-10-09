@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
 
 set_option linter.style.header false
@@ -15,7 +15,7 @@ the radial group-velocity average because both are consequences of the spectrum 
 not of a particular response representation or relaxation model.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -265,4 +265,4 @@ theorem isotropicFermiSurfaceMeanSquareVelocityX_pos
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

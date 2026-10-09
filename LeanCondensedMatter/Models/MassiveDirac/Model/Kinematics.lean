@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.SpecialFunctions.Sqrt
@@ -31,7 +31,7 @@ For an isotropic Fermi circle, projecting the radial group velocity onto the `x`
 factor of `1/2`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -148,4 +148,4 @@ theorem isotropicMeanSquareRadialGroupVelocityX_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

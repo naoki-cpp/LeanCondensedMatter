@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 
 set_option linter.style.header false
@@ -19,9 +19,11 @@ This is pointwise spectral data only. No global eigenvector gauge, Brillouin-zon
 topological claim is made here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open BerryGeometry
 
@@ -266,4 +268,4 @@ theorem bandProjectorOperator_eq_rankOne_pointwiseEigenbasis
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 
 set_option linter.style.header false
 
@@ -20,7 +20,7 @@ parallel Green-function formalism. No disorder data, momentum integration, angul
 closure, SCBA, or vertex resummation is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -210,4 +210,4 @@ theorem star_pauliGreenOperatorOfRegulator
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

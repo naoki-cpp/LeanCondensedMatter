@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 
@@ -24,9 +24,11 @@ arbitrary nonzero signed-regulator realization, are therefore model-level spectr
 Kubo–Bastin, Středa, propagator, and disorder consumers remain downstream.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open ContinuousLinearMap
 
@@ -184,4 +186,4 @@ theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

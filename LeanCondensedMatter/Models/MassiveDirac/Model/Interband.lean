@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral
+import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
 
 set_option linter.style.header false
 
@@ -10,9 +10,11 @@ the interband energy gap and the gauge-independent projector/velocity trace. The
 `oppositeBand` involution itself is basic model data and is owned by `Model.Basic`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Energy denominator `E_n - E_m` with `m` the opposite band. -/
 def interbandEnergyGap (band : Band) (v m px py : ℝ) : ℝ :=
@@ -114,4 +116,4 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

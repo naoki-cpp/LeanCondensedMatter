@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Analysis.CStarAlgebra.Matrix
@@ -20,9 +20,11 @@ No Kubo–Bastin or Středa kernel is defined here. Response-specific trace iden
 representations remain downstream of this model realization.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
@@ -223,4 +225,4 @@ noncomputable def boundedFreeSystem (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
