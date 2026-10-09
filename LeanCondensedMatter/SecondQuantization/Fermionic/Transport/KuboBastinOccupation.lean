@@ -62,7 +62,7 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℂ :=
   finiteKuboBastinOccupationResolvedChannelResponse system data interpolation
-      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
+      (boundedDirectionalResponseChannel system geometry direction K q)
       omega eta *
     finiteVolumeConductivityNormalization convention omega eta
 
@@ -84,7 +84,7 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
       response * finiteVolumeConductivityNormalization convention omega eta)
     (finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
       system data interpolation
-      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
+      (boundedDirectionalResponseChannel system geometry direction K q)
       omega eta)
 
 /-- The occupation-resolved response remains connected directly to the upstream causal Kubo and
