@@ -157,7 +157,7 @@ noncomputable def mixedTimeOrderedAtomicLegPosition {n : ℕ}
   (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm leg
 
 /-- The canonical position equivalence computes the index in the sorted atomic-leg list. -/
-private theorem mixedTimeOrderedAtomicLegPosition_val {n : ℕ}
+theorem mixedTimeOrderedAtomicLegPosition_val {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
     (mixedTimeOrderedAtomicLegPosition τ τ' σ leg).val =
       @List.idxOf (OrderedTwoPointLeg n) (instBEqOfDecidableEq : BEq (OrderedTwoPointLeg n))
