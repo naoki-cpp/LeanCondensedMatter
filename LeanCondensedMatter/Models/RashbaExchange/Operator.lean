@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model
+import LeanCondensedMatter.Models.RashbaExchange.Model
 
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -15,7 +15,7 @@ This file is the model-to-response boundary. Matrices remain the primary model r
 generic finite-dimensional Středa response theory consumes their bounded-operator realization.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
@@ -109,4 +109,4 @@ noncomputable def greenOperator
         params.chemicalPotential params.broadening
 
 end
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange

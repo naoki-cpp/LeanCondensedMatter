@@ -13,6 +13,7 @@
         "LeanCondensedMatter/Transport/Models.lean",
         "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
         "LeanCondensedMatter/Models/Parabolic2DEG.lean",
+        "LeanCondensedMatter/Models/RashbaExchange.lean",
         "LeanCondensedMatter/Models.lean",
         "LeanCondensedMatter/SecondQuantization.lean"
       ]
@@ -574,8 +575,7 @@
       "id": "transportModelsUmbrella",
       "path": "LeanCondensedMatter/Transport/Models.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange"
+        "LeanCondensedMatter.Transport.Models.MassiveDirac"
       ]
     },
     {
@@ -587,9 +587,25 @@
       ]
     },
     {
+      "id": "rashbaExchangePublicUmbrella",
+      "path": "LeanCondensedMatter/Models/RashbaExchange.lean",
+      "modules": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.Response",
+        "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry"
+      ]
+    },
+    {
       "id": "modelsPublicUmbrella",
       "path": "LeanCondensedMatter/Models.lean",
-      "modules": ["LeanCondensedMatter.Models.Parabolic2DEG"]
+      "modules": [
+        "LeanCondensedMatter.Models.Parabolic2DEG",
+        "LeanCondensedMatter.Models.RashbaExchange"
+      ]
     },
     {
       "id": "massiveDiracPublicUmbrella",

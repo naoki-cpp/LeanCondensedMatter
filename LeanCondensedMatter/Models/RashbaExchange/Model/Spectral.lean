@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model
+import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -24,7 +24,7 @@ P_s = 1/2 (I + s d·σ / E).
 All projector identities that require separated bands are stated under `E ≠ 0`.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
@@ -269,4 +269,4 @@ theorem bandProjector_mul_oppositeBand
 
 end
 
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange
