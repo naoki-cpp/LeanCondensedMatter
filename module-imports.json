@@ -7402,13 +7402,31 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop",
+      "sourceFile": "LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder/TMatrix/BornDysonLoop.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity",
+      "sourceFile": "LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder/TMatrix/ScalarImpurity.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
       "sourceFile": "LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder/TMatrix.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator"
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate",
