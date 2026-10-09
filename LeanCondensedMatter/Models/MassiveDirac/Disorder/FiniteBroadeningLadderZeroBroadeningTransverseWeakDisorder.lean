@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -17,9 +17,11 @@ The cutoff remains fixed beyond the metallic shell. No Středa insertion, conduc
 Hall projection, ultraviolet limit, or simultaneous broadening/disorder limit is taken here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -154,4 +156,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBo
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

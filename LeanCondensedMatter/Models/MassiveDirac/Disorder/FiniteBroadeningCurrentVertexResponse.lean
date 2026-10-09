@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -21,7 +21,7 @@ No Streda trace, Gaussian-crossed Fourier kernel, same-side remainder, conductiv
 or zero-broadening limit is owned here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -109,4 +109,4 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedLongitudinalCurrentFactor_
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

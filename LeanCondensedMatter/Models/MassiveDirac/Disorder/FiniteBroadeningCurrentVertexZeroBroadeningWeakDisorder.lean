@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -13,9 +13,11 @@ quadratic Lorentzian and then sent through the separate one-sided `W → 0⁺` l
 normal-form API, cutoff limit, or simultaneous broadening/disorder limit is exposed.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter MeasureTheory QuantumTheory.Transport
 open scoped Interval
@@ -302,4 +304,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

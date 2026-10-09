@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
-import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Tactic
 
@@ -18,7 +18,7 @@ The cutoff and disorder strength remain fixed. No weak-disorder, ultraviolet, so
 conductivity, or simultaneous-limit statement is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -478,4 +478,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

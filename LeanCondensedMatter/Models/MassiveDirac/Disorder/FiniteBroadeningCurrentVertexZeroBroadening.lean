@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -17,7 +17,7 @@ No radial-integral limit, solved-ladder limit, disorder-strength limit, ultravio
 projection, or mechanism label is introduced here. The repository orientation remains `Gᴿ Γ Gᴬ`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -186,4 +186,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialI
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

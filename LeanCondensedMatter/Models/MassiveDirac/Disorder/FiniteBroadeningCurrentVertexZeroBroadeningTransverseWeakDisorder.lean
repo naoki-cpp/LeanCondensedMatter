@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,9 +15,11 @@ longitudinal and transverse integrated rung entries share the same radial kernel
 ultraviolet, thermodynamic, or simultaneous broadening/disorder limit is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter MeasureTheory QuantumTheory.Transport
 open scoped Interval
@@ -182,4 +184,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
 
 set_option linter.style.header false
 
@@ -14,9 +14,11 @@ The cutoff remains fixed beyond the metallic shell. No conductivity, ultraviolet
 simultaneous limit is taken here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter
 
@@ -192,4 +194,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

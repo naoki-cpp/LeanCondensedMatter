@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
-import LeanCondensedMatter.Transport.Models.MassiveDirac.TransportDomain
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false
 
@@ -15,9 +15,11 @@ taken here.
 The repository orientation remains `[[X,-Y],[Y,X]]`, corresponding to `Gᴿ Γ Gᴬ`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter
 
@@ -123,4 +125,4 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

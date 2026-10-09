@@ -1,8 +1,8 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
+import LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -33,7 +33,7 @@ This module does not insert the vertex into Kubo/Středa, take broadening or dis
 identify the Born-Dyson approximation with an exact disorder average.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -271,4 +271,4 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

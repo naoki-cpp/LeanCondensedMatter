@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -22,7 +22,7 @@ No disorder-strength limit, ultraviolet removal, limit interchange, Hall project
 label, SCBA/Ward claim, or exact-disorder-average claim is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -351,4 +351,4 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroa
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
