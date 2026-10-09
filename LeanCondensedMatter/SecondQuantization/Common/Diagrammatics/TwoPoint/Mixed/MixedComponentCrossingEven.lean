@@ -122,24 +122,12 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
         mixedTimeOrderedInteractionLeg v.1 l
       rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
         mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-    have htarget : d.unflattenedLegInComponent C
-        (mixedTimeOrderedInteractionLeg v.1 l) := by
-      change (Sum.inr ⟨v.1, Finset.mem_univ v.1⟩ :
-          TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
-        (C : Finset (TwoPointVertex
-          (Finset.univ : Finset (Fin n))))
-      exact (mem_interactionSector_subtype
-        (C : Finset (TwoPointVertex
-          (Finset.univ : Finset (Fin n))))
-        ⟨v.1, Finset.mem_univ v.1⟩).1 v.2
-    have hleg : leg = ⟨mixedTimeOrderedInteractionLeg v.1 l, htarget⟩ :=
-      Subtype.ext hlegVal
     change d.vacuumLegDataEquiv C hVac leg = (v, l)
+    have hleg : leg =
+        ⟨mixedTimeOrderedInteractionLeg v.1 l, hlegVal ▸ leg.2⟩ :=
+      Subtype.ext hlegVal
     rw [hleg]
-    apply Prod.ext
-    · apply Subtype.ext
-      rfl
-    · rfl
+    rfl
   have hs :
       (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm (v, l) = direct := by
     apply (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).injective
