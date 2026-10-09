@@ -198,7 +198,6 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
   let e : LocalPair ≃ AmbientPair :=
     TwoPointDiagram.slotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ
   rw [TwoPointDiagram.mixedComponentCrossingCount,
-    TwoPointDiagram.mixedComponentOrientedCrossingCount,
     Pairing.componentCrossingCount, Fintype.sum_prod_type,
     Pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
   symm
