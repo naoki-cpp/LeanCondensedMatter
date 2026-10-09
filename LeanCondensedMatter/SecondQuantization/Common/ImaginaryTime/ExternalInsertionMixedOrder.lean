@@ -494,8 +494,11 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
         externalInsertionMixedTimeOrderedAtomicLegs externalTime υ := by
     unfold externalInsertionMixedTimeOrderedAtomicLegs
     rw [hordered]
+  apply Equiv.ext
+  intro i
   unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
-  rw [hlegs]
+  simpa only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
+    List.get_eq_getElem, hlegs]
 
 end Common
 end SecondQuantization
