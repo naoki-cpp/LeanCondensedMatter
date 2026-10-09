@@ -1,4 +1,5 @@
 import Mathlib.Data.Int.Basic
+import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
 
@@ -30,6 +31,18 @@ in the (anti)commutation relations `a_i a_j† - ζ a_j† a_i = δᵢⱼ` unify
 def zetaInt : Statistics → ℤ
   | boson => 1
   | fermion => -1
+
+/-- Parity of a field operator with the selected particle statistics.
+The grade lives in the additive group `ZMod 2`, not in the scalar sign. -/
+def parity : Statistics → ZMod 2
+  | .boson => 0
+  | .fermion => 1
+
+@[simp]
+theorem parity_boson : parity boson = 0 := rfl
+
+@[simp]
+theorem parity_fermion : parity fermion = 1 := rfl
 
 @[simp]
 theorem zetaInt_boson : zetaInt boson = 1 := rfl
