@@ -51,10 +51,17 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
         (Sum.inl e) (slotSplitVacuumVertex v) :=
     ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
       (slotSplitVacuumVertex v) (Sum.inl e)).1 he
-  obtain ⟨p⟩ := hreach.symm
-  obtain ⟨w, hw, -⟩ :=
-    exists_reachable_of_walk_ofSlotSplitVacuum h ext vac p v rfl
-  simpa [slotSplitVacuumVertex] using hw
+  have hsum :
+      (ext.vertexGraph ⊕g vac.vertexGraph).Reachable
+        (Sum.inl (Sum.inl e)) (Sum.inr v) :=
+    (SimpleGraph.Iso.reachable_iff
+      (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
+      (u := Sum.inl (Sum.inl e)) (v := Sum.inr v)).mp
+      (by
+        change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+          (slotSplitVertex h (Sum.inl e)) (slotSplitVacuumVertex v)
+        simpa [slotSplitVertex] using hreach)
+  exact SimpleGraph.not_reachable_sum_inl_inr _ _ hsum
 
 /-- Send a quartic vacuum-piece component to the corresponding ambient vacuum component. -/
 noncomputable def slotSplitVacuumComponentPart
