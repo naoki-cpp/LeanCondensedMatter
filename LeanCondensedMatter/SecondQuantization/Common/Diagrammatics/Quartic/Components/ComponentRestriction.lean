@@ -11,8 +11,8 @@ The restriction construction depends only on the pairing-induced vertex graph an
 indexing. It is independent of the vertex-label type and particle statistics.
 
 Partner-invariant pairing restriction is owned by `Combinatorics.PerfectPairing.Restriction`; this
-module supplies only the quartic component predicate and its leg reindexing. Connectedness of the
-restricted diagram and reassembly are developed separately.
+module supplies the component predicate, its leg reindexing, and compatibility of restricted vertex
+labels with ambient labels. Connectedness and reassembly are developed separately.
 -/
 
 namespace SecondQuantization
@@ -139,6 +139,18 @@ noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
     d.vertexLabel ((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
       (fun {_} hx => d.vertexGraph.componentPartitionOn.le hB hx)).symm v).1
   pairing := d.restrictedPairing hB
+
+/-- The label of a restricted vertex agrees with the ambient label under the partition's
+`equivSigmaParts` inclusion. -/
+@[simp]
+theorem QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (B : d.vertexGraph.componentPartitionOn.parts) (v : ↥(B : Finset (Fin N))) :
+    (d.restrictComponent B.2).vertexLabel v =
+      d.vertexLabel (d.vertexGraph.componentPartitionOn.equivSigmaParts.symm ⟨B, v⟩) := by
+  apply congrArg d.vertexLabel
+  apply Subtype.ext
+  rfl
 
 end Common
 end SecondQuantization

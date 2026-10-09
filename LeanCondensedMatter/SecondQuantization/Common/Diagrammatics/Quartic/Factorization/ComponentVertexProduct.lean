@@ -9,27 +9,12 @@ set_option linter.style.header false
 The connected-component partition of a quartic diagram decomposes its ambient vertices into the
 dependent disjoint union of the component vertex sets. Applying finite-partition product identities
 to this decomposition factors arbitrary commutative vertex-local weights over the components.
-
-The module also records the compatibility between ambient vertex labels and the labels of restricted
-component diagrams.
 -/
 
 namespace SecondQuantization
 namespace Common
 
 variable {Label : Type*} {N : ℕ}
-
-/-- The label of a restricted vertex agrees with the ambient label under the partition's
-`equivSigmaParts` inclusion. -/
-@[simp]
-theorem QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (B : d.vertexGraph.componentPartitionOn.parts) (v : ↥(B : Finset (Fin N))) :
-    (d.restrictComponent B.2).vertexLabel v =
-      d.vertexLabel (d.vertexGraph.componentPartitionOn.equivSigmaParts.symm ⟨B, v⟩) := by
-  apply congrArg d.vertexLabel
-  apply Subtype.ext
-  rfl
 
 /-- The statistics-independent complex Dyson sign times vertex weight factors over connected
 components. -/
