@@ -48,16 +48,6 @@ private theorem slotSplitVertex_injective (h : T ⊆ S) :
   · simp only [slotSplitVertex, Sum.inr.injEq, Subtype.mk.injEq] at hEq
     exact congrArg Sum.inr (Subtype.ext hEq)
 
-/-- A vertex of the external piece is never an interaction vertex outside the slot set. -/
-private theorem slotSplitVertex_ne_inr_of_not_mem (h : T ⊆ S) (x : TwoPointVertex T) {w : ↥S}
-    (hw : (w : Fin N) ∉ T) : slotSplitVertex h x ≠ Sum.inr w := by
-  cases x with
-  | inl e => simp [slotSplitVertex]
-  | inr v =>
-      simp only [slotSplitVertex, ne_eq, Sum.inr.injEq, Subtype.ext_iff]
-      intro hEq
-      exact hw (hEq ▸ v.2)
-
 /-- Left legs carry the ambient vertices of the corresponding external-piece vertices. -/
 theorem twoPointVertexOfLeg_slotLegSplitting_inl (h : T ⊆ S)
     (i : Fin (2 * (2 * T.card + 1))) :
@@ -73,45 +63,8 @@ theorem twoPointVertexOfLeg_slotLegSplitting_inl (h : T ⊆ S)
       rw [slotLegSplitting_left_interaction]
       simp [twoPointVertexOfLeg, slotSplitVertex]
 
-/-- Right legs carry interaction vertices outside the slot set. -/
-private theorem exists_not_mem_twoPointVertexOfLeg_slotLegSplitting_inr (h : T ⊆ S)
-    (i : Fin (2 * (2 * (S \ T).card))) :
-    ∃ w : ↥S, (w : Fin N) ∉ T ∧
-      twoPointVertexOfLeg (slotLegSplitting h (Sum.inr i)) = Sum.inr w := by
-  obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \ T)).symm.surjective i
-  obtain ⟨v, l⟩ := p
-  refine ⟨⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, (Finset.mem_sdiff.mp v.2).2, ?_⟩
-  rw [slotLegSplitting_right_interaction]
-  simp [twoPointVertexOfLeg]
-
 variable (h : T ⊆ S) (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
   (vac : QuarticDiagram InternalLabel N (S \ T))
-
-/-- **A reassembled diagram induces the adjacency of its external piece.** -/
-theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
-    (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
-        (slotSplitVertex h x) (slotSplitVertex h y) ↔
-      ext.vertexGraph.Adj x y := by
-  constructor
-  · rintro ⟨hne, leg, hleg, hpartner⟩
-    obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
-    cases z with
-    | inl i =>
-        rw [twoPointVertexOfLeg_slotLegSplitting_inl] at hleg
-        rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl,
-          twoPointVertexOfLeg_slotLegSplitting_inl] at hpartner
-        refine ⟨fun hxy => hne (congrArg (slotSplitVertex h) hxy), i,
-          slotSplitVertex_injective h hleg, slotSplitVertex_injective h hpartner⟩
-    | inr j =>
-        obtain ⟨w, hw, hvert⟩ :=
-          exists_not_mem_twoPointVertexOfLeg_slotLegSplitting_inr h j
-        exact absurd (hvert.symm.trans hleg).symm (slotSplitVertex_ne_inr_of_not_mem h x hw)
-  · rintro ⟨hne, i, hi, hpartner⟩
-    refine ⟨fun hEq => hne (slotSplitVertex_injective h hEq),
-      slotLegSplitting h (Sum.inl i), ?_, ?_⟩
-    · rw [twoPointVertexOfLeg_slotLegSplitting_inl, hi]
-    · rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl,
-        twoPointVertexOfLeg_slotLegSplitting_inl, hpartner]
 
 /-- Adjacency in a quartic vertex graph, unfolded. -/
 private theorem QuarticDiagram.vertexGraph_adj_iff
@@ -192,6 +145,31 @@ theorem twoPointVertexOfLeg_slotLegSplitting_inr_exact (h : T ⊆ S)
   simpa [twoPointInteractionLeg, slotSplitVacuumVertex] using
     (twoPointVertexOfLeg_interactionLeg
       (v := ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩) l)
+
+/-- **A reassembled diagram induces the adjacency of its external piece.** -/
+theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
+        (slotSplitVertex h x) (slotSplitVertex h y) ↔
+      ext.vertexGraph.Adj x y := by
+  constructor
+  · rintro ⟨hne, leg, hleg, hpartner⟩
+    obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
+    cases z with
+    | inl i =>
+        rw [twoPointVertexOfLeg_slotLegSplitting_inl] at hleg
+        rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl,
+          twoPointVertexOfLeg_slotLegSplitting_inl] at hpartner
+        refine ⟨fun hxy => hne (congrArg (slotSplitVertex h) hxy), i,
+          slotSplitVertex_injective h hleg, slotSplitVertex_injective h hpartner⟩
+    | inr j =>
+        rw [twoPointVertexOfLeg_slotLegSplitting_inr_exact] at hleg
+        exact False.elim (slotSplitVertex_ne_slotSplitVacuumVertex h x _ hleg.symm)
+  · rintro ⟨hne, i, hi, hpartner⟩
+    refine ⟨fun hEq => hne (slotSplitVertex_injective h hEq),
+      slotLegSplitting h (Sum.inl i), ?_, ?_⟩
+    · rw [twoPointVertexOfLeg_slotLegSplitting_inl, hi]
+    · rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl,
+        twoPointVertexOfLeg_slotLegSplitting_inl, hpartner]
 
 /-- Reassembly preserves and reflects adjacency between vertices of the vacuum piece. -/
 private theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
