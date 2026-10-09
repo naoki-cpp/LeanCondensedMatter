@@ -242,13 +242,7 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
         exact h.trans hC.symm
       have hBVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
         (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
-      have hcomm :
-          pairing.componentGeometricCrossingCount components B C =
-            pairing.componentGeometricCrossingCount components C B := by
-        rw [pairing.componentGeometricCrossingCount_eq_oriented_add components B C,
-          pairing.componentGeometricCrossingCount_eq_oriented_add components C B]
-        omega
-      rw [hcomm]
+      rw [pairing.componentGeometricCrossingCount_comm components B C]
       exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
         τ τ' σ C B (Ne.symm hBC) hBVac
     · have hCVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
