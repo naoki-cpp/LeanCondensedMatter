@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
+import LeanCondensedMatter.Combinatorics.SimpleGraphClosedEmbedding
 
 set_option linter.style.header false
 
@@ -148,17 +149,11 @@ private theorem exists_reachable_of_walk_ofSlotSplit :
       (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Walk u v →
         ∀ x : TwoPointVertex T, u = slotSplitVertex h x →
           ∃ y : TwoPointVertex T, v = slotSplitVertex h y ∧ ext.vertexGraph.Reachable x y := by
-  intro u v p
-  induction p with
-  | nil => exact fun x hx => ⟨x, hx, SimpleGraph.Reachable.refl _⟩
-  | cons hadj p ih =>
-      intro x hx
-      subst hx
-      obtain ⟨x', hx'⟩ := exists_eq_slotSplitVertex_of_adj h ext vac hadj
-      obtain ⟨y, hy, hreach⟩ := ih x' hx'
-      refine ⟨y, hy, SimpleGraph.Reachable.trans ?_ hreach⟩
-      exact (SimpleGraph.Adj.reachable
-        ((adj_ofSlotSplit_slotSplitVertex_iff h ext vac x x').1 (hx' ▸ hadj)))
+  exact SimpleGraph.exists_reachable_of_walk_of_adj_closed
+    ext.vertexGraph (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph
+    (slotSplitVertex h)
+    (fun x u hadj => exists_eq_slotSplitVertex_of_adj h ext vac hadj)
+    (fun x y hadj => (adj_ofSlotSplit_slotSplitVertex_iff h ext vac x y).1 hadj)
 
 /-- Reachability from a vertex of the external piece is reachability inside that piece. -/
 private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
