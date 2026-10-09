@@ -258,61 +258,26 @@ noncomputable def TwoPointDiagram.ofSlotSplit_vertexGraphIso :
     · simpa only [slotSplitVertexEquiv_inr, SimpleGraph.sum_adj_inr] using
         (adj_ofSlotSplit_slotSplitVacuumVertex_iff h ext vac x y)
 
-/-- **A walk cannot leave the external piece.** -/
-private theorem exists_eq_slotSplitVertex_of_adj {x : TwoPointVertex T} {u : TwoPointVertex S}
-    (hadj : (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj (slotSplitVertex h x) u) :
-    ∃ y : TwoPointVertex T, u = slotSplitVertex h y := by
-  obtain ⟨hne, leg, hleg, hpartner⟩ := hadj
-  obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
-  cases z with
-  | inl i =>
-      refine ⟨twoPointVertexOfLeg (ext.pairing.partner i), ?_⟩
-      rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl,
-        twoPointVertexOfLeg_slotLegSplitting_inl] at hpartner
-      exact hpartner.symm
-  | inr j =>
-      obtain ⟨w, hw, hvert⟩ :=
-        exists_not_mem_twoPointVertexOfLeg_slotLegSplitting_inr h j
-      exact absurd (hvert.symm.trans hleg).symm (slotSplitVertex_ne_inr_of_not_mem h x hw)
-
-/-- The external piece maps into the reassembled diagram as a graph homomorphism. -/
-private noncomputable def ofSlotSplitHom :
-    ext.vertexGraph →g (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph where
-  toFun := slotSplitVertex h
-  map_rel' := fun {_ _} hab =>
-    (adj_ofSlotSplit_slotSplitVertex_iff h ext vac _ _).2 hab
+/-- Reachability between vertices of the external piece is exactly the restriction of
+reachability in the graph of the reconstructed slot split. -/
+private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+        (slotSplitVertex h x) (slotSplitVertex h y) ↔
+      ext.vertexGraph.Reachable x y := by
+  change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+      ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inl x))
+      ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inl y)) ↔ _
+  exact (SimpleGraph.Iso.reachable_iff
+    (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+    (u := Sum.inl x) (v := Sum.inl y)).trans
+      (SimpleGraph.reachable_sum_inl_iff ext.vertexGraph vac.vertexGraph x y)
 
 /-- Reachability inside the external piece survives reassembly. -/
 theorem reachable_ofSlotSplit_of_reachable {x y : TwoPointVertex T}
     (hreach : ext.vertexGraph.Reachable x y) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-      (slotSplitVertex h x) (slotSplitVertex h y) := by
-  exact hreach.map (ofSlotSplitHom h ext vac)
-
-/-- **Every walk of a reassembled diagram starting in the external piece stays in it**, and its
-image is a walk of that piece. -/
-private theorem exists_reachable_of_walk_ofSlotSplit :
-    ∀ {u v : TwoPointVertex S},
-      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Walk u v →
-        ∀ x : TwoPointVertex T, u = slotSplitVertex h x →
-          ∃ y : TwoPointVertex T, v = slotSplitVertex h y ∧ ext.vertexGraph.Reachable x y := by
-  exact SimpleGraph.exists_reachable_of_walk_of_adj_closed
-    ext.vertexGraph (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph
-    (slotSplitVertex h)
-    (fun x u hadj => exists_eq_slotSplitVertex_of_adj h ext vac hadj)
-    (fun x y hadj => (adj_ofSlotSplit_slotSplitVertex_iff h ext vac x y).1 hadj)
-
-/-- Reachability from a vertex of the external piece is reachability inside that piece. -/
-private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
-    (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-        (slotSplitVertex h x) (slotSplitVertex h y) ↔
-      ext.vertexGraph.Reachable x y := by
-  constructor
-  · rintro ⟨p⟩
-    obtain ⟨y', hy', hreach⟩ := exists_reachable_of_walk_ofSlotSplit h ext vac p x rfl
-    have : y = y' := slotSplitVertex_injective h hy'
-    exact this ▸ hreach
-  · exact reachable_ofSlotSplit_of_reachable h ext vac
+      (slotSplitVertex h x) (slotSplitVertex h y) :=
+  (reachable_ofSlotSplit_iff h ext vac x y).2 hreach
 
 /-- **The slot set of a reassembled diagram is its external component's interaction part**, provided
 the external piece really is externally connected. -/
@@ -325,18 +290,27 @@ theorem interactionSector_externalComponent_ofSlotSplit
   rw [mem_interactionSector]
   constructor
   · rintro ⟨hv, hmem⟩
-    have hreach :=
-      ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
-        (Sum.inl 0) (Sum.inr ⟨v, hv⟩)).1 hmem
-    obtain ⟨y, hy, -⟩ :=
-      exists_reachable_of_walk_ofSlotSplit h ext vac hreach.symm.some (Sum.inl 0) rfl
-    cases y with
-    | inl e => simp [slotSplitVertex] at hy
-    | inr w =>
-        have hvw : v = (w : Fin N) := by
-          simpa [slotSplitVertex] using hy
-        rw [hvw]
-        exact w.2
+    by_cases hvT : v ∈ T
+    · exact hvT
+    · let w : ↥(S \ T) := ⟨v, Finset.mem_sdiff.mpr ⟨hv, hvT⟩⟩
+      have hreach :
+          (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+            (Sum.inl (0 : Fin 2)) (slotSplitVacuumVertex w) := by
+        have hmemreach :=
+          ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
+            (Sum.inl 0) (Sum.inr ⟨v, hv⟩)).1 hmem
+        simpa [w, slotSplitVacuumVertex] using hmemreach.symm
+      have hsum :
+          (ext.vertexGraph ⊕g vac.vertexGraph).Reachable
+            (Sum.inl (Sum.inl (0 : Fin 2))) (Sum.inr w) :=
+        (SimpleGraph.Iso.reachable_iff
+          (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+          (u := Sum.inl (Sum.inl (0 : Fin 2))) (v := Sum.inr w)).mp
+          (by
+            change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+              (slotSplitVertex h (Sum.inl (0 : Fin 2))) (slotSplitVacuumVertex w)
+            simpa [slotSplitVertex] using hreach)
+      exact False.elim (SimpleGraph.not_reachable_sum_inl_inr _ _ hsum)
   · intro hvT
     refine ⟨h hvT, ?_⟩
     obtain ⟨e, he⟩ := hext.1 ⟨v, hvT⟩
