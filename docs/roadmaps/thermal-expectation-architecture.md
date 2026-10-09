@@ -125,3 +125,8 @@ scalar coefficients. Both preserve the ordered product after deleting one positi
 an arbitrary complex exchange factor. Common finite Gibbs, bosonic free Gibbs, and completed
 fermionic Gibbs proofs use these algebraic identities directly. CCR/CAR relations, KMS rotation,
 trace identities, and summability remain in the respective thermal implementations.
+The same module owns the field identity that solves the scalar equations left by exchange and
+rotation. Bosonic and completed fermionic first-pair reductions apply it with remainder coefficients
+`1` and `-1` respectively. Their KMS proofs, denominator nonvanishing, and fermionic odd-tail
+sign proof remain in the representation-specific consumers. The algebraic identity assumes only
+a field and the two scalar equalities, and introduces no thermal-state contract.

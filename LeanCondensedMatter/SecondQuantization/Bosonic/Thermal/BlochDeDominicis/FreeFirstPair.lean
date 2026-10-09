@@ -98,26 +98,9 @@ theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
       C.kmsFactor ε β *
         freeGibbsExpectation ε β ((orderedProduct l).comp C.operator)
     exact C.freeGibbsExpectation_operator_comp_rotate ε β (orderedProduct l)
-  have hqR : C.kmsFactor ε β * R = P + R := by
-    calc
-      C.kmsFactor ε β * R = E := hkms.symm
-      _ = P + R := hpeel
-  have hRmul : R * (C.kmsFactor ε β - 1) = P := by
-    calc
-      R * (C.kmsFactor ε β - 1) = C.kmsFactor ε β * R - R := by ring
-      _ = (P + R) - R := by rw [hqR]
-      _ = P := by ring
-  have hne := C.kmsFactor_sub_one_ne_zero ε β hpos
-  have hR : R = P / (C.kmsFactor ε β - 1) :=
-    (eq_div_iff hne).2 hRmul
-  calc
-    freeGibbsExpectation ε β (orderedProduct (C :: l)) = E := rfl
-    _ = C.kmsFactor ε β * R := hkms
-    _ = (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) * P := by
-      rw [hR]
-      ring
-    _ = (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) *
-        freeGibbsExpectation ε β (C.operatorPeelSum l) := rfl
+  exact ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R 1 (C.kmsFactor ε β)
+    (by simpa only [one_mul] using hpeel) hkms
+    (C.kmsFactor_sub_one_ne_zero ε β hpos)
 
 /-- The KMS solution factor times the bare CCR exchange coefficient is exactly the canonical
 normalized two-field free thermal kernel. -/
