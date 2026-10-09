@@ -32,8 +32,11 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
       c1j / (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 [(Cj, c1j)] hC1
     (by simpa using hcomm)
-  simp [ScalarExchange.peelSumWithCoefficients, Module.End.one_eq_id,
-    LinearMap.comp_smul, map_smul, smul_eq_mul] at h
+  simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
+    List.prod_cons, List.prod_nil, pow_one, mul_one,
+    ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero] at h
+  simp only [Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id,
+    map_smul, smul_eq_mul] at h
   have hZ := traceFock_diagonalEvolution_ne_zero energy β
   rw [finiteGibbsExpectation_eq_trace_div, div_eq_div_iff hZ hne]
   linear_combination h

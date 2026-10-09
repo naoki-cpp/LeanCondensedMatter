@@ -175,11 +175,17 @@ theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
   have hthm := Common.tsumTrace_diagonalEvolution_comp_peel (freeEigenvalue ε) β (-(ε i))
     (1 : ℂ) (annihilate i) [(create j, if i = j then (1 : ℂ) else 0)] hC1
     (by simpa using hcomm)
-    (by simpa [ScalarExchange.peelSumWithCoefficients, Module.End.one_eq_id,
-      LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul] using hPeel)
-    (by simpa using hRotate)
-  simpa [ScalarExchange.peelSumWithCoefficients, Module.End.one_eq_id,
-    LinearMap.comp_smul, Common.tsumTrace_smul] using hthm
+    (by simpa only [ScalarExchange.peelSumWithCoefficients, List.map_nil, List.prod_nil,
+      mul_zero, smul_zero, add_zero, Module.End.one_eq_id, LinearMap.comp_smul,
+      LinearMap.comp_id, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul,
+      imaginaryTimeEvolveFree] using hPeel)
+    (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one,
+      imaginaryTimeEvolveFree] using hRotate)
+  simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
+    List.prod_cons, List.prod_nil, pow_one, one_mul, mul_one,
+    ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero] at hthm
+  simpa only [Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id,
+    Common.tsumTrace_smul] using hthm
 
 end
 end Bosonic
