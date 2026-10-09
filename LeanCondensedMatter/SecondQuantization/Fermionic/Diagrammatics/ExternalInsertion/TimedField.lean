@@ -76,6 +76,19 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicPairValue
 
 variable [Fintype Mode]
 
+/-- Free-Gibbs contraction of two fixed canonical external-insertion legs, varying only the
+interaction times. Unlike a mixed-position kernel, the two leg identities do not change
+when the mixed event order changes. -/
+noncomputable def orderedExternalInsertionLegPairContraction {E n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (x y : OrderedExternalInsertionLeg E n) : ℂ :=
+  timedFieldPairContraction ε β
+    (orderedExternalInsertionLegField externalLabel externalTime q σ x)
+    (orderedExternalInsertionLegField externalLabel externalTime q σ y)
+
 /-- Fermionic pairing evaluation of one external-insertion diagram in mixed-time atomic order.
 Interaction couplings and the external time-ordering sign are not included here. -/
 noncomputable def ExternalInsertionWickDiagram.mixedPairingValue {E n : ℕ}
