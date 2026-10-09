@@ -145,23 +145,13 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
   have hLocalPairwise :
       (orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).Pairwise localRel := by
-    dsimp [localRel]
-    change
-      (List.insertionSort
-        (stableTimedEventBeforeOrEqual
-          (externalInsertionTimedEventTime
-            (externalTime ∘ fExternal) (σ ∘ fInteraction))
-          externalInsertionTimedEventRank)
-        (canonicalExternalInsertionTimedEvents E₁ m)).Pairwise
-          (stableTimedEventBeforeOrEqual
-            (externalInsertionTimedEventTime
-              (externalTime ∘ fExternal) (σ ∘ fInteraction))
-            externalInsertionTimedEventRank)
-    exact pairwise_insertionSort_stableTimedEventBeforeOrEqual
-      (externalInsertionTimedEventTime
-        (externalTime ∘ fExternal) (σ ∘ fInteraction))
-      externalInsertionTimedEventRank
-      (canonicalExternalInsertionTimedEvents E₁ m)
+    simpa [localRel, orderedExternalInsertionTimedEvents,
+      externalInsertionTimedEventBeforeOrEqual] using
+      (pairwise_insertionSort_stableTimedEventBeforeOrEqual
+        (externalInsertionTimedEventTime
+          (externalTime ∘ fExternal) (σ ∘ fInteraction))
+        externalInsertionTimedEventRank
+        (canonicalExternalInsertionTimedEvents E₁ m))
   have hMappedPairwise :
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
@@ -200,20 +190,12 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
         hab hba⟩
   have hAmbientPairwise :
       (orderedExternalInsertionTimedEvents externalTime σ).Pairwise ambientRel := by
-    dsimp [ambientRel]
-    change
-      (List.insertionSort
-        (stableTimedEventBeforeOrEqual
-          (externalInsertionTimedEventTime externalTime σ)
-          externalInsertionTimedEventRank)
-        (canonicalExternalInsertionTimedEvents E₂ n)).Pairwise
-          (stableTimedEventBeforeOrEqual
-            (externalInsertionTimedEventTime externalTime σ)
-            externalInsertionTimedEventRank)
-    exact pairwise_insertionSort_stableTimedEventBeforeOrEqual
-      (externalInsertionTimedEventTime externalTime σ)
-      externalInsertionTimedEventRank
-      (canonicalExternalInsertionTimedEvents E₂ n)
+    simpa [ambientRel, orderedExternalInsertionTimedEvents,
+      externalInsertionTimedEventBeforeOrEqual] using
+      (pairwise_insertionSort_stableTimedEventBeforeOrEqual
+        (externalInsertionTimedEventTime externalTime σ)
+        externalInsertionTimedEventRank
+        (canonicalExternalInsertionTimedEvents E₂ n))
   exact List.sublist_of_subperm_of_pairwise
     (r := ambientRel) hSubperm hMappedPairwise hAmbientPairwise
 
