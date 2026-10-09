@@ -106,25 +106,28 @@ private theorem not_mem_left_of_mem_vacuumComponentPart
     (w : ↥S) (hwB : (Sum.inr w : TwoPointVertex S) ∈ (B.1 : Finset (TwoPointVertex S))) :
     (w : Fin N) ∉ T := by
   intro hwT
-  obtain ⟨e, he⟩ := hext.1 ⟨w.1, hwT⟩
-  have hamb :
-      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-        (Sum.inl e) (Sum.inr w) := by
-    simpa [slotSplitVertex] using
-      reachable_ofSlotSplit_of_reachable h ext vac he
-  have hblock :
-      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock (Sum.inr w) = B.1.1 := by
-    exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock_eq_iff_mem B.1.2 (Sum.inr w)).2 hwB
-  have heB : (Sum.inl e : TwoPointVertex S) ∈ (B.1 : Finset (TwoPointVertex S)) := by
-    rw [← hblock]
-    change (Sum.inl e : TwoPointVertex S) ∈
-      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock (Sum.inr w)
-    exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
-      (Sum.inr w) (Sum.inl e)).2 hamb
-  have hVac :
-      ComponentIsVacuum (B.1 : Finset (TwoPointVertex S)) :=
-    (mem_vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph B.1).1 B.2
-  exact hVac ⟨e, heB⟩
+  let d := TwoPointDiagram.ofSlotSplit h ext vac
+  have hExternal :
+      (Sum.inr w : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl 0) := by
+    apply (mem_interactionSector_subtype
+      (d.vertexGraph.componentBlock (Sum.inl 0)) w).1
+    rw [interactionSector_externalComponent_ofSlotSplit h ext vac hext]
+    exact hwT
+  have hBlock :
+      d.vertexGraph.componentBlock (Sum.inr w) = B.1.1 :=
+    (d.vertexGraph.componentBlock_eq_iff_mem B.1.2 (Sum.inr w)).2 hwB
+  have hSame :
+      d.vertexGraph.componentBlock (Sum.inr w) =
+        d.vertexGraph.componentBlock (Sum.inl 0) :=
+    (d.vertexGraph.componentBlock_eq_iff_mem
+      (d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0))
+      (Sum.inr w)).2 hExternal
+  have hVacuum : ComponentIsVacuum (B.1 : Finset (TwoPointVertex S)) :=
+    (mem_vacuumComponentParts d.vertexGraph B.1).1 B.2
+  apply hVacuum
+  refine ⟨0, ?_⟩
+  rw [← hBlock, hSame]
+  exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)
 
 /-- With an externally connected left piece, every ambient vacuum component comes from a quartic
 right-side component. -/
