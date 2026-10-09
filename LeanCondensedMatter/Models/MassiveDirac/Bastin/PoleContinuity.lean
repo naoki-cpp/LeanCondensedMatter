@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,9 +15,11 @@ in target-centered coordinates, evaluates it at the pole, and proves the general
 continuity theorem. Concrete pole/window specializations remain at their consumers.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -88,4 +90,4 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

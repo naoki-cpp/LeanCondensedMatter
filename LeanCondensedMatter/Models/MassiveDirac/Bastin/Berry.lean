@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
@@ -26,9 +26,11 @@ subsequent band decomposition, occupation integration, and zero-broadening analy
 downstream.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open BerryGeometry
 open ContinuousLinearMap
@@ -121,4 +123,4 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

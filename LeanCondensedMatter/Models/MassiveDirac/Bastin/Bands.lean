@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Berry
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry
 
 set_option linter.style.header false
 
@@ -19,9 +19,11 @@ This decomposition is pointwise in probe energy and broadening. Occupation integ
 zero-broadening limit remain downstream steps.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open ContinuousLinearMap
 
@@ -161,4 +163,4 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

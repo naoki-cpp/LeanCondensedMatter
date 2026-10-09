@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -20,9 +20,11 @@ No energy integration, zero-broadening limit/integral interchange, or momentum i
 performed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference
@@ -73,4 +75,4 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

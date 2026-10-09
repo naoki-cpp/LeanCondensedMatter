@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -22,9 +22,11 @@ Physical normalization by the Bastin trace prefactor, angular integral, and cont
 measure belongs downstream under `MassiveDirac/Conductivity/Hall`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -139,4 +141,4 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

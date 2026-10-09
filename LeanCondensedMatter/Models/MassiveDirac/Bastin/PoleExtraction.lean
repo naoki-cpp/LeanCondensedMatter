@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity
 import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
@@ -14,9 +14,11 @@ The result remains pointwise in momentum. No momentum integration or momentum-li
 performed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -86,4 +88,4 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

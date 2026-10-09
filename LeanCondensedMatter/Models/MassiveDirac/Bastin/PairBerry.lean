@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -20,9 +20,11 @@ This remains pointwise in momentum. No momentum integration or interchange of th
 integral with the zero-broadening limit is performed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter
 
@@ -100,4 +102,4 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

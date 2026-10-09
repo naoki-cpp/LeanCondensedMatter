@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Bands
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands
 import Mathlib.Topology.Algebra.GroupWithZero
 import Mathlib.Tactic
 
@@ -19,9 +19,11 @@ limit.  The present file deliberately proves only the pointwise statement.  It d
 an energy integral with a limit and it does not introduce a delta-distribution identity.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
@@ -147,4 +149,4 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
