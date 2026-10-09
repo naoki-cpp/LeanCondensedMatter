@@ -1,5 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
+import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
 
@@ -55,6 +58,58 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
     change (particleNumber (insertOccupation i n) : ℤ) =
       (particleNumber n : ℤ) + 1
     omega
+
+/-! ## Composite operators and fermion parity -/
+
+/-- A number operator preserves total particle number. -/
+theorem carriesParticleNumberCharge_numberOperator (i : Mode) :
+    Common.CarriesShift
+      (fun n : Occupation Mode => (particleNumber n : ℤ)) (numberOperator i) 0 := by
+  simpa [numberOperator] using
+    (carriesParticleNumberCharge_create i).comp
+      (carriesParticleNumberCharge_annihilate i)
+
+/-- A number-conserving quartic vertex has zero particle-number shift. -/
+theorem carriesParticleNumberCharge_quarticVertexOperator (q : Common.QuarticVertexLabel Mode) :
+    Common.CarriesShift (fun n : Occupation Mode => (particleNumber n : ℤ))
+      (quarticVertexOperator q) 0 := by
+  have h :=
+    (carriesParticleNumberCharge_create q.create₁).comp
+      ((carriesParticleNumberCharge_create q.create₂).comp
+        ((carriesParticleNumberCharge_annihilate q.annihilate₂).comp
+          (carriesParticleNumberCharge_annihilate q.annihilate₁)))
+  simpa [quarticVertexOperator, Common.quarticVertexOperator] using h
+
+/-- A finite, number-conserving quartic interaction also preserves particle number. -/
+theorem carriesParticleNumberCharge_quarticInteractionOn
+    (support : Finset (Common.QuarticVertexLabel Mode))
+    (g : Common.QuarticVertexLabel Mode → ℂ) :
+    Common.CarriesShift (fun n : Occupation Mode => (particleNumber n : ℤ))
+      (quarticInteractionOn support g) 0 := by
+  change Common.CarriesShift (fun n : Occupation Mode => (particleNumber n : ℤ))
+    (∑ q ∈ support, g q • quarticVertexOperator q) 0
+  apply Common.CarriesShift.sum
+  intro q hq
+  exact (carriesParticleNumberCharge_quarticVertexOperator q).smul (g q)
+
+/-- A sum of one creation and one annihilation operator has fermion parity one,
+although its two summands carry opposite integer particle-number shifts. -/
+theorem carriesFermionParity_create_add_annihilate (i : Mode) :
+    Common.CarriesShift
+      (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+      (create i + annihilate i) 1 := by
+  have hcreate : Common.CarriesShift
+      (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+      (create i) 1 := by
+    simpa using
+      (carriesParticleNumberCharge_create i).map (Int.castAddHom (ZMod 2))
+  have hannihilate : Common.CarriesShift
+      (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+      (annihilate i) 1 := by
+    have hneg : ((-1 : ℤ) : ZMod 2) = 1 := by decide
+    simpa [hneg] using
+      (carriesParticleNumberCharge_annihilate i).map (Int.castAddHom (ZMod 2))
+  exact hcreate.add hannihilate
 
 /-! ## Same-type products have zero diagonal coefficients -/
 
