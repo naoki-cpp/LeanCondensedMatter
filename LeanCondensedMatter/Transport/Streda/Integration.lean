@@ -76,10 +76,6 @@ structure RegularizedStredaIntegralData where
     IntervalIntegrable occupationDerivative volume lowerEnergy upperEnergy
   surfacePrimitiveDerivative_intervalIntegrable :
     IntervalIntegrable surfacePrimitiveDerivative volume lowerEnergy upperEnergy
-  surfaceProduct_intervalIntegrable :
-    IntervalIntegrable
-      (fun energy => occupation energy * surfacePrimitiveDerivative energy)
-      volume lowerEnergy upperEnergy
   seaProduct_intervalIntegrable :
     IntervalIntegrable
       (fun energy => occupation energy * seaKernel energy)
@@ -130,7 +126,8 @@ theorem regularizedBastinEnergyIntegral_eq_surface_add_sea
     regularizedStredaFermiSea
   simp_rw [mul_add]
   rw [intervalIntegral.integral_add
-    data.surfaceProduct_intervalIntegrable data.seaProduct_intervalIntegrable, hsurface]
+    (data.surfacePrimitiveDerivative_intervalIntegrable.continuousOn_mul
+      data.occupation_continuous) data.seaProduct_intervalIntegrable, hsurface]
 
 /-- If the occupation derivative vanishes identically, the regularized Fermi-surface contribution
 vanishes. This is a smooth finite-interval statement, not a zero-temperature distributional claim. -/
