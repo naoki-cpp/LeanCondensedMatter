@@ -114,7 +114,7 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
       response * finiteVolumeConductivityNormalization convention omega eta)
     (finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
       system data interpolation
-      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
+      (boundedDirectionalResponseChannel system geometry direction K q)
       omega eta)
 
 end
