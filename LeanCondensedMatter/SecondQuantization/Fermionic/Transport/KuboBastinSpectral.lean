@@ -63,25 +63,12 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
         (system.hbar : ℂ) (q : ℂ) K)
       omega eta heta mn
 
-/-- The directional current, source, and Peierls contact form one response channel. -/
-noncomputable def finiteDirectionalCurrentResponseChannel
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q : ℝ) :
-    ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  source := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  observableVariation := boundedDirectionalContact geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-
 /-- Finite regularized directional Kubo–Bastin conductivity in spectral resolvent form, with the
 Peierls contact term retained explicitly. -/
 noncomputable def finiteKuboBastinSpectralDirectionalConductivity
     [Fintype ι] (convention : QuantumTheory.Transport.PositiveVolume) : ℂ :=
   finiteKuboBastinSpectralChannelResponse system data
-      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
+      (boundedDirectionalResponseChannel system geometry direction K q)
       omega eta *
     finiteVolumeConductivityNormalization convention omega eta
 
@@ -97,7 +84,7 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
   unfold finiteKuboGreenwoodDirectionalConductivity
     finiteKuboBastinSpectralDirectionalConductivity
   rw [finiteKuboBastinSpectralChannelResponse_eq_vertexSum]
-  unfold finiteDirectionalCurrentResponseChannel
+  unfold boundedDirectionalResponseChannel
     finiteKuboBastinSpectralVertexSum
   congr 1
   congr 1
