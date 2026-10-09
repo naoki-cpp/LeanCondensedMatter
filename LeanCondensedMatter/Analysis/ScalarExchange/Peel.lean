@@ -39,7 +39,9 @@ theorem peelSum_eq_sum {Label A : Type*} [Semiring A] [Algebra ℂ A]
   induction l with
   | nil => simp [peelSum]
   | cons D t ih =>
-      rw [peelSum, Fin.sum_univ_succ]
+      rw [peelSum]
+      simp only [List.length_cons]
+      rw [Fin.sum_univ_succ]
       simp only [Fin.val_zero, pow_zero, one_mul, List.getElem_cons_zero,
         List.eraseIdx_cons_zero]
       congr 1
