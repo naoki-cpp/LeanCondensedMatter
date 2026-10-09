@@ -6,6 +6,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
+import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
