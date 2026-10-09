@@ -21,7 +21,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
 open Asymptotics Filter Topology
 
 /-- Scalar-impurity parameters kept separate from the dressed Green-loop provenance. -/
