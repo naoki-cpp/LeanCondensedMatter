@@ -240,7 +240,14 @@ private theorem
   have huniform :=
     d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac p vl.1 vl.2
   rw [hq] at huniform
-  exact congrArg (fun h : Prop => if h then (1 : ℕ) else 0) huniform
+  by_cases h : q.1 < p.1
+  · have h0 : (d.mixedVacuumInteractionPosition τ τ' σ C hVac vl.1 0).1 < p.1 :=
+      huniform ▸ h
+    simp [h, h0]
+  · have h0 : ¬ (d.mixedVacuumInteractionPosition τ τ' σ C hVac vl.1 0).1 < p.1 := by
+      intro hz
+      exact h (huniform.symm ▸ hz)
+    simp [h, h0]
 
 /-- For full quartic two-point diagrams, mixed-time pairing weights factor unconditionally into the
 external component and all vacuum components, for arbitrary exchange statistics. -/
