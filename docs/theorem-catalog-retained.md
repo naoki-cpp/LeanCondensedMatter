@@ -397,9 +397,6 @@ or consumer structure changes.
   underlying standard atomic legs in their normalized order.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber` —
   Component exchange-statistics weight is constant on one chamber.
-- `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq` — The product of
-  the Dyson signs carried by the ambient vacuum components is the Dyson sign of the whole quartic
-  vacuum piece.
 - `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct` —
   The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
   product over all vertices of the standalone quartic vacuum piece.
