@@ -45,9 +45,9 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
   have hsign : (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign =
       (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card := by
     unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
-    simpa [d, fixedExternalOfSlotSplit] using
-      (Common.TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
-        (Finset.subset_univ T) ext.1 vac hext)
+    simpa [d, fixedExternalOfSlotSplit, Finset.prod_const] using
+      (Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
+        (Finset.subset_univ T) ext.1 vac hext (fun _ => (-1 : ℂ)))
   have hvertex : (Common.vacuumComponentParts d.1.vertexGraph).prod (d.mixedComponentVertexWeight g) =
       vac.vertexWeight g := by
     unfold FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
