@@ -14,7 +14,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
 
 /-- Energy denominator `E_n - E_m` with `m` the opposite band. -/
 def interbandEnergyGap (band : Band) (v m px py : ℝ) : ℝ :=
