@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelTermsIndexed
 
 set_option linter.style.header false
 
@@ -27,7 +26,7 @@ theorem finiteGibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ 
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
     finiteGibbsExpectation energy β (C1.comp (List.prod (l.map Prod.fst))) =
-      finiteGibbsExpectation energy β (peelSum ζ l) /
+      finiteGibbsExpectation energy β (ScalarExchange.peelSumWithCoefficients ζ l) /
         (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
   have hZ := traceFock_diagonalEvolution_ne_zero energy β
@@ -37,28 +36,17 @@ theorem finiteGibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ 
   field_simp [hZ, hne']
   linear_combination (norm := ring_nf) h
 
-/-- The expectation of `peelSum`, written as an indexed finite sum. -/
+/-- The expectation of `ScalarExchange.peelSumWithCoefficients`, written as an indexed finite sum. -/
 theorem finiteGibbsExpectation_peelSum_eq_sum (energy : Config → ℝ) (β : ℝ) (ζ : ℂ)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
-    finiteGibbsExpectation energy β (peelSum ζ l) =
+    finiteGibbsExpectation energy β (ScalarExchange.peelSumWithCoefficients ζ l) =
       ∑ j : Fin l.length, ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2 *
         finiteGibbsExpectation energy β (List.prod ((l.eraseIdx j).map Prod.fst)) := by
-  have hmap : ∀ L : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
-      finiteGibbsExpectation energy β L.sum =
-        (L.map (finiteGibbsExpectation energy β)).sum := by
-    intro L
-    calc
-      finiteGibbsExpectation energy β L.sum =
-          finiteGibbsExpectationLinearMap energy β L.sum := rfl
-      _ = (L.map ⇑(finiteGibbsExpectationLinearMap energy β)).sum :=
-        map_list_sum (finiteGibbsExpectationLinearMap energy β) L
-      _ = (L.map (finiteGibbsExpectation energy β)).sum := by
-        apply congrArg List.sum
-        exact List.map_congr_left fun _ _ => rfl
-  rw [peelSum_eq_peelTerms_sum, peelTerms_eq_ofFn, hmap, List.map_ofFn, List.sum_ofFn]
+  change (finiteGibbsExpectationLinearMap energy β)
+    (ScalarExchange.peelSumWithCoefficients ζ l) = _
+  rw [ScalarExchange.peelSumWithCoefficients_eq_sum, map_sum]
   apply Finset.sum_congr rfl
   intro j _
-  simp only [Function.comp]
   simpa only [finiteGibbsExpectation, smul_smul, smul_eq_mul, mul_assoc] using
     (finiteGibbsExpectationLinearMap energy β).map_smul
       (ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2)

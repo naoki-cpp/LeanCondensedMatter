@@ -29,62 +29,6 @@ variable {Mode : Type*}
 
 namespace FreeThermalField
 
-/-- Individual bosonic CCR peel terms, one for each field in the tail. -/
-noncomputable def operatorPeelTerms (C₁ : FreeThermalField Mode) :
-    List (FreeThermalField Mode) →
-      List (FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-  | [] => []
-  | D :: t =>
-      (C₁.exchangeValue D • orderedProduct t) ::
-        (operatorPeelTerms C₁ t).map (fun A => D.operator.comp A)
-
-/-- The recursive bosonic peel is the sum of its individual terms. -/
-theorem operatorPeelSum_eq_operatorPeelTerms_sum
-    (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
-    C₁.operatorPeelSum l = (C₁.operatorPeelTerms l).sum := by
-  induction l with
-  | nil =>
-      simp [FreeThermalField.operatorPeelSum, operatorPeelTerms,
-        ScalarExchange.peelSum]
-  | cons D t ih =>
-      have hmap :
-          ((C₁.operatorPeelTerms t).map (fun A => D.operator.comp A)).sum =
-            D.operator.comp (C₁.operatorPeelTerms t).sum := by
-        exact
-          (map_list_sum (LinearMap.compRight ℂ D.operator) (C₁.operatorPeelTerms t)).symm
-      rw [operatorPeelTerms, List.sum_cons, hmap, ← ih]
-      unfold FreeThermalField.operatorPeelSum
-      rw [ScalarExchange.peelSum]
-      simp only [one_smul]
-      rw [Module.End.mul_eq_comp, orderedProduct]
-
-/-- Closed position-indexed form of the bosonic CCR peel terms. -/
-theorem operatorPeelTerms_eq_ofFn
-    (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
-    C₁.operatorPeelTerms l =
-      List.ofFn (fun j : Fin l.length =>
-        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) := by
-  induction l with
-  | nil => simp [operatorPeelTerms]
-  | cons D t ih =>
-      rw [List.ofFn_succ, operatorPeelTerms]
-      simp only [Fin.val_zero, List.getElem_cons_zero, List.eraseIdx_cons_zero]
-      congr 1
-      rw [ih, List.map_ofFn]
-      congr 1
-      funext i
-      change D.operator.comp
-          (C₁.exchangeValue (t[(i : ℕ)]'i.isLt) • orderedProduct (t.eraseIdx i)) =
-        C₁.exchangeValue
-            (((D :: t))[((i.succ : Fin (t.length + 1)) : ℕ)]'
-              (i.succ : Fin (t.length + 1)).isLt) •
-          orderedProduct ((D :: t).eraseIdx (i.succ : Fin (t.length + 1)))
-      simp only [Fin.val_succ, List.getElem_cons_succ, List.eraseIdx_cons_succ,
-        FreeThermalField.orderedProduct_cons]
-      apply LinearMap.ext
-      intro x
-      simp only [LinearMap.comp_apply, LinearMap.smul_apply, map_smul]
-
 variable [Fintype Mode]
 
 /-- The whole finite CCR peel is in the convergence-aware free-Gibbs domain. -/
@@ -92,8 +36,12 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
     C₁.operatorPeelSum l ∈ freeGibbsDomain ε β := by
-  rw [operatorPeelSum_eq_operatorPeelTerms_sum, operatorPeelTerms_eq_ofFn,
-    List.sum_ofFn, mem_freeGibbsDomain_iff]
+  have h : C₁.operatorPeelSum l =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
+      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
+  rw [h, mem_freeGibbsDomain_iff]
   exact freeGibbsSummable_sum ε β
     (fun j : Fin l.length =>
       C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
@@ -108,8 +56,12 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
       ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
           freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
-  rw [operatorPeelSum_eq_operatorPeelTerms_sum, operatorPeelTerms_eq_ofFn,
-    List.sum_ofFn]
+  have h : C₁.operatorPeelSum l =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
+      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
+  rw [h]
   calc
     freeGibbsExpectation ε β
         (∑ j : Fin l.length,

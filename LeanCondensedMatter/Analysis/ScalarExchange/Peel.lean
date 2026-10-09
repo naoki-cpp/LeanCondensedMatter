@@ -27,6 +27,32 @@ theorem peelSum_nil {Label A : Type*} [Semiring A] [Algebra ℂ A]
     (ζ : ℂ) (C : Label) :
     peelSum element exchangeCoeff ζ C [] = 0 := rfl
 
+/-- The recursive exchange sum is a finite sum over the removed position. The remaining factors
+retain their original order; no commutativity or exchange relation is required. -/
+theorem peelSum_eq_sum {Label A : Type*} [Semiring A] [Algebra ℂ A]
+    (element : Label → A) (exchangeCoeff : Label → Label → ℂ)
+    (ζ : ℂ) (C : Label) (l : List Label) :
+    peelSum element exchangeCoeff ζ C l =
+      ∑ j : Fin l.length,
+        (ζ ^ (j : ℕ) * exchangeCoeff C (l[(j : ℕ)]'j.isLt)) •
+          ((l.eraseIdx j).map element).prod := by
+  induction l with
+  | nil => simp [peelSum]
+  | cons D t ih =>
+      rw [peelSum]
+      simp only [List.length_cons]
+      rw [Fin.sum_univ_succ]
+      simp only [Fin.val_zero, pow_zero, one_mul, List.getElem_cons_zero,
+        List.eraseIdx_cons_zero]
+      congr 1
+      rw [ih, Finset.mul_sum, Finset.smul_sum]
+      apply Finset.sum_congr rfl
+      intro j _
+      simp only [Fin.val_succ, List.getElem_cons_succ, List.eraseIdx_cons_succ,
+        List.map_cons, List.prod_cons, pow_succ, mul_smul_comm, smul_smul]
+      congr 1
+      ring
+
 /-- Repeatedly apply a scalar exchange relation while pushing one algebra element through a finite
 ordered product. -/
 theorem mul_prod_eq_peelSum
@@ -60,6 +86,22 @@ noncomputable def peelSumWithCoefficients {A : Type*} [Semiring A] [Algebra ℂ 
 @[simp]
 theorem peelSumWithCoefficients_nil {A : Type*} [Semiring A] [Algebra ℂ A]
     (ζ : ℂ) : peelSumWithCoefficients (A := A) ζ [] = 0 := rfl
+
+/-- Position-indexed expansion when each factor carries its exchange coefficient. -/
+theorem peelSumWithCoefficients_eq_sum {A : Type*} [Semiring A] [Algebra ℂ A]
+    (ζ : ℂ) (l : List (A × ℂ)) :
+    peelSumWithCoefficients ζ l =
+      ∑ j : Fin l.length,
+        (ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2) •
+          ((l.eraseIdx j).map Prod.fst).prod := by
+  have h : peelSumWithCoefficients ζ l =
+      peelSum Prod.fst (fun _ p => p.2) ζ (0, 0) l := by
+    induction l with
+    | nil => rfl
+    | cons p t ih =>
+        obtain ⟨B, c⟩ := p
+        simp only [peelSumWithCoefficients, peelSum, ih]
+  rw [h, peelSum_eq_sum]
 
 /-- Repeatedly apply a scalar exchange relation between one fixed element and the factors of a
 coefficient-paired list. This form is useful when the exchange coefficients depend on the fixed
