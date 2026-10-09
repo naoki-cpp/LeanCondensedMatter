@@ -307,30 +307,28 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
         mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.2 := by
   classical
   let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-  let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)
-  let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
-  have hEnds :
-      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
-        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
-    simpa [q, p0, p1] using
-      d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B
-        (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-          τ τ' σ υ B hChamber) pr
-  have h0Pos :
-      q.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
-    simpa [q] using congrArg Subtype.val hEnds.1
-  have h1Pos :
-      q.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-    simpa [q] using congrArg Subtype.val hEnds.2
+  have hEnds := d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
+    τ τ' σ υ B
+    (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
+      τ τ' σ υ B hChamber) pr
+  have hLeg (k : Fin 2) :
+      mixedTimeOrderedAtomicLegEquiv τ τ' υ
+          (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, k)).1 =
+        mixedTimeOrderedAtomicLegEquiv τ τ' σ
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)).1 := by
+    have hEndpoint :
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, k) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)) := by
+      fin_cases k
+      · simpa [q] using hEnds.1
+      · simpa [q] using hEnds.2
+    rw [hEndpoint]
+    exact d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B
+      (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k))
   constructor
-  · rw [h0Pos]
-    simpa [p0] using
-      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
-  · rw [h1Pos]
-    simpa [p1] using
-      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
+  · simpa using hLeg 0
+  · simpa using hLeg 1
 
 /-- Component exchange-statistics weight is constant on one chamber. -/
 theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
