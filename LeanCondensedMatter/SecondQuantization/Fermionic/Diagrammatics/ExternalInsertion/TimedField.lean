@@ -74,6 +74,70 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicPairValue
     (externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ a)
     (externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ b)
 
+
+/-- Relabeling external and interaction slots preserves the concrete time-labelled field
+on each canonical atomic leg. The maps need not be order preserving: this identity
+concerns the identity of the field, not the fermionic permutation sign. -/
+theorem orderedExternalInsertionLegField_map
+    {E₁ E₂ m n : ℕ}
+    (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
+    (fInteraction : Fin m → Fin n)
+    (externalLabel : Fin (2 * E₂) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E₂) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E₁ m) :
+    orderedExternalInsertionLegField
+        (externalLabel ∘ fExternal) (externalTime ∘ fExternal)
+        (q ∘ fInteraction) (σ ∘ fInteraction) leg =
+      orderedExternalInsertionLegField externalLabel externalTime q σ
+        (orderedExternalInsertionLegMap fExternal fInteraction leg) := by
+  cases leg with
+  | inl e => rfl
+  | inr p =>
+      rcases p with ⟨v, l⟩
+      rfl
+
+/-- The actual finite-mode free-Gibbs contraction is invariant under the induced
+relabeling of atomic legs, with both times and field labels pulled back along the
+same slot maps. The endpoints retain the order `a, b`; reversing an *ambient
+normalized pair* is a separate issue when transporting fermionic signs. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_map
+    [Fintype Mode] {E₁ E₂ m n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ)
+    (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
+    (fInteraction : Fin m → Fin n)
+    (externalLabel : Fin (2 * E₂) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E₂) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (a b : OrderedExternalInsertionLeg E₁ m) :
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        externalLabel externalTime q σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap fExternal fInteraction a))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap fExternal fInteraction b)) =
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        (externalLabel ∘ fExternal) (externalTime ∘ fExternal)
+        (q ∘ fInteraction) (σ ∘ fInteraction)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          (externalTime ∘ fExternal) (σ ∘ fInteraction) a)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          (externalTime ∘ fExternal) (σ ∘ fInteraction) b) := by
+  have hfield (leg : OrderedExternalInsertionLeg E₁ m) :
+      externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+            (orderedExternalInsertionLegMap fExternal fInteraction leg)) =
+        externalInsertionMixedTimeOrderedAtomicFieldFamily
+          (externalLabel ∘ fExternal) (externalTime ∘ fExternal)
+          (q ∘ fInteraction) (σ ∘ fInteraction)
+          (externalInsertionMixedTimeOrderedAtomicLegPosition
+            (externalTime ∘ fExternal) (σ ∘ fInteraction) leg) := by
+    simp only [externalInsertionMixedTimeOrderedAtomicFieldFamily,
+      externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
+    exact (orderedExternalInsertionLegField_map
+      fExternal fInteraction externalLabel externalTime q σ leg).symm
+  exact congrArg₂ (timedFieldPairContraction ε β) (hfield a) (hfield b)
+
 variable [Fintype Mode]
 
 /-- Fermionic pairing evaluation of one external-insertion diagram in mixed-time atomic order.
