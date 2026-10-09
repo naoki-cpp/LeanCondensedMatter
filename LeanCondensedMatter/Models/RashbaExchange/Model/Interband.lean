@@ -16,6 +16,8 @@ namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
+open QuantumTheory.Transport
+
 /-- Energy denominator between one band and its opposite partner. -/
 def interbandEnergyGap
     (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
