@@ -153,6 +153,22 @@ private theorem measurable_externalInsertionOrderSignature {E n : ℕ}
       (continuous_externalInsertionTimedEventTime externalTime a).measurable
       (continuous_externalInsertionTimedEventTime externalTime b).measurable)
 
+/-- The standard-to-mixed atomic-position permutation depends only on the finite
+external-insertion order signature, including equal-time rank tie breaking. -/
+theorem externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
+    (h : externalInsertionOrderSignature externalTime σ =
+      externalInsertionOrderSignature externalTime υ) :
+    externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ =
+      externalInsertionStandardToMixedAtomicPositionEquiv externalTime υ := by
+  have horder :=
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
+      externalTime σ υ
+      ((sameExternalInsertionOrderChamber_iff_orderSignature_eq
+        externalTime σ υ).2 h)
+  unfold externalInsertionStandardToMixedAtomicPositionEquiv
+  rw [horder]
+
 /-- The interaction-time assignments realizing a fixed arbitrary-external order signature. -/
 def externalInsertionOrderSignatureFiber {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ)

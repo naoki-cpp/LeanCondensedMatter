@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
@@ -31,6 +31,22 @@ noncomputable def ExternalInsertionDiagram.pairingInMixedOrder {E n : ℕ}
     Pairing (2 * n + E) :=
   (externalInsertionPairingCastEquiv E n d.pairing).transport
     (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ).symm
+
+/-- The mixed pairing is constant on each finite external-insertion order-signature
+fiber. This statement concerns only pairing transport; the time-dependent contraction kernel
+is not constant on those fibers. -/
+theorem ExternalInsertionDiagram.pairingInMixedOrder_eq_of_orderSignature_eq
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
+    (h : externalInsertionOrderSignature externalTime σ =
+      externalInsertionOrderSignature externalTime υ) :
+    d.pairingInMixedOrder externalTime σ =
+      d.pairingInMixedOrder externalTime υ := by
+  unfold ExternalInsertionDiagram.pairingInMixedOrder
+  rw [externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq
+    externalTime σ υ h]
 
 private theorem externalInsertionPairingCastEquiv_partner {E n : ℕ}
     (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + E))
