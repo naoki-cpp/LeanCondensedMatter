@@ -86,7 +86,7 @@ variable (h : T ⊆ S) (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
   (vac : QuarticDiagram InternalLabel N (S \ T))
 
 /-- **A reassembled diagram induces the adjacency of its external piece.** -/
-private theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
+theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
         (slotSplitVertex h x) (slotSplitVertex h y) ↔
       ext.vertexGraph.Adj x y := by
