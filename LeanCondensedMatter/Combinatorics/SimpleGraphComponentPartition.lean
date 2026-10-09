@@ -1,5 +1,6 @@
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Order.Partition.Finpartition
+import Mathlib.Combinatorics.SimpleGraph.Sum
 
 set_option linter.style.header false
 
@@ -8,7 +9,7 @@ set_option linter.style.header false
 
 This module exposes the finite partition determined by graph reachability. It provides both the
 ordinary partition of a finite vertex type and an ambient-finset view for graphs whose vertex type
-is a subtype `↥s`. It also provides a generic walk-lifting lemma for adjacency-closed graph images.
+is a subtype `↥s`. It also provides generic walk-lifting and graph-sum reachability lemmas.
 -/
 
 namespace SimpleGraph
@@ -87,6 +88,26 @@ theorem exists_reachable_of_walk_of_adj_closed
       obtain ⟨y, hy, hreach⟩ := ih x' hx'
       refine ⟨y, hy, SimpleGraph.Reachable.trans ?_ hreach⟩
       exact SimpleGraph.Adj.reachable (hreflect x x' (hx' ▸ hadj))
+
+/-- Reachability between right-side vertices of a graph sum is exactly reachability
+inside the right summand. -/
+theorem reachable_sum_inr_iff
+    {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) (x y : W) :
+    (G ⊕g H).Reachable (Sum.inr x) (Sum.inr y) ↔ H.Reachable x y := by
+  constructor
+  · rintro ⟨p⟩
+    obtain ⟨y', hyy', hreach⟩ :=
+      exists_reachable_of_walk_of_adj_closed H (G ⊕g H) Sum.inr
+        (fun z w hAdj => by
+          cases w with
+          | inl u =>
+              exact False.elim
+                (SimpleGraph.not_adj_sum_inl_inr u z ((G ⊕g H).adj_symm hAdj))
+          | inr u => exact ⟨u, rfl⟩)
+        (fun z w hAdj => (SimpleGraph.sum_adj_inr).1 hAdj) p x rfl
+    exact (Sum.inr.inj hyy').symm ▸ hreach
+  · intro hreach
+    exact hreach.map SimpleGraph.Embedding.sumInr.toHom
 
 section AmbientFinset
 
