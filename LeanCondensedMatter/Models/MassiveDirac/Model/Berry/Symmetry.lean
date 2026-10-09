@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
 set_option linter.style.header false
 
@@ -15,9 +15,11 @@ The algebraic `berryCurvature` definition is total even when `E = 0`, because Le
 division is total. The algebraic massless identity therefore needs no nondegeneracy hypothesis.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Reversing the Dirac mass leaves the positive dispersion unchanged. -/
 theorem energy_neg_mass (v m px py : ℝ) :
@@ -51,4 +53,4 @@ theorem berryCurvature_massless (band : Band) (v px py : ℝ) :
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

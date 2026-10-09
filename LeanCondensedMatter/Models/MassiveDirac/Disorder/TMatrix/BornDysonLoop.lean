@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 
 set_option linter.style.header false
 
@@ -15,7 +15,7 @@ The linear mean-potential term remains separate. The supplied-loop scalar-impuri
 is specialized here without asserting a self-consistent T-matrix or exact disorder average.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -281,4 +281,4 @@ noncomputable def finiteCutoffContinuumBornDysonScalarImpuritySelfEnergy
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

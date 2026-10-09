@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
@@ -28,9 +28,11 @@ At `m = 0` the Berry density itself vanishes, so the same formula holds without 
 massless cone. No infinite-cutoff limit and no `e²/h` transport prefactor are claimed in this file.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open MeasureTheory Set QuantumTheory.Transport
 open scoped Interval
@@ -169,4 +171,4 @@ theorem zeroTemperatureOccupiedBerryWeightCutoff_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

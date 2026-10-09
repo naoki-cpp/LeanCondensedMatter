@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop
 
 set_option linter.style.header false
 

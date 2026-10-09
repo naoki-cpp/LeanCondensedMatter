@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Disorder.Born
 
 set_option linter.style.header false
@@ -27,9 +27,11 @@ particular, the Born self-energy below remains a Born object; it is not identifi
 disorder-averaged Green operator.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open QuantumTheory QuantumTheory.Transport
 
@@ -90,4 +92,4 @@ end FiniteScalarDisorderModel
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

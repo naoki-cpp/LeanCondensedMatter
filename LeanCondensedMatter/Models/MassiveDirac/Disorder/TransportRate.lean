@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping
+import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -31,7 +31,7 @@ No Kubo ladder equation, Ward identity, crossed diagram, or identification with 
 averaged conductivity is claimed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -426,4 +426,4 @@ def continuumBornUpperBandPositiveTransportLifetime
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

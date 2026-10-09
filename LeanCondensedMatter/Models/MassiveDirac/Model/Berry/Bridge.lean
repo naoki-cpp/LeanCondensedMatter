@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise
+import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise
 
 set_option linter.style.header false
 
@@ -19,9 +19,11 @@ E_n - E_m = 2 s E,
 so the two-band force-matrix curvature reduces to `-s m v² / (2 E³)`.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open BerryGeometry
 open ContinuousLinearMap
@@ -177,4 +179,4 @@ theorem pointwiseBerryCurvature_xy_eq_berryCurvature
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

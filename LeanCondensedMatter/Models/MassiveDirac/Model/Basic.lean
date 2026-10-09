@@ -38,7 +38,7 @@ Disorder, Fermi occupation, Kubo–Středa integration, and ultraviolet regulari
 separate downstream phases.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -204,4 +204,4 @@ theorem berryCurvature_lower (v m px py : ℝ) :
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

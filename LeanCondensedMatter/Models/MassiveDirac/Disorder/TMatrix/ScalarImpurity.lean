@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Analysis.Normed.Ring.Units
 import Mathlib.Tactic
@@ -17,7 +17,7 @@ Phys. Rev. Lett. 97, 126602 (2006), Eqs. (12)–(15), doi:10.1103/PhysRevLett.97
 No spectral regulator, momentum measure, cutoff, or self-consistent loop is chosen here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -383,4 +383,4 @@ theorem scalarImpurityTMatrixOperator_sub_bare_isBigO_sq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
