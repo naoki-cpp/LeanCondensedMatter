@@ -319,8 +319,10 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
     have h := d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B
       (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k))
     fin_cases k
-    · simpa only [hEnds.1] using h
-    · simpa only [hEnds.2] using h
+    · rw [hEnds.1]
+      exact h
+    · rw [hEnds.2]
+      exact h
   constructor
   · simpa using hLeg 0
   · simpa using hLeg 1
