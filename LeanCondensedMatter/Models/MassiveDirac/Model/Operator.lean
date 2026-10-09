@@ -24,9 +24,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
-open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
+open QuantumTheory QuantumTheory.LinearResponse
 
 /-- Canonical two-level Hilbert space on which the massive-Dirac matrices act. -/
 abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
