@@ -87,7 +87,7 @@ or consumer structure changes.
 - `QuantumTheory.LinearResponse.finite_purePointLehmann_has_both_local_iterated_limits` — canonical finite pure-point Lehmann limit-order theorem giving both local iterated limits under the static nonresonance condition.
 - `QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm` — reusable scalar Lehmann-term continuity result at fixed nonzero switching rate.
 - `QuantumTheory.LinearResponse.hasStaticLimit_unswitchedLehmannTerm` — reusable zero-rate scalar Lehmann-term static-limit result under the explicit nonresonance/zero-weight condition.
-- `QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq` — model-level angular-reduction identity removing the in-plane Pauli channels and producing the physical `2π` factor.
+- `QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq` — model-level angular-reduction identity removing the in-plane Pauli channels and producing the physical `2π` factor.
 - `QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator` — canonical band-projector eigenoperator identity for the Rashba-exchange Hamiltonian.
 - `QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self` — canonical spectral identity that the traceless Rashba-exchange spin Hamiltonian squares to `E² I`.
 - `QuantumTheory.Models.RashbaExchange.sum_bandProjectorOperator_eq_one` — canonical resolution-of-identity theorem for the Rashba-exchange band projectors.
@@ -99,7 +99,7 @@ or consumer structure changes.
   dimension-independent signed-regulator Herglotz identity for a self-adjoint resolvent. Consumers
   that need the reversed inner-product orientation should reverse it locally rather than expose a
   second public theorem.
-- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative`
+- `QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative`
   — model-level dissipativity statement for the finite-cutoff Born self-energy. It is a physical
   property of the model, not merely an intermediate step in the downstream injectivity proof.
 - `ConservationLaw.DependsOnlyOnDifferential.iff_ker_le_ker` — canonical linear-algebra
@@ -249,10 +249,10 @@ or consumer structure changes.
   the density state's spectral probability weights.
 - `QuantumTheory.POVM.hasSum_inner_apply` — canonical diagonal weak-operator consequence of strong
   POVM normalization and a reusable bridge from operator normalization to Born probabilities.
-- `QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_eq_closedForm` —
+- `QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_eq_closedForm` —
   canonical closed numerator/denominator form of the arbitrary-regulator Massive Dirac Green
   operator.
-- `QuantumTheory.Transport.Models.MassiveDirac.sum_bandProjectorOperator_eq_one` — canonical
+- `QuantumTheory.Models.MassiveDirac.sum_bandProjectorOperator_eq_one` — canonical
   completeness relation for the finite family of Massive Dirac band projectors.
 - `SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeSubtypeEquivSubtype` — one direction of the
   canonical inverse laws between the public block-vertex embedding and `Equiv.subtypeSubtypeEquivSubtype`, paired
@@ -303,10 +303,10 @@ or consumer structure changes.
   normalized reciprocal pairing used to construct crystallographic reciprocal bases and lattices.
 - `LinearPMap.stoneEvolution_apply_hasDerivAt_zero` — Stone-generator endpoint identifying the
   derivative at zero of the strong Stone evolution with `-iA` on the operator domain.
-- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral`
+- `QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral`
   — model-level T-matrix provenance theorem exposing the finite-cutoff radial Green-loop integral
   and its single physical momentum-measure prefactor.
-- `QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset`
+- `QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset`
   — model-specific uniform separation bound between the mass-window margin and the shifted
   opposite-band energy denominator.
 - `SecondQuantization.Fermionic.CompletedThermalLadder.completedAnticomm_operator_operator` —
@@ -344,37 +344,37 @@ or consumer structure changes.
   invariant stating that the finite disorder probabilities sum to one.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator` — Adjointing the
   exact finite disorder-averaged Green operator reverses the signed regulator.
-- `QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_ne_zero` — Every band projector
+- `QuantumTheory.Models.MassiveDirac.bandProjectorOperator_ne_zero` — Every band projector
   is a nonzero bounded operator.
-- `QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale_eq_selfEnergyPrefactor` —
+- `QuantumTheory.Models.MassiveDirac.continuumBornDampingScale_eq_selfEnergyPrefactor` —
   The damping scale is exactly the physical-momentum prefactor already extracted from the Born
   self-energy.
-- `QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq` —
+- `QuantumTheory.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq` —
   The radial Cartesian Born denominators multiply to the canonical real weak-Born RA product.
-- `QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint` —
+- `QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint` —
   The finite-broadening bare-source same-side radial integrand is integrable and evaluates to the
   canonical endpoint.
-- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm` —
+- `QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm` —
   The ordered `xy` radial Hall-surface integrand is the measured-`x`, source-`y` Středa radial
   response in explicit common RA Born-Dyson denominator form.
-- `QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm` —
+- `QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm` —
   The ordered `xx` finite-`η` dressed Středa angular coefficient in explicit denominator form.
-- `QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le` —
+- `QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le` —
   Uniform norm bound for the complete target-centered interband Bastin pair on the radial axis.
-- `QuantumTheory.Transport.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass` —
+- `QuantumTheory.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass` —
   A pole window narrower than the mass gap is valid simultaneously at every momentum.
-- `QuantumTheory.Transport.Models.MassiveDirac.star_pauliGreenOperatorOfRegulator` — Adjointing the
+- `QuantumTheory.Models.MassiveDirac.star_pauliGreenOperatorOfRegulator` — Adjointing the
   explicit Pauli Green operator reverses the signed regulator.
-- `QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero` —
+- `QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero` —
   At fixed cutoff beyond the metallic shell, the canonical zero-broadening solved ladder vector
   converges to the longitudinal dressed-current factor `2 (ε² + m²) / (ε² + 3 m²)` with vanishing
   raw transverse component.
-- `QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero` —
+- `QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero` —
   The transverse component of the zero-broadening dressed-current vector carries the same first
   nonvanishing weak-disorder coefficient as the transverse ladder action.
-- `QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity` —
+- `QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity` —
   The pointwise fixed-window theorem expressed through the named clean Bastin-pair limit density.
-- `QuantumTheory.Transport.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq` — The
+- `QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq` — The
   canonical occupation-derived finite-cutoff response keeps the single-cone regulator term explicit,
   including the massless endpoint where both sides vanish.
 - `QuantumTheory.Transport.tendsto_integral_radialQuadraticLorentzian_atTop` — For nonzero radial
