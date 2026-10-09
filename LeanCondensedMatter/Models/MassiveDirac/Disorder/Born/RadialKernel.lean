@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,7 +15,7 @@ No self-energy, disorder/measure prefactor, radial integral, ladder conclusion, 
 statement lives here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -107,4 +107,4 @@ theorem coe_continuumBornRADenominatorProduct_eq_massiveDirac
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

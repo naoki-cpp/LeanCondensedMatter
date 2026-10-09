@@ -9,7 +9,7 @@ This module binds one continuum Born scalar-disorder line to exactly one two-dim
 measure. Angular reduction and response/conductivity normalization remain downstream responsibilities.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -22,4 +22,4 @@ def continuumBornDisorderMeasurePrefactor
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

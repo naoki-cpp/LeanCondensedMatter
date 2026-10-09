@@ -1,8 +1,8 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -28,7 +28,7 @@ No weak-disorder or ultraviolet limit, ladder resummation, transport-lifetime id
 claim, or conductivity theorem is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -414,4 +414,4 @@ def continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

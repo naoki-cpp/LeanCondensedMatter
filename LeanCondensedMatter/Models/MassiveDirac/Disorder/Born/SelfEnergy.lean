@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.Star
 import Mathlib.Tactic
@@ -25,7 +25,7 @@ No ultraviolet limit, zero-broadening limit, exact disorder average, SCBA closur
 identification, or current-vertex resummation is claimed here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -328,11 +328,11 @@ theorem star_finiteCutoffContinuumBornSelfEnergy
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
 
 set_option linter.style.header false
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -409,11 +409,11 @@ private theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
 
 set_option linter.style.header false
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -488,4 +488,4 @@ theorem finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

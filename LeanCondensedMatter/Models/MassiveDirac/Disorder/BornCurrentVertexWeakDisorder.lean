@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import Mathlib.Topology.Algebra.Order.Field
 import Mathlib.Tactic
 
@@ -20,7 +20,7 @@ lifetime factor. Exact finite-cutoff normalization and arctangent evaluation are
 identification is made here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -223,4 +223,4 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

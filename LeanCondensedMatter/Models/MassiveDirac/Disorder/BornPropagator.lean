@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -28,7 +28,7 @@ records the self-energy-prefactor and Cartesian-to-radial denominator bridges. N
 integration, ladder resummation, Ward claim, or conductivity theorem occurs here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -119,4 +119,4 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

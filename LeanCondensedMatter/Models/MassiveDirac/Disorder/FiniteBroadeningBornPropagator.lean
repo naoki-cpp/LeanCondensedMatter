@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
+import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
 
@@ -35,7 +35,7 @@ approximation candidate. It is not identified with the exact disorder average, a
 weak-disorder, SCBA/Ward, or conductivity-limit statement is made here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -507,4 +507,4 @@ massive-Dirac Pauli Green operator. -/
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

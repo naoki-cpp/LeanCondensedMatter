@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
@@ -20,7 +20,7 @@ nonzero regulator its real part has the logarithmic ultraviolet divergence, whil
 cutoff in the metallic regime its imaginary part has the retarded/advanced `η → 0⁺` boundary value.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -298,11 +298,11 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_im_eq
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
 
 set_option linter.style.header false
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -386,11 +386,11 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
 
 set_option linter.style.header false
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -532,4 +532,4 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

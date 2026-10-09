@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary
+import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -22,9 +22,11 @@ vertex relation, renormalization prescription, or simultaneous ultraviolet / zer
 is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 open Filter
 open ContinuousLinearMap
@@ -319,4 +321,4 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_dam
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

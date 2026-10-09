@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Analysis.Normed.Operator.Banach
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Tactic
@@ -19,7 +19,7 @@ This closes the invertibility boundary of the finite-`η` Born-Dyson propagator.
 exact disorder average, SCBA closure, Ward identity, or broadening/disorder limit is asserted here.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -373,4 +373,4 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac

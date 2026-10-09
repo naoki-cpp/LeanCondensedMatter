@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic
 
@@ -25,7 +25,7 @@ not solve a new ladder equation, insert the result into Kubo–Středa, claim Wa
 include crossed diagrams.
 -/
 
-namespace QuantumTheory.Transport.Models.MassiveDirac
+namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
@@ -364,4 +364,4 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_di
 
 end
 
-end QuantumTheory.Transport.Models.MassiveDirac
+end QuantumTheory.Models.MassiveDirac
