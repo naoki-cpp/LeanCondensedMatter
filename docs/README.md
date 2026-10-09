@@ -46,6 +46,7 @@ and cross-track targets. Follow these topic documents for details.
 
 | Area | Topic documents |
 | --- | --- |
+| Cross-track structures | [Unifying mathematical structures (ideas)](roadmaps/unifying-structures.md) |
 | Quantum theory | [Foundations](roadmaps/quantum-theory-foundations.md) |
 | Combinatorics | [Combinatorics](roadmaps/combinatorics.md) |
 | Operator analysis | [Operator algebra](roadmaps/operator-algebra.md), [Fredholm determinant](roadmaps/fredholm-determinant.md) |
