@@ -160,7 +160,8 @@ noncomputable def mixedTimeOrderedAtomicLegPosition {n : ℕ}
 private theorem mixedTimeOrderedAtomicLegPosition_val {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
     (mixedTimeOrderedAtomicLegPosition τ τ' σ leg).val =
-      (mixedTimeOrderedAtomicLegs τ τ' σ).idxOf leg := by
+      @List.idxOf (OrderedTwoPointLeg n) (instBEqOfDecidableEq : BEq (OrderedTwoPointLeg n))
+        leg (mixedTimeOrderedAtomicLegs τ τ' σ) := by
   classical
   rfl
 
