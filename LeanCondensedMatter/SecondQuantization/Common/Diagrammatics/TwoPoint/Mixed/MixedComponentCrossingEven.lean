@@ -128,11 +128,8 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
       Subtype.ext hlegVal
     rw [hleg]
     rfl
-  have hs :
-      (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm (v, l) = direct := by
-    apply (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).injective
-    rw [Equiv.apply_symm_apply]
-    exact hdata.symm
+  have hs := (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm_apply_apply direct
+  rw [hdata] at hs
   exact congrArg Subtype.val hs
 
 private theorem
