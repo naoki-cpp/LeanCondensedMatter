@@ -21,34 +21,15 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- A chosen point of a realizable mixed-time chamber; unrealized signatures use zero. -/
-private noncomputable def externalInsertionOrderSignatureBase {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ)
-    (s : ExternalInsertionOrderSignature E n) : Fin n → ℝ := by
-  classical
-  exact if h : ∃ σ : Fin n → ℝ, externalInsertionOrderSignature externalTime σ = s then
-    Classical.choose h
-  else
-    0
-
-private theorem externalInsertionOrderSignature_base_eq {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ)
-    (s : ExternalInsertionOrderSignature E n)
-    (h : ∃ σ : Fin n → ℝ, externalInsertionOrderSignature externalTime σ = s) :
-    externalInsertionOrderSignature externalTime
-        (externalInsertionOrderSignatureBase externalTime s) = s := by
-  classical
-  simp only [externalInsertionOrderSignatureBase, dite_eq_left h]
-  exact Classical.choose_spec h
-
+/-- The representative of a realized signature has the same mixed event ordering. -/
 private theorem sameExternalInsertionOrderChamber_signatureBase {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     SameExternalInsertionOrderChamber externalTime
-      (externalInsertionOrderSignatureBase externalTime
+      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
         (externalInsertionOrderSignature externalTime σ)) σ := by
   rw [sameExternalInsertionOrderChamber_iff_orderSignature_eq]
-  exact externalInsertionOrderSignature_base_eq externalTime
-    (externalInsertionOrderSignature externalTime σ) ⟨σ, rfl⟩
+  exact intervalIntegral.finiteSignatureBase_signature_eq
+    (externalInsertionOrderSignature externalTime) σ
 
 /-- For two fixed canonical legs, the Gibbs contraction is continuous in all
 interaction-time coordinates. -/
@@ -139,52 +120,23 @@ private theorem ExternalInsertionWickDiagram.measurable_dysonFixedTimeAmplitude
     (externalTime : Fin (2 * E) → ℝ) :
     Measurable (fun σ : Fin n → ℝ =>
       d.dysonFixedTimeAmplitude ε β g externalTime σ) := by
-  classical
-  let rep : (Fin n → ℝ) → ℂ := fun σ =>
-    ∑ s : ExternalInsertionOrderSignature E n,
-      if externalInsertionOrderSignature externalTime σ = s then
-        d.dysonFixedTimeChamberRepresentative ε β g externalTime
-          (externalInsertionOrderSignatureBase externalTime s) σ
-      else 0
-  have hRep : Measurable rep := by
-    dsimp [rep]
-    apply Finset.measurable_sum
-    intro s _
-    have hFiber := measurableSet_externalInsertionOrderSignatureFiber externalTime s
-    have hContinuous :=
-      (d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
-        (externalInsertionOrderSignatureBase externalTime s)).measurable
-    simpa only [externalInsertionOrderSignatureFiber, Set.mem_ofPred_eq] using
-      (Measurable.ite hFiber hContinuous measurable_const)
-  have hEq : rep = fun σ : Fin n → ℝ =>
-      d.dysonFixedTimeAmplitude ε β g externalTime σ := by
-    funext σ
-    dsimp [rep]
-    let s₀ := externalInsertionOrderSignature externalTime σ
-    have hsum :
-        (∑ s : ExternalInsertionOrderSignature E n,
-          if externalInsertionOrderSignature externalTime σ = s then
-            d.dysonFixedTimeChamberRepresentative ε β g externalTime
-              (externalInsertionOrderSignatureBase externalTime s) σ
-          else 0) =
-        d.dysonFixedTimeChamberRepresentative ε β g externalTime
-          (externalInsertionOrderSignatureBase externalTime s₀) σ := by
-      change (∑ s : ExternalInsertionOrderSignature E n,
-          if s₀ = s then
-            d.dysonFixedTimeChamberRepresentative ε β g externalTime
-              (externalInsertionOrderSignatureBase externalTime s) σ
-          else 0) =
-        d.dysonFixedTimeChamberRepresentative ε β g externalTime
-          (externalInsertionOrderSignatureBase externalTime s₀) σ
-      simp
-    rw [hsum]
-    exact d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
+  apply intervalIntegral.measurable_of_finite_continuous_signature
+    (signature := externalInsertionOrderSignature externalTime)
+    (branch := fun s =>
+      d.dysonFixedTimeChamberRepresentative ε β g externalTime
+        (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s))
+  · intro s
+    simpa [externalInsertionOrderSignatureFiber] using
+      measurableSet_externalInsertionOrderSignatureFiber externalTime s
+  · intro s
+    exact d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
+      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s)
+  · intro σ
+    exact (d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
       ε β g externalTime
-      (externalInsertionOrderSignatureBase externalTime s₀) σ
-      (by simpa [s₀] using
-        sameExternalInsertionOrderChamber_signatureBase externalTime σ)
-  rw [← hEq]
-  exact hRep
+      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
+        (externalInsertionOrderSignature externalTime σ)) σ
+      (sameExternalInsertionOrderChamber_signatureBase externalTime σ)).symm
 
 /-- The arbitrary-external fermionic Dyson fixed-time integrand is measurable
 and uniformly bounded on each finite interaction-time cube. -/
@@ -197,16 +149,16 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
   apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_selection
     (g := fun s : ExternalInsertionOrderSignature E n =>
       d.dysonFixedTimeChamberRepresentative ε β g externalTime
-        (externalInsertionOrderSignatureBase externalTime s))
+        (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s))
   · exact d.measurable_dysonFixedTimeAmplitude ε β g externalTime
   · intro s
     exact d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
-      (externalInsertionOrderSignatureBase externalTime s)
+      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s)
   · intro σ
     refine ⟨externalInsertionOrderSignature externalTime σ, ?_⟩
     exact (d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
       ε β g externalTime
-      (externalInsertionOrderSignatureBase externalTime
+      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
         (externalInsertionOrderSignature externalTime σ)) σ
       (sameExternalInsertionOrderChamber_signatureBase externalTime σ)).symm
 
