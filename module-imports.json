@@ -1700,10 +1700,94 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/Berry.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
+        "LeanCondensedMatter.Transport.Streda.TraceKernel"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Interband.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/OperatorSpectral.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Transport.Resolvent.Spectral",
+        "LeanCondensedMatter.Transport.Resolvent.Uniqueness"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Spectral.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Model",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+        "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+        "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Operator",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Operator.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model",
+        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
+      ],
+      "externalImportCount": 4
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Response",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Response.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor",
+        "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
+        "LeanCondensedMatter.Transport.Streda.TraceRepresentation"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+        "LeanCondensedMatter.Models.RashbaExchange.Model",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.Response"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models",
       "sourceFile": "LeanCondensedMatter/Models.lean",
       "imports": [
-        "LeanCondensedMatter.Models.Parabolic2DEG"
+        "LeanCondensedMatter.Models.Parabolic2DEG",
+        "LeanCondensedMatter.Models.RashbaExchange"
       ],
       "externalImportCount": 0
     },
@@ -7870,94 +7954,10 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Bastin.Berry",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Bastin/Berry.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
-        "LeanCondensedMatter.Transport.Streda.TraceKernel"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Model/Interband.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Model/OperatorSpectral.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
-        "LeanCondensedMatter.Transport.Resolvent.Spectral",
-        "LeanCondensedMatter.Transport.Resolvent.Uniqueness"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Model/Spectral.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Model.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-        "LeanCondensedMatter.Transport.Analysis.BandOccupation",
-        "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Operator.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
-        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
-      ],
-      "externalImportCount": 4
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Response",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Response.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
-        "LeanCondensedMatter.Transport.Core.ConductivityTensor",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
-        "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
-        "LeanCondensedMatter.Transport.Streda.TraceRepresentation"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.RashbaExchange",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Bastin.Berry",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Operator",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange.Response"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Models",
       "sourceFile": "LeanCondensedMatter/Transport/Models.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac",
-        "LeanCondensedMatter.Transport.Models.RashbaExchange"
+        "LeanCondensedMatter.Transport.Models.MassiveDirac"
       ],
       "externalImportCount": 0
     },
