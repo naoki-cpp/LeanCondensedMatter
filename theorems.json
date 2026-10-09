@@ -80654,48 +80654,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (self : QuantumTheory.Transport.RegularizedStredaIntegralData),\n  IntervalIntegrable (fun energy => self.occupation energy * self.surfacePrimitiveDerivative energy)\n    MeasureTheory.volume self.lowerEnergy self.upperEnergy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.RegularizedStredaIntegralData.surfaceProduct_intervalIntegrable",
-    "module": "LeanCondensedMatter.Transport.Streda.Integration",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.regularizedBastinEnergyIntegral_eq_surface_add_sea"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.regularizedBastinEnergyIntegral_eq_surface_add_sea"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {response : ℂ} (self : QuantumTheory.Transport.RegularizedStredaRepresentation response),\n  response = QuantumTheory.Transport.regularizedBastinEnergyIntegral self.toRegularizedStredaIntegralData",
     "standardAxioms": [
       "Classical.choice",
@@ -85939,8 +85897,7 @@
       "QuantumTheory.Transport.RegularizedStredaIntegralData.seaProduct_intervalIntegrable",
       "QuantumTheory.Transport.RegularizedStredaIntegralData.surfacePrimitiveDerivative_intervalIntegrable",
       "QuantumTheory.Transport.RegularizedStredaIntegralData.surfacePrimitive_continuous",
-      "QuantumTheory.Transport.RegularizedStredaIntegralData.surfacePrimitive_hasDerivAt",
-      "QuantumTheory.Transport.RegularizedStredaIntegralData.surfaceProduct_intervalIntegrable"
+      "QuantumTheory.Transport.RegularizedStredaIntegralData.surfacePrimitive_hasDerivAt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -116861,6 +116818,47 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ),\n  (∀ (a b : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n      SecondQuantization.Common.externalInsertionTimedEventTime externalTime σ a <\n          SecondQuantization.Common.externalInsertionTimedEventTime externalTime σ b ↔\n        SecondQuantization.Common.externalInsertionTimedEventTime externalTime υ a <\n          SecondQuantization.Common.externalInsertionTimedEventTime externalTime υ b) →\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ =\n      SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime υ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder",
+    "externalAxioms": [],
+    "docString": "The canonical mixed atomic-leg enumeration is unchanged if every strict comparison\nbetween external and interaction event times is unchanged. The fixed rank also resolves\nall equal-time ties identically. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173850,6 +173848,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
     ],
     "dependencies": [
@@ -173859,9 +173858,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173985,6 +173985,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
     ],
     "dependencies": [
@@ -173996,9 +173997,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
