@@ -42,8 +42,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- Complex two-band matrices. -/
 abbrev Matrix2 := InternalSpace.PauliMatrix
 
