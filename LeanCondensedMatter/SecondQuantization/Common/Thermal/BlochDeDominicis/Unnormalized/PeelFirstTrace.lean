@@ -61,8 +61,7 @@ theorem traceFock_diagonalEvolution_comp_peel [Fintype Config]
 hypotheses plus explicit summability of `ScalarExchange.peelSumWithCoefficients`'s own diagonal series (`hPeel`) and of the
 rotation's double series (`hRotate`). Summability of the rotated tail's diagonal series (`n ↦
 (e^{-βH₀}(B₁⋯Bₖ)C₁)ₙₙ`) is *not* a separate hypothesis — it follows from `hRotate` alone via
-`summable_matrixCoeff_diag_comp_of_summable_uncurry`, mirroring `TwoPoint.lean`'s own `tsum`
-theorem. -/
+`summable_matrixCoeff_diag_comp_of_summable_uncurry`. -/
 theorem tsumTrace_diagonalEvolution_comp_peel
     (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)

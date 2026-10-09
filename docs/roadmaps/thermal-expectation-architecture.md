@@ -138,3 +138,8 @@ rotation. Bosonic and completed fermionic first-pair reductions apply it with re
 `1` and `-1` respectively. Their KMS proofs, denominator nonvanishing, and fermionic odd-tail
 sign proof remain in the representation-specific consumers. The algebraic identity assumes only
 a field and the two scalar equalities, and introduces no thermal-state contract.
+Finite normalized two-point values and the bosonic two-point diagonal trace identity apply the
+same general trace peel theorem to a singleton coefficient-paired tail. The singleton peel's
+diagonal summability follows by multiplying the partition-function diagonal series by the exchange
+coefficient; rotation still requires its existing double-series summability. No separate two-point
+trace induction or additional analytic assumption is used.

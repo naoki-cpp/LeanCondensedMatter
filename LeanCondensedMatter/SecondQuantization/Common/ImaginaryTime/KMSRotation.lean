@@ -21,9 +21,8 @@ weight (`q = -εᵢ` for `annihilate i`, `q = εᵢ` for `create i`).
 
 Both a `[Fintype Config]` version (`traceFock_diagonalEvolution_comp_rotate`) and a `tsum`,
 summability-hypothesis-gated version usable on an infinite `Config`
-(`tsumTrace_diagonalEvolution_comp_rotate`) are proved below. The Bloch–de Dominicis 2-point base
-case that consumes this rotation identity lives in
-`Common/Thermal/BlochDeDominicis/Unnormalized/TwoPoint.lean`.
+(`tsumTrace_diagonalEvolution_comp_rotate`) are proved below. The general trace peel identity combining this rotation with scalar exchange lives in
+`Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirstTrace.lean`.
 -/
 
 namespace SecondQuantization
