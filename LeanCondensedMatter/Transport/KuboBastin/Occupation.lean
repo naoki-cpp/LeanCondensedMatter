@@ -83,27 +83,17 @@ theorem purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
 
 variable [Fintype ι]
 
-/-- Complete generalized response after replacing every discrete probability difference by its
-oriented occupation-derivative integral. The explicit observable-variation expectation is kept
-unchanged. -/
-private noncomputable def finiteKuboBastinOccupationResolvedVertexResponse
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source observableVariation : H →L[ℂ] H)
-    (omega eta : ℝ) : ℂ :=
-  (∑ mn : ι × ι,
-      purePointKuboBastinOccupationResolvedVertexTerm
-        system data interpolation measured source omega eta mn) +
-    purePointNormalizedExpectation system data observableVariation
 /-- Occupation-resolved generalized response attached directly to a neutral response channel. -/
 noncomputable def finiteKuboBastinOccupationResolvedChannelResponse
     (interpolation : PurePointOccupationInterpolation system data)
     (channel : ResponseChannel H)
     (omega eta : ℝ) : ℂ :=
-  finiteKuboBastinOccupationResolvedVertexResponse system data interpolation
-    channel.measured channel.source channel.observableVariation omega eta
+  (∑ mn : ι × ι,
+      purePointKuboBastinOccupationResolvedVertexTerm
+        system data interpolation channel.measured channel.source omega eta mn) +
+    purePointNormalizedExpectation system data channel.observableVariation
 
-/-- The public occupation-resolved channel response exposes its aggregate transition sum without
-exposing the private response-level implementation. -/
+/-- The occupation-resolved channel response reduces to its aggregate transition sum. -/
 theorem finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum
     (interpolation : PurePointOccupationInterpolation system data)
     (channel : ResponseChannel H)
