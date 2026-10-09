@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
 set_option linter.style.header false
 
@@ -18,9 +19,10 @@ mechanics: `velocity`, `m`, and the operator-valued one-form localizer `N` are s
 operators/data.
 
 When an intrinsic transport `Φ` factors through `J_nested ∘ d`, its exact-flux response decomposes
-canonically into symmetrized and localization-correction responses.  This remains a
-statement on exact differential data; no uniqueness of arbitrary/global current extensions is
-claimed.
+canonically into symmetrized and localization-correction responses. The same bounded corrected
+current also defines a response channel with independent source and observable-variation inputs.
+This remains a statement on exact differential data; no uniqueness of arbitrary/global current
+extensions is claimed.
 -/
 
 namespace SecondQuantization
@@ -37,6 +39,31 @@ variable {Site Test OneForm : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
+
+/-- Bounded Fock-space observable associated with one corrected/nested current component. -/
+noncomputable def boundedCorrectedCurrentObservable
+    (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
+    (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (α : OneForm) :
+    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
+  boundedOneBodyOperator
+    (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
+      (LatticeState Site) velocity m N α)
+
+/-- Response channel for one corrected current component.
+
+The measured observable is the bounded corrected current. The source vertex and its explicit
+observable variation are supplied independently, as needed for spin and orbital current response. -/
+noncomputable def correctedCurrentResponseChannel
+    (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
+    (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (α : OneForm)
+    (source observableVariation :
+      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :
+    QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) where
+  measured := boundedCorrectedCurrentObservable velocity m N α
+  source := source
+  observableVariation := observableVariation
 
 /-- Retarded response of the symmetrized current flux
 `α ↦ 1/2 {N α, 1/2 {v,m}}`. -/
