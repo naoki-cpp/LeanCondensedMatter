@@ -143,6 +143,11 @@ theorem ExternalInsertionDiagram.ofSlotSplit_vertexWeight
         ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
       simp [ExternalInsertionDiagram.ofSlotSplit,
         subsetSumSdiffEquiv_inl_apply, subsetSumSdiffEquiv_inr_apply]
+      congr 1
+      apply Finset.prod_congr rfl
+      intro v _
+      have hv : (v : Fin N) ∉ T := (Finset.mem_sdiff.mp v.2).2
+      simp [hv]
 
 section Decompose
 
