@@ -51407,8 +51407,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.purePointExpectation_heisenberg_mul_eq_tsum",
-      "QuantumTheory.LinearResponse.purePointExpectation_mul_heisenberg_eq_tsum",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
+      "QuantumTheory.LinearResponse.purePointExpectation_mul_heisenberg_eq_tsum"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
@@ -51419,10 +51418,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.purePointExpectation_heisenberg_mul_eq_tsum",
-      "QuantumTheory.LinearResponse.purePointExpectation_mul_heisenberg_eq_tsum",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
+      "QuantumTheory.LinearResponse.purePointExpectation_mul_heisenberg_eq_tsum"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82692,7 +82690,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) channel.measured channel.source omega\n        eta heta +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        channel.observableVariation =\n    QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -82700,7 +82698,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -82711,18 +82709,14 @@
     "docString": "At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is\nexactly its finite Kubo–Bastin spectral response. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121532,6 +121526,7 @@
     "dependencies": [
       "List.idxOf_flatMap_block_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem"
@@ -121579,6 +121574,7 @@
     ],
     "dependencies": [
       "List.idxOf_flatMap_block_lt_uniform",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup"
     ],
     "crossModuleDirectWrapper": false,
@@ -121626,6 +121622,7 @@
     "dependencies": [
       "List.idxOf_flatMap_block_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_map_lt_iff",
@@ -121690,6 +121687,56 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedTwoPointLeg n),\n  ↑(SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =\n    List.idxOf leg (SecondQuantization.Common.mixedTimeOrderedAtomicLegs τ τ' σ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": "The canonical position equivalence computes the index in the sorted atomic-leg list. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -121925,6 +121972,7 @@
       "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
       "List.idxOf_flatMap_block_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
@@ -133166,47 +133214,6 @@
       "QuantumTheory.Transport.RegularizedStredaRepresentation.response_eq_surface_add_sea"
     ],
     "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {OneForm : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (velocity m :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ] SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (N :\n    OneForm →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (α : OneForm)\n  (source observableVariation :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data)\n        (SecondQuantization.Fermionic.Transport.boundedCorrectedCurrentObservable velocity m N α) source omega eta\n        heta +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        observableVariation =\n    SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralCorrectedCurrentResponse system data velocity m N α\n      source observableVariation omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin",
-    "externalAxioms": [],
-    "docString": "At positive switching rate, the causal frequency-domain response of the corrected current\nchannel is exactly its finite spectral Kubo–Bastin response. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
-    ],
-    "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
@@ -174621,6 +174628,7 @@
     ],
     "dependencies": [
       "List.idxOf_flatMap_lt_of_idxOf_lt",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",

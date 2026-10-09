@@ -6200,19 +6200,11 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentKuboBastin.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
-        "LeanCondensedMatter.Transport.KuboBastin.Finite"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse"
       ],
       "externalImportCount": 0
@@ -6379,7 +6371,6 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteConductivityTable",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderConductivity",
