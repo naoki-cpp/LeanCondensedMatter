@@ -5,9 +5,8 @@ set_option linter.style.header false
 /-!
 # Component-local Dyson-signed values for two-point diagrams
 
-The order-`n` Dyson sign depends only on the number of quartic interaction vertices. The interaction
-vertices are partitioned by the full external-plus-interaction components, so this sign factors into
-one power of `-1` for the canonical external component and one for every vacuum component.
+The order-`n` Dyson sign depends only on the number of quartic interaction vertices and factors
+directly over all full external-plus-interaction components via the generic vertex-product theorem.
 
 This module combines those local signs with the component-local fixed-time values. The resulting
 pointwise signed integrand is the exact input required by the subsequent ordered-simplex shuffle
@@ -28,23 +27,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
   (-1 : ℂ) ^ (Common.interactionSector
     (B : Finset (Common.TwoPointVertex
       (Finset.univ : Finset (Fin n))))).card
-
-private theorem FixedExternalTwoPointWickDiagram.dysonSign_eq_external_mul_prod_vacuum_mixed
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    (-1 : ℂ) ^ n = d.mixedComponentDysonSign d.1.externalComponentPart *
-      (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign := by
-  calc
-    (-1 : ℂ) ^ n = (-1 : ℂ) ^ (Finset.univ : Finset (Fin n)).card := by simp
-    _ = (-1 : ℂ) ^ (Common.interactionSector
-          (d.1.vertexGraph.componentBlock (Sum.inl 0))).card *
-        (Common.vacuumComponentParts d.1.vertexGraph).prod (fun B =>
-          (-1 : ℂ) ^ (Common.interactionSector
-            (B : Finset (Common.TwoPointVertex
-              (Finset.univ : Finset (Fin n))))).card) :=
-      d.1.dysonSign_eq_external_mul_prod_vacuum
-    _ = d.mixedComponentDysonSign d.1.externalComponentPart *
-        (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign := by
-      rfl
 
 section Fermionic
 
@@ -89,12 +71,9 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
   have hsign :
       (-1 : ℂ) ^ n = ∏ B : d.1.vertexGraph.componentPartition.parts, d.mixedComponentDysonSign B := by
-    calc
-      (-1 : ℂ) ^ n = d.mixedComponentDysonSign d.1.externalComponentPart *
-          (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign :=
-        d.dysonSign_eq_external_mul_prod_vacuum_mixed
-      _ = ∏ B : d.1.vertexGraph.componentPartition.parts, d.mixedComponentDysonSign B := by
-        rw [d.1.prod_componentParts_eq_external_mul_prod_vacuum]
+    simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
+      Finset.card_univ, Fintype.card_coe] using
+      (d.1.prod_vertexLabel_eq_prod_componentInteractionParts (fun _ => (-1 : ℂ)))
   rw [hsign, d.fixedTimeAmplitude_eq_externalSign_mul_prod_components]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   rw [Finset.prod_mul_distrib]
