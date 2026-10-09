@@ -23,6 +23,68 @@ def CarriesShift {Config G : Type*} [AddCommGroup G] (grading : Config → G)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (q : G) : Prop :=
   ∀ m n, matrixCoeff A m n ≠ 0 → grading m = grading n + q
 
+/-! ## Functoriality and linear closure -/
+
+/-- A fixed support shift transports along any additive homomorphism of grading groups. -/
+theorem CarriesShift.map {Config G H : Type*} [AddCommGroup G] [AddCommGroup H]
+    {grading : Config → G} {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+    {q : G} (hA : CarriesShift grading A q) (f : G →+ H) :
+    CarriesShift (f ∘ grading) A (f q) := by
+  intro m n hmn
+  simpa only [Function.comp_apply, map_add] using congrArg f (hA m n hmn)
+
+/-- The zero operator satisfies every support-shift predicate. -/
+theorem CarriesShift.zero {Config G : Type*} [AddCommGroup G]
+    (grading : Config → G) (q : G) :
+    CarriesShift grading (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) q := by
+  intro m n hmn
+  simp [matrixCoeff] at hmn
+
+/-- Operators with the same support shift are closed under addition. -/
+theorem CarriesShift.add {Config G : Type*} [AddCommGroup G]
+    {grading : Config → G}
+    {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
+    (hA : CarriesShift grading A q) (hB : CarriesShift grading B q) :
+    CarriesShift grading (A + B) q := by
+  intro m n hmn
+  have hcoeff : matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
+    simpa only [matrixCoeffLinear_apply] using (matrixCoeffLinear m n).map_add A B
+  rw [hcoeff] at hmn
+  by_cases ha : matrixCoeff A m n = 0
+  · exact hB m n (by simpa only [ha, zero_add] using hmn)
+  · exact hA m n ha
+
+/-- A scalar multiple preserves an operator's support shift. -/
+theorem CarriesShift.smul {Config G : Type*} [AddCommGroup G]
+    {grading : Config → G}
+    {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
+    (hA : CarriesShift grading A q) (c : ℂ) :
+    CarriesShift grading (c • A) q := by
+  intro m n hmn
+  have hcoeff : matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
+    simpa only [matrixCoeffLinear_apply, smul_eq_mul] using
+      (matrixCoeffLinear m n).map_smul c A
+  rw [hcoeff] at hmn
+  exact hA m n (right_ne_zero_of_mul hmn)
+
+/-- A finite sum of operators with a common support shift has that shift. -/
+theorem CarriesShift.sum {Config G ι : Type*} [AddCommGroup G]
+    {grading : Config → G}
+    (s : Finset ι) (A : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : G) (hA : ∀ i ∈ s, CarriesShift grading (A i) q) :
+    CarriesShift grading (∑ i ∈ s, A i) q := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+      simpa only [Finset.sum_empty] using CarriesShift.zero grading q
+  | @insert i s hi ih =>
+      have hhead : CarriesShift grading (A i) q :=
+        hA i (Finset.mem_insert_self i s)
+      have htail : ∀ j ∈ s, CarriesShift grading (A j) q := by
+        intro j hj
+        exact hA j (Finset.mem_insert_of_mem hj)
+      simpa only [Finset.sum_insert hi] using hhead.add (ih htail)
+
 /-- If a basis vector is sent to a scalar multiple of one target basis vector with grading shift
 `q`, every nonzero matrix coefficient in that column has the same grading shift. -/
 theorem grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
