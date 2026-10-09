@@ -112,6 +112,18 @@ theorem reachable_sum_inr_iff
   · intro hreach
     exact hreach.map SimpleGraph.Embedding.sumInr.toHom
 
+omit [DecidableEq V] in
+/-- Reachability between left-side vertices of a graph sum is exactly reachability
+inside the left summand. -/
+theorem reachable_sum_inl_iff
+    {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) (x y : V) :
+    (G ⊕g H).Reachable (Sum.inl x) (Sum.inl y) ↔ G.Reachable x y := by
+  simpa [SimpleGraph.Iso.sumComm] using
+    ((SimpleGraph.Iso.reachable_iff
+      (φ := SimpleGraph.Iso.sumComm (G := G) (H := H))
+      (u := Sum.inl x) (v := Sum.inl y)).symm.trans
+        (SimpleGraph.reachable_sum_inr_iff H G x y))
+
 section AmbientFinset
 
 variable {α : Type*} [DecidableEq α] {s : Finset α}
