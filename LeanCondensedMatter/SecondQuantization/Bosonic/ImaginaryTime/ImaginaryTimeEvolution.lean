@@ -158,12 +158,12 @@ theorem diagonalCoeff_evolve_annihilate_comp_create
       if i = j then Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * ((n i : ℂ) + 1) else 0 := by
   by_cases hij : i = j
   · subst j
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     change ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create i)) (basisState n) n = _
     rw [LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
       LinearMap.smul_apply, annihilate_create_basisState_same, smul_smul, basisState,
       Common.smul_basisState_apply_self]
-  · rw [if_neg hij]
+  · rw [ite_eq_right hij]
     change ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) (basisState n) n = 0
     rw [LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
       LinearMap.smul_apply, create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
