@@ -22,8 +22,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- Gauge-independent spectral projector candidate
 `P_s = 1/2 (I + s H₀/E)` for the massive-Dirac band with sign `s`. -/
 def bandProjector (band : Band) (v m px py : ℝ) : Matrix2 :=
