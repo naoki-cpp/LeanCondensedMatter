@@ -185,8 +185,12 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
       (d.mixedExternalPositionEquiv τ τ' υ)
       (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart)
       (fun p => by
-        simp [TwoPointDiagram.mixedExternalPositionEquiv,
-          TwoPointDiagram.mixedComponentPositionTimeEquiv])
+        change d.externalComponentLegEquiv.symm
+            (d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart
+              (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p)) =
+          d.externalComponentLegEquiv.symm
+            (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
+        simp [TwoPointDiagram.mixedComponentPositionTimeEquiv])
       (congrArg Subtype.val hlocal) hp hq
   · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
       (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
