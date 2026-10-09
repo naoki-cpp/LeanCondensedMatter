@@ -169,21 +169,44 @@ theorem TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap
       (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
     (d.mixedTimePositionEquiv_partner τ τ' σ υ) pr
 
-/-- Canonical comparison of the mixed normalized pairs of one full component at two time assignments. -/
+/-- Canonical comparison of mixed normalized pairs in one component, obtained by restricting the
+global partner-preserving pair transport rather than splitting external and vacuum components. -/
 noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.MixedComponentPair τ τ' σ B ≃ d.MixedComponentPair τ τ' υ B := by
   classical
-  by_cases hB : B = d.externalComponentPart
-  · subst B
-    exact (d.mixedExternalComponentPairEquiv τ τ' σ).trans
-      (d.mixedExternalComponentPairEquiv τ τ' υ).symm
-  · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
-      (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
-    exact (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac).trans
-      (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac).symm
+  let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
+    (mixedTimeAmbientPositionEquiv τ τ' υ).symm
+  let e := d.mixedPairTimeEquiv τ τ' σ υ
+  have hpos (p : Fin (2 * (2 * n + 1))) :
+      d.mixedPositionComponent τ τ' υ (f p) =
+        d.mixedPositionComponent τ τ' σ p := by
+    apply Subtype.ext
+    change d.vertexGraph.componentBlock
+        (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' υ (f p))) =
+      d.vertexGraph.componentBlock
+        (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
+    simp [f]
+  have hcomp (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
+      d.mixedPairComponent τ τ' υ (e pr) =
+        d.mixedPairComponent τ τ' σ pr := by
+    have hends := d.mixedPairTimeEquiv_pair_eq_or_swap τ τ' σ υ pr
+    change (e pr).1 = (f pr.1.1, f pr.1.2) ∨
+        (e pr).1 = (f pr.1.2, f pr.1.1) at hends
+    change d.mixedPositionComponent τ τ' υ (e pr).1.1 =
+      d.mixedPositionComponent τ τ' σ pr.1.1
+    rcases hends with hends | hends
+    · rw [congrArg Prod.fst hends, hpos]
+    · rw [congrArg Prod.fst hends, hpos]
+      have hpair := ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff
+        pr.1.1 pr.1.2).1 pr.2
+      rw [← hpair.2, d.mixedPositionComponent_partner]
+  exact e.subtypeEquiv (fun pr => by
+    change d.mixedPairComponent τ τ' σ pr = B ↔
+      d.mixedPairComponent τ τ' υ (e pr) = B
+    rw [hcomp])
 
 end Common
 end SecondQuantization
