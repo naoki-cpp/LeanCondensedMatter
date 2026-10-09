@@ -75,10 +75,10 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicPairValue
     (externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ b)
 
 
+omit [LinearOrder Mode] in
 /-- Relabeling external and interaction slots preserves the concrete time-labelled field
 on each canonical atomic leg. The maps need not be order preserving: this identity
 concerns the identity of the field, not the fermionic permutation sign. -/
-omit [LinearOrder Mode] in
 theorem orderedExternalInsertionLegField_map
     {E₁ E₂ m n : ℕ}
     (fExternal : Fin (2 * E₁) → Fin (2 * E₂))
