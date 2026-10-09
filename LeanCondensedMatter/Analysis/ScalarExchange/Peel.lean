@@ -12,6 +12,19 @@ under a fixed scalar exchange relation. The underlying bracket identities live i
 
 namespace ScalarExchange
 
+/-- Solve the scalar equation left after exchange and rotation: the exchange remainder has
+coefficient `s`, and the rotated value has coefficient `q`. No operator or thermal assumptions
+enter this field identity. -/
+theorem eq_div_mul_of_eq_add_mul_of_eq_mul {F : Type*} [Field F]
+    (E P R s q : F) (hExchange : E = P + s * R) (hRotate : E = q * R)
+    (hne : q - s ≠ 0) : E = (q / (q - s)) * P := by
+  have h : (q - s) * E = q * P := by
+    linear_combination q * hExchange - s * hRotate
+  calc
+    E = (q * P) / (q - s) :=
+      (eq_div_iff hne).2 (by simpa only [mul_comm] using h)
+    _ = (q / (q - s)) * P := by ring
+
 /-- The exchange terms generated while pushing one labelled algebra element through a finite tail. -/
 noncomputable def peelSum {Label A : Type*} [Semiring A] [Algebra ℂ A]
     (element : Label → A) (exchangeCoeff : Label → Label → ℂ)

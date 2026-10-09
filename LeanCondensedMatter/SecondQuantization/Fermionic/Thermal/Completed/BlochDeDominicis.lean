@@ -467,26 +467,10 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     have h := Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq
       Common.Statistics.fermion hmod
     simpa using h
-  have hgr : C.gibbsFactor ε β * R = P - R := by
-    calc
-      C.gibbsFactor ε β * R = E := hkms.symm
-      _ = P + ((-1 : ℂ) ^ l.length) * R := hpeel
-      _ = P - R := by rw [hsign]; ring
-  have hRmul : R * ((1 : ℂ) + C.gibbsFactor ε β) = P := by
-    calc
-      R * ((1 : ℂ) + C.gibbsFactor ε β) = C.gibbsFactor ε β * R + R := by ring
-      _ = (P - R) + R := by rw [hgr]
-      _ = P := by ring
-  have hR : R = P / ((1 : ℂ) + C.gibbsFactor ε β) :=
-    (eq_div_iff hne).2 hRmul
-  calc
-    completedFreeGibbsExpectation ε β hsum (C :: l) = E := rfl
-    _ = C.gibbsFactor ε β * R := hkms
-    _ = (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) * P := by
-      rw [hR]
-      ring
-    _ = (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C l) := rfl
+  simpa only [sub_neg_eq_add, add_comm] using
+    ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R (-1) (C.gibbsFactor ε β)
+      (by simpa only [hsign] using hpeel) hkms
+      (by simpa only [sub_neg_eq_add, add_comm] using hne)
 
 /-- The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied
 by the same Gibbs ratio that solves the odd-tail KMS equation. -/
