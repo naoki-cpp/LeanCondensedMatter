@@ -39,15 +39,6 @@ def slotSplitVertex (h : T ⊆ S) : TwoPointVertex T → TwoPointVertex S
   | Sum.inl e => Sum.inl e
   | Sum.inr v => Sum.inr ⟨v.1, h v.2⟩
 
-private theorem slotSplitVertex_injective (h : T ⊆ S) :
-    Function.Injective (slotSplitVertex h) := by
-  rintro (e | v) (f | w) hEq
-  · simpa [slotSplitVertex] using hEq
-  · simp [slotSplitVertex] at hEq
-  · simp [slotSplitVertex] at hEq
-  · simp only [slotSplitVertex, Sum.inr.injEq, Subtype.mk.injEq] at hEq
-    exact congrArg Sum.inr (Subtype.ext hEq)
-
 /-- Left legs carry the ambient vertices of the corresponding external-piece vertices. -/
 theorem twoPointVertexOfLeg_slotLegSplitting_inl (h : T ⊆ S)
     (i : Fin (2 * (2 * T.card + 1))) :
@@ -78,17 +69,6 @@ private theorem QuarticDiagram.vertexGraph_adj_iff
 def slotSplitVacuumVertex : ↥(S \ T) → TwoPointVertex S :=
   fun v => Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
 
-/-- The vacuum-piece vertex embedding is injective. -/
-private theorem slotSplitVacuumVertex_injective :
-    Function.Injective (slotSplitVacuumVertex (S := S) (T := T)) := by
-  intro v w hvw
-  have hs :
-      (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ : ↥S) =
-        ⟨w.1, (Finset.mem_sdiff.mp w.2).1⟩ := by
-    exact Sum.inr.inj hvw
-  apply Subtype.ext
-  exact congrArg (fun z : ↥S => (z : Fin N)) hs
-
 /-- Reindex the vertices of a reassembled two-point diagram by the vertices of its
 external two-point and quartic vacuum pieces. -/
 noncomputable def slotSplitVertexEquiv (h : T ⊆ S) :
@@ -114,6 +94,20 @@ theorem slotSplitVertexEquiv_inr (h : T ⊆ S) (v : ↥(S \ T)) :
     slotSplitVacuumVertex v
   rw [subsetSumSdiffEquiv_inr_apply]
   rfl
+
+/-- The external vertex embedding inherits injectivity from the slot-split equivalence. -/
+private theorem slotSplitVertex_injective (h : T ⊆ S) :
+    Function.Injective (slotSplitVertex h) := by
+  intro x y hxy
+  exact Sum.inl.inj ((slotSplitVertexEquiv h).injective
+    (by simpa only [slotSplitVertexEquiv_inl] using hxy))
+
+/-- The vacuum vertex embedding inherits injectivity from the slot-split equivalence. -/
+private theorem slotSplitVacuumVertex_injective (h : T ⊆ S) :
+    Function.Injective (slotSplitVacuumVertex (S := S) (T := T)) := by
+  intro x y hxy
+  exact Sum.inr.inj ((slotSplitVertexEquiv h).injective
+    (by simpa only [slotSplitVertexEquiv_inr] using hxy))
 
 /-- An external-piece vertex and a vacuum-piece vertex have disjoint images. -/
 private theorem slotSplitVertex_ne_slotSplitVacuumVertex (h : T ⊆ S)
@@ -189,10 +183,10 @@ private theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
         rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr,
           twoPointVertexOfLeg_slotLegSplitting_inr_exact] at hpartner
         refine ⟨fun hxy => hne (congrArg slotSplitVacuumVertex hxy), j, ?_, ?_⟩
-        · exact slotSplitVacuumVertex_injective hleg
-        · exact slotSplitVacuumVertex_injective hpartner
+        · exact slotSplitVacuumVertex_injective h hleg
+        · exact slotSplitVacuumVertex_injective h hpartner
   · rintro ⟨hne, leg, hleg, hpartner⟩
-    refine ⟨fun hxy => hne (slotSplitVacuumVertex_injective hxy),
+    refine ⟨fun hxy => hne (slotSplitVacuumVertex_injective h hxy),
       slotLegSplitting h (Sum.inr leg), ?_, ?_⟩
     · rw [twoPointVertexOfLeg_slotLegSplitting_inr_exact, hleg]
     · rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr,
@@ -252,13 +246,6 @@ private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
     (u := Sum.inl x) (v := Sum.inl y)).trans
       (SimpleGraph.reachable_sum_inl_iff ext.vertexGraph vac.vertexGraph x y)
 
-/-- Reachability inside the external piece survives reassembly. -/
-theorem reachable_ofSlotSplit_of_reachable {x y : TwoPointVertex T}
-    (hreach : ext.vertexGraph.Reachable x y) :
-    (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-      (slotSplitVertex h x) (slotSplitVertex h y) :=
-  (reachable_ofSlotSplit_iff h ext vac x y).2 hreach
-
 /-- **The slot set of a reassembled diagram is its external component's interaction part**, provided
 the external piece really is externally connected. -/
 theorem interactionSector_externalComponent_ofSlotSplit
@@ -297,7 +284,9 @@ theorem interactionSector_externalComponent_ofSlotSplit
     have hmapped :
         (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
           (Sum.inl e) (Sum.inr ⟨v, h hvT⟩) := by
-      simpa [slotSplitVertex] using reachable_ofSlotSplit_of_reachable h ext vac he
+      simpa [slotSplitVertex] using
+        (reachable_ofSlotSplit_iff h ext vac (Sum.inl e)
+          (Sum.inr ⟨v, hvT⟩)).2 he
     have hexternal :
         (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
           (Sum.inl e) (Sum.inl 0) := by
@@ -354,9 +343,10 @@ noncomputable def TwoPointDiagram.externalFiberEquiv :
       {ext : TwoPointDiagram ExternalLabel InternalLabel N T // ext.IsExternallyConnected} ×
         QuarticDiagram InternalLabel N (S \ T) where
   toFun d :=
-    (⟨d.1.slotSplitExternal h (isSplit_slotLegSplitting_of_interactionSector_eq h d.2),
-        isExternallyConnected_slotSplitExternal h d.2 _⟩,
-      d.1.slotSplitVacuum h (isSplit_slotLegSplitting_of_interactionSector_eq h d.2))
+    let hsplit := isSplit_slotLegSplitting_of_interactionSector_eq h d.2
+    (⟨d.1.slotSplitExternal h hsplit,
+        isExternallyConnected_slotSplitExternal h d.2 hsplit⟩,
+      d.1.slotSplitVacuum h hsplit)
   invFun p :=
     ⟨TwoPointDiagram.ofSlotSplit h p.1.1 p.2,
       interactionSector_externalComponent_ofSlotSplit h p.1.1 p.2 p.1.2⟩
