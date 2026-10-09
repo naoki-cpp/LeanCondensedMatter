@@ -55,7 +55,7 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
       (ext.vertexGraph ⊕g vac.vertexGraph).Reachable
         (Sum.inl (Sum.inl e)) (Sum.inr v) :=
     (SimpleGraph.Iso.reachable_iff
-      (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+      (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
       (u := Sum.inl (Sum.inl e)) (v := Sum.inr v)).mp
       (by
         change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
