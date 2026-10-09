@@ -21,33 +21,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
 
-/-- Unoriented geometric crossing count between two mixed-time components. -/
-private noncomputable def TwoPointDiagram.mixedComponentGeometricCrossingCount
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
-  ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
-    if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0
-
-/-- Geometric crossings split into the two oriented component-crossing counts. -/
-private theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.vertexGraph.componentPartition.parts) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C =
-      d.mixedComponentOrientedCrossingCount τ τ' σ B C +
-        d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
-  change
-    (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
-        (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C =
-      (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
-          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C +
-        (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
-          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) C B
-  exact
-    (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
-      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C
-
 private noncomputable def TwoPointDiagram.mixedComponentPositionInversionCount
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -56,36 +29,6 @@ private noncomputable def TwoPointDiagram.mixedComponentPositionInversionCount
   ∑ p : d.MixedComponentPosition τ τ' σ B,
     ∑ q : d.MixedComponentPosition τ τ' σ C,
       if q.1 < p.1 then 1 else 0
-
-private theorem
-    TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 =
-      d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by
-  have endpointVal (D : d.vertexGraph.componentPartition.parts)
-      (p : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
-      (d.mixedComponentPairEndpointEquiv τ τ' σ D (p, k)).1 =
-        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (p.1, k) := by
-    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
-      (d.pairingInMixedOrder τ τ' σ)
-      (fun x => d.mixedPositionComponent τ τ' σ x = D) _ p k
-  have hcross :=
-    Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-      (d.pairingInMixedOrder τ τ' σ)
-      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
-      (fun D => d.mixedComponentPairEndpointEquiv τ τ' σ D)
-      (fun _ p => p.1)
-      (fun D p k => by
-        simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
-          endpointVal D p k)
-      B C hBC
-  simpa [TwoPointDiagram.mixedComponentGeometricCrossingCount,
-    Combinatorics.Pairing.componentGeometricCrossingCount,
-    TwoPointDiagram.mixedComponentPositionInversionCount] using hcross
 
 private noncomputable def TwoPointDiagram.mixedVacuumPositionDataEquiv
     {n : ℕ}
@@ -380,9 +323,32 @@ private theorem
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
     (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
-  rw [d.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount
-    τ τ' σ B C hBC]
+    (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
+        (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 = 0 := by
+  have endpointVal (D : d.vertexGraph.componentPartition.parts)
+      (p : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
+      (d.mixedComponentPairEndpointEquiv τ τ' σ D (p, k)).1 =
+        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (p.1, k) := by
+    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
+    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+      (d.pairingInMixedOrder τ τ' σ)
+      (fun x => d.mixedPositionComponent τ τ' σ x = D) _ p k
+  have hcross :=
+    Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+      (d.pairingInMixedOrder τ τ' σ)
+      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
+      (fun D => d.mixedComponentPairEndpointEquiv τ τ' σ D)
+      (fun _ p => p.1)
+      (fun D p k => by
+        simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
+          endpointVal D p k)
+      B C hBC
+  have hcount :
+      (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
+          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 =
+        d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by
+    simpa only [TwoPointDiagram.mixedComponentPositionInversionCount] using hcross
+  rw [hcount]
   exact d.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform
     τ τ' σ B C hVac
     (d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac)
@@ -397,8 +363,10 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       d.mixedComponentWeight s τ τ' σ d.externalComponentPart *
         (vacuumComponentParts d.vertexGraph).prod
           (d.mixedComponentWeight s τ τ' σ) := by
+  let pairing := d.pairingInMixedOrder τ τ' σ
+  let components := Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)
   have hEven : ∀ B C : d.vertexGraph.componentPartition.parts, B ≠ C →
-      d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
+      pairing.componentGeometricCrossingCount components B C % 2 = 0 := by
     intro B C hBC
     by_cases hC : C = d.externalComponentPart
     · have hB : B ≠ d.externalComponentPart := by
@@ -408,10 +376,10 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       have hBVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
         (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
       have hcomm :
-          d.mixedComponentGeometricCrossingCount τ τ' σ B C =
-            d.mixedComponentGeometricCrossingCount τ τ' σ C B := by
-        rw [d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C,
-          d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ C B]
+          pairing.componentGeometricCrossingCount components B C =
+            pairing.componentGeometricCrossingCount components C B := by
+        rw [pairing.componentGeometricCrossingCount_eq_oriented_add components B C,
+          pairing.componentGeometricCrossingCount_eq_oriented_add components C B]
         omega
       rw [hcomm]
       exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
@@ -428,9 +396,9 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       (d.pairingInMixedOrder τ τ' σ)
       (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
       (fun B C hBC => by
-        change (d.mixedComponentOrientedCrossingCount τ τ' σ B C +
-          d.mixedComponentOrientedCrossingCount τ τ' σ C B) % 2 = 0
-        rw [← d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C]
+        change (pairing.componentCrossingCount components B C +
+          pairing.componentCrossingCount components C B) % 2 = 0
+        rw [← pairing.componentGeometricCrossingCount_eq_oriented_add components B C]
         exact hEven B C hBC)
   have hcomponents :
       (d.pairingInMixedOrder τ τ' σ).weight s =
