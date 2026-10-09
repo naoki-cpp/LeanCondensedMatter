@@ -28,6 +28,18 @@ noncomputable def externalInsertionMixedAtomicOrderSign {E n : ℕ}
   ((Equiv.Perm.sign
     (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) : ℤ) : ℂ)
 
+/-- The fermionic sign of mixed atomic ordering is constant on every finite
+external-insertion order-signature fiber. -/
+theorem externalInsertionMixedAtomicOrderSign_eq_of_orderSignature_eq
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
+    (h : externalInsertionOrderSignature externalTime σ =
+      externalInsertionOrderSignature externalTime υ) :
+    externalInsertionMixedAtomicOrderSign externalTime σ =
+      externalInsertionMixedAtomicOrderSign externalTime υ := by
+  unfold externalInsertionMixedAtomicOrderSign
+  rw [externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq
+    externalTime σ υ h]
+
 /-- Fixed-time amplitude of an arbitrary external-insertion Wick diagram. -/
 noncomputable def ExternalInsertionWickDiagram.fixedTimeAmplitude {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
