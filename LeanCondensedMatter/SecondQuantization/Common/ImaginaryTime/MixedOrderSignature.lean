@@ -83,7 +83,10 @@ private theorem measurable_twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) :
       (Fin n → ℝ) → TwoPointOrderSignature n) := by
   exact measurable_strictOrderSignature
     (fun σ event => twoPointTimedEventTime τ τ' σ event)
-    (fun event => (continuous_sumEventTime (twoPointExternalTimes τ τ') event).measurable)
+    (fun event => by
+      convert (continuous_sumEventTime (twoPointExternalTimes τ τ') event).measurable using 1
+      funext σ
+      cases event <;> rfl)
 
 /-- Fiber of the finite mixed-order signature map over a prescribed signature. -/
 def twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
@@ -142,7 +145,10 @@ private theorem measurable_externalInsertionOrderSignature {E n : ℕ}
       (Fin n → ℝ) → ExternalInsertionOrderSignature E n) := by
   exact measurable_strictOrderSignature
     (fun σ event => externalInsertionTimedEventTime externalTime σ event)
-    (fun event => (continuous_sumEventTime externalTime event).measurable)
+    (fun event => by
+      convert (continuous_sumEventTime externalTime event).measurable using 1
+      funext σ
+      cases event <;> rfl)
 
 /-- The standard-to-mixed atomic-position permutation depends only on the finite
 external-insertion order signature, including equal-time rank tie breaking. -/
