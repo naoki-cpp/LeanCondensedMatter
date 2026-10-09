@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
