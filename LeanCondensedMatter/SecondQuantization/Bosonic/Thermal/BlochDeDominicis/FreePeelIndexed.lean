@@ -38,7 +38,7 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     C₁.operatorPeelSum l ∈ freeGibbsDomain ε β := by
   have h := ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
   simp only [one_pow, one_mul, ← orderedProduct] at h
-  rw [operatorPeelSum, h, mem_freeGibbsDomain_iff]
+  rw [h, mem_freeGibbsDomain_iff]
   exact freeGibbsSummable_sum ε β
     (fun j : Fin l.length =>
       C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
@@ -55,7 +55,7 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
           freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
   have h := ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
   simp only [one_pow, one_mul, ← orderedProduct] at h
-  rw [operatorPeelSum, h]
+  rw [h]
   calc
     freeGibbsExpectation ε β
         (∑ j : Fin l.length,
