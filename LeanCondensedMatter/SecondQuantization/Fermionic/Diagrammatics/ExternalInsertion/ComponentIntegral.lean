@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
 set_option linter.style.header false
 
@@ -107,12 +108,7 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ)
     (blockOrder : d.vertexGraph.componentPartition.parts ≃
-      Fin (Fintype.card d.vertexGraph.componentPartition.parts))
-    (hlocal : ∀ B : d.vertexGraph.componentPartition.parts,
-      intervalIntegral.MeasurableLocallyBounded
-        (fun localσ =>
-          (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
-            (d.componentExternalTime externalTime B) localσ)) :
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
     (∑ shuffle : d.ComponentInteractionOrderShuffle,
       d.orderedDysonAmplitude ε β g externalTime
         (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
@@ -159,6 +155,11 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
           (d.componentExternalTime externalTime B)
           (shuffle.timeAssignment τ B)
     rw [d.componentInteractionTime_assembleInteractionOrder shuffle τ B]
+  have hlocal (B : d.vertexGraph.componentPartition.parts) :
+      intervalIntegral.MeasurableLocallyBounded (localIntegrand B) := by
+    simpa [size, localIntegrand] using
+      (d.componentWickDiagram B).measurableLocallyBounded_dysonFixedTimeAmplitude
+        ε β g (d.componentExternalTime externalTime B)
   have hTotal : (∑ B, size B) = (Finset.univ : Finset (Fin n)).card := by
     simpa [size] using
       (sum_interactionSector_card_eq d.vertexGraph)
