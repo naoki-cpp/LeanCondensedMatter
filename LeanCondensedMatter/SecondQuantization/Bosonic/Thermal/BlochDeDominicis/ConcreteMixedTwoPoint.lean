@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -8,9 +8,9 @@ set_option linter.unusedFintypeInType false
 # Concrete mixed free-boson Gibbs contractions
 
 Under the standard positive one-mode Boltzmann exponent assumption, summability of the mixed product
-`aᵢ aⱼ†` and nonvanishing of the Bose denominator follow automatically. This module proves those
-facts directly on the infinite occupation space and derives the KMS-rotated reverse contraction from
-the canonical commutation relation and linearity of the convergence-aware Gibbs functional.
+`aᵢ aⱼ†` follows from the general finite ordered-product summability theorem on the infinite
+occupation space. The Bose denominator is nonzero under the same positivity hypothesis. The reverse
+contraction follows from the canonical commutation relation and linearity on the free-Gibbs domain.
 -/
 
 namespace SecondQuantization
@@ -23,97 +23,7 @@ variable {Mode : Type*}
 /-- File-local classical decidable equality for mode comparisons in the concrete contractions. -/
 local instance instDecidableEqConcreteMixedTwoPoint : DecidableEq Mode := Classical.decEq Mode
 
-/-- The diagonal coefficient of `aᵢ aⱼ†` is `nᵢ + 1` for equal modes and zero otherwise. -/
-theorem matrixCoeff_annihilate_comp_create_self
-    (i j : Mode) (n : Occupation Mode) :
-    Common.matrixCoeff ((annihilate i).comp (create j)) n n =
-      if i = j then (n i : ℂ) + 1 else 0 := by
-  by_cases hij : i = j
-  · subst j
-    rw [ite_eq_left rfl]
-    have haction : ((annihilate i).comp (create i)) (basisState n) =
-        ((n i : ℂ) + 1) • basisState n := by
-      rw [LinearMap.comp_apply, annihilate_create_basisState_same]
-    simpa using
-      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := n) haction)
-  · rw [ite_eq_right hij, Common.matrixCoeff, LinearMap.comp_apply]
-    change (annihilate i (create j (basisState n))) n = 0
-    rw [create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
-    change (Real.sqrt (n j + 1 : ℝ) : ℂ) *
-      Common.matrixCoeff (annihilate i) n (createOccupation j n) = 0
-    rw [matrixCoeff_annihilate]
-    have hne : n ≠ removeOccupation i (createOccupation j n) := by
-      intro h
-      have hj := congrArg (fun x : Occupation Mode => x j) h
-      rw [removeOccupation_apply_ne (Ne.symm hij), createOccupation_apply_same] at hj
-      omega
-    rw [ite_eq_right hne, mul_zero]
-
-/-- The diagonal coefficient of `aᵢ aⱼ†` grows at most linearly with occupation number. -/
-theorem norm_matrixCoeff_annihilate_comp_create_self_le
-    (i j : Mode) (n : Occupation Mode) :
-    ‖Common.matrixCoeff ((annihilate i).comp (create j)) n n‖ ≤ (n i : ℝ) + 1 := by
-  rw [matrixCoeff_annihilate_comp_create_self]
-  split_ifs
-  · have hcast : (n i : ℂ) + 1 = (((n i : ℝ) + 1 : ℝ) : ℂ) := by
-      push_cast
-      ring
-    rw [hcast, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]
-    positivity
-  · rw [norm_zero]
-    positivity
-
 variable [Fintype Mode]
-
-/-- `aᵢ aⱼ†` has a summable free-Gibbs numerator under positive one-mode Boltzmann exponents. -/
-theorem freeGibbsSummable_annihilate_comp_create
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    freeGibbsSummable ε β ((annihilate i).comp (create j)) := by
-  unfold freeGibbsSummable imaginaryTimeEvolveFree
-  have hN := summable_particleNumber_boltzmannWeight ε β hpos i
-  have hW := summable_boltzmannWeight ε β hpos
-  have hmajorant : Summable (fun n : Occupation Mode =>
-      (n i : ℝ) * boltzmannWeight ε β n + boltzmannWeight ε β n) := hN.add hW
-  apply hmajorant.of_norm_bounded
-  intro n
-  rw [Common.matrixCoeff_diagonalEvolution_comp, norm_mul, Complex.norm_exp]
-  have hA := norm_matrixCoeff_annihilate_comp_create_self_le i j n
-  have hw : 0 ≤ boltzmannWeight ε β n := Real.exp_nonneg _
-  change boltzmannWeight ε β n *
-      ‖Common.matrixCoeff ((annihilate i).comp (create j)) n n‖ ≤ _
-  calc
-    boltzmannWeight ε β n * ‖Common.matrixCoeff ((annihilate i).comp (create j)) n n‖ ≤
-        boltzmannWeight ε β n * ((n i : ℝ) + 1) :=
-      mul_le_mul_of_nonneg_left hA hw
-    _ = (n i : ℝ) * boltzmannWeight ε β n + boltzmannWeight ε β n := by ring
-
-/-- The reverse mixed product `aⱼ† aᵢ` is also in the free-Gibbs domain.  This follows from the CCR
-and linear closure, so no second occupation-space convergence proof is needed. -/
-theorem create_comp_annihilate_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    (create j).comp (annihilate i) ∈ freeGibbsDomain ε β := by
-  have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i j
-  have hreorder :
-      (annihilate i).comp (create j) =
-        (if i = j then (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0) +
-          (create j).comp (annihilate i) := by
-    simpa [Module.End.mul_eq_comp] using
-      (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
-        (comm_annihilate_create i j))
-  by_cases hij : i = j
-  · subst j
-    have hId := linearMap_id_mem_freeGibbsDomain ε β hpos
-    have hop : (create i).comp (annihilate i) =
-        (annihilate i).comp (create i) -
-          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-      apply (eq_sub_iff_add_eq).2
-      simpa [add_comm] using hreorder.symm
-    rw [hop]
-    exact (freeGibbsDomain ε β).sub_mem hA hId
-  · have hop : (create j).comp (annihilate i) = (annihilate i).comp (create j) := by
-      simpa [hij] using hreorder.symm
-    rw [hop]
-    exact hA
 
 omit [Fintype Mode] in
 /-- The Bose denominator is nonzero under the same positivity hypothesis that makes the partition
@@ -137,7 +47,11 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
       if i = j then (1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)))⁻¹ else 0 := by
-  have hSumm := freeGibbsSummable_annihilate_comp_create ε β hpos i j
+  have hSumm : freeGibbsSummable ε β ((annihilate i).comp (create j)) := by
+    simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
+      Module.End.mul_eq_comp] using
+      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
+        [.annihilate i, .create j])
   have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
   rw [freeGibbsExpectation_annihilate_comp_create_eq ε β hpos i j hSumm hden]
   by_cases hij : i = j <;> simp [hij]
@@ -159,7 +73,11 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
         (comm_annihilate_create j i))
   by_cases hij : i = j
   · subst j
-    have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i i
+    have hA : freeGibbsSummable ε β ((annihilate i).comp (create i)) := by
+      simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
+        Module.End.mul_eq_comp] using
+        (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
+          [.annihilate i, .create i])
     have hId := linearMap_id_mem_freeGibbsDomain ε β hpos
     have hop : (create i).comp (annihilate i) =
         (annihilate i).comp (create i) -
