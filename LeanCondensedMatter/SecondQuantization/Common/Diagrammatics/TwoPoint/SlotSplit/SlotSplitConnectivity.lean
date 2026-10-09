@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
-import LeanCondensedMatter.Combinatorics.SimpleGraphClosedEmbedding
+import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
 set_option linter.style.header false
 
