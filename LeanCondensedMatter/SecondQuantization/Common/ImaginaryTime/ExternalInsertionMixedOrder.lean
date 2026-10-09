@@ -288,21 +288,8 @@ private theorem externalInsertionTimedEventAtomicLegs_disjoint {E n : ℕ}
     {a b : ExternalInsertionTimedEvent E n} (h : a ≠ b) :
     List.Disjoint (externalInsertionTimedEventAtomicLegs a)
       (externalInsertionTimedEventAtomicLegs b) := by
-  cases a with
-  | inl e =>
-      cases b with
-      | inl e' => simpa [externalInsertionTimedEventAtomicLegs] using h.symm
-      | inr v => simp [externalInsertionTimedEventAtomicLegs]
-  | inr v =>
-      cases b with
-      | inl e => simp [externalInsertionTimedEventAtomicLegs]
-      | inr v' =>
-          have hv : v ≠ v' := by
-            intro hv
-            apply h
-            cases hv
-            rfl
-          simpa [externalInsertionTimedEventAtomicLegs] using hv.symm
+  cases a <;> cases b <;>
+    simp_all [externalInsertionTimedEventAtomicLegs]
 
 private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
