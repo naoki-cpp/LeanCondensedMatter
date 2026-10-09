@@ -127,7 +127,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
     change mixedTimeAmbientPositionEquiv τ τ' υ
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
       mixedTimeAmbientPositionEquiv τ τ' σ p.1 at h
-    simpa [f] using h
+    simpa only [f, Equiv.trans_apply, Equiv.apply_symm_apply] using h
   have hPair := d.mixedPairTimeEquiv_pair_eq_or_swap τ τ' σ υ pr.1
   change q.1.1 = (f pr.1.1.1, f pr.1.1.2) ∨
       q.1.1 = (f pr.1.1.2, f pr.1.1.1) at hPair
