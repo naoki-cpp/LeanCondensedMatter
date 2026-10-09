@@ -57,8 +57,10 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
     (SimpleGraph.Iso.reachable_iff
       (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
       (u := Sum.inl (Sum.inl e)) (v := Sum.inr v)).mp
-      (by simpa [slotSplitVertexEquiv_inl, slotSplitVertexEquiv_inr, slotSplitVertex] using
-        hreach)
+      (by
+        change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+          (slotSplitVertex h (Sum.inl e)) (slotSplitVacuumVertex v)
+        simpa [slotSplitVertex] using hreach)
   exact SimpleGraph.not_reachable_sum_inl_inr _ _ hsum
 
 /-- Send a quartic vacuum-piece component to the corresponding ambient vacuum component. -/
