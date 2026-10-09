@@ -126,43 +126,5 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
         (Fintype.prod_equiv_sigma vac.vertexGraph.componentPartitionOn.equivSigmaParts
           (fun v => w (vac.vertexLabel v))).symm
 
-/-- The product of the Dyson signs carried by the ambient vacuum components is the Dyson sign of the
-whole quartic vacuum piece. -/
-theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
-    (h : T ⊆ S)
-    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
-    (vac : QuarticDiagram InternalLabel N (S \ T))
-    (hext : ext.IsExternallyConnected) :
-    (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph).prod (fun B =>
-      (-1 : ℂ) ^ (interactionSector
-        (B : Finset (TwoPointVertex S))).card) =
-      (-1 : ℂ) ^ (S \ T).card := by
-  classical
-  calc
-    (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph).prod (fun B =>
-        (-1 : ℂ) ^ (interactionSector
-          (B : Finset (TwoPointVertex S))).card) =
-      ∏ B : ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph),
-        (-1 : ℂ) ^ (interactionSector
-          (B.1 : Finset (TwoPointVertex S))).card := by
-        exact Finset.prod_subtype
-          (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)
-          (fun _ => Iff.rfl) _
-    _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
-        (-1 : ℂ) ^ (interactionSector
-          (((slotSplitVacuumComponentEquiv h ext vac hext C).1.1 :
-            Finset (TwoPointVertex S)))).card := by
-      exact (Equiv.prod_comp (slotSplitVacuumComponentEquiv h ext vac hext)
-        (fun B => (-1 : ℂ) ^ (interactionSector
-          (B.1 : Finset (TwoPointVertex S))).card)).symm
-    _ = ∏ C : vac.vertexGraph.componentPartitionOn.parts,
-        (-1 : ℂ) ^ (C : Finset (Fin N)).card := by
-      apply Fintype.prod_congr
-      intro C
-      rw [slotSplitVacuumComponentEquiv_apply,
-        interactionSector_slotSplitVacuumComponentPart]
-    _ = (-1 : ℂ) ^ (S \ T).card :=
-      (Finpartition.pow_card_eq_prod_parts vac.vertexGraph.componentPartitionOn (-1 : ℂ)).symm
-
 end Common
 end SecondQuantization
