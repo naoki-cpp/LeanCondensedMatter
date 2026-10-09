@@ -235,29 +235,15 @@ private theorem
     mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 ∉
       twoPointTimedEventAtomicLegs (Sum.inr v.1 : TwoPointTimedEvent n) := by
   intro hmem
-  have hpos :
-      mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) = p.1 :=
-    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1
-  have hcontr (l : Fin 4)
-      (hleg : mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 =
-        mixedTimeOrderedInteractionLeg v.1 l) : False := by
-    have hcomp : d.mixedPositionComponent τ τ' σ p.1 = C := by
-      calc
-        d.mixedPositionComponent τ τ' σ p.1 =
-            d.mixedPositionComponent τ τ' σ
-              (mixedTimeOrderedAtomicLegPosition τ τ' σ
-                (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1)) := by rw [hpos]
-        _ = d.mixedPositionComponent τ τ' σ
-              (mixedTimeOrderedAtomicLegPosition τ τ' σ
-                (mixedTimeOrderedInteractionLeg v.1 l)) := by rw [hleg]
-        _ = C := d.mixedPositionComponent_interactionLegPosition τ τ' σ C v l
-    exact hBC (p.2.symm.trans hcomp)
   rw [twoPointTimedEventAtomicLegs_interaction] at hmem
   simp only [List.mem_ofFn] at hmem
-  rcases hmem with ⟨l, hleg⟩
-  apply hcontr l
-  simpa only [mixedTimeOrderedInteractionLeg] using hleg.symm
+  obtain ⟨l, hl⟩ := hmem
+  have hleg : mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 =
+      mixedTimeOrderedInteractionLeg v.1 l := by
+    simpa only [mixedTimeOrderedInteractionLeg] using hl.symm
+  have hcomp := d.mixedPositionComponent_interactionLegPosition τ τ' σ C v l
+  rw [← hleg, mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv] at hcomp
+  exact hBC (p.2.symm.trans hcomp)
 
 private theorem TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform
     {n : ℕ}
