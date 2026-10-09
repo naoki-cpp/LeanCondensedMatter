@@ -74,41 +74,6 @@ theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotentialResponse
         finiteVolumeConductivityNormalization convention 0 eta := by
   rfl
 
-/-- Expanding the static spectral response gives the finite zero-frequency transition sum plus the
-unchanged contact expectation. -/
-theorem finiteStaticKuboBastinVectorPotentialResponse_eq_finite_sum
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ) :
-    finiteStaticKuboBastinVectorPotentialResponse
-        system data geometry direction K q eta =
-      (∑ mn : ι × ι,
-        finiteKuboBastinSpectralDirectionalCurrentTerm
-          system data geometry direction K q 0 eta mn) +
-        purePointNormalizedExpectation system data
-          (boundedDirectionalContact geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) := by
-  rfl
-
-/-- Exact finite spectral form of the named static conductivity target. -/
-theorem finiteStaticKuboBastinDirectionalConductivity_eq_finite_sum
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ) :
-    finiteStaticKuboBastinDirectionalConductivity
-        convention system data geometry direction K q eta =
-      ((∑ mn : ι × ι,
-        finiteKuboBastinSpectralDirectionalCurrentTerm
-          system data geometry direction K q 0 eta mn) +
-        purePointNormalizedExpectation system data
-          (boundedDirectionalContact geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)) *
-        finiteVolumeConductivityNormalization convention 0 eta := by
-  rfl
-
 /-- The static named target remains connected to the causal Kubo response at every positive
 switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_zero_frequency_eq_staticKuboBastin
