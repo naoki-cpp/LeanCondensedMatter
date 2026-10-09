@@ -142,6 +142,46 @@ private theorem TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap
   intro q
   rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B q]
 
+/-- Identifying the same local normalized pair at two position coordinate systems preserves
+its unordered endpoints. Any difference is solely the normalization orientation. -/
+private theorem pairEndpoints_eq_or_swap_of_equiv
+    {P Q R : Type*} (e : P ≃ R) (e' : Q ≃ R) (f : P ≃ Q)
+    (htransport : ∀ x, e' (f x) = e x)
+    {x₀ x₁ : P} {y₀ y₁ : Q} {s t : R × R}
+    (hpair : t = s)
+    (hp : s = (e x₀, e x₁) ∨ s = (e x₁, e x₀))
+    (hq : t = (e' y₀, e' y₁) ∨ t = (e' y₁, e' y₀)) :
+    (y₀ = f x₀ ∧ y₁ = f x₁) ∨ (y₀ = f x₁ ∧ y₁ = f x₀) := by
+  rcases hp with hp | hp <;> rcases hq with hq | hq
+  · left
+    have hcoords := hq.symm.trans (hpair.trans hp)
+    constructor
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.fst hcoords
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.snd hcoords
+  · right
+    have hcoords := hq.symm.trans (hpair.trans hp)
+    constructor
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.snd hcoords
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.fst hcoords
+  · right
+    have hcoords := hq.symm.trans (hpair.trans hp)
+    constructor
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.fst hcoords
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.snd hcoords
+  · left
+    have hcoords := hq.symm.trans (hpair.trans hp)
+    constructor
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.snd hcoords
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.fst hcoords
+
 private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -196,54 +236,20 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         d.mixedExternalComponentPairEquiv τ τ' υ q =
           d.mixedExternalComponentPairEquiv τ τ' σ pr := by
       simpa [q] using d.mixedExternalComponentPairEquiv_pairTimeEquiv τ τ' σ υ pr
-    have hlocalVal :
-        (d.mixedExternalComponentPairEquiv τ τ' υ q).1 =
-          (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 :=
-      congrArg Subtype.val hlocal
-    rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ
-        d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' σ)
-        d.externalVacuumSplit.1.pairing
-        (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr with hp | hp <;>
-      rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' υ
-          d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' υ)
-          d.externalVacuumSplit.1.pairing
-          (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' υ) q with hq | hq
-    · left
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-    · right
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
-    · right
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-    · left
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
-        simpa [TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
+    have hp := d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ
+      d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' σ)
+      d.externalVacuumSplit.1.pairing
+      (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr
+    have hq := d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' υ
+      d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' υ)
+      d.externalVacuumSplit.1.pairing
+      (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' υ) q
+    exact pairEndpoints_eq_or_swap_of_equiv
+      (d.mixedExternalPositionEquiv τ τ' σ)
+      (d.mixedExternalPositionEquiv τ τ' υ)
+      (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart)
+      (d.mixedExternalPositionEquiv_positionTimeEquiv τ τ' σ υ)
+      (congrArg Subtype.val hlocal) hp hq
   · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
       (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
@@ -251,56 +257,20 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q =
           d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr := by
       simpa [q] using d.mixedVacuumComponentPairEquiv_pairTimeEquiv τ τ' σ υ B hVac pr
-    have hlocalVal :
-        (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q).1 =
-          (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 :=
-      congrArg Subtype.val hlocal
-    rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ B
-        (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
-        (d.restrictedVacuumPairing B hVac)
-        (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
-      with hp | hp <;>
-      rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' υ B
-          (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
-          (d.restrictedVacuumPairing B hVac)
-          (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' υ B hVac) q
-        with hq | hq
-    · left
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-    · right
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
-    · right
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-    · left
-      have hcoords := hq.symm.trans (hlocalVal.trans hp)
-      constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.snd hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
-        simpa [TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv] using
-          congrArg Prod.fst hcoords
+    have hp := d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ B
+      (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+      (d.restrictedVacuumPairing B hVac)
+      (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
+    have hq := d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' υ B
+      (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
+      (d.restrictedVacuumPairing B hVac)
+      (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' υ B hVac) q
+    exact pairEndpoints_eq_or_swap_of_equiv
+      (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+      (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
+      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B)
+      (d.mixedVacuumPositionEquiv_positionTimeEquiv τ τ' σ υ B hVac)
+      (congrArg Subtype.val hlocal) hp hq
 
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
