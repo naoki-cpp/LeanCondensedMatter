@@ -35,19 +35,6 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
-/-- Neutral response-channel packaging used by the static directional charge-current target. -/
-private noncomputable def staticDirectionalChargeResponseChannel
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q : ℝ) :
-    ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  source := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  observableVariation := boundedDirectionalContact geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-
 /-- Zero-frequency vector-potential response coefficient, retaining the finite spectral
 current-current response and explicit Peierls contact expectation. -/
 noncomputable def finiteStaticKuboBastinVectorPotentialResponse
@@ -56,7 +43,7 @@ noncomputable def finiteStaticKuboBastinVectorPotentialResponse
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   finiteStaticKuboBastinChannelResponse system data
-    (staticDirectionalChargeResponseChannel system geometry direction K q) eta
+    (boundedDirectionalResponseChannel system geometry direction K q) eta
 
 /-- Named finite static Kubo–Bastin conductivity target. The switching rate remains positive and
 finite; only the driving frequency is specialized to zero. The Smrcka--Streda terminology follows
