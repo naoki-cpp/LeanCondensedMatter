@@ -204,6 +204,7 @@ private theorem
     (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
         (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 = 0 := by
+  classical
   have endpointVal (D : d.vertexGraph.componentPartition.parts)
       (p : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
       (d.mixedComponentPairEndpointEquiv τ τ' σ D (p, k)).1 =
