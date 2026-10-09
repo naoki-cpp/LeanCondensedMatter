@@ -6,13 +6,20 @@ status: accepted
 
 A nonempty finite bosonic mode set still has infinitely many occupation configurations because each mode admits arbitrary natural-number occupation. Therefore finite-mode bosonic thermal theory uses an explicit summability domain rather than the finite-configuration trace argument available to finite-mode fermions.
 
-`ConvergenceAwareGibbsFunctional` stores a submodule of admissible observables and a normalized linear expectation on that submodule. For free bosons, `freeGibbsDomain` is the canonical submodule defined by `freeGibbsSummable`; its membership equivalence and finite-sum expectation adapter convert explicit summability witnesses into the subtype consumed by the functional. A totalized value is only an adapter for total-function interfaces; the assigned value outside the domain is not a physical expectation.
+`freeGibbsDomain` is the canonical submodule defined by `freeGibbsSummable`, and
+`freeGibbsExpectationLinear` is the normalized expectation restricted to that submodule under
+positive one-mode Boltzmann exponents. Its membership equivalence and finite-sum adapter convert
+explicit summability witnesses into the subtype consumed by the linear map. The total trace-ratio
+expression `freeGibbsExpectation` has physical expectation semantics only when its numerator is
+summable and its partition series is nonzero. For free thermal field lists, the ordered-product
+summability theorem establishes this domain condition for every finite product; the Common pairing
+recursion therefore consumes the trace-ratio expression directly, without a second totalization.
 
 This lets algebraic thermal results proceed before a completed bosonic operator theory is available, at the cost of explicit membership proofs. Linear closure does not imply closure under operator products or integrals. Those operations, and any later boundedness or trace-class interpretation, need separate analytic justification.
 
 Finite-mode polynomial occupation majorants are owned by a general weighted-monomial summability layer; quadratic and total-particle-number bounds are specializations that consume it. Exact particle-number sum formulas remain separately available where KMS arguments need the value, rather than only convergence.
 
-Evidence: [domain and totalization](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean), [occupation algebra](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/Occupation.lean), [quartic coefficient bound](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticVertexBound.lean), [quartic Gibbs adapter](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticGibbsSummable.lean), and [bosonic thermal boundary](../roadmaps/thermal-expectation-architecture.md).
+Evidence: [summability domain and expectation](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean), [occupation algebra](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/Occupation.lean), [quartic coefficient bound](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticVertexBound.lean), [quartic Gibbs adapter](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticGibbsSummable.lean), and [bosonic thermal boundary](../roadmaps/thermal-expectation-architecture.md).
 
 ## Historical evidence
 

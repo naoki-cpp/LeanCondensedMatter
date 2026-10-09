@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -70,46 +70,23 @@ theorem freeGibbsExpectation_firstPair_recursion
 
 end FreeThermalField
 
-/-- Concrete convergence-aware free-boson pairing recursion.  Every finite ordered field family is
-admissible because its free-Gibbs summability follows from `hpos`. -/
-noncomputable def concreteFreeGibbsPairingRecursion
+/-- File-local realization of the Common pairing recursion using the actual free-Gibbs expectation.
+Every finite field product is summable under `hpos`; the first-pair theorem supplies the analytic
+KMS/exchange recurrence without transporting values through an additional totalization. -/
+private noncomputable def concreteFreeGibbsPairingRecursion
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
-    ConvergenceAwarePairingRecursion
-      (FockSpace Mode →ₗ[ℂ] FockSpace Mode) (FreeThermalField Mode) .boson :=
-  { functional := freeGibbsFunctional ε β hpos
-    orderedProduct := FreeThermalField.orderedProduct
-    pairValue := freeThermalPairValue ε β
-    admissible := fun _ _ => True
-    orderedProduct_mem := fun _ C _ =>
-      FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (List.ofFn C)
-    orderedProduct_nil := rfl
-    admissible_erase := fun _ _ _ _ => trivial
-    expectation_succ := by
-      intro n C _
-      simp only [Statistics.zetaInt_boson, Int.cast_one, one_pow, one_mul]
-      have hfull := FreeThermalField.freeGibbsSummable_orderedProduct
-        ε β hpos (List.ofFn C)
-      rw [freeGibbsFunctional_value_of_summable ε β hpos hfull]
-      have hrec := FreeThermalField.freeGibbsExpectation_firstPair_recursion
-        ε β hpos n C
-      calc
-        freeGibbsExpectation ε β (FreeThermalField.orderedProduct (List.ofFn C)) =
-            ∑ j : Fin (2 * n + 1),
-              freeThermalPairValue ε β (C 0) (C j.succ) *
-                freeGibbsExpectation ε β
-                  (FreeThermalField.orderedProduct
-                    (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := hrec
-        _ = ∑ j : Fin (2 * n + 1),
-              freeThermalPairValue ε β (C 0) (C j.succ) *
-                (freeGibbsFunctional ε β hpos).value
-                  (FreeThermalField.orderedProduct
-                    (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
-          apply Finset.sum_congr rfl
-          intro j _
-          have htail := FreeThermalField.freeGibbsSummable_orderedProduct
-            ε β hpos
-              (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))
-          rw [freeGibbsFunctional_value_of_summable ε β hpos htail] }
+    Common.BlochDeDominicis.ExpectationPairingRecursion (FreeThermalField Mode) .boson where
+  expectation := fun fields => freeGibbsExpectation ε β (FreeThermalField.orderedProduct fields)
+  pairValue := freeThermalPairValue ε β
+  admissible := fun _ _ => True
+  expectation_nil := by
+    rw [FreeThermalField.orderedProduct_nil]
+    exact freeGibbsExpectation_id ε β hpos
+  admissible_erase := fun _ _ _ _ => trivial
+  expectation_succ := by
+    intro n C _
+    simpa only [Statistics.zetaInt_boson, Int.cast_one, one_pow, one_mul] using
+      FreeThermalField.freeGibbsExpectation_firstPair_recursion ε β hpos n C
 
 /-- Fully concrete free-boson Bloch--de Dominicis/Wick pairing expansion.  The only analytic
 hypothesis is positivity of every one-mode Boltzmann exponent. -/
@@ -120,18 +97,7 @@ theorem freeGibbsExpectation_eq_sum_pairing_concrete
       ∑ pairing : Pairing n,
         pairing.weight .boson *
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) := by
-  let data := concreteFreeGibbsPairingRecursion ε β hpos
-  have h := data.toExpectationPairingRecursion.bloch_de_dominicis n C trivial
-  change
-    (freeGibbsFunctional ε β hpos).value
-        (FreeThermalField.orderedProduct (List.ofFn C)) =
-      ∑ pairing : Pairing n,
-        pairing.weight .boson *
-          ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) at h
-  have hmem := FreeThermalField.freeGibbsSummable_orderedProduct
-    ε β hpos (List.ofFn C)
-  rw [freeGibbsFunctional_value_of_summable ε β hpos hmem] at h
-  exact h
+  exact (concreteFreeGibbsPairingRecursion ε β hpos).bloch_de_dominicis n C trivial
 
 end
 end Bosonic

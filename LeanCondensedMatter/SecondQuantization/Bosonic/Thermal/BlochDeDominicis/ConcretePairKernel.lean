@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -64,17 +64,6 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
               ((_root_.SecondQuantization.Bosonic.create i).comp
                 (_root_.SecondQuantization.Bosonic.create j))
               (matrixCoeff_create_comp_create i j))
-
-/-- Functional form of the concrete pair-kernel theorem, suitable for the generic Wick-recursion
-interface. -/
-theorem freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k)
-    (f g : FreeThermalField Mode) :
-    (freeGibbsFunctional ε β hpos).value (FreeThermalField.orderedProduct [f, g]) =
-      freeThermalPairValue ε β f g := by
-  have hSumm := FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos [f, g]
-  rw [freeGibbsFunctional_value_of_summable ε β hpos hSumm]
-  exact freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue ε β hpos f g
 
 end
 end Bosonic

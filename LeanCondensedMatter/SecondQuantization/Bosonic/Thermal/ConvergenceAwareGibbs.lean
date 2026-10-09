@@ -16,7 +16,7 @@ line:
 - an explicit submodule of observables whose Gibbs numerator is summable;
 - canonical adapters from summability to domain membership, finite linear closure, and evaluation;
 - a linear expectation on that submodule;
-- a distinguished unit observable with normalized expectation;
+- normalization on the identity observable;
 - the canonical free-boson realization under `0 < β ε i`.
 
 Callers must still provide the relevant summability witness.  A composition or integral belongs to
@@ -32,53 +32,6 @@ namespace SecondQuantization
 namespace Bosonic
 
 noncomputable section
-
-/-- A normalized Gibbs functional defined on an explicit linear domain of admissible observables.
-
-The domain is a `Submodule`, so closure under finite linear combinations is part of the data.  Any
-additional closure under operator products or integrals must be supplied separately by the theorem
-that uses those operations. -/
-structure ConvergenceAwareGibbsFunctional (Observable : Type*)
-    [AddCommMonoid Observable] [Module ℂ Observable] where
-  /-- Observables for which the expectation is analytically defined. -/
-  domain : Submodule ℂ Observable
-  /-- The linear expectation on the admissible domain. -/
-  expectation : domain →ₗ[ℂ] ℂ
-  /-- The observable representing the empty product. -/
-  unit : Observable
-  /-- The empty-product observable belongs to the analytic domain. -/
-  unit_mem : unit ∈ domain
-  /-- The expectation is normalized on the empty product. -/
-  expectation_unit : expectation ⟨unit, unit_mem⟩ = 1
-
-namespace ConvergenceAwareGibbsFunctional
-
-variable {Observable : Type*} [AddCommMonoid Observable] [Module ℂ Observable]
-
-/-- Totalize a partial Gibbs functional by assigning zero outside its stated analytic domain.
-
-All physical theorems using `value` must separately provide domain membership.  The totalization is
-only an adapter to APIs, such as `ExpectationPairingRecursion`, whose expectation field is total. -/
-noncomputable def value (functional : ConvergenceAwareGibbsFunctional Observable)
-    (A : Observable) : ℂ := by
-  classical
-  exact if hA : A ∈ functional.domain then functional.expectation ⟨A, hA⟩ else 0
-
-/-- On an admissible observable, the totalized value is the underlying partial expectation. -/
-theorem value_of_mem (functional : ConvergenceAwareGibbsFunctional Observable)
-    {A : Observable} (hA : A ∈ functional.domain) :
-    functional.value A = functional.expectation ⟨A, hA⟩ := by
-  classical
-  simp [value, hA]
-
-/-- The totalized functional remains normalized on its distinguished unit. -/
-@[simp]
-theorem value_unit (functional : ConvergenceAwareGibbsFunctional Observable) :
-    functional.value functional.unit = 1 := by
-  rw [functional.value_of_mem functional.unit_mem]
-  exact functional.expectation_unit
-
-end ConvergenceAwareGibbsFunctional
 
 variable {Mode : Type*} [Fintype Mode]
 
@@ -277,28 +230,6 @@ theorem freeGibbsExpectation_id (ε : Mode → ℝ) (β : ℝ)
   rw [freeGibbsExpectation, LinearMap.comp_id]
   change freeGibbsPartition ε β / freeGibbsPartition ε β = 1
   exact div_self (freeGibbsPartition_ne_zero ε β hpos)
-
-/-- The canonical convergence-aware free-boson Gibbs functional on algebraic Fock space. -/
-noncomputable def freeGibbsFunctional (ε : Mode → ℝ) (β : ℝ)
-    (hpos : ∀ i, 0 < β * ε i) :
-    ConvergenceAwareGibbsFunctional (FockSpace Mode →ₗ[ℂ] FockSpace Mode) where
-  domain := freeGibbsDomain ε β
-  expectation := freeGibbsExpectationLinear ε β
-  unit := LinearMap.id
-  unit_mem := linearMap_id_mem_freeGibbsDomain ε β hpos
-  expectation_unit := freeGibbsExpectation_id ε β hpos
-
-/-- A summability witness is the complete analytic adapter from the totalized free-Gibbs functional
-to the concrete normalized expectation.  In particular, callers do not reconstruct a domain subtype
-or unfold `freeGibbsExpectationLinear`. -/
-theorem freeGibbsFunctional_value_of_summable
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
-    (hA : freeGibbsSummable ε β A) :
-    (freeGibbsFunctional ε β hpos).value A = freeGibbsExpectation ε β A := by
-  rw [(freeGibbsFunctional ε β hpos).value_of_mem
-    ((mem_freeGibbsDomain_iff ε β A).2 hA)]
-  rfl
 
 end
 end Bosonic
