@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model
+import LeanCondensedMatter.Models.Parabolic2DEG.Model
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -26,7 +26,7 @@ this benchmark. It is not a claim about a generic two-dimensional system and doe
 nonzero Hall response.
 -/
 
-namespace QuantumTheory.Transport.Models.Parabolic2DEG
+namespace QuantumTheory.Models.Parabolic2DEG
 
 noncomputable section
 
@@ -276,4 +276,4 @@ theorem broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight
 
 end
 
-end QuantumTheory.Transport.Models.Parabolic2DEG
+end QuantumTheory.Models.Parabolic2DEG
