@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTim
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -156,26 +156,36 @@ theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
     simpa using comm_annihilate_create i j
   have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
-  by_cases hij : i = j
-  · subst hij
-    have h := summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag ε β hpos i
-    have hthm := Common.tsumTrace_diagonalEvolution_comp_two_point (freeEigenvalue ε) β (-(ε i))
-      (1 : ℂ) (if i = i then (1 : ℂ) else 0) (annihilate i) (create i) hC1 hcomm hSummD h
-    simpa using hthm
-  · have hzero : Function.uncurry (fun n k =>
-        Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
-          Common.matrixCoeff (annihilate i) k n) = 0 := by
-      funext p
-      simp only [Function.uncurry, Pi.zero_apply]
-      exact matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne hij ε
-        (-β) p.1 p.2
-    have h : Summable (Function.uncurry (fun n k =>
-        Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
-          Common.matrixCoeff (annihilate i) k n)) := by
-      rw [hzero]; exact summable_zero
-    have hthm := Common.tsumTrace_diagonalEvolution_comp_two_point (freeEigenvalue ε) β (-(ε i))
-      (1 : ℂ) (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC1 hcomm hSummD h
-    simpa using hthm
+  have hRotate : Summable (Function.uncurry (fun n k =>
+      Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
+        Common.matrixCoeff (annihilate i) k n)) := by
+    by_cases hij : i = j
+    · subst hij
+      exact summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag ε β hpos i
+    · have hzero : Function.uncurry (fun n k =>
+          Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
+            Common.matrixCoeff (annihilate i) k n) = 0 := by
+        funext p
+        simp only [Function.uncurry, Pi.zero_apply]
+        exact matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
+          hij ε (-β) p.1 p.2
+      rw [hzero]
+      exact summable_zero
+  have hPeel := hSummD.mul_left (if i = j then (1 : ℂ) else 0)
+  have hthm := Common.tsumTrace_diagonalEvolution_comp_peel (freeEigenvalue ε) β (-(ε i))
+    (1 : ℂ) (annihilate i) [(create j, if i = j then (1 : ℂ) else 0)] hC1
+    (by simpa using hcomm)
+    (by simpa only [ScalarExchange.peelSumWithCoefficients, List.map_nil, List.prod_nil,
+      mul_zero, smul_zero, add_zero, Module.End.one_eq_id, LinearMap.comp_smul,
+      LinearMap.comp_id, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul,
+      imaginaryTimeEvolveFree] using hPeel)
+    (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one,
+      imaginaryTimeEvolveFree] using hRotate)
+  simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
+    List.prod_cons, List.prod_nil, one_pow, one_mul, mul_one,
+    ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero] at hthm
+  simpa only [Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id,
+    Common.tsumTrace_smul] using hthm
 
 end
 end Bosonic
