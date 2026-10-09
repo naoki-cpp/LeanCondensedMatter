@@ -98,29 +98,6 @@ private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOr
   rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
   exact hOrder
 
-private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart) :
-    d.mixedExternalComponentPairEquiv τ τ' υ
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ d.externalComponentPart pr) =
-      d.mixedExternalComponentPairEquiv τ τ' σ pr := by
-  simp [TwoPointDiagram.mixedComponentPairTimeEquiv]
-
-private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    d.mixedVacuumComponentPairEquiv τ τ' υ B hVac
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr) =
-      d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr := by
-  have hB : B ≠ d.externalComponentPart :=
-    (d.componentIsVacuum_iff_ne_externalComponentPart B).1 hVac
-  simp [TwoPointDiagram.mixedComponentPairTimeEquiv, hB]
-
 private theorem TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -152,35 +129,21 @@ private theorem pairEndpoints_eq_or_swap_of_equiv
     (hp : s = (e x₀, e x₁) ∨ s = (e x₁, e x₀))
     (hq : t = (e' y₀, e' y₁) ∨ t = (e' y₁, e' y₀)) :
     (y₀ = f x₀ ∧ y₁ = f x₁) ∨ (y₀ = f x₁ ∧ y₁ = f x₀) := by
+  have recover {a b : P} {c d : Q}
+      (h : (e' c, e' d) = (e a, e b)) :
+      c = f a ∧ d = f b := by
+    constructor
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.fst h
+    · apply e'.injective
+      simpa only [htransport] using congrArg Prod.snd h
   rcases hp with hp | hp <;> rcases hq with hq | hq
-  · left
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-  · right
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
-  · right
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-  · left
-    have hcoords := hq.symm.trans (hpair.trans hp)
-    constructor
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.snd hcoords
-    · apply e'.injective
-      simpa only [htransport] using congrArg Prod.fst hcoords
+  · exact Or.inl (recover (hq.symm.trans (hpair.trans hp)))
+  · obtain ⟨h1, h0⟩ := recover (hq.symm.trans (hpair.trans hp))
+    exact Or.inr ⟨h0, h1⟩
+  · exact Or.inr (recover (hq.symm.trans (hpair.trans hp)))
+  · obtain ⟨h1, h0⟩ := recover (hq.symm.trans (hpair.trans hp))
+    exact Or.inl ⟨h0, h1⟩
 
 private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -235,7 +198,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
     have hlocal :
         d.mixedExternalComponentPairEquiv τ τ' υ q =
           d.mixedExternalComponentPairEquiv τ τ' σ pr := by
-      simpa [q] using d.mixedExternalComponentPairEquiv_pairTimeEquiv τ τ' σ υ pr
+      simpa [q, TwoPointDiagram.mixedComponentPairTimeEquiv]
     have hp := d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ
       d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' σ)
       d.externalVacuumSplit.1.pairing
@@ -256,7 +219,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
     have hlocal :
         d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q =
           d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr := by
-      simpa [q] using d.mixedVacuumComponentPairEquiv_pairTimeEquiv τ τ' σ υ B hVac pr
+      simpa [q, TwoPointDiagram.mixedComponentPairTimeEquiv, hB]
     have hp := d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ B
       (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
       (d.restrictedVacuumPairing B hVac)
