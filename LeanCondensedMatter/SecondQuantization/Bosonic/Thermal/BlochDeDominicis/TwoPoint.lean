@@ -182,7 +182,7 @@ theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
     (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one,
       imaginaryTimeEvolveFree] using hRotate)
   simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
-    List.prod_cons, List.prod_nil, pow_one, one_mul, mul_one,
+    List.prod_cons, List.prod_nil, one_pow, one_mul, mul_one,
     ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero] at hthm
   simpa only [Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id,
     Common.tsumTrace_smul] using hthm
