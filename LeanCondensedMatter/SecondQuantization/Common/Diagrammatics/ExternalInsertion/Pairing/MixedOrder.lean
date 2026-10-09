@@ -44,13 +44,9 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_eq_of_orderSignature_eq
       externalInsertionOrderSignature externalTime υ) :
     d.pairingInMixedOrder externalTime σ =
       d.pairingInMixedOrder externalTime υ := by
-  have hpos : externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ =
-      externalInsertionStandardToMixedAtomicPositionEquiv externalTime υ := by
-    unfold externalInsertionStandardToMixedAtomicPositionEquiv
-    rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_orderSignature_eq
-      externalTime σ υ h]
   unfold ExternalInsertionDiagram.pairingInMixedOrder
-  rw [hpos]
+  rw [externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq
+    externalTime σ υ h]
 
 private theorem externalInsertionPairingCastEquiv_partner {E n : ℕ}
     (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + E))
