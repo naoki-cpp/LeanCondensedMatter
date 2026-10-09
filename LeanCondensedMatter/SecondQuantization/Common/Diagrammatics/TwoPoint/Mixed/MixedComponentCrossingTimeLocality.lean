@@ -375,42 +375,10 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
   have hq1Val :
       tq.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
     simpa [tq, endpointVal] using congrArg Subtype.val hqEnds.2
-  have h00 := hOrder p0 q0
-  have h01 := hOrder q0 p1
-  have h11 := hOrder p1 q1
-  unfold Crosses
-  constructor
-  · rintro ⟨hpq, hqp, hpq'⟩
-    have ht00 := h00.mp (by simpa [p0, q0, endpointVal] using hpq)
-    have ht01 := h01.mp (by simpa [q0, p1, endpointVal] using hqp)
-    have ht11 := h11.mp (by simpa [p1, q1, endpointVal] using hpq')
-    refine ⟨?_, ?_, ?_⟩
-    · rw [hp0Val, hq0Val]
-      exact ht00
-    · rw [hq0Val, hp1Val]
-      exact ht01
-    · rw [hp1Val, hq1Val]
-      exact ht11
-  · rintro ⟨hpq, hqp, hpq'⟩
-    have ht00 :
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
-      rw [← hp0Val, ← hq0Val]
-      exact hpq
-    have ht01 :
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-      rw [← hq0Val, ← hp1Val]
-      exact hqp
-    have ht11 :
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
-      rw [← hp1Val, ← hq1Val]
-      exact hpq'
-    refine ⟨?_, ?_, ?_⟩
-    · simpa [p0, q0, endpointVal] using h00.mpr ht00
-    · simpa [q0, p1, endpointVal] using h01.mpr ht01
-    · simpa [p1, q1, endpointVal] using h11.mpr ht11
+  have hCross := and_congr (hOrder p0 q0)
+    (and_congr (hOrder q0 p1) (hOrder p1 q1))
+  rw [← hp0Val, ← hq0Val, ← hp1Val, ← hq1Val] at hCross
+  simpa [Crosses, p0, p1, q0, q1, endpointVal] using hCross
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
