@@ -491,14 +491,14 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
     rw [hrel]
   have hlegs :
       externalInsertionMixedTimeOrderedAtomicLegs externalTime σ =
-        externalInsertionMixedTimeOrderedAtomicLegs externalTime υ := by
-    unfold externalInsertionMixedTimeOrderedAtomicLegs
-    rw [hordered]
+        externalInsertionMixedTimeOrderedAtomicLegs externalTime υ :=
+    congrArg (List.flatMap (externalInsertionTimedEventAtomicLegs (E := E) (n := n))) hordered
   apply Equiv.ext
   intro i
   unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
-  simpa only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
+  simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
     List.get_eq_getElem, hlegs]
+  rfl
 
 end Common
 end SecondQuantization
