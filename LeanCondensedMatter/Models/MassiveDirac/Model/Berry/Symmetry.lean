@@ -19,8 +19,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- Reversing the Dirac mass leaves the positive dispersion unchanged. -/
 theorem energy_neg_mass (v m px py : ℝ) :
     energy v (-m) px py = energy v m px py := by
