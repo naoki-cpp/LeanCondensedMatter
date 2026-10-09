@@ -88,23 +88,14 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
       (boundedIntrinsicFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.localizationCorrectionCurrentFlux
           (LatticeState Site) velocity m N) t s).comp d := by
-  apply LinearMap.ext
-  intro f
-  change
-    (boundedOneBodyRetardedResponseLinearMap system expectation source t s) (Φ f) =
-      (boundedOneBodyRetardedResponseLinearMap system expectation source t s)
-          (_root_.ConservationLaw.symmetrizedCurrentFlux
-            (LatticeState Site) velocity m N (d f)) +
-        (boundedOneBodyRetardedResponseLinearMap system expectation source t s)
-          (_root_.ConservationLaw.localizationCorrectionCurrentFlux
-            (LatticeState Site) velocity m N (d f))
-  rw [hΦ f]
-  have hdecomp := congrArg
-    (fun J : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site) => J (d f))
-    (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
-      (LatticeState Site) velocity m N)
-  rw [hdecomp]
-  exact map_add (boundedOneBodyRetardedResponseLinearMap system expectation source t s) _ _
+  rw [boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
+    system expectation source d Φ
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
+        (LatticeState Site) velocity m N) hΦ t s]
+  rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
+    (LatticeState Site) velocity m N]
+  ext f
+  simp [boundedIntrinsicFluxRetardedResponse]
 
 /-- When all supplied localizers commute with `m`, the correction disappears and the intrinsic
 exact-flux response is represented by the symmetrized current flux alone. -/

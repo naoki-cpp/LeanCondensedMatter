@@ -44,6 +44,29 @@ noncomputable def boundedIntrinsicFluxRetardedResponse
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
   (boundedOneBodyRetardedResponseLinearMap system expectation source t s).comp Φ
 
+/-- A differential-current representation identifies the intrinsic Kubo response with
+the chosen current response precomposed by the differential. The equality is only on exact
+differentials; no equality of arbitrary current extensions is implied. -/
+theorem boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock Site))
+    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
+    (d : Test →ₗ[ℂ] OneForm)
+    (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (J : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ J)
+    (t s : ℝ) :
+    boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
+      (boundedIntrinsicFluxRetardedResponse system expectation source J t s).comp d := by
+  apply LinearMap.ext
+  intro f
+  change
+    boundedOneBodyRetardedResponseLinearMap system expectation source t s (Φ f) =
+      boundedOneBodyRetardedResponseLinearMap system expectation source t s (J (d f))
+  rw [hΦ f]
+
 /-- Equivalent full current functionals give the same retarded response on every exact
 differential.  No statement is made here for an arbitrary non-exact one-form. -/
 theorem boundedIntrinsicFluxRetardedResponse_eq_of_differentialEquivalent
@@ -79,10 +102,9 @@ theorem boundedIntrinsicFluxRetardedResponse_current_eq_of_eq_differential
     boundedIntrinsicFluxRetardedResponse system expectation source R.current t s α =
       boundedIntrinsicFluxRetardedResponse system expectation source Φ t s f := by
   subst α
-  change
-    boundedOneBodyRetardedResponseLinearMap system expectation source t s (R.current (d f)) =
-      boundedOneBodyRetardedResponseLinearMap system expectation source t s (Φ f)
-  rw [R.isCurrent f]
+  exact (congrArg (fun response : Test →ₗ[ℂ] ℂ => response f)
+    (boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
+      system expectation source d Φ R.current R.isCurrent t s)).symm
 
 end
 end Transport
