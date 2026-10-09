@@ -255,21 +255,8 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_posi
   let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
   change d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) = _ ∧
     d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) = _
-  have hCases :
-      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
-        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
-      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) ∧
-        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
-    simpa [q] using d.mixedComponentPairTimeEquiv_endpoints_eq_or_swap τ τ' σ υ B pr
-  rcases hCases with hSame | hSwap
+  rcases d.mixedComponentPairTimeEquiv_endpoints_eq_or_swap τ τ' σ υ B pr with
+    hSame | hSwap
   · exact hSame
   · have hSource :
         (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)).1 <
