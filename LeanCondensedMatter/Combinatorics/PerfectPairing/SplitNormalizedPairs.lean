@@ -97,8 +97,12 @@ theorem Pairing.prod_pairs_ofSplit
     _ = (∏ pr : P.NormalizedPair, leftValue pr.1.1 pr.1.2) *
         ∏ pr : Q.NormalizedPair, rightValue pr.1.1 pr.1.2 := by
       congr 1
-      · exact Fintype.prod_congr (fun pr => hleft pr)
-      · exact Fintype.prod_congr (fun pr => hright pr)
+      · apply Fintype.prod_congr
+        intro pr
+        exact hleft pr
+      · apply Fintype.prod_congr
+        intro pr
+        exact hright pr
     _ = _ := by
       rw [← Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
         (fun pr => leftValue pr.1 pr.2),
