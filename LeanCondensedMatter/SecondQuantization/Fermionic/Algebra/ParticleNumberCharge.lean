@@ -101,13 +101,13 @@ theorem carriesFermionParity_create_add_annihilate (i : Mode) :
   have hcreate : Common.CarriesShift
       (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
       (create i) 1 := by
-    simpa using
+    simpa [Function.comp_def] using
       (carriesParticleNumberCharge_create i).map (Int.castAddHom (ZMod 2))
   have hannihilate : Common.CarriesShift
       (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
       (annihilate i) 1 := by
     have hneg : ((-1 : ℤ) : ZMod 2) = 1 := by decide
-    simpa [hneg] using
+    simpa [Function.comp_def, hneg] using
       (carriesParticleNumberCharge_annihilate i).map (Int.castAddHom (ZMod 2))
   exact hcreate.add hannihilate
 
