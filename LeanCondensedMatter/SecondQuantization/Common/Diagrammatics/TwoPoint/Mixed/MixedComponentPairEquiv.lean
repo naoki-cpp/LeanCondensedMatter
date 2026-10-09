@@ -206,8 +206,6 @@ noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
         pr.1.1 pr.1.2).1 pr.2
       rw [← hpair.2, d.mixedPositionComponent_partner]
   exact e.subtypeEquiv (fun pr => by
-    change d.mixedPairComponent τ τ' σ pr = B ↔
-      d.mixedPairComponent τ τ' υ (e pr) = B
     rw [hcomp])
 
 end Common
