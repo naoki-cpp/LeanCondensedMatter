@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -29,37 +29,6 @@ variable {Mode : Type*}
 local instance instDecidableEqConcretePairKernel : DecidableEq Mode := Classical.decEq Mode
 
 variable [Fintype Mode]
-
-/-- Every ordered product of two free thermal fields belongs to the explicit free-Gibbs domain. -/
-theorem FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k)
-    (f g : FreeThermalField Mode) :
-    FreeThermalField.orderedProduct [f, g] ∈ freeGibbsDomain ε β := by
-  cases f with
-  | annihilate i =>
-      cases g with
-      | annihilate j =>
-          change freeGibbsSummable ε β
-            ((_root_.SecondQuantization.Bosonic.annihilate i).comp
-              (_root_.SecondQuantization.Bosonic.annihilate j))
-          exact freeGibbsSummable_of_matrixCoeff_self_eq_zero ε β _
-            (matrixCoeff_annihilate_comp_annihilate i j)
-      | create j =>
-          change freeGibbsSummable ε β
-            ((_root_.SecondQuantization.Bosonic.annihilate i).comp
-              (_root_.SecondQuantization.Bosonic.create j))
-          exact freeGibbsSummable_annihilate_comp_create ε β hpos i j
-  | create i =>
-      cases g with
-      | annihilate j =>
-          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator, Module.End.mul_eq_comp] using
-            create_comp_annihilate_mem_freeGibbsDomain ε β hpos j i
-      | create j =>
-          change freeGibbsSummable ε β
-            ((_root_.SecondQuantization.Bosonic.create i).comp
-              (_root_.SecondQuantization.Bosonic.create j))
-          exact freeGibbsSummable_of_matrixCoeff_self_eq_zero ε β _
-            (matrixCoeff_create_comp_create i j)
 
 /-- The canonical free thermal pair kernel is exactly the normalized free-Gibbs expectation of the
 corresponding ordered two-field product. -/
@@ -103,9 +72,7 @@ theorem freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue
     (f g : FreeThermalField Mode) :
     (freeGibbsFunctional ε β hpos).value (FreeThermalField.orderedProduct [f, g]) =
       freeThermalPairValue ε β f g := by
-  have hSumm : freeGibbsSummable ε β (FreeThermalField.orderedProduct [f, g]) :=
-    (mem_freeGibbsDomain_iff ε β (FreeThermalField.orderedProduct [f, g])).1
-      (FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain ε β hpos f g)
+  have hSumm := FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos [f, g]
   rw [freeGibbsFunctional_value_of_summable ε β hpos hSumm]
   exact freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue ε β hpos f g
 
