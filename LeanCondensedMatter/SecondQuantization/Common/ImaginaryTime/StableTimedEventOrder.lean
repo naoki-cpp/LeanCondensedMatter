@@ -73,6 +73,36 @@ theorem stableTimedEventBeforeOrEqual_iff {α : Type*} (time : α → ℝ) (rank
       time b < time a ∨ (time a = time b ∧ rank a ≤ rank b) := by
   simp [stableTimedEventBeforeOrEqual, stableTimedEventKey, Prod.Lex.toLex_le_toLex]
 
+/-- Preserving every strict time comparison preserves the stable event order,
+including equal-time ties resolved by the fixed rank. -/
+theorem stableTimedEventBeforeOrEqual_congr {α : Type*}
+    (t u : α → ℝ) (rank : α → ℕ)
+    (h : ∀ a b, t a < t b ↔ u a < u b) (a b : α) :
+    stableTimedEventBeforeOrEqual t rank a b ↔
+      stableTimedEventBeforeOrEqual u rank a b := by
+  have heq : (t a = t b) ↔ (u a = u b) := by
+    constructor
+    · intro hab
+      by_contra huv
+      rcases lt_or_gt_of_ne huv with huv | huv
+      · have ht := (h a b).mpr huv
+        rw [hab] at ht
+        exact lt_irrefl _ ht
+      · have ht := (h b a).mpr huv
+        rw [hab] at ht
+        exact lt_irrefl _ ht
+    · intro hab
+      by_contra hne
+      rcases lt_or_gt_of_ne hne with hlt | hgt
+      · have hu := (h a b).mp hlt
+        rw [hab] at hu
+        exact lt_irrefl _ hu
+      · have hu := (h b a).mp hgt
+        rw [hab] at hu
+        exact lt_irrefl _ hu
+  simp only [stableTimedEventBeforeOrEqual_iff]
+  rw [h b a, heq]
+
 instance {α : Type*} (time : α → ℝ) (rank : α → ℕ) :
     Std.Total (stableTimedEventBeforeOrEqual time rank) :=
   ⟨fun a b => by
