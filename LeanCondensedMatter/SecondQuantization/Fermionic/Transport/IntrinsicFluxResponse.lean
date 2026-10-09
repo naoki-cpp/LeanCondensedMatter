@@ -44,22 +44,9 @@ noncomputable def boundedIntrinsicFluxRetardedResponse
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
   (boundedOneBodyRetardedResponseLinearMap system expectation source t s).comp Φ
 
-/-- Retarded response associated with one chosen full current functional on one-form-like data.
-This API deliberately remains distinct from `boundedIntrinsicFluxRetardedResponse`: away from
-`range d`, the current functional contains extension data not fixed by the intrinsic balance law. -/
-noncomputable def boundedCurrentFunctionalRetardedResponse
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (J : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (t s : ℝ) : OneForm →ₗ[ℂ] ℂ :=
-  boundedIntrinsicFluxRetardedResponse system expectation source J t s
-
 /-- Equivalent full current functionals give the same retarded response on every exact
 differential.  No statement is made here for an arbitrary non-exact one-form. -/
-theorem boundedCurrentFunctionalRetardedResponse_eq_of_differentialEquivalent
+theorem boundedIntrinsicFluxRetardedResponse_eq_of_differentialEquivalent
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -69,8 +56,8 @@ theorem boundedCurrentFunctionalRetardedResponse_eq_of_differentialEquivalent
     (J₁ J₂ : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (hJ : _root_.ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂)
     (t s : ℝ) (f : Test) :
-    boundedCurrentFunctionalRetardedResponse system expectation source J₁ t s (d f) =
-      boundedCurrentFunctionalRetardedResponse system expectation source J₂ t s (d f) := by
+    boundedIntrinsicFluxRetardedResponse system expectation source J₁ t s (d f) =
+      boundedIntrinsicFluxRetardedResponse system expectation source J₂ t s (d f) := by
   change
     boundedOneBodyRetardedResponseLinearMap system expectation source t s (J₁ (d f)) =
       boundedOneBodyRetardedResponseLinearMap system expectation source t s (J₂ (d f))
@@ -79,7 +66,7 @@ theorem boundedCurrentFunctionalRetardedResponse_eq_of_differentialEquivalent
 /-- A chosen global current component agrees with the intrinsic response once it is explicitly
 identified as an exact differential.  This witness is essential: exact-differential equivalence
 alone does not identify arbitrary/global one-forms. -/
-theorem boundedCurrentFunctionalRetardedResponse_eq_intrinsic_of_eq_differential
+theorem boundedIntrinsicFluxRetardedResponse_current_eq_of_eq_differential
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -89,7 +76,7 @@ theorem boundedCurrentFunctionalRetardedResponse_eq_intrinsic_of_eq_differential
     (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d Φ)
     (t s : ℝ) (α : OneForm) (f : Test) (hα : α = d f) :
-    boundedCurrentFunctionalRetardedResponse system expectation source R.current t s α =
+    boundedIntrinsicFluxRetardedResponse system expectation source R.current t s α =
       boundedIntrinsicFluxRetardedResponse system expectation source Φ t s f := by
   subst α
   change
