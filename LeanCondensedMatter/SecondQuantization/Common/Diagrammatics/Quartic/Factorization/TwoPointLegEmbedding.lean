@@ -94,8 +94,8 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
             pb.1 (Finset.mem_univ pb.1) pb.2)
       rw [hleft, hright]
       exact hlocal
-    simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegEquiv,
-      mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using hblock.mpr hidx
+    simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
+      mixedTimeOrderedAtomicLegs] using hblock.mpr hidx
   · have hslotLt : pa.1 < pb.1 :=
       (Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne
         (by ring : 2 * (2 * n) = n * 4) pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
