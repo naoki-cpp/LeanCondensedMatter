@@ -5,12 +5,13 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestrictio
 set_option linter.style.header false
 
 /-!
-# Mixed-time component pairs and local pairings
+# Mixed-time component pairs and pairing transports
 
-This module lifts generic mixed component-position transport to normalized pairs. Each full component
-is identified with the corresponding time-independent restricted pairing; normalized endpoint order
-may be preserved or swapped. Canonical comparisons across time assignments factor through these
-restricted pairings. No particle-statistics or operator data enter these constructions.
+This module assigns mixed normalized pairs to full diagram components and supplies their
+component-local endpoint coordinates. The restricted vacuum pairing identifies the pairs of a
+vacuum component with a time-independent local pairing. Across time assignments, normalized pairs
+are transported through the ambient pairing and then restricted to each component; normalization
+may swap their endpoint order. These constructions use no particle-statistics or operator data.
 -/
 
 namespace SecondQuantization
@@ -73,22 +74,6 @@ theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
   apply Subtype.ext
   rw [d.mixedRestrictedPartner_val]
   exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
-
-/-- Mixed pairs in the external component are equivalent to normalized pairs of the canonical
-external split pairing. -/
-noncomputable def TwoPointDiagram.mixedExternalComponentPairEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.MixedComponentPair τ τ' σ d.externalComponentPart ≃
-      d.externalVacuumSplit.1.pairing.NormalizedPair :=
-  (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
-    (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart)
-    (fun p => by rw [d.mixedPositionComponent_partner])
-    (d.mixedExternalPositionEquiv τ τ' σ) d.externalVacuumSplit.1.pairing
-    (fun pos => by
-      simpa only [TwoPointDiagram.mixedRestrictedPartner] using
-        d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ pos)
 
 /-- Mixed pairs in a vacuum component are equivalent to normalized pairs of the corresponding
 restricted vacuum pairing. -/
