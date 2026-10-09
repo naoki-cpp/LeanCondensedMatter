@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
+import Mathlib.Combinatorics.SimpleGraph.Sum
 
 set_option linter.style.header false
 
@@ -44,6 +45,32 @@ private theorem slotSplitVacuumVertex_injective :
     exact Sum.inr.inj hvw
   apply Subtype.ext
   exact congrArg (fun z : ↥S => (z : Fin N)) hs
+
+/-- Reindex the vertices of a reassembled two-point diagram by the vertices of its
+external two-point and quartic vacuum pieces. -/
+noncomputable def slotSplitVertexEquiv (h : T ⊆ S) :
+    (TwoPointVertex T ⊕ ↥(S \ T)) ≃ TwoPointVertex S :=
+  (Equiv.sumAssoc (Fin 2) ↥T ↥(S \ T)).trans
+    (Equiv.sumCongr (Equiv.refl (Fin 2)) (subsetSumSdiffEquiv h))
+
+@[simp]
+theorem slotSplitVertexEquiv_inl (h : T ⊆ S) (x : TwoPointVertex T) :
+    slotSplitVertexEquiv h (Sum.inl x) = slotSplitVertex h x := by
+  cases x with
+  | inl e => rfl
+  | inr v =>
+      change (Sum.inr (subsetSumSdiffEquiv h (Sum.inl v)) : TwoPointVertex S) =
+        slotSplitVertex h (Sum.inr v)
+      rw [subsetSumSdiffEquiv_inl_apply]
+      rfl
+
+@[simp]
+theorem slotSplitVertexEquiv_inr (h : T ⊆ S) (v : ↥(S \ T)) :
+    slotSplitVertexEquiv h (Sum.inr v) = slotSplitVacuumVertex v := by
+  change (Sum.inr (subsetSumSdiffEquiv h (Sum.inr v)) : TwoPointVertex S) =
+    slotSplitVacuumVertex v
+  rw [subsetSumSdiffEquiv_inr_apply]
+  rfl
 
 /-- An external-piece vertex and a vacuum-piece vertex have disjoint images. -/
 private theorem slotSplitVertex_ne_slotSplitVacuumVertex (h : T ⊆ S)
@@ -106,6 +133,45 @@ private theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
     · rw [twoPointVertexOfLeg_slotLegSplitting_inr_exact, hleg]
     · rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr,
         twoPointVertexOfLeg_slotLegSplitting_inr_exact, hpartner]
+
+/-- The two sectors of a slot split have no edges between them. -/
+private theorem not_adj_slotSplitVertex_slotSplitVacuumVertex
+    (x : TwoPointVertex T) (y : ↥(S \ T)) :
+    ¬ (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
+      (slotSplitVertex h x) (slotSplitVacuumVertex y) := by
+  intro hadj
+  obtain ⟨_, leg, hleg, hpartner⟩ :=
+    ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph_adj_iff _ _).1 hadj
+  obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
+  cases z with
+  | inl i =>
+      rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inl,
+        twoPointVertexOfLeg_slotLegSplitting_inl] at hpartner
+      exact slotSplitVertex_ne_slotSplitVacuumVertex h _ y hpartner
+  | inr j =>
+      rw [twoPointVertexOfLeg_slotLegSplitting_inr_exact] at hleg
+      exact slotSplitVertex_ne_slotSplitVacuumVertex h x _ hleg.symm
+
+/-- Reassembling a slot split produces exactly the disjoint graph sum of its two pieces. -/
+noncomputable def TwoPointDiagram.ofSlotSplit_vertexGraphIso :
+    (ext.vertexGraph ⊕g vac.vertexGraph) ≃g
+      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph where
+  toEquiv := slotSplitVertexEquiv h
+  map_rel_iff' := by
+    rintro (x | x) (y | y)
+    · simpa only [slotSplitVertexEquiv_inl, SimpleGraph.sum_adj_inl] using
+        (adj_ofSlotSplit_slotSplitVertex_iff h ext vac x y)
+    · simpa [slotSplitVertexEquiv_inl, slotSplitVertexEquiv_inr, SimpleGraph.sum] using
+        (not_adj_slotSplitVertex_slotSplitVacuumVertex h ext vac x y)
+    · have hnot :
+          ¬ (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
+            (slotSplitVacuumVertex x) (slotSplitVertex h y) := by
+        intro hadj
+        exact not_adj_slotSplitVertex_slotSplitVacuumVertex h ext vac y x
+          ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.adj_symm hadj)
+      simpa [slotSplitVertexEquiv_inl, slotSplitVertexEquiv_inr, SimpleGraph.sum] using hnot
+    · simpa only [slotSplitVertexEquiv_inr, SimpleGraph.sum_adj_inr] using
+        (adj_ofSlotSplit_slotSplitVacuumVertex_iff h ext vac x y)
 
 /-- The vacuum piece maps into a reassembled two-point diagram as a graph homomorphism. -/
 private noncomputable def ofSlotSplitVacuumHom :
