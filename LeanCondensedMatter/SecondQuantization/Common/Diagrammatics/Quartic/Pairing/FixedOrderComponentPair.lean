@@ -57,16 +57,22 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
       (d.pairingInOrder order).NormalizedPair := by
   let orders := d.vertexGraph.componentPartitionOn.partOrdersOfOrder order
   let shuffle := d.fixedOrderComponentShuffle order
-  let e : (Σ B : d.vertexGraph.componentPartitionOn.parts, d.LocalOrderedPair orders B) ≃
-      (d.pairingInOrder order).NormalizedPair := by
-    simpa only [orders, shuffle, d.assembleVertexOrder_fixedOrderComponentShuffle order] using
-      (d.componentPairEquiv orders shuffle)
+  let e := d.componentPairEquiv orders shuffle
+  have hpair :
+      d.pairingInOrder (d.assembleVertexOrder orders shuffle) =
+        d.pairingInOrder order :=
+    congrArg (d.pairingInOrder) (d.assembleVertexOrder_fixedOrderComponentShuffle order)
   exact {
-    toFun := fun pr => e ⟨C, pr⟩
+    toFun := fun pr =>
+      ⟨(e ⟨C, pr⟩).1, by
+        rw [← hpair]
+        exact (e ⟨C, pr⟩).2⟩
     inj' := by
       intro p q hpq
+      have hpq' : e ⟨C, p⟩ = e ⟨C, q⟩ :=
+        Subtype.ext (congrArg Subtype.val hpq)
       have h : (⟨C, p⟩ : Σ B : d.vertexGraph.componentPartitionOn.parts,
-          d.LocalOrderedPair orders B) = ⟨C, q⟩ := e.injective hpq
+          d.LocalOrderedPair orders B) = ⟨C, q⟩ := e.injective hpq'
       cases h
       rfl
   }
@@ -78,11 +84,13 @@ private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
     (d.fixedOrderComponentPairEmbedding order C pr).1 =
       (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.1,
         d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.2) := by
-  have h := d.componentPairEquiv_apply
+  change
+    (d.componentPairEquiv
+        (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order)
+        (d.fixedOrderComponentShuffle order) ⟨C, pr⟩).1 = _
+  exact d.componentPairEquiv_apply
     (d.vertexGraph.componentPartitionOn.partOrdersOfOrder order)
     (d.fixedOrderComponentShuffle order) C pr
-  simp only [d.assembleVertexOrder_fixedOrderComponentShuffle order] at h
-  simpa [QuarticDiagram.fixedOrderComponentPairEmbedding] using h
 
 /-- The fixed-order component-pair embedding preserves and reflects crossings. -/
 theorem QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff
