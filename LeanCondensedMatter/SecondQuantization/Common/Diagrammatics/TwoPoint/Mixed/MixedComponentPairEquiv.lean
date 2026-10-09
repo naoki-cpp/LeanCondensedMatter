@@ -46,6 +46,20 @@ noncomputable def TwoPointDiagram.mixedComponentPairEndpointEquiv
     (fun p => d.mixedPositionComponent τ τ' σ p = B)
     (fun p => by rw [d.mixedPositionComponent_partner])
 
+/-- The ambient position of a mixed component pair endpoint is its normalized-pair endpoint. -/
+@[simp]
+theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
+    (pr : d.MixedComponentPair τ τ' σ B) (k : Fin 2) :
+    (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)).1 =
+      (d.pairingInMixedOrder τ τ' σ).pairEndpoint (pr.1, k) := by
+  unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
+  exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+    (d.pairingInMixedOrder τ τ' σ)
+    (fun p => d.mixedPositionComponent τ τ' σ p = B) _ pr k
+
 /-- On mixed component endpoints, the restricted mixed partner exchanges endpoint zero and endpoint
 one of the same normalized mixed pair. -/
 theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
