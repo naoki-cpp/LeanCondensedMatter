@@ -1410,6 +1410,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SplitNormalizedPairs.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Split"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SumDecomposition.lean",
       "imports": [
@@ -1455,6 +1465,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph"
@@ -3100,7 +3111,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic"
       ],
@@ -3222,7 +3233,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion"
       ],
       "externalImportCount": 0
     },
@@ -3231,7 +3243,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ConcreteMixedTwoPoint.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable"
       ],
       "externalImportCount": 0
     },
@@ -3241,25 +3253,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ExpectationRecursion.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreeExpectationRecursion.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField"
       ],
       "externalImportCount": 0
     },
@@ -3277,7 +3271,9 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreeKMSRotation.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField"
       ],
       "externalImportCount": 0
     },
@@ -3312,7 +3308,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/OrderedProductSummable.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
@@ -3326,7 +3323,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint"
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace"
       ],
       "externalImportCount": 0
     },
@@ -3338,15 +3335,14 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField"
       ],
       "externalImportCount": 0
     },
@@ -3417,6 +3413,14 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionFunction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/FreePartitionFunction.lean",
       "imports": [],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/FreeThermalField.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation"
+      ],
       "externalImportCount": 2
     },
     {
@@ -4294,7 +4298,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumVertexProduct.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct",
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents"
       ],
       "externalImportCount": 0
@@ -4657,7 +4662,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/GibbsExpectation/Peel.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelTermsIndexed",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate"
       ],
       "externalImportCount": 0
@@ -4679,7 +4683,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate"
       ],
       "externalImportCount": 0
@@ -4733,30 +4737,11 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelTermsIndexed",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized/PeelTermsIndexed.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized/TwoPoint.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelTermsIndexed",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint"
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace"
       ],
       "externalImportCount": 0
     },
