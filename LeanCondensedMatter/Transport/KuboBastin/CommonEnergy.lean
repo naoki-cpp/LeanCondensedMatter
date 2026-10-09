@@ -129,18 +129,6 @@ theorem integral_finiteKuboBastinCommonVertexEnergyKernel
     exact integrable_purePointKuboBastinCommonVertexTransitionIntegrand
       system data interpolation measured source omega eta mn
 
-/-- Generalized common-energy response, with the explicit observable-variation expectation kept
-outside the energy kernel. -/
-private noncomputable def finiteKuboBastinCommonEnergyVertexResponse
-    (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source observableVariation : H →L[ℂ] H)
-    (omega eta : ℝ) : ℂ :=
-  (∫ energy : ℝ, finiteKuboBastinCommonVertexEnergyKernel
-      system data interpolation measured source omega eta energy) +
-    purePointNormalizedExpectation system data observableVariation
-
 /-- Generalized common-energy response attached directly to a neutral response channel. -/
 noncomputable def finiteKuboBastinCommonEnergyChannelResponse
     (system : BoundedFreeSystem H)
@@ -148,8 +136,9 @@ noncomputable def finiteKuboBastinCommonEnergyChannelResponse
     (interpolation : PurePointOccupationInterpolation system data)
     (channel : ResponseChannel H)
     (omega eta : ℝ) : ℂ :=
-  finiteKuboBastinCommonEnergyVertexResponse system data interpolation
-    channel.measured channel.source channel.observableVariation omega eta
+  (∫ energy : ℝ, finiteKuboBastinCommonVertexEnergyKernel
+      system data interpolation channel.measured channel.source omega eta energy) +
+    purePointNormalizedExpectation system data channel.observableVariation
 
 /-- The generalized occupation-resolved channel response equals its common-energy-kernel
 representation. -/
@@ -165,7 +154,6 @@ theorem finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy
         system data interpolation channel omega eta := by
   rw [finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum]
   unfold finiteKuboBastinCommonEnergyChannelResponse
-    finiteKuboBastinCommonEnergyVertexResponse
   rw [integral_finiteKuboBastinCommonVertexEnergyKernel]
 
 theorem finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
