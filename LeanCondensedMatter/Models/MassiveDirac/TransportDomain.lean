@@ -15,8 +15,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- Common fixed-cutoff metallic domain for Born-Dyson zero-broadening transport boundaries. -/
 structure FixedCutoffMetallicBornRegime where
   /-- Dirac velocity parameter. -/
