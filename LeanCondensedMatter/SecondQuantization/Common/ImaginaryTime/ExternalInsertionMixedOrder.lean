@@ -146,7 +146,6 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
       (orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).Pairwise localRel := by
     dsimp [localRel]
-    rw [orderedExternalInsertionTimedEvents]
     change
       (List.insertionSort
         (stableTimedEventBeforeOrEqual
@@ -158,12 +157,11 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
             (externalInsertionTimedEventTime
               (externalTime ∘ fExternal) (σ ∘ fInteraction))
             externalInsertionTimedEventRank)
-    exact
-      pairwise_insertionSort_stableTimedEventBeforeOrEqual
-        (externalInsertionTimedEventTime
-          (externalTime ∘ fExternal) (σ ∘ fInteraction))
-        externalInsertionTimedEventRank
-        (canonicalExternalInsertionTimedEvents E₁ m)
+    exact pairwise_insertionSort_stableTimedEventBeforeOrEqual
+      (externalInsertionTimedEventTime
+        (externalTime ∘ fExternal) (σ ∘ fInteraction))
+      externalInsertionTimedEventRank
+      (canonicalExternalInsertionTimedEvents E₁ m)
   have hMappedPairwise :
       ((orderedExternalInsertionTimedEvents
         (externalTime ∘ fExternal) (σ ∘ fInteraction)).map
