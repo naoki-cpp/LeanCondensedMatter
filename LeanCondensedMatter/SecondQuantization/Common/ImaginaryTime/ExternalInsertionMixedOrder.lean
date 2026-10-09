@@ -112,10 +112,7 @@ private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
         (stableTimedEventBeforeOrEqual
           (externalInsertionTimedEventTime externalTime σ)
           externalInsertionTimedEventRank)
-  exact pairwise_insertionSort_stableTimedEventBeforeOrEqual
-    (externalInsertionTimedEventTime externalTime σ)
-    externalInsertionTimedEventRank
-    (canonicalExternalInsertionTimedEvents E n)
+  exact List.pairwise_insertionSort _ _
 
 variable {E₁ E₂ m n : ℕ}
 

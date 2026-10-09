@@ -85,11 +85,6 @@ theorem trace_congr {T R : H →L[ℂ] H}
     hT.trace = ∑' i, inner ℂ (d i) (T (d i)) := hT.trace_eq_tsum_inner d
     _ = hR.trace := (hR.trace_eq_tsum_inner d).symm
 
-/-- The canonical trace is independent of the proof of trace-class membership. -/
-theorem trace_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
-    hT.trace = hT'.trace :=
-  trace_congr hT hT' rfl
-
 /-- The diagonal series sums to the trace in every Hilbert basis. -/
 theorem hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :

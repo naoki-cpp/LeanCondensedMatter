@@ -494,3 +494,11 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
   — canonical finite free-fermion entropy endpoint expressing the Gibbs-state von Neumann entropy
   as the sum of binary Fermi–Dirac mode entropies.
+- `ContinuousLinearMap.IsTraceClass.traceNorm_nonneg` — Canonical nonnegativity of the trace norm of a general trace-class operator. Although its proof reuses Hilbert–Schmidt norm-square, the trace-norm invariant deserves its own operator-facing API.
+- `ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel` — Trace norm depends on the operator rather than the witness of trace-class membership. Retain the trace-class-facing statement used by adjoint and norm-congruence arguments.
+- `ContinuousLinearMap.IsTraceClass.trace_add` — General additivity of the canonical complex trace on trace-class operators. Its present private density-expectation consumer does not make the operator theorem proof plumbing.
+- `ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt` — Hilbert-basis independence of the Hilbert–Schmidt inner product, independently meaningful even when its current consumer is the private basis-independence proof for trace.
+- `LinearPMap.mem_compOnDomain_domain_iff` — Canonical operator-product domain-membership statement. The reduction to `mem_naturalCompDomain_iff` is intentional: it exposes the condition through the public `compOnDomain` construction.
+- `SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts` — Two-point diagram specialization of the general interaction-sector product factorization; it exposes vertex-local weights in the component decomposition used by Dyson signs and fermionic amplitudes.
+- `SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionShuffle_slotEquiv_apply` — Canonical `[simp]` evaluation of the component mixed-position shuffle. Its forwarding proof connects the concrete family shuffle to the component-position API and fixes the normal form used by crossing parity.
+- `SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne` — General commutation of occupation creation and removal in distinct bosonic modes, a reusable occupation-algebra fact rather than a private CCR proof step.

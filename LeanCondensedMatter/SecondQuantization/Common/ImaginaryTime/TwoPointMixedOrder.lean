@@ -115,9 +115,7 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
       (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
       ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)).Pairwise
         (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
-  exact pairwise_insertionSort_stableTimedEventBeforeOrEqual
-    (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
-    ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)
+  exact List.pairwise_insertionSort _ _
 
 /-- The fully ordered mixed-event list contains no duplicate events. -/
 theorem orderedTwoPointTimedEvents_nodup {n : ℕ}
