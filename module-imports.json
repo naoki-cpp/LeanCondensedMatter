@@ -1535,7 +1535,7 @@
       "name": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
       "sourceFile": "LeanCondensedMatter/Combinatorics/SimpleGraphComponentPartition.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.SlotShuffle",
@@ -1665,6 +1665,45 @@
         "LeanCondensedMatter.Crystal.PointGroup",
         "LeanCondensedMatter.Crystal.Symmetry",
         "LeanCondensedMatter.Crystal.Translation"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+      "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Model.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
+        "LeanCondensedMatter.Transport.Resolvent.Spectral"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
+      "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Response.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor",
+        "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
+        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Models.Parabolic2DEG",
+      "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Models.Parabolic2DEG.Response"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models",
+      "sourceFile": "LeanCondensedMatter/Models.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.Parabolic2DEG"
       ],
       "externalImportCount": 0
     },
@@ -4238,9 +4277,11 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitConnectivity.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair",
@@ -4257,16 +4298,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumConnectivity"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumConnectivity",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumConnectivity.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity"
       ],
       "externalImportCount": 0
@@ -4328,7 +4359,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct"
@@ -4977,9 +5007,11 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/ParticleNumberCharge.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
@@ -7838,37 +7870,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/Parabolic2DEG/Model.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
-        "LeanCondensedMatter.Transport.Resolvent.Spectral"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/Parabolic2DEG/Response.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
-        "LeanCondensedMatter.Transport.Core.ConductivityTensor",
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
-        "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
-        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
-      ],
-      "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Models.Parabolic2DEG",
-      "sourceFile": "LeanCondensedMatter/Transport/Models/Parabolic2DEG.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Model",
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG.Response"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Models.RashbaExchange.Bastin.Berry",
       "sourceFile": "LeanCondensedMatter/Transport/Models/RashbaExchange/Bastin/Berry.lean",
       "imports": [
@@ -7956,7 +7957,6 @@
       "sourceFile": "LeanCondensedMatter/Transport/Models.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac",
-        "LeanCondensedMatter.Transport.Models.Parabolic2DEG",
         "LeanCondensedMatter.Transport.Models.RashbaExchange"
       ],
       "externalImportCount": 0
@@ -8177,6 +8177,7 @@
         "LeanCondensedMatter.Analysis",
         "LeanCondensedMatter.Combinatorics",
         "LeanCondensedMatter.Crystal",
+        "LeanCondensedMatter.Models",
         "LeanCondensedMatter.Permutation",
         "LeanCondensedMatter.QuantumMechanics",
         "LeanCondensedMatter.QuantumTheory",
