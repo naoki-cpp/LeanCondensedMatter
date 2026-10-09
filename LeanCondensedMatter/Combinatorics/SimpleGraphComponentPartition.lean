@@ -94,6 +94,7 @@ inside the right summand. -/
 theorem reachable_sum_inr_iff
     {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) (x y : W) :
     (G ⊕g H).Reachable (Sum.inr x) (Sum.inr y) ↔ H.Reachable x y := by
+  classical
   constructor
   · rintro ⟨p⟩
     obtain ⟨y', hyy', hreach⟩ :=
