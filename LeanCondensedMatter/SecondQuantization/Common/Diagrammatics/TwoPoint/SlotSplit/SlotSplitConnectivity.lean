@@ -253,44 +253,29 @@ theorem interactionSector_externalComponent_ofSlotSplit
   rw [mem_interactionSector]
   constructor
   · rintro ⟨hv, hmem⟩
-    by_cases hvT : v ∈ T
-    · exact hvT
-    · let w : ↥(S \ T) := ⟨v, Finset.mem_sdiff.mpr ⟨hv, hvT⟩⟩
-      have hreach :
-          (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-            (Sum.inl (0 : Fin 2)) (slotSplitVacuumVertex w) := by
-        have hmemreach :=
-          ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
-            (Sum.inl 0) (Sum.inr ⟨v, hv⟩)).1 hmem
-        simpa [w, slotSplitVacuumVertex] using hmemreach.symm
-      have hsum :
-          (ext.vertexGraph ⊕g vac.vertexGraph).Reachable
-            (Sum.inl (Sum.inl (0 : Fin 2))) (Sum.inr w) :=
-        (SimpleGraph.Iso.reachable_iff
-          (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
-          (u := Sum.inl (Sum.inl (0 : Fin 2))) (v := Sum.inr w)).mp
-          (by
-            change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-              (slotSplitVertex h (Sum.inl (0 : Fin 2))) (slotSplitVacuumVertex w)
-            simpa [slotSplitVertex] using hreach)
-      exact False.elim (SimpleGraph.not_reachable_sum_inl_inr _ _ hsum)
+    by_contra hvT
+    let w : ↥(S \ T) := ⟨v, Finset.mem_sdiff.mpr ⟨hv, hvT⟩⟩
+    apply SimpleGraph.not_reachable_sum_inl_inr (Sum.inl (0 : Fin 2)) w
+    apply (SimpleGraph.Iso.reachable_iff
+      (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
+      (u := Sum.inl (Sum.inl (0 : Fin 2))) (v := Sum.inr w)).mp
+    change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
+      (slotSplitVertex h (Sum.inl 0)) (slotSplitVacuumVertex w)
+    simpa [slotSplitVertex, slotSplitVacuumVertex, w] using
+      (((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
+        (Sum.inl 0) (Sum.inr ⟨v, hv⟩)).1 hmem).symm
   · intro hvT
     refine ⟨h hvT, ?_⟩
     obtain ⟨e, he⟩ := hext.1 ⟨v, hvT⟩
-    have hmapped :
-        (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-          (Sum.inl e) (Sum.inr ⟨v, h hvT⟩) := by
-      simpa [slotSplitVertex] using
-        (reachable_ofSlotSplit_iff h ext vac (Sum.inl e)
-          (Sum.inr ⟨v, hvT⟩)).2 he
-    have hexternal :
-        (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-          (Sum.inl e) (Sum.inl 0) := by
+    have hzero : ext.vertexGraph.Reachable (Sum.inl e) (Sum.inl 0) := by
       fin_cases e
       · exact SimpleGraph.Reachable.refl _
-      · exact (TwoPointDiagram.ofSlotSplit h ext vac).externalVerticesConnected.symm
+      · exact ext.externalVerticesConnected.symm
+    have hreach := (reachable_ofSlotSplit_iff h ext vac
+      (Sum.inr ⟨v, hvT⟩) (Sum.inl 0)).2 (he.symm.trans hzero)
     exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
-      (Sum.inl 0) (Sum.inr ⟨v, h hvT⟩)).2 (hmapped.symm.trans hexternal)
+      (Sum.inl 0) (Sum.inr ⟨v, h hvT⟩)).2 (by
+        simpa [slotSplitVertex] using hreach)
 
 /-- A diagram whose external component has interaction part `T` is split by the corresponding slot
 leg splitting. -/
