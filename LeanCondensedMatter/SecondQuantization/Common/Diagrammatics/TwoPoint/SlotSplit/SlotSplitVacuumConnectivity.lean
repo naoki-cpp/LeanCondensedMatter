@@ -32,10 +32,10 @@ private theorem reachable_ofSlotSplitVacuum_iff (x y : ↥(S \ T)) :
       (slotSplitVacuumVertex x) (slotSplitVacuumVertex y) ↔
       vac.vertexGraph.Reachable x y := by
   change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-      ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inr x))
-      ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inr y)) ↔ _
+      ((TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) (Sum.inr x))
+      ((TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) (Sum.inr y)) ↔ _
   exact (SimpleGraph.Iso.reachable_iff
-    (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+    (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
     (u := Sum.inr x) (v := Sum.inr y)).trans
       (SimpleGraph.reachable_sum_inr_iff ext.vertexGraph vac.vertexGraph x y)
 
@@ -60,7 +60,7 @@ theorem interactionSector_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) 
           (ext.vertexGraph ⊕g vac.vertexGraph).Reachable
             (Sum.inr v) (Sum.inl (Sum.inr ⟨x, hxT⟩)) :=
         (SimpleGraph.Iso.reachable_iff
-          (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+          (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
           (u := Sum.inr v) (v := Sum.inl (Sum.inr ⟨x, hxT⟩))).mp
           (by
             change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
