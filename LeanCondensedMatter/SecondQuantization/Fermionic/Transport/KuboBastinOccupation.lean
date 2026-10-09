@@ -79,9 +79,6 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
         convention system data interpolation geometry direction K q omega eta := by
   unfold finiteKuboBastinSpectralDirectionalConductivity
     finiteKuboBastinOccupationResolvedDirectionalConductivity
-    finiteKuboBastinSpectralChannelResponse
-    finiteKuboBastinOccupationResolvedChannelResponse
-    finiteDirectionalCurrentResponseChannel
   exact congrArg
     (fun response : ℂ =>
       response * finiteVolumeConductivityNormalization convention omega eta)
