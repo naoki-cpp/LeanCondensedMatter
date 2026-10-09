@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -7,7 +8,7 @@ set_option linter.unusedFintypeInType false
 /-!
 # Concrete free-boson Gibbs pairing recursion
 
-This file closes the B1 analytic gap for the free bosonic Bloch--de Dominicis line.  The arbitrary
+This module constructs the free bosonic Bloch--de Dominicis recursion from its analytic proofs.  The arbitrary
 fixed-length ordered products are summable, the CCR peel has a finite indexed form, and KMS rotation
 solves the wrapped term.  These ingredients produce the concrete first-pair recurrence with
 `freeThermalPairValue`, then instantiate the representation-independent Common pairing recursion.
@@ -70,18 +71,22 @@ theorem freeGibbsExpectation_firstPair_recursion
 end FreeThermalField
 
 /-- Concrete convergence-aware free-boson pairing recursion.  Every finite ordered field family is
-admissible because #868 proves its free-Gibbs summability under `hpos`. -/
+admissible because its free-Gibbs summability follows from `hpos`. -/
 noncomputable def concreteFreeGibbsPairingRecursion
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     ConvergenceAwarePairingRecursion
       (FockSpace Mode →ₗ[ℂ] FockSpace Mode) (FreeThermalField Mode) .boson :=
-  freeGibbsPairingRecursion ε β hpos
-    (fun _ _ => True)
-    (fun _ C _ =>
-      FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (List.ofFn C))
-    (fun _ _ _ _ => trivial)
-    (by
+  { functional := freeGibbsFunctional ε β hpos
+    orderedProduct := FreeThermalField.orderedProduct
+    pairValue := freeThermalPairValue ε β
+    admissible := fun _ _ => True
+    orderedProduct_mem := fun _ C _ =>
+      FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (List.ofFn C)
+    orderedProduct_nil := rfl
+    admissible_erase := fun _ _ _ _ => trivial
+    expectation_succ := by
       intro n C _
+      simp only [Statistics.zetaInt_boson, Int.cast_one, one_pow, one_mul]
       have hfull := FreeThermalField.freeGibbsSummable_orderedProduct
         ε β hpos (List.ofFn C)
       rw [freeGibbsFunctional_value_of_summable ε β hpos hfull]
@@ -104,7 +109,7 @@ noncomputable def concreteFreeGibbsPairingRecursion
           have htail := FreeThermalField.freeGibbsSummable_orderedProduct
             ε β hpos
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))
-          rw [freeGibbsFunctional_value_of_summable ε β hpos htail])
+          rw [freeGibbsFunctional_value_of_summable ε β hpos htail] }
 
 /-- Fully concrete free-boson Bloch--de Dominicis/Wick pairing expansion.  The only analytic
 hypothesis is positivity of every one-mode Boltzmann exponent. -/
