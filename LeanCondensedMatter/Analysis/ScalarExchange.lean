@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.Analysis.ScalarExchange.Peel
+import LeanCondensedMatter.Analysis.ScalarExchange.Graded
 
 set_option linter.style.header false
 
