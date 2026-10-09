@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
-import LeanCondensedMatter.Combinatorics.SimpleGraphClosedEmbedding
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
