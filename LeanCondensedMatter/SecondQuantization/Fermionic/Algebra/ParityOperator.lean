@@ -38,5 +38,48 @@ theorem fermionParityOperator_comp_self :
       (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
   Common.parityOperator_comp_self _
 
+/-- Number operators preserve fermion parity. -/
+theorem fermionParityOperator_conjugate_numberOperator (i : Mode) :
+    (fermionParityOperator (Mode := Mode)).comp
+        ((numberOperator i).comp fermionParityOperator) = numberOperator i := by
+  have hshift : Common.CarriesShift
+      (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+      (numberOperator i) 0 := by
+    simpa [Function.comp_def] using
+      (carriesParticleNumberCharge_numberOperator i).map (Int.castAddHom (ZMod 2))
+  have h := (Common.carriesShift_iff_parityOperator_conjugate
+    (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+    (numberOperator i) 0).mp hshift
+  simpa [fermionParityOperator] using h
+
+/-- A finite number-conserving quartic interaction preserves fermion parity. -/
+theorem fermionParityOperator_conjugate_quarticInteractionOn
+    (support : Finset (Common.QuarticVertexLabel Mode))
+    (g : Common.QuarticVertexLabel Mode → ℂ) :
+    (fermionParityOperator (Mode := Mode)).comp
+        ((quarticInteractionOn support g).comp fermionParityOperator) =
+      quarticInteractionOn support g := by
+  have hshift : Common.CarriesShift
+      (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+      (quarticInteractionOn support g) 0 := by
+    simpa [Function.comp_def] using
+      (carriesParticleNumberCharge_quarticInteractionOn support g).map
+        (Int.castAddHom (ZMod 2))
+  have h := (Common.carriesShift_iff_parityOperator_conjugate
+    (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+    (quarticInteractionOn support g) 0).mp hshift
+  simpa [fermionParityOperator] using h
+
+/-- A sum of a creation and an annihilation operator is odd under parity. -/
+theorem fermionParityOperator_conjugate_create_add_annihilate (i : Mode) :
+    (fermionParityOperator (Mode := Mode)).comp
+        ((create i + annihilate i).comp fermionParityOperator) =
+      -(create i + annihilate i) := by
+  have h := (Common.carriesShift_iff_parityOperator_conjugate
+    (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
+    (create i + annihilate i) 1).mp
+      (carriesFermionParity_create_add_annihilate i)
+  simpa [fermionParityOperator] using h
+
 end Fermionic
 end SecondQuantization
