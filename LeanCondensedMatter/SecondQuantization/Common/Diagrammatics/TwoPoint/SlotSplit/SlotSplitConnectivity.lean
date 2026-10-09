@@ -255,7 +255,8 @@ theorem interactionSector_externalComponent_ofSlotSplit
   · rintro ⟨hv, hmem⟩
     by_contra hvT
     let w : ↥(S \ T) := ⟨v, Finset.mem_sdiff.mpr ⟨hv, hvT⟩⟩
-    apply SimpleGraph.not_reachable_sum_inl_inr (Sum.inl (0 : Fin 2)) w
+    apply SimpleGraph.not_reachable_sum_inl_inr (G := ext.vertexGraph)
+      (H := vac.vertexGraph) (Sum.inl (0 : Fin 2)) w
     apply (SimpleGraph.Iso.reachable_iff
       (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
       (u := Sum.inl (Sum.inl (0 : Fin 2))) (v := Sum.inr w)).mp
