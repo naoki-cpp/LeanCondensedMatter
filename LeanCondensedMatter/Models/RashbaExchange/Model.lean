@@ -25,9 +25,11 @@ The two-dimensional momentum domain is the closed disk `p_x² + p_y² ≤ p_max�
 finite. No disorder, zero-broadening limit, or device-level Hall observable is introduced here.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Physical and normalization data for one finite Rashba-exchange benchmark. -/
 structure Parameters where
@@ -180,4 +182,4 @@ def berryCurvature (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
   ring
 
 end
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange

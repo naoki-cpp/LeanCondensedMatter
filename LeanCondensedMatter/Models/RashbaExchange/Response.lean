@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
+import LeanCondensedMatter.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -25,7 +25,7 @@ curvature, which remains independent clean-band data in `Model`. No cutoff-remov
 zero-broadening, weak-disorder, or universal-Hall-value statement is made here.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
@@ -415,4 +415,4 @@ theorem finiteCutoffSurfaceDiagnosticComponent_swap
   ring
 
 end
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange

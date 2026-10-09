@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.OperatorSpectral
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Interband
+import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
+import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
@@ -12,7 +12,7 @@ same gauge-free two-band projectors.  The physical current is `j = q v`, so ever
 current block carries the explicit factor `q²`.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
@@ -127,4 +127,4 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
 
 end
 
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange

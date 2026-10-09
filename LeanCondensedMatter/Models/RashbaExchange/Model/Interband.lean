@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral
+import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -12,9 +12,11 @@ identity pieces to the velocities; the exact interband trace below proves that t
 from the Hall numerator.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Energy denominator between one band and its opposite partner. -/
 def interbandEnergyGap
@@ -179,4 +181,4 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature
 
 end
 
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange

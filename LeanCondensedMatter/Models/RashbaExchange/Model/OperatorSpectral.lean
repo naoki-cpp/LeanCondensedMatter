@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Operator
-import LeanCondensedMatter.Transport.Models.RashbaExchange.Model.Spectral
+import LeanCondensedMatter.Models.RashbaExchange.Operator
+import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
@@ -14,7 +14,7 @@ finite two-band projector resolvent.  Away from the band degeneracy, this candid
 canonical resolvent at every nonzero signed imaginary regulator.
 -/
 
-namespace QuantumTheory.Transport.Models.RashbaExchange
+namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
@@ -184,4 +184,4 @@ theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
 
 end
 
-end QuantumTheory.Transport.Models.RashbaExchange
+end QuantumTheory.Models.RashbaExchange

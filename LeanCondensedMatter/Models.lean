@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.Parabolic2DEG
+import LeanCondensedMatter.Models.RashbaExchange
 
 set_option linter.style.header false
 
