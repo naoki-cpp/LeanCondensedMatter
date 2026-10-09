@@ -65,21 +65,8 @@ private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
 private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
     {a b : TwoPointTimedEvent n} (h : a ≠ b) :
     List.Disjoint (twoPointTimedEventAtomicLegs a) (twoPointTimedEventAtomicLegs b) := by
-  cases a with
-  | inl e =>
-      cases b with
-      | inl e' => simpa using h.symm
-      | inr v => simp
-  | inr v =>
-      cases b with
-      | inl e => simp
-      | inr v' =>
-          have hv : v ≠ v' := by
-            intro hv
-            apply h
-            cases hv
-            rfl
-          simpa using hv.symm
+  cases a <;> cases b <;>
+    simp_all [twoPointTimedEventAtomicLegs, ne_comm]
 
 /-- The mixed-time leg list has no duplicate leg identities. -/
 theorem mixedTimeOrderedAtomicLegs_nodup {n : ℕ}
