@@ -63,38 +63,15 @@ theorem adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
   exact purePointLehmannVertexTerm_eq_bastinSpectral
     system data measured source omega eta heta mn
 
-/-- Finite pure-point Kubo–Bastin response coefficient for supplied measured/source vertices and an
-explicit first-order observable variation. -/
-private noncomputable def finiteKuboBastinSpectralVertexResponse
-    (measured source observableVariation : H →L[ℂ] H)
-    (omega eta : ℝ) : ℂ :=
-  finiteKuboBastinSpectralVertexSum system data measured source omega eta +
-    purePointNormalizedExpectation system data observableVariation
-
-/-- The generic fixed-positive-rate frequency-domain susceptibility plus the explicit
-observable-variation term is exactly the finite Kubo–Bastin spectral response. -/
-private theorem adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral
-    (measured source observableVariation : H →L[ℂ] H)
-    (omega eta : ℝ) (heta : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-          (purePointNormalizedExpectation system data)
-          measured source omega eta heta +
-        purePointNormalizedExpectation system data observableVariation =
-      finiteKuboBastinSpectralVertexResponse
-        system data measured source observableVariation omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
-    system data measured source omega eta heta]
-  rfl
-
 /-- The finite spectral Kubo–Bastin response attached directly to a neutral `ResponseChannel`. -/
 noncomputable def finiteKuboBastinSpectralChannelResponse
     (channel : ResponseChannel H)
     (omega eta : ℝ) : ℂ :=
-  finiteKuboBastinSpectralVertexResponse system data
-    channel.measured channel.source channel.observableVariation omega eta
+  finiteKuboBastinSpectralVertexSum
+      system data channel.measured channel.source omega eta +
+    purePointNormalizedExpectation system data channel.observableVariation
 
-/-- The public channel response exposes its aggregate spectral vertex sum without exposing the
-private response-level implementation. -/
+/-- The channel response reduces to its aggregate spectral vertex sum. -/
 theorem finiteKuboBastinSpectralChannelResponse_eq_vertexSum
     (channel : ResponseChannel H)
     (omega eta : ℝ) :
@@ -113,9 +90,12 @@ theorem adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral
           channel.measured channel.source omega eta heta +
         purePointNormalizedExpectation system data channel.observableVariation =
       finiteKuboBastinSpectralChannelResponse system data channel omega eta := by
-  simpa [finiteKuboBastinSpectralChannelResponse] using
-    adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral
-      system data channel.measured channel.source channel.observableVariation omega eta heta
+  simpa only [finiteKuboBastinSpectralChannelResponse] using
+    congrArg
+      (fun response : ℂ =>
+        response + purePointNormalizedExpectation system data channel.observableVariation)
+      (adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
+        system data channel.measured channel.source omega eta heta)
 
 end
 end Transport
