@@ -1,7 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
-import Mathlib.Combinatorics.SimpleGraph.Sum
 
 set_option linter.style.header false
 
