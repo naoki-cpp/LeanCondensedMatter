@@ -9,7 +9,7 @@ set_option linter.style.header false
 
 This module exposes the finite partition determined by graph reachability. It provides both the
 ordinary partition of a finite vertex type and an ambient-finset view for graphs whose vertex type
-is a subtype `↥s`. It also provides generic walk-lifting and graph-sum reachability lemmas.
+is a subtype `↥s`. It also provides graph-sum reachability lemmas.
 -/
 
 namespace SimpleGraph
@@ -71,26 +71,6 @@ theorem componentBlock_eq_iff_mem [Fintype V] (G : SimpleGraph V) {B : Finset V}
   exact G.componentPartition.part_eq_iff_mem hB
 
 omit [DecidableEq V] in
-/-- An ambient walk starting in the image of an adjacency-closed map lifts to a reachable source
-vertex, provided that adjacency between image vertices reflects to source adjacency. -/
-theorem exists_reachable_of_walk_of_adj_closed
-    {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) (f : V → W)
-    (hclosed : ∀ x u, H.Adj (f x) u → ∃ y, u = f y)
-    (hreflect : ∀ x y, H.Adj (f x) (f y) → G.Adj x y) :
-    ∀ {u v : W}, H.Walk u v →
-      ∀ x : V, u = f x → ∃ y, v = f y ∧ G.Reachable x y := by
-  intro u v p
-  induction p with
-  | nil => exact fun x hx => ⟨x, hx, SimpleGraph.Reachable.refl _⟩
-  | cons hadj p ih =>
-      intro x hx
-      subst hx
-      obtain ⟨x', hx'⟩ := hclosed x _ hadj
-      obtain ⟨y, hy, hreach⟩ := ih x' hx'
-      refine ⟨y, hy, SimpleGraph.Reachable.trans ?_ hreach⟩
-      exact SimpleGraph.Adj.reachable (hreflect x x' (hx' ▸ hadj))
-
-omit [DecidableEq V] in
 /-- Reachability between right-side vertices of a graph sum is exactly reachability
 inside the right summand. -/
 theorem reachable_sum_inr_iff
@@ -99,16 +79,30 @@ theorem reachable_sum_inr_iff
   classical
   constructor
   · rintro ⟨p⟩
-    obtain ⟨y', hyy', hreach⟩ :=
-      exists_reachable_of_walk_of_adj_closed H (G ⊕g H) Sum.inr
-        (fun z w hAdj => by
-          cases w with
-          | inl u =>
-              exact False.elim
-                (SimpleGraph.not_adj_sum_inl_inr u z ((G ⊕g H).adj_symm hAdj))
-          | inr u => exact ⟨u, rfl⟩)
-        (fun z w hAdj => (SimpleGraph.sum_adj_inr).1 hAdj) p x rfl
-    exact (Sum.inr.inj hyy').symm ▸ hreach
+    have hclosed (z : W) (w : V ⊕ W)
+        (hadj : (G ⊕g H).Adj (Sum.inr z) w) :
+        ∃ z' : W, w = Sum.inr z' := by
+      cases w with
+      | inl u =>
+          exact False.elim
+            (SimpleGraph.not_adj_sum_inl_inr u z ((G ⊕g H).adj_symm hadj))
+      | inr u => exact ⟨u, rfl⟩
+    have hlift :
+        ∀ {u v : V ⊕ W}, (G ⊕g H).Walk u v →
+          ∀ z : W, u = Sum.inr z →
+            ∃ z' : W, v = Sum.inr z' ∧ H.Reachable z z' := by
+      intro u v q
+      induction q with
+      | nil => exact fun z hz => ⟨z, hz, SimpleGraph.Reachable.refl _⟩
+      | cons hadj q ih =>
+          intro z hz
+          subst hz
+          obtain ⟨z', hz'⟩ := hclosed z _ hadj
+          obtain ⟨y, hy, hreach⟩ := ih z' hz'
+          refine ⟨y, hy, SimpleGraph.Reachable.trans ?_ hreach⟩
+          exact SimpleGraph.Adj.reachable ((SimpleGraph.sum_adj_inr).1 (hz' ▸ hadj))
+    obtain ⟨z, hz, hreach⟩ := hlift p x rfl
+    exact (Sum.inr.inj hz).symm ▸ hreach
   · intro hreach
     exact hreach.map SimpleGraph.Embedding.sumInr.toHom
 
