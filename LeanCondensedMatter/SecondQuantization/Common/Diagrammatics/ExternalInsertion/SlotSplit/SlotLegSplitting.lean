@@ -141,13 +141,18 @@ theorem ExternalInsertionDiagram.ofSlotSplit_vertexWeight
           w ((ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexLabel v))).symm
     _ = (∏ v : ↥T, w (ext.vertexLabel v)) *
         ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
-      simp [ExternalInsertionDiagram.ofSlotSplit,
+      simp only [Fintype.prod_sum_type, Finset.univ_eq_attach,
         subsetSumSdiffEquiv_inl_apply, subsetSumSdiffEquiv_inr_apply]
       congr 1
-      apply Finset.prod_congr rfl
-      intro v _
-      have hv : (v : Fin N) ∉ T := (Finset.mem_sdiff.mp v.2).2
-      simp [hv]
+      · apply Finset.prod_congr rfl
+        intro v _
+        rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
+          h ext vac ⟨v.1, h v.2⟩ v.2]
+      · apply Finset.prod_congr rfl
+        intro v _
+        rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
+          h ext vac ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
+            (Finset.mem_sdiff.mp v.2).2]
 
 section Decompose
 
