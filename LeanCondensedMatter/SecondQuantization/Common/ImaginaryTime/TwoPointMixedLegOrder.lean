@@ -153,12 +153,8 @@ theorem orderedTwoPointLeg_mem_eventAtomicLegs {n : ℕ} (leg : OrderedTwoPointL
 /-- The mixed position occupied by a standard two-point leg identity. -/
 noncomputable def mixedTimeOrderedAtomicLegPosition {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
-    Fin (2 * (2 * n + 1)) := by
-  classical
-  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
-  refine ⟨(mixedTimeOrderedAtomicLegs τ τ' σ).idxOf leg, ?_⟩
-  rw [← mixedTimeOrderedAtomicLegs_length τ τ' σ]
-  exact List.idxOf_lt_length_iff.mpr (mixedTimeOrderedAtomicLegs_all_mem τ τ' σ leg)
+    Fin (2 * (2 * n + 1)) :=
+  (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm leg
 
 /-- The position selected by an atomic leg identity is inverse to reading the identity at a mixed
 position. -/
