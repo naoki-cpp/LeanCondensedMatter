@@ -4090,7 +4090,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Components/ComponentVertexProduct.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition"
       ],
       "externalImportCount": 0
