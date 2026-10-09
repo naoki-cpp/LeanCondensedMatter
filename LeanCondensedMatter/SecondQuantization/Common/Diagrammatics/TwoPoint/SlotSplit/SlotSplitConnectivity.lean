@@ -243,6 +243,7 @@ private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
         (slotSplitVertex h x) (slotSplitVertex h y) ↔
       ext.vertexGraph.Reachable x y := by
+  rw [← slotSplitVertexEquiv_inl h x, ← slotSplitVertexEquiv_inl h y]
   change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
       ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inl x))
       ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inl y)) ↔ _
