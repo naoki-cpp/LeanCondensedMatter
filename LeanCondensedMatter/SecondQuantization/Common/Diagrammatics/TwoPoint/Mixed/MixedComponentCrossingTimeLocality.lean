@@ -75,27 +75,17 @@ private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOr
         hChamber
         (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1))
         (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)))
-  have hpSource :
+  have hSource (r : d.MixedComponentPosition τ τ' σ B) :
       mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) = p.1 :=
+        (mixedTimeOrderedAtomicLegEquiv τ τ' σ r.1) = r.1 :=
     mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hqSource :
-      mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) = q.1 :=
-    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hpTarget :
+  have hTarget (r : d.MixedComponentPosition τ τ' σ B) :
       mixedTimeOrderedAtomicLegPosition τ τ' υ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) =
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 := by
-    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ r.1) =
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B r).1 := by
+    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B r]
     exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hqTarget :
-      mixedTimeOrderedAtomicLegPosition τ τ' υ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) =
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
-    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B q]
-    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
+  rw [hSource p, hSource q, hTarget p, hTarget q] at hOrder
   exact hOrder
 
 private theorem TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap
