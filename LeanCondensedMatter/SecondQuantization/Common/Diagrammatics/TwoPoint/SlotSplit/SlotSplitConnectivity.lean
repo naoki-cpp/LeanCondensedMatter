@@ -217,7 +217,7 @@ private theorem not_adj_slotSplitVertex_slotSplitVacuumVertex
       exact slotSplitVertex_ne_slotSplitVacuumVertex h x _ hleg.symm
 
 /-- Reassembling a slot split produces exactly the disjoint graph sum of its two pieces. -/
-noncomputable def TwoPointDiagram.ofSlotSplit_vertexGraphIso :
+noncomputable def TwoPointDiagram.ofSlotSplitVertexGraphIso :
     (ext.vertexGraph ⊕g vac.vertexGraph) ≃g
       (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph where
   toEquiv := slotSplitVertexEquiv h
@@ -245,10 +245,10 @@ private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
       ext.vertexGraph.Reachable x y := by
   rw [← slotSplitVertexEquiv_inl h x, ← slotSplitVertexEquiv_inl h y]
   change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-      ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inl x))
-      ((TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac) (Sum.inl y)) ↔ _
+      ((TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) (Sum.inl x))
+      ((TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) (Sum.inl y)) ↔ _
   exact (SimpleGraph.Iso.reachable_iff
-    (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+    (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
     (u := Sum.inl x) (v := Sum.inl y)).trans
       (SimpleGraph.reachable_sum_inl_iff ext.vertexGraph vac.vertexGraph x y)
 
@@ -284,7 +284,7 @@ theorem interactionSector_externalComponent_ofSlotSplit
           (ext.vertexGraph ⊕g vac.vertexGraph).Reachable
             (Sum.inl (Sum.inl (0 : Fin 2))) (Sum.inr w) :=
         (SimpleGraph.Iso.reachable_iff
-          (φ := TwoPointDiagram.ofSlotSplit_vertexGraphIso h ext vac)
+          (φ := TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac)
           (u := Sum.inl (Sum.inl (0 : Fin 2))) (v := Sum.inr w)).mp
           (by
             change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
