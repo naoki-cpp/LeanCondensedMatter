@@ -107,19 +107,15 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
         system data geometry direction K q omega eta convention =
       finiteKuboBastinCommonEnergyDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta := by
-  calc
-    _ = finiteKuboBastinOccupationResolvedDirectionalConductivity
-        convention system data interpolation geometry direction K q omega eta :=
-      finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
-        convention system data interpolation geometry direction K q omega eta
-    _ = _ := by
-      unfold finiteKuboBastinOccupationResolvedDirectionalConductivity
-        finiteKuboBastinCommonEnergyDirectionalConductivity
-      rw [finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy
-        system data interpolation
-        (finiteDirectionalCurrentResponseChannel system geometry direction K q)
-        omega eta]
-      rfl
+  unfold finiteKuboBastinSpectralDirectionalConductivity
+    finiteKuboBastinCommonEnergyDirectionalConductivity
+  exact congrArg
+    (fun response : ℂ =>
+      response * finiteVolumeConductivityNormalization convention omega eta)
+    (finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
+      system data interpolation
+      (finiteDirectionalCurrentResponseChannel system geometry direction K q)
+      omega eta)
 
 end
 
