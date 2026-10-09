@@ -12,6 +12,20 @@
       ]
     },
     {
+      "id": "transportModelOwnership",
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport",
+        "LeanCondensedMatter/Models"
+      ],
+      "layers": [
+        {"id": "transport", "modulePrefixes": ["LeanCondensedMatter.Transport"]},
+        {"id": "models", "modulePrefixes": ["LeanCondensedMatter.Models"]}
+      ],
+      "edges": [
+        {"upstream": "transport", "downstream": "models"}
+      ]
+    },
+    {
       "id": "transportPurePointSpectralBridge",
       "sourceRoots": [
         "LeanCondensedMatter/QuantumTheory/LinearResponse",

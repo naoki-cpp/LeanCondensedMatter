@@ -587,6 +587,11 @@
       ]
     },
     {
+      "id": "modelsPublicUmbrella",
+      "path": "LeanCondensedMatter/Models.lean",
+      "modules": ["LeanCondensedMatter.Models.Parabolic2DEG"]
+    },
+    {
       "id": "massiveDiracPublicUmbrella",
       "path": "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
       "modules": [
