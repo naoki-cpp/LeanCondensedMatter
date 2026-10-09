@@ -193,14 +193,6 @@ private theorem
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
         (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 = 0 := by
   classical
-  have endpointVal (D : d.vertexGraph.componentPartition.parts)
-      (p : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
-      (d.mixedComponentPairEndpointEquiv τ τ' σ D (p, k)).1 =
-        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (p.1, k) := by
-    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
-      (d.pairingInMixedOrder τ τ' σ)
-      (fun x => d.mixedPositionComponent τ τ' σ x = D) _ p k
   have hcross :=
     Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
       (d.pairingInMixedOrder τ τ' σ)
@@ -209,7 +201,7 @@ private theorem
       (fun _ p => p.1)
       (fun D p k => by
         simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
-          endpointVal D p k)
+          d.mixedComponentPairEndpointEquiv_apply_val τ τ' σ D p k)
       B C hBC
   rw [hcross]
   apply Nat.mod_eq_zero_of_dvd
