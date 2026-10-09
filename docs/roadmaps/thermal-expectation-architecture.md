@@ -82,6 +82,11 @@ condition and spectral expectation. Potentially unbounded energy expectation rem
 `QuantumTheory.Gibbs.PurePointExpectation`; there is no public arbitrary-diagonal thermal
 expectation API.
 
+Bosonic two-field occupation-diagonal coefficients are algebraic imaginary-time facts, owned by
+`Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean`. The single mode-indexed theorem
+`diagonalCoeff_evolve_annihilate_comp_create` uses `Common.diagonalCoeff` directly; its equal-mode
+and distinct-mode cases do not require Gibbs summability or temperature assumptions.
+
 ## Bosonic boundary
 
 Even for finite `Mode`,
