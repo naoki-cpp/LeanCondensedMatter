@@ -28,6 +28,8 @@ namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
+open QuantumTheory.Transport
+
 /-- The traceless spin-orbit/exchange part `d·σ` of the Hamiltonian. -/
 def spinHamiltonian (params : Parameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
   InternalSpace.pauliCombination (rashbaPauliCoefficients params px py)
