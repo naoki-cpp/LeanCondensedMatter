@@ -1577,7 +1577,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -1589,7 +1589,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
     "dependencies": [
       "Combinatorics.BinaryShuffle.sum_slotShuffle",
@@ -1598,9 +1599,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -4043,16 +4045,16 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add"
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add"
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -4090,7 +4092,7 @@
     "dependents": [
       "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
@@ -4103,7 +4105,7 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -5226,7 +5228,7 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
     "dependencies": [],
@@ -5235,7 +5237,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
     "compiledConsumerCount": 4,
@@ -10168,6 +10170,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction"
     ],
@@ -10175,10 +10178,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10250,6 +10254,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
     ],
@@ -10257,10 +10262,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23347,7 +23353,7 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "dependencies": [
       "Fintype.sum_equiv_fst_eq_card_mul_sum"
@@ -23356,7 +23362,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -51402,10 +51408,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.purePointExpectation_heisenberg_mul_eq_tsum",
       "QuantumTheory.LinearResponse.purePointExpectation_mul_heisenberg_eq_tsum",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_zero_frequency_eq_staticKuboBastin",
-      "SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse_eq_surface_add_sea_add_observableVariation"
+      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
@@ -51417,12 +51420,9 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.purePointExpectation_heisenberg_mul_eq_tsum",
       "QuantumTheory.LinearResponse.purePointExpectation_mul_heisenberg_eq_tsum",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_zero_frequency_eq_staticKuboBastin",
-      "SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse_eq_surface_add_sea_add_observableVariation"
+      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82700,7 +82700,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -82712,20 +82712,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_zero_frequency_eq_staticKuboBastin"
+      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply",
-      "_private.LeanCondensedMatter.Transport.KuboBastin.Finite.0.QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_zero_frequency_eq_staticKuboBastin"
+      "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82746,7 +82743,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
@@ -82759,7 +82756,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.KuboBastin.Finite.0.QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum",
@@ -82768,7 +82765,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.KuboBastin.Finite.0.QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -83659,7 +83656,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83671,8 +83668,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_commonEnergy",
-      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy"
+      "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_commonEnergy"
     ],
     "dependencies": [
       "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum",
@@ -83681,10 +83677,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_commonEnergy",
-      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy"
+      "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_commonEnergy"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83714,7 +83709,7 @@
     "name": "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum",
     "module": "LeanCondensedMatter.Transport.KuboBastin.Occupation",
     "externalAxioms": [],
-    "docString": "The public occupation-resolved channel response exposes its aggregate transition sum without\nexposing the private response-level implementation. ",
+    "docString": "The occupation-resolved channel response reduces to its aggregate transition sum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -83742,7 +83737,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ),\n  QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta =\n    QuantumTheory.Transport.finiteKuboBastinCommonEnergyChannelResponse system data interpolation channel omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -83750,7 +83745,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83761,15 +83756,19 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy",
       "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_occupationResolved"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83847,7 +83846,7 @@
     "name": "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_vertexSum",
     "module": "LeanCondensedMatter.Transport.KuboBastin.Finite",
     "externalAxioms": [],
-    "docString": "The public channel response exposes its aggregate spectral vertex sum without exposing the\nprivate response-level implementation. ",
+    "docString": "The channel response reduces to its aggregate spectral vertex sum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -83877,7 +83876,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (eta : ℝ)\n  (representation :\n    QuantumTheory.Transport.RegularizedStredaRepresentation\n      (QuantumTheory.Transport.finiteStaticKuboBastinChannelVertexResponse system data channel eta)),\n  QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse system data channel eta =\n    QuantumTheory.Transport.regularizedStredaFermiSurface representation.toRegularizedStredaIntegralData +\n        QuantumTheory.Transport.regularizedStredaFermiSea representation.toRegularizedStredaIntegralData +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        channel.observableVariation",
     "standardAxioms": [
       "Classical.choice",
@@ -83885,7 +83884,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83896,19 +83895,15 @@
     "docString": "Once the static two-vertex response is equipped with an explicit regularized Středa energy\nrepresentation, the complete generalized response is its surface-plus-sea decomposition plus the\nunchanged observable-variation expectation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse_eq_surface_add_sea_add_observableVariation"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.Transport.RegularizedStredaRepresentation.response_eq_surface_add_sea",
       "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_vertexSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse_eq_surface_add_sea_add_observableVariation"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105625,6 +105620,46 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (w : InternalLabel → ℂ),\n  (-1) ^ S.card * (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexWeight w =\n    (-1) ^ T.card * ext.vertexWeight w * ((-1) ^ (S \\ T).card * vac.vertexWeight w)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "Dyson interaction signs and local vertex weights split multiplicatively along the\nexternal-support/vacuum slot partition. This statement does not concern the fermionic\nmixed-time permutation or pairing-crossing sign. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (e : Fin (2 * E)),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).externalLabel e = ext.externalLabel e",
     "standardAxioms": [
       "Classical.choice",
@@ -105774,6 +105809,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit"
     ],
     "dependencies": [],
@@ -105781,9 +105817,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105818,6 +105855,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit"
     ],
     "dependencies": [],
@@ -105825,9 +105863,97 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {M : Type u_3} [inst : CommMonoid M]\n  {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (w : InternalLabel → M),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexWeight w =\n    ext.vertexWeight w * vac.vertexWeight w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "Reassembling disjoint external-support and vacuum diagrams multiplies their local\ninteraction-vertex weights, independently of the pairings or particle statistics. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight"
+    ],
+    "dependencies": [
+      "Combinatorics.subsetSumSdiffEquiv_inl_apply",
+      "Combinatorics.subsetSumSdiffEquiv_inr_apply",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ),\n  SecondQuantization.Common.externalInsertionOrderSignature externalTime σ =\n      SecondQuantization.Common.externalInsertionOrderSignature externalTime υ →\n    d.pairingInMixedOrder externalTime σ = d.pairingInMixedOrder externalTime υ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_eq_of_orderSignature_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "The mixed pairing is constant on each finite external-insertion order-signature\nfiber. This statement concerns only pairing transport; the time-dependent contraction kernel\nis not constant on those fibers. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109641,7 +109767,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
@@ -109655,7 +109781,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -109931,7 +110057,7 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -109940,7 +110066,7 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -110676,11 +110802,11 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "dependencies": [
+      "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
       "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
       "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
       "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "crossModuleDirectWrapper": false,
@@ -116836,8 +116962,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -116849,18 +116975,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber"
     ],
     "dependencies": [
+      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_congr",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117091,6 +117220,53 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ),\n  SecondQuantization.Common.externalInsertionOrderSignature externalTime σ =\n      SecondQuantization.Common.externalInsertionOrderSignature externalTime υ →\n    SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ =\n      SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime υ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
+    "externalAxioms": [],
+    "docString": "The standard-to-mixed atomic-position permutation depends only on the finite\nexternal-insertion order signature, including equal-time rank tie breaking. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_eq_of_orderSignature_eq",
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_eq_of_orderSignature_eq"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "SecondQuantization.Common.sameExternalInsertionOrderChamber_iff_orderSignature_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_eq_of_orderSignature_eq",
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_eq_of_orderSignature_eq"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121142,7 +121318,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
@@ -121157,7 +121333,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
@@ -121254,7 +121430,7 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "dependencies": [],
@@ -121266,7 +121442,7 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 7,
@@ -122497,7 +122673,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
+      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_congr"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -123462,8 +123638,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -123475,15 +123651,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.strictOrderSignature_eq_iff"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123519,7 +123699,9 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.strictOrderSignature_eq_iff"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -123974,6 +124156,50 @@
     "compiledConsumers": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} (t u : α → ℝ) (rank : α → ℕ),\n  (∀ (a b : α), t a < t b ↔ u a < u b) →\n    ∀ (a b : α),\n      SecondQuantization.Common.stableTimedEventBeforeOrEqual t rank a b ↔\n        SecondQuantization.Common.stableTimedEventBeforeOrEqual u rank a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.stableTimedEventBeforeOrEqual_congr",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder",
+    "externalAxioms": [],
+    "docString": "Preserving every strict time comparison preserves the stable event order,\nincluding equal-time ties resolved by the fixed rank. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -125499,7 +125725,7 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
     ],
     "dependencies": [],
@@ -125510,7 +125736,7 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
     ],
     "compiledConsumerCount": 6,
@@ -129169,7 +129395,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -129181,7 +129407,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
@@ -129193,9 +129420,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129396,7 +129624,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -129408,7 +129636,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
     "dependencies": [
       "intervalIntegral.orderedSimplexIntegral_smul"
@@ -129416,9 +129645,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132993,47 +133223,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {OneForm : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (velocity m :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ] SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (N :\n    OneForm →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (α : OneForm)\n  (source observableVariation :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data)\n        (SecondQuantization.Fermionic.Transport.boundedCorrectedCurrentObservable velocity m N α) source 0 eta heta +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        observableVariation =\n    SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse system data velocity m N α\n      source observableVariation eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.adiabaticFrequencyDomainCorrectedCurrent_zero_frequency_eq_staticKuboBastin",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentStreda",
-    "externalAxioms": [],
-    "docString": "At positive switching rate, the zero-frequency causal response of the corrected current equals\nits named finite static spectral Kubo–Bastin response. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Site : Type u_1} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (velocity m :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ] SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (N :\n    OneForm →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (t s : ℝ),\n  SecondQuantization.Fermionic.Transport.boundedCorrectedCurrentFluxRetardedResponse system expectation source velocity\n      m N t s =\n    SecondQuantization.Fermionic.Transport.boundedSymmetrizedCurrentFluxRetardedResponse system expectation source\n        velocity m N t s +\n      SecondQuantization.Fermionic.Transport.boundedLocalizationCorrectionRetardedResponse system expectation source\n        velocity m N t s",
     "standardAxioms": [
@@ -133588,8 +133777,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.finiteKuboBastinOccupationResolvedChannelResponse_eq_commonEnergy",
-      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved"
+      "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_commonEnergy"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -133616,7 +133804,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -133628,7 +133816,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved"
     ],
     "dependencies": [
@@ -133637,10 +133824,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133863,85 +134049,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {OneForm : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (velocity m :\n    SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ] SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (N :\n    OneForm →ₗ[ℂ]\n      SecondQuantization.Fermionic.Lattice.LatticeState Site →ₗ[ℂ]\n        SecondQuantization.Fermionic.Lattice.LatticeState Site)\n  (α : OneForm)\n  (source observableVariation :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (eta : ℝ)\n  (representation :\n    QuantumTheory.Transport.RegularizedStredaRepresentation\n      (QuantumTheory.Transport.finiteStaticKuboBastinChannelVertexResponse system data\n        (SecondQuantization.Fermionic.Transport.correctedCurrentResponseChannel velocity m N α source\n          observableVariation)\n        eta)),\n  SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse system data velocity m N α\n      source observableVariation eta =\n    QuantumTheory.Transport.regularizedStredaFermiSurface representation.toRegularizedStredaIntegralData +\n        QuantumTheory.Transport.regularizedStredaFermiSea representation.toRegularizedStredaIntegralData +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        observableVariation",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteStaticCorrectedCurrentKuboBastinResponse_eq_surface_add_sea_add_observableVariation",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentStreda",
-    "externalAxioms": [],
-    "docString": "Given an explicit Středa representation for the corrected-current measured/source vertex\nresponse, the complete static response is its Fermi-surface plus Fermi-sea decomposition together\nwith the unchanged observable-variation/contact expectation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply",
-      "QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype ι]\n  (convention : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q eta : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinDirectionalConductivity convention system data geometry\n      direction K q eta =\n    (∑ mn,\n          SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalCurrentTerm system data geometry\n            direction K q 0 eta mn +\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)) *\n      QuantumTheory.Transport.finiteVolumeConductivityNormalization convention 0 eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinDirectionalConductivity_eq_finite_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse",
-    "externalAxioms": [],
-    "docString": "Exact finite spectral form of the named static conductivity target. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype ι]\n  (convention : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q eta : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinDirectionalConductivity convention system data geometry\n      direction K q eta =\n    SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinVectorPotentialResponse system data geometry direction\n        K q eta *\n      QuantumTheory.Transport.finiteVolumeConductivityNormalization convention 0 eta",
     "standardAxioms": [
@@ -134013,44 +134120,6 @@
       "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedBastin"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q eta : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinVectorPotentialResponse system data geometry direction K\n      q eta =\n    ∑ mn,\n        SecondQuantization.Fermionic.Transport.finiteKuboBastinSpectralDirectionalCurrentTerm system data geometry\n          direction K q 0 eta mn +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinVectorPotentialResponse_eq_finite_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse",
-    "externalAxioms": [],
-    "docString": "Expanding the static spectral response gives the finite zero-frequency transition sum plus the\nunchanged contact expectation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140950,7 +141019,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq"
@@ -140959,9 +141029,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142206,6 +142277,46 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.sum_leftSlotSet_standardizedSupportFiber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ),\n  SecondQuantization.Common.externalInsertionOrderSignature externalTime σ =\n      SecondQuantization.Common.externalInsertionOrderSignature externalTime υ →\n    SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime σ =\n      SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime υ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_eq_of_orderSignature_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "The fermionic sign of mixed atomic ordering is constant on every finite\nexternal-insertion order-signature fiber. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -146817,6 +146928,53 @@
       "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E m k : ℕ} (externalTime : Fin (2 * E) → ℝ)\n  (ext : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E m)\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  ∑ shuffle,\n      intervalIntegral.orderedSimplexIntegral (m + k) β\n        (shuffle.integrand (fun σ => ext.dysonFixedTimeAmplitude ε β g externalTime σ) fun σ =>\n          ((-1) ^ k * ∏ q, g (x.1 q)) * SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β x.1 σ x.2) =\n    ext.dysonAmplitude ε β g externalTime *\n      (((-1) ^ k * ∏ q, g (x.1 q)) *\n        intervalIntegral.orderedSimplexIntegral k β fun σ =>\n          SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β x.1 σ x.2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and\none fixed-order vacuum diagram gives the product of their independent Dyson contributions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+      "SecondQuantization.Fermionic.continuous_flatVertexLegPairingEvaluation",
+      "intervalIntegral.Continuous.measurableLocallyBounded",
+      "intervalIntegral.MeasurableLocallyBounded.mul",
+      "intervalIntegral.measurableLocallyBounded_const",
+      "intervalIntegral.orderedSimplexIntegral_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171329,96 +171487,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount✝ d τ τ' σ B C =\n    d.mixedComponentOrientedCrossingCount τ τ' σ B C + d.mixedComponentOrientedCrossingCount τ τ' σ C B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": "Geometric crossings split into the two oriented component-crossing counts. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  B ≠ C →\n    SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount✝ d τ τ' σ B C % 2 =\n      SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount✝ d τ τ' σ B C % 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
-      "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  B ≠ C →\n    SecondQuantization.Common.ComponentIsVacuum ↑C →\n      SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount✝ d τ τ' σ B C % 2 = 0",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  B ≠ C →\n    SecondQuantization.Common.ComponentIsVacuum ↑C →\n      (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount\n            (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C %\n          2 =\n        0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171440,101 +171509,15 @@
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform",
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val",
+      "Fintype.dvd_sum_equiv_fst_of_dvd_card",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑C),\n  SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount✝ d τ τ' σ B C =\n    ∑ p,\n      ∑ v,\n        ∑ l,\n          if ↑(SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition✝ d τ τ' σ C hVac v l) < ↑p then\n            1\n          else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑C),\n  (∀ (p : d.MixedComponentPosition τ τ' σ B) (v : ↥(SecondQuantization.Common.interactionSector ↑C)) (l : Fin 4),\n      (↑(SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition✝ d τ τ' σ C hVac v l) < ↑p) =\n        (↑(SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition✝ d τ τ' σ C hVac v 0) < ↑p)) →\n    SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount✝ d τ τ' σ B C % 2 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
-    ],
-    "dependencies": [
-      "Fintype.dvd_sum_equiv_fst_of_dvd_card",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -171616,7 +171599,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
@@ -171628,54 +171612,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.directMixedVacuumInteractionPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (C : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑C)\n  (v : ↥(SecondQuantization.Common.interactionSector ↑C)) (l : Fin 4),\n  SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition✝ d τ τ' σ C hVac v l =\n    SecondQuantization.Common.TwoPointDiagram.directMixedVacuumInteractionPosition✝ d τ τ' σ C v l",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171762,60 +171702,17 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct"
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_eq_iff_legInComponent",
+      "SecondQuantization.Common.mem_interactionSector_subtype",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
+      "SecondQuantization.Common.twoPointLegEquiv_mixedTimeAmbientPositionEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (C : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑C)\n  (v : ↥(SecondQuantization.Common.interactionSector ↑C)) (l : Fin 4),\n  (SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv✝ d τ τ' σ C hVac)\n      (SecondQuantization.Common.TwoPointDiagram.directMixedVacuumInteractionPosition✝ d τ τ' σ C v l) =\n    (v, l)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_eq_iff_legInComponent",
-      "SecondQuantization.Common.mem_interactionSector_subtype",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
-      "SecondQuantization.Common.twoPointLegEquiv_mixedTimeAmbientPositionEquiv"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -174479,206 +174376,36 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBeforeOrEqual τ τ' υ a b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventTime_eq_iff_of_sameOrderChamber"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventBefore τ τ' σ a b ↔\n        SecondQuantization.Common.twoPointTimedEventBefore τ τ' υ a b",
+    "statement": "∀ {External : Type u_1} {n : ℕ} (externalTime : External → ℝ) (event : External ⊕ Fin n),\n  Continuous fun σ => Sum.elim externalTime σ event",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBefore_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b ↔\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a =\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventTime_eq_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (event : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n  Continuous fun σ => SecondQuantization.Common.externalInsertionTimedEventTime externalTime σ event",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_externalInsertionTimedEventTime",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_sumEventTime",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "A mixed family contains fixed external events and variable interaction times. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_externalInsertionOrderSignature"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_externalInsertionOrderSignature"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (a : SecondQuantization.Common.TwoPointTimedEvent n),\n  Continuous fun σ => SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_twoPointTimedEventTime",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_externalInsertionOrderSignature",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_externalInsertionOrderSignature",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174715,7 +174442,8 @@
       "SecondQuantization.Common.measurableSet_externalInsertionOrderSignatureFiber"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_externalInsertionTimedEventTime"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_sumEventTime",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_strictOrderSignature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -174723,6 +174451,50 @@
       "SecondQuantization.Common.measurableSet_externalInsertionOrderSignatureFiber"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Event : Type u_1} {X : Type u_2} [inst : Fintype Event] [inst_1 : MeasurableSpace X] (time : X → Event → ℝ),\n  (∀ (a : Event), Measurable fun x => time x a) → Measurable (SecondQuantization.Common.strictOrderSignature✝ time)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_strictOrderSignature",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_externalInsertionOrderSignature",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_externalInsertionOrderSignature",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_twoPointOrderSignature"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174759,7 +174531,8 @@
       "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_twoPointTimedEventTime"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.continuous_sumEventTime",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.measurable_strictOrderSignature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -174767,6 +174540,50 @@
       "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Event : Type u_1} {X : Type u_2} [inst : Fintype Event] (time : X → Event → ℝ) (x y : X),\n  SecondQuantization.Common.strictOrderSignature✝ time x = SecondQuantization.Common.strictOrderSignature✝ time y ↔\n    ∀ (a b : Event), time x a < time x b ↔ time y a < time y b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature.0.SecondQuantization.Common.strictOrderSignature_eq_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.sameExternalInsertionOrderChamber_iff_orderSignature_eq",
+      "SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.sameExternalInsertionOrderChamber_iff_orderSignature_eq",
+      "SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178095,7 +177912,8 @@
       "SecondQuantization.Common.measurableSet_externalInsertionOrderSignatureFiber",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase",
+      "intervalIntegral.measurable_of_finite_continuous_signature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178161,49 +177979,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (s : SecondQuantization.Common.ExternalInsertionOrderSignature E n),\n  (∃ σ, SecondQuantization.Common.externalInsertionOrderSignature externalTime σ = s) →\n    SecondQuantization.Common.externalInsertionOrderSignature externalTime\n        (SecondQuantization.Fermionic.externalInsertionOrderSignatureBase✝ externalTime s) =\n      s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.externalInsertionOrderSignature_base_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  SecondQuantization.Common.SameExternalInsertionOrderChamber externalTime\n    (SecondQuantization.Fermionic.externalInsertionOrderSignatureBase✝ externalTime\n      (SecondQuantization.Common.externalInsertionOrderSignature externalTime σ))\n    σ",
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  SecondQuantization.Common.SameExternalInsertionOrderChamber externalTime\n    (intervalIntegral.finiteSignatureBase (SecondQuantization.Common.externalInsertionOrderSignature externalTime)\n      (SecondQuantization.Common.externalInsertionOrderSignature externalTime σ))\n    σ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178218,7 +177994,7 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The representative of a realized signature has the same mixed event ordering. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -178227,7 +178003,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.sameExternalInsertionOrderChamber_iff_orderSignature_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.externalInsertionOrderSignature_base_eq"
+      "intervalIntegral.finiteSignatureBase_signature_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178404,7 +178180,7 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
     "externalAxioms": [],
-    "docString": "A mixed-component Dyson fixed-time value is globally measurable after assembling its finite\nchamberwise-continuous representatives along the mixed-order signature partition. ",
+    "docString": "A mixed-component Dyson fixed-time value is measurable by the finite mixed-order\nsignature and its continuous chamber representatives. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -178414,7 +178190,8 @@
       "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase",
+      "intervalIntegral.measurable_of_finite_continuous_signature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178528,7 +178305,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ'\n    (SecondQuantization.Fermionic.twoPointOrderSignatureBase✝ τ τ'\n      (SecondQuantization.Common.twoPointOrderSignature τ τ' σ))\n    σ",
+    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ'\n    (intervalIntegral.finiteSignatureBase (SecondQuantization.Common.twoPointOrderSignature τ τ')\n      (SecondQuantization.Common.twoPointOrderSignature τ τ' σ))\n    σ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178543,7 +178320,7 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The representative of a realized signature has the same mixed event ordering. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -178552,7 +178329,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.twoPointOrderSignature_twoPointOrderSignatureBase_eq"
+      "intervalIntegral.finiteSignatureBase_signature_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178561,48 +178338,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (s : SecondQuantization.Common.TwoPointOrderSignature n),\n  (∃ σ, SecondQuantization.Common.twoPointOrderSignature τ τ' σ = s) →\n    SecondQuantization.Common.twoPointOrderSignature τ τ'\n        (SecondQuantization.Fermionic.twoPointOrderSignatureBase✝ τ τ' s) =\n      s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.twoPointOrderSignature_twoPointOrderSignatureBase_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182322,50 +182057,6 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.shift_mul_green"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (measured source observableVariation : H →L[ℂ] H)\n  (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) measured source omega eta heta +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        observableVariation =\n    QuantumTheory.Transport.finiteKuboBastinSpectralVertexResponse✝ system data measured source observableVariation\n      omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.KuboBastin.Finite.0.QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral",
-    "module": "LeanCondensedMatter.Transport.KuboBastin.Finite",
-    "externalAxioms": [],
-    "docString": "The generic fixed-positive-rate frequency-domain susceptibility plus the explicit\nobservable-variation term is exactly the finite Kubo–Bastin spectral response. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189100,6 +188791,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
@@ -189110,10 +188802,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189386,6 +189079,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_slotShuffleIntegrand",
       "intervalIntegral.MeasurableLocallyBounded.finsetProd"
@@ -189396,11 +189090,12 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_slotShuffleIntegrand",
       "intervalIntegral.MeasurableLocallyBounded.finsetProd"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189504,6 +189199,94 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {ι : Type u_1} (signature : (Fin n → ℝ) → ι) (σ : Fin n → ℝ),\n  signature (intervalIntegral.finiteSignatureBase signature (signature σ)) = signature σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "intervalIntegral.finiteSignatureBase_signature_eq",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
+    "externalAxioms": [],
+    "docString": "Every assignment shares its signature with the representative of its own fiber. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
+    ],
+    "dependencies": [
+      "intervalIntegral.finiteSignatureBase_signature_eq_of_exists"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.sameExternalInsertionOrderChamber_signatureBase",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.sameTwoPointOrderChamber_signatureBase"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {ι : Type u_1} (signature : (Fin n → ℝ) → ι) (s : ι),\n  (∃ σ, signature σ = s) → signature (intervalIntegral.finiteSignatureBase signature s) = s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "intervalIntegral.finiteSignatureBase_signature_eq_of_exists",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
+    "externalAxioms": [],
+    "docString": "The chosen representative has the requested signature whenever its fiber is nonempty. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "intervalIntegral.finiteSignatureBase_signature_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "intervalIntegral.finiteSignatureBase_signature_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (n : ℕ) (f : (Fin (n + 1) → ℝ) → ℂ),\n  Continuous f →\n    ∀ (β : ℝ),\n      HasDerivAt (fun t => intervalIntegral.orderedSimplexIntegral (n + 1) t f)\n        (intervalIntegral.orderedSimplexIntegral n β fun rest => f (Fin.cons β rest)) β",
     "standardAxioms": [
@@ -189566,6 +189349,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
       "intervalIntegral.MeasurableLocallyBounded.finsetProd"
     ],
@@ -189575,10 +189359,11 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
       "intervalIntegral.MeasurableLocallyBounded.finsetProd"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189627,6 +189412,50 @@
       "intervalIntegral.Continuous.measurableLocallyBounded"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} [Finite ι] {n : ℕ} (signature : (Fin n → ℝ) → ι),\n  (∀ (s : ι), MeasurableSet {σ | signature σ = s}) →\n    ∀ (f : (Fin n → ℝ) → ℂ) (branch : ι → (Fin n → ℝ) → ℂ),\n      (∀ (s : ι), Continuous (branch s)) → (∀ (σ : Fin n → ℝ), f σ = branch (signature σ) σ) → Measurable f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "intervalIntegral.measurable_of_finite_continuous_signature",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
+    "externalAxioms": [],
+    "docString": "A finite measurable signature selects one of finitely many continuous branches\nmeasurably, without assuming continuity across signature boundaries. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurable_dysonFixedTimeAmplitude",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurable_dysonFixedTimeAmplitude",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189993,7 +189822,8 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
     "dependencies": [
       "intervalIntegral.orderedSimplexIntegral_succ"
@@ -190006,9 +189836,10 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

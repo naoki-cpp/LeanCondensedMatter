@@ -3783,7 +3783,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature"
       ],
       "externalImportCount": 0
     },
@@ -5303,6 +5303,18 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumShuffleIntegral.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
+        "LeanCondensedMatter.Combinatorics.SlotShuffle",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/FixedExternalFiberSum.lean",
       "imports": [
@@ -5350,6 +5362,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField"
       ],
@@ -6205,15 +6218,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentStreda",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentStreda.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin",
-        "LeanCondensedMatter.Transport.Streda.GeneralizedStatic"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteConductivityTable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteConductivityTable.lean",
       "imports": [
@@ -6377,7 +6381,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentStreda",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteConductivityTable",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderConductivity",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
