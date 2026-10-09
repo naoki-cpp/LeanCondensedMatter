@@ -42,6 +42,14 @@ private theorem strictOrderSignature_eq_iff
     rcases p with ⟨a, b⟩
     simpa [strictOrderSignature] using h a b
 
+/-- A mixed family contains fixed external events and variable interaction times. -/
+private theorem continuous_sumEventTime {External : Type*} {n : ℕ}
+    (externalTime : External → ℝ) (event : External ⊕ Fin n) :
+    Continuous (fun σ : Fin n → ℝ => Sum.elim externalTime σ event) := by
+  cases event with
+  | inl _ => exact continuous_const
+  | inr v => exact continuous_apply v
+
 private theorem measurable_strictOrderSignature
     {Event X : Type*} [Fintype Event] [MeasurableSpace X]
     (time : X → Event → ℝ)
@@ -70,23 +78,12 @@ theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
   exact (strictOrderSignature_eq_iff
     (fun σ event => twoPointTimedEventTime τ τ' σ event) σ υ).symm
 
-private theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
-    (a : TwoPointTimedEvent n) :
-    Continuous (fun σ : Fin n → ℝ => twoPointTimedEventTime τ τ' σ a) := by
-  cases a with
-  | inl e =>
-      change Continuous (fun _ : Fin n → ℝ => twoPointExternalTimes τ τ' e)
-      exact continuous_const
-  | inr v =>
-      change Continuous (fun σ : Fin n → ℝ => σ v)
-      exact continuous_apply v
-
 private theorem measurable_twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) :
     Measurable (twoPointOrderSignature τ τ' :
       (Fin n → ℝ) → TwoPointOrderSignature n) := by
   exact measurable_strictOrderSignature
     (fun σ event => twoPointTimedEventTime τ τ' σ event)
-    (fun event => (continuous_twoPointTimedEventTime τ τ' event).measurable)
+    (fun event => (continuous_sumEventTime (twoPointExternalTimes τ τ') event).measurable)
 
 /-- Fiber of the finite mixed-order signature map over a prescribed signature. -/
 def twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
@@ -139,25 +136,13 @@ theorem sameExternalInsertionOrderChamber_iff_orderSignature_eq {E n : ℕ}
   exact (strictOrderSignature_eq_iff
     (fun σ event => externalInsertionTimedEventTime externalTime σ event) σ υ).symm
 
-private theorem continuous_externalInsertionTimedEventTime {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (event : ExternalInsertionTimedEvent E n) :
-    Continuous (fun σ : Fin n → ℝ =>
-      externalInsertionTimedEventTime externalTime σ event) := by
-  cases event with
-  | inl e =>
-      change Continuous (fun _ : Fin n → ℝ => externalTime e)
-      exact continuous_const
-  | inr v =>
-      change Continuous (fun σ : Fin n → ℝ => σ v)
-      exact continuous_apply v
-
 private theorem measurable_externalInsertionOrderSignature {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) :
     Measurable (externalInsertionOrderSignature externalTime :
       (Fin n → ℝ) → ExternalInsertionOrderSignature E n) := by
   exact measurable_strictOrderSignature
     (fun σ event => externalInsertionTimedEventTime externalTime σ event)
-    (fun event => (continuous_externalInsertionTimedEventTime externalTime event).measurable)
+    (fun event => (continuous_sumEventTime externalTime event).measurable)
 
 /-- The standard-to-mixed atomic-position permutation depends only on the finite
 external-insertion order signature, including equal-time rank tie breaking. -/
