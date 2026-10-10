@@ -700,7 +700,7 @@
     {
       "id": "massiveDiracBastinUmbrella",
       "path": "LeanCondensedMatter/Models/MassiveDirac/Bastin.lean",
-      "modules": ["LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction"]
+      "modules": ["LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral"]
     },
     {
       "id": "thermalPublicUmbrella",

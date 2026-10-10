@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -6,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Fixed-window interband Bastin-pair extraction in the massive Dirac model
 
-The model-specific ordered band pair is identified with the generic isolated interband Bastin pole.
-The fixed-window zero-broadening limit is then inherited from
-`Transport.Streda.InterbandPole`.
+The target-centered regular-factor integral is shared by the pair factorization and radial
+estimates. The concrete ordered band pair is identified with the generic isolated interband Bastin
+pole, whose fixed-window zero-broadening limit is provided by `Transport.Streda.InterbandPole`.
 
 The result remains pointwise in momentum. No momentum integration or momentum-limit interchange is
 performed here.
@@ -21,6 +22,30 @@ noncomputable section
 open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
+
+/-- Lorentzian-weighted target-centered integral of the regular interband spectator/current factor. -/
+noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
+    (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
+  lorentzianRegularFactorIntegral
+    (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
+    radius broadening
+
+/-- The model-specific pole integral is the generic isolated-interband regular-factor integral. -/
+private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral
+    (band : Band) (e v m px py radius broadening : ℝ) :
+    targetCenteredInterbandSpectatorCurrentPoleIntegral
+        band e v m px py radius broadening =
+      interbandPoleRegularFactorIntegral
+        (interbandEnergyGap band v m px py)
+        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        radius broadening := by
+  unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
+    interbandPoleRegularFactorIntegral
+  congr 1
+  funext p
+  exact targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
+    band e v m px py p
 
 /-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
 the opposite band and whose target is `band`. -/
