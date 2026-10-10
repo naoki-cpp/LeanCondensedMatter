@@ -5025,7 +5025,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -5037,8 +5037,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
     ],
     "dependencies": [
       "Combinatorics.crosses_map_iff"
@@ -5046,10 +5045,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93705,6 +93703,7 @@
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -93722,10 +93721,11 @@
       "SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94067,8 +94067,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -94080,15 +94080,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94110,7 +94112,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -94122,15 +94124,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100728,7 +100732,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ‖SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.quarticVertexOperator q) n n‖ ≤\n    (↑(SecondQuantization.Bosonic.particleNumber n) + 2) ^ 2",
     "standardAxioms": [
       "Classical.choice",
@@ -100736,7 +100740,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -100747,9 +100751,7 @@
     "docString": "The diagonal coefficient of a single ordered bosonic quartic vertex is bounded uniformly by\n`(N + 2)^2`, where `N` is the total occupation of the input basis state. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
       "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
@@ -100762,10 +100764,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101528,10 +101528,9 @@
       "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
-      "SecondQuantization.Bosonic.summable_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight",
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp"
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_cons",
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_nil"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -102014,7 +102013,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102026,8 +102025,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight"
@@ -102035,10 +102033,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.purePointGibbsSummable_freeEigenvalue"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102357,7 +102354,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    Summable fun n =>\n      ↑(SecondQuantization.Bosonic.particleNumber n) ^ 2 * SecondQuantization.Bosonic.boltzmannWeight ε β n",
     "standardAxioms": [
       "Classical.choice",
@@ -102365,7 +102362,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102376,19 +102373,15 @@
     "docString": "The square of the total particle number remains summable against the free bosonic Boltzmann\nweight.  This is the uniform degree-two majorant used for quartic ladder amplitudes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.particleNumber_eq_sum_univ",
       "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103992,7 +103985,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
@@ -104002,11 +103994,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104049,44 +104040,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_eq_sum"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (v : Fin (SecondQuantization.Common.interactionSector ↑B).card),\n  d.componentInteractionShuffle.slotEquiv ⟨B, v⟩ =\n    (S.orderIsoOfFin ⋯).symm ⟨↑(((SecondQuantization.Common.interactionSector ↑B).orderIsoOfFin ⋯) v), ⋯⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -119292,7 +119245,6 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Bosonic.freeGibbsSummable_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
@@ -119306,11 +119258,10 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Bosonic.freeGibbsSummable_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172540,47 +172491,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (p q : (d.restrictComponent B).pairing.NormalizedPair),\n  Combinatorics.Crosses ↑((d.componentNormalizedPairEmbedding B) p) ↑((d.componentNormalizedPairEmbedding B) q) ↔\n    Combinatorics.Crosses ↑p ↑q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The canonical component normalized-pair embedding preserves and reflects geometric crossings. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  (∃ p, d.componentDiagramLeg B p = leg) ↔ d.legInComponent (↑B) leg",
     "standardAxioms": [
       "Classical.choice",
@@ -174081,48 +173991,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts),\n  Function.Injective (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts) {u' w' : ↥↑B},\n  (↑(F B)).vertexGraph.Adj u' w' →\n    (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Adj\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B u')\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B w')",
     "standardAxioms": [
       "Classical.choice",
@@ -174147,7 +174015,6 @@
     "dependencies": [
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "crossModuleDirectWrapper": false,

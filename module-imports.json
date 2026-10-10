@@ -4408,10 +4408,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/QuarticGibbsSummable.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable"
       ],
       "externalImportCount": 0
     },
