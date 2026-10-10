@@ -74,11 +74,6 @@ def finiteRadialCleanInterbandBastinPairIntegral
   ∫ p in Set.Icc 0 pMax,
     radialCleanInterbandBastinPairLimitDensity band e v m p
 
-/-- Uniform norm bound for the complete energy-integrated radial Bastin pair. -/
-def radialInterbandBastinPairUniformBound
-    (e v m radius : ℝ) : ℝ :=
-  2 * (radialInterbandSpectatorUniformBound e v m radius * Real.pi)
-
 /-- The pair bound is nonnegative. -/
 private theorem radialInterbandBastinPairUniformBound_nonneg
     (e v m radius : ℝ) :
