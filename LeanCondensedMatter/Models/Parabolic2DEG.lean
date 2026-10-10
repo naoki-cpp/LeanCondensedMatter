@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.Parabolic2DEG.Model
+import LeanCondensedMatter.Models.Parabolic2DEG.Green
 import LeanCondensedMatter.Models.Parabolic2DEG.Response
 
 set_option linter.style.header false
