@@ -45,7 +45,8 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrder
       ((d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv (pr.1, 0)))).1.1 =
     pr.1.1
   simp only [Equiv.trans_apply, hambient, Equiv.symm_apply_apply]
-  simpa only [← hpairing, Equiv.symm_apply_apply]
+  rw [← hpairing]
+  simp
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
