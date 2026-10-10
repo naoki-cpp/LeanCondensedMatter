@@ -70,8 +70,8 @@ Continuum measure factors are kept separate from trace/current normalization.
 `Analysis.ContinuumMeasure` owns both the bare two-dimensional physical-momentum prefactor and its
 exact full-angle radial specialization, while `Streda.ConductivityNormalization` owns the
 model-independent static Bastin/Středa trace prefactor and its composition with an explicit measure.
-The model-local `ContinuumMeasureProvenance` module now records only the remaining disorder-stage
-bridge equality, while crossed real-space Fourier blocks retain their momentum measure upstream.
+The massive-Dirac Born disorder stage attaches a scalar disorder line to the bare physical-momentum
+measure. Crossed real-space Fourier blocks retain their momentum measure upstream.
 
 ## SCBA and ladder boundary
 
