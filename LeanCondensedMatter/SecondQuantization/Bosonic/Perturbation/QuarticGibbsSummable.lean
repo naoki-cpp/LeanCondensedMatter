@@ -31,7 +31,7 @@ theorem quarticVertexOperator_mem_freeGibbsDomain
     quarticVertexOperator q ∈ freeGibbsDomain ε β := by
   change freeGibbsSummable ε β (quarticVertexOperator q)
   simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
-    FreeThermalField.operator, LinearMap.comp_id, LinearMap.comp_assoc,
+    FreeThermalField.operator, LinearMap.comp_id,
     quarticVertexOperator, Common.quarticVertexOperator] using
     (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
       [.create q.create₁, .create q.create₂, .annihilate q.annihilate₂, .annihilate q.annihilate₁])
