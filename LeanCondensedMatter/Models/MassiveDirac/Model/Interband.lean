@@ -32,6 +32,23 @@ theorem interbandEnergyGap_eq (band : Band) (v m px py : ℝ) :
   rw [interbandEnergyGap_eq, interbandEnergyGap_eq, bandSign_oppositeBand]
   ring
 
+/-- The absolute interband gap is bounded below by `2|m|`, uniformly in momentum. -/
+theorem two_mul_abs_mass_le_abs_interbandEnergyGap
+    (band : Band) (v m px py : ℝ) :
+    2 * |m| ≤ |interbandEnergyGap band v m px py| := by
+  rw [interbandEnergyGap_eq]
+  have hE := energy_nonneg v m px py
+  have hmE := abs_mass_le_energy v m px py
+  cases band <;> simp [bandSign, abs_of_nonneg hE] <;> linarith
+
+/-- A pole window narrower than the mass gap is valid simultaneously at every momentum. -/
+theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
+    (band : Band) (v m px py radius : ℝ)
+    (hradius : radius < 2 * |m|) :
+    radius < |interbandEnergyGap band v m px py| := by
+  exact lt_of_lt_of_le hradius
+    (two_mul_abs_mass_le_abs_interbandEnergyGap band v m px py)
+
 /-- Away from the Dirac degeneracy, the interband energy gap is nonzero. -/
 theorem interbandEnergyGap_ne_zero_of_energy_ne_zero
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :

@@ -170,6 +170,37 @@ theorem energy_sq (v m px py : ℝ) :
     energy v m px py ^ 2 = energySq v m px py := by
   exact Real.sq_sqrt (energySq_nonneg v m px py)
 
+/-- The positive Dirac energy is nonnegative for every momentum. -/
+theorem energy_nonneg (v m px py : ℝ) :
+    0 ≤ energy v m px py := by
+  exact Real.sqrt_nonneg _
+
+/-- The massive-Dirac energy is bounded below by the mass magnitude uniformly in momentum. -/
+theorem abs_mass_le_energy (v m px py : ℝ) :
+    |m| ≤ energy v m px py := by
+  have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
+    positivity
+  have hsq : |m| ^ 2 ≤ energy v m px py ^ 2 := by
+    rw [energy_sq]
+    unfold energySq
+    rw [sq_abs]
+    linarith
+  have hm : 0 ≤ |m| := abs_nonneg m
+  have hE := energy_nonneg v m px py
+  nlinarith
+
+/-- Any nonzero Dirac mass keeps the model uniformly away from the Dirac degeneracy. -/
+theorem energy_pos_of_mass_ne_zero (v m px py : ℝ) (hm : m ≠ 0) :
+    0 < energy v m px py := by
+  have hmSq : 0 < m ^ 2 := sq_pos_of_ne_zero hm
+  have hsq : 0 < energy v m px py ^ 2 := by
+    rw [energy_sq]
+    unfold energySq
+    have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by positivity
+    linarith
+  have hE := energy_nonneg v m px py
+  nlinarith
+
 /-- The massive-Dirac Hamiltonian squares to `E² I`. -/
 theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =

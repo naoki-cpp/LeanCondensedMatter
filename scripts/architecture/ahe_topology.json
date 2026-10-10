@@ -179,7 +179,6 @@
         {
           "id": "bastinRadial",
           "modulePrefixes": [
-            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination",
             "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
             "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
             "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
