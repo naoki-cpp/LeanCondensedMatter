@@ -204,6 +204,12 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+      "sourceFile": "LeanCondensedMatter/Analysis/Inequalities/Gibbs.lean",
+      "imports": [],
+      "externalImportCount": 5
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov",
       "sourceFile": "LeanCondensedMatter/Analysis/Inequalities/PeierlsBogoliubov.lean",
       "imports": [
@@ -3573,6 +3579,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/FreeEnergy.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
         "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov",
         "LeanCondensedMatter.Analysis.InfiniteSum.Order",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
@@ -3638,6 +3645,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointUniqueness.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
         "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational"
       ],
       "externalImportCount": 0
@@ -3646,7 +3654,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointVariational.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
         "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"
       ],
       "externalImportCount": 0
@@ -3664,6 +3672,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Uniqueness.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
         "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Equality"
       ],

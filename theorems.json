@@ -5123,7 +5123,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
@@ -5133,9 +5134,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5588,7 +5590,8 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5597,9 +5600,10 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5636,7 +5640,8 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5645,9 +5650,10 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69445,7 +69451,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -69457,7 +69463,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
     ],
     "dependencies": [
@@ -69467,10 +69472,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69554,7 +69558,6 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral.0.QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral"
     ],
@@ -69567,11 +69570,10 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral.0.QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72720,48 +72722,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    0 < radius →\n      radius < |QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m px py| →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m px py radius\n              broadening)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (-2 * Complex.I *\n              Real.pi •\n                QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py\n                  (0, 0)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
-    "externalAxioms": [],
-    "docString": "On a fixed positive target-centered window narrower than the interband gap, the integrated\nopposite-source Bastin pair converges to `-2 i π` times the regular factor at the target pole. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
-      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87638,7 +87598,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -87650,7 +87610,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
       "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
     ],
     "dependencies": [
@@ -87659,10 +87618,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
       "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90017,14 +89975,14 @@
       "QuantumTheory.gibbsOp_spectralTraceClass",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
-      "QuantumTheory.summable_gibbsComparison_and_tsum_eq",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum",
+      "Real.negMulLog_le_of_neg_log_le",
+      "Real.neg_log_le_of_exp_le",
+      "Real.summable_gibbsComparison_and_tsum_eq",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
+      "Real.tsum_div_le_one",
       "negMulLog_bound_eq_iff",
-      "negMulLog_le_of_neg_log_le",
-      "neg_log_le_of_exp_le",
-      "pointwise_eq_of_tsum_eq_of_le",
-      "tsum_div_le_one"
+      "pointwise_eq_of_tsum_eq_of_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90137,9 +90095,9 @@
       "QuantumTheory.gibbsOp_spectralTraceClass",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum",
-      "neg_log_le_of_exp_le"
+      "Real.neg_log_le_of_exp_le",
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91323,7 +91281,7 @@
       "QuantumTheory.purePointBoltzmannWeight_pos",
       "QuantumTheory.purePointBoltzmannWeight_summable",
       "QuantumTheory.purePointPartitionFunction_pos",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs"
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91979,105 +91937,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_2} (p q energy : ι → ℝ) (β Z : ℝ),\n  HasSum p 1 →\n    (Summable fun i => p i * energy i) →\n      Summable q →\n        (Summable fun i => β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) ∧\n          ∑' (i : ι), (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) =\n            β * ∑' (i : ι), p i * energy i + Real.log Z - 1 + ∑' (i : ι), q i / Z",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.summable_gibbsComparison_and_tsum_eq",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "The Gibbs comparison series is summable whenever the normalized probability family,\nenergy term, and comparison weights are summable. Its total separates into energy, normalization,\nand comparison-weight contributions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_2} (p q energy : ι → ℝ) (β Z : ℝ),\n  (∀ (i : ι), 0 ≤ p i) →\n    HasSum p 1 →\n      (Summable fun i => p i * energy i) →\n        Summable q →\n          ∑' (i : ι), q i ≤ Z →\n            (∀ (i : ι), 0 < q i) →\n              0 < Z →\n                (∀ (i : ι), -Real.log (q i) ≤ β * energy i) →\n                  (Summable fun i => (p i).negMulLog) ∧\n                    ∑' (i : ι), (p i).negMulLog ≤ β * ∑' (i : ι), p i * energy i + Real.log Z",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "Countable Gibbs entropy bound for a normalized nonnegative family. The comparison weights need\nonly have total mass at most `Z`; the logarithmic estimate supplies the energy term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
-      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
-    ],
-    "dependencies": [
-      "QuantumTheory.summable_gibbsComparison_and_tsum_eq",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy.0.QuantumTheory.summable_and_tsum_le_of_nonneg_of_le",
-      "negMulLog_le_of_neg_log_le",
-      "tsum_div_le_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
-      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable E β →\n    QuantumTheory.PurePointGibbsEnergyIntegrable E β →\n      Summable fun i => ‖(QuantumTheory.purePointGibbsProbability E β i).negMulLog‖",
     "standardAxioms": [
@@ -92391,6 +92250,329 @@
     "compiledConsumers": [
       "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_eq",
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (x y : ℝ), 0 ≤ x → 0 < y → x.negMulLog + x - y ≤ -x * Real.log y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.gibbs_scalar_ineq",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "Gibbs' scalar inequality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Real.negMulLog_le_of_neg_log_le",
+      "negMulLog_bound_eq_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Real.negMulLog_le_of_neg_log_le",
+      "negMulLog_bound_eq_iff"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (x y : ℝ), 0 ≤ x → 0 < y → (x.negMulLog + x - y = -x * Real.log y ↔ x = y)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.gibbs_scalar_ineq_eq_iff",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "Equality in Gibbs' scalar inequality holds exactly on the diagonal `x = y`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff",
+      "negMulLog_bound_eq_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff",
+      "negMulLog_bound_eq_iff"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {p q Z u : ℝ}, 0 ≤ p → 0 < q → 0 < Z → -Real.log q ≤ u → p.negMulLog ≤ p * u + p * Real.log Z - p + q / Z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.negMulLog_le_of_neg_log_le",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "Combine `gibbs_scalar_ineq` with a bound on `-log q`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
+    ],
+    "dependencies": [
+      "Real.gibbs_scalar_ineq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {u q : ℝ}, Real.exp (-u) ≤ q → -Real.log q ≤ u",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.neg_log_le_of_exp_le",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "From `exp(-u) ≤ q`, obtain `-log q ≤ u`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} (p q energy : ι → ℝ) (β Z : ℝ),\n  HasSum p 1 →\n    (Summable fun i => p i * energy i) →\n      Summable q →\n        (Summable fun i => β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) ∧\n          ∑' (i : ι), (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) =\n            β * ∑' (i : ι), p i * energy i + Real.log Z - 1 + ∑' (i : ι), q i / Z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.summable_gibbsComparison_and_tsum_eq",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "The Gibbs comparison series is summable whenever the normalized probability family,\nenergy term, and comparison weights are summable. Its total separates into energy, normalization,\nand comparison-weight contributions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} (p q energy : ι → ℝ) (β Z : ℝ),\n  (∀ (i : ι), 0 ≤ p i) →\n    HasSum p 1 →\n      (Summable fun i => p i * energy i) →\n        Summable q →\n          ∑' (i : ι), q i ≤ Z →\n            (∀ (i : ι), 0 < q i) →\n              0 < Z →\n                (∀ (i : ι), -Real.log (q i) ≤ β * energy i) →\n                  (Summable fun i => (p i).negMulLog) ∧\n                    ∑' (i : ι), (p i).negMulLog ≤ β * ∑' (i : ι), p i * energy i + Real.log Z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.summable_negMulLog_and_tsum_le_gibbs",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "Countable Gibbs entropy bound for a normalized nonnegative family. The comparison weights need\nonly have total mass at most `Z`; the logarithmic estimate supplies the energy term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
+    ],
+    "dependencies": [
+      "Real.negMulLog_le_of_neg_log_le",
+      "Real.summable_gibbsComparison_and_tsum_eq",
+      "Real.tsum_div_le_one",
+      "_private.LeanCondensedMatter.Analysis.Inequalities.Gibbs.0.Real.summable_and_tsum_le_of_nonneg_of_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {q : ι → ℝ} {Z : ℝ}, ∑' (i : ι), q i ≤ Z → 0 < Z → ∑' (i : ι), q i / Z ≤ 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Real.tsum_div_le_one",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -109036,15 +109218,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair),\n  have f :=\n    (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ).trans\n      (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' υ).symm;\n  ↑((d.mixedPairTimeEquiv τ τ' σ υ) pr) = (f (↑pr).1, f (↑pr).2) ∨\n    ↑((d.mixedPairTimeEquiv τ τ' σ υ) pr) = (f (↑pr).2, f (↑pr).1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -109055,19 +109237,15 @@
     "docString": "Ambient pair transport preserves the pair endpoints up to normalized orientation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedTimePositionEquiv_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148056,6 +148234,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {f g : ι → ℝ},\n  (∀ (i : ι), 0 ≤ f i) → (∀ (i : ι), f i ≤ g i) → Summable g → Summable f ∧ ∑' (i : ι), f i ≤ ∑' (i : ι), g i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Inequalities.Gibbs.0.Real.summable_and_tsum_le_of_nonneg_of_le",
+    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+    "externalAxioms": [],
+    "docString": "Comparison test packaged with `tsum` monotonicity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (b : OrthonormalBasis ι ℂ H) (E : ι → ℝ),\n  (∀ (i : ι), ↑T (b i) = ↑(E i) • b i) → ∀ (x : H), T.diagonalExpectationValue hT x = ∑ i, E i * ‖(b.repr x).ofLp i‖ ^ 2",
     "standardAxioms": [
       "Classical.choice",
@@ -168831,48 +169051,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_2} {f g : ι → ℝ},\n  (∀ (i : ι), 0 ≤ f i) → (∀ (i : ι), f i ≤ g i) → Summable g → Summable f ∧ ∑' (i : ι), f i ≤ ∑' (i : ι), g i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy.0.QuantumTheory.summable_and_tsum_le_of_nonneg_of_le",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "Comparison test packaged with `tsum` monotonicity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable E β →\n    ∀ (i : ι),\n      Real.log (QuantumTheory.purePointGibbsProbability E β i) =\n        -β * E i - Real.log (QuantumTheory.purePointPartitionFunction E β)",
     "standardAxioms": [
       "Classical.choice",
@@ -169034,10 +169212,10 @@
       "QuantumTheory.purePointBoltzmannWeight_pos",
       "QuantumTheory.purePointBoltzmannWeight_summable",
       "QuantumTheory.purePointPartitionFunction_pos",
-      "QuantumTheory.summable_gibbsComparison_and_tsum_eq",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
-      "gibbs_scalar_ineq_eq_iff",
-      "negMulLog_le_of_neg_log_le",
+      "Real.gibbs_scalar_ineq_eq_iff",
+      "Real.negMulLog_le_of_neg_log_le",
+      "Real.summable_gibbsComparison_and_tsum_eq",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
       "pointwise_eq_of_tsum_eq_of_le"
     ],
     "crossModuleDirectWrapper": false,
@@ -175467,7 +175645,9 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.Pairing.pairEndpoint_one",
+      "Combinatorics.Pairing.pairEndpoint_zero",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons"
     ],
     "crossModuleDirectWrapper": false,
@@ -185636,94 +185816,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (x y : ℝ), 0 ≤ x → 0 < y → x.negMulLog + x - y ≤ -x * Real.log y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "gibbs_scalar_ineq",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "Gibbs' scalar inequality. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "negMulLog_bound_eq_iff",
-      "negMulLog_le_of_neg_log_le"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "negMulLog_bound_eq_iff",
-      "negMulLog_le_of_neg_log_le"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (x y : ℝ), 0 ≤ x → 0 < y → (x.negMulLog + x - y = -x * Real.log y ↔ x = y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "gibbs_scalar_ineq_eq_iff",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "Equality in Gibbs' scalar inequality holds exactly on the diagonal `x = y`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff",
-      "negMulLog_bound_eq_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff",
-      "negMulLog_bound_eq_iff"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {f : ℂ → ℂ} {f' A : ℂ},\n  HasDerivAt f f' A → ∀ (v : V), HasAlgebraicDerivAt (fun z => f z • v) (f' • v) A",
     "standardAxioms": [
       "Classical.choice",
@@ -187096,8 +187188,8 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_components"
     ],
     "dependencies": [
-      "gibbs_scalar_ineq",
-      "gibbs_scalar_ineq_eq_iff"
+      "Real.gibbs_scalar_ineq",
+      "Real.gibbs_scalar_ineq_eq_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -187105,98 +187197,6 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_components"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {p q Z u : ℝ}, 0 ≤ p → 0 < q → 0 < Z → -Real.log q ≤ u → p.negMulLog ≤ p * u + p * Real.log Z - p + q / Z",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "negMulLog_le_of_neg_log_le",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "Combine `gibbs_scalar_ineq` with a bound on `-log q`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
-    ],
-    "dependencies": [
-      "gibbs_scalar_ineq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_le_and_eq_iff"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {u q : ℝ}, Real.exp (-u) ≤ q → -Real.log q ≤ u",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "neg_log_le_of_exp_le",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "From `exp(-u) ≤ q`, obtain `-log q ≤ u`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187327,50 +187327,6 @@
       "IncidenceAlgebra.mu_pi_finset_apply"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} {q : ι → ℝ} {Z : ℝ}, ∑' (i : ι), q i ≤ Z → 0 < Z → ∑' (i : ι), q i / Z ≤ 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "tsum_div_le_one",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
