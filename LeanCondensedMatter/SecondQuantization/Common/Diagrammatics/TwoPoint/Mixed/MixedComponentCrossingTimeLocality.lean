@@ -22,175 +22,46 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
 
-/-- Canonical comparison of mixed positions of one full component across interaction-time
-assignments, used only to prove chamber locality. -/
-private noncomputable def TwoPointDiagram.mixedComponentPositionTimeEquiv {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
-    d.MixedComponentPosition τ τ' σ B ≃ d.MixedComponentPosition τ τ' υ B :=
-  (d.mixedComponentPositionEquiv τ τ' σ B).trans
-    (d.mixedComponentPositionEquiv τ τ' υ B).symm
-
-/-- Time transport preserves the atomic leg represented by a mixed component position. -/
-private theorem TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (p : d.MixedComponentPosition τ τ' σ B) :
-    mixedTimeOrderedAtomicLegEquiv τ τ' υ
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
-      mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 := by
-  rw [← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
-  apply congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-  have h := congrArg Subtype.val
-    (show d.mixedComponentPositionEquiv τ τ' υ B
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
-        d.mixedComponentPositionEquiv τ τ' σ B p by
-      simp [TwoPointDiagram.mixedComponentPositionTimeEquiv])
-  change mixedTimeAmbientPositionEquiv τ τ' υ
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
-    mixedTimeAmbientPositionEquiv τ τ' σ p.1 at h
-  exact h
-
-/-- Component position transport preserves strict order inside one mixed-order chamber. -/
-private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber {n : ℕ}
+/-- In one mixed-order chamber, time transport leaves the ambient normalized pair unchanged. -/
+private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
-    (p q : d.MixedComponentPosition τ τ' σ B) :
-    p.1 < q.1 ↔
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
-  have hOrder :
-      (mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) <
-        mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)) ↔
-      (mixedTimeOrderedAtomicLegPosition τ τ' υ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) <
-        mixedTimeOrderedAtomicLegPosition τ τ' υ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)) :=
-    mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff τ τ' σ υ _ _
-      (orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
-        hChamber
-        (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1))
-        (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)))
-  have hSource (r : d.MixedComponentPosition τ τ' σ B) :
-      mixedTimeOrderedAtomicLegPosition τ τ' σ
-        (mixedTimeOrderedAtomicLegEquiv τ τ' σ r.1) = r.1 :=
-    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hTarget (r : d.MixedComponentPosition τ τ' σ B) :
-      mixedTimeOrderedAtomicLegPosition τ τ' υ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ r.1) =
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B r).1 := by
-    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B r]
-    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  rw [hSource p, hSource q, hTarget p, hTarget q] at hOrder
-  exact hOrder
-
-/-- Order-preserving component transport cannot reverse normalized pair endpoints. -/
-private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
-      p.1 < q.1 ↔
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1)
     (pr : d.MixedComponentPair τ τ' σ B) :
-    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-    d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
-      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := by
-  classical
-  let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 = pr.1.1 := by
+  have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
+  have hstd : standardToMixedAtomicPositionEquiv τ τ' σ =
+      standardToMixedAtomicPositionEquiv τ τ' υ := by
+    unfold standardToMixedAtomicPositionEquiv
+    rw [hlegs]
+  have hambient : mixedTimeAmbientPositionEquiv τ τ' σ =
+      mixedTimeAmbientPositionEquiv τ τ' υ := by
+    unfold mixedTimeAmbientPositionEquiv
+    rw [hstd]
   let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
     (mixedTimeAmbientPositionEquiv τ τ' υ).symm
-  have hpos (p : d.MixedComponentPosition τ τ' σ B) :
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 = f p.1 := by
-    apply (mixedTimeAmbientPositionEquiv τ τ' υ).injective
-    have h := congrArg Subtype.val
-      (show d.mixedComponentPositionEquiv τ τ' υ B
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
-        d.mixedComponentPositionEquiv τ τ' σ B p by
-        simp [TwoPointDiagram.mixedComponentPositionTimeEquiv])
-    change mixedTimeAmbientPositionEquiv τ τ' υ
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
-      mixedTimeAmbientPositionEquiv τ τ' σ p.1 at h
-    simpa only [f, Equiv.trans_apply, Equiv.apply_symm_apply] using h
-  have hSource : pr.1.1.1 < pr.1.1.2 :=
-    ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).mp pr.1.2 |>.1
-  have hSorted : f pr.1.1.1 < f pr.1.1.2 := by
-    have hTransport :=
-      (hOrder (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))
-        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))).1
-        (by simpa only [d.mixedComponentPairEndpointEquiv_apply_val,
-          Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one] using hSource)
-    simpa only [hpos, d.mixedComponentPairEndpointEquiv_apply_val,
-      Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one] using hTransport
+  have hf (p : Fin (2 * (2 * n + 1))) : f p = p := by
+    simp only [f, hambient, Equiv.trans_apply, Equiv.symm_apply_apply]
   have hPair := d.mixedPairTimeEquiv_pair_eq_or_swap τ τ' σ υ pr.1
-  change q.1.1 = (f pr.1.1.1, f pr.1.1.2) ∨
-      q.1.1 = (f pr.1.1.2, f pr.1.1.1) at hPair
-  have hExact : q.1.1 = (f pr.1.1.1, f pr.1.1.2) := by
-    rcases hPair with h | h
-    · exact h
-    · have hTarget : q.1.1.1 < q.1.1.2 :=
-        ((d.pairingInMixedOrder τ τ' υ).mem_pairs_iff q.1.1.1 q.1.1.2).mp q.1.2 |>.1
-      rw [congrArg Prod.fst h, congrArg Prod.snd h] at hTarget
-      exact (lt_asymm hTarget hSorted).elim
-  constructor
-  · apply Subtype.ext
-    change q.1.1.1 = _
-    rw [hpos]
-    simpa only [d.mixedComponentPairEndpointEquiv_apply_val,
-      Pairing.pairEndpoint_zero] using congrArg Prod.fst hExact
-  · apply Subtype.ext
-    change q.1.1.2 = _
-    rw [hpos]
-    simpa only [d.mixedComponentPairEndpointEquiv_apply_val,
-      Pairing.pairEndpoint_one] using congrArg Prod.snd hExact
-
-private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
-      p.1 < q.1 ↔
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1)
-    (p q : d.MixedComponentPair τ τ' σ B) :
-    Crosses p.1.1 q.1.1 ↔
-      Crosses
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B p).1.1
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B q).1.1 := by
-  classical
-  let tp := d.mixedComponentPairTimeEquiv τ τ' σ υ B p
-  let tq := d.mixedComponentPairTimeEquiv τ τ' σ υ B q
-  let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 0)
-  let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 1)
-  let q0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (q, 0)
-  let q1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (q, 1)
-  have endpointVals (r : d.MixedComponentPair τ τ' σ B) :
-      (d.mixedComponentPairTimeEquiv τ τ' σ υ B r).1.1.1 =
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (r, 0))).1 ∧
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B r).1.1.2 =
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (r, 1))).1 := by
-    have hEnds :=
-      d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B hOrder r
-    constructor
-    · simpa using congrArg Subtype.val hEnds.1
-    · simpa using congrArg Subtype.val hEnds.2
-  obtain ⟨hp0Val, hp1Val⟩ := endpointVals p
-  obtain ⟨hq0Val, hq1Val⟩ := endpointVals q
-  have hCross := and_congr (hOrder p0 q0)
-    (and_congr (hOrder q0 p1) (hOrder p1 q1))
-  rw [← hp0Val, ← hq0Val, ← hp1Val, ← hq1Val] at hCross
-  simpa [Crosses, p0, p1, q0, q1] using hCross
+  change (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 =
+      (f pr.1.1.1, f pr.1.1.2) ∨
+    (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 =
+      (f pr.1.1.2, f pr.1.1.1) at hPair
+  simp only [hf] at hPair
+  rcases hPair with h | h
+  · exact h
+  · have hSource : pr.1.1.1 < pr.1.1.2 :=
+      ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).mp pr.1.2 |>.1
+    have hTarget :
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.1 <
+          (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.2 :=
+      ((d.pairingInMixedOrder τ τ' υ).mem_pairs_iff
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.1
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.2).mp
+          (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.2 |>.1
+    rw [congrArg Prod.fst h, congrArg Prod.snd h] at hTarget
+    exact (lt_asymm hTarget hSource).elim
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
@@ -205,30 +76,14 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
         mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.1 ∧
       mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.2 =
         mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.2 := by
-  classical
-  let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-  have hEnds := d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
-    τ τ' σ υ B
-    (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-      τ τ' σ υ B hChamber) pr
-  have hLeg (k : Fin 2) :
-      mixedTimeOrderedAtomicLegEquiv τ τ' υ
-          (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, k)).1 =
-        mixedTimeOrderedAtomicLegEquiv τ τ' σ
-          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)).1 := by
-    have hEndpoint :
-        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, k) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)) := by
-      fin_cases k
-      · simpa [q] using hEnds.1
-      · simpa [q] using hEnds.2
-    rw [hEndpoint]
-    exact d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B
-      (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k))
+  have hPair := d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
+    τ τ' σ υ B hChamber pr
+  have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
   constructor
-  · simpa using hLeg 0
-  · simpa using hLeg 1
+  · simpa only [hlegs] using
+      congrArg (fun p => mixedTimeOrderedAtomicLegEquiv τ τ' υ p.1) hPair
+  · simpa only [hlegs] using
+      congrArg (fun p => mixedTimeOrderedAtomicLegEquiv τ τ' υ p.2) hPair
 
 /-- Component exchange-statistics weight is constant on one chamber. -/
 theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
@@ -247,10 +102,10 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
     (fun p : d.MixedComponentPair τ τ' υ B => p.1.1)
     (d.mixedComponentPairTimeEquiv τ τ' σ υ B)
-    (fun p q =>
-      d.mixedComponentCrosses_iff_of_positionOrder τ τ' σ υ B
-        (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-          τ τ' σ υ B hChamber) p q)
-
+    (fun p q => by
+      rw [d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
+          τ τ' σ υ B hChamber p,
+        d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
+          τ τ' σ υ B hChamber q])
 end Common
 end SecondQuantization

@@ -399,5 +399,35 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
       orderedTwoPointLegEvent_orderedTwoPointLegMap,
       orderedTwoPointTimedEventPosition_map_lt_iff hf]
 
+/-- The mixed-time atomic-leg enumeration is identical whenever every strict comparison of
+the underlying event times agrees. Equal-time events retain the same stable rank. -/
+theorem mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
+    {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (h : ∀ a b : TwoPointTimedEvent n,
+      twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b ↔
+        twoPointTimedEventTime τ τ' υ a < twoPointTimedEventTime τ τ' υ b) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' σ =
+      mixedTimeOrderedAtomicLegEquiv τ τ' υ := by
+  have hrel : twoPointTimedEventBeforeOrEqual τ τ' σ =
+      twoPointTimedEventBeforeOrEqual τ τ' υ := by
+    funext a b
+    apply propext
+    exact stableTimedEventBeforeOrEqual_congr
+      (twoPointTimedEventTime τ τ' σ)
+      (twoPointTimedEventTime τ τ' υ) twoPointTimedEventRank h a b
+  have hordered : orderedTwoPointTimedEvents τ τ' σ =
+      orderedTwoPointTimedEvents τ τ' υ := by
+    unfold orderedTwoPointTimedEvents
+    rw [hrel]
+  have hlegs : mixedTimeOrderedAtomicLegs τ τ' σ =
+      mixedTimeOrderedAtomicLegs τ τ' υ :=
+    congrArg (List.flatMap (twoPointTimedEventAtomicLegs (n := n))) hordered
+  apply Equiv.ext
+  intro i
+  unfold mixedTimeOrderedAtomicLegEquiv
+  simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
+    List.get_eq_getElem, hlegs]
+  rfl
+
 end Common
 end SecondQuantization
