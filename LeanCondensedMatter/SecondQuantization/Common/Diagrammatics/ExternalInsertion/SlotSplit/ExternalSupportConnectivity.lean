@@ -19,27 +19,11 @@ open Combinatorics
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
   {S T : Finset (Fin N)}
 
-/-- Embed external-bearing vertices into the ambient vertex type of a slot split. -/
-private def supportSlotVertex (h : T ⊆ S) :
-    ExternalInsertionVertex E T → ExternalInsertionVertex E S
-  | Sum.inl e => Sum.inl e
-  | Sum.inr v => Sum.inr ⟨v.1, h v.2⟩
-
 /-- The external-bearing and vacuum vertex sectors partition the ambient vertices. -/
 private noncomputable def supportSlotVertexEquiv (h : T ⊆ S) :
     (ExternalInsertionVertex E T ⊕ ↥(S \ T)) ≃ ExternalInsertionVertex E S :=
   (Equiv.sumAssoc (Fin (2 * E)) ↥T ↥(S \ T)).trans
     (Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (subsetSumSdiffEquiv h))
-
-private theorem supportSlotVertexEquiv_inl (h : T ⊆ S) (x : ExternalInsertionVertex E T) :
-    supportSlotVertexEquiv h (Sum.inl x) = supportSlotVertex h x := by
-  cases x with
-  | inl e => rfl
-  | inr v =>
-      change (Sum.inr (subsetSumSdiffEquiv h (Sum.inl v)) : ExternalInsertionVertex E S) =
-        supportSlotVertex h (Sum.inr v)
-      rw [subsetSumSdiffEquiv_inl_apply]
-      rfl
 
 private theorem supportSlotVertexEquiv_inr (h : T ⊆ S) (v : ↥(S \ T)) :
     supportSlotVertexEquiv (E := E) h (Sum.inr v) =
@@ -52,16 +36,16 @@ private theorem supportSlotVertex_of_left_leg (h : T ⊆ S)
     (i : Fin (2 * (2 * T.card + E))) :
     externalInsertionVertexOfLeg
         (externalInsertionSlotLegSplitting (E := E) h (Sum.inl i)) =
-      supportSlotVertex h (externalInsertionVertexOfLeg i) := by
+      supportSlotVertexEquiv h (Sum.inl (externalInsertionVertexOfLeg i)) := by
   obtain ⟨x, rfl⟩ := (externalInsertionLegEquiv E T).symm.surjective i
   cases x with
   | inl e =>
       rw [externalInsertionSlotLegSplitting_external]
-      simp [externalInsertionVertexOfLeg, supportSlotVertex]
+      simp [externalInsertionVertexOfLeg, supportSlotVertexEquiv]
   | inr p =>
       obtain ⟨v, l⟩ := p
       rw [externalInsertionSlotLegSplitting_left_interaction]
-      simp [externalInsertionVertexOfLeg, supportSlotVertex]
+      simp [externalInsertionVertexOfLeg, supportSlotVertexEquiv]
 
 /-- Right legs retain the corresponding quartic vertices under the splitting. -/
 private theorem supportSlotVertex_of_right_leg (h : T ⊆ S)
@@ -90,7 +74,7 @@ private noncomputable def supportSlotVertexGraphIso :
     (supportSlotVertexEquiv h) (externalInsertionVertexOfLeg (E := E) (S := S))
     (by
       intro i
-      rw [supportSlotVertex_of_left_leg, supportSlotVertexEquiv_inl])
+      exact supportSlotVertex_of_left_leg h i)
     (by
       intro i
       exact supportSlotVertex_of_right_leg h i)
@@ -98,9 +82,9 @@ private noncomputable def supportSlotVertexGraphIso :
 /-- Reachability in the external-bearing piece is reflected by the disjoint graph sum. -/
 private theorem supportSlotVertex_reachable_iff (x y : ExternalInsertionVertex E T) :
     (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-        (supportSlotVertex h x) (supportSlotVertex h y) ↔
+        (supportSlotVertexEquiv h (Sum.inl x))
+        (supportSlotVertexEquiv h (Sum.inl y)) ↔
       ext.vertexGraph.Reachable x y := by
-  rw [← supportSlotVertexEquiv_inl h x, ← supportSlotVertexEquiv_inl h y]
   change (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
       ((supportSlotVertexGraphIso h ext vac) (Sum.inl x))
       ((supportSlotVertexGraphIso h ext vac) (Sum.inl y)) ↔ _
@@ -125,16 +109,10 @@ theorem ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram
   obtain ⟨e, he⟩ := (d.mem_externallySupportedInteractionPart vS).1 v.2
   have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr vS) :=
     (d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).1 he
-  have hD : ExternalInsertionDiagram.ofSlotSplit h ext vac = d :=
-    d.externalSupport_reconstruction
-  have hreach' :
-      (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-        (supportSlotVertex h (Sum.inl e))
-        (supportSlotVertex h (Sum.inr v)) := by
-    rw [hD]
-    simpa [supportSlotVertex] using hreach
-  exact ⟨e, (supportSlotVertex_reachable_iff h ext vac (Sum.inl e) (Sum.inr v)).1
-    hreach'⟩
+  refine ⟨e, ?_⟩
+  apply (supportSlotVertex_reachable_iff h ext vac (Sum.inl e) (Sum.inr v)).1
+  rw [d.externalSupport_reconstruction]
+  simpa [supportSlotVertexEquiv] using hreach
 
 
 /-- Reassembling a vacuum-free external-bearing diagram with an arbitrary quartic complement
@@ -165,14 +143,13 @@ theorem ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit
     change d.vertexGraph.Reachable
       (supportSlotVertexEquiv h (Sum.inl (Sum.inl e)))
       (supportSlotVertexEquiv h (Sum.inr w))
-    simpa [supportSlotVertexEquiv_inl, supportSlotVertexEquiv_inr,
-      supportSlotVertex, vS, w] using hr
+    simpa [supportSlotVertexEquiv, vS, w] using hr
   · intro v hv
     let vT : ↥T := ⟨v, hv⟩
     let vS : ↥S := ⟨v, h hv⟩
     obtain ⟨e, he⟩ := hext vT
     have hr : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr vS) := by
-      simpa [d, supportSlotVertex] using
+      simpa [d, supportSlotVertexEquiv] using
         (supportSlotVertex_reachable_iff h ext vac (Sum.inl e) (Sum.inr vT)).2 he
     apply (d.mem_externallySupportedInteractionPart vS).2
     exact ⟨e, (d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).2 hr⟩
