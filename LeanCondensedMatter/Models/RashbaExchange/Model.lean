@@ -55,6 +55,10 @@ structure Parameters extends HamiltonianParameters where
   /-- Explicit normalization multiplying the two-dimensional momentum integral. -/
   momentumMeasureNormalization : ℝ
 
+/-- Forget the response/normalization conditions, retaining the clean Hamiltonian data. -/
+instance : Coe Parameters HamiltonianParameters where
+  coe params := params.toHamiltonianParameters
+
 /-- Regular finite-parameter regime used by analytic statements about the benchmark. -/
 structure Parameters.IsRegular (params : Parameters) : Prop where
   effectiveMass_pos : 0 < params.effectiveMass
