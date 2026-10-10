@@ -653,11 +653,15 @@ private def declarationGraph (audit : Array CatalogEntry) : CommandElabM Json :=
       if result.contains dep then result else result.push dep
     for dependency in dependencies do
       consumers := addConsumer consumers dependency name.toString
-    let statement ← liftTermElabM do return (← ppExpr info.type).pretty
+    let baseFields := (auditByName.find? name).getD (.mkObj [])
+    -- Audit rows already contain the pretty-printed theorem type. Reuse it rather than
+    -- delaborating every theorem a second time for the declaration graph.
+    let statement ← match (baseFields.getObjValAs? String "statement").toOption with
+      | some statement => pure statement
+      | none => liftTermElabM do return (← ppExpr info.type).pretty
     let docString ← liftIO <| findDocString? env name
     let sourceFile := moduleName.toString.replace "." "/" ++ ".lean"
     let sourceLine := ranges.map fun r => r.selectionRange.pos.line
-    let baseFields := (auditByName.find? name).getD (.mkObj [])
     let fields : List (String × Json) := [
       ("name", .str name.toString), ("module", .str moduleName.toString),
       ("kind", .str kind), ("generated", .bool ranges.isNone),
