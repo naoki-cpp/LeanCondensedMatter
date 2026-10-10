@@ -8,7 +8,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall
 import LeanCondensedMatter.Models.MassiveDirac.Scaling.Longitudinal
 import LeanCondensedMatter.Models.MassiveDirac.Scaling.Pair
-import LeanCondensedMatter.Models.MassiveDirac.ContinuumMeasureProvenance
 
 set_option linter.style.header false
 
@@ -18,6 +17,6 @@ set_option linter.style.header false
 Public entry point for the two-dimensional massive-Dirac transport benchmark. It exposes the clean
 model, propagator and its momentum-inversion symmetry, intrinsic Hall benchmark, Středa and Bastin
 representations, disorder specialization, physically normalized longitudinal/Hall conductivity
-results, and the model-local provenance bridges relating continuum measure, angular reduction,
-disorder-line, and conductivity prefactors.
+results. The model-specific Born disorder stage attaches its scalar disorder line to the
+shared physical-momentum continuum measure; generic trace/current normalization stays upstream.
 -/

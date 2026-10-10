@@ -180,8 +180,7 @@ The massive-Dirac continuum normalization keeps each physical factor at the narr
 radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times
 one bare physical-momentum measure independently of where angular reduction is performed, while
 `Streda.ConductivityNormalization` owns the model-independent Bastin/Středa trace prefactor and its
-composition with continuum normalization. `MassiveDirac.ContinuumMeasureProvenance` retains only
-model-specific bridge equalities involving the disorder stage. Momentum-space non-crossing
+composition with continuum normalization. Momentum-space non-crossing
 responses consume the physical-momentum conductivity normalization only after their response
 integral is formed. Real-space crossed Fourier blocks already contain their physical momentum
 measures upstream, so a later crossed conductivity boundary must consume only the remaining
