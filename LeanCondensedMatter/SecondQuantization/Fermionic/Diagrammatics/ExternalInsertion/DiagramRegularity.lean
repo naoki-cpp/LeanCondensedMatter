@@ -100,6 +100,7 @@ private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
   have hpair : d.pairingInMixedOrder externalTime σ₀ =
       d.pairingInMixedOrder externalTime σ := by
     unfold ExternalInsertionDiagram.pairingInMixedOrder
+      externalInsertionMixedTimeAmbientPositionEquiv
     rw [hperm]
   have hsign : externalInsertionMixedAtomicOrderSign externalTime σ₀ =
       externalInsertionMixedAtomicOrderSign externalTime σ := by

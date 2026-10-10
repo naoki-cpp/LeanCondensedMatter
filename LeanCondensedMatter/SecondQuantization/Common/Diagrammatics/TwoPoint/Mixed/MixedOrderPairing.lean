@@ -16,37 +16,12 @@ namespace Common
 
 open Combinatorics
 
-/-- Cast the standard diagram pairing cardinality from `univ.card` to the explicit slot count. -/
-noncomputable def orderedTwoPointPairingCastEquiv (n : ℕ) :
-    Pairing (2 * (Finset.univ : Finset (Fin n)).card + 1) ≃ Pairing (2 * n + 1) :=
-  Equiv.cast (by simp)
-
 /-- A generic two-point diagram pairing transported into mixed-time atomic order. -/
 noncomputable def TwoPointDiagram.pairingInMixedOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (2 * n + 1) :=
-  (orderedTwoPointPairingCastEquiv n d.pairing).transport
-    (standardToMixedAtomicPositionEquiv τ τ' σ).symm
-
-private theorem orderedTwoPointPairingCastEquiv_partner {n : ℕ}
-    (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + 1))
-    (p : Fin (2 * (2 * n + 1))) :
-    (finCongr (by simp)) ((orderedTwoPointPairingCastEquiv n pairing).partner p) =
-      pairing.partner ((finCongr (by simp)) p) := by
-  let h : 2 * (Finset.univ : Finset (Fin n)).card + 1 = 2 * n + 1 := by
-    simp
-  have hcast : orderedTwoPointPairingCastEquiv n pairing =
-      Equiv.cast (congrArg Pairing h) pairing := by
-    unfold orderedTwoPointPairingCastEquiv
-    congr
-  have hfin : (finCongr (by simp) :
-      Fin (2 * (2 * n + 1)) ≃
-        Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) =
-      finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
-    congr
-  rw [hcast, hfin]
-  exact pairing.cast_partner h p
+  d.pairing.transport (mixedTimeAmbientPositionEquiv τ τ' σ)
 
 /-- Transporting a mixed-order partner back to the standard diagram enumeration recovers the
 original generic diagram partner. -/
@@ -57,18 +32,11 @@ theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner
     mixedTimeAmbientPositionEquiv τ τ' σ
         ((d.pairingInMixedOrder τ τ' σ).partner p) =
       d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by
-  change (finCongr (by simp))
-      ((standardToMixedAtomicPositionEquiv τ τ' σ).symm
-        (((orderedTwoPointPairingCastEquiv n d.pairing).transport
-          (standardToMixedAtomicPositionEquiv τ τ' σ).symm).partner p)) =
-    d.pairing.partner
-      ((finCongr (by simp))
-        ((standardToMixedAtomicPositionEquiv τ τ' σ).symm p))
+  change (mixedTimeAmbientPositionEquiv τ τ' σ)
+      ((d.pairing.transport (mixedTimeAmbientPositionEquiv τ τ' σ)).partner p) =
+    d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p)
   rw [PairingOn.transport_partner]
-  simp only [Equiv.symm_symm]
-  rw [(standardToMixedAtomicPositionEquiv τ τ' σ).symm_apply_apply]
-  exact orderedTwoPointPairingCastEquiv_partner d.pairing
-    ((standardToMixedAtomicPositionEquiv τ τ' σ).symm p)
+  exact (mixedTimeAmbientPositionEquiv τ τ' σ).apply_symm_apply _
 
 /-- The diagram pairing as a map on atomic leg identities; this map is independent of the mixed-time
 enumeration. -/
