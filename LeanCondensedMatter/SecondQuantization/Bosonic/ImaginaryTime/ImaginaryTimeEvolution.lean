@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
@@ -12,7 +12,7 @@ This module contains the bosonic imaginary-time layer:
 
 - the free-energy eigenvalue and diagonal free Hamiltonian;
 - algebraic free and Heisenberg imaginary-time evolution;
-- fixed energy shifts and evolved creation/annihilation operators;
+- fixed energy shifts, evolved creation/annihilation operators, and their two-field diagonal coefficients;
 - the algebraic interaction-picture operator.
 
 All constructions are algebraic. No operator exponential, Hilbert-space completion, positivity
@@ -149,6 +149,34 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
   simpa using
     Common.heisenbergEvolve_eq_smul_of_carriesShift
       (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
+
+/-- The occupation-diagonal coefficient of an evolved annihilator followed by a creator.
+This is an algebraic coordinate evaluation, not a thermal expectation or operator trace. -/
+theorem diagonalCoeff_evolve_annihilate_comp_create
+    (ε : Mode → ℝ) (τ : ℝ) (i j : Mode) (n : Occupation Mode) :
+    Common.diagonalCoeff ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) n =
+      if i = j then Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * ((n i : ℂ) + 1) else 0 := by
+  by_cases hij : i = j
+  · subst j
+    rw [ite_eq_left rfl]
+    change ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create i)) (basisState n) n = _
+    rw [LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
+      LinearMap.smul_apply, annihilate_create_basisState_same, smul_smul, basisState,
+      Common.smul_basisState_apply_self]
+  · rw [ite_eq_right hij]
+    change ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) (basisState n) n = 0
+    rw [LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
+      LinearMap.smul_apply, create_basisState_eq, map_smul, Finsupp.smul_apply, smul_eq_mul]
+    change Complex.exp (-(τ : ℂ) * (ε i : ℂ)) *
+      ((Real.sqrt (n j + 1 : ℝ) : ℂ) *
+        Common.matrixCoeff (annihilate i) n (createOccupation j n)) = 0
+    rw [matrixCoeff_annihilate]
+    have hne : n ≠ removeOccupation i (createOccupation j n) := by
+      intro h
+      have hj := congrArg (fun x : Occupation Mode => x j) h
+      rw [removeOccupation_apply_ne (Ne.symm hij), createOccupation_apply_same] at hj
+      omega
+    rw [ite_eq_right hne, mul_zero, mul_zero]
 
 /-- Move an annihilation operator through the free diagonal evolution. -/
 theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
