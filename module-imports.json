@@ -1613,14 +1613,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Crystal.KronigPenney",
-      "sourceFile": "LeanCondensedMatter/Crystal/KronigPenney.lean",
-      "imports": [
-        "LeanCondensedMatter.Crystal.Brillouin"
-      ],
-      "externalImportCount": 9
-    },
-    {
       "name": "LeanCondensedMatter.Crystal.Lattice",
       "sourceFile": "LeanCondensedMatter/Crystal/Lattice.lean",
       "imports": [],
@@ -1665,7 +1657,6 @@
         "LeanCondensedMatter.Crystal.AtomicConfiguration",
         "LeanCondensedMatter.Crystal.Brillouin",
         "LeanCondensedMatter.Crystal.Classification",
-        "LeanCondensedMatter.Crystal.KronigPenney",
         "LeanCondensedMatter.Crystal.Lattice",
         "LeanCondensedMatter.Crystal.Periodicity",
         "LeanCondensedMatter.Crystal.PointGroup",
@@ -1673,6 +1664,14 @@
         "LeanCondensedMatter.Crystal.Translation"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.KronigPenney",
+      "sourceFile": "LeanCondensedMatter/Models/KronigPenney.lean",
+      "imports": [
+        "LeanCondensedMatter.Crystal.Brillouin"
+      ],
+      "externalImportCount": 9
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands",
@@ -2879,6 +2878,7 @@
       "name": "LeanCondensedMatter.Models",
       "sourceFile": "LeanCondensedMatter/Models.lean",
       "imports": [
+        "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.Parabolic2DEG",
         "LeanCondensedMatter.Models.RashbaExchange"

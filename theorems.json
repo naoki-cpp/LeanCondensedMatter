@@ -4944,7 +4944,7 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -4961,7 +4961,7 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 12,
     "axioms": [
@@ -5603,11 +5603,8 @@
     "dependents": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5615,13 +5612,10 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5657,11 +5651,8 @@
     "dependents": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5669,13 +5660,10 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -27501,1512 +27489,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  Crystal.KronigPenney.inBlochDomain params self.blochCoordinate",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.bloch_mem",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  (fun k => Crystal.KronigPenney.discriminant params (self.branchEnergy k)) =ᶠ[nhds self.blochCoordinate] fun k =>\n    Real.cos (k * params.period)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.bloch_relation",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  ∀ᶠ (k : ℝ) in nhds self.blochCoordinate, DifferentiableAt ℝ self.branchEnergy k",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.branchDifferentiable",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (edge : Crystal.KronigPenney.BandEdgeData params),\n  edge.curvature = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) / edge.discriminantSlope",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_eq",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "Band-edge curvature obtained from the finite Bloch discriminant relation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.effectiveMass_eq"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.effectiveMass_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (edge : Crystal.KronigPenney.BandEdgeData params), edge.curvature ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_ne_zero",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "Nonzero phase curvature and nonzero discriminant slope force the band curvature to be\nnonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.phaseCurvatureDenominator_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  HasDerivAt (Crystal.KronigPenney.discriminant params) self.discriminantSlope self.energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantDerivative",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  DifferentiableAt ℝ (fun e => deriv (Crystal.KronigPenney.discriminant params) e) self.energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantDerivativeDifferentiable",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  ∀ᶠ (k : ℝ) in nhds self.blochCoordinate,\n    DifferentiableAt ℝ (Crystal.KronigPenney.discriminant params) (self.branchEnergy k)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantDifferentiable",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (edge : Crystal.KronigPenney.BandEdgeData params),\n  edge.discriminantSlope * edge.curvature = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "The second-order Bloch dispersion identity follows from the local Bloch relation and the\nexplicit differentiability assumptions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_eq",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_ne_zero"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.bloch_relation",
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative",
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.cosine_second_derivative"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_eq",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  self.discriminantSlope ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_ne_zero",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_eq",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.effectiveMass_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_eq",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.effectiveMass_eq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (edge : Crystal.KronigPenney.BandEdgeData params),\n  Crystal.KronigPenney.effectiveMass params edge =\n    -(params.hbar ^ 2 * edge.discriminantSlope) / (params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.effectiveMass_eq",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "Finite-model effective-mass identity at a nondegenerate stationary band edge:\n`m* = -ℏ² Δ'(E₀) / (a² cos(k₀ a))`.\n\nAll differentiability, stationary-point, and nonzero-denominator assumptions are carried explicitly\nby `BandEdgeData`; no infinite-period or thermodynamic statement is used. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_eq",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  self.branchEnergy self.blochCoordinate = self.energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.energy_eq",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  Crystal.KronigPenney.inEnergyDomain params self.energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.energy_mem",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  params.period ^ 2 * Real.cos (self.blochCoordinate * params.period) ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.phaseCurvatureDenominator_ne_zero",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.curvature_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  HasDerivAt (fun k => deriv self.branchEnergy k) self.curvature self.blochCoordinate",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.secondDerivative",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (self : Crystal.KronigPenney.BandEdgeData params),\n  HasDerivAt self.branchEnergy 0 self.blochCoordinate",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.stationary",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} {energy k : ℝ},\n  Crystal.KronigPenney.BlochCondition params energy k →\n    ↑(2 * Crystal.KronigPenney.discriminant params energy) =\n      Crystal.KronigPenney.cellBlochPhase params k + (Crystal.KronigPenney.cellBlochPhase params k)⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.BlochCondition.phase_form",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "A Bloch condition implies the equivalent canonical phase form\n`2 Δ(E) = exp(i k a) + exp(-i k a)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_inv_eq_two_cos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → 0 ≤ params.barrierHeight",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.barrierHeight_nonneg",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → 0 < params.barrierWidth",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.barrierWidth_pos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → params.barrierHeight < params.energyMin",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.barrier_below_energyMin",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → params.energyMin < params.energyMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.energyMin_lt_energyMax",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → 0 < params.hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.hbar_pos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → 0 < params.particleMass",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.particleMass_pos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → 0 < params.period",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.period_pos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → 0 < params.wellWidth",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.wellWidth_pos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters}, params.IsRegular → params.wellWidth + params.barrierWidth = params.period",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.widths_sum",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters),\n  0 < params.period →\n    ∀ {energy : ℝ},\n      Crystal.KronigPenney.AllowedBandEnergy params energy ↔\n        Crystal.KronigPenney.inEnergyDomain params energy ∧\n          ∃ k, Crystal.KronigPenney.inBlochDomain params k ∧ Crystal.KronigPenney.BlochCondition params energy k",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.allowedBandEnergy_iff_exists_bloch",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "For positive lattice period, the discriminant criterion is exactly existence of a Bloch\ncoordinate in the chosen first-Brillouin representative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters) {energy : ℝ},\n  Crystal.KronigPenney.inEnergyDomain params energy →\n    Crystal.KronigPenney.AllowedBandEnergy params energy ∨ Crystal.KronigPenney.ForbiddenGapEnergy params energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.allowedBand_or_forbiddenGap",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "Every energy in the finite domain is classified by the explicit discriminant normalization as\nallowed or forbidden. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      Crystal.KronigPenney.inEnergyDomain params energy → Crystal.KronigPenney.barrierWaveNumber params energy ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "The barrier wave number is nonzero throughout the regular finite energy domain. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm",
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.barrier_below_energyMin",
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.hbar_pos",
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.particleMass_pos",
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.waveNumber_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm",
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters) {L : Submodule ℤ ℝ} {G k : ℝ},\n  G ∈ Crystal.reciprocalLattice L →\n    params.period ∈ L →\n      Crystal.KronigPenney.cellBlochPhase params (k + G) = Crystal.KronigPenney.cellBlochPhase params k",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_eq_of_mem_reciprocalLattice",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "Reciprocal-lattice shifts preserve the one-cell Bloch phase whenever the model period is a\ntranslation in the ambient real-space lattice. This is the bridge from the model coordinate to the\ncanonical `Crystal.reciprocalLattice`/Brillouin convention. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.blochPhase_add_eq_of_mem_reciprocalLattice"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters) (k : ℝ),\n  Crystal.KronigPenney.cellBlochPhase params k + (Crystal.KronigPenney.cellBlochPhase params k)⁻¹ =\n    ↑(2 * Real.cos (k * params.period))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_inv_eq_two_cos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "The model-local one-cell phase/cosine bridge inherited from `Crystal.blochPhase`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BlochCondition.phase_form"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.blochPhase_add_inv_eq_two_cos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BlochCondition.phase_form"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      Crystal.KronigPenney.inEnergyDomain params energy →\n        Crystal.KronigPenney.discriminant params energy =\n          Real.cos (Crystal.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n              Real.cos (Crystal.KronigPenney.wellWaveNumber params energy * params.wellWidth) -\n            (Crystal.KronigPenney.barrierWaveNumber params energy / Crystal.KronigPenney.wellWaveNumber params energy +\n                    Crystal.KronigPenney.wellWaveNumber params energy /\n                      Crystal.KronigPenney.barrierWaveNumber params energy) /\n                  2 *\n                Real.sin (Crystal.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n              Real.sin (Crystal.KronigPenney.wellWaveNumber params energy * params.wellWidth)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "Closed form of the one-cell Kronig–Penney discriminant on the regular finite energy domain.\nBoth local wave numbers are nonzero there, so this is the standard physical transfer-matrix\ndispersion formula rather than an artifact of totalized division. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero",
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm_algebraic"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters) (energy : ℝ),\n  Crystal.KronigPenney.wellWaveNumber params energy ≠ 0 →\n    Crystal.KronigPenney.barrierWaveNumber params energy ≠ 0 →\n      (Crystal.KronigPenney.oneCellTransfer params energy).det = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "The one-cell transfer matrix is unimodular when both local wave numbers are nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.regionTransfer_det"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      Crystal.KronigPenney.inEnergyDomain params energy → (Crystal.KronigPenney.oneCellTransfer params energy).det = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "In the regular finite energy domain, one-cell unimodularity follows from the parameter\nassumptions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (q width : ℝ), q ≠ 0 → (Crystal.KronigPenney.regionTransfer q width).det = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.regionTransfer_det",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "A constant-region transfer matrix is unimodular whenever its wave number is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      Crystal.KronigPenney.inEnergyDomain params energy → Crystal.KronigPenney.wellWaveNumber params energy ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": "The well wave number is nonzero throughout the regular finite energy domain. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm",
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.barrierHeight_nonneg",
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.barrier_below_energyMin",
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.hbar_pos",
-      "LeanCondensedMatter.Crystal.KronigPenney.Parameters.IsRegular.particleMass_pos",
-      "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.waveNumber_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm",
-      "LeanCondensedMatter.Crystal.KronigPenney.oneCellTransfer_det_of_mem"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {K : Type u_1} [inst : NormedAddCommGroup K] [inst_1 : InnerProductSpace ℝ K] {L : Submodule ℤ K} (k : K) {G R : K},\n  G ∈ Crystal.reciprocalLattice L → R ∈ L → Crystal.blochPhase (k + G) R = Crystal.blochPhase k R",
     "standardAxioms": [
@@ -29027,7 +27509,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_eq_of_mem_reciprocalLattice"
+      "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_eq_of_mem_reciprocalLattice"
     ],
     "dependencies": [
       "LeanCondensedMatter.Crystal.blochPhase_eq_one_of_mem_reciprocalLattice"
@@ -29035,7 +27517,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_eq_of_mem_reciprocalLattice"
+      "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_eq_of_mem_reciprocalLattice"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29071,13 +27553,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_inv_eq_two_cos"
+      "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_inv_eq_two_cos"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.cellBlochPhase_add_inv_eq_two_cos"
+      "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_inv_eq_two_cos"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -53456,6 +51938,1512 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  QuantumTheory.Models.KronigPenney.inBlochDomain params self.blochCoordinate",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.bloch_mem",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  (fun k => QuantumTheory.Models.KronigPenney.discriminant params (self.branchEnergy k)) =ᶠ[nhds self.blochCoordinate]\n    fun k => Real.cos (k * params.period)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.bloch_relation",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  ∀ᶠ (k : ℝ) in nhds self.blochCoordinate, DifferentiableAt ℝ self.branchEnergy k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.branchDifferentiable",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (edge : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  edge.curvature = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period)) / edge.discriminantSlope",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_eq",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "Band-edge curvature obtained from the finite Bloch discriminant relation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.effectiveMass_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.effectiveMass_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (edge : QuantumTheory.Models.KronigPenney.BandEdgeData params), edge.curvature ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_ne_zero",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "Nonzero phase curvature and nonzero discriminant slope force the band curvature to be\nnonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.phaseCurvatureDenominator_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  HasDerivAt (QuantumTheory.Models.KronigPenney.discriminant params) self.discriminantSlope self.energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantDerivative",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  DifferentiableAt ℝ (fun e => deriv (QuantumTheory.Models.KronigPenney.discriminant params) e) self.energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantDerivativeDifferentiable",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  ∀ᶠ (k : ℝ) in nhds self.blochCoordinate,\n    DifferentiableAt ℝ (QuantumTheory.Models.KronigPenney.discriminant params) (self.branchEnergy k)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantDifferentiable",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (edge : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  edge.discriminantSlope * edge.curvature = -(params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "The second-order Bloch dispersion identity follows from the local Bloch relation and the\nexplicit differentiability assumptions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_eq",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_ne_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.bloch_relation",
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative",
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.cosine_second_derivative"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_eq",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params), self.discriminantSlope ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_ne_zero",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_eq",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.effectiveMass_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_eq",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.effectiveMass_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (edge : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  QuantumTheory.Models.KronigPenney.effectiveMass params edge =\n    -(params.hbar ^ 2 * edge.discriminantSlope) / (params.period ^ 2 * Real.cos (edge.blochCoordinate * params.period))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.effectiveMass_eq",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "Finite-model effective-mass identity at a nondegenerate stationary band edge:\n`m* = -ℏ² Δ'(E₀) / (a² cos(k₀ a))`.\n\nAll differentiability, stationary-point, and nonzero-denominator assumptions are carried explicitly\nby `BandEdgeData`; no infinite-period or thermodynamic statement is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_eq",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params), self.branchEnergy self.blochCoordinate = self.energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.energy_eq",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  QuantumTheory.Models.KronigPenney.inEnergyDomain params self.energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.energy_mem",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  params.period ^ 2 * Real.cos (self.blochCoordinate * params.period) ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.phaseCurvatureDenominator_ne_zero",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.curvature_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  HasDerivAt (fun k => deriv self.branchEnergy k) self.curvature self.blochCoordinate",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.secondDerivative",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (self : QuantumTheory.Models.KronigPenney.BandEdgeData params), HasDerivAt self.branchEnergy 0 self.blochCoordinate",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BandEdgeData.stationary",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters} {energy k : ℝ},\n  QuantumTheory.Models.KronigPenney.BlochCondition params energy k →\n    ↑(2 * QuantumTheory.Models.KronigPenney.discriminant params energy) =\n      QuantumTheory.Models.KronigPenney.cellBlochPhase params k +\n        (QuantumTheory.Models.KronigPenney.cellBlochPhase params k)⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.BlochCondition.phase_form",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "A Bloch condition implies the equivalent canonical phase form\n`2 Δ(E) = exp(i k a) + exp(-i k a)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_inv_eq_two_cos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → 0 ≤ params.barrierHeight",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.barrierHeight_nonneg",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → 0 < params.barrierWidth",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.barrierWidth_pos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → params.barrierHeight < params.energyMin",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.barrier_below_energyMin",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → params.energyMin < params.energyMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.energyMin_lt_energyMax",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → 0 < params.hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.hbar_pos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → 0 < params.particleMass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.particleMass_pos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → 0 < params.period",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.period_pos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}, params.IsRegular → 0 < params.wellWidth",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.wellWidth_pos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters},\n  params.IsRegular → params.wellWidth + params.barrierWidth = params.period",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.widths_sum",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters),\n  0 < params.period →\n    ∀ {energy : ℝ},\n      QuantumTheory.Models.KronigPenney.AllowedBandEnergy params energy ↔\n        QuantumTheory.Models.KronigPenney.inEnergyDomain params energy ∧\n          ∃ k,\n            QuantumTheory.Models.KronigPenney.inBlochDomain params k ∧\n              QuantumTheory.Models.KronigPenney.BlochCondition params energy k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.allowedBandEnergy_iff_exists_bloch",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "For positive lattice period, the discriminant criterion is exactly existence of a Bloch\ncoordinate in the chosen first-Brillouin representative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) {energy : ℝ},\n  QuantumTheory.Models.KronigPenney.inEnergyDomain params energy →\n    QuantumTheory.Models.KronigPenney.AllowedBandEnergy params energy ∨\n      QuantumTheory.Models.KronigPenney.ForbiddenGapEnergy params energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.allowedBand_or_forbiddenGap",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "Every energy in the finite domain is classified by the explicit discriminant normalization as\nallowed or forbidden. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      QuantumTheory.Models.KronigPenney.inEnergyDomain params energy →\n        QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "The barrier wave number is nonzero throughout the regular finite energy domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm",
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.barrier_below_energyMin",
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.hbar_pos",
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.particleMass_pos",
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.waveNumber_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm",
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) {L : Submodule ℤ ℝ} {G k : ℝ},\n  G ∈ Crystal.reciprocalLattice L →\n    params.period ∈ L →\n      QuantumTheory.Models.KronigPenney.cellBlochPhase params (k + G) =\n        QuantumTheory.Models.KronigPenney.cellBlochPhase params k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_eq_of_mem_reciprocalLattice",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "Reciprocal-lattice shifts preserve the one-cell Bloch phase whenever the model period is a\ntranslation in the ambient real-space lattice. This is the bridge from the model coordinate to the\ncanonical `Crystal.reciprocalLattice`/Brillouin convention. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.blochPhase_add_eq_of_mem_reciprocalLattice"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) (k : ℝ),\n  QuantumTheory.Models.KronigPenney.cellBlochPhase params k +\n      (QuantumTheory.Models.KronigPenney.cellBlochPhase params k)⁻¹ =\n    ↑(2 * Real.cos (k * params.period))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.cellBlochPhase_add_inv_eq_two_cos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "The model-local one-cell phase/cosine bridge inherited from `Crystal.blochPhase`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BlochCondition.phase_form"
+    ],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.blochPhase_add_inv_eq_two_cos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BlochCondition.phase_form"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      QuantumTheory.Models.KronigPenney.inEnergyDomain params energy →\n        QuantumTheory.Models.KronigPenney.discriminant params energy =\n          Real.cos (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n              Real.cos (QuantumTheory.Models.KronigPenney.wellWaveNumber params energy * params.wellWidth) -\n            (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy /\n                      QuantumTheory.Models.KronigPenney.wellWaveNumber params energy +\n                    QuantumTheory.Models.KronigPenney.wellWaveNumber params energy /\n                      QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy) /\n                  2 *\n                Real.sin (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n              Real.sin (QuantumTheory.Models.KronigPenney.wellWaveNumber params energy * params.wellWidth)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "Closed form of the one-cell Kronig–Penney discriminant on the regular finite energy domain.\nBoth local wave numbers are nonzero there, so this is the standard physical transfer-matrix\ndispersion formula rather than an artifact of totalized division. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero",
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm_algebraic"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) (energy : ℝ),\n  QuantumTheory.Models.KronigPenney.wellWaveNumber params energy ≠ 0 →\n    QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy ≠ 0 →\n      (QuantumTheory.Models.KronigPenney.oneCellTransfer params energy).det = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.oneCellTransfer_det",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "The one-cell transfer matrix is unimodular when both local wave numbers are nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.regionTransfer_det"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      QuantumTheory.Models.KronigPenney.inEnergyDomain params energy →\n        (QuantumTheory.Models.KronigPenney.oneCellTransfer params energy).det = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "In the regular finite energy domain, one-cell unimodularity follows from the parameter\nassumptions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (q width : ℝ), q ≠ 0 → (QuantumTheory.Models.KronigPenney.regionTransfer q width).det = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.regionTransfer_det",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "A constant-region transfer matrix is unimodular whenever its wave number is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters),\n  params.IsRegular →\n    ∀ {energy : ℝ},\n      QuantumTheory.Models.KronigPenney.inEnergyDomain params energy →\n        QuantumTheory.Models.KronigPenney.wellWaveNumber params energy ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": "The well wave number is nonzero throughout the regular finite energy domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm",
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.barrierHeight_nonneg",
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.barrier_below_energyMin",
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.hbar_pos",
+      "QuantumTheory.Models.KronigPenney.Parameters.IsRegular.particleMass_pos",
+      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.waveNumber_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm",
+      "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109292,10 +109280,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val"
@@ -109304,12 +109289,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109346,12 +109328,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -109396,8 +109374,7 @@
     ],
     "dependencies": [
       "Combinatorics.sum_sum_crosses_eq_of_equiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -109438,7 +109415,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
@@ -109447,7 +109424,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -120771,6 +120748,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ),\n  (∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.twoPointTimedEventTime τ τ' σ a <\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' σ b ↔\n        SecondQuantization.Common.twoPointTimedEventTime τ τ' υ a <\n          SecondQuantization.Common.twoPointTimedEventTime τ τ' υ b) →\n    SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ =\n      SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' υ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
+    "externalAxioms": [],
+    "docString": "The mixed-time atomic-leg enumeration is identical whenever every strict comparison of\nthe underlying event times agrees. Equal-time events retain the same stable rank. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_all_mem",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
+      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_congr"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : SecondQuantization.Common.OrderedTwoPointLeg n),\n  (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ)\n      (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =\n    leg",
     "standardAxioms": [
       "Classical.choice",
@@ -120872,15 +120897,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : SecondQuantization.Common.OrderedTwoPointLeg n),\n  (SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ\n          (SecondQuantization.Common.orderedTwoPointLegEvent x) <\n        SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ\n          (SecondQuantization.Common.orderedTwoPointLegEvent y) ↔\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ\n          (SecondQuantization.Common.orderedTwoPointLegEvent x) <\n        SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ\n          (SecondQuantization.Common.orderedTwoPointLegEvent y)) →\n    (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ y ↔\n      SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ y)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -120891,9 +120916,7 @@
     "docString": "The flattened atomic-leg order of two legs is determined by the relative order of their two\nsupporting events. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
-    ],
+    "dependents": [],
     "dependencies": [
       "List.idxOf_flatMap_block_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
@@ -120904,10 +120927,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121046,8 +121067,7 @@
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -121056,10 +121076,9 @@
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121143,6 +121162,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_length",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
@@ -121154,10 +121174,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_length",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121238,6 +121259,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
@@ -121254,6 +121276,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
@@ -121261,7 +121284,7 @@
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122068,15 +122091,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ},\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (a b : SecondQuantization.Common.TwoPointTimedEvent n),\n      SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' σ b ↔\n        SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ a <\n          SecondQuantization.Common.orderedTwoPointTimedEventPosition τ τ' υ b",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -122087,19 +122110,15 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
       "SecondQuantization.Common.stableTimedEventBeforeOrEqual_congr"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123523,6 +123542,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
     ],
     "dependencies": [],
@@ -123530,9 +123550,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124967,8 +124988,7 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -124978,10 +124998,9 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158584,184 +158603,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {params : Crystal.KronigPenney.Parameters} (edge : Crystal.KronigPenney.BandEdgeData params),\n  HasDerivAt (fun k => deriv (fun q => Crystal.KronigPenney.discriminant params (edge.branchEnergy q)) k)\n    (edge.discriminantSlope * edge.curvature) edge.blochCoordinate",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.composite_second_derivative",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.branchDifferentiable",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantDerivative",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantDerivativeDifferentiable",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantDifferentiable",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.energy_eq",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.secondDerivative",
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.stationary"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (period k : ℝ),\n  HasDerivAt (fun x => deriv (fun q => Real.cos (q * period)) x) (-(period ^ 2 * Real.cos (k * period))) k",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.cosine_second_derivative",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters) (energy : ℝ),\n  Crystal.KronigPenney.discriminant params energy =\n    Real.cos (Crystal.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n        Real.cos (Crystal.KronigPenney.wellWaveNumber params energy * params.wellWidth) -\n      (Crystal.KronigPenney.barrierWaveNumber params energy / Crystal.KronigPenney.wellWaveNumber params energy +\n              Crystal.KronigPenney.wellWaveNumber params energy /\n                Crystal.KronigPenney.barrierWaveNumber params energy) /\n            2 *\n          Real.sin (Crystal.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n        Real.sin (Crystal.KronigPenney.wellWaveNumber params energy * params.wellWidth)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm_algebraic",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.discriminant_eq_closedForm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : Crystal.KronigPenney.Parameters) (potential energy : ℝ),\n  0 < params.particleMass →\n    0 < params.hbar → potential < energy → 0 < Crystal.KronigPenney.waveNumber params potential energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.KronigPenney.0.LeanCondensedMatter.Crystal.KronigPenney.waveNumber_pos",
-    "module": "LeanCondensedMatter.Crystal.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.KronigPenney.barrierWaveNumber_ne_zero",
-      "LeanCondensedMatter.Crystal.KronigPenney.wellWaveNumber_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} [Finite ι]\n  (b : Module.Basis ι ℝ V),\n  Crystal.reciprocalLattice (Crystal.reciprocalLattice (Submodule.span ℤ (Set.range ⇑b))) =\n    Submodule.span ℤ (Set.range ⇑b)",
     "standardAxioms": [
       "Classical.choice",
@@ -158835,6 +158676,184 @@
       "LeanCondensedMatter.Crystal.AtomicConfiguration.translationSymmetrySubgroup_eq_ker_symmetryLinearPartHom"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {params : QuantumTheory.Models.KronigPenney.Parameters}\n  (edge : QuantumTheory.Models.KronigPenney.BandEdgeData params),\n  HasDerivAt (fun k => deriv (fun q => QuantumTheory.Models.KronigPenney.discriminant params (edge.branchEnergy q)) k)\n    (edge.discriminantSlope * edge.curvature) edge.blochCoordinate",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.BandEdgeData.composite_second_derivative",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.branchDifferentiable",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantDerivative",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantDerivativeDifferentiable",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantDifferentiable",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.energy_eq",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.secondDerivative",
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.stationary"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (period k : ℝ),\n  HasDerivAt (fun x => deriv (fun q => Real.cos (q * period)) x) (-(period ^ 2 * Real.cos (k * period))) k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.cosine_second_derivative",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.BandEdgeData.discriminantSlope_mul_curvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) (energy : ℝ),\n  QuantumTheory.Models.KronigPenney.discriminant params energy =\n    Real.cos (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n        Real.cos (QuantumTheory.Models.KronigPenney.wellWaveNumber params energy * params.wellWidth) -\n      (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy /\n                QuantumTheory.Models.KronigPenney.wellWaveNumber params energy +\n              QuantumTheory.Models.KronigPenney.wellWaveNumber params energy /\n                QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy) /\n            2 *\n          Real.sin (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n        Real.sin (QuantumTheory.Models.KronigPenney.wellWaveNumber params energy * params.wellWidth)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm_algebraic",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) (potential energy : ℝ),\n  0 < params.particleMass →\n    0 < params.hbar → potential < energy → 0 < QuantumTheory.Models.KronigPenney.waveNumber params potential energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.waveNumber_pos",
+    "module": "LeanCondensedMatter.Models.KronigPenney",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175953,44 +175972,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts) (p : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv✝ d shuffle) ⟨B, p⟩ =\n    d.componentOrderedLeg shuffle B p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts)\n  (p : Fin (2 * (2 * (↑B).card))),\n  (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner\n      ((SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv✝ d shuffle) ⟨B, p⟩) =\n    (SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv✝ d shuffle)\n      ⟨B, ((d.restrictComponent ⋯).pairingInOrder (orders B)).partner p⟩",
     "standardAxioms": [
@@ -176008,15 +175989,15 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
+    "directWrapperOf": "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv",
@@ -176873,54 +176854,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_3} {InternalLabel : Type u_4} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts),\n  (∀ (p q : d.MixedComponentPosition τ τ' σ B),\n      ↑p < ↑q ↔\n        ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) p) <\n          ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) q)) →\n    ∀ (p q : d.MixedComponentPair τ τ' σ B),\n      Combinatorics.Crosses ↑↑p ↑↑q ↔\n        Combinatorics.Crosses ↑↑((d.mixedComponentPairTimeEquiv τ τ' σ υ B) p)\n          ↑↑((d.mixedComponentPairTimeEquiv τ τ' σ υ B) q)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_3} {InternalLabel : Type u_4} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts),\n  (∀ (p q : d.MixedComponentPosition τ τ' σ B),\n      ↑p < ↑q ↔\n        ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) p) <\n          ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) q)) →\n    ∀ (pr : d.MixedComponentPair τ τ' σ B),\n      have q := (d.mixedComponentPairTimeEquiv τ τ' σ υ B) pr;\n      (d.mixedComponentPairEndpointEquiv τ τ' υ B) (q, 0) =\n          (SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B)\n            ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 0)) ∧\n        (d.mixedComponentPairEndpointEquiv τ τ' υ B) (q, 1) =\n          (SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B)\n            ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 1))",
+    "statement": "∀ {ExternalLabel : Type u_3} {InternalLabel : Type u_4} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (pr : d.MixedComponentPair τ τ' σ B), ↑↑((d.mixedComponentPairTimeEquiv τ τ' σ υ B) pr) = ↑↑pr",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -176932,123 +176866,26 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
     "externalAxioms": [],
-    "docString": "Order-preserving component transport cannot reverse normalized pair endpoints. ",
+    "docString": "In one mixed-order chamber, time transport leaves the ambient normalized pair unchanged. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (p q : d.MixedComponentPosition τ τ' σ B),\n      ↑p < ↑q ↔\n        ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) p) <\n          ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) q)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
-    "externalAxioms": [],
-    "docString": "Component position transport preserves strict order inside one mixed-order chamber. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap",
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (p : d.MixedComponentPosition τ τ' σ B),\n  (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' υ)\n      ↑((SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv✝ d τ τ' σ υ B) p) =\n    (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) ↑p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
-    "externalAxioms": [],
-    "docString": "Time transport preserves the atomic leg represented by a mixed component position. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.twoPointLegEquiv_mixedTimeAmbientPositionEquiv"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
