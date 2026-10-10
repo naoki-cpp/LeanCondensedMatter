@@ -95,9 +95,13 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
       mixedTimeAmbientPositionEquiv τ τ' υ := by
     unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
     rw [hlegs]
-  simp only [TwoPointDiagram.mixedComponentWeight,
-    TwoPointDiagram.mixedComponentCrossingCount,
-    TwoPointDiagram.mixedPairComponent, TwoPointDiagram.mixedPositionComponent,
-    TwoPointDiagram.pairingInMixedOrder, hambient]
+  unfold TwoPointDiagram.mixedComponentWeight TwoPointDiagram.mixedComponentCrossingCount
+  congr 1
+  simp only [TwoPointDiagram.pairingInMixedOrder]
+  rw [hambient]
+  congr 1
+  funext pr
+  simp only [TwoPointDiagram.mixedPairComponent,
+    TwoPointDiagram.mixedPositionComponent, hambient]
 end Common
 end SecondQuantization
