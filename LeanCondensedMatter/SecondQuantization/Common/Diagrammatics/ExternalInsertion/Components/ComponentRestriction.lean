@@ -543,23 +543,6 @@ noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
       simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
         (d.componentDiagramLeg_restrictComponent_pairing_partner B p).symm)
 
-/-- The canonical component normalized-pair embedding preserves and reflects geometric crossings. -/
-private theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (p q : (d.restrictComponent B).pairing.NormalizedPair) :
-    Crosses (d.componentNormalizedPairEmbedding B p).1
-        (d.componentNormalizedPairEmbedding B q).1 ↔
-      Crosses p.1 q.1 := by
-  simpa [ExternalInsertionDiagram.componentNormalizedPairEmbedding] using
-    (d.restrictComponent B).pairing.normalizedPairEmbedding_crosses_iff d.pairing
-      (d.componentDiagramLegOrderEmbedding B)
-      (fun i => by
-        simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
-          (d.componentDiagramLeg_restrictComponent_pairing_partner B i).symm)
-      p q
-
 /-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
