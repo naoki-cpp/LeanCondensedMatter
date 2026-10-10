@@ -25,26 +25,6 @@ variable {ExternalLabel InternalLabel : Type*} {E N M : ℕ}
 def externalInsertionVertexCongr (e : ↥T ≃ ↥U) : ExternalInsertionVertex E T ≃ ExternalInsertionVertex E U :=
   Equiv.sumCongr (Equiv.refl (Fin (2 * E))) e
 
-@[simp]
-theorem externalInsertionVertexCongr_inl (e : ↥T ≃ ↥U) (a : Fin (2 * E)) :
-    externalInsertionVertexCongr (E := E) e (Sum.inl a) = Sum.inl a := rfl
-
-@[simp]
-theorem externalInsertionVertexCongr_inr (e : ↥T ≃ ↥U) (v : ↥T) :
-    externalInsertionVertexCongr (E := E) e (Sum.inr v) = Sum.inr (e v) := rfl
-
-/-- Relabeling the interaction vertices relabels the unflattened legs. -/
-def externalInsertionLegDataCongr (e : ↥T ≃ ↥U) : ExternalInsertionLeg E T ≃ ExternalInsertionLeg E U :=
-  Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (e.prodCongr (Equiv.refl (Fin 4)))
-
-@[simp]
-theorem externalInsertionLegDataCongr_inl (e : ↥T ≃ ↥U) (a : Fin (2 * E)) :
-    externalInsertionLegDataCongr (E := E) e (Sum.inl a) = Sum.inl a := rfl
-
-@[simp]
-theorem externalInsertionLegDataCongr_inr (e : ↥T ≃ ↥U) (v : ↥T) (l : Fin 4) :
-    externalInsertionLegDataCongr (E := E) e (Sum.inr (v, l)) = Sum.inr (e v, l) := rfl
-
 /-- Relabeling the interaction vertices relabels the flattened legs. -/
 noncomputable def externalInsertionLegCongr (e : ↥T ≃ ↥U) :
     Fin (2 * (2 * T.card + E)) ≃ Fin (2 * (2 * U.card + E)) :=
