@@ -673,7 +673,7 @@ private def declarationGraph (audit : Array CatalogEntry) : CommandElabM Json :=
     let row := fields.foldl (init := baseFields) fun row (key, value) =>
       row.setObjVal! key value
     rows := rows.push (name, row)
-  let rows := rows.qsort fun a b => a.1.toString < b.1.toString
+  rows := rows.qsort fun a b => a.1.toString < b.1.toString
   return .arr <| rows.map fun (name, row) =>
     row.setObjVal! "dependents" (.arr <| (sortedConsumers consumers name).map Json.str)
 

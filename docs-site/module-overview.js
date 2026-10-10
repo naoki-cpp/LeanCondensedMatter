@@ -204,7 +204,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     overview.append(renderBreadcrumb(parts));
 
     const header = element("div", "overview-header module-overview-header");
-    header.append(element("h2", "", node.fullName));
+    header.append(element("h2", "", node.name));
     if (description) header.append(element("p", "module-description module-header-description", description));
     const summary = element("div", "overview-summary");
     const counts = node.counts;
@@ -212,7 +212,6 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     summary.append(summaryChip(`Theorems ${counts.theorems}`));
     summary.append(summaryChip(`Total ${counts.total}`));
     if (counts.generated) summary.append(summaryChip(`Generated ${counts.generated}`));
-    summary.append(summaryChip(`${node.declarationCount} declarations`));
     summary.append(summaryChip(`${node.moduleCount} module${node.moduleCount === 1 ? "" : "s"}`));
     summary.append(summaryChip(`${node.children.size} direct submodule${node.children.size === 1 ? "" : "s"}`));
     header.append(summary);
