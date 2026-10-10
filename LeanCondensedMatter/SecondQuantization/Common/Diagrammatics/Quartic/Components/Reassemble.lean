@@ -77,14 +77,6 @@ private noncomputable def QuarticDiagram.reassembleVertex {S : Finset (Fin N)} (
     (B : π.parts) (v : ↥(B : Finset (Fin N))) : ↥S :=
   π.equivSigmaParts.symm ⟨B, v⟩
 
-private theorem QuarticDiagram.reassembleVertex_injective {S : Finset (Fin N)}
-    (π : Finpartition S) (B : π.parts) :
-    Function.Injective (QuarticDiagram.reassembleVertex π B) := by
-  intro v w hvw
-  have h : (⟨B, v⟩ : Σ t : π.parts, ↥(t : Finset (Fin N))) = ⟨B, w⟩ :=
-    π.equivSigmaParts.symm.injective hvw
-  simpa using h
-
 private theorem QuarticDiagram.bigLegEquiv_fst_eq_part {S : Finset (Fin N)}
     (π : Finpartition S) (leg : Fin (2 * (2 * S.card))) :
     ((QuarticDiagram.bigLegEquiv π leg).1 : Finset (Fin N)) =
@@ -165,8 +157,11 @@ private theorem QuarticDiagram.reassemble_adj_of_adj_component {S : Finset (Fin 
     rw [hpartner, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
     rw [vertexOfLeg_legOfVertexLocal, hw']
     rfl
-  exact ⟨fun hEq => hne' (QuarticDiagram.reassembleVertex_injective π B hEq),
-    leg0, hu, hw⟩
+  refine ⟨?_, leg0, hu, hw⟩
+  intro hEq
+  apply hne'
+  apply Subtype.ext
+  exact congrArg (fun v : ↥S => (v : Fin N)) hEq
 
 private theorem QuarticDiagram.reassemble_reachable_of_reachable_component
     {S : Finset (Fin N)} (π : Finpartition S)
