@@ -141,6 +141,12 @@ specializations of the same state model.
 
 ## Gibbs states and free energy
 
+Scalar Gibbs inequalities and summable-family entropy comparison belong to
+Analysis/Inequalities/Gibbs.lean under Real. Bounded operator free-energy results and
+countable pure-point variational and uniqueness results use this mathematical owner directly.
+Normalization, positive comparison weights, and energy summability remain explicit hypotheses.
+
+
 For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by continuous functional
 calculus as `exp (-β Hop)`. The public bounded `gibbsState` API assumes finite dimensionality
 directly; compactness, spectral summability, and strictly positive trace are derived internally.

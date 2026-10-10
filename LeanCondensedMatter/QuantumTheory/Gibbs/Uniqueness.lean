@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
 
@@ -16,7 +17,7 @@ theorem negMulLog_bound_eq_iff {p q Z u : ℝ}
     Real.negMulLog p = p * u + p * Real.log Z - p + q / Z ↔
       p = q / Z ∧ -Real.log q = u := by
   have hqZpos : 0 < q / Z := div_pos hq hZ
-  have hgibbs := gibbs_scalar_ineq p (q / Z) hp.le hqZpos
+  have hgibbs := Real.gibbs_scalar_ineq p (q / Z) hp.le hqZpos
   have hlogdiv : Real.log (q / Z) = Real.log q - Real.log Z :=
     Real.log_div hq.ne' hZ.ne'
   have hAB :
@@ -41,13 +42,13 @@ theorem negMulLog_bound_eq_iff {p q Z u : ℝ}
         Real.negMulLog p + p - q / Z = -p * Real.log (q / Z) := by
       rw [hlogdiv]
       nlinarith
-    have hpq := (gibbs_scalar_ineq_eq_iff p (q / Z) hp.le hqZpos).mp hscalar
+    have hpq := (Real.gibbs_scalar_ineq_eq_iff p (q / Z) hp.le hqZpos).mp hscalar
     have hlogeq : -Real.log q = u := by
       nlinarith [hBCeq, hp]
     exact ⟨hpq, hlogeq⟩
   · rintro ⟨hpq, hlogeq⟩
     have hscalar :=
-      (gibbs_scalar_ineq_eq_iff p (q / Z) hp.le hqZpos).mpr hpq
+      (Real.gibbs_scalar_ineq_eq_iff p (q / Z) hp.le hqZpos).mpr hpq
     rw [hlogdiv] at hscalar
     nlinarith
 
@@ -102,11 +103,11 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H] [FiniteDimensional ℂ 
       exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)
   have hqpos : ∀ a, 0 < q a := fun a => (Real.exp_pos _).trans_le (hstep1 a)
   have hstep2 : ∀ a, -Real.log (q a) ≤ β * h a := fun a =>
-    neg_log_le_of_exp_le (u := β * h a) (by rw [← neg_mul]; exact hstep1 a)
+    Real.neg_log_le_of_exp_le (u := β * h a) (by rw [← neg_mul]; exact hstep1 a)
   have hbound : ∀ a, Real.negMulLog (p a) ≤
       β * (p a * h a) + p a * Real.log Z - p a + q a / Z := by
     intro a
-    have hb := negMulLog_le_of_neg_log_le (p := p a) (q := q a) (Z := Z)
+    have hb := Real.negMulLog_le_of_neg_log_le (p := p a) (q := q a) (Z := Z)
       (u := β * h a) (ρ.eigenvalue_nonneg a) (hqpos a) hZpos (hstep2 a)
     nlinarith [hb]
   have hp_hasSum : HasSum p 1 := by
@@ -117,10 +118,10 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H] [FiniteDimensional ℂ 
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
     simpa [Z, hq_def] using hbound
   obtain ⟨hB_summable, hsum_eq⟩ :=
-    summable_gibbsComparison_and_tsum_eq
+    Real.summable_gibbsComparison_and_tsum_eq
       p q h β Z hp_hasSum hph_summable hq_summable_and_le.1
   obtain ⟨hnML_summable, _⟩ :=
-    summable_negMulLog_and_tsum_le_gibbs
+    Real.summable_negMulLog_and_tsum_le_gibbs
       p q h β Z (fun a => ρ.eigenvalue_nonneg a)
       hp_hasSum hph_summable
       hq_summable_and_le.1 hq_summable_and_le.2 hqpos hZpos hstep2
@@ -130,7 +131,7 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H] [FiniteDimensional ℂ 
     vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ hnML_summable
   rw [hphsum] at hsum_eq
   have hqZsum_le : ∑' a, q a / Z ≤ 1 :=
-    tsum_div_le_one hq_summable_and_le.2 hZpos
+    Real.tsum_div_le_one hq_summable_and_le.2 hZpos
   have hEntropyTarget :
       (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z := by
     have hfree' := hfree

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
 
 /-!
@@ -6,8 +7,8 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
 This file characterizes equality in the countable diagonal Gibbs variational principle. Under the
 same explicit energy-integrability hypothesis used for pure-point thermodynamics, the normalized
 Gibbs probabilities define an admissible competitor. Equality in the Helmholtz lower bound holds
-exactly for that competitor. Scalar and countable-sum equality helpers are inherited from
-`FreeEnergy.lean` through `PurePointVariational.lean`, without depending on bounded operator
+exactly for that competitor. Scalar and summable-family comparison helpers come from
+`Analysis/Inequalities/Gibbs.lean`, without depending on bounded operator
 equality machinery.
 -/
 
@@ -68,17 +69,17 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
       β * (p.probability i * E i) + p.probability i * Real.log Z -
         p.probability i + q i / Z := by
     intro i
-    have hb := negMulLog_le_of_neg_log_le
+    have hb := Real.negMulLog_le_of_neg_log_le
       (p := p.probability i) (q := q i) (Z := Z) (u := β * E i)
       (p.nonneg i) (purePointBoltzmannWeight_pos E β i) hZpos (hlog i)
     nlinarith [hb]
   obtain ⟨hB, hBsumRaw⟩ :=
-    summable_gibbsComparison_and_tsum_eq
+    Real.summable_gibbsComparison_and_tsum_eq
       p.probability q E β Z p.hasSum_one hEnergy hqsum
   have hqsum_le : ∑' i, q i ≤ Z := by
     rfl
   obtain ⟨hEntropySummable, hmainRaw⟩ :=
-    summable_negMulLog_and_tsum_le_gibbs
+    Real.summable_negMulLog_and_tsum_le_gibbs
       p.probability q E β Z p.nonneg p.hasSum_one hEnergy
       hqsum hqsum_le (fun i => purePointBoltzmannWeight_pos E β i) hZpos hlog
   have hqZ : ∑' i, q i / Z = 1 := by
@@ -143,7 +144,7 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
       rw [henergylog] at hterm
       nlinarith [hterm]
     have hpq :=
-      (gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
+      (Real.gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
         (p.nonneg i) hqZpos).mp hscalar
     calc
       p.probability i = q i / Z := hpq
@@ -163,7 +164,7 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
           _ = q i / Z := by
             simp [q, Z, purePointGibbsProbability, div_eq_mul_inv, mul_comm]
       have hscalar :=
-        (gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
+        (Real.gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
           (p.nonneg i) hqZpos).mpr hpq
       have hlog : -Real.log (q i) = β * E i := by
         simp [q, purePointBoltzmannWeight]
