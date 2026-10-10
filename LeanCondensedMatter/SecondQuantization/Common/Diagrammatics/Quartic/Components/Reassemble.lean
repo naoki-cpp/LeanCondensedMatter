@@ -111,17 +111,6 @@ private theorem QuarticDiagram.reassemble_vertexGraph_adj_same_part
     ← QuarticDiagram.bigLegEquiv_fst_eq_part,
     QuarticDiagram.reassemble_partner_bigLegEquiv_fst]
 
-private theorem QuarticDiagram.reassemble_reachable_same_part {S : Finset (Fin N)}
-    (π : Finpartition S)
-    (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
-    {u w : ↥S} (h : (QuarticDiagram.reassemble π F).vertexGraph.Reachable u w) :
-    π.part (u : Fin N) = π.part (w : Fin N) := by
-  simpa only [Relation.reflTransGen_eq_self] using
-    (Relation.ReflTransGen.lift (p := Eq)
-      (fun v : ↥S => π.part (v : Fin N))
-      (fun _ _ hadj => QuarticDiagram.reassemble_vertexGraph_adj_same_part π F hadj))
-      u w ((SimpleGraph.reachable_iff_reflTransGen u w).mp h)
-
 private theorem QuarticDiagram.reassemble_componentBlock_subset_part
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
@@ -131,7 +120,14 @@ private theorem QuarticDiagram.reassemble_componentBlock_subset_part
   change x ∈ (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn v at hx
   obtain ⟨hxS, hreach⟩ :=
     ((QuarticDiagram.reassemble π F).vertexGraph.mem_componentBlockOn v).1 hx
-  rw [← QuarticDiagram.reassemble_reachable_same_part π F hreach]
+  have hpart : π.part x = π.part (v : Fin N) := by
+    simpa only [Relation.reflTransGen_eq_self] using
+      (Relation.ReflTransGen.lift (p := Eq)
+        (fun u : ↥S => π.part (u : Fin N))
+        (fun _ _ hadj => QuarticDiagram.reassemble_vertexGraph_adj_same_part π F hadj))
+        (⟨x, hxS⟩ : ↥S) v
+        ((SimpleGraph.reachable_iff_reflTransGen _ _).mp hreach)
+  rw [← hpart]
   exact π.mem_part hxS
 
 /-- The inclusion of a reassembled component preserves vertex adjacency. -/
