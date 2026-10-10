@@ -147,8 +147,6 @@ private theorem QuarticDiagram.reassemble_adj_of_adj_component {S : Finset (Fin 
       (QuarticDiagram.reassembleVertex π B w') := by
   obtain ⟨hne', leg, hu', hw'⟩ := h
   set leg0 := (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩ with hlegdef
-  have hbig : QuarticDiagram.bigLegEquiv π leg0 = ⟨B, leg⟩ :=
-    Equiv.apply_symm_apply _ _
   have hu : vertexOfLeg leg0 = QuarticDiagram.reassembleVertex π B u' := by
     rw [hlegdef, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
     rw [vertexOfLeg_legOfVertexLocal, hu']
