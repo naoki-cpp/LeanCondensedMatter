@@ -206,9 +206,8 @@ its partner-transport theorem states that this embedding intertwines the restric
 pairing partners. The canonical leg order makes this map an `OrderEmbedding`; taken over all components these
 embeddings form `componentLegShuffle`, the order-preserving family shuffle onto the ambient leg
 set. Its generic block-inversion count is the canonical measure of inter-component leg exchange.
-The induced `componentNormalizedPairEmbedding` preserves and reflects pairing crossings, while
-`componentPairEquiv` identifies the dependent sum of component-local normalized pairs with all
-ambient normalized pairs. Unlike the
+The `componentPairEquiv` identifies the dependent sum of component-local normalized pairs with
+all ambient normalized pairs. Unlike the
 pure-quartic case, distinct external-insertion components can interleave in the ambient leg order, so
 their crossing contribution is retained explicitly as `interComponentCrossingCount`; the global
 crossing count and exchange weight split into local component terms plus this residual factor. A
