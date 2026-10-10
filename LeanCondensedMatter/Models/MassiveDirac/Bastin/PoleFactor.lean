@@ -13,10 +13,10 @@ retarded-minus-advanced factor is the Lorentzian pole centered at `E_n`; the rem
 advanced opposite-band resolvent squares are regular spectators multiplying the two current-trace
 orderings.
 
-This file separates those pieces exactly while keeping the current directions generic. At the
-target-band pole the regular spectator/current factor converges to the inverse-gap-squared
-antisymmetric current block. Concrete Hall consumers specialize the directions to `(x,y)`
-downstream.
+This file separates those pieces exactly while keeping the current directions generic, and
+expresses the opposite-band resolvent in target-centered offset coordinates for downstream Hall
+continuity and radial estimates. At the target-band pole the regular spectator/current factor
+converges to the inverse-gap-squared antisymmetric current block.
 
 No energy integration or momentum integration is performed here.
 -/
@@ -28,6 +28,22 @@ noncomputable section
 open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
+
+/-- In target-centered offset coordinates, the opposite-band spectator denominator on spectral side
+`s` is `gap + offset + i γˢ`. -/
+theorem projectorResolventCoefficient_targetOffset_oppositeBand
+    (side : SpectralSide) (band : Band) (v m px py offset broadening : ℝ) :
+    projectorResolventCoefficient
+        (spectralParameter side
+          (bandEnergy band v m px py + offset) broadening)
+        (oppositeBand band) v m px py =
+      ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
+          ((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
+  unfold projectorResolventCoefficient spectralParameter spectralParameterOfRegulator
+    interbandEnergyGap
+  congr 1
+  push_cast
+  ring
 
 /-- The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian
 centered at the selected band energy. -/
