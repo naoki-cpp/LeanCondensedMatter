@@ -157,8 +157,11 @@ private theorem QuarticDiagram.reassemble_adj_of_adj_component {S : Finset (Fin 
     rw [hpartner, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
     rw [vertexOfLeg_legOfVertexLocal, hw']
     rfl
-  exact ⟨fun hEq => hne' (Subtype.ext (congrArg Subtype.val hEq)),
-    leg0, hu, hw⟩
+  refine ⟨?_, leg0, hu, hw⟩
+  intro hEq
+  apply hne'
+  apply Subtype.ext
+  exact congrArg (fun v : ↥S => (v : Fin N)) hEq
 
 private theorem QuarticDiagram.reassemble_reachable_of_reachable_component
     {S : Finset (Fin N)} (π : Finpartition S)
