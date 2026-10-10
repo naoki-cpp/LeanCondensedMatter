@@ -10502,6 +10502,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {z : ℂ}, z.re ≠ 0 → Complex.exp z ≠ 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Complex.exp_ne_one_of_re_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.Exponential",
+    "externalAxioms": [],
+    "docString": "A complex exponential cannot equal one when its exponent has nonzero real part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs] {δ : Obs →ₗ[𝕜] Obs}\n  {Q : Test →ₗ[𝕜] Obs} {d : Test →ₗ[𝕜] OneForm} (self : ConservationLaw.BalanceLaw δ Q d) (f : Test),\n  δ (Q f) = self.current (d f) + self.source f",
     "standardAxioms": [],
@@ -93510,10 +93556,10 @@
       "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
     ],
     "dependencies": [
+      "Complex.exp_ne_one_of_re_ne_zero",
       "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.FreeThermalField.kmsFactor_sub_one_ne_zero",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton",
@@ -93724,48 +93770,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "compiledConsumerCount": 8,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (C : SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.FreeThermalField.kmsFactor ε β C - 1 ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.kmsFactor_sub_one_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
-    "externalAxioms": [],
-    "docString": "Positive one-mode Boltzmann exponents keep the bosonic KMS denominator away from zero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98743,9 +98747,9 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
+      "Complex.exp_ne_one_of_re_ne_zero",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq",
-      "SecondQuantization.Bosonic.freeGibbs_boseDenominator_ne_zero"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98878,6 +98882,7 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
+      "Complex.exp_ne_one_of_re_ne_zero",
       "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.comm_annihilate_create",
@@ -98885,7 +98890,6 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
       "SecondQuantization.Bosonic.freeGibbsExpectation_id",
       "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
-      "SecondQuantization.Bosonic.freeGibbs_boseDenominator_ne_zero",
       "SecondQuantization.Bosonic.linearMap_id_mem_freeGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
@@ -99671,50 +99675,6 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_create_rotate"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ), (∀ (k : Mode), 0 < β * ε k) → ∀ (i : Mode), 1 - Complex.exp ↑(-ε i * β) ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbs_boseDenominator_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint",
-    "externalAxioms": [],
-    "docString": "The Bose denominator is nonzero under the same positivity hypothesis that makes the partition\nseries converge. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_concrete",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_create_comp_annihilate_concrete"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108389,8 +108349,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108402,7 +108362,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv"
     ],
     "dependencies": [
@@ -108411,10 +108370,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108909,49 +108867,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_partner"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (p : d.MixedComponentPosition τ τ' σ d.externalComponentPart),\n  d.externalVacuumSplit.1.pairing.partner ((d.mixedExternalPositionEquiv τ τ' σ) p) =\n    (d.mixedExternalPositionEquiv τ τ' σ) ((d.mixedRestrictedPartner τ τ' σ d.externalComponentPart) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing",
-    "externalAxioms": [],
-    "docString": "The canonical external split pairing partner is the transport of the mixed restricted partner. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -172060,7 +171975,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -172072,7 +171987,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
     "dependencies": [
@@ -172083,10 +171997,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

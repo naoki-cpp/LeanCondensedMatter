@@ -186,6 +186,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Exponential",
+      "sourceFile": "LeanCondensedMatter/Analysis/Exponential.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
       "sourceFile": "LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean",
       "imports": [],
@@ -3365,6 +3371,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ConcreteMixedTwoPoint.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Exponential",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable"
       ],
@@ -3384,6 +3391,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreeFirstPair.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Exponential",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed"
       ],
