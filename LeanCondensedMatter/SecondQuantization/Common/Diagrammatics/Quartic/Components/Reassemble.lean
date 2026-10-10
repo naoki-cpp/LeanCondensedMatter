@@ -63,6 +63,15 @@ noncomputable def QuarticDiagram.reassemble {S : Finset (Fin N)} (π : Finpartit
       (QuarticDiagram.bigLegEquiv π)
 
 
+private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk
+    {S : Finset (Fin N)} (π : Finpartition S)
+    (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
+    (B : π.parts) (leg : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    (QuarticDiagram.reassemble π F).pairing.partner
+        ((QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩) =
+      (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
+  simp [QuarticDiagram.reassemble]
+
 /-- A vertex of a block `B`, included back into the ambient vertex set. -/
 private noncomputable def QuarticDiagram.reassembleVertex {S : Finset (Fin N)} (π : Finpartition S)
     (B : π.parts) (v : ↥(B : Finset (Fin N))) : ↥S :=
@@ -91,11 +100,10 @@ private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_fst {S : Finset (F
     (QuarticDiagram.bigLegEquiv π
         ((QuarticDiagram.reassemble π F).pairing.partner leg)).1 =
       (QuarticDiagram.bigLegEquiv π leg).1 := by
-  have hlhs : (QuarticDiagram.reassemble π F).pairing.partner =
-      (QuarticDiagram.bigLegEquiv π).symm.permCongr
-        (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner) := rfl
-  rw [hlhs, Equiv.permCongr_apply, Equiv.symm_symm, Equiv.apply_symm_apply]
-  rfl
+  have h := QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk
+    π F (QuarticDiagram.bigLegEquiv π leg).1 (QuarticDiagram.bigLegEquiv π leg).2
+  have hfst := congrArg (fun x => (QuarticDiagram.bigLegEquiv π x).1) h
+  simpa only [Equiv.symm_apply_apply, Equiv.apply_symm_apply] using hfst
 
 private theorem QuarticDiagram.reassemble_vertexGraph_adj_same_part
     {S : Finset (Fin N)} (π : Finpartition S)
@@ -148,11 +156,8 @@ private theorem QuarticDiagram.reassemble_adj_of_adj_component {S : Finset (Fin 
   have hpartner :
       (QuarticDiagram.reassemble π F).pairing.partner leg0 =
         (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
-    have hlhs : (QuarticDiagram.reassemble π F).pairing.partner =
-        (QuarticDiagram.bigLegEquiv π).symm.permCongr
-          (Equiv.sigmaCongrRight fun C => (F C).1.pairing.partner) := rfl
-    rw [hlhs, Equiv.permCongr_apply, Equiv.symm_symm, hbig]
-    rfl
+    rw [hlegdef]
+    exact QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk π F B leg
   have hw : vertexOfLeg ((QuarticDiagram.reassemble π F).pairing.partner leg0) =
       QuarticDiagram.reassembleVertex π B w' := by
     rw [hpartner, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
@@ -291,15 +296,6 @@ private theorem QuarticDiagram.blockLegEquiv_symm_reassemble_val {S : Finset (Fi
   simpa using
     (QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm π B
       (vertexOfLeg leg)).symm
-
-private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk
-    {S : Finset (Fin N)} (π : Finpartition S)
-    (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
-    (B : π.parts) (leg : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    (QuarticDiagram.reassemble π F).pairing.partner
-        ((QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩) =
-      (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
-  simp [QuarticDiagram.reassemble]
 
 private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     {S : Finset (Fin N)} (π : Finpartition S)
