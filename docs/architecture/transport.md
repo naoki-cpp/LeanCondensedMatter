@@ -168,7 +168,8 @@ side-indexed objects are retained only at reusable physical boundaries such as b
 Born-Dyson dressing, and RA vertex calculations. Physical-side specializations consume the canonical
 `SpectralSide.regulator` conversion rather than depending on the sign representation directly.
 
-The fixed-cutoff metallic Born-Dyson zero-broadening boundaries share one explicit
+The current-rung, ladder determinant, solved-vector, dressed-current, and momentum-integral
+fixed-cutoff metallic Born-Dyson zero-broadening boundaries share one explicit
 `FixedCutoffMetallicBornRegime` domain package. It owns only the common velocity, mass, probe-energy,
 disorder, reduced-Planck, cutoff, metallic-shell, and cutoff-orientation data. Conductivity charge
 normalization, real Born-renormalization bounds, and ladder determinant nonvanishing remain explicit
