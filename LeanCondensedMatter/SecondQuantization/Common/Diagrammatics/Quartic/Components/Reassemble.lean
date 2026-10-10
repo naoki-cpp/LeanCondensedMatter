@@ -178,6 +178,9 @@ private theorem QuarticDiagram.part_subset_reassemble_componentBlock
       (π.equivSigmaParts v).2 :=
     (F B).2.1 ⟨x, hxB⟩ (π.equivSigmaParts v).2
   have hreach := hreach0.map (QuarticDiagram.reassembleComponentHom π F B)
+  change (QuarticDiagram.reassemble π F).vertexGraph.Reachable
+    (QuarticDiagram.reassembleVertex π B ⟨x, hxB⟩)
+    (QuarticDiagram.reassembleVertex π B (π.equivSigmaParts v).2) at hreach
   have heq1 : QuarticDiagram.reassembleVertex π B ⟨x, hxB⟩ = (⟨x, hxS⟩ : ↥S) := rfl
   have heq2 : QuarticDiagram.reassembleVertex π B (π.equivSigmaParts v).2 = v := by
     change π.equivSigmaParts.symm ⟨B, (π.equivSigmaParts v).2⟩ = v
