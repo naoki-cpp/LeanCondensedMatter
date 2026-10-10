@@ -338,39 +338,25 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
   rw [← ha, ← hb] at hab ⊢
   rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
   · change
-      externalInsertionExternalLeg (d.externalPairCount B) T e <
-        externalInsertionExternalLeg (d.externalPairCount B) T f at hab
-    change
+      (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
+        (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
+    change d.componentDiagramLeg B
+        (externalInsertionExternalLeg (d.externalPairCount B) T e) <
       d.componentDiagramLeg B
-          (externalInsertionExternalLeg (d.externalPairCount B) T e) <
-        d.componentDiagramLeg B
-          (externalInsertionExternalLeg (d.externalPairCount B) T f)
+        (externalInsertionExternalLeg (d.externalPairCount B) T f)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_external B]
-    change
-      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
-        (externalInsertionExternalLeg E S (d.externalSectorOrderIso B f).1).val
     have hef : e < f := by
-      change
-        (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
-          (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
-      simpa using hab
-    simpa using (d.externalSectorOrderIso B).strictMono hef
-  · change
-      externalInsertionExternalLeg (d.externalPairCount B) T e <
-        externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
-    change
+      simpa only [externalInsertionExternalLeg_val] using hab
+    simpa only [externalInsertionExternalLeg_val] using
+      (d.externalSectorOrderIso B).strictMono hef
+  · change d.componentDiagramLeg B
+        (externalInsertionExternalLeg (d.externalPairCount B) T e) <
       d.componentDiagramLeg B
-          (externalInsertionExternalLeg (d.externalPairCount B) T e) <
-        d.componentDiagramLeg B
-          (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
+        (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_interaction B]
-    change
-      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
-        (externalInsertionInteractionLeg (E := E)
-          ⟨w.1, interactionSector_subset
-            (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
     simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-    exact Nat.lt_of_lt_of_le (d.externalSectorOrderIso B e).1.isLt (by omega)
+    have hbound := (d.externalSectorOrderIso B e).1.isLt
+    omega
   · change
       externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
         externalInsertionExternalLeg (d.externalPairCount B) T f at hab
