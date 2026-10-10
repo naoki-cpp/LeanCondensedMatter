@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -20,6 +21,21 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+
+/-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
+theorem bastinXYBandBlockTrace_opposite_source_radial
+    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
+    bastinBandBlockTrace 0 1 (oppositeBand band) band e v m p 0 =
+      (((e ^ 2 : ℝ) : ℂ)) *
+        (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
+  have hblock :=
+    currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
+      0 1 (oppositeBand band) e v m p 0
+  simp only [oppositeBand_oppositeBand] at hblock
+  rw [hblock, forceMatrixTraceNumerator_xy_eq (oppositeBand band) v m p 0 hE]
+  simp [bandSign_oppositeBand]
+  ring
 
 /-- Common purely-imaginary current amplitude in the radial interband Bastin blocks. -/
 def radialInterbandCurrentAmplitude

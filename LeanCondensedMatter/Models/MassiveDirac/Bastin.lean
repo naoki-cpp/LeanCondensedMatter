@@ -10,7 +10,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
