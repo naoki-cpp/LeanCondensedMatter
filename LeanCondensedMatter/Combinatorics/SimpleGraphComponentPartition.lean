@@ -118,8 +118,8 @@ theorem reachable_sum_inl_iff
       (u := Sum.inl x) (v := Sum.inl y)).symm.trans
         (SimpleGraph.reachable_sum_inr_iff H G x y))
 
-/-- A graph-sum isomorphism reflects reachability within the left summand. -/
 omit [DecidableEq V] in
+/-- A graph-sum isomorphism reflects reachability within the left summand. -/
 theorem Iso.reachable_sum_inl_iff {W U : Type*}
     {G : SimpleGraph V} {H : SimpleGraph W} {K : SimpleGraph U}
     (φ : (G ⊕g H) ≃g K) (x y : V) :
@@ -128,8 +128,8 @@ theorem Iso.reachable_sum_inl_iff {W U : Type*}
     (φ := φ) (u := Sum.inl x) (v := Sum.inl y)).trans
       (SimpleGraph.reachable_sum_inl_iff G H x y)
 
-/-- A graph-sum isomorphism reflects reachability within the right summand. -/
 omit [DecidableEq V] in
+/-- A graph-sum isomorphism reflects reachability within the right summand. -/
 theorem Iso.reachable_sum_inr_iff {W U : Type*}
     {G : SimpleGraph V} {H : SimpleGraph W} {K : SimpleGraph U}
     (φ : (G ⊕g H) ≃g K) (x y : W) :
