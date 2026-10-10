@@ -100,17 +100,14 @@ private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_fst {S : Finset (F
     (QuarticDiagram.bigLegEquiv π
         ((QuarticDiagram.reassemble π F).pairing.partner leg)).1 =
       (QuarticDiagram.bigLegEquiv π leg).1 := by
-  have h := QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk
-    π F (QuarticDiagram.bigLegEquiv π leg).1 (QuarticDiagram.bigLegEquiv π leg).2
-  have hfst := congrArg (fun x => (QuarticDiagram.bigLegEquiv π x).1) h
-  have heta :
-      (⟨(QuarticDiagram.bigLegEquiv π leg).1,
-        (QuarticDiagram.bigLegEquiv π leg).2⟩ :
-          Σ B : π.parts, Fin (2 * (2 * (B : Finset (Fin N)).card))) =
-        QuarticDiagram.bigLegEquiv π leg := by
-    cases QuarticDiagram.bigLegEquiv π leg
-    rfl
-  simpa only [heta, Equiv.symm_apply_apply, Equiv.apply_symm_apply] using hfst
+  change (QuarticDiagram.bigLegEquiv π
+      ((Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
+        (QuarticDiagram.bigLegEquiv π)).partner leg).1 =
+    (QuarticDiagram.bigLegEquiv π leg).1
+  rw [Combinatorics.PairingOn.transport_partner, Equiv.apply_symm_apply]
+  cases h : QuarticDiagram.bigLegEquiv π leg with
+  | mk B p =>
+    simp only [Combinatorics.PairingOn.sigmaCongrRight_partner]
 
 private theorem QuarticDiagram.reassemble_vertexGraph_adj_same_part
     {S : Finset (Fin N)} (π : Finpartition S)
