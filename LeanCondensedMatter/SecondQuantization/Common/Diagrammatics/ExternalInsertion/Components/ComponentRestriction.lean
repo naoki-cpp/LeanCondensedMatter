@@ -401,37 +401,33 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     simp only [externalInsertionInteractionLeg_val] at hab ⊢
     by_cases hvw : v = w
     · subst w
-      have hlk : l.val < k.val := by omega
       omega
     · have hrank_ne :
           ((T.orderIsoOfFin rfl).symm v).val ≠
             ((T.orderIsoOfFin rfl).symm w).val := by
         intro h
         apply hvw
-        apply (T.orderIsoOfFin rfl).symm.injective
-        exact Fin.ext h
-      have hl : l.val < 4 := l.isLt
-      have hk : k.val < 4 := k.isLt
+        exact (T.orderIsoOfFin rfl).symm.injective (Fin.ext h)
       have hrank :
           ((T.orderIsoOfFin rfl).symm v).val <
             ((T.orderIsoOfFin rfl).symm w).val := by
+        have hl := l.isLt
+        have hk := k.isLt
         omega
-      have hvwT : v < w := by
-        simpa using (T.orderIsoOfFin rfl).strictMono hrank
-      let vS : ↥S :=
-        ⟨v.1, interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)) v.2⟩
-      let wS : ↥S :=
-        ⟨w.1, interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)) w.2⟩
-      have hvwS : vS < wS := by
+      have hvwT : v < w :=
+        (T.orderIsoOfFin rfl).strictMono hrank
+      have hamb :
+          ((S.orderIsoOfFin rfl).symm
+            (⟨v.1, interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S)) v.2⟩ : ↥S)).val <
+          ((S.orderIsoOfFin rfl).symm
+            (⟨w.1, interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S)) w.2⟩ : ↥S)).val := by
+        apply (S.orderIsoOfFin rfl).symm.strictMono
         change v.1 < w.1
         exact hvwT
-      have hamb :
-          ((S.orderIsoOfFin rfl).symm vS).val <
-            ((S.orderIsoOfFin rfl).symm wS).val :=
-        (S.orderIsoOfFin rfl).symm.strictMono hvwS
-      dsimp [vS, wS] at hamb
+      have hl := l.isLt
+      have hk := k.isLt
       omega
 
 /-- The canonical order embedding of one restricted component's flattened legs into the ambient
