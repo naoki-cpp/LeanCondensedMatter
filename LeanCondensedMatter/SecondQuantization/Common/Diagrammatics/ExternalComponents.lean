@@ -29,6 +29,30 @@ def HasNoVacuumComponent (G : SimpleGraph (External ⊕ Internal)) : Prop :=
   ∀ v : Internal, ∃ e : External,
     G.Reachable (Sum.inl e : External ⊕ Internal) (Sum.inr v)
 
+/-- Vacuum-freeness is invariant under a graph isomorphism preserving the external and
+internal sectors up to relabeling. -/
+theorem hasNoVacuumComponent_congr_iff
+    {External' Internal' : Type*}
+    {G : SimpleGraph (External ⊕ Internal)}
+    {H : SimpleGraph (External' ⊕ Internal')}
+    (φ : G ≃g H) (eExt : External ≃ External') (eInt : Internal ≃ Internal')
+    (hext : ∀ x : External, φ (Sum.inl x) = Sum.inl (eExt x))
+    (hint : ∀ x : Internal, φ (Sum.inr x) = Sum.inr (eInt x)) :
+    HasNoVacuumComponent H ↔ HasNoVacuumComponent G := by
+  constructor
+  · intro h v
+    obtain ⟨f, hf⟩ := h (eInt v)
+    refine ⟨eExt.symm f, ?_⟩
+    apply (SimpleGraph.Iso.reachable_iff
+      (φ := φ) (u := Sum.inl (eExt.symm f)) (v := Sum.inr v)).mp
+    simpa only [hext, hint, Equiv.apply_symm_apply] using hf
+  · intro h v
+    obtain ⟨f, hf⟩ := h (eInt.symm v)
+    refine ⟨eExt f, ?_⟩
+    have hreach := (SimpleGraph.Iso.reachable_iff
+      (φ := φ) (u := Sum.inl f) (v := Sum.inr (eInt.symm v))).mpr hf
+    simpa only [hext, hint, Equiv.apply_symm_apply] using hreach
+
 /-- External support is equivalent to nonemptiness of Mathlib's left-summand extraction. -/
 theorem componentMeetsExternal_iff_toLeft_nonempty
     (B : Finset (External ⊕ Internal)) :
