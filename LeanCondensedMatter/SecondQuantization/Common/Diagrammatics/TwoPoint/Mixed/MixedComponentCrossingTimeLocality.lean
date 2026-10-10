@@ -95,13 +95,17 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
       mixedTimeAmbientPositionEquiv τ τ' υ := by
     unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
     rw [hlegs]
-  unfold TwoPointDiagram.mixedComponentWeight TwoPointDiagram.mixedComponentCrossingCount
-  congr 1
-  simp only [TwoPointDiagram.pairingInMixedOrder]
-  rw [hambient]
-  congr 1
-  funext pr
-  simp only [TwoPointDiagram.mixedPairComponent,
-    TwoPointDiagram.mixedPositionComponent, hambient]
+  let weightFor (e : Fin (2 * (2 * n + 1)) ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) : ℂ :=
+    (s.zetaInt : ℂ) ^
+      (d.pairing.transport e).componentCrossingCount
+        (Equiv.sigmaFiberEquiv (fun pr =>
+          (⟨d.vertexGraph.componentBlock
+              (twoPointVertexOfLeg (e pr.1.1)),
+            d.vertexGraph.componentBlock_mem_componentPartition _⟩ :
+              d.vertexGraph.componentPartition.parts))) B B
+  change weightFor (mixedTimeAmbientPositionEquiv τ τ' σ) =
+    weightFor (mixedTimeAmbientPositionEquiv τ τ' υ)
+  exact congrArg weightFor hambient
 end Common
 end SecondQuantization
