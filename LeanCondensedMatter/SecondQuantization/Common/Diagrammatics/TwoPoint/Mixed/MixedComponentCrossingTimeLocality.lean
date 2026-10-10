@@ -81,9 +81,9 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
   have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
   constructor
   · simpa only [hlegs] using
-      congrArg (mixedTimeOrderedAtomicLegEquiv τ τ' υ ∘ Prod.fst) hPair
+      congrArg (fun p => mixedTimeOrderedAtomicLegEquiv τ τ' υ p.1) hPair
   · simpa only [hlegs] using
-      congrArg (mixedTimeOrderedAtomicLegEquiv τ τ' υ ∘ Prod.snd) hPair
+      congrArg (fun p => mixedTimeOrderedAtomicLegEquiv τ τ' υ p.2) hPair
 
 /-- Component exchange-statistics weight is constant on one chamber. -/
 theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
