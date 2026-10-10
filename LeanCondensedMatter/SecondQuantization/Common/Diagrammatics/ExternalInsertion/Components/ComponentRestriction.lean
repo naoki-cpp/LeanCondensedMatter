@@ -175,61 +175,6 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
       (d.externalSectorOrderIso B e).1 := by
   rfl
 
-/-- The canonical order-preserving shuffle of component-local interaction vertices into the
-ambient interaction-vertex order. -/
-noncomputable def ExternalInsertionDiagram.componentInteractionShuffle
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    FamilySlotShuffleTo
-      (fun B : d.vertexGraph.componentPartition.parts =>
-        (interactionSector
-          (B : Finset (ExternalInsertionVertex E S))).card)
-      S.card where
-  slotEquiv :=
-    (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
-      ((interactionSector
-        (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).toEquiv).trans <|
-      (interactionSectorComponentEquiv d.vertexGraph).symm.trans
-        (S.orderIsoOfFin rfl).symm.toEquiv
-  strictMono := by
-    intro B a b hab
-    change
-      (S.orderIsoOfFin rfl).symm
-          ⟨((interactionSector
-            (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl a).1,
-            interactionSector_subset
-              (B : Finset (ExternalInsertionVertex E S))
-              ((interactionSector
-                (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl a).2⟩ <
-        (S.orderIsoOfFin rfl).symm
-          ⟨((interactionSector
-            (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl b).1,
-            interactionSector_subset
-              (B : Finset (ExternalInsertionVertex E S))
-              ((interactionSector
-                (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl b).2⟩
-    apply (S.orderIsoOfFin rfl).symm.strictMono
-    exact
-      ((interactionSector
-        (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).strictMono hab
-
-@[simp]
-theorem ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (v : Fin (interactionSector
-      (B : Finset (ExternalInsertionVertex E S))).card) :
-    d.componentInteractionShuffle.slotEquiv ⟨B, v⟩ =
-      (S.orderIsoOfFin rfl).symm
-        ⟨((interactionSector
-          (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl v).1,
-          interactionSector_subset
-            (B : Finset (ExternalInsertionVertex E S))
-            ((interactionSector
-              (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl v).2⟩ := by
-  rfl
-
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
@@ -597,23 +542,6 @@ noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
     (fun p => by
       simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
         (d.componentDiagramLeg_restrictComponent_pairing_partner B p).symm)
-
-/-- The canonical component normalized-pair embedding preserves and reflects geometric crossings. -/
-private theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (p q : (d.restrictComponent B).pairing.NormalizedPair) :
-    Crosses (d.componentNormalizedPairEmbedding B p).1
-        (d.componentNormalizedPairEmbedding B q).1 ↔
-      Crosses p.1 q.1 := by
-  simpa [ExternalInsertionDiagram.componentNormalizedPairEmbedding] using
-    (d.restrictComponent B).pairing.normalizedPairEmbedding_crosses_iff d.pairing
-      (d.componentDiagramLegOrderEmbedding B)
-      (fun i => by
-        simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
-          (d.componentDiagramLeg_restrictComponent_pairing_partner B i).symm)
-      p q
 
 /-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
