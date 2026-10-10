@@ -73,14 +73,6 @@ theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
   · exact Or.inl (shuffle.strictMono B hslot)
   · exact Or.inr ⟨congrArg (fun i => shuffle.slotEquiv ⟨B, i⟩) hslot, hlocal⟩
 
-/-- The canonical order embedding of one component's flattened legs into the assembled order. -/
-noncomputable def QuarticDiagram.componentOrderedLegOrderEmbedding {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.vertexGraph.componentPartitionOn.parts) :
-    Fin (2 * (2 * (B : Finset (Fin N)).card)) ↪o Fin (2 * (2 * S.card)) :=
-  OrderEmbedding.ofStrictMono (d.componentOrderedLeg shuffle B)
-    (d.componentOrderedLeg_strictMono shuffle B)
-
 /-- The assembled global order sends a component slot to the same underlying labelled vertex as its
 component-local order. -/
 theorem QuarticDiagram.assembleVertexOrder_componentSlot_val
