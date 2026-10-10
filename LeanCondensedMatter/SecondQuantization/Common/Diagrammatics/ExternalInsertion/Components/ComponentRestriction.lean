@@ -530,19 +530,6 @@ theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
   rfl
 
 
-/-- Embed normalized pairs of a restricted component into the ambient pairing using the canonical
-component leg order embedding. -/
-noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) :
-    (d.restrictComponent B).pairing.NormalizedPair ↪ d.pairing.NormalizedPair :=
-  (d.restrictComponent B).pairing.normalizedPairEmbedding d.pairing
-    (d.componentDiagramLegOrderEmbedding B)
-    (fun p => by
-      simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
-        (d.componentDiagramLeg_restrictComponent_pairing_partner B p).symm)
-
 /-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
