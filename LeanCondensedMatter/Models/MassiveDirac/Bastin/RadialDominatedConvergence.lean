@@ -74,17 +74,8 @@ def finiteRadialCleanInterbandBastinPairIntegral
   ∫ p in Set.Icc 0 pMax,
     radialCleanInterbandBastinPairLimitDensity band e v m p
 
-/-- The pair bound is nonnegative. -/
-private theorem radialInterbandBastinPairUniformBound_nonneg
-    (e v m radius : ℝ) :
-    0 ≤ radialInterbandBastinPairUniformBound e v m radius := by
-  unfold radialInterbandBastinPairUniformBound
-  have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
-  have hpi := Real.pi_pos.le
-  positivity
-
 /-- Constant dominating function after attaching the radial Jacobian on `0 ≤ p ≤ pMax`. -/
-def radialInterbandBastinDominatingConstant
+private def radialInterbandBastinDominatingConstant
     (e v m radius pMax : ℝ) : ℝ :=
   pMax * radialInterbandBastinPairUniformBound e v m radius
 

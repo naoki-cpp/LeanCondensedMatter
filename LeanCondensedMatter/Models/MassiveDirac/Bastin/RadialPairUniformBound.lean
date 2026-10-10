@@ -89,6 +89,15 @@ def radialInterbandBastinPairUniformBound
     (e v m radius : ℝ) : ℝ :=
   2 * (radialInterbandSpectatorUniformBound e v m radius * Real.pi)
 
+/-- The pair bound is nonnegative. -/
+theorem radialInterbandBastinPairUniformBound_nonneg
+    (e v m radius : ℝ) :
+    0 ≤ radialInterbandBastinPairUniformBound e v m radius := by
+  unfold radialInterbandBastinPairUniformBound
+  have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
+  have hpi := Real.pi_pos.le
+  positivity
+
 /-- Uniform norm bound for the complete target-centered interband Bastin pair on the radial axis. -/
 theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
     (band : Band) (e v m p radius broadening : ℝ)
