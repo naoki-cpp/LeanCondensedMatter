@@ -25,15 +25,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S T : Finset (Fin N)}
 
-/-- Adjacency in a two-point vertex graph, unfolded. -/
-theorem TwoPointDiagram.vertexGraph_adj_iff
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v w : TwoPointVertex S) :
-    d.vertexGraph.Adj v w ↔
-      v ≠ w ∧ ∃ leg : Fin (2 * (2 * S.card + 1)),
-        twoPointVertexOfLeg leg = v ∧
-          twoPointVertexOfLeg (d.pairing.partner leg) = w :=
-  Iff.rfl
-
 /-- The ambient vertex carrying a vertex of the external piece. -/
 def slotSplitVertex (h : T ⊆ S) : TwoPointVertex T → TwoPointVertex S
   | Sum.inl e => Sum.inl e
@@ -56,14 +47,6 @@ theorem twoPointVertexOfLeg_slotLegSplitting_inl (h : T ⊆ S)
 
 variable (h : T ⊆ S) (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
   (vac : QuarticDiagram InternalLabel N (S \ T))
-
-/-- Adjacency in a quartic vertex graph, unfolded. -/
-private theorem QuarticDiagram.vertexGraph_adj_iff
-    (d : QuarticDiagram InternalLabel N S) (v w : ↥S) :
-    d.vertexGraph.Adj v w ↔
-      v ≠ w ∧ ∃ leg : Fin (2 * (2 * S.card)),
-        vertexOfLeg leg = v ∧ vertexOfLeg (d.pairing.partner leg) = w :=
-  Iff.rfl
 
 /-- The ambient interaction vertex carrying a vertex of the vacuum piece. -/
 def slotSplitVacuumVertex : ↥(S \ T) → TwoPointVertex S :=
@@ -166,7 +149,15 @@ private theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
         (slotSplitVacuumVertex x) (slotSplitVacuumVertex y) ↔
       vac.vertexGraph.Adj x y := by
-  rw [TwoPointDiagram.vertexGraph_adj_iff, QuarticDiagram.vertexGraph_adj_iff]
+  change
+    (slotSplitVacuumVertex x ≠ slotSplitVacuumVertex y ∧
+      ∃ leg : Fin (2 * (2 * S.card + 1)),
+        twoPointVertexOfLeg leg = slotSplitVacuumVertex x ∧
+          twoPointVertexOfLeg
+            ((TwoPointDiagram.ofSlotSplit h ext vac).pairing.partner leg) =
+              slotSplitVacuumVertex y) ↔
+      (x ≠ y ∧ ∃ leg : Fin (2 * (2 * (S \ T).card)),
+        vertexOfLeg leg = x ∧ vertexOfLeg (vac.pairing.partner leg) = y)
   constructor
   · rintro ⟨hne, leg, hleg, hpartner⟩
     obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
@@ -194,8 +185,7 @@ private theorem not_adj_slotSplitVertex_slotSplitVacuumVertex
     ¬ (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
       (slotSplitVertex h x) (slotSplitVacuumVertex y) := by
   intro hadj
-  obtain ⟨_, leg, hleg, hpartner⟩ :=
-    ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph_adj_iff _ _).1 hadj
+  obtain ⟨_, leg, hleg, hpartner⟩ := hadj
   obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
   cases z with
   | inl i =>
