@@ -56,7 +56,8 @@ theorem ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner {E n : �
   change (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)
       ((d.pairing.transport (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)).partner p) =
     d.pairing.partner (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ p)
-  simp
+  rw [PairingOn.transport_partner]
+  exact (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).apply_symm_apply _
 
 
 end Common

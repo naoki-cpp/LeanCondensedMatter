@@ -35,7 +35,8 @@ theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner
   change (mixedTimeAmbientPositionEquiv τ τ' σ)
       ((d.pairing.transport (mixedTimeAmbientPositionEquiv τ τ' σ)).partner p) =
     d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p)
-  simp
+  rw [PairingOn.transport_partner]
+  exact (mixedTimeAmbientPositionEquiv τ τ' σ).apply_symm_apply _
 
 /-- The diagram pairing as a map on atomic leg identities; this map is independent of the mixed-time
 enumeration. -/
