@@ -150,31 +150,30 @@ theorem ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit
   let d := ExternalInsertionDiagram.ofSlotSplit h ext vac
   apply Finset.Subset.antisymm
   · intro v hv
+    by_contra hvT
     have hvS : v ∈ S := d.externallySupportedInteractionPart_subset hv
     let vS : ↥S := ⟨v, hvS⟩
+    let w : ↥(S \ T) := ⟨v, Finset.mem_sdiff.mpr ⟨hvS, hvT⟩⟩
     obtain ⟨e, he⟩ := (d.mem_externallySupportedInteractionPart vS).1 hv
     have hr : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr vS) :=
       (d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).1 he
-    have hr' :
-        (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-          (supportSlotVertex h (Sum.inl e)) (Sum.inr vS) := by
-      simpa [d, supportSlotVertex] using hr
-    obtain ⟨y, hy, -⟩ :=
-      supportSlotVertex_walk_lift h ext vac hr'.some (Sum.inl e) rfl
-    cases y with
-    | inl f => simp [supportSlotVertex] at hy
-    | inr w =>
-        have heq : v = (w : Fin N) := by
-          exact congrArg Subtype.val (by simpa [supportSlotVertex] using hy)
-        rw [heq]
-        exact w.2
+    apply SimpleGraph.not_reachable_sum_inl_inr
+      (G := ext.vertexGraph) (H := vac.vertexGraph) (Sum.inl e) w
+    apply (SimpleGraph.Iso.reachable_iff
+      (φ := supportSlotVertexGraphIso h ext vac)
+      (u := Sum.inl (Sum.inl e)) (v := Sum.inr w)).mp
+    change d.vertexGraph.Reachable
+      (supportSlotVertexEquiv h (Sum.inl (Sum.inl e)))
+      (supportSlotVertexEquiv h (Sum.inr w))
+    simpa [supportSlotVertexEquiv_inl, supportSlotVertexEquiv_inr,
+      supportSlotVertex, vS, w] using hr
   · intro v hv
     let vT : ↥T := ⟨v, hv⟩
     let vS : ↥S := ⟨v, h hv⟩
     obtain ⟨e, he⟩ := hext vT
     have hr : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr vS) := by
-      have hmapped := supportSlotVertex_reachable_of_reachable h ext vac he
-      simpa [d, supportSlotVertex] using hmapped
+      simpa [d, supportSlotVertex] using
+        (supportSlotVertex_reachable_iff h ext vac (Sum.inl e) (Sum.inr vT)).2 he
     apply (d.mem_externallySupportedInteractionPart vS).2
     exact ⟨e, (d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).2 hr⟩
 
