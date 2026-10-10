@@ -96,4 +96,23 @@ noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
       rw [pairing.restrict_partner_val]
       exact ((pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2)
 
+/-- Transport partner-invariant normalized-pair subsets along a partner-preserving position
+equivalence when the selection predicates agree under that equivalence. -/
+noncomputable def Pairing.normalizedPairSubtypeEquivOfPartnerEquiv
+    {m n : ℕ} (source : Pairing m) (target : Pairing n)
+    (e : Fin (2 * m) ≃ Fin (2 * n))
+    (hpartner : ∀ i, target.partner (e i) = e (source.partner i))
+    (p : Fin (2 * m) → Prop) (q : Fin (2 * n) → Prop)
+    (hstable : ∀ i, p (source.partner i) ↔ p i)
+    (hcompat : ∀ i, q (e i) ↔ p i) :
+    source.NormalizedPairSubtype p ≃ target.NormalizedPairSubtype q :=
+  (source.normalizedPairEquivOfPartnerEquiv target e hpartner).subtypeEquiv
+    (fun pr => by
+      have hends := source.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap
+        target e hpartner pr
+      rcases hends with h | h
+      · rw [congrArg Prod.fst h, hcompat]
+      · have hp := ((source.mem_pairs_iff pr.1.1 pr.1.2).mp pr.2).2
+        rw [congrArg Prod.fst h, hcompat, ← hp, hstable])
+
 end Combinatorics
