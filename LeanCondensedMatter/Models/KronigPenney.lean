@@ -29,11 +29,13 @@ The model is finite and convention-explicit. It does not introduce transport, Be
 Chern data, an infinite-crystal limit, or a thermodynamic limit.
 -/
 
-namespace LeanCondensedMatter.Crystal.KronigPenney
+namespace QuantumTheory.Models.KronigPenney
 
 open scoped Topology
 
 noncomputable section
+
+open LeanCondensedMatter.Crystal
 
 /-- Physical and finite-domain parameters for one square-potential Kronig–Penney benchmark.
 
@@ -472,4 +474,4 @@ theorem BandEdgeData.effectiveMass_eq
 
 end
 
-end LeanCondensedMatter.Crystal.KronigPenney
+end QuantumTheory.Models.KronigPenney
