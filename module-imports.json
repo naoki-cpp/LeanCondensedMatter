@@ -1730,7 +1730,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PairIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
+        "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 1
     },
@@ -1741,15 +1742,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor"
       ],
       "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleExtraction.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
-        "LeanCondensedMatter.Transport.Streda.InterbandPole"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
@@ -1836,7 +1828,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
