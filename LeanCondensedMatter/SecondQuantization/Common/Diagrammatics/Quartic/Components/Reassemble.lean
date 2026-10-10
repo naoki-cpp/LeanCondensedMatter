@@ -120,7 +120,7 @@ private theorem QuarticDiagram.reassemble_reachable_same_part {S : Finset (Fin N
     (Relation.ReflTransGen.lift (p := Eq)
       (fun v : ↥S => π.part (v : Fin N))
       (fun _ _ hadj => QuarticDiagram.reassemble_vertexGraph_adj_same_part π F hadj))
-      ((SimpleGraph.reachable_iff_reflTransGen u w).mp h)
+      u w ((SimpleGraph.reachable_iff_reflTransGen u w).mp h)
 
 private theorem QuarticDiagram.reassemble_componentBlock_subset_part
     {S : Finset (Fin N)} (π : Finpartition S)
