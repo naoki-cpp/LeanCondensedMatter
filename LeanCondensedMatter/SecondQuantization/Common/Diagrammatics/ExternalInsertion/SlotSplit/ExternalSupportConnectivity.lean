@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
 
 set_option linter.style.header false
 
@@ -45,7 +46,6 @@ private theorem supportSlotVertexEquiv_inr (h : T ⊆ S) (v : ↥(S \ T)) :
       (Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ : ExternalInsertionVertex E S) := by
   change (Sum.inr (subsetSumSdiffEquiv h (Sum.inr v)) : ExternalInsertionVertex E S) = _
   rw [subsetSumSdiffEquiv_inr_apply]
-  rfl
 
 /-- Left legs retain the corresponding vertices under the splitting. -/
 private theorem supportSlotVertex_of_left_leg (h : T ⊆ S)
