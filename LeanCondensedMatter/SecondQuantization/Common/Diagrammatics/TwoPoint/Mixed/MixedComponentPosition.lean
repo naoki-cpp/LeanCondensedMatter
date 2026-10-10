@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
 
 set_option linter.style.header false
 
@@ -83,16 +82,6 @@ noncomputable def TwoPointDiagram.mixedComponentPositionEquiv {n : ℕ}
     d.MixedComponentPosition τ τ' σ B ≃ d.ComponentLeg B :=
   (mixedTimeAmbientPositionEquiv τ τ' σ).subtypeEquiv fun p =>
     d.mixedPositionComponent_eq_iff_legInComponent τ τ' σ B p
-
-/-- Mixed positions in the external component, reindexed by the canonical left external split. -/
-noncomputable def TwoPointDiagram.mixedExternalPositionEquiv {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.MixedComponentPosition τ τ' σ d.externalComponentPart ≃
-      Fin (2 * (2 * (interactionSector
-        (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1)) :=
-  (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart).trans
-    d.externalComponentLegEquiv.symm
 
 /-- Mixed positions in a vacuum component, reindexed as the legs of its restricted quartic
 diagram. -/

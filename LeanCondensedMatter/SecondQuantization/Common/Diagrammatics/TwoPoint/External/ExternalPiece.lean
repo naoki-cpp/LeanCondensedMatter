@@ -301,7 +301,9 @@ noncomputable def TwoPointDiagram.externalPieceMixedPositionEquiv
       have hcard :
           Fintype.card (Fin (2 * (2 * d.externalInteractionPart.card + 1))) =
             Fintype.card (d.MixedComponentPosition τ τ' σ d.externalComponentPart) := by
-        rw [Fintype.card_congr (d.mixedExternalPositionEquiv τ τ' σ), Fintype.card_fin,
+        rw [Fintype.card_congr
+            ((d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart).trans
+              d.externalComponentLegEquiv.symm), Fintype.card_fin,
           Fintype.card_fin]
         rfl
       refine (Fintype.bijective_iff_injective_and_card _).2 ⟨fun p q h => ?_, hcard⟩
