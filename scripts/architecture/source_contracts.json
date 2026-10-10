@@ -576,6 +576,7 @@
       "path": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
       "modules": [
         "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Models.Parabolic2DEG.Green",
         "LeanCondensedMatter.Models.Parabolic2DEG.Response"
       ]
     },
@@ -761,6 +762,11 @@
       "id": "genericResolventSpectralBoundary",
       "path": "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
       "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"]
+    },
+    {
+      "id": "parabolic2DEGCleanModelResolventBoundary",
+      "path": "LeanCondensedMatter/Models/Parabolic2DEG/Model.lean",
+      "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
     }
   ],
   "forbiddenImportPrefixes": [
