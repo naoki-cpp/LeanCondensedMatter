@@ -744,7 +744,9 @@ function renderDetails(name) {
   ui.detail.append(relationSection("Type dependencies", entry.typeDependencies ?? []));
   ui.detail.append(relationSection("Body / proof dependencies", entry.valueDependencies ?? []));
   ui.detail.append(relationSection("Declaration consumers", entry.dependents));
-  ui.detail.append(relationSection("Compiled consumers", entry.compiledConsumers));
+  if (entry.kind === "theorem" && Number.isInteger(entry.compiledConsumerCount)) {
+    ui.detail.append(relationSection("Theorem audit compiled consumers", entry.compiledConsumers));
+  }
 }
 
 function writeLocation(push) {
