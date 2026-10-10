@@ -116,11 +116,11 @@ private theorem QuarticDiagram.reassemble_reachable_same_part {S : Finset (Fin N
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
     {u w : ↥S} (h : (QuarticDiagram.reassemble π F).vertexGraph.Reachable u w) :
     π.part (u : Fin N) = π.part (w : Fin N) := by
-  obtain ⟨p⟩ := h
-  induction p with
-  | nil => rfl
-  | cons hadj _ ih =>
-    exact (QuarticDiagram.reassemble_vertexGraph_adj_same_part π F hadj).trans ih
+  simpa only [Relation.reflTransGen_eq_self] using
+    (Relation.ReflTransGen.lift (p := Eq)
+      (fun v : ↥S => π.part (v : Fin N))
+      (fun _ _ hadj => QuarticDiagram.reassemble_vertexGraph_adj_same_part π F hadj))
+      ((SimpleGraph.reachable_iff_reflTransGen u w).mp h)
 
 private theorem QuarticDiagram.reassemble_componentBlock_subset_part
     {S : Finset (Fin N)} (π : Finpartition S)
