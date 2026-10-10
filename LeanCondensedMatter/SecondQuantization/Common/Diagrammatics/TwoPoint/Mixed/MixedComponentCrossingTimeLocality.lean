@@ -35,29 +35,17 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrder
       mixedTimeAmbientPositionEquiv τ τ' υ := by
     unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
     rw [hlegs]
-  let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
-    (mixedTimeAmbientPositionEquiv τ τ' υ).symm
-  have hf (p : Fin (2 * (2 * n + 1))) : f p = p := by
-    simp only [f, hambient, Equiv.trans_apply, Equiv.symm_apply_apply]
   have hpairing : d.pairingInMixedOrder τ τ' σ =
       d.pairingInMixedOrder τ τ' υ := by
     unfold TwoPointDiagram.pairingInMixedOrder
     rw [hambient]
-  have hnorm := (d.pairingInMixedOrder τ τ' υ).normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    (d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv f
-    (fun q => by
-      simp only [Pairing.pairEndpointEquiv_apply,
-        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf]
-      rw [← hpairing]
-      exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff _ _).mp q.2).2)
-    pr.1 (by
-      simpa only [Pairing.pairEndpointEquiv_apply,
-        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf] using
-        (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff _ _).mp pr.1.2).1)
-  change ((d.pairingInMixedOrder τ τ' υ).normalizedPairOfEndpointEquiv
-    (d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv f pr.1).1 = pr.1.1
-  simpa only [Pairing.pairEndpointEquiv_apply,
-    Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf] using hnorm
+  change ((d.pairingInMixedOrder τ τ' υ).pairEndpointEquiv.symm
+    (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
+      (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
+      ((d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv (pr.1, 0)))).1.1 =
+    pr.1.1
+  simp only [Equiv.trans_apply, hambient, Equiv.symm_apply_apply]
+  simpa only [← hpairing, Equiv.symm_apply_apply]
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
