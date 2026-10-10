@@ -73,40 +73,15 @@ theorem ExternalInsertionDiagram.slotCongr_vertexLabel (e : ↥T ≃ ↥U)
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) (v : ↥U) :
     (d.slotCongr (M := M) e).vertexLabel v = d.vertexLabel (e.symm v) := rfl
 
-/-- The transported pairing pairs the transported legs. -/
-theorem ExternalInsertionDiagram.slotCongr_partner (e : ↥T ≃ ↥U)
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
-    (leg : Fin (2 * (2 * T.card + E))) :
-    (d.slotCongr (M := M) e).pairing.partner (externalInsertionLegCongr (E := E) e leg) =
-      externalInsertionLegCongr (E := E) e (d.pairing.partner leg) := by
-  simp [ExternalInsertionDiagram.slotCongr]
-
-/-- **The transport is an isomorphism of vertex graphs.** -/
-theorem ExternalInsertionDiagram.slotCongr_adj_iff (e : ↥T ≃ ↥U)
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) (v w : ExternalInsertionVertex E T) :
-    (d.slotCongr (M := M) e).vertexGraph.Adj
-        (externalInsertionVertexCongr (E := E) e v) (externalInsertionVertexCongr (E := E) e w) ↔
-      d.vertexGraph.Adj v w := by
-  constructor
-  · rintro ⟨hne, leg, hleg, hpartner⟩
-    obtain ⟨leg, rfl⟩ := (externalInsertionLegCongr (E := E) e).surjective leg
-    rw [externalInsertionVertexOfLeg_externalInsertionLegCongr] at hleg
-    rw [d.slotCongr_partner e leg, externalInsertionVertexOfLeg_externalInsertionLegCongr] at hpartner
-    exact ⟨fun hvw => hne (congrArg (externalInsertionVertexCongr (E := E) e) hvw), leg,
-      (externalInsertionVertexCongr (E := E) e).injective hleg, (externalInsertionVertexCongr (E := E) e).injective hpartner⟩
-  · rintro ⟨hne, leg, hleg, hpartner⟩
-    refine ⟨fun hEq => hne ((externalInsertionVertexCongr (E := E) e).injective hEq), externalInsertionLegCongr (E := E) e leg, ?_, ?_⟩
-    · rw [externalInsertionVertexOfLeg_externalInsertionLegCongr, hleg]
-    · rw [d.slotCongr_partner e leg, externalInsertionVertexOfLeg_externalInsertionLegCongr, hpartner]
-
 /-- Interaction-slot relabeling induces an isomorphism of vertex graphs. -/
 noncomputable def ExternalInsertionDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
-    d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph where
-  toEquiv := externalInsertionVertexCongr (E := E) e
-  map_rel_iff' := by
-    intro a b
-    exact d.slotCongr_adj_iff (M := M) e a b
+    d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph :=
+  d.pairing.vertexGraphTransportIso (externalInsertionLegCongr (E := E) e)
+    (externalInsertionVertexOfLeg (E := E) (S := T))
+    (externalInsertionVertexOfLeg (E := E) (S := U))
+    (externalInsertionVertexCongr (E := E) e)
+    (externalInsertionVertexOfLeg_externalInsertionLegCongr e)
 
 /-- The transport is an equivalence of diagram types. -/
 noncomputable def ExternalInsertionDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :

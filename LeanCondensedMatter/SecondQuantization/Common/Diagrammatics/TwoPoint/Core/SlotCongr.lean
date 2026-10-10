@@ -116,32 +116,13 @@ theorem TwoPointDiagram.slotCongr_partner (e : ↥T ≃ ↥U)
       twoPointLegCongr e (d.pairing.partner leg) := by
   simp [TwoPointDiagram.slotCongr]
 
-/-- **The transport is an isomorphism of vertex graphs.** -/
-theorem TwoPointDiagram.slotCongr_adj_iff (e : ↥T ≃ ↥U)
-    (d : TwoPointDiagram ExternalLabel InternalLabel N T) (v w : TwoPointVertex T) :
-    (d.slotCongr (M := M) e).vertexGraph.Adj
-        (twoPointVertexCongr e v) (twoPointVertexCongr e w) ↔
-      d.vertexGraph.Adj v w := by
-  constructor
-  · rintro ⟨hne, leg, hleg, hpartner⟩
-    obtain ⟨leg, rfl⟩ := (twoPointLegCongr e).surjective leg
-    rw [twoPointVertexOfLeg_twoPointLegCongr] at hleg
-    rw [d.slotCongr_partner e leg, twoPointVertexOfLeg_twoPointLegCongr] at hpartner
-    exact ⟨fun hvw => hne (congrArg (twoPointVertexCongr e) hvw), leg,
-      (twoPointVertexCongr e).injective hleg, (twoPointVertexCongr e).injective hpartner⟩
-  · rintro ⟨hne, leg, hleg, hpartner⟩
-    refine ⟨fun hEq => hne ((twoPointVertexCongr e).injective hEq), twoPointLegCongr e leg, ?_, ?_⟩
-    · rw [twoPointVertexOfLeg_twoPointLegCongr, hleg]
-    · rw [d.slotCongr_partner e leg, twoPointVertexOfLeg_twoPointLegCongr, hpartner]
-
 /-- Interaction-slot relabeling induces an isomorphism of vertex graphs. -/
 noncomputable def TwoPointDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
-    d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph where
-  toEquiv := twoPointVertexCongr e
-  map_rel_iff' := by
-    intro a b
-    exact d.slotCongr_adj_iff (M := M) e a b
+    d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph :=
+  d.pairing.vertexGraphTransportIso (twoPointLegCongr e)
+    (twoPointVertexOfLeg (S := T)) (twoPointVertexOfLeg (S := U))
+    (twoPointVertexCongr e) (twoPointVertexOfLeg_twoPointLegCongr e)
 
 /-- **External connectedness is preserved by the transport.** -/
 theorem TwoPointDiagram.slotCongr_isExternallyConnected_iff (e : ↥T ≃ ↥U)

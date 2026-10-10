@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import Mathlib.Combinatorics.SimpleGraph.Sum
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
@@ -30,6 +31,33 @@ noncomputable def Pairing.vertexGraph {n : ℕ} {Vertex : Type*} (pairing : Pair
     rintro v ⟨hvv, -⟩
     exact hvv rfl⟩
 
+
+/-- Transporting the paired legs and their incident vertices along compatible equivalences
+induces an isomorphism of the pairing vertex graphs. -/
+noncomputable def Pairing.vertexGraphTransportIso
+    {m n : ℕ} {V W : Type*}
+    (P : Pairing m) (e : Fin (2 * m) ≃ Fin (2 * n))
+    (vertex : Fin (2 * m) → V) (vertex' : Fin (2 * n) → W)
+    (f : V ≃ W) (h : ∀ i, vertex' (e i) = f (vertex i)) :
+    P.vertexGraph vertex ≃g Pairing.vertexGraph (P.transport e.symm) vertex' where
+  toEquiv := f
+  map_rel_iff' := by
+    intro a b
+    have hpartner (i : Fin (2 * m)) :
+        (P.transport e.symm).partner (e i) = e (P.partner i) := by
+      simp only [PairingOn.transport_partner, Equiv.symm_symm,
+        Equiv.symm_apply_apply]
+    constructor
+    · rintro ⟨hne, leg, hleg, hpair⟩
+      obtain ⟨i, rfl⟩ := e.surjective leg
+      rw [h i] at hleg
+      rw [hpartner i, h (P.partner i)] at hpair
+      exact ⟨fun hab => hne (congrArg f hab), i,
+        f.injective hleg, f.injective hpair⟩
+    · rintro ⟨hne, i, hi, hj⟩
+      refine ⟨fun hab => hne (f.injective hab), e i, ?_, ?_⟩
+      · rw [h i, hi]
+      · rw [hpartner i, h (P.partner i), hj]
 
 /-- Splitting the legs of a pairing induces a disjoint sum of vertex graphs when the
 incidence maps identify the two vertex sectors with disjoint summands. -/
