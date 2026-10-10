@@ -31,37 +31,33 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrder
     (pr : d.MixedComponentPair τ τ' σ B) :
     (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 = pr.1.1 := by
   have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
-  have hstd : standardToMixedAtomicPositionEquiv τ τ' σ =
-      standardToMixedAtomicPositionEquiv τ τ' υ := by
-    unfold standardToMixedAtomicPositionEquiv
-    rw [hlegs]
   have hambient : mixedTimeAmbientPositionEquiv τ τ' σ =
       mixedTimeAmbientPositionEquiv τ τ' υ := by
-    unfold mixedTimeAmbientPositionEquiv
-    rw [hstd]
+    unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
+    rw [hlegs]
   let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
     (mixedTimeAmbientPositionEquiv τ τ' υ).symm
   have hf (p : Fin (2 * (2 * n + 1))) : f p = p := by
     simp only [f, hambient, Equiv.trans_apply, Equiv.symm_apply_apply]
-  have hPair := d.mixedPairTimeEquiv_pair_eq_or_swap τ τ' σ υ pr.1
-  change (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 =
-      (f pr.1.1.1, f pr.1.1.2) ∨
-    (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 =
-      (f pr.1.1.2, f pr.1.1.1) at hPair
-  simp only [hf] at hPair
-  rcases hPair with h | h
-  · exact h
-  · have hSource : pr.1.1.1 < pr.1.1.2 :=
-      ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).mp pr.1.2 |>.1
-    have hTarget :
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.1 <
-          (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.2 :=
-      ((d.pairingInMixedOrder τ τ' υ).mem_pairs_iff
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.1
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1.2).mp
-          (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.2 |>.1
-    rw [congrArg Prod.fst h, congrArg Prod.snd h] at hTarget
-    exact (lt_asymm hTarget hSource).elim
+  have hpairing : d.pairingInMixedOrder τ τ' σ =
+      d.pairingInMixedOrder τ τ' υ := by
+    unfold TwoPointDiagram.pairingInMixedOrder
+    rw [hambient]
+  have hnorm := (d.pairingInMixedOrder τ τ' υ).normalizedPairOfEndpointEquiv_pair_eq_of_lt
+    (d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv f
+    (fun q => by
+      simp only [Pairing.pairEndpointEquiv_apply,
+        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf]
+      rw [← hpairing]
+      exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff _ _).mp q.2).2)
+    pr.1 (by
+      simpa only [Pairing.pairEndpointEquiv_apply,
+        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf] using
+        (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff _ _).mp pr.1.2).1)
+  change ((d.pairingInMixedOrder τ τ' υ).normalizedPairOfEndpointEquiv
+    (d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv f pr.1).1 = pr.1.1
+  simpa only [Pairing.pairEndpointEquiv_apply,
+    Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf] using hnorm
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
