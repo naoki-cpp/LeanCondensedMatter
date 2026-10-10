@@ -118,17 +118,6 @@ noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)
   (Finset.toLeft
     (B : Finset (ExternalInsertionVertex E S))).card / 2
 
-/-- The external sector of one component has twice its local external-pair count. -/
-private theorem ExternalInsertionDiagram.externalSector_card_eq_two_mul_externalPairCount
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) :
-    (Finset.toLeft
-      (B : Finset (ExternalInsertionVertex E S))).card =
-      2 * d.externalPairCount B := by
-  rw [ExternalInsertionDiagram.externalPairCount]
-  exact (Nat.two_mul_div_two_of_even (d.externalSector_card_even B)).symm
-
 /-- Increasing reindexing of a component's ambient external insertions by its local external slots. -/
 noncomputable def ExternalInsertionDiagram.externalSectorOrderIso {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -138,7 +127,9 @@ noncomputable def ExternalInsertionDiagram.externalSectorOrderIso {S : Finset (F
         (B : Finset (ExternalInsertionVertex E S))) :=
   (Finset.toLeft
     (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
-      (d.externalSector_card_eq_two_mul_externalPairCount B)
+      (by
+        rw [ExternalInsertionDiagram.externalPairCount]
+        exact (Nat.two_mul_div_two_of_even (d.externalSector_card_even B)).symm)
 
 /-- The canonical order-preserving shuffle of component-local external insertions into the
 ambient external-insertion order. -/
