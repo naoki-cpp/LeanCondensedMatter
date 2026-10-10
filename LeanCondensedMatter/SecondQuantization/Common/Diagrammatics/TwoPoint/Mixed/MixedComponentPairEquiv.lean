@@ -195,38 +195,6 @@ private theorem TwoPointDiagram.mixedTimePositionEquiv_partner
   simp only [TwoPointDiagram.pairingInMixedOrder, PairingOn.transport_partner,
     Equiv.trans_apply, Equiv.apply_symm_apply]
 
-/-- Transport ambient normalized pairs between time assignments through their common diagram legs. -/
-noncomputable def TwoPointDiagram.mixedPairTimeEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
-    (d.pairingInMixedOrder τ τ' σ).NormalizedPair ≃
-      (d.pairingInMixedOrder τ τ' υ).NormalizedPair :=
-  (d.pairingInMixedOrder τ τ' σ).normalizedPairEquivOfPartnerEquiv
-    (d.pairingInMixedOrder τ τ' υ)
-    ((mixedTimeAmbientPositionEquiv τ τ' σ).trans
-      (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
-    (d.mixedTimePositionEquiv_partner τ τ' σ υ)
-
-/-- Ambient pair transport preserves the pair endpoints up to normalized orientation. -/
-theorem TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
-    let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
-      (mixedTimeAmbientPositionEquiv τ τ' υ).symm
-    (d.mixedPairTimeEquiv τ τ' σ υ pr).1 =
-      (f pr.1.1, f pr.1.2) ∨
-    (d.mixedPairTimeEquiv τ τ' σ υ pr).1 =
-      (f pr.1.2, f pr.1.1) := by
-  dsimp only
-  exact (d.pairingInMixedOrder τ τ' σ).normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap
-    (d.pairingInMixedOrder τ τ' υ)
-    ((mixedTimeAmbientPositionEquiv τ τ' σ).trans
-      (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
-    (d.mixedTimePositionEquiv_partner τ τ' σ υ) pr
-
 /-- Canonical comparison of mixed normalized pairs in one component, obtained by restricting the
 global partner-preserving pair transport rather than splitting external and vacuum components. -/
 noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
