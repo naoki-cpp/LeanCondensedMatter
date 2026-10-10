@@ -279,8 +279,9 @@ theorem TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition
   have hleg := d.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition τ τ' σ p
   have hcanonical := d.twoPointLegEquiv_externalPieceLegEquiv_symm pieceLeg
   have hamb :
-      d.unflattenedLegInComponent d.externalComponentPart
-        (twoPointLegEquiv (Finset.univ : Finset (Fin n)) ambientLeg.1) :=
+      componentLegVertex
+        (twoPointLegEquiv (Finset.univ : Finset (Fin n)) ambientLeg.1) ∈
+          (d.externalComponentPart : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
     (d.legInComponent_iff_unflattened d.externalComponentPart ambientLeg.1).1 ambientLeg.2
   rw [d.mixedPositionComponent_eq_iff_legInComponent,
     d.legInComponent_iff_unflattened, twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
