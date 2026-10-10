@@ -323,10 +323,19 @@ private theorem QuarticDiagram.restrictComponent_reassemble_pairing
             (QuarticDiagram.reassemble π F).legInBlock (B : Finset (Fin N)) leg}) :
           Fin (2 * (2 * S.card))) =
         (QuarticDiagram.bigLegEquiv π).symm ⟨B, q⟩ := by
-    have h := QuarticDiagram.blockLegEquiv_symm_val_bigLegEquiv
-      (QuarticDiagram.reassemble π F) ⟨B, hB'⟩ q
-    rw [QuarticDiagram.componentPartition_reassemble π F] at h
-    exact h
+    calc
+      (((QuarticDiagram.reassemble π F).blockLegEquiv hB').symm q).1 =
+          (QuarticDiagram.bigLegEquiv
+            (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn).symm
+            ⟨⟨B, hB'⟩, q⟩ :=
+        QuarticDiagram.blockLegEquiv_symm_val_bigLegEquiv
+          (QuarticDiagram.reassemble π F) ⟨B, hB'⟩ q
+      _ = (QuarticDiagram.bigLegEquiv π).symm ⟨B, q⟩ := by
+        rw [QuarticDiagram.bigLegEquiv_symm_sigma_mk,
+          QuarticDiagram.bigLegEquiv_symm_sigma_mk]
+        apply congrArg (fun v : ↥S => legOfVertexLocal v (localLegOfLeg q))
+        apply Subtype.ext
+        rfl
   rw [(QuarticDiagram.reassemble π F).restrictedPartner_val B,
     hblock leg,
     QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk π F B leg,
