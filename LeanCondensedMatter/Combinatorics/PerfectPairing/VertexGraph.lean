@@ -39,7 +39,7 @@ noncomputable def Pairing.vertexGraphTransportIso
     (P : Pairing m) (e : Fin (2 * m) ≃ Fin (2 * n))
     (vertex : Fin (2 * m) → V) (vertex' : Fin (2 * n) → W)
     (f : V ≃ W) (h : ∀ i, vertex' (e i) = f (vertex i)) :
-    P.vertexGraph vertex ≃g (P.transport e.symm).vertexGraph vertex' where
+    P.vertexGraph vertex ≃g Pairing.vertexGraph (P.transport e.symm) vertex' where
   toEquiv := f
   map_rel_iff' := by
     intro a b
