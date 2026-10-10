@@ -15,9 +15,10 @@ electron gas,
 ε(p) = |p|² / (2 m_eff).
 ```
 
-The benchmark uses physical momentum rather than wave vector and keeps the signed carrier charge,
-reduced Planck constant, finite radial momentum cutoff, finite spectral broadening, and
-momentum-measure normalization explicit. Green functions live in the separate `Green` module. No infinite-volume, cutoff-removal, zero-broadening, or
+The clean band and velocity use only `HamiltonianParameters` (the effective mass). The
+extended `Parameters` carries charge, chemical potential, reduced Planck constant, momentum cutoff,
+spectral broadening and measure normalization for finite response calculations. Green functions
+live in the separate `Green` module. No infinite-volume, cutoff-removal, zero-broadening, or
 universal-limit identification is made here.
 
 The current convention is `j = q v`, where `q` is the signed carrier charge stored in
@@ -33,12 +34,14 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Physical and measure-normalization data needed to interpret one finite parabolic-2DEG
-calculation. Response normalization is deliberately not stored here; the response layer attaches
-its named Kubo/Středa prefactor before constructing a physical conductivity tensor. -/
-structure Parameters where
+/-- Effective mass determining the clean parabolic band, Hamiltonian and group velocity. -/
+structure HamiltonianParameters where
   /-- Effective mass `m_eff` in the parabolic dispersion. -/
   effectiveMass : ℝ
+
+/-- Clean model parameters together with the finite response and measure-normalization data.
+The Kubo/Středa conductivity prefactor is attached by the response layer, not stored here. -/
+structure Parameters extends HamiltonianParameters where
   /-- Chemical potential used as the probe energy of the one-band Green function. -/
   chemicalPotential : ℝ
   /-- Finite radial momentum cutoff `p_max`. -/
@@ -52,6 +55,10 @@ structure Parameters where
   /-- Scalar multiplying the radial/angular momentum integral. This records the chosen measure
   normalization explicitly; for physical momentum one may choose `1 / (2πℏ)²`. -/
   momentumMeasureNormalization : ℝ
+
+/-- Use a response parameter bundle where only clean Hamiltonian data is needed. -/
+instance : Coe Parameters HamiltonianParameters where
+  coe params := params.toHamiltonianParameters
 
 /-- Explicit physical regularity domain for the finite benchmark. -/
 structure Parameters.IsRegular (params : Parameters) : Prop where
@@ -92,12 +99,12 @@ def MomentumInDomain (params : Parameters) (px py : ℝ) : Prop :=
   momentumSq px py ≤ params.momentumCutoff ^ 2
 
 /-- Parabolic band energy `ε(p) = |p|² / (2 m_eff)`. -/
-def bandEnergy (params : Parameters) (px py : ℝ) : ℝ :=
+def bandEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
   momentumSq px py / (2 * params.effectiveMass)
 
 /-- Cartesian group-velocity component `v_i = p_i / m_eff`. -/
 def velocityComponent
-    (params : Parameters) (direction : Fin 2) (px py : ℝ) : ℝ :=
+    (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) : ℝ :=
   momentumComponent direction px py / params.effectiveMass
 
 /-- Cartesian electrical-current component in the explicit convention `j_i = q v_i`. -/
@@ -107,13 +114,13 @@ def currentComponent
 
 /-- One-band Hamiltonian operator, represented as scalar multiplication on `ℂ`. -/
 noncomputable def hamiltonianOperator
-    (params : Parameters) (px py : ℝ) : BandHilbert →L[ℂ] BandHilbert :=
+    (params : HamiltonianParameters) (px py : ℝ) : BandHilbert →L[ℂ] BandHilbert :=
   (((bandEnergy params px py : ℝ) : ℂ)) •
     (1 : BandHilbert →L[ℂ] BandHilbert)
 
 /-- One-band velocity operator represented by the named velocity component. -/
 noncomputable def velocityOperator
-    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) :
     BandHilbert →L[ℂ] BandHilbert :=
   (((velocityComponent params direction px py : ℝ) : ℂ)) •
     (1 : BandHilbert →L[ℂ] BandHilbert)
@@ -137,13 +144,13 @@ theorem currentOperator_eq_charge_smul_velocityOperator
 
 /-- The Hamiltonian operator is self-adjoint because its scalar coefficient is real. -/
 theorem hamiltonianOperator_isSelfAdjoint
-    (params : Parameters) (px py : ℝ) :
+    (params : HamiltonianParameters) (px py : ℝ) :
     IsSelfAdjoint (hamiltonianOperator params px py) := by
   simp [hamiltonianOperator, isSelfAdjoint_iff]
 
 /-- The velocity operator is self-adjoint because its scalar coefficient is real. -/
 theorem velocityOperator_isSelfAdjoint
-    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) :
     IsSelfAdjoint (velocityOperator params direction px py) := by
   simp [velocityOperator, isSelfAdjoint_iff]
 
