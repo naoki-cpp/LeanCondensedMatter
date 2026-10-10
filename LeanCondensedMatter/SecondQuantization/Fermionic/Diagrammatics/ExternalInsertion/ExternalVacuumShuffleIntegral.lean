@@ -23,6 +23,61 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- The free-Gibbs contraction of two quartic interaction legs embedded in the
+arbitrary-external mixed-time leg order agrees with the canonical vacuum Dyson
+pair kernel. Both sides use the same ordered endpoints; this does not identify
+the orientation of an ambient normalized pair after an external/vacuum shuffle. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (a b : Fin (2 * (2 * n))) :
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        externalLabel externalTime q σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (Sum.inr (⟨(orderedQuarticLegEquiv n a).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv n a).2)))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (Sum.inr (⟨(orderedQuarticLegEquiv n b).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv n b).2))) =
+      flatVertexLegPairValue ε β q σ a b := by
+  simp only [externalInsertionMixedTimeOrderedAtomicPairValue,
+    externalInsertionMixedTimeOrderedAtomicFieldFamily,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    flatVertexLegPairValue]
+  rfl
+
+/-- The quartic vacuum pair kernel remains unchanged after embedding its
+interaction slots into an ambient arbitrary-external mixed-time diagram. In
+particular this applies to the vacuum half of a binary slot shuffle; endpoint
+orientation is kept explicit rather than quotienting by pair reversal. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
+    (ε : Mode → ℝ) (β : ℝ) {E m n : ℕ}
+    (fInteraction : Fin m → Fin n)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (a b : Fin (2 * (2 * m))) :
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        externalLabel externalTime q σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
+            (Sum.inr (⟨(orderedQuarticLegEquiv m a).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv m a).2))))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
+            (Sum.inr (⟨(orderedQuarticLegEquiv m b).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv m b).2)))) =
+      flatVertexLegPairValue ε β (q ∘ fInteraction) (σ ∘ fInteraction) a b := by
+  simp only [externalInsertionMixedTimeOrderedAtomicPairValue,
+    externalInsertionMixedTimeOrderedAtomicFieldFamily,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    flatVertexLegPairValue]
+  rfl
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
