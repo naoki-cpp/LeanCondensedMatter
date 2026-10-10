@@ -163,8 +163,7 @@
           "id": "bastinPole",
           "modulePrefixes": [
             "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
-            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
-            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction"
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity"
           ]
         },
         {
