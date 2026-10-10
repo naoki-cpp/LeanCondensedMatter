@@ -107,7 +107,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
   have hdata :
       d.mixedVacuumPositionDataEquiv τ τ' σ C hVac direct = (v, l) := by
     simp only [TwoPointDiagram.mixedVacuumPositionDataEquiv,
-      TwoPointDiagram.mixedComponentPositionEquiv, Equiv.trans_apply]
+      TwoPointDiagram.mixedComponentPositionEquiv]
     let leg :
         {leg : OrderedTwoPointLeg n // d.unflattenedLegInComponent C leg} :=
       ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).subtypeEquiv
