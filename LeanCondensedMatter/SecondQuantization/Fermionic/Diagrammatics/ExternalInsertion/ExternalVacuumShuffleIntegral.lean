@@ -48,6 +48,44 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic
     flatVertexLegPairValue]
   rfl
 
+/-- The quartic vacuum pair kernel remains unchanged after embedding its
+interaction slots into an ambient arbitrary-external mixed-time diagram. In
+particular this applies to the vacuum half of a binary slot shuffle; endpoint
+orientation is kept explicit rather than quotienting by pair reversal. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
+    (ε : Mode → ℝ) (β : ℝ) {E m n : ℕ}
+    (fInteraction : Fin m → Fin n)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (a b : Fin (2 * (2 * m))) :
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        externalLabel externalTime q σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
+            (Sum.inr (⟨(orderedQuarticLegEquiv m a).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv m a).2))))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
+            (Sum.inr (⟨(orderedQuarticLegEquiv m b).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv m b).2)))) =
+      flatVertexLegPairValue ε β (q ∘ fInteraction) (σ ∘ fInteraction) a b := by
+  have hmap :=
+    externalInsertionMixedTimeOrderedAtomicPairValue_map ε β
+      (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
+      externalLabel externalTime q σ
+      (Sum.inr (⟨(orderedQuarticLegEquiv m a).1, Finset.mem_univ _⟩,
+        (orderedQuarticLegEquiv m a).2))
+      (Sum.inr (⟨(orderedQuarticLegEquiv m b).1, Finset.mem_univ _⟩,
+        (orderedQuarticLegEquiv m b).2))
+  exact hmap.trans
+    (externalInsertionMixedTimeOrderedAtomicPairValue_quartic ε β
+      (externalLabel ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
+      (externalTime ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
+      (q ∘ fInteraction) (σ ∘ fInteraction) a b)
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
