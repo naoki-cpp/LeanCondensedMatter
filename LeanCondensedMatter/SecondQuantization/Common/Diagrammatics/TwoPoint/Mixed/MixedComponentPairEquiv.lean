@@ -234,10 +234,8 @@ noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.MixedComponentPair τ τ' σ B ≃ d.MixedComponentPair τ τ' υ B := by
-  classical
   let f := (mixedTimeAmbientPositionEquiv τ τ' σ).trans
     (mixedTimeAmbientPositionEquiv τ τ' υ).symm
-  let e := d.mixedPairTimeEquiv τ τ' σ υ
   have hpos (p : Fin (2 * (2 * n + 1))) :
       d.mixedPositionComponent τ τ' υ (f p) =
         d.mixedPositionComponent τ τ' σ p := by
@@ -247,22 +245,13 @@ noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
       d.vertexGraph.componentBlock
         (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
     simp only [f, Equiv.trans_apply, Equiv.apply_symm_apply]
-  have hcomp (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
-      d.mixedPairComponent τ τ' υ (e pr) =
-        d.mixedPairComponent τ τ' σ pr := by
-    have hends := d.mixedPairTimeEquiv_pair_eq_or_swap τ τ' σ υ pr
-    change (e pr).1 = (f pr.1.1, f pr.1.2) ∨
-        (e pr).1 = (f pr.1.2, f pr.1.1) at hends
-    change d.mixedPositionComponent τ τ' υ (e pr).1.1 =
-      d.mixedPositionComponent τ τ' σ pr.1.1
-    rcases hends with hends | hends
-    · rw [congrArg Prod.fst hends, hpos]
-    · rw [congrArg Prod.fst hends, hpos]
-      have hpair := ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff
-        pr.1.1 pr.1.2).1 pr.2
-      rw [← hpair.2, d.mixedPositionComponent_partner]
-  exact e.subtypeEquiv (fun pr => by
-    rw [hcomp])
+  exact (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfPartnerEquiv
+    (d.pairingInMixedOrder τ τ' υ) f
+    (d.mixedTimePositionEquiv_partner τ τ' σ υ)
+    (fun p => d.mixedPositionComponent τ τ' σ p = B)
+    (fun p => d.mixedPositionComponent τ τ' υ p = B)
+    (fun p => by rw [d.mixedPositionComponent_partner])
+    (fun p => by rw [hpos])
 
 end Common
 end SecondQuantization
