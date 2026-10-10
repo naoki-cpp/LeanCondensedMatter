@@ -10,6 +10,7 @@
         "LeanCondensedMatter/QuantumTheory.lean",
         "LeanCondensedMatter/QuantumMechanics.lean",
         "LeanCondensedMatter/Transport.lean",
+        "LeanCondensedMatter/Models/KronigPenney.lean",
         "LeanCondensedMatter/Models/MassiveDirac.lean",
         "LeanCondensedMatter/Models/Parabolic2DEG.lean",
         "LeanCondensedMatter/Models/RashbaExchange.lean",
@@ -595,6 +596,7 @@
       "id": "modelsPublicUmbrella",
       "path": "LeanCondensedMatter/Models.lean",
       "modules": [
+        "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.Parabolic2DEG",
         "LeanCondensedMatter.Models.RashbaExchange"
