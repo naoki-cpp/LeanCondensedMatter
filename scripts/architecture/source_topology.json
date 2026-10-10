@@ -12,6 +12,20 @@
       ]
     },
     {
+      "id": "crystalModelOwnership",
+      "sourceRoots": [
+        "LeanCondensedMatter/Crystal",
+        "LeanCondensedMatter/Models"
+      ],
+      "layers": [
+        {"id": "crystal", "modulePrefixes": ["LeanCondensedMatter.Crystal"]},
+        {"id": "models", "modulePrefixes": ["LeanCondensedMatter.Models"]}
+      ],
+      "edges": [
+        {"upstream": "crystal", "downstream": "models"}
+      ]
+    },
+    {
       "id": "transportModelOwnership",
       "sourceRoots": [
         "LeanCondensedMatter/Transport",
