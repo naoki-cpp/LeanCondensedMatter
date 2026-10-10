@@ -49,20 +49,14 @@ theorem ExternalInsertionDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin 
   unfold ExternalInsertionDiagram.legInComponent
   exact d.vertexGraph.componentBlock_eq_iff_mem hB (externalInsertionVertexOfLeg leg)
 
-/-- Membership of an unflattened leg in a component part. -/
-private def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
-  componentLegVertex leg ∈ (B : Finset (ExternalInsertionVertex E S))
-
 /-- Flattening preserves the component-membership predicate. -/
 private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔
-      d.unflattenedLegInComponent B (externalInsertionLegEquiv E S leg) := by
+      componentLegVertex (externalInsertionLegEquiv E S leg) ∈
+        (B : Finset (ExternalInsertionVertex E S)) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
-  unfold ExternalInsertionDiagram.unflattenedLegInComponent
   unfold externalInsertionVertexOfLeg
   cases externalInsertionLegEquiv E S leg <;> rfl
 
@@ -82,27 +76,6 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
     (SecondQuantization.Common.componentLegDataEquiv
       (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
       (B := (B : Finset (ExternalInsertionVertex E S))))
-
-private theorem ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (e : ↥(Finset.toLeft (B : Finset (ExternalInsertionVertex E S)))) :
-    ((d.componentBlockLegDataEquiv B).symm (Sum.inl e)).1 =
-      externalInsertionExternalLeg E S e.1 := by
-  rfl
-
-private theorem ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (v : ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
-    (l : Fin 4) :
-    ((d.componentBlockLegDataEquiv B).symm (Sum.inr (v, l))).1 =
-      externalInsertionInteractionLeg (E := E)
-        ⟨v.1, interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
-  rfl
 
 private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -357,8 +330,8 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_external
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    hLocal, hShuffle,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inl_val]
+    hLocal, hShuffle]
+  all_goals rfl
 
 /-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
 vertex and local quartic leg. -/
@@ -398,8 +371,8 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
   rw [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
     Equiv.symm_trans_apply, Equiv.symm_trans_apply,
-    hLocal, hShuffle,
-    ExternalInsertionDiagram.componentBlockLegDataEquiv_symm_inr_val]
+    hLocal, hShuffle]
+  all_goals rfl
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
