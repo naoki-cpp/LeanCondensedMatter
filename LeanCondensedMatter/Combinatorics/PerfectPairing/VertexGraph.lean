@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
+import Mathlib.Combinatorics.SimpleGraph.Sum
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
 set_option linter.style.header false
@@ -28,6 +29,79 @@ noncomputable def Pairing.vertexGraph {n : ℕ} {Vertex : Type*} (pairing : Pair
   loopless := ⟨by
     rintro v ⟨hvv, -⟩
     exact hvv rfl⟩
+
+
+/-- Splitting the legs of a pairing induces a disjoint sum of vertex graphs when the
+incidence maps identify the two vertex sectors with disjoint summands. -/
+noncomputable def Pairing.vertexGraphOfSplitIso
+    {a b n : ℕ} {V W U : Type*}
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (leftVertex : Fin (2 * a) → V) (rightVertex : Fin (2 * b) → W)
+    (vertexEquiv : V ⊕ W ≃ U) (vertexOfLeg : Fin (2 * n) → U)
+    (hleft : ∀ i, vertexOfLeg (e (Sum.inl i)) =
+      vertexEquiv (Sum.inl (leftVertex i)))
+    (hright : ∀ i, vertexOfLeg (e (Sum.inr i)) =
+      vertexEquiv (Sum.inr (rightVertex i))) :
+    (P.vertexGraph leftVertex ⊕g Q.vertexGraph rightVertex) ≃g
+      (Pairing.ofSplit e P Q).vertexGraph vertexOfLeg where
+  toEquiv := vertexEquiv
+  map_rel_iff' := by
+    intro x y
+    constructor
+    · rintro ⟨hne, leg, hx, hy⟩
+      obtain ⟨z, rfl⟩ := e.surjective leg
+      cases z with
+      | inl i =>
+          rw [hleft, Pairing.ofSplit_partner_inl, hleft] at hx hy
+          have hx' : x = Sum.inl (leftVertex i) :=
+            (vertexEquiv.injective hx).symm
+          have hy' : y = Sum.inl (leftVertex (P.partner i)) :=
+            (vertexEquiv.injective hy).symm
+          subst x
+          subst y
+          change (P.vertexGraph leftVertex).Adj _ _
+          refine ⟨?_, i, rfl, rfl⟩
+          intro hxy
+          exact hne (congrArg vertexEquiv (congrArg Sum.inl hxy))
+      | inr i =>
+          rw [hright, Pairing.ofSplit_partner_inr, hright] at hx hy
+          have hx' : x = Sum.inr (rightVertex i) :=
+            (vertexEquiv.injective hx).symm
+          have hy' : y = Sum.inr (rightVertex (Q.partner i)) :=
+            (vertexEquiv.injective hy).symm
+          subst x
+          subst y
+          change (Q.vertexGraph rightVertex).Adj _ _
+          refine ⟨?_, i, rfl, rfl⟩
+          intro hxy
+          exact hne (congrArg vertexEquiv (congrArg Sum.inr hxy))
+    · cases x with
+      | inl x =>
+          cases y with
+          | inl y =>
+              intro hadj
+              obtain ⟨hne, i, hi, hj⟩ := hadj
+              refine ⟨?_, e (Sum.inl i), ?_, ?_⟩
+              · intro heq
+                exact hne (Sum.inl.inj (vertexEquiv.injective heq))
+              · rw [hleft, hi]
+              · rw [Pairing.ofSplit_partner_inl, hleft, hj]
+          | inr y =>
+              intro hadj
+              cases hadj
+      | inr x =>
+          cases y with
+          | inl y =>
+              intro hadj
+              cases hadj
+          | inr y =>
+              intro hadj
+              obtain ⟨hne, i, hi, hj⟩ := hadj
+              refine ⟨?_, e (Sum.inr i), ?_, ?_⟩
+              · intro heq
+                exact hne (Sum.inr.inj (vertexEquiv.injective heq))
+              · rw [hright, hi]
+              · rw [Pairing.ofSplit_partner_inr, hright, hj]
 
 /-- The two incident vertices of a paired leg lie in the same connected component of the pairing
 vertex graph. -/
