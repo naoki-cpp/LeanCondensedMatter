@@ -4939,8 +4939,7 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -4956,10 +4955,9 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5123,8 +5121,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
@@ -5134,10 +5131,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5590,8 +5586,7 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5600,10 +5595,9 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5640,8 +5634,7 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5650,10 +5643,9 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10472,7 +10464,6 @@
     "dependents": [
       "Combinatorics.Pairing.componentCrossingCount_self_eq",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
     "dependencies": [],
@@ -10481,10 +10472,9 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.componentCrossingCount_self_eq",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59865,7 +59855,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n                    disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  ∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular v m probeEnergy\n                      broadening disorderStrength hbar pMax",
+    "statement": "∀ (regime : QuantumTheory.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary regime.v\n          regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      ∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular regime.v regime.m\n          regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68544,7 +68534,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
     "externalAxioms": [],
     "docString": "The explicit spectator bound is nonnegative. ",
     "directWrapperTargetModule": null,
@@ -70635,7 +70625,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n                    disorderStrength hbar pMax <\n                  1 →\n                Filter.Tendsto\n                  (fun broadening =>\n                    QuantumTheory.Models.MassiveDirac.inPlaneLadderDeterminant\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector v m probeEnergy\n                        broadening disorderStrength hbar pMax))\n                  (nhdsWithin 0 (Set.Ioi 0))\n                  (nhds\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (regime : QuantumTheory.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Models.MassiveDirac.inPlaneLadderDeterminant\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector regime.v regime.m\n            regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax))\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n          regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70776,7 +70766,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n                    disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n                        broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                        v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (regime : QuantumTheory.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary regime.v\n          regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector regime.v regime.m\n            regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n            regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71422,7 +71412,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (source : Fin 2) (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n                    disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n                        source e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary\n                        source e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (source : Fin 2) (e : ℝ) (regime : QuantumTheory.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary regime.v\n          regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n            source e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary\n            source e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103983,7 +103973,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -104030,7 +104022,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [
-      "SecondQuantization.Common.interactionSector_subset"
+      "SecondQuantization.Common.interactionSector_subset",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -108885,7 +108878,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + 1))),\n  d.legInComponent (↑B) leg ↔ d.unflattenedLegInComponent B ((SecondQuantization.Common.twoPointLegEquiv S) leg)",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + 1))),\n  d.legInComponent (↑B) leg ↔\n    SecondQuantization.Common.componentLegVertex ((SecondQuantization.Common.twoPointLegEquiv S) leg) ∈ ↑B",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109196,8 +109189,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber"
     ],
     "dependencies": [
-      "Combinatorics.sum_sum_crosses_eq_of_equiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons",
+      "SimpleGraph.componentBlock_mem_componentPartition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -120206,6 +120199,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
     "dependencies": [
@@ -120217,9 +120211,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147821,6 +147816,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -147832,6 +147828,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -147839,7 +147836,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172692,7 +172689,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent (↑B) leg ↔\n    SecondQuantization.Common.componentLegVertex ((SecondQuantization.Common.externalInsertionLegEquiv E S) leg) ∈ ↑B",
     "standardAxioms": [
       "Classical.choice",
@@ -172711,17 +172708,22 @@
     "docString": "Flattening preserves the component-membership predicate. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction"
+    ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictVacuumComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174134,7 +174136,7 @@
     ],
     "dependencies": [
       "SimpleGraph.mem_componentBlockOn",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -174339,50 +174341,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) {u w : ↥S},\n  (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Reachable u w → π.part ↑u = π.part ↑w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) {u w : ↥S},\n  (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Adj u w → π.part ↑u = π.part ↑w",
     "standardAxioms": [
       "Classical.choice",
@@ -174402,7 +174360,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
@@ -174411,7 +174369,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -175628,7 +175586,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -175640,23 +175598,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.mem_pairs_iff",
-      "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
