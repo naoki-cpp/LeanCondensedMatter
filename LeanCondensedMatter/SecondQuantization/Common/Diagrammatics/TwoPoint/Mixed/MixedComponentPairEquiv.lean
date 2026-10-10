@@ -192,26 +192,8 @@ private theorem TwoPointDiagram.mixedTimePositionEquiv_partner
       ((mixedTimeAmbientPositionEquiv τ τ' σ).trans
         (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
           ((d.pairingInMixedOrder τ τ' σ).partner p) := by
-  apply (mixedTimeAmbientPositionEquiv τ τ' υ).injective
-  calc
-    mixedTimeAmbientPositionEquiv τ τ' υ
-        ((d.pairingInMixedOrder τ τ' υ).partner
-          (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
-            (mixedTimeAmbientPositionEquiv τ τ' υ).symm) p)) =
-      d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' υ
-        (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
-          (mixedTimeAmbientPositionEquiv τ τ' υ).symm) p)) :=
-        d.mixedTimeAmbientPositionEquiv_partner τ τ' υ _
-    _ = d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by
-      simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
-    _ = mixedTimeAmbientPositionEquiv τ τ' σ
-        ((d.pairingInMixedOrder τ τ' σ).partner p) :=
-      (d.mixedTimeAmbientPositionEquiv_partner τ τ' σ p).symm
-    _ = mixedTimeAmbientPositionEquiv τ τ' υ
-        (((mixedTimeAmbientPositionEquiv τ τ' σ).trans
-          (mixedTimeAmbientPositionEquiv τ τ' υ).symm)
-          ((d.pairingInMixedOrder τ τ' σ).partner p)) := by
-      simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
+  simp only [TwoPointDiagram.pairingInMixedOrder, PairingOn.transport_partner,
+    Equiv.trans_apply, Equiv.apply_symm_apply]
 
 /-- Transport ambient normalized pairs between time assignments through their common diagram legs. -/
 noncomputable def TwoPointDiagram.mixedPairTimeEquiv
