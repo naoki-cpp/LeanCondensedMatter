@@ -101,8 +101,8 @@ private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_fst {S : Finset (F
         ((QuarticDiagram.reassemble π F).pairing.partner leg)).1 =
       (QuarticDiagram.bigLegEquiv π leg).1 := by
   change (QuarticDiagram.bigLegEquiv π
-      ((Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
-        (QuarticDiagram.bigLegEquiv π)).partner leg).1 =
+      (((Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
+        (QuarticDiagram.bigLegEquiv π)).partner leg)).1 =
     (QuarticDiagram.bigLegEquiv π leg).1
   rw [Combinatorics.PairingOn.transport_partner, Equiv.apply_symm_apply]
   cases h : QuarticDiagram.bigLegEquiv π leg with
