@@ -37,28 +37,24 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
 from the solved zero-broadening ladder vector. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_broadening_zero_of_boundary_realRenormalization_lt_one
     (source : Fin 2)
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (e : ℝ) (regime : FixedCutoffMetallicBornRegime)
     (hrenorm :
       finiteCutoffContinuumBornBoundaryRealRenormalization
-        v m probeEnergy disorderStrength hbar pMax < 1)
+        regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1)
     (hdet :
       finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
-        v m probeEnergy disorderStrength hbar pMax ≠ 0) :
+        regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-          source e v m probeEnergy broadening disorderStrength hbar pMax)
+          source e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
-          source e v m probeEnergy disorderStrength hbar pMax)) := by
+          source e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
   have hSolved :=
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      v m probeEnergy disorderStrength hbar pMax
-      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm hdet
+      regime hrenorm hdet
   have hAlpha := tendsto_pi_nhds.mp hSolved 0
   have hBeta := tendsto_pi_nhds.mp hSolved 1
   fin_cases source
@@ -66,14 +62,14 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
-      (hAlpha.smul_const (currentOperator 0 e v)).add
-        (hBeta.smul_const (currentOperator 1 e v))
+      (hAlpha.smul_const (currentOperator 0 e regime.v)).add
+        (hBeta.smul_const (currentOperator 1 e regime.v))
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
-      (hBeta.neg.smul_const (currentOperator 0 e v)).add
-        (hAlpha.smul_const (currentOperator 1 e v))
+      (hBeta.neg.smul_const (currentOperator 0 e regime.v)).add
+        (hAlpha.smul_const (currentOperator 1 e regime.v))
 
 end
 

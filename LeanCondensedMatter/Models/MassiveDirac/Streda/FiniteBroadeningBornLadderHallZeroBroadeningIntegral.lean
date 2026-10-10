@@ -164,12 +164,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
   have hRung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
       regime hrenorm
-  rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
-    hdisorder, hmetal, hcutoff⟩
   have hSolved :=
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
-      v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
-      hdisorder hmetal hcutoff hrenorm hdet
+      regime hrenorm hdet
+  rcases regime with ⟨v, m, probeEnergy, disorderStrength, hbar, pMax, hpMax, hvelocity, hhbar,
+    hdisorder, hmetal, hcutoff⟩
   have hAction := tendsto_inPlaneLadderAction hRung hSolved
   have hEndpoint :
       Tendsto
