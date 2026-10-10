@@ -151,38 +151,15 @@ noncomputable def TwoPointDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
     intro a b
     exact d.slotCongr_adj_iff (M := M) e a b
 
-/-- **Reachability is preserved by the transport.** -/
-theorem TwoPointDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
-    (d : TwoPointDiagram ExternalLabel InternalLabel N T) (v w : TwoPointVertex T) :
-    (d.slotCongr (M := M) e).vertexGraph.Reachable
-        (twoPointVertexCongr e v) (twoPointVertexCongr e w) ↔
-      d.vertexGraph.Reachable v w := by
-  exact SimpleGraph.Iso.reachable_iff
-    (φ := d.slotCongrVertexGraphIso (M := M) e) (u := v) (v := w)
-
-/-- **Absence of vacuum components is preserved by the transport.** -/
-theorem TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff (e : ↥T ≃ ↥U)
-    (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
-    HasNoVacuumComponent (d.slotCongr (M := M) e).vertexGraph ↔ HasNoVacuumComponent d.vertexGraph := by
-  constructor
-  · intro hd v
-    obtain ⟨f, hf⟩ := hd (e v)
-    refine ⟨f, ?_⟩
-    rw [← d.slotCongr_reachable_iff (M := M) e (Sum.inl f) (Sum.inr v)]
-    simpa using hf
-  · intro hd v
-    obtain ⟨f, hf⟩ := hd (e.symm v)
-    refine ⟨f, ?_⟩
-    have := (d.slotCongr_reachable_iff (M := M) e (Sum.inl f) (Sum.inr (e.symm v))).2 hf
-    simpa using this
-
 /-- **External connectedness is preserved by the transport.** -/
 theorem TwoPointDiagram.slotCongr_isExternallyConnected_iff (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
     (d.slotCongr (M := M) e).IsExternallyConnected ↔ d.IsExternallyConnected := by
   rw [TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent,
-    TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent,
-    d.slotCongr_hasNoVacuumComponent_iff (M := M) e]
+    TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent]
+  exact hasNoVacuumComponent_congr_iff
+    (d.slotCongrVertexGraphIso (M := M) e) (Equiv.refl (Fin 2)) e
+    (fun _ => rfl) (fun _ => rfl)
 
 /-- The transport is an equivalence of diagram types. -/
 noncomputable def TwoPointDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
