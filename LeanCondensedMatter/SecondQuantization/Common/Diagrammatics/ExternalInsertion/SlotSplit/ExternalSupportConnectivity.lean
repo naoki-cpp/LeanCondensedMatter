@@ -88,10 +88,8 @@ private theorem supportSlotVertex_reachable_iff (x y : ExternalInsertionVertex E
   change (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
       ((supportSlotVertexGraphIso h ext vac) (Sum.inl x))
       ((supportSlotVertexGraphIso h ext vac) (Sum.inl y)) ↔ _
-  exact (SimpleGraph.Iso.reachable_iff
-    (φ := supportSlotVertexGraphIso h ext vac)
-    (u := Sum.inl x) (v := Sum.inl y)).trans
-      (SimpleGraph.reachable_sum_inl_iff ext.vertexGraph vac.vertexGraph x y)
+  exact SimpleGraph.Iso.reachable_sum_inl_iff
+    (supportSlotVertexGraphIso h ext vac) x y
 
 /-- The canonical external-bearing diagram contains no pure-vacuum connected components.
 All components touching distinct external insertions are retained independently. -/
