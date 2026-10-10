@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
-import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 
 set_option linter.style.header false
 
