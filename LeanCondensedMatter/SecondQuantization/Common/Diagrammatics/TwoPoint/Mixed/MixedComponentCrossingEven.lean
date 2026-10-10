@@ -33,7 +33,8 @@ private noncomputable def TwoPointDiagram.mixedVacuumPositionDataEquiv
   ((d.mixedComponentPositionEquiv τ τ' σ C).trans
     ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).subtypeEquiv
       (fun q => d.legInComponent_iff_unflattened C q))).trans
-    (d.vacuumLegDataEquiv C hVac)
+    (vacuumComponentLegDataEquiv
+      (B := (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) hVac)
 
 private noncomputable def TwoPointDiagram.mixedVacuumInteractionPosition
     {n : ℕ}
@@ -106,7 +107,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
   have hdata :
       d.mixedVacuumPositionDataEquiv τ τ' σ C hVac direct = (v, l) := by
     simp only [TwoPointDiagram.mixedVacuumPositionDataEquiv,
-      TwoPointDiagram.mixedComponentPositionEquiv, Equiv.trans_apply]
+      TwoPointDiagram.mixedComponentPositionEquiv]
     let leg :
         {leg : OrderedTwoPointLeg n // d.unflattenedLegInComponent C leg} :=
       ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).subtypeEquiv
@@ -122,7 +123,9 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
         mixedTimeOrderedInteractionLeg v.1 l
       rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
         mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-    change d.vacuumLegDataEquiv C hVac leg = (v, l)
+    change vacuumComponentLegDataEquiv
+      (B := (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) hVac leg =
+        (v, l)
     have hleg : leg =
         ⟨mixedTimeOrderedInteractionLeg v.1 l, hlegVal ▸ leg.2⟩ :=
       Subtype.ext hlegVal
