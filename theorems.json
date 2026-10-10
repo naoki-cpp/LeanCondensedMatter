@@ -5365,11 +5365,7 @@
     "dependents": [
       "Combinatorics.Pairing.isSplit_ofSplit",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
-      "Combinatorics.Pairing.splitLeft_ofSplit",
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
+      "Combinatorics.Pairing.splitLeft_ofSplit"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.sumCongr_partner_inl",
@@ -5380,13 +5376,9 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.isSplit_ofSplit",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
-      "Combinatorics.Pairing.splitLeft_ofSplit",
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
+      "Combinatorics.Pairing.splitLeft_ofSplit"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5422,7 +5414,6 @@
     "dependents": [
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "dependencies": [
@@ -5434,10 +5425,9 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10242,7 +10232,8 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction",
-      "SecondQuantization.Common.slotSplitVertexEquiv_inl"
+      "SecondQuantization.Common.slotSplitVertexEquiv_inl",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inl"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -10251,9 +10242,10 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction",
-      "SecondQuantization.Common.slotSplitVertexEquiv_inl"
+      "SecondQuantization.Common.slotSplitVertexEquiv_inl",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inl"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10328,7 +10320,8 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
       "SecondQuantization.Common.slotLegSplitting_right_interaction",
-      "SecondQuantization.Common.slotSplitVertexEquiv_inr"
+      "SecondQuantization.Common.slotSplitVertexEquiv_inr",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inr"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -10337,9 +10330,10 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
       "SecondQuantization.Common.slotLegSplitting_right_interaction",
-      "SecondQuantization.Common.slotSplitVertexEquiv_inr"
+      "SecondQuantization.Common.slotSplitVertexEquiv_inr",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inr"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74258,7 +74252,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.continuous_greenScalar_radial",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
     "externalAxioms": [],
     "docString": "The radial scalar Green function is continuous at every finite nonzero broadening. ",
     "directWrapperTargetModule": null,
@@ -74582,7 +74576,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.greenDenominator_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
     "externalAxioms": [],
     "docString": "Finite nonzero broadening keeps the scalar Green denominator away from zero. ",
     "directWrapperTargetModule": null,
@@ -74627,7 +74621,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.greenOperator_apply",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
     "externalAxioms": [],
     "docString": "The canonical operator Green function acts by the named scalar Green factor. This is the\nexplicit bridge that lets response code use scalar one-band algebra without bypassing the common\nresolvent boundary. ",
     "directWrapperTargetModule": null,
@@ -74673,7 +74667,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.greenOperator_eq_greenScalar_smul_id",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
     "externalAxioms": [],
     "docString": "Operator/scalar Green bridge for the one-band model. ",
     "directWrapperTargetModule": null,
@@ -75217,7 +75211,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    Function.Injective fun band => QuantumTheory.Models.RashbaExchange.bandEnergy params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    Function.Injective fun band =>\n      QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75255,7 +75249,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandEnergy params band px py ≠\n      QuantumTheory.Models.RashbaExchange.bandEnergy params (QuantumTheory.Models.RashbaExchange.oppositeBand band) px\n        py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py ≠\n      QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters\n        (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75295,7 +75289,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py =\n      0",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py =\n      0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75339,7 +75333,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75430,7 +75424,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n    (1 / 2) •\n      (1 +\n        InternalSpace.pauliCombination\n          (↑(QuantumTheory.Models.RashbaExchange.bandSign band /\n                QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py) •\n            QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params px py))",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n    (1 / 2) •\n      (1 +\n        InternalSpace.pauliCombination\n          (↑(QuantumTheory.Models.RashbaExchange.bandSign band /\n                QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py) •\n            QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params.toHamiltonianParameters px py))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75476,7 +75470,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjector params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjector params (QuantumTheory.Models.RashbaExchange.oppositeBand band)\n          px py =\n      0",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjector params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjector params (QuantumTheory.Models.RashbaExchange.oppositeBand band)\n          px py =\n      0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75521,7 +75515,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjector params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n      QuantumTheory.Models.RashbaExchange.bandProjector params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjector params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n      QuantumTheory.Models.RashbaExchange.bandProjector params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75659,7 +75653,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ), params.exchangeSplitting = 0 → QuantumTheory.Models.RashbaExchange.berryCurvature params band px py = 0",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ), params.exchangeSplitting = 0 → QuantumTheory.Models.RashbaExchange.berryCurvature params band px py = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75697,7 +75691,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.berryCurvature params (QuantumTheory.Models.RashbaExchange.oppositeBand band) px\n      py =\n    -QuantumTheory.Models.RashbaExchange.berryCurvature params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.berryCurvature params (QuantumTheory.Models.RashbaExchange.oppositeBand band) px\n      py =\n    -QuantumTheory.Models.RashbaExchange.berryCurvature params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75737,7 +75731,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ), params.rashbaVelocity = 0 → QuantumTheory.Models.RashbaExchange.berryCurvature params band px py = 0",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ), params.rashbaVelocity = 0 → QuantumTheory.Models.RashbaExchange.berryCurvature params band px py = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75863,7 +75857,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  z - ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params band px py) ≠ 0 →\n    ContinuousAt (fun w => QuantumTheory.Models.RashbaExchange.projectorResolventCoefficient w params band px py) z",
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  z - ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py) ≠ 0 →\n    ContinuousAt (fun w => QuantumTheory.Models.RashbaExchange.projectorResolventCoefficient w params band px py) z",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76451,7 +76445,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature params band px py =\n      QuantumTheory.Models.RashbaExchange.berryCurvature params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature params band px py =\n      QuantumTheory.Models.RashbaExchange.berryCurvature params.toHamiltonianParameters band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76496,7 +76490,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator params 0 1 band px py =\n      -↑(params.rashbaVelocity ^ 4 * px * py / QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ^ 2) -\n        ↑(QuantumTheory.Models.RashbaExchange.bandSign band * params.exchangeSplitting * params.rashbaVelocity ^ 2 /\n              QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py) *\n          Complex.I",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator params 0 1 band px py =\n      -↑(params.rashbaVelocity ^ 4 * px * py /\n              QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ^ 2) -\n        ↑(QuantumTheory.Models.RashbaExchange.bandSign band * params.exchangeSplitting * params.rashbaVelocity ^ 2 /\n              QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py) *\n          Complex.I",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76589,7 +76583,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params band px py) •\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py) •\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76633,7 +76627,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.hamiltonian params px py =\n    ↑(QuantumTheory.Models.RashbaExchange.kineticEnergy params px py) • 1 +\n      QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.hamiltonian params.toHamiltonianParameters px py =\n    ↑(QuantumTheory.Models.RashbaExchange.kineticEnergy params.toHamiltonianParameters px py) • 1 +\n      QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76675,7 +76669,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  Matrix.IsHermitian (QuantumTheory.Models.RashbaExchange.hamiltonian params px py)",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  Matrix.IsHermitian (QuantumTheory.Models.RashbaExchange.hamiltonian params.toHamiltonianParameters px py)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76719,7 +76713,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.hamiltonian params px py *\n        QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n      ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params band px py) •\n        QuantumTheory.Models.RashbaExchange.bandProjector params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.hamiltonian params.toHamiltonianParameters px py *\n        QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n      ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py) •\n        QuantumTheory.Models.RashbaExchange.bandProjector params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76767,7 +76761,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py =\n    2 * QuantumTheory.Models.RashbaExchange.bandSign band *\n      QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py =\n    2 * QuantumTheory.Models.RashbaExchange.bandSign band *\n      QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76813,7 +76807,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py ≠ 0",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py ≠ 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76988,7 +76982,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.projectorResolventCoefficient z params band px py =\n    QuantumTheory.Transport.scalarResolventCoefficient z\n      (QuantumTheory.Models.RashbaExchange.bandEnergy params band px py)",
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.projectorResolventCoefficient z params band px py =\n    QuantumTheory.Transport.scalarResolventCoefficient z\n      (QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77030,7 +77024,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.projectorResolvent z params px py ^ 2 =\n      ∑ band,\n        QuantumTheory.Models.RashbaExchange.projectorResolventCoefficient z params band px py ^ 2 •\n          QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.projectorResolvent z params px py ^ 2 =\n      ∑ band,\n        QuantumTheory.Models.RashbaExchange.projectorResolventCoefficient z params band px py ^ 2 •\n          QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77072,7 +77066,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params px py ⬝ᵥ\n      QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params px py =\n    ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params px py)",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params.toHamiltonianParameters px py ⬝ᵥ\n      QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params.toHamiltonianParameters px py =\n    ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params.toHamiltonianParameters px py)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77116,7 +77110,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 0 px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 1 px py) probeEnergy broadening =\n        QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 0 px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 1 px py) probeEnergy broadening =\n        QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77160,7 +77154,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy regulator : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    regulator ≠ 0 →\n      resolvent (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py)\n          (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) =\n        QuantumTheory.Models.RashbaExchange.projectorResolvent\n          (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) params px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy regulator : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    regulator ≠ 0 →\n      resolvent (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py)\n          (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) =\n        QuantumTheory.Models.RashbaExchange.projectorResolvent\n          (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) params px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77207,7 +77201,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py *\n      QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py =\n    ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params px py) • 1",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py *\n      QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py =\n    ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params.toHamiltonianParameters px py) • 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77252,7 +77246,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  0 ≤ QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  0 ≤ QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params.toHamiltonianParameters px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77294,7 +77288,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ^ 2 =\n    QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ^ 2 =\n    QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params.toHamiltonianParameters px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77558,7 +77552,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    2 *\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 0 1 band\n              (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py).im /\n        QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py ^ 2 =\n      params.signedCharge ^ 2 * QuantumTheory.Models.RashbaExchange.berryCurvature params band px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    2 *\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 0 1 band\n              (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py).im /\n        QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py ^ 2 =\n      params.signedCharge ^ 2 *\n        QuantumTheory.Models.RashbaExchange.berryCurvature params.toHamiltonianParameters band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104687,8 +104681,9 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset",
       "SecondQuantization.Common.ExternalInsertionDiagram.mem_externallySupportedInteractionPart",
       "SimpleGraph.mem_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_of_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inl",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inr",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -105113,7 +105108,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing =\n    Combinatorics.Pairing.ofSplit (SecondQuantization.Common.externalInsertionSlotLegSplitting h) ext.pairing\n      vac.pairing",
     "standardAxioms": [
       "Classical.choice",
@@ -105132,18 +105127,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105441,7 +105430,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -105459,8 +105448,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongrVertexGraphIso"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105512,46 +105503,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T),\n  SecondQuantization.Common.HasNoVacuumComponent\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexGraph ↔\n    SecondQuantization.Common.HasNoVacuumComponent d.vertexGraph",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_hasNoVacuumComponent_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
-    "externalAxioms": [],
-    "docString": "**Absence of vacuum components is preserved by the transport.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_reachable_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (leg : Fin (2 * (2 * T.card + E))),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairing.partner\n      ((SecondQuantization.Common.externalInsertionLegCongr e) leg) =\n    (SecondQuantization.Common.externalInsertionLegCongr e) (d.pairing.partner leg)",
     "standardAxioms": [
@@ -105581,48 +105532,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_adj_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (v w : SecondQuantization.Common.ExternalInsertionVertex E T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexGraph.Reachable\n      ((SecondQuantization.Common.externalInsertionVertexCongr e) v)\n      ((SecondQuantization.Common.externalInsertionVertexCongr e) w) ↔\n    d.vertexGraph.Reachable v w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_reachable_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
-    "externalAxioms": [],
-    "docString": "**Reachability is preserved by the transport.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_hasNoVacuumComponent_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_hasNoVacuumComponent_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -106590,7 +106499,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
@@ -106603,7 +106512,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
     "dependencies": [
       "Combinatorics.crosses_map_iff",
@@ -106613,7 +106522,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -109926,7 +109835,9 @@
     "dependencies": [
       "Combinatorics.Pairing.crossingCount_eq_sum_crosses",
       "Combinatorics.sum_sum_crosses_eq_of_equiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -109954,8 +109865,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -109967,21 +109878,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110479,7 +110384,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110497,8 +110402,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.slotCongrVertexGraphIso"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110550,50 +110457,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T),\n  SecondQuantization.Common.HasNoVacuumComponent (SecondQuantization.Common.TwoPointDiagram.slotCongr e d).vertexGraph ↔\n    SecondQuantization.Common.HasNoVacuumComponent d.vertexGraph",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
-    "externalAxioms": [],
-    "docString": "**Absence of vacuum components is preserved by the transport.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_reachable_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T),\n  (SecondQuantization.Common.TwoPointDiagram.slotCongr e d).IsExternallyConnected ↔ d.IsExternallyConnected",
     "standardAxioms": [
@@ -110616,7 +110479,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent",
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff"
+      "SecondQuantization.Common.hasNoVacuumComponent_congr_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -110668,48 +110531,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (v w : SecondQuantization.Common.TwoPointVertex T),\n  (SecondQuantization.Common.TwoPointDiagram.slotCongr e d).vertexGraph.Reachable\n      ((SecondQuantization.Common.twoPointVertexCongr e) v) ((SecondQuantization.Common.twoPointVertexCongr e) w) ↔\n    d.vertexGraph.Reachable v w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.slotCongr_reachable_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
-    "externalAxioms": [],
-    "docString": "**Reachability is preserved by the transport.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110898,7 +110719,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
@@ -110911,7 +110732,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
@@ -110920,7 +110741,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -110999,51 +110820,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (x y : SecondQuantization.Common.TwoPointVertex T),\n  (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj\n      (SecondQuantization.Common.slotSplitVertex h x) (SecondQuantization.Common.slotSplitVertex h y) ↔\n    ext.vertexGraph.Adj x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "**A reassembled diagram induces the adjacency of its external piece.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.ofSplit_partner_inl",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
-      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inl",
-      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -116332,6 +116108,9 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_map",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_quartic",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
     "dependencies": [],
@@ -116342,9 +116121,12 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_map",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_quartic",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118161,6 +117943,46 @@
     "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {External : Type u_1} {Internal : Type u_2} {External' : Type u_3} {Internal' : Type u_4}\n  {G : SimpleGraph (External ⊕ Internal)} {H : SimpleGraph (External' ⊕ Internal')} (φ : G ≃g H)\n  (eExt : External ≃ External') (eInt : Internal ≃ Internal'),\n  (∀ (x : External), φ (Sum.inl x) = Sum.inl (eExt x)) →\n    (∀ (x : Internal), φ (Sum.inr x) = Sum.inr (eInt x)) →\n      (SecondQuantization.Common.HasNoVacuumComponent H ↔ SecondQuantization.Common.HasNoVacuumComponent G)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.hasNoVacuumComponent_congr_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
+    "externalAxioms": [],
+    "docString": "Vacuum-freeness is invariant under a graph isomorphism preserving the external and\ninternal sectors up to relabeling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
       "Quot.sound",
       "propext"
     ],
@@ -123262,8 +123084,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -123275,9 +123097,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.reachable_ofSlotSplit_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.reachable_ofSlotSplit_iff"
     ],
     "dependencies": [
       "Combinatorics.subsetSumSdiffEquiv_inl_apply"
@@ -123285,11 +123105,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.reachable_ofSlotSplit_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.reachable_ofSlotSplit_iff"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123303,7 +123121,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (v : ↥(S \\ T)),\n  (SecondQuantization.Common.slotSplitVertexEquiv h) (Sum.inr v) = SecondQuantization.Common.slotSplitVacuumVertex v",
     "standardAxioms": [
       "Classical.choice",
@@ -123322,20 +123140,14 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVacuumVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.subsetSumSdiffEquiv_inr_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVacuumVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125274,7 +125086,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (i : Fin (2 * (2 * T.card + 1))),\n  SecondQuantization.Common.twoPointVertexOfLeg ((SecondQuantization.Common.slotLegSplitting h) (Sum.inl i)) =\n    SecondQuantization.Common.slotSplitVertex h (SecondQuantization.Common.twoPointVertexOfLeg i)",
     "standardAxioms": [
       "Classical.choice",
@@ -125293,23 +125105,15 @@
     "docString": "Left legs carry the ambient vertices of the corresponding external-piece vertices. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.slotLegSplitting_external",
       "SecondQuantization.Common.slotLegSplitting_left_interaction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125331,7 +125135,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -125343,10 +125147,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component"
     ],
     "dependencies": [
       "SecondQuantization.Common.slotLegSplitting_right_interaction",
@@ -125355,12 +125156,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141700,6 +141498,127 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E₁ E₂ m n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n)\n  (externalLabel : Fin (2 * E₂) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n  (externalTime : Fin (2 * E₂) → ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ)\n  (a b : SecondQuantization.Common.OrderedExternalInsertionLeg E₁ m),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β externalLabel externalTime q σ\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction a))\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction b)) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β (externalLabel ∘ fExternal)\n      (externalTime ∘ fExternal) (q ∘ fInteraction) (σ ∘ fInteraction)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition (externalTime ∘ fExternal)\n        (σ ∘ fInteraction) a)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition (externalTime ∘ fExternal)\n        (σ ∘ fInteraction) b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "The actual finite-mode free-Gibbs contraction is invariant under the induced\nrelabeling of atomic legs, with both times and field labels pulled back along the\nsame slot maps. The endpoints retain the order `a, b`; reversing an *ambient\nnormalized pair* is a separate issue when transporting fermionic signs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
+      "SecondQuantization.Fermionic.orderedExternalInsertionLegField_map"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β externalLabel externalTime q σ\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (Sum.inr\n          (⟨((SecondQuantization.Common.orderedQuarticLegEquiv n) a).1, ⋯⟩,\n            ((SecondQuantization.Common.orderedQuarticLegEquiv n) a).2)))\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (Sum.inr\n          (⟨((SecondQuantization.Common.orderedQuarticLegEquiv n) b).1, ⋯⟩,\n            ((SecondQuantization.Common.orderedQuarticLegEquiv n) b).2))) =\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β q σ a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_quartic",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "The free-Gibbs contraction of two quartic interaction legs embedded in the\narbitrary-external mixed-time leg order agrees with the canonical vacuum Dyson\npair kernel. Both sides use the same ordered endpoints; this does not identify\nthe orientation of an ambient normalized pair after an external/vacuum shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E m n : ℕ}\n  (fInteraction : Fin m → Fin n) (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n  (externalTime : Fin (2 * E) → ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ)\n  (a b : Fin (2 * (2 * m))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β externalLabel externalTime q σ\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap Fin.elim0 fInteraction\n          (Sum.inr\n            (⟨((SecondQuantization.Common.orderedQuarticLegEquiv m) a).1, ⋯⟩,\n              ((SecondQuantization.Common.orderedQuarticLegEquiv m) a).2))))\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap Fin.elim0 fInteraction\n          (Sum.inr\n            (⟨((SecondQuantization.Common.orderedQuarticLegEquiv m) b).1, ⋯⟩,\n              ((SecondQuantization.Common.orderedQuarticLegEquiv m) b).2)))) =\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (q ∘ fInteraction) (σ ∘ fInteraction) a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "The quartic vacuum pair kernel remains unchanged after embedding its\ninteraction slots into an ambient arbitrary-external mixed-time diagram. In\nparticular this applies to the vacuum half of a binary slot shuffle; endpoint\norientation is kept explicit rather than quotienting by pair reversal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ),\n  n ≠ 0 →\n    ↑n.factorial *\n        (PowerSeries.coeff n)\n          (SecondQuantization.Fermionic.dysonFormalLogPartitionFunction ε β\n            (SecondQuantization.Fermionic.quarticInteraction g)) =\n      ∑ d, SecondQuantization.Fermionic.quarticWickDiagramAmplitude ε β g ↑d",
     "standardAxioms": [
@@ -145112,6 +145031,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E₁ E₂ m n : ℕ} (fExternal : Fin (2 * E₁) → Fin (2 * E₂)) (fInteraction : Fin m → Fin n)\n  (externalLabel : Fin (2 * E₂) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n  (externalTime : Fin (2 * E₂) → ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ)\n  (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E₁ m),\n  SecondQuantization.Fermionic.orderedExternalInsertionLegField (externalLabel ∘ fExternal) (externalTime ∘ fExternal)\n      (q ∘ fInteraction) (σ ∘ fInteraction) leg =\n    SecondQuantization.Fermionic.orderedExternalInsertionLegField externalLabel externalTime q σ\n      (SecondQuantization.Common.orderedExternalInsertionLegMap fExternal fInteraction leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.orderedExternalInsertionLegField_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "Relabeling external and interaction slots preserves the concrete time-labelled field\non each canonical atomic leg. The maps need not be order preserving: this identity\nconcerns the identity of the field, not the fermionic permutation sign. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_map"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_map"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  {S : Finset (Fin N)} (d : SecondQuantization.Fermionic.QuarticWickDiagram Mode N S)\n  (orders : SecondQuantization.Common.QuarticDiagram.ComponentVertexOrders d)\n  (shuffle : SecondQuantization.Common.QuarticDiagram.ComponentShuffle d) (τ : Fin S.card → ℝ)\n  (B : ↥(SecondQuantization.Common.QuarticDiagram.vertexGraph d).componentPartitionOn.parts)\n  (a b : Fin (2 * (2 * (↑B).card))),\n  SecondQuantization.Fermionic.orderedQuarticPairValue ε β d\n      (SecondQuantization.Common.QuarticDiagram.assembleVertexOrder d orders shuffle) τ\n      (SecondQuantization.Common.QuarticDiagram.componentOrderedLeg d shuffle B a)\n      (SecondQuantization.Common.QuarticDiagram.componentOrderedLeg d shuffle B b) =\n    SecondQuantization.Fermionic.orderedQuarticPairValue ε β\n      (SecondQuantization.Common.QuarticDiagram.restrictComponent d ⋯) (orders B)\n      (Combinatorics.FamilySlotShuffleTo.timeAssignment shuffle τ B) a b",
     "standardAxioms": [
       "Classical.choice",
@@ -148436,8 +148397,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -148449,6 +148410,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.reachable_ofSlotSplit_iff"
     ],
     "dependencies": [
@@ -148457,9 +148419,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.reachable_ofSlotSplit_iff"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -164100,7 +164063,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    ((algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) z -\n          QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py) *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      (z - ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params band px py)) •\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    ((algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) z -\n          QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py) *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      (z - ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py)) •\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164144,7 +164107,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    z - ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params QuantumTheory.Models.RashbaExchange.Band.lower px py) ≠\n        0 →\n      z -\n            ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params QuantumTheory.Models.RashbaExchange.Band.upper px\n                py) ≠\n          0 →\n        ((algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) z -\n              QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py) *\n            QuantumTheory.Models.RashbaExchange.projectorResolvent z params px py =\n          1",
+    "statement": "∀ (z : ℂ) (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    z -\n          ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters\n              QuantumTheory.Models.RashbaExchange.Band.lower px py) ≠\n        0 →\n      z -\n            ↑(QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters\n                QuantumTheory.Models.RashbaExchange.Band.upper px py) ≠\n          0 →\n        ((algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) z -\n              QuantumTheory.Models.RashbaExchange.hamiltonianOperator params px py) *\n            QuantumTheory.Models.RashbaExchange.projectorResolvent z params px py =\n          1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164236,7 +164199,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py *\n        QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py =\n      1",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py *\n        QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py =\n      1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164283,7 +164246,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py =\n      ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py) •\n        QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py =\n      ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py) •\n        QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173834,104 +173797,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (x y : SecondQuantization.Common.ExternalInsertionVertex E T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Adj\n      (SecondQuantization.Common.supportSlotVertex✝ h x) (SecondQuantization.Common.supportSlotVertex✝ h y) ↔\n    ext.vertexGraph.Adj x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.ofSplit_partner_inl",
-      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_ne_inr_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_left_leg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  {x : SecondQuantization.Common.ExternalInsertionVertex E T}\n  {u : SecondQuantization.Common.ExternalInsertionVertex E S},\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Adj\n      (SecondQuantization.Common.supportSlotVertex✝ h x) u →\n    ∃ y, u = SecondQuantization.Common.supportSlotVertex✝ h y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.ofSplit_partner_inl",
-      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_ne_inr_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_left_leg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S), Function.Injective (SecondQuantization.Common.supportSlotVertex✝ h)",
+    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (x : SecondQuantization.Common.ExternalInsertionVertex E T),\n  (SecondQuantization.Common.supportSlotVertexEquiv✝ h) (Sum.inl x) = SecondQuantization.Common.supportSlotVertex✝ h x",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173943,21 +173809,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_injective",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inl",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.subsetSumSdiffEquiv_inl_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
     ],
     "compiledConsumerCount": 2,
@@ -173975,7 +173843,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (x : SecondQuantization.Common.ExternalInsertionVertex E T) {w : ↥S},\n  ↑w ∉ T → SecondQuantization.Common.supportSlotVertex✝ h x ≠ Sum.inr w",
+    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (v : ↥(S \\ T)),\n  (SecondQuantization.Common.supportSlotVertexEquiv✝ h) (Sum.inr v) = Sum.inr ⟨↑v, ⋯⟩",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173987,22 +173855,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_ne_inr_of_not_mem",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inr",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.subsetSumSdiffEquiv_inr_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -174018,7 +173888,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (i : Fin (2 * (2 * T.card + E))),\n  SecondQuantization.Common.externalInsertionVertexOfLeg\n      ((SecondQuantization.Common.externalInsertionSlotLegSplitting h) (Sum.inl i)) =\n    SecondQuantization.Common.supportSlotVertex✝ h (SecondQuantization.Common.externalInsertionVertexOfLeg i)",
     "standardAxioms": [
       "Classical.choice",
@@ -174034,24 +173904,18 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_left_leg",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Left legs retain the corresponding vertices under the splitting. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_external",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174065,15 +173929,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (i : Fin (2 * (2 * (S \\ T).card))),\n  ∃ w,\n    ↑w ∉ T ∧\n      SecondQuantization.Common.externalInsertionVertexOfLeg\n          ((SecondQuantization.Common.externalInsertionSlotLegSplitting h) (Sum.inr i)) =\n        Sum.inr w",
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (i : Fin (2 * (2 * (S \\ T).card))),\n  SecondQuantization.Common.externalInsertionVertexOfLeg\n      ((SecondQuantization.Common.externalInsertionSlotLegSplitting h) (Sum.inr i)) =\n    (SecondQuantization.Common.supportSlotVertexEquiv✝ h) (Sum.inr (SecondQuantization.Common.vertexOfLeg i))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -174081,23 +173945,20 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Right legs retain the corresponding quartic vertices under the splitting. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
-    ],
+    "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction"
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inr"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexGraphIso"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174119,7 +173980,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -174127,112 +173988,22 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Reachability in the external-bearing piece is reflected by the disjoint graph sum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_of_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift"
+      "SimpleGraph.reachable_sum_inl_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertexEquiv_inl"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  {x y : SecondQuantization.Common.ExternalInsertionVertex E T},\n  ext.vertexGraph.Reachable x y →\n    (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable\n      (SecondQuantization.Common.supportSlotVertex✝ h x) (SecondQuantization.Common.supportSlotVertex✝ h y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_of_reachable",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  {u v : SecondQuantization.Common.ExternalInsertionVertex E S}\n  (a : (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph.Walk u v)\n  (x : SecondQuantization.Common.ExternalInsertionVertex E T),\n  u = SecondQuantization.Common.supportSlotVertex✝ h x →\n    ∃ y, v = SecondQuantization.Common.supportSlotVertex✝ h y ∧ ext.vertexGraph.Reachable x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_walk_lift",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_exists_of_adj"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_reachable_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -175102,7 +174873,8 @@
     "dependencies": [
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -175332,7 +175104,9 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -175359,8 +175133,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -175372,6 +175146,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [
@@ -175381,9 +175157,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -176994,95 +176772,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (x y : ↥(S \\ T)),\n  (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj\n      (SecondQuantization.Common.slotSplitVacuumVertex x) (SecondQuantization.Common.slotSplitVacuumVertex y) ↔\n    vac.vertexGraph.Adj x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "Reassembly preserves and reflects adjacency between vertices of the vacuum piece. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.ofSplit_partner_inr",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
-      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inl",
-      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVacuumVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (x : SecondQuantization.Common.TwoPointVertex T) (y : ↥(S \\ T)),\n  ¬(SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj\n      (SecondQuantization.Common.slotSplitVertex h x) (SecondQuantization.Common.slotSplitVacuumVertex y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "The two sectors of a slot split have no edges between them. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.ofSplit_partner_inl",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
-      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inl",
-      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (x y : SecondQuantization.Common.TwoPointVertex T),\n  (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable\n      (SecondQuantization.Common.slotSplitVertex h x) (SecondQuantization.Common.slotSplitVertex h y) ↔\n    ext.vertexGraph.Reachable x y",
     "standardAxioms": [
@@ -177117,143 +176806,6 @@
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} {S T : Finset (Fin N)}, T ⊆ S → Function.Injective SecondQuantization.Common.slotSplitVacuumVertex",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVacuumVertex_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "The vacuum vertex embedding inherits injectivity from the slot-split equivalence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.slotSplitVertexEquiv_inr"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S), Function.Injective (SecondQuantization.Common.slotSplitVertex h)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "The external vertex embedding inherits injectivity from the slot-split equivalence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.slotSplitVertexEquiv_inl"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (x : SecondQuantization.Common.TwoPointVertex T) (v : ↥(S \\ T)),\n  SecondQuantization.Common.slotSplitVertex h x ≠ SecondQuantization.Common.slotSplitVacuumVertex v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "An external-piece vertex and a vacuum-piece vertex have disjoint images. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.slotSplitVertexEquiv_inl",
-      "SecondQuantization.Common.slotSplitVertexEquiv_inr"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177316,7 +176868,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -177329,55 +176881,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T))\n  (C : ↥vac.vertexGraph.componentPartitionOn.parts) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (hσ : StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))\n  (p q :\n    vac.LocalOrderedPair\n      (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (SecondQuantization.Common.slotSplitVacuumOrder T)) C),\n  Combinatorics.Crosses\n      ↑↑((SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv✝ T ext vac C τ τ' σ hσ) p)\n      ↑↑((SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv✝ T ext vac C τ τ' σ hσ) q) ↔\n    Combinatorics.Crosses ↑p ↑q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair",
-    "externalAxioms": [],
-    "docString": "The componentwise pair equivalence preserves and reflects crossing geometry. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [

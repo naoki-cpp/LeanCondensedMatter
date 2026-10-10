@@ -1445,10 +1445,10 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/VertexGraph.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing",
@@ -2761,19 +2761,27 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
+      "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Green.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Transport.Resolvent.Spectral"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Model.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
-        "LeanCondensedMatter.Transport.Resolvent.Spectral"
+        "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Response.lean",
       "imports": [
-        "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Models.Parabolic2DEG.Green",
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Core.ConductivityTensor",
@@ -2786,6 +2794,7 @@
       "name": "LeanCondensedMatter.Models.Parabolic2DEG",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
       "imports": [
+        "LeanCondensedMatter.Models.Parabolic2DEG.Green",
         "LeanCondensedMatter.Models.Parabolic2DEG.Model",
         "LeanCondensedMatter.Models.Parabolic2DEG.Response"
       ],
@@ -2798,6 +2807,15 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Transport.Streda.TraceKernel"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Green",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Green.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
       ],
       "externalImportCount": 0
     },
@@ -2834,7 +2852,6 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-        "LeanCondensedMatter.Transport.Analysis.BandOccupation",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
       "externalImportCount": 1
@@ -2843,8 +2860,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Operator",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Operator.lean",
       "imports": [
-        "LeanCondensedMatter.Models.RashbaExchange.Model",
-        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
+        "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
       "externalImportCount": 4
     },
@@ -2852,7 +2868,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Response",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Response.lean",
       "imports": [
-        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Core.ConductivityTensor",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
@@ -2865,6 +2881,7 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+        "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Models.RashbaExchange.Model",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
@@ -5004,7 +5021,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/ExternalSupportConnectivity.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected"
       ],
       "externalImportCount": 0
     },
