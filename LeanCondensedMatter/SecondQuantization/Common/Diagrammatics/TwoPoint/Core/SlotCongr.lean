@@ -147,7 +147,9 @@ noncomputable def TwoPointDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
     d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph where
   toEquiv := twoPointVertexCongr e
-  map_rel_iff' := fun _ _ => (d.slotCongr_adj_iff (M := M) e _ _).symm
+  map_rel_iff' := by
+    intro a b
+    exact d.slotCongr_adj_iff (M := M) e a b
 
 /-- **Reachability is preserved by the transport.** -/
 theorem TwoPointDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
