@@ -4,7 +4,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral

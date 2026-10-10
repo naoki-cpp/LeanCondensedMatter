@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -10,9 +10,9 @@ The target-band Lorentzian kernel depends on the energy offset from the pole and
 broadening. The opposite-band spectator/current factor is regular wherever the shifted interband
 gap stays nonzero.
 
-This file specializes the generic spectator factor to the Hall direction pair `(x,y)`, packages it
-in target-centered coordinates, evaluates it at the pole, and proves the general shifted-gap
-continuity theorem. Concrete pole/window specializations remain at their consumers.
+This file rewrites the opposite-band resolvent in target-centered coordinates, specializes the
+generic spectator factor to the Hall direction pair `(x,y)`, evaluates it at the pole, and proves
+joint continuity away from the shifted gap zero. Fixed-window integration lives downstream.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -22,6 +22,22 @@ noncomputable section
 open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
+
+/-- In target-centered offset coordinates, the opposite-band spectator denominator on spectral side
+`s` is `gap + offset + i γˢ`. -/
+private theorem projectorResolventCoefficient_targetOffset_oppositeBand
+    (side : SpectralSide) (band : Band) (v m px py offset broadening : ℝ) :
+    projectorResolventCoefficient
+        (spectralParameter side
+          (bandEnergy band v m px py + offset) broadening)
+        (oppositeBand band) v m px py =
+      ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
+          ((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
+  unfold projectorResolventCoefficient spectralParameter spectralParameterOfRegulator
+    interbandEnergyGap
+  congr 1
+  push_cast
+  ring
 
 /-- The regular Hall interband spectator/current factor written in target-centered coordinates
 `(offset, broadening)`. -/
