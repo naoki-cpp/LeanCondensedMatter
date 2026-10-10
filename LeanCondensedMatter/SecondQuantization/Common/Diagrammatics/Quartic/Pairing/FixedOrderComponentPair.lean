@@ -105,8 +105,8 @@ theorem QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff
   rw [d.fixedOrderComponentPairEmbedding_apply order C p,
     d.fixedOrderComponentPairEmbedding_apply order C q]
   exact crosses_map_iff
-    (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C)
-    (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C).strictMono
+    (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C)
+    (d.componentOrderedLeg_strictMono (d.fixedOrderComponentShuffle order) C)
     p.1.1 p.1.2 q.1.1 q.1.2
 
 /-- A component-local normalized pair remains assigned to that component after embedding into the
