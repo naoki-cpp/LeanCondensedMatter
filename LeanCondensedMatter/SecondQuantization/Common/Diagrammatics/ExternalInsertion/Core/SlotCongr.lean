@@ -128,32 +128,6 @@ noncomputable def ExternalInsertionDiagram.slotCongrVertexGraphIso (e : ↥T ≃
     intro a b
     exact d.slotCongr_adj_iff (M := M) e a b
 
-/-- **Reachability is preserved by the transport.** -/
-theorem ExternalInsertionDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) (v w : ExternalInsertionVertex E T) :
-    (d.slotCongr (M := M) e).vertexGraph.Reachable
-        (externalInsertionVertexCongr (E := E) e v) (externalInsertionVertexCongr (E := E) e w) ↔
-      d.vertexGraph.Reachable v w := by
-  exact SimpleGraph.Iso.reachable_iff
-    (φ := d.slotCongrVertexGraphIso (M := M) e) (u := v) (v := w)
-
-/-- **Absence of vacuum components is preserved by the transport.** -/
-theorem ExternalInsertionDiagram.slotCongr_hasNoVacuumComponent_iff (e : ↥T ≃ ↥U)
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
-    HasNoVacuumComponent (d.slotCongr (M := M) e).vertexGraph ↔ HasNoVacuumComponent d.vertexGraph := by
-  constructor
-  · intro hd v
-    obtain ⟨f, hf⟩ := hd (e v)
-    refine ⟨f, ?_⟩
-    rw [← d.slotCongr_reachable_iff (M := M) e (Sum.inl f) (Sum.inr v)]
-    simpa using hf
-  · intro hd v
-    obtain ⟨f, hf⟩ := hd (e.symm v)
-    refine ⟨f, ?_⟩
-    have := (d.slotCongr_reachable_iff (M := M) e (Sum.inl f) (Sum.inr (e.symm v))).2 hf
-    simpa using this
-
-
 /-- The transport is an equivalence of diagram types. -/
 noncomputable def ExternalInsertionDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
     ExternalInsertionDiagram ExternalLabel InternalLabel E N T ≃
