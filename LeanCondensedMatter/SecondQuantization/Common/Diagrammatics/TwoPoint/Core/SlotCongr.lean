@@ -48,14 +48,6 @@ noncomputable def standardSlotEquiv (T : Finset (Fin N)) :
 def twoPointVertexCongr (e : ↥T ≃ ↥U) : TwoPointVertex T ≃ TwoPointVertex U :=
   Equiv.sumCongr (Equiv.refl (Fin 2)) e
 
-@[simp]
-theorem twoPointVertexCongr_inl (e : ↥T ≃ ↥U) (a : Fin 2) :
-    twoPointVertexCongr e (Sum.inl a) = Sum.inl a := rfl
-
-@[simp]
-theorem twoPointVertexCongr_inr (e : ↥T ≃ ↥U) (v : ↥T) :
-    twoPointVertexCongr e (Sum.inr v) = Sum.inr (e v) := rfl
-
 /-- Relabeling the interaction vertices relabels the unflattened legs. -/
 def twoPointLegDataCongr (e : ↥T ≃ ↥U) : TwoPointLeg T ≃ TwoPointLeg U :=
   Equiv.sumCongr (Equiv.refl (Fin 2)) (e.prodCongr (Equiv.refl (Fin 4)))
