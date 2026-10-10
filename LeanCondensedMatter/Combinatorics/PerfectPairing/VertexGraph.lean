@@ -52,7 +52,8 @@ noncomputable def Pairing.vertexGraphOfSplitIso
       obtain ⟨z, rfl⟩ := e.surjective leg
       cases z with
       | inl i =>
-          rw [hleft, Pairing.ofSplit_partner_inl, hleft] at hx hy
+          rw [hleft] at hx
+          rw [Pairing.ofSplit_partner_inl, hleft] at hy
           have hx' : x = Sum.inl (leftVertex i) :=
             (vertexEquiv.injective hx).symm
           have hy' : y = Sum.inl (leftVertex (P.partner i)) :=
@@ -64,7 +65,8 @@ noncomputable def Pairing.vertexGraphOfSplitIso
           intro hxy
           exact hne (congrArg vertexEquiv (congrArg Sum.inl hxy))
       | inr i =>
-          rw [hright, Pairing.ofSplit_partner_inr, hright] at hx hy
+          rw [hright] at hx
+          rw [Pairing.ofSplit_partner_inr, hright] at hy
           have hx' : x = Sum.inr (rightVertex i) :=
             (vertexEquiv.injective hx).symm
           have hy' : y = Sum.inr (rightVertex (Q.partner i)) :=
