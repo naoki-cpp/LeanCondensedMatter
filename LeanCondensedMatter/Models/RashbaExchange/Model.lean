@@ -17,8 +17,8 @@ j_i = q v_i.
 
 Thus `α_R` has velocity dimension. `signedCharge` is the carrier charge itself, so electrons use
 a negative value. Chemical potential remains an explicit response parameter. The spectrum is
-model data; consumers can apply occupation laws directly to band energies using the generic
-`Transport.bandStateOccupation` interface.
+model data; consumers can apply occupation laws to band energies relative to the chemical
+potential using the generic `Transport.bandStateOccupation` interface.
 
 The two-dimensional momentum domain is the closed disk `p_x² + p_y² ≤ p_max²`; `p_max` is kept
 finite. No disorder, zero-broadening limit, or device-level Hall observable is introduced here.
