@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
-import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
+import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 
 /-!
 # Variational principle for countable pure-point Gibbs data
@@ -67,7 +67,7 @@ theorem purePointGibbs_helmholtzFreeEnergy_le
       simp [q, purePointBoltzmannWeight]
     exact hlogEq.le
   obtain ⟨-, hmain'⟩ :=
-    summable_negMulLog_and_tsum_le_gibbs
+    Real.summable_negMulLog_and_tsum_le_gibbs
       p.probability q E β Z p.nonneg p.hasSum_one hEnergy
       hqsum hqsum_le (fun i => purePointBoltzmannWeight_pos E β i) hZpos hlog
   have hmain : p.entropy ≤ β * p.energy + Real.log Z := by
