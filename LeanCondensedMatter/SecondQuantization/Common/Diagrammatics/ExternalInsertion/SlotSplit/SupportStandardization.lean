@@ -30,7 +30,9 @@ noncomputable def ExternalInsertionDiagram.vacuumFreeSlotCongrEquiv
     {d : ExternalInsertionDiagram ExternalLabel InternalLabel E M U //
       HasNoVacuumComponent d.vertexGraph} :=
   Equiv.subtypeEquiv (ExternalInsertionDiagram.slotCongrEquiv (E := E) e)
-    (fun d => (d.slotCongr_hasNoVacuumComponent_iff (M := M) e).symm)
+    (fun d => (hasNoVacuumComponent_congr_iff
+      (d.slotCongrVertexGraphIso (M := M) e) (Equiv.refl (Fin (2 * E))) e
+      (fun _ => rfl) (fun _ => rfl)).symm)
 
 /-- Canonically enumerate the interaction slots of a vacuum-free external diagram.
 External insertion labels are not reordered. -/
