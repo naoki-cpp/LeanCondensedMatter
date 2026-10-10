@@ -94,18 +94,16 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     d.mixedComponentWeight s τ τ' σ B =
       d.mixedComponentWeight s τ τ' υ B := by
+  have hstd : standardToMixedAtomicPositionEquiv τ τ' σ =
+      standardToMixedAtomicPositionEquiv τ τ' υ := by
+    unfold standardToMixedAtomicPositionEquiv
+    rw [mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber]
   unfold TwoPointDiagram.mixedComponentWeight
-  congr 1
-  unfold TwoPointDiagram.mixedComponentCrossingCount
-  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv
-    (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
-    (fun p : d.MixedComponentPair τ τ' υ B => p.1.1)
-    (d.mixedComponentPairTimeEquiv τ τ' σ υ B)
-    (fun p q => by
-      rw [d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
-          τ τ' σ υ B hChamber p,
-        d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
-          τ τ' σ υ B hChamber q])
+    TwoPointDiagram.mixedComponentCrossingCount
+    TwoPointDiagram.mixedPairComponent
+    TwoPointDiagram.mixedPositionComponent
+    TwoPointDiagram.pairingInMixedOrder
+    mixedTimeAmbientPositionEquiv
+  rw [hstd]
 end Common
 end SecondQuantization
