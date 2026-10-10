@@ -345,15 +345,22 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
       d.componentDiagramLeg B
         (externalInsertionExternalLeg (d.externalPairCount B) T f)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_external B]
+    change
+      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
+        (externalInsertionExternalLeg E S (d.externalSectorOrderIso B f).1).val
     have hef : e < f := by
-      simpa only [externalInsertionExternalLeg_val] using hab
-    simpa only [externalInsertionExternalLeg_val] using
-      (d.externalSectorOrderIso B).strictMono hef
+      simpa using hab
+    simpa using (d.externalSectorOrderIso B).strictMono hef
   · change d.componentDiagramLeg B
         (externalInsertionExternalLeg (d.externalPairCount B) T e) <
       d.componentDiagramLeg B
         (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_interaction B]
+    change
+      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
+        (externalInsertionInteractionLeg (E := E)
+          ⟨w.1, interactionSector_subset
+            (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
     simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
     have hbound := (d.externalSectorOrderIso B e).1.isLt
     omega
@@ -400,8 +407,8 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
         have hl := l.isLt
         have hk := k.isLt
         omega
-      have hvwT : v < w :=
-        (T.orderIsoOfFin rfl).strictMono hrank
+      have hvwT : v < w := by
+        simpa using (T.orderIsoOfFin rfl).strictMono hrank
       have hamb :
           ((S.orderIsoOfFin rfl).symm
             (⟨v.1, interactionSector_subset
