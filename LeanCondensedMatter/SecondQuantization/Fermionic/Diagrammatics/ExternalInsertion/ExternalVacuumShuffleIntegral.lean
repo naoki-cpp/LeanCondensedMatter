@@ -72,19 +72,11 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
             (Sum.inr (⟨(orderedQuarticLegEquiv m b).1, Finset.mem_univ _⟩,
               (orderedQuarticLegEquiv m b).2)))) =
       flatVertexLegPairValue ε β (q ∘ fInteraction) (σ ∘ fInteraction) a b := by
-  have hmap :=
-    externalInsertionMixedTimeOrderedAtomicPairValue_map (E₁ := 0) (E₂ := E) ε β
-      (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
-      externalLabel externalTime q σ
-      (Sum.inr (⟨(orderedQuarticLegEquiv m a).1, Finset.mem_univ _⟩,
-        (orderedQuarticLegEquiv m a).2))
-      (Sum.inr (⟨(orderedQuarticLegEquiv m b).1, Finset.mem_univ _⟩,
-        (orderedQuarticLegEquiv m b).2))
-  exact hmap.trans
-    (externalInsertionMixedTimeOrderedAtomicPairValue_quartic ε β
-      (externalLabel ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
-      (externalTime ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
-      (q ∘ fInteraction) (σ ∘ fInteraction) a b)
+  simp only [externalInsertionMixedTimeOrderedAtomicPairValue,
+    externalInsertionMixedTimeOrderedAtomicFieldFamily,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    flatVertexLegPairValue]
+  rfl
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
