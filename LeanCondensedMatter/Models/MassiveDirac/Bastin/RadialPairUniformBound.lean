@@ -84,12 +84,10 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
   rw [intervalIntegral.integral_const_mul] at hineq
   exact hineq
 
-/-- The explicit spectator bound is nonnegative. -/
-theorem radialInterbandSpectatorUniformBound_nonneg
-    (e v m radius : ℝ) :
-    0 ≤ radialInterbandSpectatorUniformBound e v m radius := by
-  unfold radialInterbandSpectatorUniformBound
-  positivity
+/-- Uniform norm bound for the complete energy-integrated radial Bastin pair. -/
+def radialInterbandBastinPairUniformBound
+    (e v m radius : ℝ) : ℝ :=
+  2 * (radialInterbandSpectatorUniformBound e v m radius * Real.pi)
 
 /-- Uniform norm bound for the complete target-centered interband Bastin pair on the radial axis. -/
 theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le

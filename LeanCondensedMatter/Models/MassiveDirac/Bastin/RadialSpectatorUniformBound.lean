@@ -85,6 +85,13 @@ def radialInterbandSpectatorUniformBound
     (e v m radius : ℝ) : ℝ :=
   2 * (radialBastinMassWindowMargin m radius)⁻¹ ^ 2 * (e ^ 2 * v ^ 2)
 
+/-- The explicit spectator bound is nonnegative. -/
+theorem radialInterbandSpectatorUniformBound_nonneg
+    (e v m radius : ℝ) :
+    0 ≤ radialInterbandSpectatorUniformBound e v m radius := by
+  unfold radialInterbandSpectatorUniformBound
+  positivity
+
 /-- The regular radial spectator/current factor is uniformly bounded throughout the fixed target
 window, independently of momentum and broadening. -/
 theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
