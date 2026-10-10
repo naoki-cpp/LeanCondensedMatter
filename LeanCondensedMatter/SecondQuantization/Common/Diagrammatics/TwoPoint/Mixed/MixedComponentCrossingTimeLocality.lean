@@ -46,7 +46,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrder
     pr.1.1
   simp only [Equiv.trans_apply, hambient, Equiv.symm_apply_apply]
   rw [← hpairing]
-  simp
+  simp only [Equiv.symm_apply_apply]
 
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
