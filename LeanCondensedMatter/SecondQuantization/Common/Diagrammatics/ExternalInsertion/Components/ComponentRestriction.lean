@@ -338,31 +338,23 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
   rw [← ha, ← hb] at hab ⊢
   rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
   · change
-      externalInsertionExternalLeg (d.externalPairCount B) T e <
-        externalInsertionExternalLeg (d.externalPairCount B) T f at hab
-    change
+      (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
+        (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
+    change d.componentDiagramLeg B
+        (externalInsertionExternalLeg (d.externalPairCount B) T e) <
       d.componentDiagramLeg B
-          (externalInsertionExternalLeg (d.externalPairCount B) T e) <
-        d.componentDiagramLeg B
-          (externalInsertionExternalLeg (d.externalPairCount B) T f)
+        (externalInsertionExternalLeg (d.externalPairCount B) T f)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_external B]
     change
       (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
         (externalInsertionExternalLeg E S (d.externalSectorOrderIso B f).1).val
     have hef : e < f := by
-      change
-        (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
-          (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
       simpa using hab
     simpa using (d.externalSectorOrderIso B).strictMono hef
-  · change
-      externalInsertionExternalLeg (d.externalPairCount B) T e <
-        externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
-    change
+  · change d.componentDiagramLeg B
+        (externalInsertionExternalLeg (d.externalPairCount B) T e) <
       d.componentDiagramLeg B
-          (externalInsertionExternalLeg (d.externalPairCount B) T e) <
-        d.componentDiagramLeg B
-          (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
+        (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_interaction B]
     change
       (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
@@ -370,7 +362,8 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
           ⟨w.1, interactionSector_subset
             (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
     simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-    exact Nat.lt_of_lt_of_le (d.externalSectorOrderIso B e).1.isLt (by omega)
+    have hbound := (d.externalSectorOrderIso B e).1.isLt
+    omega
   · change
       externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
         externalInsertionExternalLeg (d.externalPairCount B) T f at hab
@@ -401,37 +394,33 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     simp only [externalInsertionInteractionLeg_val] at hab ⊢
     by_cases hvw : v = w
     · subst w
-      have hlk : l.val < k.val := by omega
       omega
     · have hrank_ne :
           ((T.orderIsoOfFin rfl).symm v).val ≠
             ((T.orderIsoOfFin rfl).symm w).val := by
         intro h
         apply hvw
-        apply (T.orderIsoOfFin rfl).symm.injective
-        exact Fin.ext h
-      have hl : l.val < 4 := l.isLt
-      have hk : k.val < 4 := k.isLt
+        exact (T.orderIsoOfFin rfl).symm.injective (Fin.ext h)
       have hrank :
           ((T.orderIsoOfFin rfl).symm v).val <
             ((T.orderIsoOfFin rfl).symm w).val := by
+        have hl := l.isLt
+        have hk := k.isLt
         omega
       have hvwT : v < w := by
         simpa using (T.orderIsoOfFin rfl).strictMono hrank
-      let vS : ↥S :=
-        ⟨v.1, interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)) v.2⟩
-      let wS : ↥S :=
-        ⟨w.1, interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)) w.2⟩
-      have hvwS : vS < wS := by
+      have hamb :
+          ((S.orderIsoOfFin rfl).symm
+            (⟨v.1, interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S)) v.2⟩ : ↥S)).val <
+          ((S.orderIsoOfFin rfl).symm
+            (⟨w.1, interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S)) w.2⟩ : ↥S)).val := by
+        apply (S.orderIsoOfFin rfl).symm.strictMono
         change v.1 < w.1
         exact hvwT
-      have hamb :
-          ((S.orderIsoOfFin rfl).symm vS).val <
-            ((S.orderIsoOfFin rfl).symm wS).val :=
-        (S.orderIsoOfFin rfl).symm.strictMono hvwS
-      dsimp [vS, wS] at hamb
+      have hl := l.isLt
+      have hk := k.isLt
       omega
 
 /-- The canonical order embedding of one restricted component's flattened legs into the ambient
