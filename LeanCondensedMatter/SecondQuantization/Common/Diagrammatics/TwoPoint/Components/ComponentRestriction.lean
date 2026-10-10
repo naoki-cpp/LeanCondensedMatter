@@ -26,10 +26,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-/-- The vertex incident to an unflattened two-point leg. -/
-def twoPointLegVertex {S : Finset (Fin N)} : TwoPointLeg S → TwoPointVertex S :=
-  componentLegVertex
-
 /-- A flattened leg belongs to `B` when the component block of its incident vertex is `B`. -/
 def TwoPointDiagram.legInComponent {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
@@ -58,7 +54,7 @@ theorem TwoPointDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin N)}
 def TwoPointDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.vertexGraph.componentPartition.parts) (leg : TwoPointLeg S) : Prop :=
-  twoPointLegVertex leg ∈ (B : Finset (TwoPointVertex S))
+  componentLegVertex leg ∈ (B : Finset (TwoPointVertex S))
 
 /-- Flattening preserves the component-membership predicate. -/
 theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
@@ -67,7 +63,7 @@ theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
     d.legInComponent B leg ↔
       d.unflattenedLegInComponent B (twoPointLegEquiv S leg) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
-  unfold TwoPointDiagram.unflattenedLegInComponent twoPointLegVertex
+  unfold TwoPointDiagram.unflattenedLegInComponent
     twoPointVertexOfLeg componentLegVertex
   cases twoPointLegEquiv S leg <;> rfl
 
@@ -102,18 +98,6 @@ theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
     d.pairing.restrict_partner_val (d.legInComponent B)
       (fun i => d.legInComponent_partner_iff B i) leg
 
-/-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
-interaction vertices. -/
-noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex S))) :
-    {leg : TwoPointLeg S // d.unflattenedLegInComponent B leg} ≃
-      ↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4 :=
-  vacuumComponentLegDataEquiv
-    (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
-    (B := (B : Finset (TwoPointVertex S))) hVac
-
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
@@ -122,7 +106,8 @@ noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
       Fin (2 * (2 * (interactionSector
         (B : Finset (TwoPointVertex S))).card)) :=
   ((twoPointLegEquiv S).subtypeEquiv fun leg => d.legInComponent_iff_unflattened B leg).trans
-    ((d.vacuumLegDataEquiv B hVac).trans
+    ((vacuumComponentLegDataEquiv
+      (B := (B : Finset (TwoPointVertex S))) hVac).trans
       (quarticLegEquiv (interactionSector
         (B : Finset (TwoPointVertex S)))).symm)
 
