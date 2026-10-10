@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Models.Parabolic2DEG.Model
+import LeanCondensedMatter.Models.Parabolic2DEG.Green
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
