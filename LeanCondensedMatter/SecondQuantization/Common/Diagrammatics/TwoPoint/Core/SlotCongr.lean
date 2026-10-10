@@ -142,21 +142,14 @@ theorem TwoPointDiagram.slotCongr_adj_iff (e : ↥T ≃ ↥U)
     · rw [twoPointVertexOfLeg_twoPointLegCongr, hleg]
     · rw [d.slotCongr_partner e leg, twoPointVertexOfLeg_twoPointLegCongr, hpartner]
 
-/-- The transport as a graph homomorphism. -/
-private noncomputable def TwoPointDiagram.slotCongrHom (e : ↥T ≃ ↥U)
+/-- Interaction-slot relabeling induces an isomorphism of vertex graphs. -/
+noncomputable def TwoPointDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
-    d.vertexGraph →g (d.slotCongr (M := M) e).vertexGraph where
-  toFun := twoPointVertexCongr e
-  map_rel' := fun {_ _} hab => (d.slotCongr_adj_iff e _ _).2 hab
-
-/-- The inverse transport as a graph homomorphism. -/
-private noncomputable def TwoPointDiagram.slotCongrHomSymm (e : ↥T ≃ ↥U)
-    (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
-    (d.slotCongr (M := M) e).vertexGraph →g d.vertexGraph where
-  toFun := (twoPointVertexCongr e).symm
-  map_rel' := fun {a b} hab => by
-    refine (d.slotCongr_adj_iff (M := M) e _ _).1 ?_
-    simpa using hab
+    d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph where
+  toEquiv := twoPointVertexCongr e
+  map_rel_iff' := by
+    intro a b
+    exact d.slotCongr_adj_iff (M := M) e a b
 
 /-- **Reachability is preserved by the transport.** -/
 theorem TwoPointDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
@@ -164,15 +157,8 @@ theorem TwoPointDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
     (d.slotCongr (M := M) e).vertexGraph.Reachable
         (twoPointVertexCongr e v) (twoPointVertexCongr e w) ↔
       d.vertexGraph.Reachable v w := by
-  constructor
-  · intro hreach
-    have hmap := hreach.map (d.slotCongrHomSymm (M := M) e)
-    have hcoe : ∀ x : TwoPointVertex U,
-        (d.slotCongrHomSymm (M := M) e) x = (twoPointVertexCongr e).symm x := fun _ => rfl
-    rw [hcoe, hcoe] at hmap
-    simpa using hmap
-  · intro hreach
-    exact hreach.map (d.slotCongrHom (M := M) e)
+  exact SimpleGraph.Iso.reachable_iff
+    (φ := d.slotCongrVertexGraphIso (M := M) e) (u := v) (v := w)
 
 /-- **Absence of vacuum components is preserved by the transport.** -/
 theorem TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff (e : ↥T ≃ ↥U)

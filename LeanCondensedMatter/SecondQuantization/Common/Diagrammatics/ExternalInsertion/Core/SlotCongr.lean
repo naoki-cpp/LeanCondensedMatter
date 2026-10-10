@@ -119,21 +119,14 @@ theorem ExternalInsertionDiagram.slotCongr_adj_iff (e : ↥T ≃ ↥U)
     · rw [externalInsertionVertexOfLeg_externalInsertionLegCongr, hleg]
     · rw [d.slotCongr_partner e leg, externalInsertionVertexOfLeg_externalInsertionLegCongr, hpartner]
 
-/-- The transport as a graph homomorphism. -/
-private noncomputable def ExternalInsertionDiagram.slotCongrHom (e : ↥T ≃ ↥U)
+/-- Interaction-slot relabeling induces an isomorphism of vertex graphs. -/
+noncomputable def ExternalInsertionDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
-    d.vertexGraph →g (d.slotCongr (M := M) e).vertexGraph where
-  toFun := externalInsertionVertexCongr (E := E) e
-  map_rel' := fun {_ _} hab => (d.slotCongr_adj_iff e _ _).2 hab
-
-/-- The inverse transport as a graph homomorphism. -/
-private noncomputable def ExternalInsertionDiagram.slotCongrHomSymm (e : ↥T ≃ ↥U)
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
-    (d.slotCongr (M := M) e).vertexGraph →g d.vertexGraph where
-  toFun := (externalInsertionVertexCongr (E := E) e).symm
-  map_rel' := fun {a b} hab => by
-    refine (d.slotCongr_adj_iff (M := M) e _ _).1 ?_
-    simpa using hab
+    d.vertexGraph ≃g (d.slotCongr (M := M) e).vertexGraph where
+  toEquiv := externalInsertionVertexCongr (E := E) e
+  map_rel_iff' := by
+    intro a b
+    exact d.slotCongr_adj_iff (M := M) e a b
 
 /-- **Reachability is preserved by the transport.** -/
 theorem ExternalInsertionDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
@@ -141,15 +134,8 @@ theorem ExternalInsertionDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
     (d.slotCongr (M := M) e).vertexGraph.Reachable
         (externalInsertionVertexCongr (E := E) e v) (externalInsertionVertexCongr (E := E) e w) ↔
       d.vertexGraph.Reachable v w := by
-  constructor
-  · intro hreach
-    have hmap := hreach.map (d.slotCongrHomSymm (M := M) e)
-    have hcoe : ∀ x : ExternalInsertionVertex E U,
-        (d.slotCongrHomSymm (M := M) e) x = (externalInsertionVertexCongr (E := E) e).symm x := fun _ => rfl
-    rw [hcoe, hcoe] at hmap
-    simpa using hmap
-  · intro hreach
-    exact hreach.map (d.slotCongrHom (M := M) e)
+  exact SimpleGraph.Iso.reachable_iff
+    (φ := d.slotCongrVertexGraphIso (M := M) e) (u := v) (v := w)
 
 /-- **Absence of vacuum components is preserved by the transport.** -/
 theorem ExternalInsertionDiagram.slotCongr_hasNoVacuumComponent_iff (e : ↥T ≃ ↥U)
