@@ -98,7 +98,7 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
   let weightFor (e : Fin (2 * (2 * n + 1)) ≃
       Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) : ℂ :=
     (s.zetaInt : ℂ) ^
-      ((d.pairing.transport e : Pairing (2 * n + 1))).componentCrossingCount
+      Pairing.componentCrossingCount (d.pairing.transport e)
         (Equiv.sigmaFiberEquiv (fun pr =>
           (⟨d.vertexGraph.componentBlock
               (twoPointVertexOfLeg (e pr.1.1)),
