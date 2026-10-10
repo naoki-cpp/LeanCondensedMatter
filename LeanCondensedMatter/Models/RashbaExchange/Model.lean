@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
-import LeanCondensedMatter.Transport.Analysis.BandOccupation
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Tactic
 
@@ -17,9 +16,9 @@ j_i = q v_i.
 ```
 
 Thus `α_R` has velocity dimension. `signedCharge` is the carrier charge itself, so electrons use
-a negative value. Chemical potential and the occupation law remain explicit and separate: the
-spectrum is model data, while occupation is supplied by a consumer through the generic
-`bandStateOccupation` interface.
+a negative value. Chemical potential remains an explicit response parameter. The spectrum is
+model data; consumers can apply occupation laws to band energies relative to the chemical
+potential using the generic `Transport.bandStateOccupation` interface.
 
 The two-dimensional momentum domain is the closed disk `p_x² + p_y² ≤ p_max²`; `p_max` is kept
 finite. No disorder, zero-broadening limit, or device-level Hall observable is introduced here.
@@ -130,17 +129,6 @@ def hamiltonian (params : Parameters) (px py : ℝ) : InternalSpace.PauliMatrix 
 /-- Energy of a selected lower or upper band. -/
 def bandEnergy (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
   kineticEnergy params px py + bandSign band * spinOrbitEnergy params px py
-
-/-- Band energy measured relative to the chemical potential. -/
-def relativeBandEnergy (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
-  bandEnergy params band px py - params.chemicalPotential
-
-/-- Consumer-supplied occupation law evaluated on energy relative to the chemical potential. -/
-def occupation
-    (occupationLaw : ℝ → ℝ) (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
-  bandStateOccupation occupationLaw
-    (fun b (p : ℝ × ℝ) => relativeBandEnergy params b p.1 p.2)
-    band (px, py)
 
 /-- Matrix velocity operator ∂H/∂p_i for an in-plane direction. -/
 def velocityOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : InternalSpace.PauliMatrix :=

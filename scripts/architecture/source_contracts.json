@@ -767,6 +767,11 @@
       "id": "parabolic2DEGCleanModelResolventBoundary",
       "path": "LeanCondensedMatter/Models/Parabolic2DEG/Model.lean",
       "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
+    },
+    {
+      "id": "rashbaExchangeCleanModelOccupationBoundary",
+      "path": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
+      "modules": ["LeanCondensedMatter.Transport.Analysis.BandOccupation"]
     }
   ],
   "forbiddenImportPrefixes": [
