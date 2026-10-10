@@ -68,7 +68,11 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
       ⟨(e pr).1, by
         rw [← hpair]
         exact (e pr).2⟩
-    inj' := fun p q hpq => e.injective (Subtype.ext (congrArg Subtype.val hpq))
+    inj' := by
+      intro p q hpq
+      apply e.injective
+      apply Subtype.ext
+      exact congrArg (fun x : (d.pairingInOrder order).NormalizedPair => x.1) hpq
   }
 
 private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
