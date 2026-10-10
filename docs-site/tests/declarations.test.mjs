@@ -47,4 +47,8 @@ test("MixedComponentCrossing overview counts and opens both definitions", async 
     card.click();
     assert.equal(opened, name);
   }
+  await explorer.render("LeanCondensedMatter");
+  assert.match(overview.text(), /Definitions 2/);
+  assert.match(overview.text(), /Theorems 0/);
+  assert.match(overview.text(), /Total 2/);
 });

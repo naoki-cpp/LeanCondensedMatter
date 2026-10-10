@@ -84,14 +84,15 @@ function makeTree(entries, modules) {
 
   function summarize(node) {
     node.declarations.sort((a, b) => a.name.localeCompare(b.name));
-    let declarations = node.declarations.filter((entry) => !entry.generated).length;
+    const counts = declarationCounts(node.declarations);
     let modules = 1;
     for (const child of node.children.values()) {
       summarize(child);
-      declarations += child.declarationCount;
+      for (const key of Object.keys(counts)) counts[key] += child.counts[key];
       modules += child.moduleCount;
     }
-    node.declarationCount = declarations;
+    node.counts = counts;
+    node.declarationCount = counts.total;
     node.moduleCount = modules;
   }
 
@@ -206,7 +207,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     header.append(element("h2", "", node.fullName));
     if (description) header.append(element("p", "module-description module-header-description", description));
     const summary = element("div", "overview-summary");
-    const counts = declarationCounts(node.declarations);
+    const counts = node.counts;
     summary.append(summaryChip(`Definitions ${counts.definitions}`));
     summary.append(summaryChip(`Theorems ${counts.theorems}`));
     summary.append(summaryChip(`Total ${counts.total}`));
@@ -230,7 +231,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
       const section = element("section", "overview-section");
       const head = element("div", "overview-section-head");
       head.append(element("h3", "", "Declarations in this module"));
-      head.append(element("span", "module-direct-count", String(node.declarations.length)));
+      head.append(element("span", "module-direct-count", String(node.declarations.filter(allowed).length)));
       section.append(head);
       const list = element("div", "declaration-list");
       for (const entry of node.declarations.filter(allowed)) list.append(declarationCard(entry));
