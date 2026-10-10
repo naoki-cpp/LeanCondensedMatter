@@ -9,8 +9,8 @@ set_option linter.style.header false
 
 Interaction-time integrations order only the quartic interaction vertices, while connected
 components are formed from both external and interaction vertices. Consequently some component
-fibers may contain no interaction vertices. This module applies the generic finite-family order
-decomposition to those interaction fibers without dropping zero-size component blocks.
+fibers may contain no interaction vertices. This module assembles component-local interaction
+orders using the generic finite-family machinery without dropping zero-size component blocks.
 -/
 
 namespace SecondQuantization
@@ -105,24 +105,6 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_symm_apply
       d.vertexGraph ⟨B, orders B j⟩).symm
   rw [hambient]
   simpa [ExternalInsertionDiagram.assembleInteractionOrder] using h
-
-/-- A global interaction-vertex order is equivalent to component-local interaction orders together
-with an order-preserving component shuffle. Empty interaction sectors remain represented as
-zero-size shuffle blocks. -/
-noncomputable def ExternalInsertionDiagram.componentInteractionOrderDecompositionEquiv
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    QuarticVertexOrder S ≃
-      d.ComponentInteractionOrders × d.ComponentInteractionOrderShuffle :=
-  familyOrderDecompositionEquivOfSize
-    (fun B : d.vertexGraph.componentPartition.parts =>
-      ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S))))
-    (fun B : d.vertexGraph.componentPartition.parts =>
-      (interactionSector
-        (B : Finset (ExternalInsertionVertex E S))).card)
-    (fun _ => Fintype.card_coe _)
-    (interactionSectorComponentEquiv d.vertexGraph)
 
 end Common
 end SecondQuantization
