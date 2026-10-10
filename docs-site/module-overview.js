@@ -3,6 +3,8 @@ const PROJECT_NAME = "LeanCondensedMatter";
 const PROJECT_PREFIX = "LeanCondensedMatter.";
 const SOURCE_ROOT_URL = `${REPOSITORY_ROOT_URL}/${PROJECT_NAME}`;
 
+import { declarationAllowed, declarationCounts } from "./declaration-model.js";
+
 function element(tag, className = "", text = "") {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -82,14 +84,15 @@ function makeTree(entries, modules) {
 
   function summarize(node) {
     node.declarations.sort((a, b) => a.name.localeCompare(b.name));
-    let declarations = node.declarations.length;
+    const counts = declarationCounts(node.declarations);
     let modules = 1;
     for (const child of node.children.values()) {
       summarize(child);
-      declarations += child.declarationCount;
+      for (const key of Object.keys(counts)) counts[key] += child.counts[key];
       modules += child.moduleCount;
     }
-    node.declarationCount = declarations;
+    node.counts = counts;
+    node.declarationCount = counts.total;
     node.moduleCount = modules;
   }
 
@@ -110,7 +113,8 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-export function createModuleOverview({ catalog, modules = [], overview, onBrowse, onOpenDeclaration }) {
+export function createModuleOverview({ catalog, modules = [], overview, onBrowse, onOpenDeclaration,
+  allowed = (entry) => declarationAllowed(entry) }) {
   const moduleDescriptionPromises = new Map();
   let hierarchyRenderVersion = 0;
 
@@ -172,6 +176,8 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     const button = element("button", "declaration-card module-declaration-card");
     button.type = "button";
     button.append(element("strong", "", declarationBaseName(entry.name)));
+    button.append(element("span", "badge", entry.kind));
+    if (entry.generated) button.append(element("span", "badge", "generated"));
     const context = entry.docString?.trim() || entry.statement || entry.name;
     button.append(element("small", "", context.slice(0, 150)));
     button.addEventListener("click", () => onOpenDeclaration(entry.name));
@@ -198,10 +204,14 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     overview.append(renderBreadcrumb(parts));
 
     const header = element("div", "overview-header module-overview-header");
-    header.append(element("h2", "", node.fullName));
+    header.append(element("h2", "", node.name));
     if (description) header.append(element("p", "module-description module-header-description", description));
     const summary = element("div", "overview-summary");
-    summary.append(summaryChip(`${node.declarationCount} declarations`));
+    const counts = node.counts;
+    summary.append(summaryChip(`Definitions ${counts.definitions}`));
+    summary.append(summaryChip(`Theorems ${counts.theorems}`));
+    summary.append(summaryChip(`Total ${counts.total}`));
+    if (counts.generated) summary.append(summaryChip(`Generated ${counts.generated}`));
     summary.append(summaryChip(`${node.moduleCount} module${node.moduleCount === 1 ? "" : "s"}`));
     summary.append(summaryChip(`${node.children.size} direct submodule${node.children.size === 1 ? "" : "s"}`));
     header.append(summary);
@@ -220,10 +230,10 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
       const section = element("section", "overview-section");
       const head = element("div", "overview-section-head");
       head.append(element("h3", "", "Declarations in this module"));
-      head.append(element("span", "module-direct-count", String(node.declarations.length)));
+      head.append(element("span", "module-direct-count", String(node.declarations.filter(allowed).length)));
       section.append(head);
       const list = element("div", "declaration-list");
-      for (const entry of node.declarations) list.append(declarationCard(entry));
+      for (const entry of node.declarations.filter(allowed)) list.append(declarationCard(entry));
       section.append(list);
       overview.append(section);
     }

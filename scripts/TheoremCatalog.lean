@@ -616,6 +616,71 @@ private def json (entries : Array CatalogEntry) : Json :=
       ("retainedNeedsReview", .bool entry.retainedNeedsReview)
     ]
 
+/-- The declaration graph includes every compiled project constant. Source ranges are queried
+directly: Lean's convenience range lookup inherits ranges for generated recursors. -/
+private def declarationGraph (audit : Array CatalogEntry) : CommandElabM Json := do
+  let env ← getEnv
+  let constants := env.constants.toList.filter fun (name, _) =>
+    ((declarationModule? env name).map projectModule?).getD false
+  let names := constants.foldl (init := NameSet.empty) fun names (name, _) => names.insert name
+  let mut rows : Array (Name × Json) := #[]
+  let mut consumers : NameMap (Array String) := {}
+  let auditRows := (json audit).getArr?.toOption.getD #[]
+  let auditByName := auditRows.foldl (init := ({} : NameMap Json)) fun result row =>
+    match (row.getObjValAs? String "name").toOption with
+    | some name => result.insert name.toName row
+    | none => result
+  for (name, info) in constants do
+    let moduleName := (declarationModule? env name).get!
+    let ranges ← findDeclarationRangesCore? name
+    let kind := match info with
+      | .thmInfo _ => "theorem"
+      | .defnInfo value => if value.hints.isAbbrev then "abbrev" else "def"
+      | .opaqueInfo _ => "opaque"
+      | .axiomInfo _ => "axiom"
+      | .inductInfo _ => "inductive"
+      | .ctorInfo _ => "constructor"
+      | .recInfo _ => "recursor"
+      | .quotInfo _ => "quotient"
+    let value? := match info with
+      | .thmInfo value => some value.value
+      | .defnInfo value => some value.value
+      | .opaqueInfo value => some value.value
+      | _ => none
+    let typeDependencies := directProjectTheoremDependencyNames names name info.type
+    let valueDependencies := value?.map (directProjectTheoremDependencyNames names name) |>.getD #[]
+    let dependencies := typeDependencies.foldl (init := valueDependencies) fun result dep =>
+      if result.contains dep then result else result.push dep
+    for dependency in dependencies do
+      consumers := addConsumer consumers dependency name.toString
+    let baseFields := (auditByName.find? name).getD (.mkObj [])
+    -- Audit rows already contain the pretty-printed theorem type. Reuse it rather than
+    -- delaborating every theorem a second time for the declaration graph.
+    let statement ← match (baseFields.getObjValAs? String "statement").toOption with
+      | some statement => pure statement
+      | none => liftTermElabM do return (← ppExpr info.type).pretty
+    let docString ← liftIO <| findDocString? env name
+    let sourceFile := moduleName.toString.replace "." "/" ++ ".lean"
+    let sourceLine := ranges.map fun r => r.selectionRange.pos.line
+    let fields : List (String × Json) := [
+      ("name", .str name.toString), ("module", .str moduleName.toString),
+      ("kind", .str kind), ("generated", .bool ranges.isNone),
+      ("statement", .str statement), ("docString", docString.map Json.str |>.getD .null),
+      ("sourceFile", .str sourceFile),
+      ("sourceLine", sourceLine.map (fun n => Json.num n) |>.getD .null),
+      ("sourceColumn", ranges.map (fun r => Json.num r.selectionRange.pos.column) |>.getD .null),
+      ("sourceEndLine", ranges.map (fun r => Json.num r.range.endPos.line) |>.getD .null),
+      ("sourceEndColumn", ranges.map (fun r => Json.num r.range.endPos.column) |>.getD .null),
+      ("typeDependencies", .arr <| (sortedNameStrings typeDependencies).map Json.str),
+      ("valueDependencies", .arr <| (sortedNameStrings valueDependencies).map Json.str),
+      ("dependencies", .arr <| (sortedNameStrings dependencies).map Json.str)]
+    let row := fields.foldl (init := baseFields) fun row (key, value) =>
+      row.setObjVal! key value
+    rows := rows.push (name, row)
+  rows := rows.qsort fun a b => a.1.toString < b.1.toString
+  return .arr <| rows.map fun (name, row) =>
+    row.setObjVal! "dependents" (.arr <| (sortedConsumers consumers name).map Json.str)
+
 run_cmd do
   let projectAxioms ← collectProjectAxioms
   let (entries, projectTheorems, theoremDependents) ← collectEntries projectAxioms
@@ -661,6 +726,8 @@ run_cmd do
   let retainedReviewQueue := retainedReviewEntries catalog
   liftIO <| IO.FS.writeFile (outputDir / "theorems.md") (markdown catalog chains retained)
   liftIO <| IO.FS.writeFile (outputDir / "theorems.json") (json catalog).pretty
+  let declarations ← declarationGraph catalog
+  liftIO <| IO.FS.writeFile (outputDir / "declarations.json") declarations.pretty
   logInfo m!"Retained catalog consistency: {missingRetained.size} missing declaration(s); {retainedWithoutSignal.size} retained declaration(s) without a current structural audit signal"
   logInfo m!"Retained re-audit queue: {retainedReviewQueue.size} declaration(s)"
   logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {privateSingleConsumerReviewQueue.size} priority public non-simp theorems with sole private compiled consumers; {projectAxiomEntries.size} theorems depending on project axioms; {externalAxiomEntries.size} theorems depending on external nonstandard axioms; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"

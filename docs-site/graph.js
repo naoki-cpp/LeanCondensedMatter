@@ -1,4 +1,5 @@
 import { createModuleOverview } from "./module-overview.js";
+import { declarationAllowed } from "./declaration-model.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
 import {
   BRANCH_COLORS,
@@ -11,7 +12,7 @@ import {
 const SVG_NS = "http://www.w3.org/2000/svg";
 const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
-const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/theorems.json";
+const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
 const MIN_BRANCH_ARC = 52;
 const MIN_LEAF_ARC = 22;
@@ -33,6 +34,8 @@ const state = {
   depth: 2,
   module: "*",
   highlights: new Set(),
+  kind: "*",
+  generated: false,
   searchResults: [],
   searchIndex: -1,
   graphBounds: null,
@@ -80,6 +83,7 @@ function element(tag, className = "", text = "") {
 function normalizeEntry(entry) {
   return {
     ...entry,
+    directWrapperOf: entry.directWrapperOf ?? null,
     dependencies: Array.isArray(entry.dependencies) ? entry.dependencies : [],
     dependents: Array.isArray(entry.dependents) ? entry.dependents : [],
     compiledConsumers: Array.isArray(entry.compiledConsumers) ? entry.compiledConsumers : [],
@@ -111,6 +115,8 @@ function displayName(name) {
 }
 
 function moduleAllowed(name) {
+  if (state.graphKind !== "modules" &&
+      !declarationAllowed(state.byName.get(name), state.kind, state.generated)) return false;
   if (state.module === "*") return true;
   return state.byName.get(name)?.module === state.module;
 }
@@ -171,7 +177,7 @@ function highlightMatches(entry) {
     (highlights.has("terminal") && entry.terminal) ||
     (highlights.has("zero") && entry.compiledConsumerCount === 0) ||
     (highlights.has("single") && entry.singleCompiledConsumer) ||
-    (highlights.has("wrapper") && entry.directWrapperOf !== null)
+    (highlights.has("wrapper") && entry.directWrapperOf != null)
   );
 }
 
@@ -424,14 +430,16 @@ function setModuleFilterEnabled(enabled) {
 
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
-  ui.overviewLink.textContent = "Theorems";
+  ui.overviewLink.textContent = "Declarations";
+  document.getElementById("kind-filter").closest("label").hidden = modules;
+  document.getElementById("generated-filter").closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name" : "Name, module, or documentation";
   ui.moduleFilterLabel.hidden = modules;
   ui.wrapperHighlightLabel.hidden = modules;
   ui.graph.setAttribute("aria-label", modules
     ? "Interactive Lean module import graph"
-    : "Interactive theorem dependency graph");
+    : "Interactive declaration dependency graph");
   const [terminal, zero, single] = ui.highlightInputs;
   terminal.nextSibling.nodeValue = modules ? " no project imports" : " terminal";
   zero.nextSibling.nodeValue = modules ? " no importers" : " zero consumer";
@@ -482,6 +490,8 @@ function renderGraph({ preserveView = false } = {}) {
       if (!targetPosition) continue;
       const treeEdge = isTreeEdge(sourceName, dependencyName, levels, parents);
       const isWrapper = source.directWrapperOf === dependencyName;
+      const typeReference = source.typeDependencies?.includes(dependencyName);
+      const valueReference = source.valueDependencies?.includes(dependencyName);
       const branch = edgeBranch(sourceName, dependencyName, levels, branchFor) ?? "cross";
       const color = treeEdge ? branchColor.get(branch) ?? "#91a9ff" : "#94a3b8";
       const opacity = treeEdge ? 0.72 : 0.18;
@@ -491,7 +501,7 @@ function renderGraph({ preserveView = false } = {}) {
         stroke: color,
         "stroke-width": isWrapper ? 2.4 : treeEdge ? 1.45 : 1,
         "stroke-opacity": opacity,
-        "stroke-dasharray": isWrapper ? "7 5" : treeEdge ? "none" : "4 7",
+        "stroke-dasharray": isWrapper ? "7 5" : typeReference && !valueReference ? "2 5" : treeEdge ? "none" : "4 7",
         "stroke-linecap": "round",
         "data-branch": treeEdge ? branch : "cross",
         "data-base-opacity": 1,
@@ -501,7 +511,7 @@ function renderGraph({ preserveView = false } = {}) {
         ? `${sourceName} directly wraps ${dependencyName}`
         : state.graphKind === "modules"
           ? `${sourceName} imports ${dependencyName}`
-          : `${sourceName} depends on ${dependencyName}`;
+          : `${sourceName} depends on ${dependencyName} (${[typeReference && "type", valueReference && "body / proof"].filter(Boolean).join(" + ")})`;
       path.append(title);
       edges.append(path);
       edgeCount += 1;
@@ -537,17 +547,22 @@ function renderGraph({ preserveView = false } = {}) {
     group.style.opacity = String(baseOpacity);
 
     const hit = svg("circle", { class: "node-hit", r: Math.max(13, radius + 7), fill: "transparent" });
+    const definition = ["def", "abbrev", "opaque"].includes(entry.kind);
     const dot = svg("circle", {
       class: "node-dot",
       r: radius,
-      fill: isRoot ? ROOT_NODE_COLOR : color,
       stroke: isSelected ? "#ffffff" : isRoot ? ROOT_NODE_STROKE : "rgba(255,255,255,0.72)",
       "stroke-width": isSelected || isRoot ? 2.4 : 1,
+      "stroke-dasharray": entry.generated ? "2 2" : "none",
+      "data-kind": entry.kind ?? "module",
+      fill: definition ? "#49bda5" : entry.kind === "axiom" ? "#f2b35d"
+        : ["inductive", "constructor", "recursor", "quotient"].includes(entry.kind) ? "#b58ae8"
+        : isRoot ? ROOT_NODE_COLOR : color,
     });
     group.append(hit, dot);
 
     const title = svg("title");
-    title.textContent = `${name}\n${entry.module}`;
+    title.textContent = `${name}\n${entry.kind ?? "module"}\n${entry.module}`;
     group.append(title);
 
     const select = () => {
@@ -623,7 +638,7 @@ function relationSection(title, names) {
     if (state.byName.has(name)) button.addEventListener("click", () => focusRoot(name));
     else {
       button.disabled = true;
-      button.title = "This consumer is not a theorem node in the current catalog";
+      button.title = "This consumer is not available in the declaration catalog";
     }
     list.append(button);
   }
@@ -684,6 +699,8 @@ function renderDetails(name) {
   ui.detail.append(element("h2", "", entry.name));
 
   const badges = element("div", "badges");
+  badges.append(badge(entry.kind));
+  if (entry.generated) badges.append(badge("generated"));
   if (entry.terminal) badges.append(badge("terminal", "terminal"));
   if (entry.compiledConsumerCount === 0) badges.append(badge("zero consumer", "zero"));
   if (entry.singleCompiledConsumer) badges.append(badge("single consumer", "single"));
@@ -724,9 +741,12 @@ function renderDetails(name) {
     wrapper.append(element("code", "", entry.directWrapperOf));
     ui.detail.append(wrapper);
   }
-  ui.detail.append(relationSection("Dependencies", entry.dependencies));
-  ui.detail.append(relationSection("Theorem dependents", entry.dependents));
-  ui.detail.append(relationSection("Compiled consumers", entry.compiledConsumers));
+  ui.detail.append(relationSection("Type dependencies", entry.typeDependencies ?? []));
+  ui.detail.append(relationSection("Body / proof dependencies", entry.valueDependencies ?? []));
+  ui.detail.append(relationSection("Declaration consumers", entry.dependents));
+  if (entry.kind === "theorem" && Number.isInteger(entry.compiledConsumerCount)) {
+    ui.detail.append(relationSection("Theorem audit compiled consumers", entry.compiledConsumers));
+  }
 }
 
 function writeLocation(push) {
@@ -905,6 +925,8 @@ function searchScore(entry, query) {
 function findSearchResults(query) {
   const ranked = [];
   for (const entry of state.catalog) {
+    if (state.graphKind !== "modules" &&
+        !declarationAllowed(entry, state.kind, state.generated)) continue;
     const score = searchScore(entry, query);
     if (score !== null) ranked.push({ entry, score });
   }
@@ -1041,6 +1063,15 @@ function bindGraphNavigation() {
 }
 
 function bindEvents() {
+  for (const id of ["kind-filter", "generated-filter"]) {
+    document.getElementById(id).addEventListener("change", () => {
+      state.kind = document.getElementById("kind-filter").value;
+      state.generated = document.getElementById("generated-filter").checked;
+      if (state.page === "overview") showOverview({ browse: state.browse });
+      else if (state.root) renderGraph();
+      renderSearchResults();
+    });
+  }
   ui.overviewLink.addEventListener("click", () => {
     if (state.page === "theorem") showOverview({ browse: state.returnBrowse });
     else showOverview();
@@ -1101,12 +1132,12 @@ function bindEvents() {
 
 async function main() {
   const response = await fetch(CATALOG_URL, { cache: "no-store" });
-  if (!response.ok) throw new Error(`failed to load theorem catalog: ${response.status}`);
+  if (!response.ok) throw new Error(`failed to load declaration catalog: ${response.status}`);
   state.theoremCatalog = (await response.json()).map(normalizeEntry).sort((a, b) => a.name.localeCompare(b.name));
   state.theoremByName = new Map(state.theoremCatalog.map((entry) => [entry.name, entry]));
   state.catalog = state.theoremCatalog;
   state.byName = state.theoremByName;
-  if (state.theoremCatalog.length === 0) throw new Error("theorem catalog is empty");
+  if (state.theoremCatalog.length === 0) throw new Error("declaration catalog is empty");
   try {
     const modulesResponse = await fetch(MODULES_URL, { cache: "no-store" });
     if (!modulesResponse.ok) throw new Error("failed to load module imports: " + modulesResponse.status);
@@ -1120,6 +1151,7 @@ async function main() {
   }
   moduleOverview = createModuleOverview({
     catalog: state.theoremCatalog,
+    allowed: (entry) => declarationAllowed(entry, state.kind, state.generated),
     modules: ["LeanCondensedMatter", ...state.moduleCatalog.map((entry) => entry.name)],
     overview: ui.overview,
     onBrowse: (moduleName) => showOverview({ browse: moduleName }),

@@ -70,7 +70,7 @@ jobs:
     needs: detect
     if: needs.detect.outputs.run == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     permissions:
       contents: write
 
@@ -116,6 +116,9 @@ jobs:
       - name: Generate module import graph
         run: python3 scripts/export_module_import_graph.py
 
+      - name: Validate declaration graph
+        run: python3 scripts/check_declaration_catalog.py
+
       - name: Audit proof-guided theorem replacements
         shell: bash
         run: |
@@ -142,6 +145,7 @@ jobs:
           path: |
             docs/generated/theorems.md
             docs/generated/theorems.json
+            docs/generated/declarations.json
             docs/generated/module-imports.json
           if-no-files-found: error
           retention-days: 30
@@ -176,11 +180,12 @@ jobs:
           git fetch origin graph-data
           git worktree add "$graph_data_dir" origin/graph-data
           cp docs/generated/theorems.json "$graph_data_dir/theorems.json"
+          cp docs/generated/declarations.json "$graph_data_dir/declarations.json"
           cp docs/generated/module-imports.json "$graph_data_dir/module-imports.json"
 
           git -C "$graph_data_dir" config user.name "github-actions[bot]"
           git -C "$graph_data_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C "$graph_data_dir" add theorems.json module-imports.json
+          git -C "$graph_data_dir" add theorems.json declarations.json module-imports.json
 
           if git -C "$graph_data_dir" diff --cached --quiet; then
             echo "Graph data is unchanged."
