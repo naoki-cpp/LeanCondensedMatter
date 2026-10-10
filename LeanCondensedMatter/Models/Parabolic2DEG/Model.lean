@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Tactic
 
