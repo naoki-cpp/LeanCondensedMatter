@@ -155,27 +155,6 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
         (vac.fixedOrderComponentPairEmbedding (slotSplitVacuumOrder T) C pr) :=
   rfl
 
-/-- The componentwise pair equivalence preserves and reflects crossing geometry. -/
-private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.vertexGraph.componentPartitionOn.parts)
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (p q : vac.LocalOrderedPair
-      (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C) :
-    Crosses
-        (TwoPointDiagram.slotSplitVacuumComponentPairEquiv
-          T ext vac C τ τ' σ hσ p).1.1
-        (TwoPointDiagram.slotSplitVacuumComponentPairEquiv
-          T ext vac C τ τ' σ hσ q).1.1 ↔
-      Crosses p.1 q.1 := by
-  rw [TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply,
-    TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply,
-    TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff,
-    vac.fixedOrderComponentPairEmbedding_crosses_iff]
-
 /-- Internal crossing counts agree componentwise between the standalone fixed-order quartic vacuum
 pairing and the corresponding ambient mixed vacuum component. -/
 theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
@@ -205,9 +184,12 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
     (fun p : LocalPair => p.1)
     (fun p : AmbientPair => p.1.1)
     e
-    (fun p q =>
-      (TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
-        T ext vac C τ τ' σ hσ p q).symm)
+    (fun p q => by
+      symm
+      rw [TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply,
+        TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply,
+        TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff,
+        vac.fixedOrderComponentPairEmbedding_crosses_iff])
 
 end Common
 end SecondQuantization
