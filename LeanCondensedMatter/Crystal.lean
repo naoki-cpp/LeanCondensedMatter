@@ -6,7 +6,6 @@ import LeanCondensedMatter.Crystal.Lattice
 import LeanCondensedMatter.Crystal.PointGroup
 import LeanCondensedMatter.Crystal.Classification
 import LeanCondensedMatter.Crystal.Brillouin
-import LeanCondensedMatter.Crystal.KronigPenney
 
 set_option linter.style.header false
 
@@ -14,6 +13,5 @@ set_option linter.style.header false
 # Crystal structure
 
 Crystalline-structure API for atomic configurations, symmetry and translation actions, periodicity,
-lattices, point groups, crystallographic classification, Brillouin-zone constructions, and finite
-periodic-potential band benchmarks.
+lattices, point groups, crystallographic classification, and Brillouin-zone constructions.
 -/
