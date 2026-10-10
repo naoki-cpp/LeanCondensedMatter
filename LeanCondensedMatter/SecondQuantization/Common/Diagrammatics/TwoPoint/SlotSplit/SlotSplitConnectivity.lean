@@ -296,22 +296,16 @@ theorem isExternallyConnected_slotSplitExternal
   rw [TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent]
   intro v
   refine ⟨0, ?_⟩
-  have hvT : (v : Fin N) ∈ interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)) := by
+  apply (reachable_ofSlotSplit_iff h (d.slotSplitExternal h hsplit)
+    (d.slotSplitVacuum h hsplit) (Sum.inl 0) (Sum.inr v)).1
+  rw [TwoPointDiagram.ofSlotSplit_slotSplit h d hsplit]
+  change d.vertexGraph.Reachable (Sum.inl 0) (Sum.inr ⟨v.1, h v.2⟩)
+  have hvT : (v : Fin N) ∈
+      interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)) := by
     rw [hd]
     exact v.2
-  have hmem : (Sum.inr ⟨v.1, h v.2⟩ : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl 0) :=
-    (mem_interactionSector_subtype (d.vertexGraph.componentBlock (Sum.inl 0)) ⟨v.1, h v.2⟩).1 hvT
-  have hreach : d.vertexGraph.Reachable (Sum.inr ⟨v.1, h v.2⟩) (Sum.inl 0) :=
-    (d.vertexGraph.mem_componentBlock (Sum.inl 0) (Sum.inr ⟨v.1, h v.2⟩)).1 hmem
-  have hD : TwoPointDiagram.ofSlotSplit h (d.slotSplitExternal h hsplit)
-      (d.slotSplitVacuum h hsplit) = d :=
-    TwoPointDiagram.ofSlotSplit_slotSplit h d hsplit
-  have hreach' : (TwoPointDiagram.ofSlotSplit h (d.slotSplitExternal h hsplit)
-      (d.slotSplitVacuum h hsplit)).vertexGraph.Reachable
-        (slotSplitVertex h (Sum.inl 0)) (slotSplitVertex h (Sum.inr v)) := by
-    rw [hD]
-    simpa [slotSplitVertex] using hreach.symm
-  exact (reachable_ofSlotSplit_iff h _ _ (Sum.inl 0) (Sum.inr v)).1 hreach'
+  exact ((d.vertexGraph.mem_componentBlock (Sum.inl 0) _).1
+    ((mem_interactionSector_subtype _ _).1 hvT)).symm
 
 /-- **The fiber decomposition of the diagram sum.**
 
