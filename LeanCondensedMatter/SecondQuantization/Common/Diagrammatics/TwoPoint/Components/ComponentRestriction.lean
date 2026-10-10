@@ -50,21 +50,15 @@ theorem TwoPointDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin N)}
   unfold TwoPointDiagram.legInComponent
   exact d.vertexGraph.componentBlock_eq_iff_mem hB (twoPointVertexOfLeg leg)
 
-/-- Membership of an unflattened leg in a component part. -/
-def TwoPointDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.vertexGraph.componentPartition.parts) (leg : TwoPointLeg S) : Prop :=
-  componentLegVertex leg ∈ (B : Finset (TwoPointVertex S))
-
 /-- Flattening preserves the component-membership predicate. -/
 theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + 1))) :
     d.legInComponent B leg ↔
-      d.unflattenedLegInComponent B (twoPointLegEquiv S leg) := by
+      componentLegVertex (twoPointLegEquiv S leg) ∈
+        (B : Finset (TwoPointVertex S)) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
-  unfold TwoPointDiagram.unflattenedLegInComponent
-    twoPointVertexOfLeg componentLegVertex
+  unfold twoPointVertexOfLeg componentLegVertex
   cases twoPointLegEquiv S leg <;> rfl
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
