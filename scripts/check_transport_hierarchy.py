@@ -8,9 +8,9 @@ from architecture_audit_common import (
 )
 
 ROOT = repository_root(__file__)
-TRANSPORT = ROOT / "LeanCondensedMatter" / "Transport"
+MODELS = ROOT / "LeanCondensedMatter" / "Models"
 
-MD_PUBLIC = "LeanCondensedMatter.Transport.Models.MassiveDirac"
+MD_PUBLIC = "LeanCondensedMatter.Models.MassiveDirac"
 MD_MODEL = f"{MD_PUBLIC}.Model"
 
 
@@ -21,7 +21,7 @@ def main() -> int:
     # scripts/architecture/source_contracts.json. Keep only the one prefix rule that needs an
     # allow-within-forbidden-prefix exception: the canonical propagator may use MassiveDirac.Model
     # but no other MassiveDirac sibling layer.
-    canonical_propagator_path = TRANSPORT / "Models" / "MassiveDirac" / "Propagator" / "Basic.lean"
+    canonical_propagator_path = MODELS / "MassiveDirac" / "Propagator" / "Basic.lean"
     for module in lean_imports(canonical_propagator_path):
         if module_matches_prefix(module, MD_PUBLIC) and not module_matches_prefix(module, MD_MODEL):
             errors.append(

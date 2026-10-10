@@ -17,15 +17,13 @@ LeanCondensedMatter.Transport
 
 LeanCondensedMatter.Transport.Analysis   (opt-in analytical utilities)
 
-LeanCondensedMatter.Transport.Models
-        └── MassiveDirac
-
 LeanCondensedMatter.Models
+        ├── MassiveDirac
         ├── Parabolic2DEG
         └── RashbaExchange
 ```
 
-`LeanCondensedMatter.Transport` does not import the concrete `Transport.Models` track or the opt-in
+`LeanCondensedMatter.Transport` does not import concrete `Models` or the opt-in
 `Transport.Analysis` package. Representation-independent analysis such as finite-dimensional trace,
 generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
 
@@ -162,7 +160,7 @@ finite-cutoff response remains a response-level object until the named `ℏ/(2π
 prefactor is attached; only then is it exposed through `Core.ConductivityTensor`. No thermodynamic,
 cutoff-removal, or zero-broadening limit is part of this benchmark.
 
-`Transport.Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
+`Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
 Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
 generic disorder layer: arbitrary-regulator definitions/theorems own the analytic calculation, while
 side-indexed objects are retained only at reusable physical boundaries such as broadening limits,
@@ -190,11 +188,11 @@ trace/current normalization rather than attach another momentum measure.
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in a concrete model.
-The canonical top-level owner for newly organized concrete models is `Models`; the massive-Dirac
-benchmark remains under `Transport.Models` in the current source tree.
+The canonical top-level owner of all three concrete benchmark families is `Models`;
+`Transport` contains only reusable model-independent theory.
 
 ## Import boundaries
 
 - generic Transport must not import `LeanCondensedMatter.SecondQuantization`;
-- `LeanCondensedMatter.Transport` must not import `LeanCondensedMatter.Transport.Models`;
+- generic `Transport` modules must not import concrete `Models` modules;
 - model-specific code must not define generic Transport APIs solely for one concrete consumer.

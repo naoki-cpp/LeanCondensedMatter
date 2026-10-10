@@ -1,0 +1,72 @@
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# Clean Bastin Hall conductivity for the massive Dirac benchmark
+
+The Bastin analysis upstream produces an occupation-weighted clean pair integral without attaching
+physical conductivity units. This file restores the canonical combined Bastin/Středa trace and
+physical-momentum normalization together with the remaining angular factor `2π` of the radial
+integral.
+
+The resulting finite-cutoff quantity agrees with the independently normalized intrinsic Hall
+conductivity, and its ultraviolet limit gives the clean metallic massive-Dirac benchmark.
+-/
+
+namespace QuantumTheory.Models.MassiveDirac
+
+noncomputable section
+
+open QuantumTheory.Transport
+
+open Filter QuantumTheory.Transport
+
+/-- Finite-cutoff Hall response obtained from the canonical occupation-weighted clean Bastin-pair
+radial integral. `bastinStredaPhysicalMomentumConductivityNormalization` attaches the trace factor and physical
+momentum measure exactly once; only the radial reduction's angular `2π` remains explicit here. -/
+def bastinCleanHallConductivityCutoff
+    (e hbar m εF Λ : ℝ) : ℝ :=
+  (2 * Real.pi * bastinStredaPhysicalMomentumConductivityNormalization hbar) *
+    zeroTemperatureOccupiedCleanInterbandBastinPairCutoff e m εF Λ
+
+/-- The canonical clean radial Bastin-pair integral has exactly the same finite-cutoff normalization
+as the canonical occupation-derived intrinsic Hall conductivity. -/
+theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
+    (e hbar m εF Λ : ℝ) :
+    bastinCleanHallConductivityCutoff e hbar m εF Λ =
+      intrinsicHallConductivityCutoff e hbar m εF Λ := by
+  unfold bastinCleanHallConductivityCutoff
+  rw [zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq]
+  unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaConductivityNormalization
+      bastinStredaTraceConductivityPrefactor
+    intrinsicHallConductivityCutoff intrinsicHallPrefactorFromMomentumMeasure
+  field_simp [Real.pi_ne_zero]
+
+/-- Removing the finite radial UV cutoff from the integrated occupation-weighted clean Bastin-pair
+profile reproduces the clean metallic intrinsic Hall conductivity. This uses the already-proved
+cutoff limit; it is not a finite-broadening/momentum limit interchange. -/
+theorem tendsto_bastinCleanHallConductivityCutoff_atTop
+    (e hbar m εF : ℝ) (hmF : |m| ≤ εF) :
+    Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
+      (nhds (intrinsicHallConductivity e hbar m εF)) := by
+  refine (tendsto_intrinsicHallConductivityCutoff_atTop e hbar m εF hmF).congr' ?_
+  filter_upwards with Λ
+  exact (bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
+    e hbar m εF Λ).symm
+
+/-- Closed massive-Dirac benchmark reached by the integrated clean Bastin-pair profile,
+`σxy = -(e²/2h) (m/εF)`, including the massless endpoint. -/
+theorem tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac
+    (e hbar m εF : ℝ) (hmF : |m| ≤ εF) :
+    Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
+      (nhds (-(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF))) := by
+  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF]
+  exact tendsto_bastinCleanHallConductivityCutoff_atTop e hbar m εF hmF
+
+end
+
+end QuantumTheory.Models.MassiveDirac

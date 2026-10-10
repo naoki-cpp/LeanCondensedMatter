@@ -10,8 +10,7 @@
         "LeanCondensedMatter/QuantumTheory.lean",
         "LeanCondensedMatter/QuantumMechanics.lean",
         "LeanCondensedMatter/Transport.lean",
-        "LeanCondensedMatter/Transport/Models.lean",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
+        "LeanCondensedMatter/Models/MassiveDirac.lean",
         "LeanCondensedMatter/Models/Parabolic2DEG.lean",
         "LeanCondensedMatter/Models/RashbaExchange.lean",
         "LeanCondensedMatter/Models.lean",
@@ -572,13 +571,6 @@
       ]
     },
     {
-      "id": "transportModelsUmbrella",
-      "path": "LeanCondensedMatter/Transport/Models.lean",
-      "modules": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac"
-      ]
-    },
-    {
       "id": "parabolic2DEGPublicUmbrella",
       "path": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
       "modules": [
@@ -603,22 +595,23 @@
       "id": "modelsPublicUmbrella",
       "path": "LeanCondensedMatter/Models.lean",
       "modules": [
+        "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.Parabolic2DEG",
         "LeanCondensedMatter.Models.RashbaExchange"
       ]
     },
     {
       "id": "massiveDiracPublicUmbrella",
-      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
+      "path": "LeanCondensedMatter/Models/MassiveDirac.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.CurrentBridge",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall"
+        "LeanCondensedMatter.Models.MassiveDirac.Model",
+        "LeanCondensedMatter.Models.MassiveDirac.CurrentBridge",
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda",
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall"
       ]
     },
     {
@@ -686,24 +679,24 @@
     },
     {
       "id": "massiveDiracGeneralizedCurrentBridge",
-      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/CurrentBridge.lean",
+      "path": "LeanCondensedMatter/Models/MassiveDirac/CurrentBridge.lean",
       "modules": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
       ]
     },
     {
       "id": "massiveDiracModelUmbrella",
-      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/Model.lean",
+      "path": "LeanCondensedMatter/Models/MassiveDirac/Model.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
       ]
     },
     {
       "id": "massiveDiracBastinUmbrella",
-      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin.lean",
-      "modules": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction"]
+      "path": "LeanCondensedMatter/Models/MassiveDirac/Bastin.lean",
+      "modules": ["LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction"]
     },
     {
       "id": "thermalPublicUmbrella",
@@ -723,7 +716,6 @@
         "LeanCondensedMatter.QuantumTheory",
         "LeanCondensedMatter.QuantumMechanics",
         "LeanCondensedMatter.Transport",
-        "LeanCondensedMatter.Transport.Models",
         "LeanCondensedMatter.Models",
         "LeanCondensedMatter.SecondQuantization"
       ]
@@ -739,7 +731,6 @@
       "id": "genericTransportUmbrella",
       "path": "LeanCondensedMatter/Transport.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Models",
         "LeanCondensedMatter.Models",
         "LeanCondensedMatter.Transport.AnomalousHall"
       ]

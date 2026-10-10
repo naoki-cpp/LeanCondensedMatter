@@ -63,7 +63,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   - **Project use:** Model-specific provenance for the Eq. (12a–c) non-crossing intrinsic,
     side-jump, and skew components; the crossed `X`/`Psi` disorder-line correction is treated
     separately in the paper's Eqs. (17–18) and documented in
-    `Transport/Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean`.
+    `Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean`.
   - **Caveat:** The project formalizes ordered finite-cutoff ladder expressions, not the paper's
     full diagrammatic calculation or a general equivalence of mechanism decompositions.
 

@@ -3,33 +3,33 @@
     {
       "id": "massiveDiracFoundation",
       "sourceRoots": [
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Model",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Propagator",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Longitudinal"
+        "LeanCondensedMatter/Models/MassiveDirac/Model",
+        "LeanCondensedMatter/Models/MassiveDirac/Propagator",
+        "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
+        "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Longitudinal"
       ],
       "coveragePrefixes": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
+        "LeanCondensedMatter.Models.MassiveDirac.Model",
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
       ],
       "layers": [
-        {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic"]},
-        {"id": "modelOperator", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator"]},
-        {"id": "modelKinematics", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics"]},
-        {"id": "modelOccupation", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation"]},
-        {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral"]},
-        {"id": "modelInterband", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband"]},
-        {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
-        {"id": "propagatorBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic"]},
-        {"id": "propagatorSymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Symmetry"]},
-        {"id": "propagatorAngularReduction", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction"]},
-        {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge"]},
-        {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
-        {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation", "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry"]},
-        {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
-        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]}
+        {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Basic"]},
+        {"id": "modelOperator", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Operator"]},
+        {"id": "modelKinematics", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"]},
+        {"id": "modelOccupation", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Occupation"]},
+        {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Spectral"]},
+        {"id": "modelInterband", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Interband"]},
+        {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"]},
+        {"id": "propagatorBasic", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"]},
+        {"id": "propagatorSymmetry", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry"]},
+        {"id": "propagatorAngularReduction", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction"]},
+        {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge"]},
+        {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry"]},
+        {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation", "LeanCondensedMatter.Models.MassiveDirac.Model.Berry"]},
+        {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
+        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]}
       ],
       "edges": [
         {"upstream": "modelBasic", "downstream": "modelOperator"},
@@ -54,65 +54,65 @@
     {
       "id": "massiveDiracFiniteBroadeningTransport",
       "sourceRoots": [
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Vertex",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Streda",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity"
+        "LeanCondensedMatter/Models/MassiveDirac/Vertex",
+        "LeanCondensedMatter/Models/MassiveDirac/Disorder",
+        "LeanCondensedMatter/Models/MassiveDirac/Streda",
+        "LeanCondensedMatter/Models/MassiveDirac/Conductivity"
       ],
       "coveragePrefixes": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder"
+        "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
+        "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder"
       ],
       "layers": [
         {
           "id": "vertexCore",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder"
+            "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
+            "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder"
           ]
         },
         {
           "id": "disorderTransportRate",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate"
+            "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate"
           ]
         },
         {
           "id": "disorderFiniteBroadening",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex"
+            "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+            "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex"
           ]
         },
         {
           "id": "stredaFiniteBroadening",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda"
+            "LeanCondensedMatter.Models.MassiveDirac.Streda"
           ]
         },
         {
           "id": "longitudinalRelaxationTime",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
+            "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
           ]
         },
         {
           "id": "longitudinalBornRelaxationTime",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime"
+            "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime"
           ]
         },
         {
           "id": "conductivityFiniteBroadening",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder"
+            "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder"
           ]
         }
       ],
@@ -128,69 +128,69 @@
     {
       "id": "massiveDiracBastinLayers",
       "sourceRoots": [
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Model/Berry",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin"
+        "LeanCondensedMatter/Models/MassiveDirac/Model/Berry",
+        "LeanCondensedMatter/Models/MassiveDirac/Bastin"
       ],
       "coveragePrefixes": [
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Berry",
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin"
       ],
       "layers": [
         {
           "id": "intrinsicGeometry",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"
+            "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
+            "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry"
           ]
         },
         {
           "id": "occupiedBerryWeight",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation"
+            "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation"
           ]
         },
         {
           "id": "bastinFoundation",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Berry",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Bands",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Interband"
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband"
           ]
         },
         {
           "id": "bastinPole",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction"
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction"
           ]
         },
         {
           "id": "bastinPair",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairIntegral",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit"
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit"
           ]
         },
         {
           "id": "bastinRadial",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDomination",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorBound",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUniformBound",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge"
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge"
           ]
         },
         {
           "id": "bastinZeroTemperature",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.ZeroTemperaturePair"
+            "LeanCondensedMatter.Models.MassiveDirac.Bastin.ZeroTemperaturePair"
           ]
         }
       ],

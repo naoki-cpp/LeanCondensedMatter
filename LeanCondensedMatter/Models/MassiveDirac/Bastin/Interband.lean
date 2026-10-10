@@ -1,0 +1,78 @@
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# Interband Bastin block antisymmetry for the massive Dirac model
+
+At a target-band Bastin pole, the source band is the opposite band. The two current orderings are
+coordinates of one direction-indexed interband block, so this module keeps them generic in
+`Fin 2` and exposes their antisymmetric difference as the canonical Bastin object. The ordered
+projector-first current blocks themselves are model-level spectral data owned by
+`Model/OperatorSpectral`.
+
+The imaginary part of the Hall antisymmetric block, normalized by the squared interband energy gap,
+is exactly minus `e²` times the clean Berry curvature away from the Dirac degeneracy.
+
+No energy integration, zero-broadening limit/integral interchange, or momentum integration is
+performed here.
+-/
+
+namespace QuantumTheory.Models.MassiveDirac
+
+noncomputable section
+
+open QuantumTheory.Transport
+
+/-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
+noncomputable def bastinInterbandBlockDifference
+    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) : ℂ :=
+  bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
+    bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
+
+/-- Exchanging the two current directions reverses the sign of the interband Bastin block
+difference. -/
+theorem bastinInterbandBlockDifference_swap
+    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
+    bastinInterbandBlockDifference ν μ band e v m px py =
+      -bastinInterbandBlockDifference μ ν band e v m px py := by
+  unfold bastinInterbandBlockDifference
+  ring
+
+/-- The antisymmetric interband Bastin block vanishes on equal current directions. -/
+theorem bastinInterbandBlockDifference_self
+    (μ : Fin 2) (band : Band) (e v m px py : ℝ) :
+    bastinInterbandBlockDifference μ μ band e v m px py = 0 := by
+  simp [bastinInterbandBlockDifference]
+
+/-- The normalized Hall antisymmetric Bastin block is the negative of `e²` times the clean Berry
+curvature. -/
+theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
+    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (bastinInterbandBlockDifference 0 1 band e v m px py).im /
+        interbandEnergyGap band v m px py ^ 2 =
+      -(e ^ 2 * berryCurvature band v m px py) := by
+  have hband :=
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
+      band e v m px py hE
+  have hopp :=
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
+      (oppositeBand band) e v m px py hE
+  rw [pointwiseBerryCurvature_xy_eq_berryCurvature band v m px py hE] at hband
+  rw [pointwiseBerryCurvature_xy_eq_berryCurvature (oppositeBand band) v m px py hE,
+    interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
+  simp [pow_two] at hopp
+  unfold bastinInterbandBlockDifference
+  rw [bastinBandBlockTrace_swap 0 1 (oppositeBand band) band]
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace 0 1 (oppositeBand band) band,
+    bastinBandBlockTrace_eq_currentBandBlockTrace 0 1 band (oppositeBand band),
+    Complex.sub_im]
+  have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
+  field_simp [hgap] at hband hopp ⊢
+  nlinarith
+
+end
+
+end QuantumTheory.Models.MassiveDirac
