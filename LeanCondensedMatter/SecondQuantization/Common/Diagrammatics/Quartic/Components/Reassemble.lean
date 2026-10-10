@@ -134,49 +134,36 @@ private theorem QuarticDiagram.reassemble_componentBlock_subset_part
   rw [← QuarticDiagram.reassemble_reachable_same_part π F hreach]
   exact π.mem_part hxS
 
-private theorem QuarticDiagram.reassemble_adj_of_adj_component {S : Finset (Fin N)}
+/-- The inclusion of a reassembled component preserves vertex adjacency. -/
+private noncomputable def QuarticDiagram.reassembleComponentHom {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
-    (B : π.parts) {u' w' : ↥(B : Finset (Fin N))} (h : (F B).1.vertexGraph.Adj u' w') :
-    (QuarticDiagram.reassemble π F).vertexGraph.Adj
-      (QuarticDiagram.reassembleVertex π B u')
-      (QuarticDiagram.reassembleVertex π B w') := by
-  obtain ⟨hne', leg, hu', hw'⟩ := h
-  set leg0 := (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩ with hlegdef
-  have hu : vertexOfLeg leg0 = QuarticDiagram.reassembleVertex π B u' := by
-    rw [hlegdef, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
-    rw [vertexOfLeg_legOfVertexLocal, hu']
-    rfl
-  have hpartner :
-      (QuarticDiagram.reassemble π F).pairing.partner leg0 =
-        (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
-    rw [hlegdef]
-    exact QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk π F B leg
-  have hw : vertexOfLeg ((QuarticDiagram.reassemble π F).pairing.partner leg0) =
-      QuarticDiagram.reassembleVertex π B w' := by
-    rw [hpartner, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
-    rw [vertexOfLeg_legOfVertexLocal, hw']
-    rfl
-  refine ⟨?_, leg0, hu, hw⟩
-  intro hEq
-  apply hne'
-  apply Subtype.ext
-  exact congrArg (fun v : ↥S => (v : Fin N)) hEq
-
-private theorem QuarticDiagram.reassemble_reachable_of_reachable_component
-    {S : Finset (Fin N)} (π : Finpartition S)
-    (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
-    (B : π.parts) {u' w' : ↥(B : Finset (Fin N))}
-    (h : (F B).1.vertexGraph.Reachable u' w') :
-    (QuarticDiagram.reassemble π F).vertexGraph.Reachable
-      (QuarticDiagram.reassembleVertex π B u')
-      (QuarticDiagram.reassembleVertex π B w') := by
-  obtain ⟨p⟩ := h
-  induction p with
-  | nil => exact SimpleGraph.Reachable.refl _
-  | cons hadj _ ih =>
-    exact (SimpleGraph.Adj.reachable
-      (QuarticDiagram.reassemble_adj_of_adj_component π F B hadj)).trans ih
+    (B : π.parts) :
+    (F B).1.vertexGraph →g (QuarticDiagram.reassemble π F).vertexGraph where
+  toFun := QuarticDiagram.reassembleVertex π B
+  map_rel' := by
+    intro u' w' h
+    obtain ⟨hne', leg, hu', hw'⟩ := h
+    set leg0 := (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩ with hlegdef
+    have hu : vertexOfLeg leg0 = QuarticDiagram.reassembleVertex π B u' := by
+      rw [hlegdef, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
+      rw [vertexOfLeg_legOfVertexLocal, hu']
+      rfl
+    have hpartner :
+        (QuarticDiagram.reassemble π F).pairing.partner leg0 =
+          (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
+      rw [hlegdef]
+      exact QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk π F B leg
+    have hw : vertexOfLeg ((QuarticDiagram.reassemble π F).pairing.partner leg0) =
+        QuarticDiagram.reassembleVertex π B w' := by
+      rw [hpartner, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
+      rw [vertexOfLeg_legOfVertexLocal, hw']
+      rfl
+    refine ⟨?_, leg0, hu, hw⟩
+    intro hEq
+    apply hne'
+    apply Subtype.ext
+    exact congrArg (fun v : ↥S => (v : Fin N)) hEq
 
 private theorem QuarticDiagram.part_subset_reassemble_componentBlock
     {S : Finset (Fin N)} (π : Finpartition S)
@@ -190,7 +177,10 @@ private theorem QuarticDiagram.part_subset_reassemble_componentBlock
   have hreach0 : (F B).1.vertexGraph.Reachable (⟨x, hxB⟩ : ↥(B : Finset (Fin N)))
       (π.equivSigmaParts v).2 :=
     (F B).2.1 ⟨x, hxB⟩ (π.equivSigmaParts v).2
-  have hreach := QuarticDiagram.reassemble_reachable_of_reachable_component π F B hreach0
+  have hreach := hreach0.map (QuarticDiagram.reassembleComponentHom π F B)
+  change (QuarticDiagram.reassemble π F).vertexGraph.Reachable
+    (QuarticDiagram.reassembleVertex π B ⟨x, hxB⟩)
+    (QuarticDiagram.reassembleVertex π B (π.equivSigmaParts v).2) at hreach
   have heq1 : QuarticDiagram.reassembleVertex π B ⟨x, hxB⟩ = (⟨x, hxS⟩ : ↥S) := rfl
   have heq2 : QuarticDiagram.reassembleVertex π B (π.equivSigmaParts v).2 = v := by
     change π.equivSigmaParts.symm ⟨B, (π.equivSigmaParts v).2⟩ = v
