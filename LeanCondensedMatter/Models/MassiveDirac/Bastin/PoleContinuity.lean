@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -10,9 +10,9 @@ The target-band Lorentzian kernel depends on the energy offset from the pole and
 broadening. The opposite-band spectator/current factor is regular wherever the shifted interband
 gap stays nonzero.
 
-This file specializes the generic spectator factor to the Hall direction pair `(x,y)`, packages it
-in target-centered coordinates, evaluates it at the pole, and proves the general shifted-gap
-continuity theorem. Concrete pole/window specializations remain at their consumers.
+This file specializes the generic spectator factor to the Hall direction pair `(x,y)`,
+evaluates it at the pole, and proves joint continuity away from the shifted gap zero. The
+shared target-centered resolvent rewrite is owned upstream by `PoleFactor`.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
