@@ -62,18 +62,18 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
     externalInsertionMixedTimeOrderedAtomicPairValue ε β
         externalLabel externalTime q σ
         (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (orderedExternalInsertionLegMap
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
             (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
             (Sum.inr (⟨(orderedQuarticLegEquiv m a).1, Finset.mem_univ _⟩,
               (orderedQuarticLegEquiv m a).2))))
         (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (orderedExternalInsertionLegMap
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
             (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
             (Sum.inr (⟨(orderedQuarticLegEquiv m b).1, Finset.mem_univ _⟩,
               (orderedQuarticLegEquiv m b).2)))) =
       flatVertexLegPairValue ε β (q ∘ fInteraction) (σ ∘ fInteraction) a b := by
   have hmap :=
-    externalInsertionMixedTimeOrderedAtomicPairValue_map ε β
+    externalInsertionMixedTimeOrderedAtomicPairValue_map (E₁ := 0) (E₂ := E) ε β
       (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) fInteraction
       externalLabel externalTime q σ
       (Sum.inr (⟨(orderedQuarticLegEquiv m a).1, Finset.mem_univ _⟩,
