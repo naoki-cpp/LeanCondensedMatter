@@ -357,22 +357,16 @@ private theorem QuarticDiagram.reassemble_componentPartition_vertexLabel
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (v : ↥S) :
     (QuarticDiagram.reassemble d.vertexGraph.componentPartitionOn
       fun B => d.restrictComponentConnected B.2).vertexLabel v = d.vertexLabel v := by
-  set B := (d.vertexGraph.componentPartitionOn.equivSigmaParts v).1
-  set v' := (d.vertexGraph.componentPartitionOn.equivSigmaParts v).2 with hv'def
-  change (d.restrictComponent B.2).vertexLabel v' = d.vertexLabel v
-  have hval : (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : Fin N) =
-      (v : Fin N) := by
-    change (v' : Fin N) = (v : Fin N)
-    rw [hv'def]
-    simp [Finpartition.equivSigmaParts]
-  have heq : (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) = v :=
-    Subtype.ext hval
-  change d.vertexLabel (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B.1))
-      (fun {_} hx => d.vertexGraph.componentPartitionOn.le B.2 hx)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) =
-      d.vertexLabel v
-  rw [heq]
+  let π := d.vertexGraph.componentPartitionOn
+  change (d.restrictComponent (π.equivSigmaParts v).1.2).vertexLabel
+    (π.equivSigmaParts v).2 = d.vertexLabel v
+  rw [d.restrictComponent_vertexLabel_equivSigmaParts]
+  have hη :
+      (⟨(π.equivSigmaParts v).1, (π.equivSigmaParts v).2⟩ :
+        Σ B : π.parts, ↥(B : Finset (Fin N))) = π.equivSigmaParts v := by
+    cases π.equivSigmaParts v
+    rfl
+  rw [hη, Equiv.symm_apply_apply]
 
 private theorem QuarticDiagram.reassemble_componentPartition_partner
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
