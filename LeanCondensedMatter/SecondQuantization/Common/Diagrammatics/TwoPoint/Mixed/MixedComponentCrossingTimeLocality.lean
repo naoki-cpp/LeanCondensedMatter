@@ -90,18 +90,22 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     d.mixedComponentWeight s τ τ' σ B =
       d.mixedComponentWeight s τ τ' υ B := by
-  unfold TwoPointDiagram.mixedComponentWeight
-  congr 1
-  unfold TwoPointDiagram.mixedComponentCrossingCount
-  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv
-    (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
-    (fun p : d.MixedComponentPair τ τ' υ B => p.1.1)
-    (d.mixedComponentPairTimeEquiv τ τ' σ υ B)
-    (fun p q => by
-      rw [d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
-          τ τ' σ υ B hChamber p,
-        d.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
-          τ τ' σ υ B hChamber q])
+  have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
+  have hambient : mixedTimeAmbientPositionEquiv τ τ' σ =
+      mixedTimeAmbientPositionEquiv τ τ' υ := by
+    unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
+    rw [hlegs]
+  let weightFor (e : Fin (2 * (2 * n + 1)) ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) : ℂ :=
+    (s.zetaInt : ℂ) ^
+      Pairing.componentCrossingCount (d.pairing.transport e)
+        (Equiv.sigmaFiberEquiv (fun pr =>
+          (⟨d.vertexGraph.componentBlock
+              (twoPointVertexOfLeg (e pr.1.1)),
+            d.vertexGraph.componentBlock_mem_componentPartition _⟩ :
+              d.vertexGraph.componentPartition.parts))) B B
+  change weightFor (mixedTimeAmbientPositionEquiv τ τ' σ) =
+    weightFor (mixedTimeAmbientPositionEquiv τ τ' υ)
+  exact congrArg weightFor hambient
 end Common
 end SecondQuantization
