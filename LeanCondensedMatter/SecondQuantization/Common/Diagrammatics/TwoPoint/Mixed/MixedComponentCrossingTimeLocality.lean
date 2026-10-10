@@ -51,7 +51,8 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrder
       rw [← hpairing]
       exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff _ _).mp q.2).2)
     pr.1 (by
-      simpa only [hf] using
+      simpa only [Pairing.pairEndpointEquiv_apply,
+        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one, hf] using
         (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff _ _).mp pr.1.2).1)
   change ((d.pairingInMixedOrder τ τ' υ).normalizedPairOfEndpointEquiv
     (d.pairingInMixedOrder τ τ' σ).pairEndpointEquiv f pr.1).1 = pr.1.1
