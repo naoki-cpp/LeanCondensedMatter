@@ -312,7 +312,8 @@ private theorem QuarticDiagram.blockLegEquiv_symm_reassemble_val {S : Finset (Fi
       (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩ := by
   have h := QuarticDiagram.blockLegEquiv_symm_val_bigLegEquiv
     (QuarticDiagram.reassemble π F) ⟨B, hB'⟩ leg
-  simpa only [QuarticDiagram.componentPartition_reassemble] using h
+  rw [QuarticDiagram.componentPartition_reassemble π F] at h
+  exact h
 
 private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     {S : Finset (Fin N)} (π : Finpartition S)
