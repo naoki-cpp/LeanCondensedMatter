@@ -119,8 +119,7 @@ private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
   change (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
       ((TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) (Sum.inl x))
       ((TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) (Sum.inl y)) ↔ _
-  exact SimpleGraph.Iso.reachable_sum_inl_iff
-    (TwoPointDiagram.ofSlotSplitVertexGraphIso h ext vac) x y
+  simp only [SimpleGraph.Iso.reachable_iff, SimpleGraph.reachable_sum_inl_iff]
 
 /-- **The slot set of a reassembled diagram is its external component's interaction part**, provided
 the external piece really is externally connected. -/
