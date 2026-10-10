@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Models.RashbaExchange.Operator
+import LeanCondensedMatter.Models.RashbaExchange.Green
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic

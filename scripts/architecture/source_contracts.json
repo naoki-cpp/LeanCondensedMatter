@@ -589,6 +589,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Models.RashbaExchange.Response",
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry"
       ]
@@ -772,6 +773,11 @@
       "id": "rashbaExchangeCleanModelOccupationBoundary",
       "path": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
       "modules": ["LeanCondensedMatter.Transport.Analysis.BandOccupation"]
+    },
+    {
+      "id": "rashbaExchangeCleanOperatorStredaBoundary",
+      "path": "LeanCondensedMatter/Models/RashbaExchange/Operator.lean",
+      "modules": ["LeanCondensedMatter.Transport.Streda.RetardedAdvanced"]
     }
   ],
   "forbiddenImportPrefixes": [

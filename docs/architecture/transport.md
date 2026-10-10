@@ -147,8 +147,8 @@ separate. TMatrix is the package entry point for these two responsibilities.
 ## Concrete models
 
 The `Models.RashbaExchange` family owns its Rashba-exchange Hamiltonian, finite spectral data,
-model-specific retarded/advanced operator realizations, Berry/force-matrix bridges, and finite
-Bastin/Středa response. Generic trace, measure, and conductivity constructions remain upstream
+clean bounded-operator realizations in `Operator`, retarded/advanced resolvents in `Green`,
+Berry/force-matrix bridges, and finite Bastin/Středa response. Generic trace, measure, and conductivity constructions remain upstream
 under `Transport`.
 
 `Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
