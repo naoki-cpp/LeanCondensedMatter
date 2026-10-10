@@ -57,27 +57,13 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
       (d.pairingInOrder order).NormalizedPair := by
   let orders := d.vertexGraph.componentPartitionOn.partOrdersOfOrder order
   let shuffle := d.fixedOrderComponentShuffle order
-  let e := d.componentPairEquiv orders shuffle
   have hpair :
       d.pairingInOrder (d.assembleVertexOrder orders shuffle) =
         d.pairingInOrder order :=
     congrArg (d.pairingInOrder) (d.assembleVertexOrder_fixedOrderComponentShuffle order)
-  exact {
-    toFun := fun pr =>
-      ⟨(e ⟨C, pr⟩).1, by
-        rw [← hpair]
-        exact (e ⟨C, pr⟩).2⟩
-    inj' := by
-      intro p q hpq
-      have hval : (e ⟨C, p⟩).1 = (e ⟨C, q⟩).1 :=
-        congrArg (fun x : (d.pairingInOrder order).NormalizedPair => x.1) hpq
-      have hpq' : e ⟨C, p⟩ = e ⟨C, q⟩ :=
-        Subtype.ext hval
-      have h : (⟨C, p⟩ : Σ B : d.vertexGraph.componentPartitionOn.parts,
-          d.LocalOrderedPair orders B) = ⟨C, q⟩ := e.injective hpq'
-      cases h
-      rfl
-  }
+  rw [← hpair]
+  exact (Function.Embedding.sigmaMk C).trans
+    (d.componentPairEquiv orders shuffle).toEmbedding
 
 private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
