@@ -1446,6 +1446,7 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/VertexGraph.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition"
       ],
       "externalImportCount": 1
@@ -1737,7 +1738,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleContinuity.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor"
       ],
       "externalImportCount": 1
     },
@@ -1761,31 +1762,14 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleWindow.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Interband"
       ],
       "externalImportCount": 3
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDomination.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
-      ],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
@@ -1809,7 +1793,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorBound.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
       ],
       "externalImportCount": 1
     },
@@ -1853,9 +1838,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleExtraction",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleWindow",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDomination",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
@@ -2057,15 +2040,6 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Normalization.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.ContinuumMeasureProvenance",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/ContinuumMeasureProvenance.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor"
       ],
       "externalImportCount": 0
     },
@@ -2749,7 +2723,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal",
-        "LeanCondensedMatter.Models.MassiveDirac.ContinuumMeasureProvenance",
         "LeanCondensedMatter.Models.MassiveDirac.CurrentBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder",
         "LeanCondensedMatter.Models.MassiveDirac.Model",
@@ -5417,15 +5390,6 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedComponentPairing.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing"
       ],
       "externalImportCount": 0
@@ -5435,7 +5399,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedComponentPosition.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder"
       ],
       "externalImportCount": 0
@@ -5540,7 +5503,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting",
