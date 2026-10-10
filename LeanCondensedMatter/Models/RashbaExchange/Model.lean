@@ -16,9 +16,10 @@ j_i = q v_i.
 ```
 
 Thus `α_R` has velocity dimension. `signedCharge` is the carrier charge itself, so electrons use
-a negative value. Chemical potential remains an explicit response parameter. The spectrum is
-model data; consumers can apply occupation laws to band energies relative to the chemical
-potential using the generic `Transport.bandStateOccupation` interface.
+a negative value. The clean Hamiltonian and spectrum take only `HamiltonianParameters`;
+`Parameters` additionally stores response and normalization conditions. Consumers may apply
+occupation laws to energies relative to the chemical potential using the generic
+`Transport.bandStateOccupation` interface.
 
 The two-dimensional momentum domain is the closed disk `p_x² + p_y² ≤ p_max²`; `p_max` is kept
 finite. No disorder, zero-broadening limit, or device-level Hall observable is introduced here.
@@ -30,14 +31,17 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Physical and normalization data for one finite Rashba-exchange benchmark. -/
-structure Parameters where
+/-- The three parameters determining the clean Rashba-exchange Hamiltonian and spectrum. -/
+structure HamiltonianParameters where
   /-- Effective mass in the scalar parabolic dispersion. -/
   effectiveMass : ℝ
   /-- Rashba coefficient in velocity units because the model uses physical momentum. -/
   rashbaVelocity : ℝ
   /-- Exchange splitting multiplying σ_z. -/
   exchangeSplitting : ℝ
+
+/-- The Hamiltonian parameters together with finite response and normalization data. -/
+structure Parameters extends HamiltonianParameters where
   /-- Chemical potential used as the Green-function probe energy. -/
   chemicalPotential : ℝ
   /-- Finite radial physical-momentum cutoff. -/
@@ -104,34 +108,34 @@ def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
 
 
 /-- Scalar parabolic kinetic energy. -/
-def kineticEnergy (params : Parameters) (px py : ℝ) : ℝ :=
+def kineticEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
   momentumSq2D px py / (2 * params.effectiveMass)
 
 /-- Squared magnitude of the Rashba-exchange Pauli vector. -/
-def spinOrbitEnergySq (params : Parameters) (px py : ℝ) : ℝ :=
+def spinOrbitEnergySq (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
   params.rashbaVelocity ^ 2 * momentumSq2D px py + params.exchangeSplitting ^ 2
 
 /-- Magnitude of the Rashba-exchange Pauli vector. -/
-def spinOrbitEnergy (params : Parameters) (px py : ℝ) : ℝ :=
+def spinOrbitEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
   Real.sqrt (spinOrbitEnergySq params px py)
 
 /-- Pauli-vector coefficients (α p_y, -α p_x, Δ). -/
-def rashbaPauliCoefficients (params : Parameters) (px py : ℝ) : InternalSpace.PauliAxis → ℂ
+def rashbaPauliCoefficients (params : HamiltonianParameters) (px py : ℝ) : InternalSpace.PauliAxis → ℂ
   | .x => ((params.rashbaVelocity * py : ℝ) : ℂ)
   | .y => ((-params.rashbaVelocity * px : ℝ) : ℂ)
   | .z => ((params.exchangeSplitting : ℝ) : ℂ)
 
 /-- Two-band Rashba-exchange Hamiltonian in physical-momentum coordinates. -/
-def hamiltonian (params : Parameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
+def hamiltonian (params : HamiltonianParameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
   ((kineticEnergy params px py : ℝ) : ℂ) • (1 : InternalSpace.PauliMatrix) +
     InternalSpace.pauliCombination (rashbaPauliCoefficients params px py)
 
 /-- Energy of a selected lower or upper band. -/
-def bandEnergy (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
+def bandEnergy (params : HamiltonianParameters) (band : Band) (px py : ℝ) : ℝ :=
   kineticEnergy params px py + bandSign band * spinOrbitEnergy params px py
 
 /-- Matrix velocity operator ∂H/∂p_i for an in-plane direction. -/
-def velocityOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : InternalSpace.PauliMatrix :=
+def velocityOperator (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) : InternalSpace.PauliMatrix :=
   if direction = 0 then
     (((px / params.effectiveMass : ℝ) : ℂ)) • (1 : InternalSpace.PauliMatrix) -
       ((params.rashbaVelocity : ℝ) : ℂ) • InternalSpace.pauliY
@@ -145,25 +149,25 @@ def currentOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : In
 
 /-- Berry curvature in physical-momentum coordinates. For the stated Rashba convention,
 `Ω_b = -s_b Δ α_R² / (2 |d|³)`. -/
-def berryCurvature (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
+def berryCurvature (params : HamiltonianParameters) (band : Band) (px py : ℝ) : ℝ :=
   -(bandSign band * params.exchangeSplitting * params.rashbaVelocity ^ 2) /
     (2 * spinOrbitEnergy params px py ^ 3)
 
 @[simp] theorem berryCurvature_exchange_zero
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hDelta : params.exchangeSplitting = 0) :
     berryCurvature params band px py = 0 := by
   simp [berryCurvature, hDelta]
 
 @[simp] theorem berryCurvature_rashba_zero
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hAlpha : params.rashbaVelocity = 0) :
     berryCurvature params band px py = 0 := by
   simp [berryCurvature, hAlpha]
 
 /-- Opposite bands carry opposite Berry curvature wherever the totalized closed formula is used. -/
 @[simp] theorem berryCurvature_oppositeBand
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     berryCurvature params (oppositeBand band) px py =
       -berryCurvature params band px py := by
   simp [berryCurvature, bandSign_oppositeBand]
