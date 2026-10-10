@@ -106316,6 +106316,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
     "dependencies": [
@@ -106326,8 +106327,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLegOrderEmbedding",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
+      "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
     "compiledConsumerCount": 3,
@@ -106606,6 +106607,7 @@
     ],
     "dependencies": [
       "Combinatorics.crosses_map_iff",
+      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -111001,50 +111003,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (v w : SecondQuantization.Common.TwoPointVertex S),\n  d.vertexGraph.Adj v w ↔\n    v ≠ w ∧\n      ∃ leg,\n        SecondQuantization.Common.twoPointVertexOfLeg leg = v ∧\n          SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner leg) = w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.vertexGraph_adj_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "Adjacency in a two-point vertex graph, unfolded. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.not_adj_slotSplitVertex_slotSplitVacuumVertex"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177036,48 +176994,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram InternalLabel N S) (v w : ↥S),\n  d.vertexGraph.Adj v w ↔\n    v ≠ w ∧\n      ∃ leg,\n        SecondQuantization.Common.vertexOfLeg leg = v ∧\n          SecondQuantization.Common.vertexOfLeg (d.pairing.partner leg) = w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.QuarticDiagram.vertexGraph_adj_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
-    "externalAxioms": [],
-    "docString": "Adjacency in a quartic vertex graph, unfolded. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVacuumVertex_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (x y : ↥(S \\ T)),\n  (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj\n      (SecondQuantization.Common.slotSplitVacuumVertex x) (SecondQuantization.Common.slotSplitVacuumVertex y) ↔\n    vac.vertexGraph.Adj x y",
     "standardAxioms": [
@@ -177101,10 +177017,8 @@
     "dependencies": [
       "Combinatorics.Pairing.ofSplit_partner_inr",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
-      "SecondQuantization.Common.TwoPointDiagram.vertexGraph_adj_iff",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inl",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.QuarticDiagram.vertexGraph_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVacuumVertex_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
     ],
@@ -177148,7 +177062,6 @@
     "dependencies": [
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
-      "SecondQuantization.Common.TwoPointDiagram.vertexGraph_adj_iff",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inl",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.slotSplitVertex_ne_slotSplitVacuumVertex"
