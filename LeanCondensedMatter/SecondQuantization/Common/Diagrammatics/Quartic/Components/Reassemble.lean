@@ -240,26 +240,6 @@ theorem QuarticDiagram.componentPartition_reassemble {S : Finset (Fin N)}
       exact (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.part_mem.2 hvS
     rwa [QuarticDiagram.reassemble_componentBlock_eq_part, hv] at hmem
 
-private theorem QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm
-    {S : Finset (Fin N)} (π : Finpartition S) (B : π.parts)
-    (v : ↥(B : Finset (Fin N))) :
-    QuarticDiagram.reassembleVertex π B v =
-      ((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
-        (q := (· ∈ (B : Finset (Fin N)))) (fun {_} hx => π.le B.2 hx)).symm v : ↥S) := by
-  apply Subtype.ext
-  change (π.equivSigmaParts.symm ⟨B, v⟩ : Fin N) = _
-  rfl
-
-private theorem QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm
-    {S : Finset (Fin N)} (π : Finpartition S) (B : π.parts)
-    (v : ↥(B : Finset (Fin N))) :
-    π.equivSigmaParts
-        (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
-        (q := (· ∈ (B : Finset (Fin N)))) (fun {_} hx => π.le B.2 hx)).symm v : ↥S)) =
-      ⟨B, v⟩ := by
-  rw [← QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm]
-  exact π.equivSigmaParts.apply_symm_apply ⟨B, v⟩
-
 private theorem QuarticDiagram.restrictComponent_reassemble_vertexLabel
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
@@ -270,12 +250,13 @@ private theorem QuarticDiagram.restrictComponent_reassemble_vertexLabel
       (F B).1.vertexLabel v := by
   set u := (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
     (q := (· ∈ (B : Finset (Fin N))))
-    (fun {_} hx => (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.le hB' hx)).symm v : ↥S)) with hu
+    (fun {_} hx => (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.le hB' hx)).symm v : ↥S))
   change (F (π.equivSigmaParts u).1).1.vertexLabel (π.equivSigmaParts u).2 =
       (F B).1.vertexLabel v
-  have hueq : u = ((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S))
-        (q := (· ∈ (B : Finset (Fin N)))) (fun {_} hx => π.le B.2 hx)).symm v : ↥S) := hu
-  rw [hueq, QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm]
+  have hueq : u = π.equivSigmaParts.symm ⟨B, v⟩ := by
+    apply Subtype.ext
+    rfl
+  rw [hueq, Equiv.apply_symm_apply]
 
 /-- Component-local and partition-wide embeddings of the same leg into the ambient diagram
 agree, independently of the component diagrams used in a reassembly. -/
