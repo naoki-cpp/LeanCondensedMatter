@@ -109,7 +109,9 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
     simp only [TwoPointDiagram.mixedVacuumPositionDataEquiv,
       TwoPointDiagram.mixedComponentPositionEquiv]
     let leg :
-        {leg : OrderedTwoPointLeg n // d.unflattenedLegInComponent C leg} :=
+        {leg : OrderedTwoPointLeg n //
+          componentLegVertex leg ∈
+            (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))} :=
       ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).subtypeEquiv
         (fun q => d.legInComponent_iff_unflattened C q))
         (((mixedTimeAmbientPositionEquiv τ τ' σ).subtypeEquiv
