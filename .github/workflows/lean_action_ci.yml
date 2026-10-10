@@ -59,6 +59,9 @@ jobs:
               - 'scripts/CheckNoSorry.lean'
               - '.github/workflows/lean_action_ci.yml'
             advisory:
+              - 'scripts/check_declaration_catalog.py'
+              - 'scripts/test_declaration_catalog.py'
+              - 'docs-site/**'
               - 'scripts/CheckUnusedHypotheses.lean'
               - 'scripts/TheoremCatalog.lean'
               - 'scripts/TheoremReplacementAudit.lean'
@@ -120,6 +123,9 @@ jobs:
         run: |
           set -euo pipefail
           lake env lean scripts/TheoremCatalog.lean
+          python3 scripts/check_declaration_catalog.py
+          python3 -m unittest discover -s scripts -p 'test_declaration_catalog.py'
+          node --test docs-site/tests/*.test.mjs
           lake env lean scripts/TheoremReplacementAudit.lean
           python3 scripts/merge_theorem_replacements.py
 

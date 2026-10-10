@@ -25,11 +25,11 @@
     <a class="brand" href="./" aria-label="LeanCondensedMatter explorer home">
       <span>
         <strong>LeanCondensedMatter</strong>
-        <small>Theorem and Module Explorer</small>
+        <small>Declaration and Module Explorer</small>
       </span>
     </a>
     <nav aria-label="Project links">
-      <button id="overview-link" class="nav-button" type="button">Theorems</button>
+      <button id="overview-link" class="nav-button" type="button">Declarations</button>
       <button id="module-imports-link" class="nav-button" type="button">Imports</button>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter">GitHub</a>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/docs/roadmap.md">Roadmap</a>
@@ -75,6 +75,19 @@
         <span id="module-filter-hint" class="control-help">Available after opening a declaration.</span>
       </label>
 
+      <label>Declaration kind
+        <select id="kind-filter">
+          <option value="*">All declarations</option>
+          <option value="theorem">Theorems</option>
+          <option value="definition">Definitions (def / abbrev / opaque)</option>
+          <option value="axiom">Axioms</option>
+          <option value="inductive">Inductive types / structures</option>
+          <option value="constructor">Constructors</option>
+          <option value="recursor">Recursors</option>
+        </select>
+      </label>
+      <label><input id="generated-filter" type="checkbox"> Include generated declarations</label>
+
       <fieldset class="highlight-controls">
         <legend>Highlight</legend>
         <label><input type="checkbox" data-highlight="terminal"> terminal</label>
@@ -85,6 +98,10 @@
 
       <div class="legend" aria-label="Graph legend">
         <span><i class="legend-node"></i> theorem</span>
+        <span><i class="legend-node" style="background:#49bda5"></i> definition</span>
+        <span><i class="legend-node" style="background:#f2b35d"></i> axiom</span>
+        <span><i class="legend-node" style="background:#b58ae8"></i> type / constructor / recursor</span>
+        <span><i class="legend-edge" style="border-style:dotted"></i> type reference</span>
         <span class="legend-dependency"><i class="legend-edge"></i> dependency</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
