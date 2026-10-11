@@ -347,7 +347,12 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
     intro a b _
     exact a.elim0
   constructor
-  · exact externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+  · change StrictMono (fun p : Fin (2 * (2 * S.card + 0)) =>
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+            (externalInsertionMixedTimeOrderedAtomicLegEquiv localTime (σ ∘ f) p)))
+    exact externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
       he hf externalTime σ
   · intro a b
     have hvertices :
