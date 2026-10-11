@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 
 set_option linter.style.header false
