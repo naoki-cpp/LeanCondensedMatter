@@ -91548,46 +91548,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.exchangeCommutator SecondQuantization.Common.Statistics.boson\n      (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.create i) =\n    LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator",
-    "externalAxioms": [],
-    "docString": "The single-mode bosonic exchange commutator is the identity. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
-    "directWrapperOf": "SecondQuantization.Common.exchangeCommutator_annihilate_create_self",
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.exchangeCommutator_annihilate_create_self"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ),\n      n ≠ 0 →\n        ↑n.factorial *\n            (PowerSeries.coeff n)\n              (SecondQuantization.Bosonic.freeGibbsDysonFormalLog ε β\n                (SecondQuantization.Bosonic.quarticInteraction g)) =\n          ∑ d, SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude ε β g (↑d) β",
     "standardAxioms": [
       "Classical.choice",
@@ -108348,7 +108308,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108360,19 +108320,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self",
-      "SecondQuantization.Common.annihilate_comp_create_self",
-      "SecondQuantization.Fermionic.exchangeCommutator_annihilate_create_self"
+      "SecondQuantization.Common.annihilate_comp_create_self"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self",
-      "SecondQuantization.Common.annihilate_comp_create_self",
-      "SecondQuantization.Fermionic.exchangeCommutator_annihilate_create_self"
+      "SecondQuantization.Common.annihilate_comp_create_self"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133306,46 +133262,6 @@
       "SecondQuantization.Fermionic.sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Common.exchangeCommutator SecondQuantization.Common.Statistics.fermion\n      (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.create i) =\n    LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.exchangeCommutator_annihilate_create_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
-    "externalAxioms": [],
-    "docString": "**`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Common.Statistics.zetaInt Common.Statistics.fermion`)**: an\ninstance of `Common.exchangeCommutator_annihilate_create_self`, via the fermionic\n`Common.ExchangeAlgebra` instance (`Fermionic/Algebra/ExchangeAlgebra.lean`), whose `annihilate`/`create`\nfields are literally `Fermionic.annihilate`/`create`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.exchangeCommutator_annihilate_create_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
