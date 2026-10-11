@@ -311,6 +311,57 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
     rw [ha, hb] at hvalue
     exact hvalue
 
+/-- The actual quartic vacuum half of an assembled external-insertion diagram has
+the standalone free-Gibbs pair kernel when its vertex slots are reindexed into the
+ambient diagram. The arguments retain their given order; normalization of ambient
+pairs after reassembly is a separate assertion. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (a b : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+            (Sum.inr (⟨(orderedQuarticLegEquiv S.card a).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card a).2))))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+            (Sum.inr (⟨(orderedQuarticLegEquiv S.card b).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card b).2)))) =
+      flatVertexLegPairValue ε β
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v))
+        (σ ∘ f) a b := by
+  intro S f d
+  have hvertices :
+      d.vertexLabelSequence ∘ f =
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) := by
+    funext v
+    let w := S.orderIsoOfFin rfl v
+    have hw : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
+    change
+      (ExternalInsertionDiagram.ofSlotSplit
+        (Finset.subset_univ T) ext vac).vertexLabel
+        ⟨w.1, Finset.mem_univ _⟩ = vac.vertexLabel w
+    rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
+      (Finset.subset_univ T) ext vac
+      ⟨w.1, Finset.mem_univ _⟩ hw]
+  have hkernel :=
+    externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
+      ε β f d.externalLabel externalTime d.vertexLabelSequence σ a b
+  rw [hvertices] at hkernel
+  exact hkernel
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
