@@ -72,6 +72,7 @@ theorem PurePointTimeDomainSummable.lehmannSummable
     (data : PurePointLehmannData system ι) (A B : H →L[ℂ] H)
     (hsum : PurePointTimeDomainSummable system data A B) :
     PurePointLehmannSummable system data A B := by
+  change Summable fun mn : ι × ι => ‖(purePointTransitionData system data A B mn).weight‖
   have hforward : Summable (purePointForwardWeight system data A B) :=
     Summable.of_norm hsum.1
   have hbackward : Summable fun mn : ι × ι =>
