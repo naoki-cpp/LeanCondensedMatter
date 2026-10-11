@@ -66,7 +66,7 @@ theorem id_sub_exchange_isPositive (i j : Site) :
   refine ⟨LinearMap.IsSymmetric.id.sub (exchange_isSymmetric i j), fun ψ => ?_⟩
   have h := re_inner_le_norm (𝕜 := ℂ) (exchange i j ψ) ψ
   rw [(exchange i j).norm_map] at h
-  change 0 ≤ (inner ℂ (ψ - exchange i j ψ) ψ).re
+  change 0 ≤ RCLike.re (inner ℂ (ψ - exchange i j ψ) ψ)
   simp only [inner_sub_left, map_sub, inner_self_eq_norm_sq]
   nlinarith
 
@@ -89,10 +89,10 @@ theorem spinDot_eq_exchange (hbar : ℝ) (i j : Site) (hij : i ≠ j) :
   have huj := Function.update_eq_self j c
   generalize hci : c i = si
   generalize hcj : c j = sj
-  fin_cases si <;> fin_cases sj <;>
+  fin_cases si <;> fin_cases sj <;> simp only [hci, hcj] at hui huj hswap <;>
     simp [spinDot, atSite, exchange_apply, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, Fin.sum_univ_two, hij, hij.symm, hci, hcj,
-      hswap, Function.update_comm hij, ← hci, ← hcj, hui, huj] <;> ring
+      hswap, Function.update_comm hij, hui, huj] <;> ring
 
 /-- A normalized fully polarized state. -/
 def polarized : State Site := EuclideanSpace.single (fun _ => 0) 1
