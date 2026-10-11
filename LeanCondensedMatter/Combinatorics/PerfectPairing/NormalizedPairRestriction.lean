@@ -108,8 +108,17 @@ noncomputable def Pairing.normalizedPairSubtypeEquivOfPartnerEquiv
     source.NormalizedPairSubtype p ≃ target.NormalizedPairSubtype q :=
   (source.normalizedPairEquivOfPartnerEquiv target e hpartner).subtypeEquiv
     (fun pr => by
-      have hends := source.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap
-        target e hpartner pr
+      have hends := target.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+        source.pairEndpointEquiv e
+        (fun r => by
+          change target.partner (e r.1.1) = e r.1.2
+          rw [hpartner]
+          exact congrArg e (((source.mem_pairs_iff r.1.1 r.1.2).1 r.2).2))
+        pr
+      change (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
+          (e pr.1.1, e pr.1.2) ∨
+        (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
+          (e pr.1.2, e pr.1.1) at hends
       rcases hends with h | h
       · rw [congrArg Prod.fst h, hcompat]
       · have hp := ((source.mem_pairs_iff pr.1.1 pr.1.2).mp pr.2).2
