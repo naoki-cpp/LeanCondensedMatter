@@ -208,12 +208,20 @@ private theorem externalInsertionLeftMixedPosition_fixed
                 (Equiv.refl (Fin 4)))) leg))))
   cases leg with
   | inl e =>
-      simp [orderedExternalInsertionLegMap,
-        externalInsertionSlotLegSplitting_external]
+      change Sum.inl e =
+        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
+          (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+            (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inl e))))
+      rw [externalInsertionSlotLegSplitting_external, Equiv.apply_symm_apply]
   | inr v =>
       rcases v with ⟨v, l⟩
-      simp [orderedExternalInsertionLegMap,
-        externalInsertionSlotLegSplitting_left_interaction]
+      change Sum.inr (⟨f v.1, Finset.mem_univ _⟩, l) =
+        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
+          (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+            (Sum.inl ((externalInsertionLegEquiv E T).symm
+              (Sum.inr ((T.orderIsoOfFin rfl v.1), l)))))
+      rw [externalInsertionSlotLegSplitting_left_interaction, Equiv.apply_symm_apply]
+      rfl
 
 /-- For an actual assembled pairing, every normalized pair on the external-support
 side becomes an ambient normalized mixed-time pair with the *same* endpoint order.
@@ -245,6 +253,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
           ext.externalLabel externalTime
           (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
           pr.1.1 pr.1.2 := by
+  dsimp only
   intro pr
   let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
   let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
