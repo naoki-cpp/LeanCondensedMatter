@@ -235,7 +235,14 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
       ((Finset.univ : Finset (Fin n)) \ T))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
-    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let localFixed :=
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f)).trans
+        ((Equiv.sumCongr
+          (Equiv.refl (Fin (2 * E)))
+          (((Equiv.subtypeUnivEquiv
+            (fun i : Fin T.card => Finset.mem_univ i)).trans
+            (T.orderIsoOfFin rfl).toEquiv).prodCongr (Equiv.refl (Fin 4)))).trans
+          (externalInsertionLegEquiv E T).symm)
     let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
     let d : ExternalInsertionWickDiagram Mode E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
