@@ -426,6 +426,7 @@ theorem externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex
 /-- The actual mixed-time pairing of a reassembled arbitrary-external diagram
 is a binary split pairing, after transporting the fixed-leg splitting into the
 ambient mixed-time order. -/
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit
     {E n : ℕ} (T : Finset (Fin n))
     (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
