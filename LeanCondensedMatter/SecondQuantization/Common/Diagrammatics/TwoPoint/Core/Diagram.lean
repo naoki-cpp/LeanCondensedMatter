@@ -3,6 +3,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false
 
@@ -36,13 +37,19 @@ abbrev TwoPointVertex (S : Finset (Fin N)) : Type := Fin 2 ⊕ ↥S
 vertex. -/
 abbrev TwoPointLeg (S : Finset (Fin N)) : Type := Fin 2 ⊕ (↥S × Fin 4)
 
-/-- Flatten the two external legs and all quartic interaction legs into the ordered finite type used
-by `Pairing`. -/
+/-- Flatten the two external legs and all quartic interaction legs into the ordered finite type
+used by `Pairing`.
+
+The external legs occupy positions `0, 1`; the interaction legs follow in increasing vertex
+order, with the four local legs of each vertex in `0, 1, 2, 3` order. The enumeration is
+explicit rather than chosen from a cardinality equality, since crossing parity depends on it. -/
 noncomputable def twoPointLegEquiv (S : Finset (Fin N)) :
     Fin (2 * (2 * S.card + 1)) ≃ TwoPointLeg S :=
-  Fintype.equivOfCardEq (by
-    simp [TwoPointLeg]
-    omega)
+  (finCongr (by omega)).trans <|
+    finSumFinEquiv.symm.trans <|
+      Equiv.sumCongr (Equiv.refl (Fin 2))
+        ((finProdFinEquiv (m := S.card) (n := 4)).symm.trans
+          ((S.orderIsoOfFin rfl).toEquiv.prodCongr (Equiv.refl (Fin 4))))
 
 /-- The flattened leg belonging to external vertex `e`. -/
 noncomputable def twoPointExternalLeg (S : Finset (Fin N)) (e : Fin 2) :
@@ -53,6 +60,20 @@ noncomputable def twoPointExternalLeg (S : Finset (Fin N)) (e : Fin 2) :
 noncomputable def twoPointInteractionLeg {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
     Fin (2 * (2 * S.card + 1)) :=
   (twoPointLegEquiv S).symm (Sum.inr (v, l))
+
+/-- The two external legs are precisely the first two flattened positions. -/
+@[simp]
+theorem twoPointExternalLeg_val (S : Finset (Fin N)) (e : Fin 2) :
+    (twoPointExternalLeg S e).val = e.val := by
+  simp [twoPointExternalLeg, twoPointLegEquiv]
+
+/-- The remaining positions list interaction vertices increasingly, with local legs in order. -/
+@[simp]
+theorem twoPointInteractionLeg_val {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
+    (twoPointInteractionLeg v l).val =
+      2 + l.val + 4 * ((S.orderIsoOfFin rfl).symm v).val := by
+  simp [twoPointInteractionLeg, twoPointLegEquiv, finProdFinEquiv]
+  omega
 
 /-- The vertex incident to a flattened two-point leg. -/
 noncomputable def twoPointVertexOfLeg {S : Finset (Fin N)}
