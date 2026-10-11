@@ -61,16 +61,9 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
         (mixedTimeOrderedAtomicLegPosition τ τ' σ
           (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
     rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-    calc
-      orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p =
-          (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-            ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
-              (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) := by
-        rw [Equiv.apply_symm_apply]
-      _ = (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-          (slotLegSplitting (Finset.subset_univ T) (Sum.inr q)) := by
-        exact congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-          (by simpa [q] using slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
+    simpa only [Equiv.apply_symm_apply] using
+      congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
+        (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
   have hvertex :
       twoPointVertexOfLeg
           (mixedTimeAmbientPositionEquiv τ τ' σ
