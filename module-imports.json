@@ -249,6 +249,12 @@
       "externalImportCount": 8
     },
     {
+      "name": "LeanCondensedMatter.Analysis.InfiniteSum.Normalization",
+      "sourceFile": "LeanCondensedMatter/Analysis/InfiniteSum/Normalization.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.InfiniteSum.Order",
       "sourceFile": "LeanCondensedMatter/Analysis/InfiniteSum/Order.lean",
       "imports": [],
@@ -3395,6 +3401,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.InfiniteSum.Normalization",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
