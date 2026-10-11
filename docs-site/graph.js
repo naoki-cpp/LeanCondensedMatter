@@ -1,5 +1,6 @@
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
+import { curvedEdgePath } from "./graph-edge.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
 import {
   BRANCH_COLORS,
@@ -349,13 +350,6 @@ function isTreeEdge(source, target, levels, parents) {
 function edgeBranch(source, target, levels, branchFor) {
   const targetLevel = levels.get(target);
   return targetLevel < 0 ? branchFor.get(target) : branchFor.get(source);
-}
-
-function curvedEdgePath(source, target, cx, cy) {
-  const middleRadius = (source.radius + target.radius) / 2;
-  const c1 = polarPoint(cx, cy, middleRadius, source.angle);
-  const c2 = polarPoint(cx, cy, middleRadius, target.angle);
-  return `M ${source.x} ${source.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${target.x} ${target.y}`;
 }
 
 function setBranchFocus(branch) {
