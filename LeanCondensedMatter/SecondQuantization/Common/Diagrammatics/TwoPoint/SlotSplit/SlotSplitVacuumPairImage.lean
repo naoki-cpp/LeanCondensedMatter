@@ -149,58 +149,6 @@ theorem TwoPointDiagram.card_mixedVacuumComponentPair
   rw [Fintype.card_congr (d.mixedVacuumComponentPairEquiv τ τ' σ B.1 hVac)]
   simpa using (d.restrictedVacuumPairing B.1 hVac).card_normalizedPair
 
-/-- For an externally connected left piece, the ambient vacuum components contain exactly the
-interaction vertices of the standalone quartic right piece. -/
-private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (hext : ext.IsExternallyConnected) :
-    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    (∑ B : ↥(vacuumComponentParts d.vertexGraph),
-      (interactionSector
-        (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card) =
-      ((Finset.univ : Finset (Fin n)) \ T).card := by
-  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let e := slotSplitVacuumComponentEquiv
-    (Finset.subset_univ T) ext vac hext
-  let F : ↥(vacuumComponentParts d.vertexGraph) → ℕ := fun B =>
-    (interactionSector
-      (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card
-  change (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) = _
-  calc
-    (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) =
-        ∑ C : vac.vertexGraph.componentPartitionOn.parts, F (e C) :=
-      (Equiv.sum_comp e F).symm
-    _ = ∑ C : vac.vertexGraph.componentPartitionOn.parts, (C : Finset (Fin n)).card := by
-      apply Fintype.sum_congr
-      intro C
-      change (interactionSector
-          ((e C).1.1 : Finset (TwoPointVertex
-            (Finset.univ : Finset (Fin n))))).card = _
-      rw [slotSplitVacuumComponentEquiv_apply,
-        interactionSector_slotSplitVacuumComponentPart]
-    _ = ((Finset.univ : Finset (Fin n)) \ T).card := by
-      rw [Finset.sum_coe_sort]
-      exact vac.vertexGraph.componentPartitionOn.sum_card_parts
-
-/-- The type of all ambient mixed vacuum pairs has the same cardinality as the normalized pairs of
-the standalone quartic vacuum pairing. -/
-private theorem TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (hext : ext.IsExternallyConnected)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    Fintype.card ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair
-      τ τ' σ) = 2 * ((Finset.univ : Finset (Fin n)) \ T).card := by
-  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  rw [← Fintype.card_congr (d.mixedVacuumPairSigmaEquiv τ τ' σ), Fintype.card_sigma]
-  simp_rw [d.card_mixedVacuumComponentPair τ τ' σ]
-  rw [← Finset.mul_sum]
-  exact congrArg (2 * ·)
-    (TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard T ext vac hext)
-
 /-- Under external connectedness, every ambient mixed pair lying in a vacuum component comes from a
 unique normalized pair of the standalone quartic vacuum pairing. -/
 private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
@@ -221,7 +169,33 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
       Fintype.card
           ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ) =
         2 * ((Finset.univ : Finset (Fin n)) \ T).card :=
-    TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair T ext vac hext τ τ' σ
+    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let e := slotSplitVacuumComponentEquiv (Finset.subset_univ T) ext vac hext
+    let F : ↥(vacuumComponentParts d.vertexGraph) → ℕ := fun B =>
+      (interactionSector
+        (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card
+    change Fintype.card (d.MixedVacuumPair τ τ' σ) = _
+    rw [← Fintype.card_congr (d.mixedVacuumPairSigmaEquiv τ τ' σ),
+      Fintype.card_sigma]
+    simp_rw [d.card_mixedVacuumComponentPair τ τ' σ]
+    rw [← Finset.mul_sum]
+    apply congrArg (2 * ·)
+    calc
+      (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) =
+          ∑ C : vac.vertexGraph.componentPartitionOn.parts, F (e C) :=
+        (Equiv.sum_comp e F).symm
+      _ = ∑ C : vac.vertexGraph.componentPartitionOn.parts,
+          (C : Finset (Fin n)).card := by
+        apply Fintype.sum_congr
+        intro C
+        change (interactionSector
+          ((e C).1.1 : Finset (TwoPointVertex
+            (Finset.univ : Finset (Fin n))))).card = _
+        rw [slotSplitVacuumComponentEquiv_apply,
+          interactionSector_slotSplitVacuumComponentPart]
+      _ = ((Finset.univ : Finset (Fin n)) \ T).card := by
+        rw [Finset.sum_coe_sort]
+        exact vac.vertexGraph.componentPartitionOn.sum_card_parts
   have hbij : Function.Bijective emb :=
     (Fintype.bijective_iff_injective_and_card emb).2
       ⟨emb.injective, hsource.trans htarget.symm⟩
