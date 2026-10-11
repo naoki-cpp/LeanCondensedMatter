@@ -622,14 +622,14 @@ private def json (entries : Array CatalogEntry) : Json :=
 
 /-- The declaration graph includes every compiled project constant. Source ranges are queried
 directly: Lean's convenience range lookup inherits ranges for generated recursors. -/
-private def declarationGraph (audit : Array CatalogEntry) : CommandElabM Json := do
+private def declarationGraph (audit : Json) : CommandElabM Json := do
   let env ← getEnv
   let constants := env.constants.toList.filter fun (name, _) =>
     ((declarationModule? env name).map projectModule?).getD false
   let names := constants.foldl (init := NameSet.empty) fun names (name, _) => names.insert name
   let mut rows : Array (Name × Json) := #[]
   let mut consumers : NameMap (Array String) := {}
-  let auditRows := (json audit).getArr?.toOption.getD #[]
+  let auditRows := audit.getArr?.toOption.getD #[]
   let auditByName := auditRows.foldl (init := ({} : NameMap Json)) fun result row =>
     match (row.getObjValAs? String "name").toOption with
     | some name => result.insert name.toName row
@@ -686,6 +686,17 @@ private def declarationGraph (audit : Array CatalogEntry) : CommandElabM Json :=
     row.setObjVal! "dependents" (.arr <| (sortedConsumers consumers name).map Json.str)
 
 run_cmd do
+  let mode ← liftIO <| IO.getEnv "LCM_CATALOG_MODE"
+  if mode == some "declarations" then
+    let outputDir : System.FilePath := "docs" / "generated"
+    let auditText ← liftIO <| IO.FS.readFile (outputDir / "theorems.json")
+    let audit ← match Json.parse auditText with
+      | .ok audit => pure audit
+      | .error error => throwError "Invalid theorem audit JSON: {error}"
+    let declarations ← declarationGraph audit
+    liftIO <| IO.FS.writeFile (outputDir / "declarations.json") declarations.pretty
+    logInfo m!"Generated declaration graph with {(declarations.getArr?.toOption.getD #[]).size} declarations"
+    return
   let projectAxioms ← collectProjectAxioms
   let (entries, projectTheorems, theoremDependents) ← collectEntries projectAxioms
   let compiledConsumers ← collectCompiledConsumers projectTheorems
@@ -730,8 +741,9 @@ run_cmd do
   let retainedReviewQueue := retainedReviewEntries catalog
   liftIO <| IO.FS.writeFile (outputDir / "theorems.md") (markdown catalog chains retained)
   liftIO <| IO.FS.writeFile (outputDir / "theorems.json") (json catalog).pretty
-  let declarations ← declarationGraph catalog
-  liftIO <| IO.FS.writeFile (outputDir / "declarations.json") declarations.pretty
+  if mode != some "audit" then
+    let declarations ← declarationGraph (json catalog)
+    liftIO <| IO.FS.writeFile (outputDir / "declarations.json") declarations.pretty
   logInfo m!"Retained catalog consistency: {missingRetained.size} missing declaration(s); {retainedWithoutSignal.size} retained declaration(s) without a current structural audit signal"
   logInfo m!"Retained re-audit queue: {retainedReviewQueue.size} declaration(s)"
   logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {privateSingleConsumerReviewQueue.size} priority public non-simp theorems with sole private compiled consumers; {projectAxiomEntries.size} theorems depending on project axioms; {externalAxiomEntries.size} theorems depending on external nonstandard axioms; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"

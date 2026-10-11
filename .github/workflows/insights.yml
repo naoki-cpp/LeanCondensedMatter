@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
+          python3 scripts/generate_declaration_catalog.py 2>&1 | tee theorem-catalog.log
 
       - name: Generate module import graph
         run: python3 scripts/export_module_import_graph.py
