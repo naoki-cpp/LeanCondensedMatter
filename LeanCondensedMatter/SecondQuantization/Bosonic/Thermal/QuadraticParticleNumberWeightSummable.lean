@@ -24,7 +24,7 @@ theorem summable_particleNumber_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ
     (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
     Summable (fun n : Occupation Mode => (n j : ℝ) ^ 2 * boltzmannWeight ε β n) := by
   classical
-  have h := summable_occupationMonomial_boltzmannWeight ε β hpos
+  have h := summable_shiftedOccupationPowerProduct_boltzmannWeight ε β hpos (fun _ => 0)
     (fun i => if i = j then 2 else 0)
   refine h.congr fun n => ?_
   congr 1

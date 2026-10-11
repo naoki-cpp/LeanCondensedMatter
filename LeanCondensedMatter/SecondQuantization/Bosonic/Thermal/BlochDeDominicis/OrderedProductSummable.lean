@@ -196,7 +196,7 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
     freeGibbsSummable ε β (FreeThermalField.orderedProduct fields) := by
   unfold freeGibbsSummable
   have hmajorant := summable_shiftedOccupationPowerProduct_boltzmannWeight
-    ε β hpos (fields.length + 1) fields.length
+    ε β hpos (fun _ => fields.length + 1) (fun _ => fields.length)
   apply hmajorant.of_norm_bounded
   intro n
   rw [show imaginaryTimeEvolveFree ε (-β) =
