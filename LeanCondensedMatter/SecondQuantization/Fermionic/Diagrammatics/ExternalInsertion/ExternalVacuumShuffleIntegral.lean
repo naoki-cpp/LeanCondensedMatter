@@ -426,15 +426,14 @@ theorem externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex
 /-- The actual mixed-time pairing of a reassembled arbitrary-external diagram
 is a binary split pairing, after transporting the fixed-leg splitting into the
 ambient mixed-time order. -/
-omit [LinearOrder Mode] [Fintype Mode] in
 private theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit
-    {E n : ℕ} (T : Finset (Fin n))
-    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
-      (QuarticVertexLabel Mode) E n T)
-    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+    {M : Type*} {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel M)
+      (QuarticVertexLabel M) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel M) n
       ((Finset.univ : Finset (Fin n)) \ T))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    let d : ExternalInsertionWickDiagram Mode E n :=
+    let d : ExternalInsertionWickDiagram M E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
     let split :=
       (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
