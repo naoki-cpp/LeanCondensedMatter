@@ -12,7 +12,7 @@ they do not supply analytic input back to it.
 
 On a finite mode type, each mode contributes a one-dimensional series `k^p r^k`, which is summable
 for `|r| < 1`; `Finsupp.hasSum_prod_nonneg` then reconstructs the infinite occupation-space sum.
-The shifted-power interface uses the same analytic boundary for the tails produced by finite ladder
+Mode-dependent shifted powers use one analytic interface for monomials and tails of finite ladder
 products.
 -/
 
@@ -22,40 +22,6 @@ namespace Bosonic
 noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
-
-/-- Every finite-mode occupation monomial is summable against the free bosonic Boltzmann weight.
-
-`power i` is the exponent of the occupation number in mode `i`.  This is the canonical finite-mode
-polynomial majorant used by lower-degree specializations and arbitrary fixed-length products of
-creation and annihilation operators. -/
-theorem summable_occupationMonomial_boltzmannWeight
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (power : Mode → ℕ) :
-    Summable (fun n : Occupation Mode =>
-      (∏ i, (n i : ℝ) ^ power i) * boltzmannWeight ε β n) := by
-  set g : Mode → ℕ → ℝ := fun i k =>
-    (k : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k with hgdef
-  have hg : ∀ i, Summable (g i) := by
-    intro i
-    have hr : ‖Real.exp (-β * ε i)‖ < 1 := by
-      rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
-      linarith [hpos i]
-    have h := summable_pow_mul_geometric_of_norm_lt_one (R := ℝ) (power i) hr
-    change Summable (fun k : ℕ =>
-      (k : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k)
-    exact h.congr fun k => by
-      unfold oneModeBoltzmannWeight
-      rw [Real.exp_nat_mul]
-  have hnonneg : ∀ i k, 0 ≤ g i k := by
-    intro i k
-    rw [hgdef]
-    exact mul_nonneg (pow_nonneg (Nat.cast_nonneg _) _) (Real.exp_nonneg _)
-  have H := Finsupp.hasSum_prod_nonneg g (fun i => ∑' k, g i k)
-    (fun i => (hg i).hasSum) hnonneg
-  exact (HasSum.congr_fun H fun n => by
-    symm
-    rw [boltzmannWeight_eq_prod]
-    simp only [hgdef]
-    exact Finset.prod_mul_distrib).summable
 
 omit [Fintype Mode] in
 /-- A fixed shift of the occupation number does not spoil polynomially weighted one-mode Gibbs
@@ -87,20 +53,20 @@ theorem summable_shiftedPow_oneModeBoltzmannWeight
     rw [pow_add]
     field_simp [hr0]
 
-/-- A uniform shifted power in every mode is summable against the free bosonic Gibbs weight.
+/-- Mode-dependent shifted occupation powers are summable against the free bosonic Gibbs weight.
 
-This product-form majorant is convenient for arbitrary fixed-length ladder products: after at most
-`shift` ladder steps, every intermediate mode occupation is bounded by `n i + shift`. -/
+Each mode has its own natural-number shift and power. Zero shifts give occupation monomials;
+constant shifts and powers give the majorants needed by fixed-length ladder products. -/
 theorem summable_shiftedOccupationPowerProduct_boltzmannWeight
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (shift power : ℕ) :
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (shift power : Mode → ℕ) :
     Summable (fun n : Occupation Mode =>
-      (∏ i, ((n i + shift : ℕ) : ℝ) ^ power) * boltzmannWeight ε β n) := by
+      (∏ i, ((n i + shift i : ℕ) : ℝ) ^ power i) * boltzmannWeight ε β n) := by
   set g : Mode → ℕ → ℝ := fun i k =>
-    ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β (ε i) k with hgdef
+    ((k + shift i : ℕ) : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k with hgdef
   have hg : ∀ i, Summable (g i) := by
     intro i
     rw [hgdef]
-    exact summable_shiftedPow_oneModeBoltzmannWeight β (ε i) (hpos i) shift power
+    exact summable_shiftedPow_oneModeBoltzmannWeight β (ε i) (hpos i) (shift i) (power i)
   have hnonneg : ∀ i k, 0 ≤ g i k := by
     intro i k
     rw [hgdef]
