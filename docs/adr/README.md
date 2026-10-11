@@ -1,6 +1,6 @@
 # Architecture decision records
 
-These records state the architectural decisions embodied in the current repository and the trade-offs that constrain its extension. They were reconstructed from the implementation and existing design documentation; they do not claim to reproduce historical discussions, decision dates, or the order in which decisions were made. Numbering is for reference.
+These records state current architectural decisions and proposed boundaries for extending the repository. The original accepted records were reconstructed from implementation and design documentation; they do not claim to reproduce historical discussions, decision dates, or the order in which decisions were made. Numbering is for reference.
 
 Records without an explicit status have status **accepted**, meaning implemented in the current design. Records marked **proposed** describe intended boundaries that are not yet implemented. Alternatives explain the relevant trade-off, not an undocumented historical evaluation.
 
