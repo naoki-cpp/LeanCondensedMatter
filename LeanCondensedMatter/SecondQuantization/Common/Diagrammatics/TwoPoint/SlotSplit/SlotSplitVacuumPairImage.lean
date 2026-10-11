@@ -168,7 +168,7 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
   have htarget :
       Fintype.card
           ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ) =
-        2 * ((Finset.univ : Finset (Fin n)) \ T).card :=
+        2 * ((Finset.univ : Finset (Fin n)) \ T).card := by
     let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
     let e := slotSplitVacuumComponentEquiv (Finset.subset_univ T) ext vac hext
     let F : ↥(vacuumComponentParts d.vertexGraph) → ℕ := fun B =>
