@@ -35,22 +35,6 @@ def cleanInterbandBastinPairLimitDensity
     (band : Band) (e v m px py : ℝ) : ℝ :=
   -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py)
 
-/-- The pointwise fixed-window theorem expressed through the named clean Bastin-pair limit density. -/
-theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity
-    (band : Band) (e v m px py radius : ℝ)
-    (hE : energy v m px py ≠ 0)
-    (hradiusPos : 0 < radius)
-    (hradius : radius < |interbandEnergyGap band v m px py|) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (targetCenteredInterbandBastinPairIntegral
-          band e v m px py radius broadening).re)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (cleanInterbandBastinPairLimitDensity band e v m px py)) := by
-  simpa [cleanInterbandBastinPairLimitDensity] using
-    tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
-      band e v m px py radius hE hradiusPos hradius
-
 /-- Radial positive-energy-coordinate density obtained from the clean local Bastin-pair profile.
 The Berry part is exactly `radialBerryEnergyDensity`; the factor `-2π e²` is the local pair limit
 proved upstream. -/
