@@ -80,30 +80,6 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
   rw [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply]
   exact congrArg d.vertexGraph.componentBlock hvertex
 
-/-- Every normalized pair from the standalone quartic vacuum piece belongs to an ambient vacuum
-component after reassembly. -/
-private theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
-    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    d.mixedPairComponent τ τ' σ
-        (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
-          T ext vac τ τ' σ hσ pr) ∈ (vacuumComponentParts d.vertexGraph) := by
-  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let q := orderedLegToDiagramLeg
-    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1
-  change d.mixedPairComponent τ τ' σ
-      (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
-        T ext vac τ τ' σ hσ pr) ∈ (vacuumComponentParts d.vertexGraph)
-  rw [TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
-    T ext vac τ τ' σ hσ pr]
-  exact componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
-    (Finset.subset_univ T) ext vac (vertexOfLeg q)
-
 /-- The quartic normalized-pair embedding with codomain restricted to ambient vacuum-component
 pairs. -/
 private noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
@@ -116,8 +92,13 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
       (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ where
   toFun pr :=
     ⟨TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr,
-      TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts
-        T ext vac τ τ' σ hσ pr⟩
+      by
+        rw [TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
+          T ext vac τ τ' σ hσ pr]
+        exact componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
+          (Finset.subset_univ T) ext vac
+          (vertexOfLeg (orderedLegToDiagramLeg
+            ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1))⟩
   inj' := by
     intro p q hpq
     apply (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
