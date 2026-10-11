@@ -101,7 +101,7 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     vac.LocalOrderedPair (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C ≃
       (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
-        (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 :=
+        (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 := by
   let emb := TwoPointDiagram.slotSplitVacuumComponentPairEmbedding T ext vac C τ τ' σ hσ
   refine Equiv.ofBijective emb
     ((Fintype.bijective_iff_injective_and_card emb).2 ⟨emb.injective, ?_⟩)
