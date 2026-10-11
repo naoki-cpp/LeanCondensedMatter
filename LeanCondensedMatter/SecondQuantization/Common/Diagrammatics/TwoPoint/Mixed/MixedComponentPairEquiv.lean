@@ -91,7 +91,8 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
   (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
     (fun p => d.mixedPositionComponent τ τ' σ p = B)
     (fun p => by rw [d.mixedPositionComponent_partner])
-    (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+    ((d.mixedComponentPositionEquiv τ τ' σ B).trans
+      (d.vacuumBlockLegEquiv B hVac))
     (d.restrictedVacuumPairing B hVac)
     (fun pos => by
       change (d.pairing.restrictAlongEquiv (d.legInComponent B)

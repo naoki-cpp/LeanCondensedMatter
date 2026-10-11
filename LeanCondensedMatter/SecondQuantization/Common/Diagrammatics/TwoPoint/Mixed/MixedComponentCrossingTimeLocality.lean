@@ -22,6 +22,15 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
 
+/-- In one order chamber, the underlying standard-position reindexing is unchanged. -/
+private theorem mixedTimeAmbientPositionEquiv_eq_of_sameOrderChamber
+    {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
+    mixedTimeAmbientPositionEquiv τ τ' σ =
+      mixedTimeAmbientPositionEquiv τ τ' υ := by
+  unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
+  rw [mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber]
+
 /-- In one mixed-order chamber, time transport leaves the ambient normalized pair unchanged. -/
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrderChamber
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -30,11 +39,8 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_pair_eq_of_sameOrder
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
     (pr : d.MixedComponentPair τ τ' σ B) :
     (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr).1.1 = pr.1.1 := by
-  have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
-  have hambient : mixedTimeAmbientPositionEquiv τ τ' σ =
-      mixedTimeAmbientPositionEquiv τ τ' υ := by
-    unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
-    rw [hlegs]
+  have hambient :=
+    mixedTimeAmbientPositionEquiv_eq_of_sameOrderChamber τ τ' σ υ hChamber
   have hpairing : d.pairingInMixedOrder τ τ' σ =
       d.pairingInMixedOrder τ τ' υ := by
     unfold TwoPointDiagram.pairingInMixedOrder
@@ -79,11 +85,8 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     d.mixedComponentWeight s τ τ' σ B =
       d.mixedComponentWeight s τ τ' υ B := by
-  have hlegs := mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons τ τ' σ υ hChamber
-  have hambient : mixedTimeAmbientPositionEquiv τ τ' σ =
-      mixedTimeAmbientPositionEquiv τ τ' υ := by
-    unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
-    rw [hlegs]
+  have hambient :=
+    mixedTimeAmbientPositionEquiv_eq_of_sameOrderChamber τ τ' σ υ hChamber
   let weightFor (e : Fin (2 * (2 * n + 1)) ≃
       Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) : ℂ :=
     (s.zetaInt : ℂ) ^
