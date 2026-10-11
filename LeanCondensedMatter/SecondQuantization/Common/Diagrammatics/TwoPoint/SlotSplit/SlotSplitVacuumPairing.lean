@@ -145,15 +145,8 @@ noncomputable def TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
     (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding
       (d.pairingInMixedOrder τ τ' σ)
       (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
-      (fun p => by
-        change (d.pairingInMixedOrder τ τ' σ).partner
-            (mixedTimeOrderedQuarticLegMapPosition
-              (slotSplitVacuumSlot T) τ τ' σ p) =
-          mixedTimeOrderedQuarticLegMapPosition
-            (slotSplitVacuumSlot T) τ τ' σ
-            ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)
-        exact TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
-          T ext vac τ τ' σ p)
+      (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+        T ext vac τ τ' σ)
 
 @[simp]
 theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply
@@ -190,15 +183,8 @@ theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff
     (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding_crosses_iff
       (d.pairingInMixedOrder τ τ' σ)
       (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
-      (fun r => by
-        change (d.pairingInMixedOrder τ τ' σ).partner
-            (mixedTimeOrderedQuarticLegMapPosition
-              (slotSplitVacuumSlot T) τ τ' σ r) =
-          mixedTimeOrderedQuarticLegMapPosition
-            (slotSplitVacuumSlot T) τ τ' σ
-            ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner r)
-        exact TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
-          T ext vac τ τ' σ r)
+      (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+        T ext vac τ τ' σ)
       p q
 
 end Common
