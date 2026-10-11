@@ -111,30 +111,23 @@ noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (Σ B : ↥(vacuumComponentParts d.vertexGraph), d.MixedComponentPair τ τ' σ B.1) ≃
-      d.MixedVacuumPair τ τ' σ where
-  toFun x :=
-    ⟨x.2.1, by
-      rw [x.2.2]
-      exact x.1.2⟩
-  invFun pr :=
-    ⟨⟨d.mixedPairComponent τ τ' σ pr.1, pr.2⟩, ⟨pr.1, rfl⟩⟩
-  left_inv := by
-    rintro ⟨B, pr⟩
-    let B' : ↥(vacuumComponentParts d.vertexGraph) :=
-      ⟨d.mixedPairComponent τ τ' σ pr.1, by
-        rw [pr.2]
-        exact B.2⟩
-    have hB : B' = B := by
-      apply Subtype.ext
-      exact pr.2
-    apply Sigma.ext hB
-    refine (Subtype.heq_iff_coe_eq ?_).2 ?_
-    · intro x
-      change d.mixedPairComponent τ τ' σ x = B'.1 ↔
-        d.mixedPairComponent τ τ' σ x = B.1
-      rw [hB]
-    · rfl
-  right_inv _ := rfl
+      d.MixedVacuumPair τ τ' σ := by
+  let f : d.MixedVacuumPair τ τ' σ → ↥(vacuumComponentParts d.vertexGraph) :=
+    fun pr => ⟨d.mixedPairComponent τ τ' σ pr.1, pr.2⟩
+  exact (Equiv.sigmaCongrRight fun B =>
+    { toFun := fun pr =>
+        ⟨⟨pr.1, by rw [pr.2]; exact B.2⟩, Subtype.ext pr.2⟩
+      invFun := fun pr => ⟨pr.1.1, congrArg Subtype.val pr.2⟩
+      left_inv := by
+        intro pr
+        apply Subtype.ext
+        rfl
+      right_inv := by
+        intro pr
+        apply Subtype.ext
+        apply Subtype.ext
+        rfl
+    }).trans (Equiv.sigmaFiberEquiv f)
 
 /-- One ambient vacuum-component mixed pair fiber has twice as many elements as interaction vertices
 in that component. -/
