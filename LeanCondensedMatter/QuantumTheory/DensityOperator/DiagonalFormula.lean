@@ -5,7 +5,7 @@ import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 # Diagonal density-state formulas over countable Hilbert bases
 
 When a density operator is diagonal in a Hilbert basis, the canonical expectation is the absolutely
-convergent weighted diagonal series. This module also owns the normalization and basis-action facts
+convergent weighted diagonal series. This module also owns the basis-action facts
 for density operators constructed from diagonal weights. No finite-dimensional hypothesis is
 required.
 -/
@@ -118,50 +118,16 @@ theorem DensityOperator.diagonal_weight_le_one (ρ : DensityOperator H)
     w i ≤ ∑' j, w j := hs.le_tsum i (fun j _ => hw_nonneg j)
     _ = 1 := (ρ.hasSum_diagonal_weights b w happly).tsum_eq
 
-/-- The normalized weight used by `diagonalDensityOperator`. -/
-def normalizedDiagonalWeight (a : ι → ℝ) (i : ι) : ℝ :=
-  (∑' j, a j)⁻¹ * a i
-
-/-- Absolute summability is preserved by normalization. -/
-theorem summable_norm_normalizedDiagonalWeight (a : ι → ℝ)
-    (ha : Summable fun i => ‖a i‖) :
-    Summable fun i => ‖normalizedDiagonalWeight a i‖ := by
-  have hscaled := ha.mul_left ‖(∑' j, a j)⁻¹‖
-  simpa [normalizedDiagonalWeight, norm_mul] using hscaled
-
 /-- The normalized diagonal density operator acts by its normalized weight. -/
 theorem diagonalDensityOperator_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
     (hZ : 0 < ∑' i, a i) (i : ι) :
     (diagonalDensityOperator b a ha ha_nonneg hZ).op (b i) =
-      (normalizedDiagonalWeight a i : ℂ) • b i := by
+      (Real.normalizedWeight a i : ℂ) • b i := by
   change HilbertBasis.diagonalOp b
-      (fun i => (normalizedDiagonalWeight a i : ℂ)) (b i) = _
+      (fun i => (Real.normalizedWeight a i : ℂ)) (b i) = _
   simpa using HilbertBasis.diagonalOp_apply_basis b
-    (fun i => (normalizedDiagonalWeight a i : ℂ))
-    (by simpa using summable_norm_normalizedDiagonalWeight a ha) i
-
-/-- Normalized nonnegative weights remain nonnegative. -/
-theorem normalizedDiagonalWeight_nonneg (a : ι → ℝ) (ha_nonneg : ∀ i, 0 ≤ a i)
-    (hZ : 0 < ∑' i, a i) (i : ι) :
-    0 ≤ normalizedDiagonalWeight a i :=
-  mul_nonneg (inv_nonneg.mpr hZ.le) (ha_nonneg i)
-
-/-- The normalized diagonal weights sum to one. -/
-theorem hasSum_normalizedDiagonalWeight (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
-    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
-    (hZ : 0 < ∑' i, a i) :
-    HasSum (normalizedDiagonalWeight a) 1 :=
-  (diagonalDensityOperator b a ha ha_nonneg hZ).hasSum_diagonal_weights b
-    (normalizedDiagonalWeight a) (diagonalDensityOperator_apply_basis b a ha ha_nonneg hZ)
-
-/-- Every normalized diagonal weight is at most one. -/
-theorem normalizedDiagonalWeight_le_one (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
-    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
-    (hZ : 0 < ∑' i, a i) (i : ι) :
-    normalizedDiagonalWeight a i ≤ 1 :=
-  (diagonalDensityOperator b a ha ha_nonneg hZ).diagonal_weight_le_one b
-    (normalizedDiagonalWeight a) (diagonalDensityOperator_apply_basis b a ha ha_nonneg hZ)
-    (normalizedDiagonalWeight_nonneg a ha_nonneg hZ) i
+    (fun i => (Real.normalizedWeight a i : ℂ))
+    (by simpa using Real.summable_norm_normalizedWeight a ha) i
 
 end QuantumTheory

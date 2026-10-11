@@ -129,7 +129,7 @@ theorem completedFreeModeTruncatedGibbsDensityOperator_apply_basis
       completedFreeModeTruncatedPartitionFunction_pos ε β S
   simpa [completedFreeModeTruncatedGibbsDensityOperator,
     completedFreeModeTruncatedGibbsProbability, completedFreeModeTruncatedPartitionFunction,
-    normalizedDiagonalWeight] using
+    Real.normalizedWeight] using
     diagonalDensityOperator_apply_basis completedOccupationHilbertBasis
       (completedFreeModeTruncatedWeight ε β S)
       (completedFreeModeTruncatedWeight_norm_summable ε β S)

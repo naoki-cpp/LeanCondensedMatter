@@ -44,6 +44,12 @@ Canonical ownership is feature-based:
 Finite-dimensional specializations remain with the feature they specialize rather than forming a
 parallel finite-dimensional state hierarchy.
 
+Analysis/InfiniteSum/Normalization.lean owns Real.normalizedWeight and its scalar
+summability, normalization, nonnegativity, and pointwise upper-bound laws. These laws require
+no Hilbert basis. Diagonal density construction and pure-point Gibbs probabilities consume
+them directly; operator positivity, trace-class membership, and basis action remain with
+the density-state modules.
+
 ## Pure-state expectations and dynamics
 
 The Lean API defines the canonical complex vector-representative expectation

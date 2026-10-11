@@ -77,18 +77,10 @@ theorem purePointGibbsProbability_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
 theorem hasSum_purePointGibbsProbability [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β) :
     HasSum (purePointGibbsProbability E β) 1 := by
-  have hZ : 0 < purePointPartitionFunction E β :=
-    purePointPartitionFunction_pos E β hsum
-  change HasSum
-    (fun i => (purePointPartitionFunction E β)⁻¹ * purePointBoltzmannWeight E β i) 1
-  have hscaled :=
-    (purePointBoltzmannWeight_summable E β hsum).hasSum.mul_left
-      (purePointPartitionFunction E β)⁻¹
-  change HasSum
-    (fun i => (purePointPartitionFunction E β)⁻¹ * purePointBoltzmannWeight E β i)
-      ((purePointPartitionFunction E β)⁻¹ * purePointPartitionFunction E β) at hscaled
-  rw [inv_mul_cancel₀ (ne_of_gt hZ)] at hscaled
-  exact hscaled
+  simpa only [purePointGibbsProbability, purePointPartitionFunction, Real.normalizedWeight] using
+    Real.hasSum_normalizedWeight (purePointBoltzmannWeight E β)
+      (purePointBoltzmannWeight_summable E β hsum)
+      (purePointPartitionFunction_pos E β hsum).ne'
 
 /-- The canonical pure-point Gibbs density operator.  No bounded Hamiltonian is introduced: the
 state is built directly from the spectral Boltzmann weights. -/
@@ -110,7 +102,7 @@ theorem purePointGibbsDensityOperator_apply_basis [Nonempty ι]
   have hZ : 0 < ∑' j, purePointBoltzmannWeight E β j := by
     simpa [purePointPartitionFunction] using purePointPartitionFunction_pos E β hsum
   simpa [purePointGibbsDensityOperator, purePointGibbsProbability,
-    purePointPartitionFunction, normalizedDiagonalWeight] using
+    purePointPartitionFunction, Real.normalizedWeight] using
     diagonalDensityOperator_apply_basis b (purePointBoltzmannWeight E β) hsum
       (purePointBoltzmannWeight_nonneg E β) hZ i
 
