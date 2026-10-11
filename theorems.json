@@ -3585,7 +3585,6 @@
     "dependents": [
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
       "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
     ],
     "dependencies": [],
@@ -3595,10 +3594,9 @@
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
       "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairIndexEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100809,8 +100807,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -100822,7 +100820,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair"
     ],
     "dependencies": [
@@ -100832,10 +100829,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111415,7 +111411,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
@@ -111429,14 +111424,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -168138,48 +168132,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T))\n  (C : ↥vac.vertexGraph.componentPartitionOn.parts) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Fintype.card\n      (vac.LocalOrderedPair\n        (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (SecondQuantization.Common.slotSplitVacuumOrder T)) C) =\n    Fintype.card\n      ((SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac).MixedComponentPair τ τ' σ\n        ↑(SecondQuantization.Common.slotSplitVacuumComponentPart ⋯ ext vac C))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair",
-    "externalAxioms": [],
-    "docString": "Source and target of the componentwise vacuum-pair embedding have equal finite cardinality. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.card_normalizedPair",
-      "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "SecondQuantization.Common.interactionSector_slotSplitVacuumComponentPart"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T))\n  (C : ↥vac.vertexGraph.componentPartitionOn.parts) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (hσ : StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))\n  (pr :\n    vac.LocalOrderedPair\n      (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (SecondQuantization.Common.slotSplitVacuumOrder T)) C),\n  ↑((SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv✝ T ext vac C τ τ' σ hσ) pr) =\n    (SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ)\n      ((vac.fixedOrderComponentPairEmbedding (SecondQuantization.Common.slotSplitVacuumOrder T) C) pr)",
     "standardAxioms": [
@@ -168670,7 +168622,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -168691,9 +168643,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
