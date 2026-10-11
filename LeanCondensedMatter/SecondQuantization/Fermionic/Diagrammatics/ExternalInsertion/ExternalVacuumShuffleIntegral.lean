@@ -221,7 +221,6 @@ private theorem externalInsertionLeftMixedPosition_fixed
             (Sum.inl ((externalInsertionLegEquiv E T).symm
               (Sum.inr ((T.orderIsoOfFin rfl v.1), l)))))
       rw [externalInsertionSlotLegSplitting_left_interaction, Equiv.apply_symm_apply]
-      rfl
 
 /-- For an actual assembled pairing, every normalized pair on the external-support
 side becomes an ambient normalized mixed-time pair with the *same* endpoint order.
@@ -253,17 +252,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
           ext.externalLabel externalTime
           (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
           pr.1.1 pr.1.2 := by
-  dsimp only
-  intro pr
-  let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
-  let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
-  let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
-  let d : ExternalInsertionWickDiagram Mode E n :=
-    ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let embed : Fin (2 * (2 * T.card + E)) → Fin (2 * (2 * n + E)) := fun p =>
-    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-      (orderedExternalInsertionLegMap (fun e => e) f
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) p))
+  intro f localFixed localPairing d embed pr
   have hfixed (p : Fin (2 * (2 * T.card + E))) :
       externalInsertionMixedTimeAmbientPositionEquiv externalTime σ (embed p) =
         externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
@@ -301,8 +290,18 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
     have hvalue :=
       externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
         ε β T ext vac externalTime σ a b
-    simpa only [externalInsertionMixedTimeOrderedAtomicLegPosition,
-      Equiv.symm_apply_apply] using hvalue
+    have ha :
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a =
+          pr.1.1 := by
+      exact (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        externalTime (σ ∘ f)).symm_apply_apply pr.1.1
+    have hb :
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b =
+          pr.1.2 := by
+      exact (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        externalTime (σ ∘ f)).symm_apply_apply pr.1.2
+    rw [ha, hb] at hvalue
+    exact hvalue
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
