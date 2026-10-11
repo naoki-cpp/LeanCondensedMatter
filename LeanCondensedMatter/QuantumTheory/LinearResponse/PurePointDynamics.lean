@@ -57,7 +57,7 @@ theorem purePointDensityOperator_apply_basis
     (data : PurePointLehmannData system ι) (i : ι) :
     (purePointDensityOperator system data).op (data.basis i) =
       (data.probability i : ℂ) • data.basis i := by
-  simpa [purePointDensityOperator, normalizedDiagonalWeight,
+  simpa [purePointDensityOperator, Real.normalizedWeight,
     data.probability_hasSum.tsum_eq] using
     diagonalDensityOperator_apply_basis data.basis data.probability
       (purePointProbability_summable_norm system data) data.probability_nonneg

@@ -21,11 +21,10 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 private theorem purePointGibbsProbability_le_one [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :
     purePointGibbsProbability E β i ≤ 1 := by
-  have hprob := hasSum_purePointGibbsProbability E β hsum
-  have hle := hprob.summable.le_tsum i
-    (fun j _ => purePointGibbsProbability_nonneg E β j)
-  rw [hprob.tsum_eq] at hle
-  exact hle
+  exact
+    Real.normalizedWeight_le_one (purePointBoltzmannWeight E β)
+      (purePointBoltzmannWeight_summable E β hsum) (purePointBoltzmannWeight_nonneg E β)
+      (purePointPartitionFunction_pos E β hsum) i
 
 private theorem log_purePointGibbsProbability [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :

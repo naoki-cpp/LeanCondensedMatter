@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
@@ -20,16 +21,11 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
     (hZ : 0 < ∑' i, a i) : DensityOperator H := by
-  let Z : ℝ := ∑' i, a i
-  let p : ι → ℝ := fun i => Z⁻¹ * a i
-  have hZ_pos : 0 < Z := by simpa [Z] using hZ
-  have hZ_ne : Z ≠ 0 := ne_of_gt hZ_pos
-  have hp_nonneg : ∀ i, 0 ≤ p i := by
-    intro i
-    exact mul_nonneg (inv_nonneg.mpr hZ_pos.le) (ha_nonneg i)
-  have hp_norm : Summable fun i => ‖p i‖ := by
-    have hscaled := ha.mul_left ‖Z⁻¹‖
-    simpa [p, norm_mul] using hscaled
+  let p : ι → ℝ := Real.normalizedWeight a
+  have hp_nonneg : ∀ i, 0 ≤ p i :=
+    Real.normalizedWeight_nonneg a ha_nonneg
+  have hp_norm : Summable fun i => ‖p i‖ :=
+    Real.summable_norm_normalizedWeight a ha
   let hpos :=
     HilbertBasis.diagonalOp_isPositive b p hp_norm hp_nonneg
   let htrace :=
@@ -46,17 +42,8 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
         (by simpa using hp_norm) i]
       rw [inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
       simp
-  have hp_tsum : ∑' i, p i = 1 := by
-    calc
-      ∑' i, p i = Z⁻¹ * ∑' i, a i := by
-        simp only [p]
-        rw [tsum_mul_left]
-      _ = 1 := by
-        change Z⁻¹ * Z = 1
-        exact inv_mul_cancel₀ hZ_ne
-  have hp_hasSum : HasSum p 1 := by
-    rw [← hp_tsum]
-    exact (Summable.of_norm hp_norm).hasSum
+  have hp_hasSum : HasSum p 1 :=
+    Real.hasSum_normalizedWeight a (Summable.of_norm ha) hZ.ne'
   exact htraceSum.unique (Complex.hasSum_ofReal.mpr hp_hasSum)
 
 /-- Every density operator is diagonal in a Hilbert basis. The basis extends the canonical
