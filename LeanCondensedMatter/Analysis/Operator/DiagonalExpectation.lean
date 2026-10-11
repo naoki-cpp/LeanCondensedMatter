@@ -78,12 +78,6 @@ theorem coe_diagonalExpectationNNReal
       diagonalExpectationValue T hT.isSelfAdjoint x :=
   rfl
 
-/-- Coercing a positive diagonal expectation back to `ℂ` recovers the original matrix element. -/
-theorem coe_coe_diagonalExpectationNNReal
-    (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
-    ((diagonalExpectationNNReal T hT x : ℝ) : ℂ) = inner ℂ x (T x) := by
-  rw [coe_diagonalExpectationNNReal, coe_diagonalExpectationValue_right]
-
 /-- Lossless diagonal expectation is additive in the operator. -/
 @[simp]
 theorem diagonalExpectationValue_add
