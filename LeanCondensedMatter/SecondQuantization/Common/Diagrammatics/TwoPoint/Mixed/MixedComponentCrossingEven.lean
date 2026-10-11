@@ -114,7 +114,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
         ⟨mixedTimeOrderedAtomicLegEquiv τ τ' σ
           (mixedTimeOrderedAtomicLegPosition τ τ' σ
             (mixedTimeOrderedInteractionLeg v.1 l)), _⟩ = (v, l)
-    rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+    simp only [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
     rfl
   have hs := (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm_apply_apply direct
   rw [hdata] at hs
