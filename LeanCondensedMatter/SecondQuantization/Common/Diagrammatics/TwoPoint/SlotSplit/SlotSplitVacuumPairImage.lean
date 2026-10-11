@@ -116,7 +116,7 @@ noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
     fun pr => ⟨d.mixedPairComponent τ τ' σ pr.1, pr.2⟩
   exact (Equiv.sigmaCongrRight fun B =>
     { toFun := fun pr =>
-        ⟨⟨pr.1, by rw [pr.2]; exact B.2⟩, Subtype.ext pr.2⟩
+        ⟨⟨pr.1, by rw [pr.2]⟩, Subtype.ext pr.2⟩
       invFun := fun pr => ⟨pr.1.1, congrArg Subtype.val pr.2⟩
       left_inv := by
         intro pr
