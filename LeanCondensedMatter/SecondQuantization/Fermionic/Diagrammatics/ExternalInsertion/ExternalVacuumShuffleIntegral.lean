@@ -356,7 +356,6 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
     rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
       (Finset.subset_univ T) ext vac
       ⟨w.1, Finset.mem_univ _⟩ hw]
-    rfl
   have hkernel :=
     externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
       ε β f d.externalLabel externalTime d.vertexLabelSequence σ a b
