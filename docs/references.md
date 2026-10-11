@@ -277,6 +277,18 @@ Annotated reference list. One entry per source: full citation, what it is used f
   - **Caveat:** No current theorem is attributed to this paper; it identifies the assumptions needed
     before extending finite bounded response to continuum Bloch Hamiltonians.
 
+## Magnetism and spin waves
+
+- **D. D. Stancil and A. Prabhakar.** *Spin Waves: Theory and Applications*.
+  Springer (2009). DOI: [10.1007/978-0-387-77865-5](https://doi.org/10.1007/978-0-387-77865-5).
+  - **Roadmap use:** Sections 2.5 and 2.7 organize the exact one-magnon benchmark,
+    Holstein-Primakoff representation, quadratic model, and quartic interactions.
+    Sections 3.7-3.8 and 5.1-5.2 organize macroscopic susceptibility, damping,
+    and dipolar-exchange waves; see the [spin-wave roadmap](roadmaps/spin-waves.md).
+  - **Caveat:** This textbook supplies model conventions and physical motivation.
+    Bond counting, occupation restrictions, approximation errors, and the comparison
+    with microscopic response require explicit hypotheses and separate Lean proofs.
+
 ## Lean / Mathlib resources
 
 (To be filled)

@@ -21,6 +21,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Target | Track | Status | Details |
 |---|---|---|---|
 | Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-bounded-theory) |
+| Exact finite-spin one-magnon spectrum, magnon approximations, and macroscopic magnetic response | A/C/D | `idea` | [spin waves](roadmaps/spin-waves.md) |
 | Canonical density operators and expectations | A/C | `proved` | [architecture](architecture/quantum-density-theory.md) |
 | Canonical purity, bounds, pure-state value, and finite-dimensional trace formula | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-expectations-and-purity) |
 | Maximal-purity rank-one characterization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-expectations-and-purity) |

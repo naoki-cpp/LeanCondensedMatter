@@ -48,6 +48,7 @@ and cross-track targets. Follow these topic documents for details.
 | --- | --- |
 | Cross-track structures | [Unifying mathematical structures (ideas)](roadmaps/unifying-structures.md) |
 | Quantum theory | [Foundations](roadmaps/quantum-theory-foundations.md) |
+| Magnetism | [Spin waves](roadmaps/spin-waves.md), [terminology](glossary/magnetism/CONTEXT.md), [model boundaries](adr/0022-spin-wave-model-boundaries.md) |
 | Combinatorics | [Combinatorics](roadmaps/combinatorics.md) |
 | Operator analysis | [Operator algebra](roadmaps/operator-algebra.md), [Fredholm determinant](roadmaps/fredholm-determinant.md) |
 | Second quantization | [Roadmap](roadmaps/second-quantization.md), [status](roadmaps/second-quantization-status.md), [completed-space and infinite-mode boundary](roadmaps/completed-space-and-infinite-mode.md) |
