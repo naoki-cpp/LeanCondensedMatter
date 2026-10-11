@@ -50,17 +50,6 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFac
     targetCenteredSourceCoefficient_eq
       .advanced (interbandEnergyGap band v m px py) p.1 p.2]
 
-/-- At zero offset and zero broadening, the regular factor is exactly the inverse-gap-squared
-canonical antisymmetric Hall current block. -/
-theorem targetCenteredInterbandSpectatorCurrentFactor_zero
-    (band : Band) (e v m px py : ℝ) :
-    targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =
-      (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-        bastinInterbandBlockDifference 0 1 band e v m px py) := by
-  rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor,
-    interbandPoleRegularFactor_zero]
-  simp [bastinInterbandBlockDifference]
-
 end
 
 end QuantumTheory.Models.MassiveDirac
