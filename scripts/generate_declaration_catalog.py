@@ -40,4 +40,8 @@ def generate():
 
 
 if __name__ == "__main__":
-    generate()
+    try:
+        generate()
+    except subprocess.CalledProcessError as error:
+        # The child already prints its diagnostics; avoid repeating every module argument.
+        raise SystemExit(error.returncode) from None
