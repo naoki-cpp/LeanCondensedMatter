@@ -89,10 +89,14 @@ theorem spinDot_eq_exchange (hbar : ℝ) (i j : Site) (hij : i ≠ j) :
   have huj := Function.update_eq_self j c
   generalize hci : c i = si
   generalize hcj : c j = sj
-  fin_cases si <;> fin_cases sj <;> simp only [hci, hcj] at hui huj hswap <;>
+  fin_cases si <;> fin_cases sj
+  all_goals
+    first | change c i = 0 at hci | change c i = 1 at hci
+    first | change c j = 0 at hcj | change c j = 1 at hcj
+    simp only [hci, hcj] at hui huj hswap
     simp [spinDot, atSite, exchange_apply, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, Fin.sum_univ_two, hij, hij.symm, hci, hcj,
-      hswap, Function.update_comm hij, hui, huj] <;> ring_nf <;> simp only [Complex.I_sq, ← hci, ← hcj, Function.update_eq_self] <;> ring
+      hswap, Function.update_comm hij, hui, huj] <;> ring_nf <;> simp only [Complex.I_sq, hui, huj] <;> ring
 
 /-- A normalized fully polarized state. -/
 def polarized : State Site := EuclideanSpace.single (fun _ => 0) 1
