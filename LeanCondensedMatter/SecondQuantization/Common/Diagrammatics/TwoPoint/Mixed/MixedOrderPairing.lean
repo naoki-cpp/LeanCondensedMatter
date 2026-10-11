@@ -23,21 +23,6 @@ noncomputable def TwoPointDiagram.pairingInMixedOrder
     (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (2 * n + 1) :=
   d.pairing.transport (mixedTimeAmbientPositionEquiv τ τ' σ)
 
-/-- Transporting a mixed-order partner back to the standard diagram enumeration recovers the
-original generic diagram partner. -/
-theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
-    mixedTimeAmbientPositionEquiv τ τ' σ
-        ((d.pairingInMixedOrder τ τ' σ).partner p) =
-      d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by
-  change (mixedTimeAmbientPositionEquiv τ τ' σ)
-      ((d.pairing.transport (mixedTimeAmbientPositionEquiv τ τ' σ)).partner p) =
-    d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p)
-  rw [PairingOn.transport_partner]
-  exact (mixedTimeAmbientPositionEquiv τ τ' σ).apply_symm_apply _
-
 /-- The diagram pairing as a map on atomic leg identities; this map is independent of the mixed-time
 enumeration. -/
 noncomputable def TwoPointDiagram.atomicLegPartner
@@ -68,7 +53,8 @@ theorem TwoPointDiagram.pairingInMixedOrder_partner_legPosition
   apply (mixedTimeOrderedAtomicLegEquiv τ τ' σ).injective
   rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
     ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    d.mixedTimeAmbientPositionEquiv_partner,
+    TwoPointDiagram.pairingInMixedOrder, PairingOn.transport_partner,
+    Equiv.apply_symm_apply,
     hpos,
     TwoPointDiagram.atomicLegPartner]
 
