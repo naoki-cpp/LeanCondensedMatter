@@ -83,5 +83,78 @@ noncomputable def vacuumNormalizedExternalInsertionDysonSeries {E : ℕ}
     (PowerSeries.normalizeByConstantCoeff
       (dysonPartitionSeries ε β (quarticInteraction g)))⁻¹
 
+
+/-- The vacuum-normalized arbitrary-external linked-cluster identity is equivalent to the
+coefficientwise Cauchy factorization by the normalized vacuum partition coefficients.
+
+This is a formal-series reduction, not the missing fermionic integrand factorization:
+the right-hand side still requires the physical support/vacuum shuffle proof. -/
+theorem vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy
+    {E : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) :
+    vacuumNormalizedExternalInsertionDysonSeries ε β g externalLabel externalTime =
+        vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime ↔
+      ∀ n : ℕ,
+        externalInsertionDysonCoefficient ε β g externalLabel externalTime n =
+          ∑ m ∈ Finset.range (n + 1),
+            vacuumFreeExternalInsertionDysonCoefficient
+                ε β g externalLabel externalTime m *
+              normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
+  let vacuum : PowerSeries ℂ :=
+    PowerSeries.normalizeByConstantCoeff
+      (dysonPartitionSeries ε β (quarticInteraction g))
+  have hvacuum : PowerSeries.constantCoeff vacuum ≠ 0 := by
+    change PowerSeries.constantCoeff
+      (PowerSeries.normalizeByConstantCoeff
+        (dysonPartitionSeries ε β (quarticInteraction g))) ≠ 0
+    rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]
+    exact one_ne_zero
+  have hcoeff :
+      (externalInsertionDysonSeries ε β g externalLabel externalTime =
+          vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime * vacuum) ↔
+        ∀ n : ℕ,
+          externalInsertionDysonCoefficient ε β g externalLabel externalTime n =
+            ∑ m ∈ Finset.range (n + 1),
+              vacuumFreeExternalInsertionDysonCoefficient
+                  ε β g externalLabel externalTime m *
+                normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
+    constructor
+    · intro hs n
+      have hn := congrArg (PowerSeries.coeff n) hs
+      rw [PowerSeries.coeff_mul,
+        Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk] at hn
+      simpa only [externalInsertionDysonSeries, vacuumFreeExternalInsertionDysonSeries,
+        PowerSeries.coeff_mk, vacuum,
+        coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+        using hn
+    · intro hs
+      ext n
+      rw [PowerSeries.coeff_mul,
+        Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+      simpa only [externalInsertionDysonSeries, vacuumFreeExternalInsertionDysonSeries,
+        PowerSeries.coeff_mk, vacuum,
+        coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+        using (hs n)
+  constructor
+  · intro h
+    apply hcoeff.mp
+    have hh := congrArg (fun z : PowerSeries ℂ => z * vacuum) h
+    change
+      (externalInsertionDysonSeries ε β g externalLabel externalTime * vacuum⁻¹) *
+          vacuum =
+        vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime * vacuum
+      at hh
+    rw [mul_assoc, PowerSeries.inv_mul_cancel vacuum hvacuum, mul_one] at hh
+    exact hh
+  · intro h
+    change
+      externalInsertionDysonSeries ε β g externalLabel externalTime * vacuum⁻¹ =
+        vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime
+    exact PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+      hvacuum (hcoeff.mpr h)
+
 end Fermionic
 end SecondQuantization
