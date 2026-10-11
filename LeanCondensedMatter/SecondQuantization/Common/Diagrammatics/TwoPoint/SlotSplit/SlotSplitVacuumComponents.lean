@@ -19,18 +19,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S T : Finset (Fin N)}
 
-private noncomputable def QuarticDiagram.componentRepresentative
-    (d : QuarticDiagram InternalLabel N S) (C : d.vertexGraph.componentPartitionOn.parts) : ↥S :=
-  ⟨Classical.choose (d.vertexGraph.componentPartitionOn.part_surjOn C.2),
-    (Classical.choose_spec (d.vertexGraph.componentPartitionOn.part_surjOn C.2)).1⟩
-
-private theorem QuarticDiagram.componentBlockOn_componentRepresentative
-    (d : QuarticDiagram InternalLabel N S) (C : d.vertexGraph.componentPartitionOn.parts) :
-    d.vertexGraph.componentBlockOn (d.componentRepresentative C) = (C : Finset (Fin N)) := by
-  change d.vertexGraph.componentPartitionOn.part
-      (Classical.choose (d.vertexGraph.componentPartitionOn.part_surjOn C.2)) = (C : Finset (Fin N))
-  exact (Classical.choose_spec (d.vertexGraph.componentPartitionOn.part_surjOn C.2)).2
-
 variable (h : T ⊆ S)
   (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
   (vac : QuarticDiagram InternalLabel N (S \ T))
@@ -128,7 +116,9 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
 noncomputable def slotSplitVacuumComponentPart
     (C : vac.vertexGraph.componentPartitionOn.parts) :
     ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph) :=
-  let v := vac.componentRepresentative C
+  let v : ↥(S \ T) :=
+    ⟨Classical.choose (vac.vertexGraph.componentPartitionOn.part_surjOn C.2),
+      (Classical.choose_spec (vac.vertexGraph.componentPartitionOn.part_surjOn C.2)).1⟩
   let d := TwoPointDiagram.ofSlotSplit h ext vac
   let B : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (slotSplitVacuumVertex v),
@@ -142,11 +132,16 @@ theorem interactionSector_slotSplitVacuumComponentPart
         ((slotSplitVacuumComponentPart h ext vac C).1.1 :
           Finset (TwoPointVertex S)) =
       (C : Finset (Fin N)) := by
+  let v : ↥(S \ T) :=
+    ⟨Classical.choose (vac.vertexGraph.componentPartitionOn.part_surjOn C.2),
+      (Classical.choose_spec (vac.vertexGraph.componentPartitionOn.part_surjOn C.2)).1⟩
   change interactionSector
       ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
-        (slotSplitVacuumVertex (vac.componentRepresentative C))) = _
+        (slotSplitVacuumVertex v)) = _
   rw [interactionSector_componentBlock_slotSplitVacuumVertex]
-  exact vac.componentBlockOn_componentRepresentative C
+  change vac.vertexGraph.componentPartitionOn.part
+    (Classical.choose (vac.vertexGraph.componentPartitionOn.part_surjOn C.2)) = _
+  exact (Classical.choose_spec (vac.vertexGraph.componentPartitionOn.part_surjOn C.2)).2
 
 /-- The quartic-to-ambient vacuum component map is injective. -/
 private theorem slotSplitVacuumComponentPart_injective :
