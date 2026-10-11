@@ -66,8 +66,12 @@ private def collectCandidates : CommandElabM (Array Candidate × NameSet) := do
     let .thmInfo theoremInfo := info | continue
     let some moduleName := declarationModule? env declName | continue
     unless projectModule? moduleName do continue
-    -- Generated declarations such as structure extensionality and injectivity
-    -- theorems do not have their own source declaration range.
+    -- Prop-valued structure fields elaborate to theorem-valued projection functions.
+    -- They have source ranges, but they are assumptions of the structure rather than
+    -- independently proved theorems to review, privatize, or remove.
+    if env.isProjectionFn declName then continue
+    -- Other generated declarations, such as structure extensionality and injectivity
+    -- theorems, do not have their own source declaration range.
     unless (← findDeclarationRanges? declName).isSome do continue
     candidates := candidates.push { name := declName, moduleName, theoremInfo }
     theoremNames := theoremNames.insert declName

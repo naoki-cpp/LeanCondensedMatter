@@ -64,6 +64,9 @@ private def collectCandidates : CommandElabM (Array Candidate × NameSet) := do
     let .thmInfo theoremInfo := info | continue
     let some moduleName := declarationModule? env declName | continue
     unless projectModule? moduleName do continue
+    -- Match TheoremCatalog.collectCandidates: theorem-valued structure projections are
+    -- assumptions of their structure, not independently proved audit targets.
+    if env.isProjectionFn declName then continue
     unless (← findDeclarationRanges? declName).isSome do continue
     candidates := candidates.push { name := declName, moduleName, theoremInfo }
     theoremNames := theoremNames.insert declName
