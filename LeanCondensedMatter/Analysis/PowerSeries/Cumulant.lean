@@ -117,19 +117,4 @@ theorem factorial_mul_coeff_logOf_eq_connectedContribution
     _ = W.connectedContribution s :=
       W.normalizedObjectMoment_cumulant_eq_connectedContribution hs
 
-/-- After normalization by any nonzero constant coefficient, factorial-normalized formal-log
-coefficients are the finite-set cumulants of the normalized coefficients. -/
-theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment
-    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z ≠ 0)
-    {α : Type*} [DecidableEq α] {s : Finset α} (hs : s ≠ ∅) :
-    (s.card.factorial : ℂ) *
-        PowerSeries.coeff s.card
-          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff Z)) =
-      Finpartition.cumulantFromMoment
-        (fun T : Finset α =>
-          (T.card.factorial : ℂ) *
-            PowerSeries.coeff T.card (PowerSeries.normalizeByConstantCoeff Z)) s :=
-  factorial_mul_coeff_logOf_eq_cumulantFromMoment
-    (PowerSeries.constantCoeff_normalizeByConstantCoeff hZ) hs
-
 end Combinatorics
