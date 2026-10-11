@@ -1736,16 +1736,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PairIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleContinuity.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor"
       ],
       "externalImportCount": 1
     },
@@ -1756,6 +1748,14 @@
         "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleHall.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor"
       ],
       "externalImportCount": 1
     },
@@ -1783,6 +1783,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound"
       ],
       "externalImportCount": 1
@@ -1791,7 +1792,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorBound.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
       ],
       "externalImportCount": 1
@@ -1833,8 +1834,8 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",

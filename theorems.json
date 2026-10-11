@@ -753,8 +753,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.card_eq_choose",
     "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
@@ -3425,8 +3425,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply",
     "module": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
@@ -3597,8 +3597,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.NormalizedSetFunction.cumulant_apply",
     "module": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
@@ -4834,8 +4834,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.isSplit_inr",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
@@ -4936,7 +4936,7 @@
       "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
@@ -4952,7 +4952,7 @@
       "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
@@ -5117,6 +5117,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
     "dependencies": [
@@ -5127,9 +5128,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5165,8 +5167,7 @@
     "dependents": [
       "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5174,10 +5175,9 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6045,8 +6045,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.prod_pairs_ofSplit",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
@@ -6774,8 +6774,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
-      "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
+      "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner"
@@ -6784,10 +6783,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
-      "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
+      "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6878,7 +6876,8 @@
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
     "dependencies": [
@@ -6890,10 +6889,11 @@
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -23372,7 +23372,6 @@
     "dependents": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.summable_norm_prod"
     ],
@@ -23385,11 +23384,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.summable_norm_prod"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57300,47 +57298,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py : ℝ) (p : ℝ × ℝ),\n  QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m px py + p.1 ≠ 0 →\n    ContinuousAt (QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py) p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
-    "externalAxioms": [],
-    "docString": "If the real shifted interband gap is nonzero at an offset, then the target-centered regular\nspectator/current factor is jointly continuous there for arbitrary real broadening. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
-      "QuantumTheory.Transport.continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (v m probeEnergy regulator : ℝ),\n  regulator ≠ 0 →\n    Continuous (QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator)",
     "standardAxioms": [
@@ -66804,7 +66761,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m p 0 radius\n                broadening‖ ≤\n            2 * (QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius * Real.pi)",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m p 0 radius\n                broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69582,13 +69539,12 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
     "externalAxioms": [],
     "docString": "The model-specific target-centered spectator is exactly the generic isolated interband-pole\nregular factor with the massive-Dirac gap and ordered Hall current blocks supplied. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral.0.QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral"
@@ -69600,12 +69556,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral.0.QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69685,7 +69640,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
     "externalAxioms": [],
     "docString": "At zero offset and zero broadening, the regular factor is exactly the inverse-gap-squared\ncanonical antisymmetric Hall current block. ",
     "directWrapperTargetModule": null,
@@ -82974,7 +82929,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -82986,17 +82941,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
       "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero",
       "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94983,7 +94936,6 @@
     "dependents": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
     "dependencies": [
@@ -94994,10 +94946,9 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102263,51 +102214,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (power : Mode → ℕ), Summable fun n => (∏ i, ↑(n i) ^ power i) * SecondQuantization.Bosonic.boltzmannWeight ε β n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
-    "externalAxioms": [],
-    "docString": "Every finite-mode occupation monomial is summable against the free bosonic Boltzmann weight.\n\n`power i` is the exponent of the occupation number in mode `i`.  This is the canonical finite-mode\npolynomial majorant used by lower-degree specializations and arbitrary fixed-length products of\ncreation and annihilation operators. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
-    ],
-    "dependencies": [
-      "Finsupp.hasSum_prod_nonneg",
-      "SecondQuantization.Bosonic.boltzmannWeight_eq_prod"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {β ε : ℝ}, Summable (SecondQuantization.Bosonic.oneModeBoltzmannWeight β ε) ↔ 0 < β * ε",
     "standardAxioms": [
@@ -102453,7 +102359,7 @@
       "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight"
+      "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -102516,14 +102422,14 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (shift power : ℕ),\n      Summable fun n => (∏ i, ↑(n i + shift) ^ power) * SecondQuantization.Bosonic.boltzmannWeight ε β n",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (shift power : Mode → ℕ),\n      Summable fun n => (∏ i, ↑(n i + shift i) ^ power i) * SecondQuantization.Bosonic.boltzmannWeight ε β n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102531,11 +102437,12 @@
     "name": "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
     "externalAxioms": [],
-    "docString": "A uniform shifted power in every mode is summable against the free bosonic Gibbs weight.\n\nThis product-form majorant is convenient for arbitrary fixed-length ladder products: after at most\n`shift` ladder steps, every intermediate mode occupation is bounded by `n i + shift`. ",
+    "docString": "Mode-dependent shifted occupation powers are summable against the free bosonic Gibbs weight.\n\nEach mode has its own natural-number shift and power. Zero shifts give occupation monomials;\nconstant shifts and powers give the majorants needed by fixed-length ladder products. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct"
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
     ],
     "dependencies": [
       "Finsupp.hasSum_prod_nonneg",
@@ -102545,9 +102452,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct"
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108255,13 +108163,17 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComponentPart"
     ],
     "dependencies": [
+      "Combinatorics.Pairing.mem_pairs_iff",
+      "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.Pairing.pairEndpoint_one",
       "Combinatorics.Pairing.pairEndpoint_zero",
       "Combinatorics.Pairing.pairs_normalized",
+      "Combinatorics.PairingOn.restrict_partner_val",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPositionEquiv_apply",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -108507,7 +108419,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (pos : d.MixedComponentPosition τ τ' σ d.externalComponentPart),\n  (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner\n      ((d.externalPieceMixedPositionEquiv τ τ' σ).symm pos) =\n    (d.externalPieceMixedPositionEquiv τ τ' σ).symm ((d.mixedRestrictedPartner τ τ' σ d.externalComponentPart) pos)",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (pos : d.MixedComponentPosition τ τ' σ d.externalComponentPart),\n  (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner\n      ((d.externalPieceMixedPositionEquiv τ τ' σ).symm pos) =\n    (d.externalPieceMixedPositionEquiv τ τ' σ).symm\n      ((Combinatorics.PairingOn.restrict (d.pairingInMixedOrder τ τ' σ)\n            (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart) ⋯).partner\n        pos)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108526,18 +108438,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv"
     ],
     "dependencies": [
+      "Combinatorics.PairingOn.restrict_partner_val",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPositionEquiv_apply",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val"
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -109036,8 +108949,7 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.isSplit_externalSlotLegSplitting",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
@@ -109048,10 +108960,9 @@
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.isSplit_externalSlotLegSplitting",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109350,7 +109261,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -109362,7 +109273,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm"
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
@@ -109371,103 +109283,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm"
     ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B),\n  (d.mixedRestrictedPartner τ τ' σ B) ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 0)) =\n    (d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 1)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": "On mixed component endpoints, the restricted mixed partner exchanges endpoint zero and endpoint\none of the same normalized mixed pair. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.mem_pairs_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (p : d.MixedComponentPosition τ τ' σ B),\n  ↑((d.mixedRestrictedPartner τ τ' σ B) p) = (d.pairingInMixedOrder τ τ' σ).partner ↑p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": "The restricted mixed partner has the ambient mixed position as its underlying value. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.restrict_partner_val",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109502,8 +109321,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner"
@@ -109512,10 +109330,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110199,8 +110016,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.atomicLegPartner_orderedTwoPointLegMap",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_partner"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.restrict_partner_val",
@@ -110210,10 +110026,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.atomicLegPartner_orderedTwoPointLegMap",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_partner"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172560,44 +172375,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  (∃ p, d.componentDiagramLeg B p = leg) ↔ d.legInComponent (↑B) leg",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The image of the canonical component leg embedding is exactly the ambient legs incident to that\nconnected component. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent (↑B) leg ↔\n    SecondQuantization.Common.componentLegVertex ((SecondQuantization.Common.externalInsertionLegEquiv E S) leg) ∈ ↑B",
     "standardAxioms": [
@@ -174973,52 +174750,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart),\n  ↑((d.externalPieceComponentPairEquiv τ τ' σ) pr) =\n      ((d.externalPieceMixedPositionEquiv τ τ' σ).symm\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 0)),\n        (d.externalPieceMixedPositionEquiv τ τ' σ).symm\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 1))) ∨\n    ↑((d.externalPieceComponentPairEquiv τ τ' σ) pr) =\n      ((d.externalPieceMixedPositionEquiv τ τ' σ).symm\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 1)),\n        (d.externalPieceMixedPositionEquiv τ τ' σ).symm\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 0)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing",
-    "externalAxioms": [],
-    "docString": "Before using normalized order, the external-piece pair equivalence transports the two ambient\ncomponent endpoints either in their original order or swapped. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (leg : Fin (2 * (2 * S.card + 1))),\n  d.legInComponent (↑d.externalComponentPart) leg → ∃ i, d.externalSlotLegSplitting (Sum.inl i) = leg",
     "standardAxioms": [
       "Classical.choice",
@@ -175531,52 +175262,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (p : d.MixedComponentPosition τ τ' σ B),\n  (d.mixedComponentPositionEquiv τ τ' σ B) ((d.mixedRestrictedPartner τ τ' σ B) p) =\n    (d.restrictedPartner ↑B) ((d.mixedComponentPositionEquiv τ τ' σ B) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": "The mixed component-position equivalence intertwines the mixed restricted partner with the\nstandard component restricted partner. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (p : Fin (2 * (2 * n + 1))),\n  (d.pairingInMixedOrder τ τ' υ).partner\n      (((SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ).trans\n          (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' υ).symm)\n        p) =\n    ((SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ).trans\n        (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' υ).symm)\n      ((d.pairingInMixedOrder τ τ' σ).partner p)",
     "standardAxioms": [
@@ -175604,50 +175289,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑B)\n  (p : d.MixedComponentPosition τ τ' σ B),\n  (d.restrictedVacuumPairing B hVac).partner ((d.mixedVacuumPositionEquiv τ τ' σ B hVac) p) =\n    (d.mixedVacuumPositionEquiv τ τ' σ B hVac) ((d.mixedRestrictedPartner τ τ' σ B) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": "A vacuum restricted pairing partner is the transport of the corresponding mixed restricted\npartner. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
