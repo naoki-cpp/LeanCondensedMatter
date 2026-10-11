@@ -33,19 +33,11 @@ theorem subsetSumSdiffEquiv_inl_apply {S T : Finset α} (h : T ⊆ S) (x : ↥T)
   apply Subtype.ext
   rfl
 
-theorem subsetSumSdiffEquiv_inl {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
-    (subsetSumSdiffEquiv h (Sum.inl x) : α) = (x : α) := by
-  rfl
-
 @[simp]
 theorem subsetSumSdiffEquiv_inr_apply {S T : Finset α} (h : T ⊆ S) (x : ↥(S \ T)) :
     subsetSumSdiffEquiv h (Sum.inr x) =
       ⟨x.1, (Finset.mem_sdiff.mp x.2).1⟩ := by
   apply Subtype.ext
-  rfl
-
-theorem subsetSumSdiffEquiv_inr {S T : Finset α} (h : T ⊆ S) (x : ↥(S \ T)) :
-    (subsetSumSdiffEquiv h (Sum.inr x) : α) = (x : α) := by
   rfl
 
 end Combinatorics
