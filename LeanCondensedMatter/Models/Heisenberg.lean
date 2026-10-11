@@ -50,7 +50,7 @@ theorem hamiltonian_isSymmetric (J : ℝ) :
     (hamiltonian (N := N) J).IsSymmetric := by
   apply LinearMap.isSymmetric_sum
   intro i _
-  exact ((LinearMap.IsSymmetric.id.smul (by norm_num)).sub
+  exact ((LinearMap.IsSymmetric.id.smul (by simp [map_ofNat])).sub
     (exchange_isSymmetric i (i + 1))).smul (by simp)
 
 theorem hamiltonian_isSelfAdjoint (J : ℝ) : IsSelfAdjoint (hamiltonian (N := N) J) :=
@@ -64,6 +64,7 @@ theorem hamiltonian_polarized (J : ℝ) :
 variable (hN : 2 < N)
 
 include hN in
+omit [NeZero N] in
 private theorem site_ne_next (i : ZMod N) : i ≠ i + 1 := by
   haveI : Fact (1 < N) := ⟨by omega⟩
   exact fun h => one_ne_zero (add_left_cancel (by simpa using h.symm : i + 1 = i + 0))
@@ -82,7 +83,7 @@ theorem hamiltonian_eq_spinSum (J hbar : ℝ) (hhbar : hbar ≠ 0) :
   ext ψ c
   simp
   field_simp [hh]
-  <;> ring
+  ring
 
 include hN in
 /-- Exact action on a single reversed spin; neighboring sites are understood modulo N. -/
