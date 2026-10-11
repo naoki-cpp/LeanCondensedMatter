@@ -58,7 +58,8 @@ theorem schwartzVelocityLocalizationFlux_isDifferentialCurrent1D
   have h := congrArg
     (fun T : SchwartzOneParticle1D →ₗ[ℂ] SchwartzOneParticle1D => T ψ)
     (SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
-  simpa [heisenbergScale, LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+  simpa [SchwartzKinetic1D.multiplicationLinear, heisenbergScale,
+    LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
     _root_.ConservationLaw.symmetrizedProduct_apply] using h
 
 /-- Probability transport (`m = I`) on the Schwartz Schrödinger model is locally represented by the
