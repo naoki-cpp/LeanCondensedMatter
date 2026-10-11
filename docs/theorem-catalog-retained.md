@@ -135,9 +135,6 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.Continuum.l2MultiplicationOperator1D_apply` — deliberate `[simp]`
   boundary for the continuum-domain multiplication-operator vocabulary. The proof delegates to the
   analysis-level operator theorem, but the specialization is the normalization rule for this API.
-- `SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self` — canonical bosonic CCR
-  statement at the bosonic algebra layer. Its generic exchange-algebra proof does not make the
-  named bosonic commutator identity redundant as a physical API result.
 - `SecondQuantization.Bosonic.numberOperator_basisState` — canonical number-operator eigenvalue
   equation `N_i |n⟩ = n_i |n⟩`; this is a physical statement about the named number operator rather
   than proof-routing around `create_annihilate_basisState_same`.

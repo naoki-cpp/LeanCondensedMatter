@@ -41,12 +41,6 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
   simpa [basisState] using
     (Common.diagonalOperator_basisState (fun m : Occupation Mode => (m i : ℂ)) n)
 
-/-- The single-mode bosonic exchange commutator is the identity. -/
-theorem exchangeCommutator_annihilate_create_self (i : Mode) :
-    Common.exchangeCommutator Common.Statistics.boson (annihilate i) (create i) =
-      (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
-  Common.exchangeCommutator_annihilate_create_self (Config := Occupation Mode) i
-
 /-- The reordering identity `a_i a_i† = id + N_i`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) =
