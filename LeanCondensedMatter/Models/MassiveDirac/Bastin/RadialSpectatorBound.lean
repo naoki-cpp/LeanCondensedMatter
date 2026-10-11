@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic
 
