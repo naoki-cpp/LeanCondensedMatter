@@ -4,15 +4,14 @@ import Mathlib.Tactic
 set_option linter.style.header false
 
 /-!
-# Continuity of the massive-Dirac Bastin spectator
+# Hall-direction target-centered massive-Dirac Bastin pole factor
 
-The target-band Lorentzian kernel depends on the energy offset from the pole and on the spectral
-broadening. The opposite-band spectator/current factor is regular wherever the shifted interband
-gap stays nonzero.
+The direction-indexed interband spectator is defined upstream by `PoleFactor`. This module
+specializes it to the ordered Hall current pair `(x,y)` in target-centered energy coordinates,
+identifies it with the generic interband-pole regular factor, and evaluates its target-pole value.
 
-This file specializes the generic spectator factor to the Hall direction pair `(x,y)`,
-evaluates it at the pole, and proves joint continuity away from the shifted gap zero. The
-shared target-centered resolvent rewrite is owned upstream by `PoleFactor`.
+Regularity of the generic factor away from the shifted interband gap is already available through
+`Transport.Streda.InterbandPole` without a model-specific continuity wrapper.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -21,7 +20,7 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-open Filter QuantumTheory.Transport
+open QuantumTheory.Transport
 
 /-- The regular Hall interband spectator/current factor written in target-centered coordinates
 `(offset, broadening)`. -/
@@ -63,30 +62,6 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
   rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor,
     interbandPoleRegularFactor_zero]
   simp [bastinInterbandBlockDifference]
-
-/-- If the real shifted interband gap is nonzero at an offset, then the target-centered regular
-spectator/current factor is jointly continuous there for arbitrary real broadening. -/
-theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero
-    (band : Band) (e v m px py : ℝ) (p : ℝ × ℝ)
-    (hshift : interbandEnergyGap band v m px py + p.1 ≠ 0) :
-    ContinuousAt
-      (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-      p := by
-  have hfun :
-      targetCenteredInterbandSpectatorCurrentFactor band e v m px py =
-        interbandPoleRegularFactor
-          (interbandEnergyGap band v m px py)
-          (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-          (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py) := by
-    funext q
-    exact targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
-      band e v m px py q
-  rw [hfun]
-  exact continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
-    (interbandEnergyGap band v m px py)
-    (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-    (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
-    p hshift
 
 end
 

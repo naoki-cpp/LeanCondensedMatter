@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleContinuity
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
 import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic
 
