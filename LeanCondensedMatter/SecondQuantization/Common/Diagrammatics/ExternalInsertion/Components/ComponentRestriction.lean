@@ -395,8 +395,11 @@ noncomputable def ExternalInsertionDiagram.componentLegShuffle
   slotEquiv :=
     (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
       (d.componentBlockLegEquiv B).symm.trans
-        { toFun := fun leg => ⟨leg.1, Subtype.ext leg.2⟩
-          invFun := fun leg => ⟨leg.1, congrArg Subtype.val leg.2⟩
+        { toFun := fun leg => ⟨leg.1, by
+            apply Subtype.ext
+            exact leg.2⟩
+          invFun := fun leg => ⟨leg.1, by
+            exact congrArg Subtype.val leg.2⟩
           left_inv := fun _ => Subtype.ext rfl
           right_inv := fun _ => Subtype.ext rfl }).trans <|
       Equiv.sigmaFiberEquiv (fun leg : Fin (2 * (2 * S.card + E)) =>
