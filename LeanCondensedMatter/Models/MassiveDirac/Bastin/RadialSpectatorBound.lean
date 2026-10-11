@@ -55,37 +55,24 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
         ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
           (broadening : ℂ) * Complex.I)⁻¹) ^ 2) *
         radialInterbandCurrentAmplitude band e v m p := by
-  have hret :
-      projectorResolventCoefficient
-          (retardedSpectralParameter (bandEnergy band v m p 0 + offset) broadening)
-          (oppositeBand band) v m p 0 =
-        ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-            ((SpectralSide.retarded.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-    simpa only [retardedSpectralParameter] using
-      projectorResolventCoefficient_targetOffset_oppositeBand
-        .retarded band v m p 0 offset broadening
-  have hadv :
-      projectorResolventCoefficient
-          (advancedSpectralParameter (bandEnergy band v m p 0 + offset) broadening)
-          (oppositeBand band) v m p 0 =
-        ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-            ((SpectralSide.advanced.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-    simpa only [advancedSpectralParameter] using
-      projectorResolventCoefficient_targetOffset_oppositeBand
-        .advanced band v m p 0 offset broadening
+  rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
+  unfold interbandPoleRegularFactor
+  dsimp
+  rw [targetCenteredSourceCoefficient_eq
+      .retarded (interbandEnergyGap band v m p 0) offset broadening,
+    targetCenteredSourceCoefficient_eq
+      .advanced (interbandEnergyGap band v m p 0) offset broadening]
   have hxyOpp :=
     bastinXYBandBlockTrace_opposite_source_radial (oppositeBand band) e v m p hE
   simp only [oppositeBand_oppositeBand, bandSign_oppositeBand] at hxyOpp
-  unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
-    radialInterbandCurrentAmplitude
-  dsimp
-  rw [hret, hadv,
-    bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
+  rw [bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
     bastinBandBlockTrace_swap 0 1 (oppositeBand band) band,
     hxyOpp]
   simp only [SpectralSide.regulator_retarded, SpectralSide.regulator_advanced]
+  unfold radialInterbandCurrentAmplitude
   push_cast
   ring
+
 
 /-- The real coefficient of the radial current amplitude is bounded by `v²`; the mass-magnitude to
 energy ratio cannot exceed one. -/
