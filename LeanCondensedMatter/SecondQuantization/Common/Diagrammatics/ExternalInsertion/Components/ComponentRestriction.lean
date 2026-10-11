@@ -406,7 +406,9 @@ noncomputable def ExternalInsertionDiagram.componentLegShuffle
         (⟨d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg),
           d.vertexGraph.componentBlock_mem_componentPartition _⟩ :
           d.vertexGraph.componentPartition.parts))
-  strictMono := fun B => (d.componentDiagramLegOrderEmbedding B).strictMono
+  strictMono := fun B => by
+    change StrictMono (fun p => d.componentDiagramLeg B p)
+    exact (d.componentDiagramLegOrderEmbedding B).strictMono
 
 @[simp]
 theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
