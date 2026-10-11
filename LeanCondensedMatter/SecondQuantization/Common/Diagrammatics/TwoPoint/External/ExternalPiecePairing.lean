@@ -58,32 +58,6 @@ noncomputable def TwoPointDiagram.externalPieceComponentPairEquiv
       simpa only [TwoPointDiagram.mixedRestrictedPartner] using
         d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ pos)
 
-/-- Before using normalized order, the external-piece pair equivalence transports the two ambient
-component endpoints either in their original order or swapped. -/
-private theorem TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart) :
-    (d.externalPieceComponentPairEquiv τ τ' σ pr).1 =
-        ((d.externalPieceMixedPositionEquiv τ τ' σ).symm
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)),
-          (d.externalPieceMixedPositionEquiv τ τ' σ).symm
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1))) ∨
-      (d.externalPieceComponentPairEquiv τ τ' σ pr).1 =
-        ((d.externalPieceMixedPositionEquiv τ τ' σ).symm
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)),
-          (d.externalPieceMixedPositionEquiv τ τ' σ).symm
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0))) := by
-  change
-    ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).normalizedPairOfEndpointEquiv
-      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart)
-      (d.externalPieceMixedPositionEquiv τ τ' σ).symm pr).1 = _ ∨ _
-  apply Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-    (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
-  intro q
-  rw [d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ,
-    d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ d.externalComponentPart q]
-
 /-- Mapping the normalized standalone external-piece pair back to ambient mixed positions recovers
 the normalized ambient component pair endpoints in their original order. -/
 theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv
@@ -93,30 +67,42 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
     (d.externalPieceMixedPosition τ τ' σ (d.externalPieceComponentPairEquiv τ τ' σ pr).1.1,
         d.externalPieceMixedPosition τ τ' σ
           (d.externalPieceComponentPairEquiv τ τ' σ pr).1.2) = pr.1.1 := by
-  have hf : ∀ x : d.MixedComponentPosition τ τ' σ d.externalComponentPart,
+  have hf (x : d.MixedComponentPosition τ τ' σ d.externalComponentPart) :
       d.externalPieceMixedPosition τ τ' σ
           ((d.externalPieceMixedPositionEquiv τ τ' σ).symm x) =
         (x : Fin (2 * (2 * n + 1))) := by
-    intro x
     rw [← TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
       Equiv.apply_symm_apply]
-  rcases d.externalPieceComponentPairEquiv_pair_eq_or_swap τ τ' σ pr with h | h
-  · rw [h]
-    simp [hf]
-  · exfalso
-    have hnorm :
-        (d.externalPieceComponentPairEquiv τ τ' σ pr).1.1 <
-          (d.externalPieceComponentPairEquiv τ τ' σ pr).1.2 :=
-      (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).pairs_normalized
-        (d.externalPieceComponentPairEquiv τ τ' σ pr).2
-    have hmono := d.externalPieceMixedPosition_strictMono τ τ' σ hnorm
-    rw [h] at hmono
-    simp only [hf] at hmono
-    change (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)).1 <
-      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)).1 at hmono
-    simp only [d.mixedComponentPairEndpointEquiv_apply_val] at hmono
-    change pr.1.1.2 < pr.1.1.1 at hmono
-    exact absurd ((d.pairingInMixedOrder τ τ' σ).pairs_normalized pr.1.2) (asymm hmono)
+  have horder :
+      (d.externalPieceMixedPositionEquiv τ τ' σ).symm
+          (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)) <
+        (d.externalPieceMixedPositionEquiv τ τ' σ).symm
+          (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)) := by
+    by_contra h
+    have hmono := (d.externalPieceMixedPosition_strictMono τ τ' σ).monotone
+      (le_of_not_gt h)
+    simp only [hf, d.mixedComponentPairEndpointEquiv_apply_val,
+      Pairing.pairEndpoint_one, Pairing.pairEndpoint_zero] at hmono
+    exact (not_le_of_gt ((d.pairingInMixedOrder τ τ' σ).pairs_normalized pr.1.2)) hmono
+  have hpair :
+      (d.externalPieceComponentPairEquiv τ τ' σ pr).1 =
+        ((d.externalPieceMixedPositionEquiv τ τ' σ).symm
+            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)),
+          (d.externalPieceMixedPositionEquiv τ τ' σ).symm
+            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1))) := by
+    change
+      ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).normalizedPairOfEndpointEquiv
+        (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart)
+        (d.externalPieceMixedPositionEquiv τ τ' σ).symm pr).1 = _
+    apply Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
+      (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
+    · intro q
+      rw [d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ,
+        d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ d.externalComponentPart q]
+    · exact horder
+  rw [hpair]
+  simp only [hf, d.mixedComponentPairEndpointEquiv_apply_val,
+    Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one]
 
 /-- The crossing count internal to the ambient external component equals the crossing count of the
 standalone external-piece pairing. -/
