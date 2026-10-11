@@ -183,26 +183,6 @@ noncomputable def Pairing.normalizedPairEquivOfPartnerEquiv
       rw [hpartner]
       exact congrArg e (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2))
 
-/-- A partner-intertwining position map preserves each normalized pair up to endpoint reversal. -/
-theorem Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap
-    {m n : ℕ} (source : Pairing m) (target : Pairing n)
-    (e : Fin (2 * m) ≃ Fin (2 * n))
-    (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
-    (pr : source.NormalizedPair) :
-    (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
-        (e pr.1.1, e pr.1.2) ∨
-      (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
-        (e pr.1.2, e pr.1.1) := by
-  change (target.normalizedPairOfEndpointEquiv source.pairEndpointEquiv e pr).1 =
-      (e pr.1.1, e pr.1.2) ∨
-    (target.normalizedPairOfEndpointEquiv source.pairEndpointEquiv e pr).1 =
-      (e pr.1.2, e pr.1.1)
-  apply target.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-  intro q
-  change target.partner (e q.1.1) = e q.1.2
-  rw [hpartner]
-  exact congrArg e (((source.mem_pairs_iff q.1.1 q.1.2).1 q.2).2)
-
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
 theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
