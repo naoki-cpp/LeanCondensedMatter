@@ -61,12 +61,6 @@ private theorem mixedTimeOrderedInteractionLeg_mem_eventBlock {n : ℕ}
   fin_cases l <;>
     simp [mixedTimeOrderedInteractionLeg, twoPointTimedEventAtomicLegs]
 
-private theorem interactionEvent_mem_orderedTwoPointTimedEvents {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (v : Fin n) :
-    (Sum.inr v : TwoPointTimedEvent n) ∈ orderedTwoPointTimedEvents τ τ' σ := by
-  exact (orderedTwoPointTimedEvents_perm τ τ' σ).symm.subset (by
-    simp [twoPointInteractionEventList])
-
 private theorem TwoPointDiagram.mixedPositionComponent_interactionLegPosition
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -160,7 +154,9 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform
     (Sum.inr v.1 : TwoPointTimedEvent n)
     (mixedTimeOrderedInteractionLeg v.1 l)
     (mixedTimeOrderedInteractionLeg v.1 0) z
-    (interactionEvent_mem_orderedTwoPointTimedEvents τ τ' σ v.1)
+    (by
+      exact (orderedTwoPointTimedEvents_perm τ τ' σ).symm.subset (by
+        simp [twoPointInteractionEventList]))
     (mixedTimeOrderedInteractionLeg_mem_eventBlock v.1 l)
     (mixedTimeOrderedInteractionLeg_mem_eventBlock v.1 0)
     (mixedTimeOrderedAtomicLegs_all_mem τ τ' σ z)
