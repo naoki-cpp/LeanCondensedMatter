@@ -105,7 +105,7 @@ theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
     (hbroadening : 0 < broadening) :
     ‖targetCenteredInterbandBastinPairIntegral
         band e v m p 0 radius broadening‖ ≤
-      2 * (radialInterbandSpectatorUniformBound e v m radius * Real.pi) := by
+      radialInterbandBastinPairUniformBound e v m radius := by
   rw [targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
     band e v m p 0 radius broadening hbroadening.ne']
   have hpole :=

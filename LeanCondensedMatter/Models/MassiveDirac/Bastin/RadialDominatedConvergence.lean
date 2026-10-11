@@ -149,7 +149,6 @@ private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_rad
       rw [intervalIntegral.integral_of_le hab]
     rw [heq]
     exact hparam
-  have hscaled := hpole.const_mul (-2 * Complex.I : ℂ)
   have heqPair :
       (fun p : ℝ =>
         targetCenteredInterbandBastinPairIntegral
@@ -162,7 +161,7 @@ private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_rad
     exact targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
       band e v m p 0 radius broadening hbroadening.ne'
   rw [heqPair]
-  exact hscaled
+  exact hpole.const_mul (-2 * Complex.I : ℂ)
 
 /-- The real radial Bastin density is strongly measurable for positive broadening. -/
 private theorem stronglyMeasurable_radialInterbandBastinPairDensity
@@ -172,16 +171,11 @@ private theorem stronglyMeasurable_radialInterbandBastinPairDensity
       (fun p : ℝ =>
         radialInterbandBastinPairDensity
           band e v m radius p broadening) := by
-  have hpair :=
-    stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
-      band e v m radius broadening hm hradiusPos hbroadening
-  have hre : StronglyMeasurable
-      (fun p : ℝ =>
-        (targetCenteredInterbandBastinPairIntegral
-          band e v m p 0 radius broadening).re) := by
-    exact Complex.continuous_re.comp_stronglyMeasurable hpair
   unfold radialInterbandBastinPairDensity
-  exact stronglyMeasurable_id.mul hre
+  exact stronglyMeasurable_id.mul
+    (Complex.continuous_re.comp_stronglyMeasurable
+      (stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
+        band e v m radius broadening hm hradiusPos hbroadening))
 
 /-- The explicit radial constant dominates the finite-broadening radial Bastin density pointwise on
 `0 ≤ p ≤ pMax`. -/
@@ -197,16 +191,11 @@ private theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
   have hre := Complex.abs_re_le_norm
     (targetCenteredInterbandBastinPairIntegral
       band e v m p 0 radius broadening)
-  have hpair' :
-      ‖targetCenteredInterbandBastinPairIntegral
-          band e v m p 0 radius broadening‖ ≤
-        radialInterbandBastinPairUniformBound e v m radius := by
-    simpa [radialInterbandBastinPairUniformBound] using hpair
   have hre' :
       |(targetCenteredInterbandBastinPairIntegral
           band e v m p 0 radius broadening).re| ≤
         radialInterbandBastinPairUniformBound e v m radius :=
-    hre.trans hpair'
+    hre.trans hpair
   have hB := radialInterbandBastinPairUniformBound_nonneg e v m radius
   unfold radialInterbandBastinPairDensity radialInterbandBastinDominatingConstant
   rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg hp.1]
