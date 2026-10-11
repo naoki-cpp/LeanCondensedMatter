@@ -88,14 +88,6 @@ def AdiabaticIntegrable
   0 < η ∧ MeasureTheory.Integrable
     (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
 
-/-- Positivity of the switching rate carried by `AdiabaticIntegrable`. -/
-theorem AdiabaticIntegrable.rate_pos
-    {expectation : NormalizedExpectation H}
-    {A B : H →L[ℂ] H} {ω η : ℝ}
-    (hInt : AdiabaticIntegrable system expectation A B ω η) :
-    0 < η :=
-  hInt.1
-
 /-- Integrability of the switched kernel carried by `AdiabaticIntegrable`. -/
 theorem AdiabaticIntegrable.integrable
     {expectation : NormalizedExpectation H}
