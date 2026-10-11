@@ -31,7 +31,7 @@ abbrev State (Site : Type*) [Fintype Site] := EuclideanSpace ℂ (Configuration 
 def atSite (A : InternalSpace.PauliMatrix) (i : Site) : State Site →ₗ[ℂ] State Site where
   toFun ψ := WithLp.toLp 2 fun c => ∑ s : Fin 2, A (c i) s * ψ (Function.update c i s)
   map_add' ψ φ := by ext c; simp [mul_add, Finset.sum_add_distrib]
-  map_smul' a ψ := by ext c; simp [Finset.mul_sum]; ring
+  map_smul' a ψ := by ext c; simp; ring
 
 /-- Exchange the spin labels at two sites. -/
 def exchangeConfiguration (i j : Site) : Equiv.Perm (Configuration Site) where
@@ -95,8 +95,11 @@ theorem spinDot_eq_exchange (hbar : ℝ) (i j : Site) (hij : i ≠ j) :
     first | change c j = 0 at hcj | change c j = 1 at hcj
     simp only [hci, hcj] at hui huj hswap
     simp [spinDot, atSite, exchange_apply, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ, Fin.sum_univ_two, hij, hij.symm, hci, hcj,
-      hswap, Function.update_comm hij, hui, huj] <;> ring_nf <;> simp only [Complex.I_sq, hui, huj] <;> ring
+      InternalSpace.pauliZ, Fin.sum_univ_two, hij.symm, hci, hcj,
+      hswap, Function.update_comm hij, hui, huj]
+    ring_nf
+    simp only [Complex.I_sq]
+    ring
 
 /-- A normalized fully polarized state. -/
 def polarized : State Site := EuclideanSpace.single (fun _ => 0) 1
@@ -111,11 +114,12 @@ theorem exchange_polarized (i j : Site) : exchange i j polarized = polarized := 
 /-- The configuration with just site `i` reversed from the polarized reference. -/
 def oneDown (i : Site) : Configuration Site := Pi.single i 1
 
+omit [Fintype Site] in
 theorem oneDown_injective : Function.Injective (oneDown (Site := Site)) := by
   intro i j h
   by_contra hij
   have := congrFun h i
-  simp [oneDown, Pi.single_apply, hij] at this
+  simp [oneDown, hij] at this
 
 /-- A localized one-spin-deviation basis state. -/
 def oneMagnonKet (i : Site) : State Site := EuclideanSpace.single (oneDown i) 1
@@ -137,7 +141,7 @@ private def oneMagnonLinear : EuclideanSpace ℂ Site →ₗ[ℂ] State Site whe
 def oneMagnonEmbedding : EuclideanSpace ℂ Site →ₗᵢ[ℂ] State Site :=
   oneMagnonLinear.isometryOfInner fun ψ φ => by
     simp [oneMagnonLinear, sum_inner, inner_sum, inner_smul_left, inner_smul_right,
-      oneMagnonKet, EuclideanSpace.inner_single_left, PiLp.single_apply,
+      oneMagnonKet, PiLp.single_apply,
       oneDown_injective.eq_iff, PiLp.inner_apply, RCLike.inner_apply, mul_comm]
 
 theorem oneMagnonEmbedding_apply (ψ : EuclideanSpace ℂ Site) :
