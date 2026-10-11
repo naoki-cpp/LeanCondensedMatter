@@ -224,19 +224,14 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       pairing.componentGeometricCrossingCount components B C % 2 = 0 := by
     intro B C hBC
     by_cases hC : C = d.externalComponentPart
-    · have hB : B ≠ d.externalComponentPart := by
-        intro h
-        apply hBC
-        exact h.trans hC.symm
-      have hBVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
-        (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
-      rw [pairing.componentGeometricCrossingCount_comm components B C]
-      exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
-        τ τ' σ C B (Ne.symm hBC) hBVac
-    · have hCVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
-        (d.componentIsVacuum_iff_ne_externalComponentPart C).2 hC
-      exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
-        τ τ' σ B C hBC hCVac
+    · rw [pairing.componentGeometricCrossingCount_comm components B C]
+      apply d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
+        τ τ' σ C B (Ne.symm hBC)
+      exact (d.componentIsVacuum_iff_ne_externalComponentPart B).2
+        (fun hB => hBC (hB.trans hC.symm))
+    · exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
+        τ τ' σ B C hBC
+        ((d.componentIsVacuum_iff_ne_externalComponentPart C).2 hC)
   have hparity :
       (d.pairingInMixedOrder τ τ' σ).crossingCount % 2 =
         (∑ B : d.vertexGraph.componentPartition.parts,
