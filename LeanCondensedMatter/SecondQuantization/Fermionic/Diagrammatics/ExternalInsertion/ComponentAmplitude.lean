@@ -73,6 +73,16 @@ private theorem ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairi
               (d.componentExternalTime externalTime B)
               (d.componentInteractionTime σ B) := by
   classical
+  let localSign : d.vertexGraph.componentPartition.parts → ℂ := fun B =>
+    externalInsertionMixedAtomicOrderSign
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)
+  let localValue : d.vertexGraph.componentPartition.parts → ℂ := fun B =>
+    (d.componentWickDiagram B).mixedPairingValue ε β
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)
+  let relativeSign : ℂ :=
+    ((Equiv.Perm.sign (d.relativeComponentShuffle externalTime σ) : ℤ) : ℂ)
   have hglobalUnits :
       Equiv.Perm.sign
           (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =
@@ -84,35 +94,29 @@ private theorem ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairi
                 (d.componentInteractionTime σ B)) := by
     rw [d.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components,
       mul_assoc, Int.units_mul_self, mul_one]
-  have hglobal :=
-    congrArg (fun u : ℤˣ => (((u : ℤ) : ℂ))) hglobalUnits
-  simp only [Units.val_mul, Units.coe_prod, Int.cast_mul, Int.cast_prod] at hglobal
-  unfold externalInsertionMixedAtomicOrderSign
-  rw [hglobal]
+  have hglobal :
+      externalInsertionMixedAtomicOrderSign externalTime σ =
+        relativeSign * ∏ B, localSign B := by
+    have h := congrArg (fun u : ℤˣ => (((u : ℤ) : ℂ))) hglobalUnits
+    simpa only [externalInsertionMixedAtomicOrderSign, relativeSign, localSign,
+      Units.val_mul, Units.coe_prod, Int.cast_mul, Int.cast_prod] using h
+  have hlocal :
+      relativeSign * d.mixedPairingValue ε β externalTime σ =
+        componentExternalOrderSign d blockOrder * ∏ B, localValue B :=
+    d.relativeComponentShuffleSign_mul_mixedPairingValue_eq_componentExternalOrderSign_mul_prod_components
+      ε β externalTime σ blockOrder
+  change externalInsertionMixedAtomicOrderSign externalTime σ *
+      d.mixedPairingValue ε β externalTime σ =
+    componentExternalOrderSign d blockOrder *
+      ∏ B, localSign B * localValue B
   calc
-    _ =
-        (∏ B : d.vertexGraph.componentPartition.parts,
-          (((Equiv.Perm.sign
-            (externalInsertionStandardToMixedAtomicPositionEquiv
-              (d.componentExternalTime externalTime B)
-              (d.componentInteractionTime σ B)) : ℤ) : ℂ))) *
-          ((((Equiv.Perm.sign
-            (d.relativeComponentShuffle externalTime σ) : ℤ) : ℂ)) *
-            d.mixedPairingValue ε β externalTime σ) := by
+    _ = (∏ B, localSign B) *
+        (relativeSign * d.mixedPairingValue ε β externalTime σ) := by
+      rw [hglobal]
       ring
-    _ =
-        (∏ B : d.vertexGraph.componentPartition.parts,
-          (((Equiv.Perm.sign
-            (externalInsertionStandardToMixedAtomicPositionEquiv
-              (d.componentExternalTime externalTime B)
-              (d.componentInteractionTime σ B)) : ℤ) : ℂ))) *
-          (componentExternalOrderSign d blockOrder *
-            ∏ B : d.vertexGraph.componentPartition.parts,
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [d.relativeComponentShuffleSign_mul_mixedPairingValue_eq_componentExternalOrderSign_mul_prod_components
-        ε β externalTime σ blockOrder]
+    _ = (∏ B, localSign B) *
+        (componentExternalOrderSign d blockOrder * ∏ B, localValue B) := by
+      rw [hlocal]
     _ = _ := by
       rw [Finset.prod_mul_distrib]
       ring
@@ -147,42 +151,23 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
   unfold ExternalInsertionWickDiagram.fixedTimeAmplitude
   calc
     _ = d.vertexWeight g *
-        (externalInsertionMixedAtomicOrderSign externalTime σ *
-          d.mixedPairingValue ε β externalTime σ) := by
-      ring
-    _ = d.vertexWeight g *
-        (componentExternalOrderSign d blockOrder *
-          ∏ B : d.vertexGraph.componentPartition.parts,
-            externalInsertionMixedAtomicOrderSign
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B) *
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [horderPairing]
-    _ = componentExternalOrderSign d blockOrder *
-        ((∏ B : d.vertexGraph.componentPartition.parts,
-            (d.componentWickDiagram B).vertexWeight g) *
-          ∏ B : d.vertexGraph.componentPartition.parts,
-            externalInsertionMixedAtomicOrderSign
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B) *
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [hvertex]
+          (externalInsertionMixedAtomicOrderSign externalTime σ *
+            d.mixedPairingValue ε β externalTime σ) := by
       ring
     _ = componentExternalOrderSign d blockOrder *
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).vertexWeight g *
-            (externalInsertionMixedAtomicOrderSign
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B) *
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [← Finset.prod_mul_distrib]
+          ((∏ B : d.vertexGraph.componentPartition.parts,
+              (d.componentWickDiagram B).vertexWeight g) *
+            ∏ B : d.vertexGraph.componentPartition.parts,
+              externalInsertionMixedAtomicOrderSign
+                  (d.componentExternalTime externalTime B)
+                  (d.componentInteractionTime σ B) *
+                (d.componentWickDiagram B).mixedPairingValue ε β
+                  (d.componentExternalTime externalTime B)
+                  (d.componentInteractionTime σ B)) := by
+      rw [hvertex, horderPairing]
+      ring
     _ = _ := by
+      rw [← Finset.prod_mul_distrib]
       apply congrArg (fun z : ℂ => componentExternalOrderSign d blockOrder * z)
       apply Finset.prod_congr rfl
       intro B _
