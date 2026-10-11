@@ -3,6 +3,7 @@ import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting
 
 set_option linter.style.header false
 
@@ -77,6 +78,66 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
     externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
     flatVertexLegPairValue]
   rfl
+
+/-- The concrete mixed-time free-Gibbs contraction on the external half of an assembled
+slot split equals the contraction of its standalone external half. This compares the ordered
+endpoints, before normalized pair orientation and crossing signs are transported. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (a b : OrderedExternalInsertionLeg E T.card) :
+    let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun e => e) f a))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun e => e) f b)) =
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        ext.externalLabel externalTime
+        (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          externalTime (σ ∘ f) a)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          externalTime (σ ∘ f) b) := by
+  let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+  let d : ExternalInsertionWickDiagram Mode E n :=
+    ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+  have hlabel : d.externalLabel = ext.externalLabel := rfl
+  have hvertices :
+      d.vertexLabelSequence ∘ f =
+        (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) := by
+    funext v
+    change (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).vertexLabel
+        ⟨(T.orderIsoOfFin rfl v).1, Finset.mem_univ _⟩ =
+      ext.vertexLabel (T.orderIsoOfFin rfl v)
+    rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
+      (Finset.subset_univ T) ext vac
+      ⟨(T.orderIsoOfFin rfl v).1, Finset.mem_univ _⟩
+      (T.orderIsoOfFin rfl v).2]
+    rfl
+  change externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (orderedExternalInsertionLegMap (fun e => e) f a))
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (orderedExternalInsertionLegMap (fun e => e) f b)) =
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      ext.externalLabel externalTime
+      (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a)
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b)
+  simpa only [Function.comp_id, hlabel, hvertices] using
+    (externalInsertionMixedTimeOrderedAtomicPairValue_map
+      ε β (fun e : Fin (2 * E) => e) f
+      d.externalLabel externalTime d.vertexLabelSequence σ a b)
+
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
