@@ -50,7 +50,7 @@ theorem hamiltonian_isSymmetric (J : ℝ) :
     (hamiltonian (N := N) J).IsSymmetric := by
   apply LinearMap.isSymmetric_sum
   intro i _
-  exact ((LinearMap.IsSymmetric.id.smul (by simp)).sub
+  exact ((LinearMap.IsSymmetric.id.smul (by norm_num)).sub
     (exchange_isSymmetric i (i + 1))).smul (by simp)
 
 theorem hamiltonian_isSelfAdjoint (J : ℝ) : IsSelfAdjoint (hamiltonian (N := N) J) :=
@@ -63,10 +63,12 @@ theorem hamiltonian_polarized (J : ℝ) :
 
 variable (hN : 2 < N)
 
+include hN in
 private theorem site_ne_next (i : ZMod N) : i ≠ i + 1 := by
   haveI : Fact (1 < N) := ⟨by omega⟩
   exact fun h => one_ne_zero (add_left_cancel (by simpa using h.symm : i + 1 = i + 0))
 
+include hN in
 /-- Equality with the dimensionful Heisenberg spin-product Hamiltonian. -/
 theorem hamiltonian_eq_spinSum (J hbar : ℝ) (hhbar : hbar ≠ 0) :
     hamiltonian (N := N) J =
@@ -82,6 +84,7 @@ theorem hamiltonian_eq_spinSum (J hbar : ℝ) (hhbar : hbar ≠ 0) :
   field_simp [hh]
   <;> ring
 
+include hN in
 /-- Exact action on a single reversed spin; neighboring sites are understood modulo N. -/
 theorem excitationHamiltonian_oneMagnonKet (J : ℝ) (k : ZMod N) :
     excitationHamiltonian J (oneMagnonKet k) =
@@ -94,7 +97,8 @@ theorem excitationHamiltonian_oneMagnonKet (J : ℝ) (k : ZMod N) :
       k = (k - 1) + 1 := by abel
       _ = k + 1 := by rw [h]
   have hterm (i : ZMod N) :
-      (LinearMap.id - (exchange i (i + 1)).toLinearMap) (oneMagnonKet k) =
+      ((LinearMap.id : State (ZMod N) →ₗ[ℂ] State (ZMod N)) -
+        (exchange i (i + 1)).toLinearMap) (oneMagnonKet k) =
         (if i = k then oneMagnonKet k - oneMagnonKet (k + 1) else 0) +
         (if i = k - 1 then oneMagnonKet k - oneMagnonKet (k - 1) else 0) := by
     change oneMagnonKet k - exchange i (i + 1) (oneMagnonKet k) = _
@@ -123,6 +127,7 @@ def oneMagnonLaplacian (J : ℝ) : EuclideanSpace ℂ (ZMod N) →ₗ[ℂ]
   map_add' ψ φ := by ext i; simp; ring
   map_smul' a ψ := by ext i; simp; ring
 
+omit [NeZero N] in
 private theorem oneMagnonLaplacian_single (J : ℝ) (k : ZMod N) :
     oneMagnonLaplacian J (EuclideanSpace.single k 1) =
       (J : ℂ) • ((EuclideanSpace.single k 1 - EuclideanSpace.single (k + 1) 1) +
@@ -131,8 +136,9 @@ private theorem oneMagnonLaplacian_single (J : ℝ) (k : ZMod N) :
   have hleft : i - 1 = k ↔ i = k + 1 := sub_eq_iff_eq_add
   have hright : i + 1 = k ↔ i = k - 1 := eq_sub_iff_add_eq.symm
   simp [oneMagnonLaplacian, PiLp.single_apply, hleft, hright]
-  <;> split_ifs <;> ring
+  split_ifs <;> ring
 
+include hN in
 /-- The exact one-magnon restriction of the full spin Hamiltonian. The embedding is
 isometric, and this identity proves that its range is invariant. -/
 theorem excitationHamiltonian_comp_oneMagnonEmbedding (J : ℝ) :
