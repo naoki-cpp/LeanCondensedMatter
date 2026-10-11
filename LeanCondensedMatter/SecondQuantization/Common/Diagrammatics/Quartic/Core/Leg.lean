@@ -110,9 +110,9 @@ noncomputable def flatVertexIndex (n : ℕ) (p : Fin (2 * (2 * n))) : Fin n :=
 noncomputable def flatLocalLeg (n : ℕ) (p : Fin (2 * (2 * n))) : Fin 4 :=
   (orderedQuarticLegEquiv n p).2
 
-/-- Equivalence between ordered vertex slots and vertices of a finite vertex set. -/
+/-- Canonical increasing enumeration of the vertices of a finite vertex set. -/
 noncomputable def quarticVertexEquiv (S : Finset (Fin N)) : Fin S.card ≃ (↥S) :=
-  (finCongr (Fintype.card_coe S)).symm.trans (Fintype.equivFin (↥S)).symm
+  (S.orderIsoOfFin rfl).toEquiv
 
 /-- A flattened position is a vertex of `S` together with a local leg. -/
 noncomputable def quarticLegEquiv (S : Finset (Fin N)) :
