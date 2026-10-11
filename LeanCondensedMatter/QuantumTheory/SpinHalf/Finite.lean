@@ -51,12 +51,13 @@ theorem exchange_involutive (i j : Site) : Function.Involutive (exchange i j) :=
   intro ψ
   ext c
   simp only [exchange_apply]
-  congr 1
-  ext k
+  apply congrArg ψ
+  funext k
   simp
 
 theorem exchange_isSymmetric (i j : Site) : (exchange i j).toLinearMap.IsSymmetric := by
   intro ψ φ
+  change inner ℂ (exchange i j ψ) φ = inner ℂ ψ (exchange i j φ)
   simpa only [exchange_involutive i j φ] using
     (exchange i j).inner_map_map ψ (exchange i j φ)
 
@@ -65,8 +66,8 @@ theorem id_sub_exchange_isPositive (i j : Site) :
   refine ⟨LinearMap.IsSymmetric.id.sub (exchange_isSymmetric i j), fun ψ => ?_⟩
   have h := re_inner_le_norm (𝕜 := ℂ) (exchange i j ψ) ψ
   rw [(exchange i j).norm_map] at h
-  simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearIsometryEquiv.coe_toLinearMap,
-    inner_sub_left, map_sub, inner_self_eq_norm_sq]
+  change 0 ≤ (inner ℂ (ψ - exchange i j ψ) ψ).re
+  simp only [inner_sub_left, map_sub, inner_self_eq_norm_sq]
   nlinarith
 
 /-- Dimensionful Cartesian spin product at two sites. -/
@@ -86,7 +87,9 @@ theorem spinDot_eq_exchange (hbar : ℝ) (i j : Site) (hij : i ≠ j) :
     Equiv.comp_swap_eq_update i j c
   have hui := Function.update_eq_self i c
   have huj := Function.update_eq_self j c
-  fin_cases hci : c i <;> fin_cases hcj : c j <;>
+  generalize hci : c i = si
+  generalize hcj : c j = sj
+  fin_cases si <;> fin_cases sj <;>
     simp [spinDot, atSite, exchange_apply, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, Fin.sum_univ_two, hij, hij.symm, hci, hcj,
       hswap, Function.update_comm hij, ← hci, ← hcj, hui, huj] <;> ring
