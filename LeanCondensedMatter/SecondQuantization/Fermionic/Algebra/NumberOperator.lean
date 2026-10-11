@@ -62,15 +62,6 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
   · simp [hi, basisState, Common.diagonalOperator_basisState]
   · simp [hi, basisState, Common.diagonalOperator_basisState]
 
-/-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Common.Statistics.zetaInt Common.Statistics.fermion`)**: an
-instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermionic
-`Common.ExchangeAlgebra` instance (`Fermionic/Algebra/ExchangeAlgebra.lean`), whose `annihilate`/`create`
-fields are literally `Fermionic.annihilate`/`create`. -/
-theorem exchangeCommutator_annihilate_create_self (i : Mode) :
-    Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create i) =
-      (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
-  Common.exchangeCommutator_annihilate_create_self (Config := Occupation Mode) i
-
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
