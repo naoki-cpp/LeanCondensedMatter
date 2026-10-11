@@ -65,6 +65,24 @@ def PurePointTimeDomainSummable
   (Summable fun mn : ι × ι => ‖purePointForwardWeight system data A B mn‖) ∧
   Summable fun mn : ι × ι => ‖purePointBackwardWeight system data A B mn‖
 
+/-- Absolute summability of both ordered commutator products implies absolute summability
+of the canonical Lehmann transition weights. The separate ordered-product hypotheses
+remain the assumptions used for time-domain trace rearrangements. -/
+theorem PurePointTimeDomainSummable.lehmannSummable
+    (data : PurePointLehmannData system ι) (A B : H →L[ℂ] H)
+    (hsum : PurePointTimeDomainSummable system data A B) :
+    PurePointLehmannSummable system data A B := by
+  change Summable fun mn : ι × ι => ‖(purePointTransitionData system data A B mn).weight‖
+  have hphysical := ((Summable.of_norm hsum.1).sub
+    ((Summable.of_norm hsum.2).comp_injective (Equiv.prodComm ι ι).injective)).mul_left
+      (Complex.I / (system.hbar : ℂ))
+  convert hphysical.norm using 1
+  funext mn
+  congr 1
+  simp [purePointTransitionData, orderedLehmannTransitionWeight,
+    purePointForwardWeight, purePointBackwardWeight]
+  ring
+
 /-- In finite dimension all time-domain rearrangement assumptions are automatic. -/
 theorem purePointTimeDomainSummable_of_finite
     [Finite ι] (data : PurePointLehmannData system ι)
