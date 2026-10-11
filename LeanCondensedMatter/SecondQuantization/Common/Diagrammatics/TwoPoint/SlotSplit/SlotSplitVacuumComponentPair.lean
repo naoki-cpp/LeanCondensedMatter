@@ -90,19 +90,21 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEmbedding
       T ext vac τ τ' σ hσ).injective
     exact congrArg Subtype.val hpq
 
-/-- Source and target of the componentwise vacuum-pair embedding have equal finite cardinality. -/
-private theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
+/-- One restricted quartic vacuum component's normalized pairs are equivalent to the corresponding
+ambient mixed component-pair fiber. -/
+private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
     (C : vac.vertexGraph.componentPartitionOn.parts)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    Fintype.card
-        (vac.LocalOrderedPair
-          (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C) =
-      Fintype.card
-        ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
-          (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1) := by
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    vac.LocalOrderedPair (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C ≃
+      (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
+        (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 := by
+  let emb := TwoPointDiagram.slotSplitVacuumComponentPairEmbedding T ext vac C τ τ' σ hσ
+  refine Equiv.ofBijective emb
+    ((Fintype.bijective_iff_injective_and_card emb).2 ⟨emb.injective, ?_⟩)
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let B := slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C
   calc
@@ -119,25 +121,6 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
     _ = Fintype.card (d.MixedComponentPair τ τ' σ B.1) := by
       symm
       exact d.card_mixedVacuumComponentPair τ τ' σ B
-
-/-- One restricted quartic vacuum component's normalized pairs are equivalent to the corresponding
-ambient mixed component-pair fiber. -/
-private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (C : vac.vertexGraph.componentPartitionOn.parts)
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    vac.LocalOrderedPair (vac.vertexGraph.componentPartitionOn.partOrdersOfOrder (slotSplitVacuumOrder T)) C ≃
-      (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedComponentPair τ τ' σ
-        (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1 :=
-  let emb := TwoPointDiagram.slotSplitVacuumComponentPairEmbedding T ext vac C τ τ' σ hσ
-  Equiv.ofBijective emb
-    ((Fintype.bijective_iff_injective_and_card emb).2
-      ⟨emb.injective,
-        TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
-          T ext vac C τ τ' σ⟩)
 
 private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
     (T : Finset (Fin n))
