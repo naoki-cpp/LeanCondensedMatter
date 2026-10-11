@@ -30,6 +30,13 @@ This context derives periodic structure, reciprocal-lattice conventions, and the
 
 The generic finite-band layer provides pointwise spectral and Berry geometry. Global lattice topology and physical response belong to downstream model consumers with their own assumptions; pointwise identities alone establish neither. See [ADR 0018](docs/adr/0018-finite-band-berry-geometry.md) and its linked declarations.
 
+### Magnetism and spin waves
+
+This planned context covers localized-spin models, magnon approximations, and macroscopic
+magnetization dynamics. The [glossary](docs/glossary/magnetism/CONTEXT.md) fixes their vocabulary;
+the [roadmap](docs/roadmaps/spin-waves.md) records unimplemented targets, and
+[proposed ADR 0022](docs/adr/0022-spin-wave-model-boundaries.md) specifies the intended boundaries.
+
 ## Relationships
 
 - `Analysis`, `Combinatorics`, and `Permutation` provide reusable mathematics to the physics contexts; physical assumptions remain downstream.
