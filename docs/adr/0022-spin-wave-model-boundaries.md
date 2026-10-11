@@ -1,7 +1,9 @@
 # Separate exact spin models, magnon approximations, and macroscopic magnetization
 
-Status: accepted. This records the approved spin-wave architecture; implementation has
-not established these interfaces. See the [roadmap](../roadmaps/spin-waves.md) for targets.
+Status: accepted. The exact finite-spin representation is implemented in
+`QuantumTheory.SpinHalf`, and the ferromagnetic ring and its one-magnon restriction
+in `Models.Heisenberg`. Approximation and macroscopic interfaces remain targets; see
+the [roadmap](../roadmaps/spin-waves.md).
 
 Spin-wave physics connects finite quantum spins, bosonic approximations, and classical
 magnetization fields. These objects have different state spaces and hypotheses. Preserve
