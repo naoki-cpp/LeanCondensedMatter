@@ -43,7 +43,7 @@ class CatalogTests(unittest.TestCase):
         self.assertNotIn("import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D\n", source)
 
     def test_full_collection_preserves_the_legacy_audit(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:
             root = Path(directory)
             (root / "scripts").mkdir()
             (root / "scripts/TheoremCatalog.lean").write_text("import LeanCondensedMatter\n", encoding="utf-8")
