@@ -73672,6 +73672,7 @@
    "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq",
    "SecondQuantization.Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
   "dependencies":
   ["PowerSeries.normalizeByConstantCoeff",
@@ -73681,8 +73682,9 @@
   "compiledConsumers":
   ["SecondQuantization.Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
-  "compiledConsumerCount": 3,
+  "compiledConsumerCount": 4,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies": [],
   "typeDependencies": [],
@@ -73970,7 +73972,7 @@
   "sourceEndColumn": 61,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": false,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -73985,13 +73987,15 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
+  ["SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
+   "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
   "dependencies": [],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
-  "compiledConsumerCount": 1,
+  ["SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
+   "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
+  "compiledConsumerCount": 2,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies": [],
   "typeDependencies": [],
@@ -74027,6 +74031,7 @@
    "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
    "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries.eq_1",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
@@ -281113,6 +281118,7 @@
    "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFiber",
    "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSupportShuffle",
    "SecondQuantization.Fermionic.externalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries.eq_1",
    "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily",
    "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily.eq_1",
    "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue",
@@ -281264,7 +281270,9 @@
    "SecondQuantization.Fermionic.twoPointTimedEventOperator_interaction",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries.eq_1",
    "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries.eq_1",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
@@ -300249,10 +300257,10 @@
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (v : ↥(S \\ T)),\n  have d := SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac;\n  have B := ⟨d.vertexGraph.componentBlock (SecondQuantization.Common.slotSplitVacuumVertex v), ⋯⟩;\n  B ∈ SecondQuantization.Common.vacuumComponentParts d.vertexGraph",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 87,
+  "sourceLine": 83,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 113,
+  "sourceEndLine": 109,
   "sourceEndColumn": 54,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -314507,8 +314515,8 @@
   "sourceLine": 39,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 83,
-  "sourceEndColumn": 47,
+  "sourceEndLine": 79,
+  "sourceEndColumn": 62,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": true,
@@ -314733,10 +314741,10 @@
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T))\n  (C : ↥vac.vertexGraph.componentPartitionOn.parts),\n  SecondQuantization.Common.interactionSector ↑↑(SecondQuantization.Common.slotSplitVacuumComponentPart h ext vac C) =\n    ↑C",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 129,
+  "sourceLine": 125,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 144,
+  "sourceEndLine": 140,
   "sourceEndColumn": 88,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -323189,10 +323197,10 @@
    "SimpleGraph.componentPartitionOn"],
   "statement":
   "{ExternalLabel : Type u_1} →\n  {InternalLabel : Type u_2} →\n    {N : ℕ} →\n      {S T : Finset (Fin N)} →\n        (h : T ⊆ S) →\n          (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T) →\n            (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) →\n              ext.IsExternallyConnected →\n                ↥vac.vertexGraph.componentPartitionOn.parts ≃\n                  ↥(SecondQuantization.Common.vacuumComponentParts\n                      (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)",
-  "sourceLine": 216,
+  "sourceLine": 210,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 222,
+  "sourceEndLine": 216,
   "sourceEndColumn": 61,
   "sourceColumn": 18,
   "name": "SecondQuantization.Common.slotSplitVacuumComponentEquiv",
@@ -323298,10 +323306,10 @@
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (hext : ext.IsExternallyConnected)\n  (C : ↥vac.vertexGraph.componentPartitionOn.parts),\n  (SecondQuantization.Common.slotSplitVacuumComponentEquiv h ext vac hext) C =\n    SecondQuantization.Common.slotSplitVacuumComponentPart h ext vac C",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 225,
+  "sourceLine": 219,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 229,
+  "sourceEndLine": 223,
   "sourceEndColumn": 5,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -323370,10 +323378,10 @@
    "SimpleGraph.componentPartitionOn"],
   "statement":
   "{ExternalLabel : Type u_1} →\n  {InternalLabel : Type u_2} →\n    {N : ℕ} →\n      {S T : Finset (Fin N)} →\n        (h : T ⊆ S) →\n          (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T) →\n            (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) →\n              ↥vac.vertexGraph.componentPartitionOn.parts →\n                ↥(SecondQuantization.Common.vacuumComponentParts\n                    (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)",
-  "sourceLine": 116,
+  "sourceLine": 112,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 126,
+  "sourceEndLine": 122,
   "sourceEndColumn": 80,
   "sourceColumn": 18,
   "name": "SecondQuantization.Common.slotSplitVacuumComponentPart",
@@ -336285,6 +336293,7 @@
    "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFiber",
    "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSupportShuffle",
    "SecondQuantization.Fermionic.externalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries.eq_1",
    "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily",
    "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily.eq_1",
    "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue",
@@ -336358,7 +336367,9 @@
    "SecondQuantization.Fermionic.twoPointTimedEventOperator_external_zero",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries.eq_1",
    "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentWickDiagram_vertexWeight_eq_restrictComponent",
    "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components",
    "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg",
@@ -372026,7 +372037,7 @@
   "sourceEndColumn": 20,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": false,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -372046,7 +372057,8 @@
   ["SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
-   "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"],
+   "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["PowerSeries.coeff_normalizeByConstantCoeff",
    "PowerSeries.normalizeByConstantCoeff",
@@ -372062,8 +372074,9 @@
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"],
-  "compiledConsumerCount": 1,
+  ["SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
+  "compiledConsumerCount": 2,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedAnnihilateMap"],
@@ -377556,6 +377569,7 @@
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
   "dependencies":
   ["SecondQuantization.Fermionic.Occupation",
@@ -377568,8 +377582,9 @@
   "completedMention": false,
   "compiledConsumers":
   ["SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
-  "compiledConsumerCount": 2,
+  "compiledConsumerCount": 3,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["QuantumTheory.constantCoeff_freeExchangeGrandPartitionSeries",
@@ -379068,6 +379083,7 @@
    "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
    "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries.eq_1",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
@@ -380221,7 +380237,9 @@
   "dependents":
   ["SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_externalSupportFiber",
    "SecondQuantization.Fermionic.externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFiber",
-   "SecondQuantization.Fermionic.externalInsertionDysonSeries"],
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries.eq_1",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["SecondQuantization.Common.ExternalInsertionDiagram.externalLabel",
    "SecondQuantization.Common.ExternalInsertionDiagram.instFintype",
@@ -380540,11 +380558,42 @@
   "generated": false,
   "docString": "Formal Dyson series for fixed arbitrary external insertions. ",
   "dependents":
-  ["SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries"],
+  ["SecondQuantization.Fermionic.externalInsertionDysonSeries.eq_1",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["SecondQuantization.Common.QuarticVertexLabel",
    "SecondQuantization.Fermionic.ExternalFieldLabel",
    "SecondQuantization.Fermionic.externalInsertionDysonCoefficient"]},
+ {"valueDependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries"],
+  "typeDependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.externalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries"],
+  "statement":
+  "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ),\n  SecondQuantization.Fermionic.externalInsertionDysonSeries ε β g externalLabel externalTime =\n    PowerSeries.mk (SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime)",
+  "sourceLine": null,
+  "sourceFile":
+  "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/DysonSeries.lean",
+  "sourceEndLine": null,
+  "sourceEndColumn": null,
+  "sourceColumn": null,
+  "name": "SecondQuantization.Fermionic.externalInsertionDysonSeries.eq_1",
+  "module":
+  "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
+  "kind": "theorem",
+  "generated": true,
+  "docString": null,
+  "dependents": [],
+  "dependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.externalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries"]},
  {"valueDependencies":
   ["SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv"],
   "typeDependencies": [],
@@ -391651,7 +391700,8 @@
    "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
    "SecondQuantization.Fermionic.sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff",
    "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff",
-   "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"],
+   "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["SecondQuantization.Fermionic.Occupation",
    "SecondQuantization.Fermionic.OccupationFock",
@@ -394512,6 +394562,7 @@
    "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff",
    "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries.eq_1",
    "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"],
@@ -400931,7 +400982,9 @@
   "docString":
   "Order-`n` coefficient after discarding diagrams with pure vacuum components. ",
   "dependents":
-  ["SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries"],
+  ["SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries.eq_1",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["SecondQuantization.Common.ExternalInsertionDiagram.externalLabel",
    "SecondQuantization.Common.ExternalInsertionDiagram.instFintype",
@@ -400968,11 +401021,43 @@
   "generated": false,
   "docString":
   "Formal Dyson series restricted to diagrams with no pure vacuum connected component. ",
-  "dependents": [],
+  "dependents":
+  ["SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries.eq_1",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["SecondQuantization.Common.QuarticVertexLabel",
    "SecondQuantization.Fermionic.ExternalFieldLabel",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient"]},
+ {"valueDependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries"],
+  "typeDependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries"],
+  "statement":
+  "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ),\n  SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime =\n    PowerSeries.mk\n      (SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient ε β g externalLabel externalTime)",
+  "sourceLine": null,
+  "sourceFile":
+  "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/DysonSeries.lean",
+  "sourceEndLine": null,
+  "sourceEndColumn": null,
+  "sourceColumn": null,
+  "name":
+  "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries.eq_1",
+  "module":
+  "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
+  "kind": "theorem",
+  "generated": true,
+  "docString": null,
+  "dependents": [],
+  "dependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries"]},
  {"valueDependencies":
   ["PowerSeries.normalizeByConstantCoeff",
    "SecondQuantization.Common.QuarticVertexLabel",
@@ -400999,7 +401084,8 @@
   "generated": false,
   "docString":
   "Vacuum-normalized arbitrary-external Dyson series.\n\nThe partition series is normalized to constant coefficient one because the diagram amplitudes use\nfree Gibbs expectations, exactly as in the two-point expansion. ",
-  "dependents": [],
+  "dependents":
+  ["SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"],
   "dependencies":
   ["PowerSeries.normalizeByConstantCoeff",
    "SecondQuantization.Common.QuarticVertexLabel",
@@ -401007,6 +401093,80 @@
    "SecondQuantization.Fermionic.dysonPartitionSeries",
    "SecondQuantization.Fermionic.externalInsertionDysonSeries",
    "SecondQuantization.Fermionic.quarticInteraction"]},
+ {"valueDependencies":
+  ["PowerSeries.constantCoeff_normalizeByConstantCoeff",
+   "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
+   "PowerSeries.normalizeByConstantCoeff",
+   "SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
+   "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
+   "SecondQuantization.Fermionic.dysonPartitionSeries",
+   "SecondQuantization.Fermionic.externalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff",
+   "SecondQuantization.Fermionic.quarticInteraction",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries"],
+  "typeDependencies":
+  ["SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.externalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff",
+   "SecondQuantization.Fermionic.quarticInteraction",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries"],
+  "terminal": true,
+  "statement":
+  "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ),\n  SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries ε β g externalLabel externalTime =\n      SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime ↔\n    ∀ (n : ℕ),\n      SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n =\n        ∑ m ∈ Finset.range (n + 1),\n          SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient ε β g externalLabel externalTime m *\n            SecondQuantization.Fermionic.normalizedDysonPartitionCoeff ε β\n              (SecondQuantization.Fermionic.quarticInteraction g) (n - m)",
+  "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
+  "sourceLine": 92,
+  "sourceFile":
+  "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/DysonSeries.lean",
+  "sourceEndLine": 157,
+  "sourceEndColumn": 28,
+  "sourceColumn": 8,
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": false,
+  "simpLemma": false,
+  "retainedNeedsReview": false,
+  "retainedMention": false,
+  "projectAxioms": [],
+  "name":
+  "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
+  "module":
+  "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
+  "kind": "theorem",
+  "generated": false,
+  "externalAxioms": [],
+  "docString":
+  "The vacuum-normalized arbitrary-external linked-cluster identity is equivalent to the\ncoefficientwise Cauchy factorization by the normalized vacuum partition coefficients.\n\nThis is a formal-series reduction, not the missing fermionic integrand factorization:\nthe right-hand side still requires the physical support/vacuum shuffle proof. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents": [],
+  "dependencies":
+  ["PowerSeries.constantCoeff_normalizeByConstantCoeff",
+   "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
+   "PowerSeries.normalizeByConstantCoeff",
+   "SecondQuantization.Common.QuarticVertexLabel",
+   "SecondQuantization.Fermionic.ExternalFieldLabel",
+   "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
+   "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
+   "SecondQuantization.Fermionic.dysonPartitionSeries",
+   "SecondQuantization.Fermionic.externalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.externalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff",
+   "SecondQuantization.Fermionic.quarticInteraction",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient",
+   "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
+   "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries"],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0,
+  "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["PowerSeries.normalizeByConstantCoeff",
    "SecondQuantization.Common.QuarticVertexLabel",
@@ -457387,10 +457547,10 @@
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  ext.IsExternallyConnected →\n    ∀\n      (B :\n        ↥(SecondQuantization.Common.vacuumComponentParts\n            (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph))\n      (w : ↥S), Sum.inr w ∈ ↑↑B → ↑w ∉ T",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 159,
+  "sourceLine": 155,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 178,
+  "sourceEndLine": 174,
   "sourceEndColumn": 81,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": true,
@@ -457567,10 +457727,10 @@
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  Function.Injective (SecondQuantization.Common.slotSplitVacuumComponentPart h ext vac)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 147,
+  "sourceLine": 143,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 155,
+  "sourceEndLine": 151,
   "sourceEndColumn": 12,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -457643,10 +457803,10 @@
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  ext.IsExternallyConnected → Function.Surjective (SecondQuantization.Common.slotSplitVacuumComponentPart h ext vac)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 182,
+  "sourceLine": 178,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumComponents.lean",
-  "sourceEndLine": 212,
+  "sourceEndLine": 206,
   "sourceEndColumn": 52,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,

@@ -30565,6 +30565,7 @@
     "dependents": [
       "SecondQuantization.Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
     "dependencies": [],
@@ -30573,9 +30574,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30911,7 +30913,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -30923,15 +30925,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130418,7 +130422,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -130430,7 +130434,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"
     ],
     "dependencies": [
       "PowerSeries.coeff_normalizeByConstantCoeff",
@@ -130440,9 +130445,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132244,6 +132250,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
     "dependencies": [
@@ -132254,9 +132261,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+      "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140036,6 +140044,49 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ),\n  SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries ε β g externalLabel externalTime =\n      SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime ↔\n    ∀ (n : ℕ),\n      SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n =\n        ∑ m ∈ Finset.range (n + 1),\n          SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient ε β g externalLabel externalTime m *\n            SecondQuantization.Fermionic.normalizedDysonPartitionCoeff ε β\n              (SecondQuantization.Fermionic.quarticInteraction g) (n - m)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
+    "externalAxioms": [],
+    "docString": "The vacuum-normalized arbitrary-external linked-cluster identity is equivalent to the\ncoefficientwise Cauchy factorization by the normalized vacuum partition coefficients.\n\nThis is a formal-series reduction, not the missing fermionic integrand factorization:\nthe right-hand side still requires the physical support/vacuum shuffle proof. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "PowerSeries.constantCoeff_normalizeByConstantCoeff",
+      "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
+      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
+      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
