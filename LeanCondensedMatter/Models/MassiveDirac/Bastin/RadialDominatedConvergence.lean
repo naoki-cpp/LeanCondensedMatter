@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
