@@ -34,7 +34,12 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0)).im =
       -(e ^ 2 * berryCurvature band v m px py) := by
-  rw [targetCenteredInterbandSpectatorCurrentFactor_zero]
+  rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor,
+    interbandPoleRegularFactor_zero]
+  change
+    (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
+      bastinInterbandBlockDifference 0 1 band e v m px py).im =
+        -(e ^ 2 * berryCurvature band v m px py)
   have hgap : interbandEnergyGap band v m px py ≠ 0 :=
     interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   have hcoeff :
