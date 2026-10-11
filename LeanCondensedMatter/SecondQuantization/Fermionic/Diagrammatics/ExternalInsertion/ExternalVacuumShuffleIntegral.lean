@@ -326,33 +326,36 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
     let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
     let d : ExternalInsertionWickDiagram Mode E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    let localTime : Fin (2 * 0) → ℝ := Fin.elim0
-    let localLeg := externalInsertionMixedTimeOrderedAtomicLegEquiv localTime (σ ∘ f)
-    let embed : Fin (2 * (2 * S.card + 0)) → Fin (2 * (2 * n + E)) := fun p =>
+    StrictMono (fun p : Fin (2 * (2 * S.card + 0)) =>
       externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
         (orderedExternalInsertionLegMap
-          (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f (localLeg p))
-    StrictMono embed ∧
+          (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) p))) ∧
       ∀ a b : Fin (2 * (2 * S.card + 0)),
         externalInsertionMixedTimeOrderedAtomicPairValue ε β
             d.externalLabel externalTime d.vertexLabelSequence σ
-            (embed a) (embed b) =
+            (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+              (orderedExternalInsertionLegMap
+                (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+                (externalInsertionMixedTimeOrderedAtomicLegEquiv
+                  (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) a)))
+            (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+              (orderedExternalInsertionLegMap
+                (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+                (externalInsertionMixedTimeOrderedAtomicLegEquiv
+                  (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) b))) =
           externalInsertionMixedTimeOrderedAtomicPairValue ε β
             (d.externalLabel ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
             (externalTime ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
             (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f) a b := by
-  intro S f d localTime localLeg embed
+  intro S f d
   have hf : StrictMono f := (S.orderIsoOfFin rfl).strictMono
   have he : StrictMono (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) := by
     intro a b _
     exact a.elim0
   constructor
-  · change StrictMono (fun p : Fin (2 * (2 * S.card + 0)) =>
-        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (orderedExternalInsertionLegMap
-            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
-            (externalInsertionMixedTimeOrderedAtomicLegEquiv localTime (σ ∘ f) p)))
-    exact externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+  · exact externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
       he hf externalTime σ
   · intro a b
     have hvertices :
@@ -373,14 +376,25 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
       externalInsertionMixedTimeOrderedAtomicPairValue_map
         ε β (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
         d.externalLabel externalTime d.vertexLabelSequence σ
-        (localLeg a) (localLeg b)
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) a)
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) b)
     rw [hvertices] at hmap
-    have ha : externalInsertionMixedTimeOrderedAtomicLegPosition localTime (σ ∘ f)
-        (localLeg a) = a := by
-      exact (externalInsertionMixedTimeOrderedAtomicLegEquiv localTime (σ ∘ f)).symm_apply_apply a
-    have hb : externalInsertionMixedTimeOrderedAtomicLegPosition localTime (σ ∘ f)
-        (localLeg b) = b := by
-      exact (externalInsertionMixedTimeOrderedAtomicLegEquiv localTime (σ ∘ f)).symm_apply_apply b
+    have ha :
+        externalInsertionMixedTimeOrderedAtomicLegPosition
+          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) a) = a :=
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)).symm_apply_apply a
+    have hb :
+        externalInsertionMixedTimeOrderedAtomicLegPosition
+          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) b) = b :=
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)).symm_apply_apply b
     rw [ha, hb] at hmap
     exact hmap
 
