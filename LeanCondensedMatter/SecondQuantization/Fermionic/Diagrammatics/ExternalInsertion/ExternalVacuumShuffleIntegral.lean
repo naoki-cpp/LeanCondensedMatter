@@ -311,92 +311,57 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
     rw [ha, hb] at hvalue
     exact hvalue
 
-/-- The actual quartic vacuum part of an assembled external-insertion diagram has the
-standalone free-Gibbs pair kernel when its mixed atomic positions are reindexed into the
-ambient order. The reindexing is strictly increasing, so the order of the fermionic
-contraction arguments is unchanged. -/
+/-- The actual quartic vacuum half of an assembled external-insertion diagram has
+the standalone free-Gibbs pair kernel when its vertex slots are reindexed into the
+ambient diagram. The arguments retain their given order; normalization of ambient
+pairs after reassembly is a separate assertion. -/
 theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
     (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
     (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
       (QuarticVertexLabel Mode) E n T)
     (vac : QuarticDiagram (QuarticVertexLabel Mode) n
       ((Finset.univ : Finset (Fin n)) \ T))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (a b : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
     let S := (Finset.univ : Finset (Fin n)) \ T
     let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
     let d : ExternalInsertionWickDiagram Mode E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    StrictMono (fun p : Fin (2 * (2 * S.card + 0)) =>
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (orderedExternalInsertionLegMap
-          (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv
-            (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) p))) ∧
-      ∀ a b : Fin (2 * (2 * S.card + 0)),
-        externalInsertionMixedTimeOrderedAtomicPairValue ε β
-            d.externalLabel externalTime d.vertexLabelSequence σ
-            (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-              (orderedExternalInsertionLegMap
-                (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
-                (externalInsertionMixedTimeOrderedAtomicLegEquiv
-                  (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) a)))
-            (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-              (orderedExternalInsertionLegMap
-                (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
-                (externalInsertionMixedTimeOrderedAtomicLegEquiv
-                  (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) b))) =
-          externalInsertionMixedTimeOrderedAtomicPairValue ε β
-            (d.externalLabel ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
-            (externalTime ∘ (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)))
-            (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f) a b := by
-  intro S f d
-  have hf : StrictMono f := (S.orderIsoOfFin rfl).strictMono
-  have he : StrictMono (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) := by
-    intro a b _
-    exact a.elim0
-  constructor
-  · exact externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
-      he hf externalTime σ
-  · intro a b
-    have hvertices :
-        d.vertexLabelSequence ∘ f =
-          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) := by
-      funext v
-      let w := S.orderIsoOfFin rfl v
-      have hw : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
-      change
-        (ExternalInsertionDiagram.ofSlotSplit
-          (Finset.subset_univ T) ext vac).vertexLabel
-          ⟨w.1, Finset.mem_univ _⟩ = vac.vertexLabel w
-      rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
-        (Finset.subset_univ T) ext vac
-        ⟨w.1, Finset.mem_univ _⟩ hw]
-      rfl
-    have hmap :=
-      externalInsertionMixedTimeOrderedAtomicPairValue_map
-        ε β (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
         d.externalLabel externalTime d.vertexLabelSequence σ
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv
-          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) a)
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv
-          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) b)
-    rw [hvertices] at hmap
-    have ha :
-        externalInsertionMixedTimeOrderedAtomicLegPosition
-          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv
-            (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) a) = a :=
-      (externalInsertionMixedTimeOrderedAtomicLegEquiv
-        (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)).symm_apply_apply a
-    have hb :
-        externalInsertionMixedTimeOrderedAtomicLegPosition
-          (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv
-            (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f) b) = b :=
-      (externalInsertionMixedTimeOrderedAtomicLegEquiv
-        (Fin.elim0 : Fin (2 * 0) → ℝ) (σ ∘ f)).symm_apply_apply b
-    rw [ha, hb] at hmap
-    exact hmap
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+            (Sum.inr (⟨(orderedQuarticLegEquiv S.card a).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card a).2))))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+            (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+            (Sum.inr (⟨(orderedQuarticLegEquiv S.card b).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card b).2)))) =
+      flatVertexLegPairValue ε β
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v))
+        (σ ∘ f) a b := by
+  intro S f d
+  have hvertices :
+      d.vertexLabelSequence ∘ f =
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) := by
+    funext v
+    let w := S.orderIsoOfFin rfl v
+    have hw : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
+    change
+      (ExternalInsertionDiagram.ofSlotSplit
+        (Finset.subset_univ T) ext vac).vertexLabel
+        ⟨w.1, Finset.mem_univ _⟩ = vac.vertexLabel w
+    rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
+      (Finset.subset_univ T) ext vac
+      ⟨w.1, Finset.mem_univ _⟩ hw]
+    rfl
+  have hkernel :=
+    externalInsertionMixedTimeOrderedAtomicPairValue_quartic_map
+      ε β f d.externalLabel externalTime d.vertexLabelSequence σ a b
+  rw [hvertices] at hkernel
+  exact hkernel
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
