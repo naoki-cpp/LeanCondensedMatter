@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Combinatorics.SlotShuffle
+import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
@@ -421,6 +422,88 @@ theorem externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex
     exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
       ε β T ext vac externalTime σ a b
   rw [hkernel]
+
+/-- The actual mixed-time pairing of a reassembled arbitrary-external diagram
+is a binary split pairing, after transporting the fixed-leg splitting into the
+ambient mixed-time order. -/
+private theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit
+    {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let split :=
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    d.pairingInMixedOrder externalTime σ =
+      Pairing.ofSplit split ext.pairing vac.pairing := by
+  intro d split
+  change ((Pairing.ofSplit
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))
+      ext.pairing vac.pairing).transport
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)) =
+    Pairing.ofSplit
+      ((externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm)
+      ext.pairing vac.pairing
+  unfold Pairing.ofSplit
+  rw [PairingOn.transport_trans]
+  rfl
+
+/-- The free-Gibbs contraction product of an assembled arbitrary-external
+diagram splits into its left- and right-sector products, evaluated at the
+*ambient normalized pairs* supplied by the binary splitting equivalence.
+
+Unlike a naive product over transported endpoint pairs, this statement does
+not assume that a slot shuffle preserves the orientation of individual
+fermionic pairs. The remaining physical task is to identify each sector's
+ambient-normalized kernel with its standalone local kernel. -/
+theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let split :=
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
+      split ext.pairing vac.pairing
+    let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+    (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,
+        kernel pr.1 pr.2) =
+      (∏ pr : ext.pairing.NormalizedPair,
+        kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
+      ∏ pr : vac.pairing.NormalizedPair,
+        kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2 := by
+  intro d split pairEquiv kernel
+  have hsplit :
+      d.pairingInMixedOrder externalTime σ =
+        Pairing.ofSplit split ext.pairing vac.pairing :=
+    externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit
+      T ext vac externalTime σ
+  rw [hsplit]
+  let pairing := Pairing.ofSplit split ext.pairing vac.pairing
+  change (∏ pr ∈ pairing.pairs, kernel pr.1 pr.2) =
+    (∏ pr : ext.pairing.NormalizedPair,
+      kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
+      ∏ pr : vac.pairing.NormalizedPair,
+        kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2
+  calc
+    (∏ pr ∈ pairing.pairs, kernel pr.1 pr.2) =
+        ∏ pr : pairing.NormalizedPair, kernel pr.1.1 pr.1.2 :=
+      Finset.prod_subtype _ (fun _ => Iff.rfl) _
+    _ = ∏ pr : ext.pairing.NormalizedPair ⊕ vac.pairing.NormalizedPair,
+          kernel (pairEquiv pr).1.1 (pairEquiv pr).1.2 :=
+      (Equiv.prod_comp pairEquiv (fun pr => kernel pr.1.1 pr.1.2)).symm
+    _ = _ := Fintype.prod_sum_type _
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
