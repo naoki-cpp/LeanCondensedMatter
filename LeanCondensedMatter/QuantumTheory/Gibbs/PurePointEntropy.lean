@@ -21,7 +21,7 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 private theorem purePointGibbsProbability_le_one [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :
     purePointGibbsProbability E β i ≤ 1 := by
-  simpa only [purePointGibbsProbability, purePointPartitionFunction, Real.normalizedWeight] using
+  exact
     Real.normalizedWeight_le_one (purePointBoltzmannWeight E β)
       (purePointBoltzmannWeight_summable E β hsum) (purePointBoltzmannWeight_nonneg E β)
       (purePointPartitionFunction_pos E β hsum) i

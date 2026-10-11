@@ -77,7 +77,7 @@ theorem purePointGibbsProbability_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
 theorem hasSum_purePointGibbsProbability [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β) :
     HasSum (purePointGibbsProbability E β) 1 := by
-  simpa only [purePointGibbsProbability, purePointPartitionFunction, Real.normalizedWeight] using
+  exact
     Real.hasSum_normalizedWeight (purePointBoltzmannWeight E β)
       (purePointBoltzmannWeight_summable E β hsum)
       (purePointPartitionFunction_pos E β hsum).ne'
