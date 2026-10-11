@@ -73,14 +73,9 @@ theorem PurePointTimeDomainSummable.lehmannSummable
     (hsum : PurePointTimeDomainSummable system data A B) :
     PurePointLehmannSummable system data A B := by
   change Summable fun mn : ι × ι => ‖(purePointTransitionData system data A B mn).weight‖
-  have hforward : Summable (purePointForwardWeight system data A B) :=
-    Summable.of_norm hsum.1
-  have hbackward : Summable fun mn : ι × ι =>
-      purePointBackwardWeight system data A B mn.swap := by
-    change Summable (purePointBackwardWeight system data A B ∘ Prod.swap)
-    exact (Summable.of_norm hsum.2).comp_injective (Equiv.prodComm ι ι).injective
-  have hphysical := (hforward.sub hbackward).mul_left
-    (Complex.I / (system.hbar : ℂ))
+  have hphysical := ((Summable.of_norm hsum.1).sub
+    ((Summable.of_norm hsum.2).comp_injective (Equiv.prodComm ι ι).injective)).mul_left
+      (Complex.I / (system.hbar : ℂ))
   convert hphysical.norm using 1
   funext mn
   congr 1

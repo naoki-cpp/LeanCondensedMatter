@@ -134,16 +134,9 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
       ∫ τ : ℝ in Ioi 0,
         ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ := by
     let C : ℝ := ∫ τ : ℝ in Ioi 0, ‖adiabaticFrequencyPhase omega eta τ‖
-    have hweight : PurePointLehmannSummable system data A B :=
-      hsum.lehmannSummable system data A B
-    have hmajorant : Summable fun mn : ι × ι =>
-        C * ‖(purePointTransitionData system data A B mn).weight‖ :=
-      hweight.mul_left C
-    refine Summable.of_norm_bounded hmajorant fun mn => ?_
-    have hnonneg : 0 ≤ ∫ τ : ℝ in Ioi 0,
-        ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ :=
-      integral_nonneg fun _ => norm_nonneg _
-    rw [Real.norm_of_nonneg hnonneg]
+    apply ((hsum.lehmannSummable system data A B).mul_left C).congr
+    intro mn
+    symm
     calc
       (∫ τ : ℝ in Ioi 0,
           ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖) =
@@ -158,7 +151,6 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
       _ = ‖(purePointTransitionData system data A B mn).weight‖ * C := by
         rw [integral_const_mul]
       _ = C * ‖(purePointTransitionData system data A B mn).weight‖ := by ring
-      _ ≤ C * ‖(purePointTransitionData system data A B mn).weight‖ := le_rfl
   rw [← MeasureTheory.integral_tsum_of_summable_integral_norm
     (μ := volume.restrict (Ioi 0)) hInt hSum]
   rw [purePointLehmannSeries]
