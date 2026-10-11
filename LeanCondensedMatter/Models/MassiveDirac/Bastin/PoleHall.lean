@@ -20,8 +20,6 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-open QuantumTheory.Transport
-
 /-- The regular Hall interband spectator/current factor written in target-centered coordinates
 `(offset, broadening)`. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentFactor
