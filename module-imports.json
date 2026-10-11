@@ -1708,7 +1708,6 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/CleanLimit.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation"
       ],
       "externalImportCount": 1
@@ -1770,6 +1769,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Interband"
       ],

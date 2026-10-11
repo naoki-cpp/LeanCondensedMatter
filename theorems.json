@@ -62694,7 +62694,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral band e v m p 0\n                fermiEnergy radius broadening‖ ≤\n            2 * (QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius * Real.pi)",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral band e v m p 0\n                fermiEnergy radius broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
