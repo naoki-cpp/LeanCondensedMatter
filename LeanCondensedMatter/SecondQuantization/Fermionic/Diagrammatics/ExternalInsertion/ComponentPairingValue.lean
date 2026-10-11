@@ -132,31 +132,38 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
         (d.componentWickDiagram B).mixedPairingValue ε β
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B) := by
-  change
-    (d.pairingInMixedOrder externalTime σ).weight Common.Statistics.fermion *
-        (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,
-          externalInsertionMixedTimeOrderedAtomicPairValue ε β
-            d.externalLabel externalTime d.vertexLabelSequence σ pr.1 pr.2) =
-      (Common.Statistics.fermion.zetaInt : ℂ) ^
-          (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-            (d.componentMixedPairEquiv externalTime σ) *
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          (((d.componentWickDiagram B).pairingInMixedOrder
-              (d.componentExternalTime externalTime B)
-              (d.componentInteractionTime σ B)).weight Common.Statistics.fermion *
-            ∏ pr ∈ ((d.componentWickDiagram B).pairingInMixedOrder
-              (d.componentExternalTime externalTime B)
-              (d.componentInteractionTime σ B)).pairs,
-              externalInsertionMixedTimeOrderedAtomicPairValue ε β
-                (d.componentWickDiagram B).externalLabel
-                (d.componentExternalTime externalTime B)
-                (d.componentWickDiagram B).vertexLabelSequence
-                (d.componentInteractionTime σ B) pr.1 pr.2)
-  rw [d.pairingInMixedOrder_weight_eq_inter_mul_prod_components
-      Common.Statistics.fermion externalTime σ,
-    d.mixedPairContractionProduct_eq_prod_components ε β externalTime σ,
-    Finset.prod_mul_distrib]
-  ring
+  let pairing := d.pairingInMixedOrder externalTime σ
+  let localPairing := fun B : d.vertexGraph.componentPartition.parts =>
+    (d.componentWickDiagram B).pairingInMixedOrder
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)
+  let pairValue :=
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+  let localPairValue := fun B : d.vertexGraph.componentPartition.parts =>
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      (d.componentWickDiagram B).externalLabel
+      (d.componentExternalTime externalTime B)
+      (d.componentWickDiagram B).vertexLabelSequence
+      (d.componentInteractionTime σ B)
+  change pairing.evaluation (pairing.weight Common.Statistics.fermion) pairValue =
+    (Common.Statistics.fermion.zetaInt : ℂ) ^
+      pairing.interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ) *
+    ∏ B, (localPairing B).evaluation
+      ((localPairing B).weight Common.Statistics.fermion) (localPairValue B)
+  exact Pairing.evaluation_eq_mul_prod_components
+    pairing localPairing (d.componentMixedPairEquiv externalTime σ)
+    (pairing.weight Common.Statistics.fermion)
+    ((Common.Statistics.fermion.zetaInt : ℂ) ^
+      pairing.interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ))
+    (fun B => (localPairing B).weight Common.Statistics.fermion)
+    pairValue localPairValue
+    (d.pairingInMixedOrder_weight_eq_inter_mul_prod_components
+      Common.Statistics.fermion externalTime σ)
+    (fun B pr => by
+      rw [d.componentMixedPairEquiv_apply externalTime σ B pr]
+      exact d.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
+        ε β externalTime σ B pr.1.1 pr.1.2)
 
 /-- Multiplying the mixed pairing value by the sign that carries fixed component-leg order to
 mixed-time component-leg order leaves the fixed external-component sign times the component-local
