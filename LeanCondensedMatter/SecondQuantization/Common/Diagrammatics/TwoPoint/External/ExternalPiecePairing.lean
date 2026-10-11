@@ -32,12 +32,14 @@ theorem TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_sy
     (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner
         ((d.externalPieceMixedPositionEquiv τ τ' σ).symm pos) =
       (d.externalPieceMixedPositionEquiv τ τ' σ).symm
-        (d.mixedRestrictedPartner τ τ' σ d.externalComponentPart pos) := by
+        (((d.pairingInMixedOrder τ τ' σ).restrict
+          (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart)
+          (fun p => by rw [d.mixedPositionComponent_partner])).partner pos) := by
   apply (d.externalPieceMixedPositionEquiv τ τ' σ).injective
   rw [Equiv.apply_symm_apply]
   apply Subtype.ext
   rw [TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
-    d.mixedRestrictedPartner_val]
+    PairingOn.restrict_partner_val]
   rw [← d.externalPieceMixedPosition_partner,
     ← TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
     Equiv.apply_symm_apply]
@@ -54,9 +56,7 @@ noncomputable def TwoPointDiagram.externalPieceComponentPairEquiv
     (fun p => by rw [d.mixedPositionComponent_partner])
     (d.externalPieceMixedPositionEquiv τ τ' σ).symm
     (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
-    (fun pos => by
-      simpa only [TwoPointDiagram.mixedRestrictedPartner] using
-        d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ pos)
+    (fun pos => d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ pos)
 
 /-- Mapping the normalized standalone external-piece pair back to ambient mixed positions recovers
 the normalized ambient component pair endpoints in their original order. -/
@@ -97,8 +97,14 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
     apply Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
       (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
     · intro q
-      rw [d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ,
-        d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ d.externalComponentPart q]
+      rw [d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ]
+      apply congrArg (d.externalPieceMixedPositionEquiv τ τ' σ).symm
+      apply Subtype.ext
+      simp only [PairingOn.restrict_partner_val,
+        d.mixedComponentPairEndpointEquiv_apply_val,
+        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one]
+      exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff
+        q.1.1.1 q.1.1.2).1 q.1.2).2
     · exact horder
   rw [hpair]
   simp only [hf, d.mixedComponentPairEndpointEquiv_apply_val,

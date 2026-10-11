@@ -37,30 +37,7 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
   rw [d.mixedTimeAmbientPositionEquiv_partner]
   exact (d.pairing.vertexGraph_componentBlock_partner twoPointVertexOfLeg _).symm
 
-/-- The mixed-order partner restricted to one full component-position fiber. -/
-noncomputable def TwoPointDiagram.mixedRestrictedPartner
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
-    Equiv.Perm (d.MixedComponentPosition τ τ' σ B) :=
-  ((d.pairingInMixedOrder τ τ' σ).restrict
-    (fun p => d.mixedPositionComponent τ τ' σ p = B)
-    (fun p => by rw [d.mixedPositionComponent_partner])).partner
-
-/-- The restricted mixed partner has the ambient mixed position as its underlying value. -/
-theorem TwoPointDiagram.mixedRestrictedPartner_val
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (p : d.MixedComponentPosition τ τ' σ B) :
-    (d.mixedRestrictedPartner τ τ' σ B p : Fin (2 * (2 * n + 1))) =
-      (d.pairingInMixedOrder τ τ' σ).partner p := by
-  simpa only [TwoPointDiagram.mixedRestrictedPartner] using
-    (d.pairingInMixedOrder τ τ' σ).restrict_partner_val
-      (fun q => d.mixedPositionComponent τ τ' σ q = B)
-      (fun q => by rw [d.mixedPositionComponent_partner]) p
-
-/-- The mixed component-position equivalence intertwines the mixed restricted partner with the
+/-- The mixed component-position equivalence intertwines the restricted mixed pairing with the
 standard component restricted partner. -/
 private theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -68,18 +45,22 @@ private theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (p : d.MixedComponentPosition τ τ' σ B) :
     d.mixedComponentPositionEquiv τ τ' σ B
-        (d.mixedRestrictedPartner τ τ' σ B p) =
+        (((d.pairingInMixedOrder τ τ' σ).restrict
+          (fun q => d.mixedPositionComponent τ τ' σ q = B)
+          (fun q => by rw [d.mixedPositionComponent_partner])).partner p) =
       d.restrictedPartner (B : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n))))
         (d.mixedComponentPositionEquiv τ τ' σ B p) := by
   apply Subtype.ext
   change mixedTimeAmbientPositionEquiv τ τ' σ
-      (d.mixedRestrictedPartner τ τ' σ B p) =
+      (((d.pairingInMixedOrder τ τ' σ).restrict
+        (fun q => d.mixedPositionComponent τ τ' σ q = B)
+        (fun q => by rw [d.mixedPositionComponent_partner])).partner p) =
     (d.restrictedPartner (B : Finset (TwoPointVertex
       (Finset.univ : Finset (Fin n))))
       (d.mixedComponentPositionEquiv τ τ' σ B p) :
         Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)))
-  rw [d.mixedRestrictedPartner_val, d.mixedTimeAmbientPositionEquiv_partner,
+  rw [PairingOn.restrict_partner_val, d.mixedTimeAmbientPositionEquiv_partner,
     d.restrictedPartner_val]
   apply congrArg d.pairing.partner
   rfl
@@ -95,13 +76,17 @@ private theorem TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPosit
     (d.restrictedVacuumPairing B hVac).partner
         (d.mixedVacuumPositionEquiv τ τ' σ B hVac p) =
       d.mixedVacuumPositionEquiv τ τ' σ B hVac
-        (d.mixedRestrictedPartner τ τ' σ B p) := by
+        (((d.pairingInMixedOrder τ τ' σ).restrict
+          (fun q => d.mixedPositionComponent τ τ' σ q = B)
+          (fun q => by rw [d.mixedPositionComponent_partner])).partner p) := by
   change (d.restrictedVacuumPairing B hVac).partner
       (d.vacuumBlockLegEquiv B hVac
         (d.mixedComponentPositionEquiv τ τ' σ B p)) =
     d.vacuumBlockLegEquiv B hVac
       (d.mixedComponentPositionEquiv τ τ' σ B
-        (d.mixedRestrictedPartner τ τ' σ B p))
+        (((d.pairingInMixedOrder τ τ' σ).restrict
+          (fun q => d.mixedPositionComponent τ τ' σ q = B)
+          (fun q => by rw [d.mixedPositionComponent_partner])).partner p))
   rw [d.mixedComponentPositionEquiv_partner]
   simpa only [TwoPointDiagram.restrictedVacuumPairing, TwoPointDiagram.restrictedPartner] using
     d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
@@ -150,20 +135,6 @@ theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val
     (d.pairingInMixedOrder τ τ' σ)
     (fun p => d.mixedPositionComponent τ τ' σ p = B) _ pr k
 
-/-- On mixed component endpoints, the restricted mixed partner exchanges endpoint zero and endpoint
-one of the same normalized mixed pair. -/
-theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    d.mixedRestrictedPartner τ τ' σ B
-        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) =
-      d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1) := by
-  apply Subtype.ext
-  rw [d.mixedRestrictedPartner_val]
-  exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
-
 /-- Mixed pairs in a vacuum component are equivalent to normalized pairs of the corresponding
 restricted vacuum pairing. -/
 noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
@@ -177,9 +148,8 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
     (fun p => by rw [d.mixedPositionComponent_partner])
     (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
     (d.restrictedVacuumPairing B hVac)
-    (fun pos => by
-      simpa only [TwoPointDiagram.mixedRestrictedPartner] using
-        d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac pos)
+    (fun pos =>
+      d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac pos)
 
 /-- Mixed-time coordinate transport intertwines the partners of the two ambient pairings. -/
 private theorem TwoPointDiagram.mixedTimePositionEquiv_partner
