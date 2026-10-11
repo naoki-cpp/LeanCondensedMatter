@@ -37,7 +37,7 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
   rw [d.mixedTimeAmbientPositionEquiv_partner]
   exact (d.pairing.vertexGraph_componentBlock_partner twoPointVertexOfLeg _).symm
 
-/-- The mixed component-position equivalence intertwines the mixed restricted partner with the
+/-- The mixed component-position equivalence intertwines the restricted mixed pairing with the
 standard component restricted partner. -/
 private theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -84,7 +84,9 @@ private theorem TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPosit
         (d.mixedComponentPositionEquiv τ τ' σ B p)) =
     d.vacuumBlockLegEquiv B hVac
       (d.mixedComponentPositionEquiv τ τ' σ B
-        (d.mixedRestrictedPartner τ τ' σ B p))
+        (((d.pairingInMixedOrder τ τ' σ).restrict
+          (fun q => d.mixedPositionComponent τ τ' σ q = B)
+          (fun q => by rw [d.mixedPositionComponent_partner])).partner p))
   rw [d.mixedComponentPositionEquiv_partner]
   simpa only [TwoPointDiagram.restrictedVacuumPairing, TwoPointDiagram.restrictedPartner] using
     d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
