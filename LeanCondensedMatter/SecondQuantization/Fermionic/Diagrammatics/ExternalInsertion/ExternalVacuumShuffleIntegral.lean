@@ -300,6 +300,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
           pr.1.2 := by
       exact (externalInsertionMixedTimeOrderedAtomicLegEquiv
         externalTime (σ ∘ f)).symm_apply_apply pr.1.2
+    dsimp only at hvalue
     rw [ha, hb] at hvalue
     exact hvalue
 
