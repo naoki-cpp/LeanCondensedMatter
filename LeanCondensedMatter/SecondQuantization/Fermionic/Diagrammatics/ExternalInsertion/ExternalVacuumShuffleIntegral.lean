@@ -121,7 +121,6 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
       (Finset.subset_univ T) ext vac
       ⟨(T.orderIsoOfFin rfl v).1, Finset.mem_univ _⟩
       (T.orderIsoOfFin rfl v).2]
-    rfl
   change externalInsertionMixedTimeOrderedAtomicPairValue ε β
       d.externalLabel externalTime d.vertexLabelSequence σ
       (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
@@ -133,10 +132,20 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
       (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
       (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a)
       (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b)
-  simpa only [Function.comp_id, hlabel, hvertices] using
-    (externalInsertionMixedTimeOrderedAtomicPairValue_map
+  have hLabelComp :
+      d.externalLabel ∘ (fun e : Fin (2 * E) => e) = ext.externalLabel := by
+    funext e
+    exact congrFun hlabel e
+  have hTimeComp :
+      externalTime ∘ (fun e : Fin (2 * E) => e) = externalTime := by
+    funext e
+    rfl
+  have hmap :=
+    externalInsertionMixedTimeOrderedAtomicPairValue_map
       ε β (fun e : Fin (2 * E) => e) f
-      d.externalLabel externalTime d.vertexLabelSequence σ a b)
+      d.externalLabel externalTime d.vertexLabelSequence σ a b
+  rw [hLabelComp, hTimeComp, hvertices, hlabel] at hmap
+  exact hmap
 
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
