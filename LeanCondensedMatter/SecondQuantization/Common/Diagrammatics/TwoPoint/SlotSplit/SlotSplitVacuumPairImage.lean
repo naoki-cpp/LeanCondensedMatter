@@ -122,15 +122,16 @@ noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
         · simpa only [pr.2] using B.2
         · exact Subtype.ext pr.2
       invFun := fun pr => ⟨pr.1.1, congrArg Subtype.val pr.2⟩
-    left_inv := by
-      intro pr
-      apply Subtype.ext
-      rfl
-    right_inv := by
-      intro pr
-      apply Subtype.ext
-      apply Subtype.ext
-      rfl }
+      left_inv := by
+        intro pr
+        apply Subtype.ext
+        rfl
+      right_inv := by
+        intro pr
+        apply Subtype.ext
+        apply Subtype.ext
+        rfl
+    }
   exact (Equiv.sigmaCongrRight fiberEquiv).trans (Equiv.sigmaFiberEquiv f)
 
 /-- One ambient vacuum-component mixed pair fiber has twice as many elements as interaction vertices
