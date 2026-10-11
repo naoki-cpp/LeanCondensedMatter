@@ -5055,7 +5055,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {m n : ℕ} (source : Combinatorics.Pairing m) (target : Combinatorics.Pairing n) (e : Fin (2 * m) ≃ Fin (2 * n))\n  (hpartner : ∀ (p : Fin (2 * m)), target.partner (e p) = e (source.partner p)) (pr : source.NormalizedPair),\n  ↑((source.normalizedPairEquivOfPartnerEquiv target e hpartner) pr) = (e (↑pr).1, e (↑pr).2) ∨\n    ↑((source.normalizedPairEquivOfPartnerEquiv target e hpartner) pr) = (e (↑pr).2, e (↑pr).1)",
     "standardAxioms": [
       "Classical.choice",
@@ -5063,7 +5063,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -5074,19 +5074,15 @@
     "docString": "A partner-intertwining position map preserves each normalized pair up to endpoint reversal. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68521,6 +68517,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
+    "externalAxioms": [],
+    "docString": "The pair bound is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius",
     "standardAxioms": [
       "Classical.choice",
@@ -68542,7 +68584,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
+      "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -68550,7 +68592,7 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
+      "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -72202,8 +72244,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
     ],
@@ -104494,15 +104536,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts), Even (↑B).toLeft.card",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -104513,9 +104555,7 @@
     "docString": "Every connected component contains an even number of external insertions. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_eq_two_mul_externalPairCount"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.PairingOn.even_card",
       "SecondQuantization.Common.externalCardEven_of_equiv_sum_prod",
@@ -104523,10 +104563,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_eq_two_mul_externalPairCount"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109198,47 +109236,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair),\n  have f :=\n    (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ).trans\n      (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' υ).symm;\n  ↑((d.mixedPairTimeEquiv τ τ' σ υ) pr) = (f (↑pr).1, f (↑pr).2) ∨\n    ↑((d.mixedPairTimeEquiv τ τ' σ υ) pr) = (f (↑pr).2, f (↑pr).1)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": "Ambient pair transport preserves the pair endpoints up to normalized orientation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.normalizedPairEquivOfPartnerEquiv_pair_eq_or_swap",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedTimePositionEquiv_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158440,7 +158437,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius pMax p broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        p ∈ Set.Icc 0 pMax →\n          0 < broadening →\n            ‖QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening‖ ≤\n              QuantumTheory.Models.MassiveDirac.radialInterbandBastinDominatingConstant e v m radius pMax",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius pMax p broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        p ∈ Set.Icc 0 pMax →\n          0 < broadening →\n            ‖QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening‖ ≤\n              QuantumTheory.Models.MassiveDirac.radialInterbandBastinDominatingConstant✝ e v m radius pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158463,7 +158460,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
+      "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -158471,52 +158468,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "The pair bound is nonnegative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172647,48 +172598,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts), (↑B).toLeft.card = 2 * d.externalPairCount B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_eq_two_mul_externalPairCount",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The external sector of one component has twice its local external-pair count. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSectorOrderIso"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent (↑B) leg ↔\n    SecondQuantization.Common.componentLegVertex ((SecondQuantization.Common.externalInsertionLegEquiv E S) leg) ∈ ↑B",
     "standardAxioms": [
@@ -175668,7 +175577,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (p : Fin (2 * (2 * n + 1))),\n  (d.pairingInMixedOrder τ τ' υ).partner\n      (((SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ).trans\n          (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' υ).symm)\n        p) =\n    ((SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ).trans\n        (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' υ).symm)\n      ((d.pairingInMixedOrder τ τ' σ).partner p)",
     "standardAxioms": [
       "Classical.choice",
@@ -175676,7 +175585,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -175687,19 +175596,16 @@
     "docString": "Mixed-time coordinate transport intertwines the partners of the two ambient pairings. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPairTimeEquiv_pair_eq_or_swap"
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
