@@ -372,8 +372,6 @@ or consumer structure changes.
 - `QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero` —
   The transverse component of the zero-broadening dressed-current vector carries the same first
   nonvanishing weak-disorder coefficient as the transverse ladder action.
-- `QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity` —
-  The pointwise fixed-window theorem expressed through the named clean Bastin-pair limit density.
 - `QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq` — The
   canonical occupation-derived finite-cutoff response keeps the single-cone regulator term explicit,
   including the massless endpoint where both sides vanish.
