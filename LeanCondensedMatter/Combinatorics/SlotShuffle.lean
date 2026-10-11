@@ -169,13 +169,6 @@ abbrev LeftSlotSet (m n : ℕ) :=
 def SlotShuffle.toLeftSlotSet {m n : ℕ} (σ : SlotShuffle m n) : LeftSlotSet m n :=
   ⟨σ.leftSlots, σ.card_leftSlots⟩
 
-/-- The left-slot set determines the whole slot shuffle. -/
-theorem SlotShuffle.toLeftSlotSet_injective {m n : ℕ} :
-    Function.Injective (SlotShuffle.toLeftSlotSet : SlotShuffle m n → LeftSlotSet m n) := by
-  intro σ τ h
-  apply SlotShuffle.eq_of_leftSlots_eq
-  exact congrArg Subtype.val h
-
 /-- The possible left-slot sets are counted by a binomial coefficient. -/
 theorem card_leftSlotSet (m n : ℕ) :
     Fintype.card (LeftSlotSet m n) = Nat.choose (m + n) m := by
