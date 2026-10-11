@@ -35,7 +35,7 @@ The generic finite-band layer provides pointwise spectral and Berry geometry. Gl
 This planned context covers localized-spin models, magnon approximations, and macroscopic
 magnetization dynamics. The [glossary](docs/glossary/magnetism/CONTEXT.md) fixes their vocabulary;
 the [roadmap](docs/roadmaps/spin-waves.md) records unimplemented targets, and
-[proposed ADR 0022](docs/adr/0022-spin-wave-model-boundaries.md) specifies the intended boundaries.
+[ADR 0022](docs/adr/0022-spin-wave-model-boundaries.md) specifies the approved boundaries.
 
 ## Relationships
 

@@ -2,7 +2,7 @@
 
 These records state current architectural decisions and proposed boundaries for extending the repository. The original accepted records were reconstructed from implementation and design documentation; they do not claim to reproduce historical discussions, decision dates, or the order in which decisions were made. Numbering is for reference.
 
-Records without an explicit status have status **accepted**, meaning implemented in the current design. Records marked **proposed** describe intended boundaries that are not yet implemented. Alternatives explain the relevant trade-off, not an undocumented historical evaluation.
+Records without an explicit status have status **accepted**. Acceptance means the architectural decision is approved; implementation status is recorded separately in each record and its roadmap. Records marked **proposed** remain under consideration. Alternatives explain the relevant trade-off, not an undocumented historical evaluation.
 
 ## Foundations and module ownership
 
@@ -42,7 +42,7 @@ Records without an explicit status have status **accepted**, meaning implemented
 
 - [0009 — Keep generic response separate from physical conductivity and models](0009-response-and-conductivity.md)
 - [0017 — Derive crystal structure from weak atomic configurations](0017-crystal-from-atomic-configurations.md)
-- [0022 — Separate exact spin models, magnon approximations, and macroscopic magnetization (proposed)](0022-spin-wave-model-boundaries.md)
+- [0022 — Separate exact spin models, magnon approximations, and macroscopic magnetization](0022-spin-wave-model-boundaries.md)
 
 [Historical review coverage](history-review.md) tracks the issue-focused sequential review, records PR-only number gaps as skips, and identifies the next issue to inspect. Historical evidence sections distinguish recorded motivations from current implementation constraints.
 
