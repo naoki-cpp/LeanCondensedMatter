@@ -151,42 +151,23 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
   unfold ExternalInsertionWickDiagram.fixedTimeAmplitude
   calc
     _ = d.vertexWeight g *
-        (externalInsertionMixedAtomicOrderSign externalTime σ *
-          d.mixedPairingValue ε β externalTime σ) := by
-      ring
-    _ = d.vertexWeight g *
-        (componentExternalOrderSign d blockOrder *
-          ∏ B : d.vertexGraph.componentPartition.parts,
-            externalInsertionMixedAtomicOrderSign
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B) *
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [horderPairing]
-    _ = componentExternalOrderSign d blockOrder *
-        ((∏ B : d.vertexGraph.componentPartition.parts,
-            (d.componentWickDiagram B).vertexWeight g) *
-          ∏ B : d.vertexGraph.componentPartition.parts,
-            externalInsertionMixedAtomicOrderSign
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B) *
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [hvertex]
+          (externalInsertionMixedAtomicOrderSign externalTime σ *
+            d.mixedPairingValue ε β externalTime σ) := by
       ring
     _ = componentExternalOrderSign d blockOrder *
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).vertexWeight g *
-            (externalInsertionMixedAtomicOrderSign
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B) *
-              (d.componentWickDiagram B).mixedPairingValue ε β
-                (d.componentExternalTime externalTime B)
-                (d.componentInteractionTime σ B)) := by
-      rw [← Finset.prod_mul_distrib]
+          ((∏ B : d.vertexGraph.componentPartition.parts,
+              (d.componentWickDiagram B).vertexWeight g) *
+            ∏ B : d.vertexGraph.componentPartition.parts,
+              externalInsertionMixedAtomicOrderSign
+                  (d.componentExternalTime externalTime B)
+                  (d.componentInteractionTime σ B) *
+                (d.componentWickDiagram B).mixedPairingValue ε β
+                  (d.componentExternalTime externalTime B)
+                  (d.componentInteractionTime σ B)) := by
+      rw [hvertex, horderPairing]
+      ring
     _ = _ := by
+      rw [← Finset.prod_mul_distrib]
       apply congrArg (fun z : ℂ => componentExternalOrderSign d blockOrder * z)
       apply Finset.prod_congr rfl
       intro B _
