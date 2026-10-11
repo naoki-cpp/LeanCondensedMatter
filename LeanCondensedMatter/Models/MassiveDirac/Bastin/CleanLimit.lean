@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
 import Mathlib.Tactic
 
@@ -27,8 +26,6 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-
-open Filter QuantumTheory.Transport
 
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/
 def cleanInterbandBastinPairLimitDensity
