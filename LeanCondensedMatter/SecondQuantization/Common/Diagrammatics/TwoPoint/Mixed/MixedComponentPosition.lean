@@ -83,19 +83,5 @@ noncomputable def TwoPointDiagram.mixedComponentPositionEquiv {n : ℕ}
   (mixedTimeAmbientPositionEquiv τ τ' σ).subtypeEquiv fun p =>
     d.mixedPositionComponent_eq_iff_legInComponent τ τ' σ B p
 
-/-- Mixed positions in a vacuum component, reindexed as the legs of its restricted quartic
-diagram. -/
-noncomputable def TwoPointDiagram.mixedVacuumPositionEquiv {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (hVac : ComponentIsVacuum
-      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
-    d.MixedComponentPosition τ τ' σ B ≃
-      Fin (2 * (2 * (interactionSector
-        (B : Finset (TwoPointVertex
-          (Finset.univ : Finset (Fin n))))).card)) :=
-  (d.mixedComponentPositionEquiv τ τ' σ B).trans
-    (d.vacuumBlockLegEquiv B hVac)
-
 end Common
 end SecondQuantization
