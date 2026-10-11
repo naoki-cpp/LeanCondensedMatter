@@ -362,6 +362,66 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
   rw [hvertices] at hkernel
   exact hkernel
 
+/-- Evaluating all vacuum-side Wick contractions of an assembled external-insertion
+diagram on its inherited quartic pairing gives the standalone quartic pairing
+evaluation, including its fermionic crossing weight.
+
+Here both products use the *vacuum pairing's* normalized endpoints. Identifying these
+with the ambient mixed-order pairing's normalized endpoints remains a separate step. -/
+theorem externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    vac.pairing.evaluation (vac.pairing.weight Common.Statistics.fermion)
+      (fun a b =>
+        externalInsertionMixedTimeOrderedAtomicPairValue ε β
+          d.externalLabel externalTime d.vertexLabelSequence σ
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+            (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+              (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+              (Sum.inr (⟨(orderedQuarticLegEquiv S.card a).1, Finset.mem_univ _⟩,
+                (orderedQuarticLegEquiv S.card a).2))))
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+            (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+              (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+              (Sum.inr (⟨(orderedQuarticLegEquiv S.card b).1, Finset.mem_univ _⟩,
+                (orderedQuarticLegEquiv S.card b).2))))) =
+      flatVertexLegPairingEvaluation ε β
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v))
+        (σ ∘ f) vac.pairing := by
+  intro S f d
+  change vac.pairing.evaluation (vac.pairing.weight Common.Statistics.fermion) _ =
+    vac.pairing.evaluation (vac.pairing.weight Common.Statistics.fermion)
+      (flatVertexLegPairValue ε β
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f))
+  have hkernel :
+      (fun a b : Fin (2 * (2 * S.card)) =>
+        externalInsertionMixedTimeOrderedAtomicPairValue ε β
+          d.externalLabel externalTime d.vertexLabelSequence σ
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+            (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+              (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+              (Sum.inr (⟨(orderedQuarticLegEquiv S.card a).1, Finset.mem_univ _⟩,
+                (orderedQuarticLegEquiv S.card a).2))))
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+            (orderedExternalInsertionLegMap (E₁ := 0) (E₂ := E)
+              (Fin.elim0 : Fin (2 * 0) → Fin (2 * E)) f
+              (Sum.inr (⟨(orderedQuarticLegEquiv S.card b).1, Finset.mem_univ _⟩,
+                (orderedQuarticLegEquiv S.card b).2))))) =
+        flatVertexLegPairValue ε β
+          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f) := by
+    funext a b
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
+      ε β T ext vac externalTime σ a b
+  rw [hkernel]
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
