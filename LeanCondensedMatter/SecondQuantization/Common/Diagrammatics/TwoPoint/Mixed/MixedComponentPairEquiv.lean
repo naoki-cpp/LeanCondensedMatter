@@ -34,7 +34,8 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
           ((d.pairingInMixedOrder τ τ' σ).partner p))) =
     d.vertexGraph.componentBlock
       (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
-  rw [d.mixedTimeAmbientPositionEquiv_partner]
+  rw [TwoPointDiagram.pairingInMixedOrder, PairingOn.transport_partner,
+    Equiv.apply_symm_apply]
   exact (d.pairing.vertexGraph_componentBlock_partner twoPointVertexOfLeg _).symm
 
 /-- The full diagram component containing a normalized pair of the mixed-time pairing. -/
@@ -111,7 +112,8 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
           (((d.pairingInMixedOrder τ τ' σ).restrict
             (fun q => d.mixedPositionComponent τ τ' σ q = B)
             (fun q => by rw [d.mixedPositionComponent_partner])).partner pos)
-      rw [PairingOn.restrict_partner_val, d.mixedTimeAmbientPositionEquiv_partner])
+      rw [PairingOn.restrict_partner_val, TwoPointDiagram.pairingInMixedOrder,
+        PairingOn.transport_partner, Equiv.apply_symm_apply])
 
 /-- Canonical comparison of mixed normalized pairs in one component, obtained by restricting the
 global partner-preserving pair transport rather than splitting external and vacuum components. -/
