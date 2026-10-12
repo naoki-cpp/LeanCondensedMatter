@@ -95,7 +95,7 @@ theorem sum_transverseReplacedBond (J : ℝ) (twiceSpin : ℕ) :
   apply Finsupp.ext
   intro n
   simp [hamiltonian, excitationHamiltonian, polarizedEnergy, ZMod.card,
-    LinearMap.sum_apply, Finset.sum_apply, smul_smul]
+    LinearMap.sum_apply, Finset.sum_apply]
   ring
 
 theorem excitationHamiltonian_vacuum (J : ℝ) (twiceSpin : ℕ) :
