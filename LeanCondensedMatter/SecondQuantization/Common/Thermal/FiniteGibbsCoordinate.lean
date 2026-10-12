@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
@@ -35,16 +35,6 @@ private theorem purePointBoltzmannWeight_cast_eq_boltzmannWeight
     (energy : Config → ℝ) (β : ℝ) (n : Config) :
     ((purePointBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
   rw [purePointBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
-
-/-- `Tr[e^{-βH₀}A]` is the Boltzmann-weighted diagonal trace of `A`. -/
-theorem traceFock_diagonalEvolution_comp_eq_weightedTrace (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    traceFock ((diagonalEvolution energy (-β)).comp A) = weightedTrace (boltzmannWeight energy β) A
-    := by
-  rw [traceFock_eq_sum_matrixCoeff, weightedTrace_eq_sum_matrixCoeff]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  rw [matrixCoeff_diagonalEvolution_comp]
-  rfl
 
 /-- The trace of the free diagonal evolution is the complex Boltzmann weight sum. -/
 theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β : ℝ) :
@@ -83,8 +73,13 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
     finiteGibbsExpectation energy β A =
       traceFock ((diagonalEvolution energy (-β)).comp A) /
         traceFock (diagonalEvolution energy (-β)) := by
-  rw [finiteGibbsExpectation_eq_sum, traceFock_diagonalEvolution_comp_eq_weightedTrace,
-    traceFock_diagonalEvolution_eq_weightSum, weightedTrace_eq_sum_matrixCoeff, weightSum]
+  rw [finiteGibbsExpectation_eq_sum, traceFock_eq_sum_matrixCoeff,
+    traceFock_diagonalEvolution_eq_weightSum, weightSum]
+  simp_rw [matrixCoeff_diagonalEvolution_comp]
+  change
+    (∑ n : Config, (purePointGibbsProbability energy β n : ℂ) * matrixCoeff A n n) =
+      (∑ n : Config, boltzmannWeight energy β n * matrixCoeff A n n) /
+        ∑ n : Config, boltzmannWeight energy β n
   simp_rw [purePointGibbsProbability]
   have hZcast : ((purePointPartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n :=
