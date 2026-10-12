@@ -36,25 +36,15 @@ private theorem purePointBoltzmannWeight_cast_eq_boltzmannWeight
     ((purePointBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
   rw [purePointBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
 
-omit [Fintype Config] in
-/-- `diagonalEvolution` is diagonal with the complex Boltzmann weights. -/
-theorem matrixCoeff_diagonalEvolution (energy : Config → ℝ) (β : ℝ) (m n : Config) :
-    matrixCoeff (diagonalEvolution energy (-β)) m n =
-      if m = n then boltzmannWeight energy β m else 0 := by
-  rw [matrixCoeff_diagonalEvolution_eq_ite]
-  by_cases h : m = n
-  · subst m
-    simp [boltzmannWeight]
-  · simp [h]
-
 /-- `Tr[e^{-βH₀}A]` is the Boltzmann-weighted diagonal trace of `A`. -/
 theorem traceFock_diagonalEvolution_comp_eq_weightedTrace (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock ((diagonalEvolution energy (-β)).comp A) = weightedTrace (boltzmannWeight energy β) A
     := by
   rw [traceFock_eq_sum_matrixCoeff, weightedTrace_eq_sum_matrixCoeff]
-  simp only [matrixCoeff_comp, matrixCoeff_diagonalEvolution, ite_mul, zero_mul,
-    Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [matrixCoeff_diagonalEvolution_comp]
+  rfl
 
 /-- The trace of the free diagonal evolution is the complex Boltzmann weight sum. -/
 theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β : ℝ) :
@@ -62,8 +52,8 @@ theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β :
   rw [traceFock_eq_sum_matrixCoeff]
   simp only [weightSum]
   refine Finset.sum_congr rfl fun n _ => ?_
-  rw [matrixCoeff_diagonalEvolution]
-  simp
+  rw [matrixCoeff_diagonalEvolution_eq_ite]
+  simp [boltzmannWeight]
 
 /-- On a finite configuration type, the canonical real pure-point partition function agrees,
 after coercion to `ℂ`, with the finite complex Boltzmann-coordinate sum. -/

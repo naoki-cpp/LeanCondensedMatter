@@ -235,7 +235,7 @@ and later thermodynamic limits is documented in
 | Completed fermionic Fock space | `SecondQuantization.Fermionic.CompletedFockSpace` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
 | Algebraic-to-completed Fock inclusion | `SecondQuantization.Fermionic.algebraicToCompleted` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
 | Completed single-mode number projection | `SecondQuantization.Fermionic.completedNumberOperator` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
-| Finite Hilbert Fock realization | `SecondQuantization.Common.FiniteHilbertFock` | `SecondQuantization/Common/Thermal/FiniteHilbertOperator.lean` |
+| Finite Hilbert Fock realization | `SecondQuantization.Common.FiniteHilbertFock` | `SecondQuantization/Common/Algebra/FiniteHilbertOperator.lean` |
 | Finite Gibbs expectation | `SecondQuantization.Common.finiteGibbsExpectation` | `SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean` |
 | Perfect pairing | `Combinatorics.PerfectPairing` | `Combinatorics/PerfectPairing.lean` |
 | Generic thermal pairing recursion | `ExpectationPairingRecursion` | `SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` |
