@@ -581,21 +581,26 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flat
           (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
           pr.1.1 pr.1.2 := by
   intro S order f d split pairEquiv kernel horder
-  calc
-    (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,
-        kernel pr.1 pr.2) =
+  have hvac :
+      (∏ pr : (vac.pairingInOrder order).NormalizedPair,
+        kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2) =
+      ∏ pr : (vac.pairingInOrder order).NormalizedPair,
+        flatVertexLegPairValue ε β
+          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+          pr.1.1 pr.1.2 := by
+    apply Fintype.prod_congr
+    intro pr
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
+      ε β T ext vac externalTime σ pr (horder pr)
+  have hsplit :=
+    externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
+      ε β T ext vac externalTime σ
+  exact hsplit.trans
+    (congrArg
+      (fun z : ℂ =>
         (∏ pr : ext.pairing.NormalizedPair,
-          kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
-        ∏ pr : (vac.pairingInOrder order).NormalizedPair,
-          kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2 :=
-      externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
-        ε β T ext vac externalTime σ
-    _ = _ := by
-      congr 1
-      apply Fintype.prod_congr
-      intro pr
-      exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
-        ε β T ext vac externalTime σ pr (horder pr)
+          kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) * z)
+      hvac)
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
