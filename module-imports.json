@@ -4632,14 +4632,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeConnectedCycleSeries",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/FreeConnectedCycleSeries.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/FreePartitionDeterminant.lean",
       "imports": [
@@ -4710,7 +4702,6 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeConnectedCycleSeries",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
@@ -5071,6 +5062,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder"
       ],
       "externalImportCount": 0
@@ -7297,15 +7289,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeConnectedCycleSeries",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeConnectedCycleSeries.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean",
       "imports": [
@@ -7369,7 +7352,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeConnectedCycleSeries",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
