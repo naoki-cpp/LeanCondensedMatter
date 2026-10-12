@@ -115,7 +115,7 @@ theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
       | Sum.inl p => (e (Sum.inl p.1.1), e (Sum.inl p.1.2))
       | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2)) := by
   rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap e P Q pr with h | h
-  · exact h
+  · cases pr <;> exact h
   · have hnormalized :=
       (Pairing.ofSplit e P Q).pairs_normalized
         (Pairing.ofSplitNormalizedPairEquiv e P Q pr).2
