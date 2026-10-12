@@ -34,8 +34,8 @@ noncomputable section
 
 variable {Site : Type*}
 
-private theorem latticeBasis_coord_eq_lapply (y : Site) :
-    (latticeBasis (Site := Site)).coord y =
+private theorem basisSingleOne_coord_eq_lapply (y : Site) :
+    (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)).coord y =
       (Finsupp.lapply y : Module.Dual ℂ ((Site →₀ ℂ))) := by
   apply LinearMap.ext
   intro ψ
@@ -58,17 +58,17 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
     boundedDgammaMatrixUnit x y =
       (finiteHilbertCreate x).comp (finiteHilbertAnnihilate y) := by
   change Common.finiteHilbertOperatorAlgEquiv
-      (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
+      (AlgebraicFock.occupationConjugate (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
         (AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y))) = _
   rw [dGamma_matrixUnit]
   have hConj := map_mul
-    (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site)))
+    (AlgebraicFock.occupationConjugate (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)))
     (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x))
     (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply y))
   simp only [Module.End.mul_eq_comp] at hConj
   rw [hConj]
-  have hx : latticeBasis (Site := Site) x = latticeKet x := rfl
-  rw [← hx, ← latticeBasis_coord_eq_lapply (Site := Site) y]
+  have hx : (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)) x = latticeKet x := rfl
+  rw [← hx, ← basisSingleOne_coord_eq_lapply (Site := Site) y]
   rw [AlgebraicFock.occupationConjugate_create,
     AlgebraicFock.occupationConjugate_annihilateDual,
     finiteHilbertCreate, finiteHilbertAnnihilate]
