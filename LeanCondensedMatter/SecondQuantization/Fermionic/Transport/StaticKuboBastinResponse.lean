@@ -3,8 +3,6 @@ import LeanCondensedMatter.Transport.Streda.GeneralizedStatic
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Static target of the finite spectral Kubo–Bastin response
 

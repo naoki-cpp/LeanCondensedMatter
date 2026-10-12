@@ -3,8 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSource
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Stationary lag representation of the finite-frequency response
 

@@ -5,14 +5,12 @@ import Mathlib.Tactic.Abel
 set_option linter.style.header false
 
 /-!
-# Geometry of a single-particle lattice
+# Lattice site geometry
 
 Positions, oriented bond displacements, and scalar coordinates are independent of exchange
-statistics and Fock-space realizations. Statistics-specific lattice-current constructions
-consume this shared one-particle geometry.
+statistics and Fock-space realizations. First- and second-quantized lattice models
+may use the same geometry.
 -/
-
-namespace QuantumMechanics.SingleParticle
 
 /-- Positions of lattice sites in a real vector space. -/
 structure LatticeGeometry (Site E : Type*) where
@@ -56,5 +54,3 @@ theorem bondCoordinate_self (geometry : LatticeGeometry Site E)
   simp
 
 end LatticeGeometry
-
-end QuantumMechanics.SingleParticle

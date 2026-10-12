@@ -3,8 +3,6 @@ import LeanCondensedMatter.Transport.KuboBastin.Occupation
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Fermionic directional occupation-resolved Kubo–Bastin response
 

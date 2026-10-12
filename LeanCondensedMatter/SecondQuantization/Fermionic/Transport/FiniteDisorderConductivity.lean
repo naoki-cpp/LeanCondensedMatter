@@ -3,8 +3,6 @@ import LeanCondensedMatter.Transport.Disorder.Finite
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Exact finite-disorder static conductivity
 

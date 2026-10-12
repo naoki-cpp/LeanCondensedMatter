@@ -2,8 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNo
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Finite Kubo–Greenwood conductivity input
 

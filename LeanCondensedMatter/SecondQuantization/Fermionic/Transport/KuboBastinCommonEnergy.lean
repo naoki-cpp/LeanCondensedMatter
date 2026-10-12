@@ -3,8 +3,6 @@ import LeanCondensedMatter.Transport.KuboBastin.CommonEnergy
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Fermionic directional common-energy Kubo–Bastin kernel
 

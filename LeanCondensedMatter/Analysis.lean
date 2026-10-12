@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.LatticeGeometry
 import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.PowerSeries

@@ -4,8 +4,6 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Fermionic infinite-observation-time adiabatic response
 

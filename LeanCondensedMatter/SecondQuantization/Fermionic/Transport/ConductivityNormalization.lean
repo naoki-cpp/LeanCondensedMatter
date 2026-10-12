@@ -3,8 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFreque
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Fermionic finite-volume directional conductivity
 

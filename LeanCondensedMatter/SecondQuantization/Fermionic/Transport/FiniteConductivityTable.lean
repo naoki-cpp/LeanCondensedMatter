@@ -3,8 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Fermionic directional finite-conductivity table realization
 

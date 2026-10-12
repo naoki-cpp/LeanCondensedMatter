@@ -3,8 +3,6 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 
 set_option linter.style.header false
 
-open QuantumMechanics.SingleParticle
-
 /-!
 # Pure-point spectral form of the directional-current response
 

@@ -24,7 +24,7 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
-Particle-statistics-independent site geometry and bond coordinates are owned by `QuantumMechanics.SingleParticle.LatticeGeometry`, whereas bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
+Particle-statistics-independent site geometry and bond coordinates are owned by `Analysis.LatticeGeometry`, whereas bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
 
 Particle-statistics-independent one-body current semantics are not second-quantization declarations.
 They live upstream under `Analysis` and `QuantumTheory.ConservationLaw`; second-quantized layers only

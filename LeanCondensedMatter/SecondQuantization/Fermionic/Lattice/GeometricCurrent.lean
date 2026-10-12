@@ -1,9 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.LatticeGeometry
+import LeanCondensedMatter.Analysis.LatticeGeometry
 
 set_option linter.style.header false
-
-open QuantumMechanics.SingleParticle
 
 /-!
 # Geometric aggregation of finite-lattice currents
