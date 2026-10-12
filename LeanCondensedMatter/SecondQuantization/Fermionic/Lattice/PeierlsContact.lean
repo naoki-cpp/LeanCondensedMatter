@@ -25,21 +25,15 @@ theorems consuming the resulting current and contact operators live downstream i
 `Fermionic.Transport`.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Lattice
-
-open QuantumTheory.PeierlsPhase
-
 noncomputable section
 
-section Algebraic
+namespace LocallyFiniteHopping
 
+open QuantumTheory.PeierlsPhase
+open SecondQuantization.Fermionic.Lattice
 variable {Site : Type*} [DecidableEq Site]
 
-namespace _root_.LocallyFiniteHopping
 
-open _root_.SecondQuantization.Fermionic.Lattice
 
 /-- Peierls-dependent one-particle current on an oriented bond, defined as the explicit negative
 link-Hamiltonian derivative. -/
@@ -99,7 +93,10 @@ theorem hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero
 
 end LocallyFiniteHopping
 
-end Algebraic
+namespace SecondQuantization
+namespace Fermionic
+namespace Lattice
+
 
 section Bounded
 
@@ -158,7 +155,8 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
 
 end Bounded
 
-end
 end Lattice
 end Fermionic
 end SecondQuantization
+
+end

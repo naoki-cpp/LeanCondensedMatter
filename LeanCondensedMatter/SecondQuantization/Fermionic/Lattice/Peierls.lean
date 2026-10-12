@@ -32,18 +32,13 @@ the complex parameter keeps the algebraic derivative statement independent of an
 real-linear operator layer.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Lattice
+namespace LocallyFiniteHopping
 
 open QuantumTheory.PeierlsPhase
-open scoped BigOperators
-
+open SecondQuantization.Fermionic.Lattice
 variable {Site : Type*} [DecidableEq Site]
 
-namespace _root_.LocallyFiniteHopping
 
-open _root_.SecondQuantization.Fermionic.Lattice
 
 /-- The two oriented hopping terms on a link with opposite Peierls phases.
 
@@ -92,7 +87,3 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonian_zero
   abel
 
 end LocallyFiniteHopping
-
-end Lattice
-end Fermionic
-end SecondQuantization
