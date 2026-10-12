@@ -6,7 +6,7 @@ and mention an identifier only when the implementation matters.
 | Term | Meaning in this project | Primary implementation |
 |---|---|---|
 | Algebraic Fock space | Finite-support linear combinations of occupation configurations. It is not a completed Hilbert space. | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
-| Finite Hilbert Fock realization | `EuclideanSpace ℂ Config` for finite `Config`, used to interpret algebraic operators as bounded finite-dimensional operators. | `SecondQuantization/Common/Thermal/FiniteHilbertOperator.lean` |
+| Finite Hilbert Fock realization | `EuclideanSpace ℂ Config` for finite `Config`, used to interpret algebraic operators as bounded finite-dimensional operators. | `SecondQuantization/Common/Algebra/FiniteHilbertOperator.lean` |
 | Mode index type | A type of one-particle labels. It does not by itself carry a one-particle Hilbert-space structure. | generic `Mode` parameters in `SecondQuantization/Common/Algebra/` |
 | Occupation configuration | Fermionic or bosonic occupation data. The zero configuration is not yet the vacuum vector until embedded in Fock space. | `SecondQuantization/Fermionic/Algebra/Occupation.lean`, `SecondQuantization/Bosonic/Algebra/Occupation.lean` |
 | Basis state | The algebraic Fock vector associated with one occupation configuration. | `basisState` |
@@ -19,7 +19,7 @@ and mention an identifier only when the implementation matters.
 | Pure-point Gibbs state | Density operator constructed directly from a Hilbert basis, real energy levels, and Boltzmann summability; the finite specialization requires no separate state implementation. | `QuantumTheory/Gibbs/PurePoint.lean` |
 | Density-state expectation | The canonical normalized expectation of a bounded operator in a density state. | `QuantumTheory.DensityOperator.expectation` |
 | Finite Gibbs expectation | Density-state expectation of the generic finite pure-point Gibbs state after transporting an algebraic Fock operator to the finite Hilbert realization. | `SecondQuantization.Common.finiteGibbsExpectation` |
-| Weighted trace | An unnormalized finite coordinate sum with an arbitrary weight. It is proof infrastructure, not a physical state by itself. | `SecondQuantization/Common/Thermal/FiniteWeightedTrace.lean` |
+| Finite weight sum | An unnormalized sum of arbitrary complex coordinate weights, not a physical state. | `SecondQuantization.Common.weightSum` in `SecondQuantization/Common/Algebra/FiniteTrace.lean` |
 | Thermal contraction | The c-number expectation of an imaginary-time-ordered operator pair in a specified thermal state. It is not the operator identity used to exchange two factors. | finite Gibbs two-point and contraction modules |
 | Perfect pairing | A complete matching of a finite set of operator positions. It is combinatorial and contains no expectation value. | `Combinatorics/PerfectPairing.lean` |
 | Pair deletion and reindexing | The induction operation that removes one matched pair and transports the remaining pairing to a smaller index type. It is not a physical process. | `eraseZeroPair` |
