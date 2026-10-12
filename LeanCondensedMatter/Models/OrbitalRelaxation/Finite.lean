@@ -132,7 +132,11 @@ theorem orbitalRate_nonneg (ℏ τ₂ c₁ c₂ r : ℝ)
 /-- Momentum and degree-two scattering times are reciprocals of distinct
 positive collision eigenvalues. -/
 noncomputable def momentumTime (I₁ : ℝ) : ℝ := I₁⁻¹
+
+/-- Relaxation time of the degree-two angular collision mode. -/
 noncomputable def degreeTwoTime (I₂ : ℝ) : ℝ := I₂⁻¹
+
+/-- Ratio of the momentum and degree-two scattering times. -/
 noncomputable def scatteringRatio (I₁ I₂ : ℝ) : ℝ :=
   momentumTime I₁ / degreeTwoTime I₂
 
