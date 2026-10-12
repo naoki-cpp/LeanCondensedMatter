@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.SubsetSplit
@@ -161,6 +162,64 @@ theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition
   rw [PairingOn.transport_partner]
   simp only [split, fixed, Equiv.trans_apply, Equiv.apply_symm_apply]
   rw [Pairing.ofSplit_partner_inr]
+
+/-- Under the increasing vacuum vertex enumeration, the actual mixed-time
+partner of an assembled vacuum leg is the image of its partner in the vacuum
+diagram's ordered pairing. The explicit vertex-order transport does not assume
+the intrinsic quartic vertex enumeration is increasing. -/
+theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_orderedLeg
+    {ExternalLabel InternalLabel : Type*} {E N : ℕ} (T : Finset (Fin N))
+    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (vac : QuarticDiagram InternalLabel N
+      ((Finset.univ : Finset (Fin N)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ)
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin N)) \ T).card))) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let d := ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let embed : Fin (2 * (2 * S.card)) → Fin (2 * (2 * N + E)) := fun q =>
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (Sum.inr
+          (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv S.card q).2))
+    (d.pairingInMixedOrder externalTime σ).partner (embed p) =
+      embed ((vac.pairingInOrder order).partner p) := by
+  intro S order d embed
+  let leg := orderedLegToDiagramLeg S order
+  let split :=
+    (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+      (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+  have hordered (q : Fin (2 * (2 * S.card))) :
+      leg q = (quarticLegEquiv S).symm
+        (order (orderedQuarticLegEquiv S.card q).1,
+          (orderedQuarticLegEquiv S.card q).2) := by
+    simp [leg, orderedLegToDiagramLeg]
+  have hpos (q : Fin (2 * (2 * S.card))) :
+      split (Sum.inr (leg q)) = embed q := by
+    rw [hordered]
+    exact externalInsertionSlotLegSplitting_right_mixedPosition T externalTime σ
+      (order (orderedQuarticLegEquiv S.card q).1)
+      (orderedQuarticLegEquiv S.card q).2
+  have hpartner (q : Fin (2 * (2 * S.card))) :
+      vac.pairing.partner (leg q) =
+        leg ((vac.pairingInOrder order).partner q) := by
+    change vac.pairing.partner (leg q) =
+      leg ((vac.pairing.transport leg).partner q)
+    rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+  calc
+    (d.pairingInMixedOrder externalTime σ).partner (embed p) =
+        (d.pairingInMixedOrder externalTime σ).partner
+          (split (Sum.inr (leg p))) := by rw [hpos]
+    _ = split (Sum.inr (vac.pairing.partner (leg p))) := by
+      rw [hpos, hordered]
+      exact ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition
+        T ext vac externalTime σ
+        (order (orderedQuarticLegEquiv S.card p).1)
+        (orderedQuarticLegEquiv S.card p).2
+    _ = split (Sum.inr (leg ((vac.pairingInOrder order).partner p))) := by
+      rw [hpartner]
+    _ = embed ((vac.pairingInOrder order).partner p) :=
+      hpos ((vac.pairingInOrder order).partner p)
 
 theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
     {S T : Finset (Fin N)} (h : T ⊆ S)
