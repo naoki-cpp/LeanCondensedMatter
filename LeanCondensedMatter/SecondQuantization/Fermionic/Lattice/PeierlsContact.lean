@@ -37,7 +37,9 @@ section Algebraic
 
 variable {Site : Type*} [DecidableEq Site]
 
-namespace LocallyFiniteHopping
+namespace _root_.LocallyFiniteHopping
+
+open _root_.SecondQuantization.Fermionic.Lattice
 
 /-- Peierls-dependent one-particle current on an oriented bond, defined as the explicit negative
 link-Hamiltonian derivative. -/

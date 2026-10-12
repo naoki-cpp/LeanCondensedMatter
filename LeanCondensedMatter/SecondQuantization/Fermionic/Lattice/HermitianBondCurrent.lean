@@ -35,7 +35,9 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
-namespace LocallyFiniteHopping
+namespace _root_.LocallyFiniteHopping
+
+open _root_.SecondQuantization.Fermionic.Lattice
 
 /-- Coefficient-level Hermiticity of a lattice hopping model. -/
 def HasHermitianAmplitudes (K : LocallyFiniteHopping Site) : Prop :=

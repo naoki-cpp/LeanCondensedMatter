@@ -41,7 +41,9 @@ open scoped BigOperators
 
 variable {Site : Type*} [DecidableEq Site]
 
-namespace LocallyFiniteHopping
+namespace _root_.LocallyFiniteHopping
+
+open _root_.SecondQuantization.Fermionic.Lattice
 
 /-- The two oriented hopping terms on a link with opposite Peierls phases.
 
