@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
+import LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 
 set_option linter.style.header false
