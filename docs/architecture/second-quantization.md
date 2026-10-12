@@ -227,6 +227,9 @@ Semantics → Factorization → Analysis → Integration → Series
 Lower layers must not import higher layers or their umbrella. The checker derives this from parsed
 Lean imports rather than source-line regexes.
 
+The Common imaginary-time quartic sequence is the ordered product of evolved vertex operators.
+Its zero and successor equations remain available to recursive consumers; the fermionic flattened
+leg product reaches the sequence through the Common row-major product theorem and vertex evolution.
 ## Current linked-cluster endpoints
 
 The finite-mode fermionic partition-function line has both formal and analytic linked-cluster
