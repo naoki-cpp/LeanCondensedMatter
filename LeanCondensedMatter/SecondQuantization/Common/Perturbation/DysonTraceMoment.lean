@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 
@@ -7,8 +6,8 @@ set_option linter.style.header false
 /-!
 # Statistics-independent finite-configuration Dyson vertex moments
 
-Normalize the Common Dyson trace coefficients by the nonzero free constant term, then package their
-factorial-normalized values as a normalized finite-set function. This construction does not use
+Normalize the Common Dyson trace coefficients by the nonzero free constant term and form
+factorial-normalized vertex moments indexed by finite sets. This construction does not use
 fermionic statistics; infinite-dimensional bosonic occupation spaces require separate summability
 and are not covered by the finite-configuration trace.
 -/
@@ -47,40 +46,6 @@ theorem normalizedDysonTraceCoeff_eq_finiteGibbsExpectation (energy : Config →
 noncomputable def dysonTraceVertexMoment {α : Type*} (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (S : Finset α) : ℂ :=
   (S.card.factorial : ℂ) * normalizedDysonTraceCoeff energy β V S.card
-
-/-- Normalized finite-set moment data of a finite-configuration Dyson trace expansion. -/
-noncomputable def dysonTraceVertexMomentSetFunction {α : Type*}
-    (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    Combinatorics.NormalizedSetFunction α ℂ where
-  toFun := dysonTraceVertexMoment energy β V
-  map_empty := by
-    simp [dysonTraceVertexMoment]
-
-@[simp]
-theorem dysonTraceVertexMomentSetFunction_apply {α : Type*}
-    (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (S : Finset α) :
-    dysonTraceVertexMomentSetFunction energy β V S =
-      dysonTraceVertexMoment energy β V S :=
-  rfl
-
-/-- The normalized Dyson trace power-series moments are the Common Dyson vertex moments. -/
-theorem powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonTraceSeries_eq_dysonTraceVertexMomentSetFunction
-    {α : Type*} (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hZ : PowerSeries.constantCoeff
-      (PowerSeries.normalizeByConstantCoeff (dysonTraceSeries energy β V)) = 1) :
-    Combinatorics.powerSeriesMomentSetFunction (α := α)
-        (PowerSeries.normalizeByConstantCoeff (dysonTraceSeries energy β V)) hZ =
-      dysonTraceVertexMomentSetFunction energy β V := by
-  rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
-  intro S
-  simp only [Combinatorics.powerSeriesMomentCoeff,
-    dysonTraceVertexMomentSetFunction_apply, dysonTraceVertexMoment,
-    PowerSeries.coeff_normalizeByConstantCoeff, coeff_dysonTraceSeries,
-    normalizedDysonTraceCoeff, div_eq_mul_inv]
-  ac_rfl
 
 end Common
 end SecondQuantization
