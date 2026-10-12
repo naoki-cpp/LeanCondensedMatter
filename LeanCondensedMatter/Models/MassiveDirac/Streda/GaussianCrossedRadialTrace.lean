@@ -975,6 +975,26 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
       let d :=
         finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
           .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+      let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+        v m probeEnergy broadening disorderStrength hbar pMax
+      let aA := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonScalarCoefficient
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let aR := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonScalarCoefficient
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let dA := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .z
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let dR := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .z
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let bA := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .x
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let bR := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .x
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       let isotropic :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
                 ∫ p in (0 : ℝ)..pMax,
@@ -1049,6 +1069,26 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
       let d :=
         -finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
           1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+        v m probeEnergy broadening disorderStrength hbar pMax
+      let aA := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonScalarCoefficient
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let aR := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonScalarCoefficient
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let dA := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .z
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let dR := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .z
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let bA := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .x
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      let bR := fun p : ℝ =>
+        finiteCutoffContinuumBornDysonPauliCoefficient .x
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       let isotropic :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
                 ∫ p in (0 : ℝ)..pMax,
@@ -1100,6 +1140,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax)
+
 /-- On the real-space radial axis, the two-dimensional crossed trace kernel is exactly the radial
 trace kernel assembled from the already reduced Green and current blocks. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq
