@@ -84,41 +84,28 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude 
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d := by
   symm
   rw [dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation]
-  have hstep : ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
-      (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
-        ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-          ∑ pairing : Pairing (2 * S.card),
-            intervalIntegral.orderedSimplexIntegral S.card β
-              (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
-    have hpt : ∀ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
-        (-1 : ℂ) ^ S.card *
-          ∑ order : Common.QuarticVertexOrder S,
-            d.vertexWeight g * d.orderedSimplexContribution ε β order :=
-      fun d => by rw [quarticWickDiagramAmplitude, mul_assoc, Finset.mul_sum]
-    calc
-      ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
-          = ∑ d : QuarticWickDiagram Mode N S, (-1 : ℂ) ^ S.card *
-              ∑ order : Common.QuarticVertexOrder S,
-                d.vertexWeight g * d.orderedSimplexContribution ε β order :=
-          Finset.sum_congr rfl fun d _ => hpt d
-      _ = (-1 : ℂ) ^ S.card * ∑ d : QuarticWickDiagram Mode N S,
-            ∑ order : Common.QuarticVertexOrder S,
-              d.vertexWeight g * d.orderedSimplexContribution ε β order :=
-          (Finset.mul_sum _ _ _).symm
-      _ = (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
-            ∑ d : QuarticWickDiagram Mode N S,
-              d.vertexWeight g * d.orderedSimplexContribution ε β order := by
-          rw [Finset.sum_comm]
-      _ = (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
-            ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-              ∑ pairing : Pairing (2 * S.card),
-                intervalIntegral.orderedSimplexIntegral S.card β
-                  (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
-          congr 1
-          exact Finset.sum_congr rfl fun order _ =>
-            sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation ε β g order
-  rw [hstep, Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
-  ring
+  calc
+    (∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d) =
+        (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
+          ∑ d : QuarticWickDiagram Mode N S,
+            d.vertexWeight g * d.orderedSimplexContribution ε β order := by
+      simp_rw [quarticWickDiagramAmplitude, mul_assoc, Finset.mul_sum]
+      rw [Finset.sum_comm]
+    _ = (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
+          ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+            ∑ pairing : Pairing (2 * S.card),
+              intervalIntegral.orderedSimplexIntegral S.card β
+                (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
+      congr 1
+      exact Finset.sum_congr rfl fun order _ =>
+        sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation ε β g order
+    _ = (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
+          ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+            ∑ pairing : Pairing (2 * S.card),
+              intervalIntegral.orderedSimplexIntegral S.card β
+                (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
+      rw [Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
+      ring
 
 end Fermionic
 end SecondQuantization
