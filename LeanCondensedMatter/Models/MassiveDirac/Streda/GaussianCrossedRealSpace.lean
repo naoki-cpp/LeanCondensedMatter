@@ -308,7 +308,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_
         .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius p =
       -finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
         .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
-  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] <;> ring
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
 
 /-- The pointwise Gaussian-crossed radial current entry kernel has the explicit scalar
 first-cosine Pauli coefficient selected by the source direction. -/
