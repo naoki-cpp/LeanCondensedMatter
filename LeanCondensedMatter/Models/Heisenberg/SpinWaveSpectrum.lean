@@ -101,7 +101,7 @@ theorem oneMagnonEnergy_pos (J : ℝ) (hJ : 0 < J) (q : ZMod N) (hq : q ≠ 0) :
 infinite-volume construction. Stancil-Prabhakar, equation (2.91). -/
 def dispersion (J a k : ℝ) : ℝ := 2 * J * (1 - Real.cos (a * k))
 
-/-- The nonnegative representative of an allowed periodic wavevector for spacing `a`.
+/-- For positive spacing `a`, the nonnegative representative of an allowed periodic wavevector.
 The mode label is modulo N; representatives differing by 2 pi/a have the same energy. -/
 def wavevector (a : ℝ) (q : ZMod N) : ℝ := 2 * Real.pi * q.val / (N * a)
 
@@ -123,7 +123,7 @@ theorem tendsto_dispersion_div_sq (J a : ℝ) (ha : 0 < a) :
         (Filter.tendsto_id.mono_left nhdsWithin_le_nhds)).div_const 2 :
         Filter.Tendsto (fun k : ℝ => a * k / 2) (𝓝[≠] 0) (𝓝 (a * 0 / 2)))
     have hc : ContinuousAt Real.sinc 0 := Real.continuous_sinc.continuousAt
-    simpa using hc.tendsto.comp hi
+    simpa [Function.comp_def] using hc.tendsto.comp hi
   have hlim : Filter.Tendsto (fun k : ℝ => J * (a ^ 2 * Real.sinc (a * k / 2) ^ 2))
       (𝓝[≠] 0) (𝓝 (J * a ^ 2)) := by
     simpa using (tendsto_const_nhds.mul (tendsto_const_nhds.mul (hs.pow 2)) :
