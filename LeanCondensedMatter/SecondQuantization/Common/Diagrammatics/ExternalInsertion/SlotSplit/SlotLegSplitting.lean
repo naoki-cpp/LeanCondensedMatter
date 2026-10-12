@@ -249,23 +249,32 @@ theorem ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orde
   let slot := externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
   let fixed := externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
   let leg := orderedLegToDiagramLeg S order
+  have hleft (p : Fin (2 * (2 * T.card + E))) :
+      splitting (Sum.inl p) = fixed.symm (slot (Sum.inl p)) := rfl
+  have hright (q : Fin (2 * (2 * S.card))) :
+      splitting (Sum.inr q) = fixed.symm (slot (Sum.inr (leg q))) := rfl
+  have hvac (q : Fin (2 * (2 * S.card))) :
+      vac.pairing.partner (leg q) =
+        leg ((vac.pairingInOrder order).partner q) := by
+    change vac.pairing.partner (leg q) =
+      leg ((vac.pairing.transport leg).partner q)
+    rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+  have hfixed :
+      (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+          externalTime σ =
+        (Pairing.ofSplit slot ext.pairing vac.pairing).transport fixed := rfl
+  rw [hfixed]
   refine PairingOn.ext (Equiv.ext fun i => ?_)
   obtain ⟨u, rfl⟩ := splitting.surjective i
   cases u with
   | inl p =>
-      change ((Pairing.ofSplit slot ext.pairing vac.pairing).transport fixed).partner
-          (fixed.symm (slot (Sum.inl p))) =
-        fixed.symm (slot (Sum.inl (ext.pairing.partner p)))
-      rw [PairingOn.transport_partner, Equiv.apply_symm_apply,
+      rw [Pairing.ofSplit_partner_inl, hleft, hleft,
+        PairingOn.transport_partner, Equiv.apply_symm_apply,
         Pairing.ofSplit_partner_inl]
   | inr q =>
-      change ((Pairing.ofSplit slot ext.pairing vac.pairing).transport fixed).partner
-          (fixed.symm (slot (Sum.inr (leg q)))) =
-        fixed.symm (slot (Sum.inr
-          (leg ((vac.pairing.transport leg).partner q))))
-      rw [PairingOn.transport_partner, Equiv.apply_symm_apply,
-        Pairing.ofSplit_partner_inr, PairingOn.transport_partner,
-        Equiv.apply_symm_apply]
+      rw [Pairing.ofSplit_partner_inr, hright, hright,
+        PairingOn.transport_partner, Equiv.apply_symm_apply,
+        Pairing.ofSplit_partner_inr, hvac]
 
 theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
     {S T : Finset (Fin N)} (h : T ⊆ S)
