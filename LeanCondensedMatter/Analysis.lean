@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
 import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 import LeanCondensedMatter.Analysis.LatticeGeometry

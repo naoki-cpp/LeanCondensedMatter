@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.SpinHalf
+import LeanCondensedMatter.QuantumTheory.LocalizedSpin
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Tactic
 
@@ -21,30 +22,24 @@ noncomputable section
 
 variable {Site : Type*} [Fintype Site] [DecidableEq Site]
 
-/-- A localized spin-1/2 configuration, with `0` up and `1` down. -/
-abbrev Configuration (Site : Type*) := Site → Fin 2
-
-/-- The full finite-spin Hilbert space. -/
-abbrev State (Site : Type*) := EuclideanSpace ℂ (Configuration Site)
-
 /-- The action of a two-level matrix at a single site. -/
-def atSite (A : InternalSpace.PauliMatrix) (i : Site) : State Site →ₗ[ℂ] State Site where
+def atSite (A : InternalSpace.PauliMatrix) (i : Site) : LocalizedSpin.State 1 Site →ₗ[ℂ] LocalizedSpin.State 1 Site where
   toFun ψ := WithLp.toLp 2 fun c => ∑ s : Fin 2, A (c i) s * ψ (Function.update c i s)
   map_add' ψ φ := by ext c; simp [mul_add, Finset.sum_add_distrib]
   map_smul' a ψ := by ext c; simp; ring
 
 /-- Exchange the spin labels at two sites. -/
-def exchangeConfiguration (i j : Site) : Equiv.Perm (Configuration Site) where
+def exchangeConfiguration (i j : Site) : Equiv.Perm (LocalizedSpin.Configuration 1 Site) where
   toFun c := c ∘ Equiv.swap i j
   invFun c := c ∘ Equiv.swap i j
   left_inv c := by ext k; simp
   right_inv c := by ext k; simp
 
 /-- Unitary exchange of two localized spins. -/
-def exchange (i j : Site) : State Site ≃ₗᵢ[ℂ] State Site :=
+def exchange (i j : Site) : LocalizedSpin.State 1 Site ≃ₗᵢ[ℂ] LocalizedSpin.State 1 Site :=
   LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (exchangeConfiguration i j)
 
-theorem exchange_apply (i j : Site) (ψ : State Site) (c : Configuration Site) :
+theorem exchange_apply (i j : Site) (ψ : LocalizedSpin.State 1 Site) (c : LocalizedSpin.Configuration 1 Site) :
     exchange i j ψ c = ψ (c ∘ Equiv.swap i j) := rfl
 
 theorem exchange_involutive (i j : Site) : Function.Involutive (exchange i j) := by
@@ -71,7 +66,7 @@ theorem id_sub_exchange_isPositive (i j : Site) :
   nlinarith
 
 /-- Dimensionful Cartesian spin product at two sites. -/
-def spinDot (hbar : ℝ) (i j : Site) : State Site →ₗ[ℂ] State Site :=
+def spinDot (hbar : ℝ) (i j : Site) : LocalizedSpin.State 1 Site →ₗ[ℂ] LocalizedSpin.State 1 Site :=
   ((hbar / 2 : ℝ) : ℂ) ^ 2 •
     ((atSite InternalSpace.pauliX i).comp (atSite InternalSpace.pauliX j) +
      (atSite InternalSpace.pauliY i).comp (atSite InternalSpace.pauliY j) +
@@ -102,7 +97,7 @@ theorem spinDot_eq_exchange (hbar : ℝ) (i j : Site) (hij : i ≠ j) :
     ring
 
 /-- A normalized fully polarized state. -/
-def polarized : State Site := EuclideanSpace.single (fun _ => 0) 1
+def polarized : LocalizedSpin.State 1 Site := EuclideanSpace.single (fun _ => 0) 1
 
 theorem norm_polarized : ‖polarized (Site := Site)‖ = 1 := by simp [polarized]
 
@@ -112,7 +107,7 @@ theorem exchange_polarized (i j : Site) : exchange i j polarized = polarized := 
   rfl
 
 /-- The configuration with just site `i` reversed from the polarized reference. -/
-def oneDown (i : Site) : Configuration Site := Pi.single i 1
+def oneDown (i : Site) : LocalizedSpin.Configuration 1 Site := Pi.single i 1
 
 omit [Fintype Site] in
 theorem oneDown_injective : Function.Injective (oneDown (Site := Site)) := by
@@ -122,7 +117,7 @@ theorem oneDown_injective : Function.Injective (oneDown (Site := Site)) := by
   simp [oneDown, hij] at this
 
 /-- A localized one-spin-deviation basis state. -/
-def oneMagnonKet (i : Site) : State Site := EuclideanSpace.single (oneDown i) 1
+def oneMagnonKet (i : Site) : LocalizedSpin.State 1 Site := EuclideanSpace.single (oneDown i) 1
 
 theorem exchange_oneMagnonKet (i j k : Site) :
     exchange i j (oneMagnonKet k) = oneMagnonKet (Equiv.swap i j k) := by
@@ -132,13 +127,13 @@ theorem exchange_oneMagnonKet (i j k : Site) :
   ext l
   simp [exchangeConfiguration, oneDown, Pi.single_apply, Equiv.swap_apply_eq_iff]
 
-private def oneMagnonLinear : EuclideanSpace ℂ Site →ₗ[ℂ] State Site where
+private def oneMagnonLinear : EuclideanSpace ℂ Site →ₗ[ℂ] LocalizedSpin.State 1 Site where
   toFun ψ := ∑ i, ψ i • oneMagnonKet i
   map_add' ψ φ := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' a ψ := by simp [Finset.smul_sum, smul_smul]
 
 /-- The isometric embedding of one-spin-deviation amplitudes into the full spin space. -/
-def oneMagnonEmbedding : EuclideanSpace ℂ Site →ₗᵢ[ℂ] State Site :=
+def oneMagnonEmbedding : EuclideanSpace ℂ Site →ₗᵢ[ℂ] LocalizedSpin.State 1 Site :=
   oneMagnonLinear.isometryOfInner fun ψ φ => by
     simp [oneMagnonLinear, sum_inner, inner_sum, inner_smul_left, inner_smul_right,
       oneMagnonKet, PiLp.single_apply,
