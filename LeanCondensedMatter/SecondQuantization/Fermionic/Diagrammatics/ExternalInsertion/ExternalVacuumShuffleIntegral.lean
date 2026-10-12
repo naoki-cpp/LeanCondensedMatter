@@ -720,6 +720,18 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flat
       congr 1
       apply Fintype.prod_congr
       intro pr
+      change
+        (if split (Sum.inr pr.1.1) < split (Sum.inr pr.1.2) then
+            flatVertexLegPairValue ε β
+              (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+              pr.1.1 pr.1.2
+          else
+            flatVertexLegPairValue ε β
+              (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+              pr.1.2 pr.1.1) =
+          flatVertexLegPairValue ε β
+            (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+            pr.1.1 pr.1.2
       simp only [horder pr, ↓reduceIte]
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
