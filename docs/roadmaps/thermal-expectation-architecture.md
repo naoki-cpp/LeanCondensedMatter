@@ -12,7 +12,7 @@ QuantumTheory.DensityOperator.expectation
 Finite-dimensional trace and occupation-basis formulas are representations of this same expectation,
 not alternative state models.
 
-For a finite configuration type, `Common/Thermal/FiniteHilbertOperator.lean` owns the finite Hilbert
+For a finite configuration type, `Common/Algebra/FiniteHilbertOperator.lean` owns the finite Hilbert
 basis and transport of algebraic Fock endomorphisms to bounded operators. The thermal state is the
 generic pure-point Gibbs density operator from `QuantumTheory.Gibbs.PurePoint`; the finite
 SecondQuantization layer only supplies the representation-specific adapter.
