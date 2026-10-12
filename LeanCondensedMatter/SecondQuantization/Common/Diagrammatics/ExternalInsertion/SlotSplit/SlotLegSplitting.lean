@@ -159,7 +159,7 @@ theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition
       (split (Sum.inr ((quarticLegEquiv S).symm (v, l)))) =
     split (Sum.inr (vac.pairing.partner ((quarticLegEquiv S).symm (v, l))))
   rw [PairingOn.transport_partner]
-  simp only [split, Equiv.trans_apply, Equiv.apply_symm_apply]
+  simp only [split, fixed, Equiv.trans_apply, Equiv.apply_symm_apply]
   rw [Pairing.ofSplit_partner_inr]
 
 theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
