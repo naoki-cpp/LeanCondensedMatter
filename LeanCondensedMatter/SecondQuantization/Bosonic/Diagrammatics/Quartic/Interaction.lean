@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic
 
 set_option linter.style.header false
@@ -36,6 +36,20 @@ noncomputable def quarticInteractionOn (support : Finset (Common.QuarticVertexLa
 noncomputable def quarticInteraction [Fintype Mode] (g : Common.QuarticVertexLabel Mode → ℂ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.quarticInteraction create annihilate g
+
+/-- A quartic vertex cannot connect occupation states with different total particle numbers.
+This is an algebraic selection rule; it imposes no Gibbs summability or operator-domain claim. -/
+theorem matrixCoeff_quarticVertexOperator_eq_zero_of_particleNumber_ne
+    (q : Common.QuarticVertexLabel Mode) (m n : Occupation Mode)
+    (hmn : particleNumber m 竕 particleNumber n) :
+    Common.matrixCoeff (quarticVertexOperator q) m n = 0 := by
+  have hshift := Common.carriesShift_quarticVertexOperator
+    (fun n : Occupation Mode => (particleNumber n : 邃､)) (1 : 邃､) create annihilate
+    carriesParticleNumberCharge_create carriesParticleNumberCharge_annihilate q
+  by_contra hcoeff
+  have hnumber : (particleNumber m : 邃､) = (particleNumber n : 邃､) := by
+    simpa only [quarticVertexOperator, add_zero] using hshift m n hcoeff
+  exact hmn (by exact_mod_cast hnumber)
 
 end Bosonic
 end SecondQuantization

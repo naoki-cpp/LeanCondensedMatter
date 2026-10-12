@@ -352,6 +352,17 @@ still has an infinite occupation basis. Product-domain closure, summability, KMS
 integration, and Dyson convergence therefore remain explicit analytic obligations of the bosonic
 line.
 
+## Composite particle-number selection rules
+
+`Common.Interaction.Quartic` owns grading preservation for two creation and two annihilation
+maps with opposite fixed charges, and for their finite-support interaction sums. These results
+consume `Common.CarriesShift` witnesses, not an exchange-algebra instance. Concrete occupation
+transition proofs stay with Fermionic and Bosonic; the bosonic quartic module uses the shared
+vertex theorem to prove vanishing matrix coefficients between different particle-number sectors.
+Number-operator charge already follows directly from `CarriesShift.comp`; parity transport uses
+`CarriesShift.map`. These algebraic selection rules establish neither Gibbs summability nor
+product-domain closure, and do not identify particle-number grading with exchange statistics.
+
 ## Refactoring rule
 
 Architecture cleanup should optimize for semantic ownership and API size, not theorem-name length.
