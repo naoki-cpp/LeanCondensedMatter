@@ -41,7 +41,7 @@ noncomputable def siteProjector (x : Site) :
 @[simp]
 theorem siteProjector_apply (x : Site) (ψ : (Site →₀ ℂ)) :
     siteProjector x ψ = Finsupp.single x (ψ x) := by
-  rfl
+  exact matrixUnit_apply x x ψ
 
 variable [DecidableEq Site]
 
