@@ -5,6 +5,7 @@ import LeanCondensedMatter.Models.MassiveDirac
 import LeanCondensedMatter.Models.Parabolic2DEG
 import LeanCondensedMatter.Models.RashbaExchange
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
+import LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision
 
 set_option linter.style.header false
 
