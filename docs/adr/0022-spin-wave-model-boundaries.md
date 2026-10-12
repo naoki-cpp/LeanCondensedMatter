@@ -1,9 +1,11 @@
 # Separate exact spin models, magnon approximations, and macroscopic magnetization
 
-Status: accepted. The exact finite-spin representation is implemented in
-`QuantumTheory.SpinHalf`, and the ferromagnetic ring and its one-magnon restriction
-in `Models.Heisenberg`. Approximation and macroscopic interfaces remain targets; see
-the [roadmap](../roadmaps/spin-waves.md).
+Status: accepted. `QuantumTheory.LocalizedSpin` owns the finite-spin configuration
+space, and `QuantumTheory.SpinHalf` its spin-1/2 Pauli representation.
+`Models.Heisenberg` owns the ring and one-magnon restriction; `Models.HolsteinPrimakoff`
+owns the exact capped occupation representation and its finite-spin action.
+Approximation and macroscopic interfaces remain targets; see the
+[roadmap](../roadmaps/spin-waves.md).
 
 Spin-wave physics connects finite quantum spins, bosonic approximations, and classical
 magnetization fields. These objects have different state spaces and hypotheses. Preserve

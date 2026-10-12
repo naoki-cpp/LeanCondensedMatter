@@ -12,6 +12,7 @@ set_option linter.style.header false
 Every site's occupation is bounded by 2s. For finitely many sites, the configuration
 Hilbert space is identified linearly with this sector of algebraic bosonic Fock space.
 The latter has no completed Hilbert-space structure here; no isometry is asserted.
+The bosonic mode labels here denote localized spin sites.
 -/
 
 namespace Models.HolsteinPrimakoff
@@ -21,7 +22,8 @@ open SecondQuantization SecondQuantization.Bosonic
 noncomputable section
 variable {Mode : Type*}
 
-/-- The simultaneous physical sector, imposing n_i <= 2s at every site. -/
+/-- The simultaneous physical sector for uniform spin s, imposing n_i <= 2s at every site.
+Stancil-Prabhakar, Section 2.7.1. -/
 def simultaneousSubspace (twiceSpin : ℕ) : Submodule ℂ (FockSpace Mode) :=
   Finsupp.supported ℂ ℂ {n : Occupation Mode | ∀ i, n i ≤ twiceSpin}
 
