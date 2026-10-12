@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
@@ -9,8 +8,9 @@ set_option linter.style.header false
 # Finite Gibbs expectation bridge
 
 Finite Gibbs states are the finite specialization of the generic pure-point Gibbs construction.
-This module keeps only the SecondQuantization-specific adapter that transports algebraic Fock
-operators to the finite Hilbert realization, together with the resulting coordinate formulas.
+This module owns the SecondQuantization-specific adapter that transports algebraic Fock
+endomorphisms to the canonical finite Hilbert Gibbs density-state expectation, together with
+its normalized diagonal-probability formula. Trace and operator-integral formulas live downstream.
 -/
 
 namespace SecondQuantization
@@ -101,19 +101,6 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
       intro n _
       rw [hinner n]
 
-/-- The canonical finite Gibbs expectation commutes with coefficientwise finite operator
-integration. -/
-theorem finiteGibbsExpectation_operatorIntervalIntegral
-    (energy : Config → ℝ) (β : ℝ)
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
-    (hF : ∀ n : Config, IntervalIntegrable
-      (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
-    finiteGibbsExpectation energy β (operatorIntervalIntegral F a b) =
-      ∫ τ in a..b, finiteGibbsExpectation energy β (F τ) := by
-  simp_rw [finiteGibbsExpectation_eq_sum, matrixCoeff_operatorIntervalIntegral,
-    ← intervalIntegral.integral_const_mul]
-  exact (intervalIntegral.integral_finsetSum fun n _ =>
-    (hF n).const_mul (purePointGibbsProbability energy β n : ℂ)).symm
 
 end
 end Common

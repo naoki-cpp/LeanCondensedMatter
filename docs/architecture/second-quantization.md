@@ -24,6 +24,10 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
+Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by `QuantumTheory.PeierlsPhase`; concrete hopping families and Fock transports remain downstream.
+
+Particle-statistics-independent site geometry and bond coordinates are owned by `Analysis.LatticeGeometry`, whereas bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
+
 Particle-statistics-independent one-body current semantics are not second-quantization declarations.
 They live upstream under `Analysis` and `QuantumTheory.ConservationLaw`; second-quantized layers only
 supply `dGamma`, bounded-realization, lattice, and response adapters where those are genuinely needed.
@@ -339,10 +343,11 @@ restricted to the physical exchange weights `ζ = +1` and `ζ = -1`; the generic
 connected-cycle series remains available for arbitrary exchange weight where its stated algebraic
 hypotheses hold.
 
-The bosonic and fermionic thermal layers keep only domain-facing specializations of that formal
-backend. Fermionic determinant identities remain in the fermionic physical-consumer layer, while
-bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
-thermal layer. The formal series is never evaluated at `t = 1` as part of this bridge.
+Formal Bose/Fermi grand-partition series and connected-cycle identities are consumed directly from
+the Gibbs-level owner with the appropriate exchange weight. The bosonic thermal modules own the
+inverse-determinant identity for the convergent occupation-space partition function.
+Bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
+thermal modules. No formal series is evaluated at one by this construction.
 
 ## Bosonic boundary
 

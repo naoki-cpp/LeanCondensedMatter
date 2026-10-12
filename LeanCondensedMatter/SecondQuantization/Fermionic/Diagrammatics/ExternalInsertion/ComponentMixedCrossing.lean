@@ -1,19 +1,17 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 
 set_option linter.style.header false
 
 /-!
-# Mixed-order component crossing factorization
+# Mixed-order component crossing parity
 
 The component-local mixed positions form an order-preserving family shuffle into the ambient
-mixed-time atomic order. Reusing the generic perfect-pairing component-crossing API then splits the
-ambient mixed crossing count into component-local crossing counts and one residual inter-component
-term.
+mixed-time atomic order. The generic perfect-pairing crossing-parity theorem identifies the residual
+inter-component crossing count modulo two with the ordered block-inversion count of this shuffle.
 
-This layer is still statistics-independent except for the final reusable pairing-weight corollary.
-The relation between the residual mixed block inversions and fermionic time-order permutation signs
-is intentionally left downstream.
+This module provides the mixed-position shuffle and the crossing-parity bridge. Pairing-weight
+factorization and fermionic time-order permutation-sign identities belong to downstream modules.
 -/
 
 namespace SecondQuantization

@@ -363,6 +363,69 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
   rw [hvertices] at hkernel
   exact hkernel
 
+/-- The vacuum-side ambient normalized contraction agrees with its standalone
+quartic kernel whenever the transported endpoints retain their order.
+
+This hypothesis is necessary: arbitrary mixed-time slot permutations can reverse
+a pair, and a fermionic contraction kernel is not symmetric in its arguments. -/
+theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let splitting :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
+      splitting ext.pairing (vac.pairingInOrder order)
+    let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+    ∀ pr : (vac.pairingInOrder order).NormalizedPair,
+      splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2) →
+      kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2 =
+        flatVertexLegPairValue ε β
+          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+          pr.1.1 pr.1.2 := by
+  intro S order f d splitting pairEquiv kernel pr horder
+  have hpair :
+      (pairEquiv (Sum.inr pr)).1 =
+        (splitting (Sum.inr pr.1.1), splitting (Sum.inr pr.1.2)) :=
+    Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
+      splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr) horder
+  have hpos (q : Fin (2 * (2 * S.card))) :
+      splitting (Sum.inr q) =
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (Sum.inr
+            (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card q).2)) :=
+    externalInsertionSlotLegSplitting_right_orderedMixedPosition T externalTime σ q
+  have hkernel :=
+    externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
+      ε β T ext vac externalTime σ pr.1.1 pr.1.2
+  change kernel
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (Sum.inr
+          (⟨(order (orderedQuarticLegEquiv S.card pr.1.1).1).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv S.card pr.1.1).2)))
+      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (Sum.inr
+          (⟨(order (orderedQuarticLegEquiv S.card pr.1.2).1).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv S.card pr.1.2).2))) =
+      flatVertexLegPairValue ε β
+        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v))
+        (σ ∘ f) pr.1.1 pr.1.2 at hkernel
+  rw [hpair, hpos, hpos]
+  exact hkernel
+
 /-- Evaluating all vacuum-side Wick contractions of an assembled external-insertion
 diagram on its inherited quartic pairing gives the standalone quartic pairing
 evaluation, including its fermionic crossing weight.
@@ -423,44 +486,13 @@ theorem externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex
       ε β T ext vac externalTime σ a b
   rw [hkernel]
 
-/-- The actual mixed-time pairing of a reassembled arbitrary-external diagram
-is a binary split pairing, after transporting the fixed-leg splitting into the
-ambient mixed-time order. -/
-private theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit
-    {M : Type*} {E n : ℕ} (T : Finset (Fin n))
-    (ext : ExternalInsertionDiagram (ExternalFieldLabel M)
-      (QuarticVertexLabel M) E n T)
-    (vac : QuarticDiagram (QuarticVertexLabel M) n
-      ((Finset.univ : Finset (Fin n)) \ T))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    let d : ExternalInsertionWickDiagram M E n :=
-      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    let split :=
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
-    d.pairingInMixedOrder externalTime σ =
-      Pairing.ofSplit split ext.pairing vac.pairing := by
-  intro d split
-  change ((Pairing.ofSplit
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))
-      ext.pairing vac.pairing).transport
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)) =
-    Pairing.ofSplit
-      ((externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm)
-      ext.pairing vac.pairing
-  unfold Pairing.ofSplit
-  rw [PairingOn.transport_trans]
-  rfl
+/-- The contraction product of an assembled arbitrary-external diagram splits
+into products on the external-side pairing and the vacuum pairing transported to
+the *increasing complementary vertex order*.
 
-/-- The free-Gibbs contraction product of an assembled arbitrary-external
-diagram splits into its left- and right-sector products, evaluated at the
-*ambient normalized pairs* supplied by the binary splitting equivalence.
-
-Unlike a naive product over transported endpoint pairs, this statement does
-not assume that a slot shuffle preserves the orientation of individual
-fermionic pairs. The remaining physical task is to identify each sector's
-ambient-normalized kernel with its standalone local kernel. -/
+Both sides use ambient-normalized endpoints determined by the binary splitting
+equivalence, so no symmetry of the fermionic kernel under endpoint reversal is
+assumed. The local-kernel comparisons remain separate. -/
 theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
     (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
     (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
@@ -468,39 +500,44 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
     (vac : QuarticDiagram (QuarticVertexLabel Mode) n
       ((Finset.univ : Finset (Fin n)) \ T))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let d : ExternalInsertionWickDiagram Mode E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
     let split :=
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
         (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
     let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
-      split ext.pairing vac.pairing
+      split ext.pairing (vac.pairingInOrder order)
     let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
       d.externalLabel externalTime d.vertexLabelSequence σ
     (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,
         kernel pr.1 pr.2) =
       (∏ pr : ext.pairing.NormalizedPair,
         kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
-      ∏ pr : vac.pairing.NormalizedPair,
+      ∏ pr : (vac.pairingInOrder order).NormalizedPair,
         kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2 := by
-  intro d split pairEquiv kernel
+  intro S order d split pairEquiv kernel
   have hsplit :
       d.pairingInMixedOrder externalTime σ =
-        Pairing.ofSplit split ext.pairing vac.pairing :=
-    externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit
+        Pairing.ofSplit split ext.pairing (vac.pairingInOrder order) :=
+    ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum
       T ext vac externalTime σ
   rw [hsplit]
-  let pairing := Pairing.ofSplit split ext.pairing vac.pairing
+  let pairing := Pairing.ofSplit split ext.pairing (vac.pairingInOrder order)
   change (∏ pr ∈ pairing.pairs, kernel pr.1 pr.2) =
     (∏ pr : ext.pairing.NormalizedPair,
       kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
-      ∏ pr : vac.pairing.NormalizedPair,
+      ∏ pr : (vac.pairingInOrder order).NormalizedPair,
         kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2
   calc
     (∏ pr ∈ pairing.pairs, kernel pr.1 pr.2) =
         ∏ pr : pairing.NormalizedPair, kernel pr.1.1 pr.1.2 :=
       Finset.prod_subtype _ (fun _ => Iff.rfl) _
-    _ = ∏ pr : ext.pairing.NormalizedPair ⊕ vac.pairing.NormalizedPair,
+    _ = ∏ pr : ext.pairing.NormalizedPair ⊕
+        (vac.pairingInOrder order).NormalizedPair,
           kernel (pairEquiv pr).1.1 (pairEquiv pr).1.2 :=
       (Equiv.prod_comp pairEquiv (fun pr => kernel pr.1.1 pr.1.2)).symm
     _ = _ := Fintype.prod_sum_type _
