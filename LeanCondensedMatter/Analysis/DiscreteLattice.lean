@@ -25,13 +25,13 @@ noncomputable def latticeKet (x : Site) : (Site →₀ ℂ) :=
 /-- The matrix unit `|x⟩⟨y|` on the algebraic lattice one-particle space. -/
 noncomputable def matrixUnit (x y : Site) :
     (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
-  (Finsupp.lsingle x : ℂ →ₗ[ℂ] (Site →₀ ℂ)).comp
-    (Finsupp.lapply y : (Site →₀ ℂ) →ₗ[ℂ] ℂ)
+  (Finsupp.lapply y : Module.Dual ℂ (Site →₀ ℂ)).smulRight (latticeKet x)
 
 @[simp]
 theorem matrixUnit_apply (x y : Site) (ψ : (Site →₀ ℂ)) :
     matrixUnit x y ψ = Finsupp.single x (ψ y) := by
-  rfl
+  change (ψ y) • (Finsupp.single x 1 : Site →₀ ℂ) = Finsupp.single x (ψ y)
+  exact Finsupp.smul_single_one x (ψ y)
 
 /-- The one-particle projector `|x⟩⟨x|` onto a lattice site. -/
 noncomputable def siteProjector (x : Site) :
@@ -41,7 +41,7 @@ noncomputable def siteProjector (x : Site) :
 @[simp]
 theorem siteProjector_apply (x : Site) (ψ : (Site →₀ ℂ)) :
     siteProjector x ψ = Finsupp.single x (ψ x) := by
-  rfl
+  exact matrixUnit_apply x x ψ
 
 variable [DecidableEq Site]
 

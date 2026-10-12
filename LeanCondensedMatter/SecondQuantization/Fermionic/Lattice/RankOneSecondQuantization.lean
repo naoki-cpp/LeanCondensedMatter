@@ -24,14 +24,8 @@ theorem dGamma_matrixUnit (x y : Site) :
     AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y) =
       (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x)).comp
         (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply y)) := by
-  have hRankOne :
-      (Finsupp.lapply y : Module.Dual ℂ ((Site →₀ ℂ))).smulRight (latticeKet x) =
-        matrixUnit x y := by
-    apply LinearMap.ext
-    intro ψ
-    rw [matrixUnit_apply]
-    simp [latticeKet]
-  rw [← hRankOne]
+  change AlgebraicFock.dGamma ((Site →₀ ℂ))
+      ((Finsupp.lapply y : Module.Dual ℂ (Site →₀ ℂ)).smulRight (latticeKet x)) = _
   exact AlgebraicFock.dGamma_dualRankOne
     ((Site →₀ ℂ)) (latticeKet x) (Finsupp.lapply y)
 
