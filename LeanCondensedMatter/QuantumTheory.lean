@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.SpinHalf.Finite
+import LeanCondensedMatter.QuantumTheory.SpinfulLattice
 import LeanCondensedMatter.QuantumTheory.PeierlsPhase
 import LeanCondensedMatter.QuantumTheory.PeierlsLattice
 import LeanCondensedMatter.QuantumTheory.ConservationLaw

@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact
