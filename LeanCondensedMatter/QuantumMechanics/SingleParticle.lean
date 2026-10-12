@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.LatticeGeometry
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity
@@ -10,6 +11,6 @@ set_option linter.style.header false
 /-!
 # Single-particle quantum mechanics
 
-Single-particle observables and dynamics: symmetrized and corrected currents, charge-like current
+Single-particle lattice geometry, observables, and dynamics: symmetrized and corrected currents, charge-like current
 specializations, orbital angular momentum, and the continuum realization.
 -/

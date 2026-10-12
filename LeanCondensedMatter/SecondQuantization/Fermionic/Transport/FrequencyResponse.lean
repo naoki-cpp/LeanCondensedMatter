@@ -3,6 +3,8 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
 
 set_option linter.style.header false
 
+open QuantumMechanics.SingleParticle
+
 /-!
 # Finite-time fermionic directional frequency response
 

@@ -3,6 +3,8 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation
 
 set_option linter.style.header false
 
+open QuantumMechanics.SingleParticle
+
 /-!
 # Geometric-current response adapter
 

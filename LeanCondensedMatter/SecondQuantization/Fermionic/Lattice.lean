@@ -15,9 +15,9 @@ set_option linter.style.header false
 # Fermionic lattice models
 
 Canonical lattice/model layer downstream of `Fermionic.Algebra` and upstream of response/transport.
-It owns discrete lattice states, finite spinful one-particle operators, locally finite hopping, charge
-and bond currents, Peierls families, finite-lattice bounded realizations, Hermiticity/current
-equivalences, and geometric aggregation. Generic Kubo, frequency-response, conductivity, Středa,
+It owns concrete discrete hopping and second-quantized currents, Peierls families, finite-lattice
+bounded realizations, Hermiticity/current equivalences, and geometric current aggregation. The
+statistics-independent site geometry and bond coordinates live in `QuantumMechanics.SingleParticle`. Generic Kubo, frequency-response, conductivity, Středa,
 disorder, and validation mathematics do not belong to this layer. Response specializations consume
 these model operators from downstream `Fermionic.Transport` modules.
 -/

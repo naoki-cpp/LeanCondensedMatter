@@ -2,6 +2,8 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
 
 set_option linter.style.header false
 
+open QuantumMechanics.SingleParticle
+
 /-!
 # Geometric Peierls families on a finite lattice
 

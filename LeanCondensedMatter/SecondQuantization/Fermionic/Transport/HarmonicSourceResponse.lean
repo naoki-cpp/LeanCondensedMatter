@@ -4,6 +4,8 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource
 
 set_option linter.style.header false
 
+open QuantumMechanics.SingleParticle
+
 /-!
 # Real harmonic sources for the finite-frequency current response
 

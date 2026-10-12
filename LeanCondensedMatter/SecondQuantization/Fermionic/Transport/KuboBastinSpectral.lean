@@ -3,6 +3,8 @@ import LeanCondensedMatter.Transport.KuboBastin.Finite
 
 set_option linter.style.header false
 
+open QuantumMechanics.SingleParticle
+
 /-!
 # Fermionic directional Kubo–Bastin spectral conductivity
 

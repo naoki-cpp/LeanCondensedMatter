@@ -3,6 +3,8 @@ import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 
 set_option linter.style.header false
 
+open QuantumMechanics.SingleParticle
+
 /-!
 # Static Kubo–Bastin to Středa bridge under a visible Peierls Ward identity
 
