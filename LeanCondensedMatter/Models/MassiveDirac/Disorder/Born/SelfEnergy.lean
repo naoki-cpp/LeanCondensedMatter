@@ -387,26 +387,6 @@ private noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOf
     finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
       v m probeEnergy regulator pMax
 
-/-- The arbitrary-regulator finite-cutoff continuum Born self-energy is exactly the explicit
-polar-integral construction, so its `2π` prefactor is derived from angular integration. -/
-private theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
-    (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornSelfEnergyOfRegulator
-        v m probeEnergy regulator disorderStrength hbar pMax =
-      finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
-        v m probeEnergy regulator disorderStrength hbar pMax := by
-  rw [finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator,
-    finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq]
-  unfold finiteCutoffContinuumBornSelfEnergyOfRegulator fullAngleMomentumMeasurePrefactor
-    continuumBornDisorderMeasurePrefactor
-  rw [← algebraMap_smul ℂ (2 * Real.pi)
-    (finiteCutoffContinuumBornGreenIntegralOfRegulator
-      v m probeEnergy regulator pMax)]
-  simp only [RCLike.algebraMap_eq_ofReal, smul_smul]
-  congr 1
-  push_cast
-  simp [mul_assoc, mul_comm, mul_left_comm]
-
 end
 
 end QuantumTheory.Models.MassiveDirac

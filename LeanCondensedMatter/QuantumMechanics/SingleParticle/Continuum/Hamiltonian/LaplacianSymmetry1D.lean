@@ -30,11 +30,6 @@ open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap Laplacian LineDe
 private def laplacianFourierSymbol1D (x : ℝ) : ℂ :=
   ((-((2 * Real.pi) ^ 2) * ‖x‖ ^ 2 : ℝ) : ℂ)
 
-private theorem continuous_laplacianFourierSymbol1D :
-    Continuous laplacianFourierSymbol1D := by
-  unfold laplacianFourierSymbol1D
-  fun_prop
-
 private theorem laplacianFourierSymbol1D_hasTemperateGrowth :
     laplacianFourierSymbol1D.HasTemperateGrowth := by
   unfold laplacianFourierSymbol1D

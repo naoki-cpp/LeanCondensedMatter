@@ -78,18 +78,6 @@ noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) 
   (orderedTwoPointTimedEvents τ τ' σ).flatMap
     (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)
 
-private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
-    (([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).map
-      twoPointTimedEventAtomicArity).sum = 2 * (2 * n + 1) := by
-  have hinteraction :
-      ((twoPointInteractionEventList n).map twoPointTimedEventAtomicArity).sum = 4 * n := by
-    rw [twoPointInteractionEventList, List.map_ofFn]
-    change (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
-    simp [Nat.mul_comm]
-  rw [List.map_append, List.sum_append, hinteraction]
-  simp [twoPointTimedEventAtomicArity]
-  omega
-
 /-- The event-level mixed time-ordered product is exactly the fermionic external-order sign times
 the composed product of its `4n + 2` atomic creation/annihilation operators. -/
 theorem mixedTimeOrderedVertexComp_eq_prod_atomicOperators {n : ℕ}
