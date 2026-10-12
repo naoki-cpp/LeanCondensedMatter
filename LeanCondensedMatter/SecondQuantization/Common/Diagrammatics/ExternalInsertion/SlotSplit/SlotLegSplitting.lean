@@ -215,7 +215,7 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
         (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
     let localPosition : Fin (2 * (2 * S.card)) → Fin (2 * (2 * S.card)) :=
       fun q =>
-        externalInsertionMixedTimeOrderedAtomicLegPosition
+        externalInsertionMixedTimeOrderedAtomicLegPosition (E := 0)
           (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f)
           (Sum.inr
             (⟨(orderedQuarticLegEquiv S.card q).1, Finset.mem_univ _⟩,
@@ -227,7 +227,7 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
       externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
         (orderedExternalInsertionLegMap
           (Fin.elim0 : Fin 0 → Fin (2 * E)) f
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
             (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) p))) := by
     apply externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
     · intro a b _
@@ -238,7 +238,7 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
         externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
           (orderedExternalInsertionLegMap
             (Fin.elim0 : Fin 0 → Fin (2 * E)) f
-            (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
               (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) (localPosition q))) := by
     rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
     change splitting (Sum.inr q) =
