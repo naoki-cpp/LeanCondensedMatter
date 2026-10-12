@@ -44,11 +44,19 @@ noncomputable def quadrupoleMode
 is expected to produce these identities; they are assumed, not inferred from
 the kernel alone. `firstCoefficient` and `secondCoefficient` are gain moments. -/
 structure AngularKernelMoments (Ω : Type*) [Fintype Ω] where
+  /-- Unit momentum direction associated with each finite index. -/
   direction : Ω → Fin 3 → ℝ
+  /-- Every direction has unit Euclidean norm. -/
   unit_direction : ∀ p, ∑ i, direction p i ^ 2 = 1
+  /-- Nonnegative transition weight from one direction to another. -/
   kernel : Ω → Ω → ℝ
+  /-- The transition weights are nonnegative. -/
+  kernel_nonneg : ∀ p q, 0 ≤ kernel p q
+  /-- Zeroth angular gain moment. -/
   totalRate : ℝ
+  /-- Coordinate-linear angular gain coefficient. -/
   firstCoefficient : ℝ
+  /-- Coordinate-quadratic angular gain coefficient. -/
   secondCoefficient : ℝ
   total_moment : ∀ p, ∑ q, kernel p q = totalRate
   first_moment : ∀ p i,
