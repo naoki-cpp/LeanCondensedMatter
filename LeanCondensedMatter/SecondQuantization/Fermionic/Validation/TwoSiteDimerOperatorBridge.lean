@@ -145,7 +145,7 @@ theorem twoSiteDimerContact_one_eq_hamiltonian :
   rw [Lattice.boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
   norm_num [peierlsCoupling]
   unfold Lattice.boundedPeierlsBondHamiltonian
-  rw [Lattice.LocallyFiniteHopping.peierlsBondHamiltonian_zero]
+  rw [LocallyFiniteHopping.peierlsBondHamiltonian_zero]
   have hdGammaAdd (S T : LatticeState TwoSite →ₗ[ℂ] LatticeState TwoSite) :
       AlgebraicFock.dGamma (LatticeState TwoSite) (S + T) =
         AlgebraicFock.dGamma (LatticeState TwoSite) S +
