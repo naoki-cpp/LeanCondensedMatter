@@ -306,6 +306,28 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
         .z source v m probeEnergy broadening disorderStrength hbar pMax radius p
 
+/-- The pointwise transverse antisymmetry survives radial momentum integration in the
+physical finite-broadening finite-cutoff regime. It reduces the number of independent
+crossed-current coefficients needed for the `X` and `Psi` trace evaluations. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      -finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  rw [
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+      .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax,
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+      .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax]
+  simp_rw [
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_eq_neg_x_one]
+  simp
+
 /-- The radial `X` topology is a finite scalar sum of positive-radius Green/current entries.
 The two negative-radius Green blocks are replaced by their exact `σ_z` conjugates. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum
