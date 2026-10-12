@@ -34,6 +34,7 @@ def excitationBond (J : ℝ) (twiceSpin : ℕ) (i j : Mode) : Module.End ℂ (Fo
 
 /-- Exchange bond after replacing transverse square-root factors by sqrt(2s),
 before dropping the longitudinal quartic term. Spins are divided by hbar.
+Its interpretation as a normal-ordered exchange bond requires distinct sites.
 Stancil-Prabhakar, equations (2.154)-(2.156), with each bond counted once. -/
 def transverseReplacedBond (J : ℝ) (twiceSpin : ℕ) (i j : Mode) :
     Module.End ℂ (FockSpace Mode) :=
