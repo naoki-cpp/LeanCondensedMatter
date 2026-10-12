@@ -54,60 +54,57 @@ theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff [Finite Mode] 
     (Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε) V k j).mul
       (Common.continuous_matrixCoeff_dysonCoeff (fermionEnergy ε) V n j n')
 
-set_option linter.unusedFintypeInType false in
-/-- **Joint continuity, in the full time vector `τ`, of a matrix coefficient of
-`Common.quarticVertexSequenceInteractionPicture`** — by induction on `n`: the base case is constant (`n = 0` gives `LinearMap.id`); the successor case's matrix coefficient is a finite sum of products of a
-single-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interactionPicture`,
-precomposed with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the
-"tail" projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum
-`Common.matrixCoeff_comp` needs), just not in the statement itself — the linter can't see that. -/
+omit [Fintype Mode] in
+/-- Joint continuity of the matrix coefficients of the quartic interaction-picture vertex
+sequence. The Common scalar-time-factor decomposition reduces this to continuity of a finite
+product of exponentials, without a finite-mode assumption. -/
 theorem continuous_matrixCoeff_quarticVertexSequenceInteractionPicture (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (k n' : Occupation Mode),
-      Continuous (fun τ : Fin n → ℝ => Common.matrixCoeff (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ) k n')
-  | 0, _, _, _ => continuous_const
-  | n + 1, q, k, n' => by
-    have heq : ∀ τ : Fin (n + 1) → ℝ, Common.matrixCoeff
-        (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate (n + 1) q τ) k n' =
-          ∑ j : Occupation Mode, Common.matrixCoeff
-            (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)) k j *
-            Common.matrixCoeff
-              (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n (fun i => q i.succ) (fun i => τ i.succ)) j n' :=
-      fun τ => by
-        rw [Common.quarticVertexSequenceInteractionPicture_succ, Common.matrixCoeff_comp]
-        simp only [interactionPicture, quarticVertexOperator]
-    simp_rw [heq]
-    exact continuous_finsetSum _ fun j _ =>
-      ((Common.continuous_matrixCoeff_interactionPicture
-          (fermionEnergy ε) (quarticVertexOperator (q 0)) k j).comp
-          (continuous_apply 0)).mul
-        ((continuous_matrixCoeff_quarticVertexSequenceInteractionPicture ε n (fun i => q i.succ) j n').comp
-          (continuous_pi fun i => continuous_apply i.succ))
+      Continuous (fun τ : Fin n → ℝ => Common.matrixCoeff
+        (Common.quarticVertexSequenceInteractionPicture
+          (fermionEnergy ε) create annihilate n q τ) k n') := by
+  intro n q k n'
+  have hcreate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
+    intro τ i
+    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_create ε τ i
+  have hannihilate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
+    intro τ i
+    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_annihilate ε τ i
+  simp_rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
+    (fermionEnergy ε) ε create annihilate hcreate hannihilate n q]
+  change Continuous (fun τ : Fin n → ℝ =>
+    (Common.matrixCoeffLinear k n')
+      (Common.quarticVertexSequenceTimeFactor ε q τ •
+        Common.quarticVertexSequenceOperator create annihilate q))
+  simp only [map_smul, smul_eq_mul]
+  exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
 
-/-- Joint continuity, in the full time vector `τ`, of the canonical finite Gibbs expectation of
-an `L`-prefixed Common quartic interaction-picture sequence. The diagonal expectation formula reduces continuity to
-a finite sum of continuous matrix coefficients. -/
-private theorem finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture
-    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
-    (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Continuous (fun τ : Fin n → ℝ =>
-      Common.finiteGibbsExpectation (fermionEnergy ε) β
-        (L.comp (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ))) := by
-  simp_rw [Common.finiteGibbsExpectation_eq_sum, Common.matrixCoeff_comp]
-  exact continuous_finsetSum _ fun k' _ => continuous_const.mul
-    (continuous_finsetSum _ fun j _ => continuous_const.mul
-      (continuous_matrixCoeff_quarticVertexSequenceInteractionPicture ε n q j k'))
-
-/-- Joint continuity of the canonical free Gibbs density-state expectation of an
-`L`-prefixed quartic interaction-picture vertex sequence. The finite diagonal calculation above remains private proof machinery. -/
+/-- Joint continuity of the free Gibbs density-state expectation of an `L`-prefixed quartic
+interaction-picture sequence, directly from the Common scalar-time-factor decomposition. -/
 theorem continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture
     (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
     (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Continuous (fun τ : Fin n → ℝ =>
       (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv
-          (L.comp (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ)))) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-    finiteGibbsExpectation_continuous_comp_quarticVertexSequenceInteractionPicture ε β n q L
+          (L.comp (Common.quarticVertexSequenceInteractionPicture
+            (fermionEnergy ε) create annihilate n q τ)))) := by
+  have hcreate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
+    intro τ i
+    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_create ε τ i
+  have hannihilate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
+    intro τ i
+    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_annihilate ε τ i
+  simp_rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
+    (fermionEnergy ε) ε create annihilate hcreate hannihilate n q]
+  simp only [LinearMap.comp_smul,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    Common.finiteGibbsExpectation_smul]
+  exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
 
 /-- The quartic Dyson coefficient expansion through the canonical free Gibbs density-state
 expectation. The operator-level Dyson expansion and scalar ordered-simplex coefficient are supplied
