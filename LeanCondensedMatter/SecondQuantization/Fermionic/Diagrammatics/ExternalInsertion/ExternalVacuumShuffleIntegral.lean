@@ -423,9 +423,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_norma
       flatVertexLegPairValue ε β
         (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v))
         (σ ∘ f) pr.1.1 pr.1.2 at hkernel
-  rw [hpair]
-    dsimp only
-    rw [hpos, hpos]
+  rw [hpair, hpos, hpos]
   exact hkernel
 
 /-- The vacuum contraction of an ambient normalized pair is the standalone
@@ -473,12 +471,8 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_norma
     externalInsertionSlotLegSplitting_right_orderedMixedPosition T externalTime σ q
   by_cases horder : splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2)
   · rw [if_pos horder]
-    have hpair :=
-      Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
-        splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr) horder
-    rw [hpair, hpos, hpos]
-    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
-      ε β T ext vac externalTime σ pr.1.1 pr.1.2
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
+      ε β T ext vac externalTime σ pr horder
   · rw [if_neg horder]
     have hpair :=
       Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
