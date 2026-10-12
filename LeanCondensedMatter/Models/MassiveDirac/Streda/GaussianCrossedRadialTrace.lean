@@ -338,7 +338,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
     (hpMax : 0 ≤ pMax) :
     let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
-      v m probeEnergy broadening disorderStrength hbar pMax radius
+      v m probeEnergy broadening disorderStrength hbar pMax
     let aA := fun p : ℝ =>
       finiteCutoffContinuumBornDysonScalarCoefficient
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -441,7 +441,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
                     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
                    finiteCutoffContinuumBornDysonPauliCoefficient .z
                     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) *
-                  finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax radius)) := by
+                  finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax)) := by
           apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
           apply intervalIntegral.integral_congr
           intro p _
@@ -476,7 +476,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
                     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
                    finiteCutoffContinuumBornDysonPauliCoefficient .x
                     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-                   finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax radius)) := by
+                   finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax)) := by
           apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
           apply intervalIntegral.integral_congr
           intro p _
