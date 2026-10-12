@@ -29,11 +29,13 @@ def oneMagnonEnergy (J : ℝ) (q : ZMod N) : ℝ :=
 private theorem phase_sum (q : ZMod N) :
     ZMod.stdAddChar q + ZMod.stdAddChar (-q) =
       (2 * Real.cos (2 * Real.pi * (q.val / N)) : ℝ) := by
-  rw [← ZMod.stdAddChar_conj]
-  rw [ZMod.stdAddChar_apply, ZMod.toCircle_eq_circleExp, Circle.coe_exp,
-    Complex.exp_mul_I]
-  simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin, map_add, map_mul,
-    Complex.conj_ofReal, Complex.conj_I, Complex.ofReal_mul, Complex.ofReal_ofNat]
+  let θ : ℝ := 2 * Real.pi * (q.val / N)
+  have he : ZMod.stdAddChar q = Complex.exp ((θ : ℂ) * Complex.I) := by
+    rw [ZMod.stdAddChar_apply, ZMod.toCircle_eq_circleExp, Circle.coe_exp]
+  rw [← ZMod.stdAddChar_conj, he, Complex.exp_mul_I]
+  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
+  simp only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I,
+    Complex.ofReal_mul, Complex.ofReal_ofNat]
   ring
 
 theorem oneMagnonLaplacian_fourierMode (J : ℝ) (q : ZMod N) :
@@ -116,9 +118,12 @@ theorem tendsto_dispersion_div_sq (J a : ℝ) (ha : 0 < a) :
     Filter.Tendsto (fun k => dispersion J a k / k ^ 2) (𝓝[≠] 0)
       (𝓝 (J * a ^ 2)) := by
   have hs : Filter.Tendsto (fun k : ℝ => Real.sinc (a * k / 2)) (𝓝[≠] 0) (𝓝 1) := by
-    have h := Real.continuous_sinc.continuousAt.tendsto.comp
-      ((tendsto_const_nhds.mul (Filter.tendsto_id.mono_left nhdsWithin_le_nhds)).div_const 2)
-    simpa using h
+    have hi : Filter.Tendsto (fun k : ℝ => a * k / 2) (𝓝[≠] 0) (𝓝 0) := by
+      simpa using ((tendsto_const_nhds.mul
+        (Filter.tendsto_id.mono_left nhdsWithin_le_nhds)).div_const 2 :
+        Filter.Tendsto (fun k : ℝ => a * k / 2) (𝓝[≠] 0) (𝓝 (a * 0 / 2)))
+    have hc : ContinuousAt Real.sinc 0 := Real.continuous_sinc.continuousAt
+    simpa using hc.tendsto.comp hi
   have hlim : Filter.Tendsto (fun k : ℝ => J * (a ^ 2 * Real.sinc (a * k / 2) ^ 2))
       (𝓝[≠] 0) (𝓝 (J * a ^ 2)) := by
     simpa using (tendsto_const_nhds.mul (tendsto_const_nhds.mul (hs.pow 2)) :
