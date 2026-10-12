@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.HolsteinPrimakoff
 import LeanCondensedMatter.Models.KronigPenney
 import LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum
 import LeanCondensedMatter.Models.MassiveDirac
