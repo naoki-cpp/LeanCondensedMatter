@@ -44,10 +44,6 @@ abbrev FiniteLatticeHilbertFock (Site : Type*) :=
 
 variable {Site : Type*} [LinearOrder Site]
 
-/-- The canonical site basis of finitely supported one-particle lattice states. -/
-noncomputable def latticeBasis : Module.Basis Site ℂ ((Site →₀ ℂ)) :=
-  Finsupp.basisSingleOne
-
 section FiniteLattice
 
 variable [Fintype Site]
@@ -58,7 +54,7 @@ noncomputable def boundedLatticeOperatorAlgEquiv :
     (AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
         AlgebraicFock ((Site →₀ ℂ))) ≃ₐ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  ((AlgebraicFock.occupationEquiv (latticeBasis (Site := Site))).symm.conjAlgEquiv ℂ).trans
+  ((AlgebraicFock.occupationEquiv (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))).symm.conjAlgEquiv ℂ).trans
     (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
 
 /-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
