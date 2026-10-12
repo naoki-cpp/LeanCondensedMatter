@@ -499,10 +499,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_paul
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient]
 
 /-- The radial `X` amplitude is the explicit scalar expansion of the generic Pauli reduction.
-The expansion uses the vanishing y component of the positive-radius Green blocks while retaining
-all three current Pauli components. -/
+The expansion uses the vanishing y component of the positive-radius Green blocks and the
+crossed-current transverse antisymmetry to eliminate one independent Pauli component. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         .x v m probeEnergy broadening disorderStrength hbar pMax radius =
       let a :=
@@ -526,9 +528,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
       let uz :=
         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
           .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius
-      let wx :=
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-          .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let wx := -uy
       let wy :=
         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
           .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
@@ -555,6 +555,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
             (d * wy - Complex.I * (wz * gax + wx * gaz)) +
           (a * grz + b * uz + Complex.I * uy * grx) *
             (c * gaz + d * wz + Complex.I * wy * gax)) := by
+  have hoffdiag :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
   have hret_y :
       finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
           .y .retarded v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
@@ -602,7 +606,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar]
   rw [hret_fun, hadv_fun]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]; ring
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
 /-- The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex
 conjugate. The final current vector and scalar carry the overall sign from
@@ -656,10 +660,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pa
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient]
 
 /-- The radial `Psi` amplitude is the explicit scalar expansion of the generic Pauli reduction.
-The positive-radius retarded Green y component is zero; the crossed-current vector at the second
-insertion retains all of its x/y/z Pauli components and its radial sign is kept explicit. -/
+The positive-radius retarded Green y component is zero; transverse crossed-current
+antisymmetry removes one independent component, and the radial current sign is kept explicit. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         .psi v m probeEnergy broadening disorderStrength hbar pMax radius =
       let a :=
@@ -681,9 +687,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
       let uz :=
         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
           .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius
-      let qx :=
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-          .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let qx := -uy
       let qy :=
         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
           .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
@@ -706,6 +710,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
             (a * grz + b * uz + Complex.I * uy * grx) *
               (-c * qz + d * grz + Complex.I * grx * qy))
       amplitude + (starRingEnd ℂ) amplitude := by
+  have hoffdiag :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
   have hret_y :
       finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
           .y .retarded v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
@@ -731,8 +739,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar]
   rw [hret_fun]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent]
-  ring
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
 /-- On the real-space radial axis, the two-dimensional crossed trace kernel is exactly the radial
 trace kernel assembled from the already reduced Green and current blocks. -/
