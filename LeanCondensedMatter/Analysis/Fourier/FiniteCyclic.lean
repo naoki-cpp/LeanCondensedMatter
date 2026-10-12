@@ -52,7 +52,7 @@ theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
   rw [← Finset.mul_sum, sum_stdAddChar_mul]
   by_cases h : q = r
   · subst r
-    simp only [sub_self, ite_true, mul_one]
+    simp only [sub_self, ite_true]
     field_simp
     exact hsq.symm
   · simp [sub_eq_zero, Ne.symm h, h]
