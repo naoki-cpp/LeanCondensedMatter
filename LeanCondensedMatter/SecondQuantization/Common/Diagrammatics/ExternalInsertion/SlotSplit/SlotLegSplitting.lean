@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
@@ -70,6 +71,37 @@ theorem externalInsertionSlotLegSplitting_right_interaction
       (externalInsertionLegEquiv E S).symm
         (Sum.inr (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, l)) := by
   simp [externalInsertionSlotLegSplitting]
+
+/-- The right-sector leg in a slot splitting occupies the mixed-time position
+of the same actual vacuum vertex leg in the full external-insertion diagram.
+
+The vertex here is the one given by the quartic leg equivalence of the
+complementary finset; no agreement with a separately chosen sorted slot
+enumeration is presumed. -/
+theorem externalInsertionSlotLegSplitting_right_mixedPosition
+    {E N : ℕ} (T : Finset (Fin N))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ)
+    (v : ↥((Finset.univ : Finset (Fin N)) \ T)) (l : Fin 4) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let split :=
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    split (Sum.inr ((quarticLegEquiv S).symm (v, l))) =
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
+  intro S split
+  apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
+  change
+    externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr ((quarticLegEquiv S).symm (v, l))) =
+      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)))
+  rw [externalInsertionSlotLegSplitting_right_interaction]
+  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin N))).injective
+  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    Equiv.apply_symm_apply]
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
 complementary piece. -/
