@@ -772,7 +772,6 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flat
         flatVertexLegPairValue ε β
           (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
           pr.1.1 pr.1.2 := by
-
   intro S order f d split pairEquiv kernel hlocal
   have hmono :=
     externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
