@@ -166,30 +166,13 @@ theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
           intervalIntegral.orderedSimplexIntegral n t
             (Common.quarticVertexSequenceTimeFactor ε q) := by
     intro q
-    calc
-      intervalIntegral.orderedSimplexIntegral n t
-          (fun τ => Common.finiteGibbsExpectation (fermionEnergy ε) β
-            (L.comp (Common.quarticVertexSequenceInteractionPicture
-              (fermionEnergy ε) create annihilate n q τ))) =
-          intervalIntegral.orderedSimplexIntegral n t
-            (fun τ =>
-              Common.finiteGibbsExpectation (fermionEnergy ε) β
-                  (L.comp (Common.quarticVertexSequenceOperator create annihilate q)) *
-                Common.quarticVertexSequenceTimeFactor ε q τ) := by
-            apply intervalIntegral.orderedSimplexIntegral_congr
-            intro τ
-            rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
-              (fermionEnergy ε) ε create annihilate hcreate hannihilate n q τ,
-              LinearMap.comp_smul, Common.finiteGibbsExpectation_smul]
-            ring
-      _ = Common.finiteGibbsExpectation (fermionEnergy ε) β
-              (L.comp (Common.quarticVertexSequenceOperator create annihilate q)) *
-            intervalIntegral.orderedSimplexIntegral n t
-              (Common.quarticVertexSequenceTimeFactor ε q) :=
-        intervalIntegral.orderedSimplexIntegral_smul n t
-          (Common.finiteGibbsExpectation (fermionEnergy ε) β
-            (L.comp (Common.quarticVertexSequenceOperator create annihilate q)))
-          (Common.quarticVertexSequenceTimeFactor ε q)
+    rw [← intervalIntegral.orderedSimplexIntegral_smul]
+    apply intervalIntegral.orderedSimplexIntegral_congr
+    intro τ
+    rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
+      (fermionEnergy ε) ε create annihilate hcreate hannihilate n q τ,
+      LinearMap.comp_smul, Common.finiteGibbsExpectation_smul]
+    ring
   simp_rw [hintegral]
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
