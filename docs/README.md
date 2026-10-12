@@ -53,7 +53,7 @@ and cross-track targets. Follow these topic documents for details.
 | Operator analysis | [Operator algebra](roadmaps/operator-algebra.md), [Fredholm determinant](roadmaps/fredholm-determinant.md) |
 | Second quantization | [Roadmap](roadmaps/second-quantization.md), [status](roadmaps/second-quantization-status.md), [completed-space and infinite-mode boundary](roadmaps/completed-space-and-infinite-mode.md) |
 | Thermal and diagrammatic theory | [Thermal expectation architecture](roadmaps/thermal-expectation-architecture.md), [linked-cluster theorem](roadmaps/linked-cluster-theorem.md) |
-| Transport and disorder | [Transport](roadmaps/transport.md), [impurity vertex correction](roadmaps/impurity-vertex-correction.md), [spin Hall](roadmaps/spin-hall.md) |
+| Transport and disorder | [Transport](roadmaps/transport.md), [impurity vertex correction](roadmaps/impurity-vertex-correction.md), [spin Hall](roadmaps/spin-hall.md), [orbital relaxation](roadmaps/orbital-relaxation.md) |
 
 ## Contributor and audit references
 

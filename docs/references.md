@@ -4,6 +4,19 @@ Annotated reference list. One entry per source: full citation, what it is used f
 
 ## Papers and books
 
+### Centrosymmetric orbital and spin relaxation
+
+- **Jeonghun Sohn, Jongjun M. Lee, and Hyun-Woo Lee.** “Dyakonov-Perel-like Orbital and Spin
+  Relaxations in Centrosymmetric Systems.” *Physical Review Letters* **132**, 246301 (2024).
+  DOI: [10.1103/PhysRevLett.132.246301](https://doi.org/10.1103/PhysRevLett.132.246301).
+  - **Project use:** Motivation and model provenance for the proposed finite spin-1 orbital
+    relaxation benchmark and later spin-orbit extension. The supplemental material, Sec. I,
+    supplies the kinetic-theory calculation and matrix conventions.
+  - **Caveat:** The kinetic closure and Fermi-surface replacement are approximations. The
+    printed integral ratio for `γ` in supplemental Eqs. (18), (36), and (55) is inverse to
+    the ratio obtained from the stated definitions of `τₘ` and `τ*`; the roadmap fixes
+    the convention algebraically before any Lean statement.
+
 ### Linear response and Kubo–Bastin–Středa transport
 
 - **Ryogo Kubo.** “Statistical-Mechanical Theory of Irreversible Processes. I. General Theory and
