@@ -2808,6 +2808,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/Finite.lean",
+      "imports": [],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Green.lean",
       "imports": [
@@ -2946,6 +2952,7 @@
         "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
         "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
         "LeanCondensedMatter.Models.Parabolic2DEG",
         "LeanCondensedMatter.Models.RashbaExchange"
       ],
