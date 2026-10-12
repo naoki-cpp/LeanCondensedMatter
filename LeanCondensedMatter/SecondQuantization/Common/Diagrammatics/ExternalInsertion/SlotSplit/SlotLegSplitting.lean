@@ -199,6 +199,59 @@ theorem externalInsertionSlotLegSplitting_right_orderedMixedPosition
     (order (orderedQuarticLegEquiv S.card p).1)
     (orderedQuarticLegEquiv S.card p).2
 
+/-- If the standalone vacuum-only mixed ordering preserves the flattened quartic-leg
+order, its embedding into the full mixed-time family also preserves that order.
+This separates the local vacuum time-chamber condition from arbitrary external event times. -/
+theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
+    {E N : ℕ} (T : Finset (Fin N))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin N := fun i => (S.orderIsoOfFin rfl i).1
+    let splitting :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let localPosition : Fin (2 * (2 * S.card)) → Fin (2 * (2 * S.card)) :=
+      fun q =>
+        externalInsertionMixedTimeOrderedAtomicLegPosition
+          (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f)
+          (Sum.inr
+            (⟨(orderedQuarticLegEquiv S.card q).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card q).2))
+    StrictMono localPosition →
+      StrictMono (fun q : Fin (2 * (2 * S.card)) => splitting (Sum.inr q)) := by
+  intro S order f splitting localPosition hlocal
+  have hembed : StrictMono (fun p : Fin (2 * (2 * S.card)) =>
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (orderedExternalInsertionLegMap
+          (Fin.elim0 : Fin 0 → Fin (2 * E)) f
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) p))) := by
+    apply externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+    · intro a b _
+      exact a.elim0
+    · exact (S.orderIsoOfFin rfl).strictMono
+  have hposition (q : Fin (2 * (2 * S.card))) :
+      splitting (Sum.inr q) =
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap
+            (Fin.elim0 : Fin 0 → Fin (2 * E)) f
+            (externalInsertionMixedTimeOrderedAtomicLegEquiv
+              (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) (localPosition q))) := by
+    rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
+    change splitting (Sum.inr q) =
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (Sum.inr
+          (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv S.card q).2))
+    exact externalInsertionSlotLegSplitting_right_orderedMixedPosition
+      T externalTime σ q
+  intro p q hpq
+  rw [hposition p, hposition q]
+  exact hembed (hlocal hpq)
+
 /-- Under the increasing vacuum vertex enumeration, the actual mixed-time
 partner of an assembled vacuum leg is the image of its partner in the vacuum
 diagram's ordered pairing. The explicit vertex-order transport does not assume
