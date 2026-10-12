@@ -108,4 +108,3 @@ Jeonghun Sohn, Jongjun M. Lee, and Hyun-Woo Lee, “Dyakonov-Perel-like Orbital
 and Spin Relaxations in Centrosymmetric Systems,” *Physical Review Letters*
 **132**, 246301 (2024), [DOI: 10.1103/PhysRevLett.132.246301](https://doi.org/10.1103/PhysRevLett.132.246301),
 and its supplemental material, Sec. I.
-
