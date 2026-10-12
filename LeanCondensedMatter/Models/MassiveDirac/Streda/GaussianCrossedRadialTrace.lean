@@ -484,6 +484,63 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
             (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
               v m probeEnergy broadening disorderStrength hbar pMax radius p).2
 
+/-- Reconstruct the two diagonal Pauli coefficients of the finite-cutoff crossed current
+from the independent isotropic `K0` and traceless `K2` radial integrals.
+Both coefficients inherit the existing physical momentum measure exactly once.
+
+This inverts the integrated sum/difference identity without taking a cutoff or
+broadening limit; no `X` or `Psi` diagram has been evaluated. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let isotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+              ∫ p in (0 : ℝ)..pMax,
+                2 * (p : ℂ) *
+                  (polarFourierZerothAngularKernel (p * radius / hbar) *
+                    ((aA p * aR p - dA p * dR p) * factor))
+    let anisotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+              ∫ p in (0 : ℝ)..pMax,
+                2 * (p : ℂ) *
+                  (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+                    (bA p * bR p * factor))
+    (jxx = (isotropic + anisotropic) / 2) ∧
+      (jyy = (isotropic - anisotropic) / 2) := by
+  have h :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics
+      v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
+  dsimp only at h ⊢
+  rcases h with ⟨h0, h2⟩
+  constructor
+  · linear_combination (1 / 2 : ℂ) * h0 + (1 / 2 : ℂ) * h2
+  · linear_combination (1 / 2 : ℂ) * h0 - (1 / 2 : ℂ) * h2
+
 /-- The radial `X` topology is a finite scalar sum of positive-radius Green/current entries.
 The two negative-radius Green blocks are replaced by their exact `σ_z` conjugates. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum
