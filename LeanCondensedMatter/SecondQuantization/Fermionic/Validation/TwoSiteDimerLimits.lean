@@ -18,6 +18,7 @@ namespace Fermionic
 namespace Validation
 
 open _root_.SecondQuantization.Fermionic.Lattice
+open QuantumTheory.PeierlsPhase
 
 noncomputable section
 

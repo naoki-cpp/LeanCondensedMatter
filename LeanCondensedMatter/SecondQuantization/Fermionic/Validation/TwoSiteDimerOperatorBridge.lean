@@ -38,6 +38,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Validation
 
+open QuantumTheory.PeierlsPhase
+
 open _root_.SecondQuantization.Fermionic.Lattice Transport
 
 noncomputable section
@@ -141,7 +143,7 @@ theorem twoSiteDimerContact_one_eq_hamiltonian :
     twoSiteDimerContact 1 = twoSiteDimerHamiltonian 1 := by
   unfold twoSiteDimerContact
   rw [Lattice.boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
-  norm_num [Lattice.peierlsCoupling]
+  norm_num [peierlsCoupling]
   unfold Lattice.boundedPeierlsBondHamiltonian
   rw [Lattice.LocallyFiniteHopping.peierlsBondHamiltonian_zero]
   have hdGammaAdd (S T : LatticeState TwoSite →ₗ[ℂ] LatticeState TwoSite) :

@@ -28,6 +28,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
 
+open QuantumTheory.PeierlsPhase
+
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 open scoped BigOperators

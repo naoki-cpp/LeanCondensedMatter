@@ -29,6 +29,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
 
+open QuantumTheory.PeierlsPhase
+
 noncomputable section
 
 section Algebraic

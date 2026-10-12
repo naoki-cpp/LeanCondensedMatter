@@ -29,6 +29,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
 
+open QuantumTheory.PeierlsPhase
+
 noncomputable section
 
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
