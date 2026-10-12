@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.DiscreteLattice
+import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 import LeanCondensedMatter.Analysis.LatticeGeometry
 import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli

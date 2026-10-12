@@ -266,18 +266,6 @@ def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
     (continuumBornRADenominatorProduct
       v m p probeEnergy disorderStrength hbar)⁻¹
 
-/-- The indexed real current-rung kernel embeds exactly into the complex radial API. -/
-private theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
-    (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ) :
-    (continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output
-        v m p probeEnergy disorderStrength hbar : ℂ) =
-      continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand output
-        v m p probeEnergy disorderStrength hbar := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed]
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
-  push_cast
-  ring
-
 /-- Finite-cutoff radial Green-product coefficient in the selected in-plane output direction. -/
 noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient
     (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
