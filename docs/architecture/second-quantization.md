@@ -339,10 +339,11 @@ restricted to the physical exchange weights `ζ = +1` and `ζ = -1`; the generic
 connected-cycle series remains available for arbitrary exchange weight where its stated algebraic
 hypotheses hold.
 
-The bosonic and fermionic thermal layers keep only domain-facing specializations of that formal
-backend. Fermionic determinant identities remain in the fermionic physical-consumer layer, while
-bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
-thermal layer. The formal series is never evaluated at `t = 1` as part of this bridge.
+Formal Bose/Fermi grand-partition series and connected-cycle identities are consumed directly from
+the Gibbs-level owner with the appropriate exchange weight. The fermionic and bosonic thermal
+modules own the determinant and inverse-determinant identities for their actual partition functions.
+Bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
+thermal modules. No formal series is evaluated at one by this construction.
 
 ## Bosonic boundary
 
