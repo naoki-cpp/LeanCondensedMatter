@@ -13,7 +13,8 @@ Source: Stancil-Prabhakar, Section 2.7.1, equation (2.147).
 
 namespace QuantumTheory.LocalizedSpin
 
-/-- Local spin-deviation labels, with the natural parameter representing 2s. -/
+/-- Local spin-deviation labels, with the natural parameter representing 2s.
+Stancil-Prabhakar, Section 2.7.1, equation (2.147). -/
 abbrev Configuration (twiceSpin : ℕ) (Site : Type*) := Site → Fin (twiceSpin + 1)
 
 /-- Complex amplitudes on localized-spin configurations. The finite-site instance

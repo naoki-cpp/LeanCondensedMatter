@@ -17,16 +17,17 @@ implemented in [SpinHalf/Finite](../../LeanCondensedMatter/QuantumTheory/SpinHal
 and [Models/Heisenberg](../../LeanCondensedMatter/Models/Heisenberg.lean). The spectrum and
 long-wavelength dispersion are proved in
 [SpinWaveSpectrum](../../LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean).
-The exact local Holstein-Primakoff representation in SW3 is also `proved`; its
-many-site and quadratic-model targets, and SW4 onward, remain `idea`. General-spin representations, infinite-volume order,
-antiferromagnetic Bogoliubov diagonalization, and thin-film boundary modes are later work.
+The exact local and finite many-site Holstein-Primakoff algebraic representations in
+SW3 are also `proved`. The quadratic model and SW4 onward remain `idea`.
+Infinite-volume order, antiferromagnetic Bogoliubov diagonalization, and thin-film
+boundary modes are later work.
 
 ## Existing infrastructure
 
 | Reusable source | Contribution and boundary |
 | --- | --- |
-| [SpinHalf](../../LeanCondensedMatter/QuantumTheory/SpinHalf.lean) and [Pauli algebra](../../LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean) | Spin-1/2 matrices and Hermitian real spin components; [Finite](../../LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean) supplies the full configuration space, site action, exchange identity, and isometric one-magnon embedding. |
-| [Bosonic creation/annihilation](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CreationAnnihilation.lean), [CCR](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CCR.lean), and [number operator](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean) | Algebraic occupation-basis actions and commutators; no identification with a finite spin space is supplied. |
+| [LocalizedSpin](../../LeanCondensedMatter/QuantumTheory/LocalizedSpin.lean), [SpinHalf](../../LeanCondensedMatter/QuantumTheory/SpinHalf.lean), and [Pauli algebra](../../LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean) | The canonical finite-spin configuration space and Hilbert space, with spin-1/2 matrices and Hermitian real spin components. [SpinHalf/Finite](../../LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean) uses the general space at 2s=1 for site action, exchange, and the isometric one-magnon embedding. |
+| [Bosonic creation/annihilation](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CreationAnnihilation.lean), [CCR](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CCR.lean), and [number operator](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean) | Algebraic oscillator actions; the [HP bridge](../../LeanCondensedMatter/Models/HolsteinPrimakoff/MultiSite.lean) identifies finite-spin states with the capped sector and transports its spin action. Unrestricted Fock space is not identified with spin space. |
 | [Completed free Gibbs theory](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/Completed/FreeGibbs.lean) | Finite-mode trace-class Gibbs construction for strictly positive mode energies; a zero-energy mode needs separate treatment. |
 | [Bosonic quartic interaction](../../LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Interaction.lean) | Existing ordered four-field vertices; a magnon coefficient and its derivation remain model-specific. |
 | [Retarded susceptibility](../../LeanCondensedMatter/QuantumTheory/LinearResponse/RetardedSusceptibility.lean) | Bounded quantum commutator response; microscopic magnetic observables and a comparison with macroscopic susceptibility remain to be constructed. |
@@ -103,7 +104,7 @@ This limit of an expression does not establish a thermodynamic-limit theorem for
 Angular frequency is E/hbar with hbar > 0; group velocity and effective mass are optional
 consequences after the spectrum is established.
 
-### SW3: Holstein-Primakoff representation and quadratic magnons (local algebra `proved`)
+### SW3: Holstein-Primakoff representation and quadratic magnons (exact algebraic representation `proved`)
 
 Source: Section 2.7.1, pp. 55-60, especially (2.146)-(2.166).
 
@@ -122,14 +123,31 @@ extend basis identities to every vector in the physical sector. The existing
 creation and annihilation supply the oscillator actions, and `Real.sq_sqrt`
 provides the coefficient identities. A custom oscillator or spin matrix is unnecessary.
 The ordered factors use the original equations (2.149)-(2.150), without their later
-low-occupation expansion. Many-site sector identification, cross-site spin relations,
-and the quadratic Hamiltonian remain targets.
+low-occupation expansion.
 
-For a many-site system, identify the simultaneous occupation restrictions
-0 <= n_j <= 2s with the localized-spin state space and prove cross-site spin
-commutation. The local endpoint and spin-algebra identities above supply the
-single-site representation; the simultaneous sector and its spin-space identification
-still require proof.
+[HP/MultiSite](../../LeanCondensedMatter/Models/HolsteinPrimakoff/MultiSite.lean)
+defines `simultaneousSubspace` with every site's occupation at most 2s, and proves
+that it equals the intersection of the local physical sectors. For finitely many
+sites, `spinStateEquiv` identifies the full `LocalizedSpin.State` with this sector,
+preserving configuration basis vectors. The common spin length is represented by
+the natural parameter `twiceSpin`; site-dependent spin lengths are not part of this interface.
+
+`spinAlgebra` is the unital complex algebra generated by S+, S-, and Sz at one site.
+It preserves the simultaneous sector. `spinRepresentation` is its algebra action on
+the full finite-spin state space; `spinRepresentation_intertwines` proves agreement
+with the original bosonic operator. `commute_of_mem_spinAlgebra` and
+`commute_spinRepresentation_of_ne` prove commutation of distinct sites' local
+algebras on both domains, including their linear combinations and products.
+The state correspondence is complex-linear; no completed Fock-space isometry or
+adjoint-compatibility theorem is claimed.
+
+The pinned Mathlib survey uses `Finsupp.supported_iInter`, `supportedEquivFinsupp`,
+`domLCongr`, `linearEquivFunOnFinite`, `LinearMap.restrict`, and
+`LinearEquiv.conjAlgEquiv`. Mathlib supplies restriction of individual maps;
+[AlgebraRestriction](../../LeanCondensedMatter/Analysis/Operator/AlgebraRestriction.lean)
+bundles it as an algebra homomorphism for any endomorphism subalgebra preserving a
+submodule. Configuration and occupation coordinates use canonical equivalences rather
+than a second oscillator representation.
 
 Keep this exact representation separate from the quadratic Hamiltonian obtained by
 expanding about the polarized state and retaining terms through degree two. Prove
