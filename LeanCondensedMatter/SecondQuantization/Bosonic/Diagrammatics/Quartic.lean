@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal
 

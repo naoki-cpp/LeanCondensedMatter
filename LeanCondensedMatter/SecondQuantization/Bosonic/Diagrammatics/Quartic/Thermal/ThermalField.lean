@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 
@@ -34,9 +33,10 @@ def quarticFreeThermalField (q : QuarticVertexLabel Mode) (l : Fin 4) : FreeTher
 /-- The thermal-field realization agrees with the existing quartic local-leg operator. -/
 theorem FreeThermalField.operator_quarticFreeThermalField
     (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    FreeThermalField.operator (quarticFreeThermalField q l) = quarticLocalLegOperator q l := by
+    FreeThermalField.operator (quarticFreeThermalField q l) =
+      Common.quarticLocalLegOperator create annihilate q l := by
   cases h : Common.quarticLocalLeg q l <;>
-    simp [quarticFreeThermalField, quarticLocalLegOperator, Common.quarticLocalLegOperator,
+    simp [quarticFreeThermalField, Common.quarticLocalLegOperator,
       FreeThermalField.operator, h]
 
 /-- Flatten `n` ordered quartic vertices into their `4 n` free thermal field labels. -/
@@ -69,7 +69,7 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : â
   apply congrArg List.ofFn
   funext i
   simp [FreeThermalField.operator_quarticFreeThermalField,
-    Common.quarticVertexOperator, quarticLocalLegOperator,
+    Common.quarticVertexOperator,
     Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp]
 
 end
