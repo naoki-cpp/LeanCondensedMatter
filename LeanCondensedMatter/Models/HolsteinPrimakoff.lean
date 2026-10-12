@@ -9,7 +9,7 @@ set_option linter.style.header false
 The natural number `twiceSpin` represents 2s. The physical subspace at a site has
 occupation at most 2s. The ordering is S+ = hbar sqrt(2s-N) a and
 S- = hbar a† sqrt(2s-N), with Sz = hbar(s-N).
-Source: Stancil-Prabhakar, Section 2.7.1, equations (2.146)-(2.153).
+Source: Stancil-Prabhakar, Section 2.7.1, equations (2.146), (2.149), and (2.150).
 The ambient domain is algebraic bosonic Fock space. No square-root expansion,
 quadratic Hamiltonian, Hilbert-space completion, or finite-dimensional CCR is assumed.
 -/
@@ -33,17 +33,17 @@ def deviationFactor (twiceSpin : ℕ) (i : Mode) : FockSpace Mode →ₗ[ℂ] Fo
   Common.diagonalOperator (fun n : Occupation Mode => (Real.sqrt ((twiceSpin : ℝ) - n i) : ℂ))
 
 /-- Exact spin raising: sqrt(2s-N) acts after bosonic annihilation.
-Stancil-Prabhakar, Section 2.7.1, equation (2.146). -/
+Stancil-Prabhakar, Section 2.7.1, equation (2.149). -/
 def spinPlus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (hbar : ℂ) • (deviationFactor twiceSpin i).comp (annihilate i)
 
 /-- Exact spin lowering: sqrt(2s-N) acts before bosonic creation.
-Stancil-Prabhakar, Section 2.7.1, equation (2.147). -/
+Stancil-Prabhakar, Section 2.7.1, equation (2.150). -/
 def spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (hbar : ℂ) • (create i).comp (deviationFactor twiceSpin i)
 
 /-- Longitudinal spin component relative to the polarized reference.
-Stancil-Prabhakar, Section 2.7.1, equation (2.148). -/
+Stancil-Prabhakar, Section 2.7.1, equation (2.146). -/
 def spinZ (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (hbar : ℂ) • (((twiceSpin : ℂ) / 2) • LinearMap.id - numberOperator i)
 
@@ -228,6 +228,9 @@ theorem comm_spinZ_spinPlus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) :
       (spinPlus hbar twiceSpin i) = (hbar : ℂ) • spinPlus hbar twiceSpin i := by
   apply Common.linearMap_ext_basisState
   intro n
+  change ScalarExchange.zetaCommutator (1 : ℂ) (spinZ hbar twiceSpin i)
+    (spinPlus hbar twiceSpin i) (basisState n) =
+      (hbar : ℂ) • spinPlus hbar twiceSpin i (basisState n)
   by_cases hz : n i = 0
   · simp [ScalarExchange.zetaCommutator_apply, spinPlus_basisState_of_zero,
       spinZ_basisState, hz]
@@ -244,6 +247,9 @@ theorem comm_spinZ_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) :
       (spinMinus hbar twiceSpin i) = (-(hbar : ℂ)) • spinMinus hbar twiceSpin i := by
   apply Common.linearMap_ext_basisState
   intro n
+  change ScalarExchange.zetaCommutator (1 : ℂ) (spinZ hbar twiceSpin i)
+    (spinMinus hbar twiceSpin i) (basisState n) =
+      (-(hbar : ℂ)) • spinMinus hbar twiceSpin i (basisState n)
   simp only [ScalarExchange.zetaCommutator_apply, one_smul, spinMinus_basisState,
     spinZ_basisState, map_smul, createOccupation_apply_same,
     LinearMap.smul_apply, smul_smul, Nat.cast_add, Nat.cast_one]
