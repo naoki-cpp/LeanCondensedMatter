@@ -39,22 +39,11 @@ theorem dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
           (PowerSeries.normalizeByConstantCoeff
             (dysonPartitionSeries ε β (quarticInteraction g))) =
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
-  rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-  calc
-    (S.card.factorial : ℂ) *
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card =
-      Common.dysonTraceVertexMoment (fermionEnergy ε) β (quarticInteraction g) S := by
-        change (S.card.factorial : ℂ) *
-            normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card =
-          (S.card.factorial : ℂ) *
-            Common.normalizedDysonTraceCoeff (fermionEnergy ε) β
-              (quarticInteraction g) S.card
-        congr 1
-        simp only [normalizedDysonPartitionCoeff, dysonPartitionCoeff_eq_dysonTraceCoeff,
-          Common.normalizedDysonTraceCoeff]
-        rw [← constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)]
-        rfl
-    _ = _ := dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S
+  rw [← dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S]
+  simp only [PowerSeries.coeff_normalizeByConstantCoeff, dysonPartitionSeries,
+    Common.coeff_dysonTraceSeries, Common.dysonTraceVertexMoment,
+    Common.normalizedDysonTraceCoeff, div_eq_mul_inv]
+  ring
 
 end Fermionic
 end SecondQuantization
