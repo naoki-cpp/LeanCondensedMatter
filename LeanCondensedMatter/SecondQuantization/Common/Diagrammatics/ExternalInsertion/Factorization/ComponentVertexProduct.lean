@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 
 set_option linter.style.header false
@@ -8,7 +7,7 @@ set_option linter.style.header false
 
 The ambient quartic interaction vertices are the dependent disjoint union of the interaction
 sectors of all full external-plus-interaction connected components. This module uses that
-decomposition to factor arbitrary commutative interaction-vertex weights and the Dyson sign.
+decomposition to factor arbitrary commutative interaction-vertex weights.
 -/
 
 namespace SecondQuantization
@@ -30,26 +29,6 @@ theorem ExternalInsertionDiagram.vertexWeight_eq_prod_components
     ExternalInsertionDiagram.restrictComponent] using
     (prod_eq_prod_interactionSectors d.vertexGraph
       (fun v => w (d.vertexLabel v)))
-
-/-- The Dyson sign and interaction-vertex weight factor together over all connected components. -/
-theorem ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (w : InternalLabel → ℂ) :
-    (-1 : ℂ) ^ S.card * d.vertexWeight w =
-      ∏ B : d.vertexGraph.componentPartition.parts,
-        ((-1 : ℂ) ^ (interactionSector
-          (B : Finset (ExternalInsertionVertex E S))).card *
-          (d.restrictComponent B).vertexWeight w) := by
-  classical
-  have hsign :
-      (-1 : ℂ) ^ S.card =
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          (-1 : ℂ) ^ (interactionSector
-            (B : Finset (ExternalInsertionVertex E S))).card := by
-    rw [← sum_interactionSector_card_eq d.vertexGraph,
-      ← Finset.prod_pow_eq_pow_sum]
-  rw [hsign, d.vertexWeight_eq_prod_components w, Finset.prod_mul_distrib]
 
 end Common
 end SecondQuantization
