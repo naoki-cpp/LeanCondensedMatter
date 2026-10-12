@@ -49,9 +49,14 @@ theorem transverseReplacedBond_eq (J : ℝ) (twiceSpin : ℕ) (i j : Mode) :
       (-((J : ℂ) * twiceSpin ^ 2 / 2)) • LinearMap.id +
         excitationBond J twiceSpin i j -
         (2 * (J : ℂ)) • (numberOperator i).comp (numberOperator j) := by
-  ext ψ n
-  simp [transverseReplacedBond, excitationBond, HolsteinPrimakoff.spinZ,
-    map_sub, map_smul]
+  apply LinearMap.ext
+  intro ψ
+  apply Finsupp.ext
+  intro n
+  simp only [transverseReplacedBond, excitationBond, HolsteinPrimakoff.spinZ,
+    Complex.ofReal_one, one_smul, LinearMap.smul_apply, LinearMap.add_apply,
+    LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.id_apply, map_sub, map_smul,
+    Finsupp.add_apply, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul]
   ring
 
 theorem excitationBond_vacuum (J : ℝ) (twiceSpin : ℕ) (i j : Mode) :
@@ -84,9 +89,12 @@ theorem sum_transverseReplacedBond (J : ℝ) (twiceSpin : ℕ) :
         (2 * (J : ℂ)) • ∑ i : ZMod N, (numberOperator i).comp (numberOperator (i + 1)) := by
   simp_rw [transverseReplacedBond_eq]
   simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.smul_sum]
+  apply LinearMap.ext
+  intro ψ
+  apply Finsupp.ext
+  intro n
   simp [hamiltonian, excitationHamiltonian, polarizedEnergy, ZMod.card,
-    smul_smul]
-  congr 1
+    LinearMap.sum_apply, Finset.sum_apply, smul_smul]
   ring
 
 theorem excitationHamiltonian_vacuum (J : ℝ) (twiceSpin : ℕ) :
