@@ -299,6 +299,17 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPaul
       else
         (p : ℂ) * (k1 * (-Complex.I * massMix * factor))
 
+/-- The crossed current's transverse Pauli coefficients are antisymmetric under exchanging
+the spatial source and Pauli directions, already at the finite-cutoff pointwise Fourier-kernel
+level. Both sides are the same zeroth-harmonic mixed channel with opposite signs. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_eq_neg_x_one
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+        .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius p =
+      -finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+        .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
+
 /-- The pointwise Gaussian-crossed radial current entry kernel has the explicit scalar
 first-cosine Pauli coefficient selected by the source direction. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient
