@@ -116,4 +116,3 @@ end Lattice
 end Fermionic
 end SecondQuantization
 
-end
