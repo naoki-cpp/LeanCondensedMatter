@@ -22,7 +22,7 @@ noncomputable section
 variable {N : ℕ} [NeZero N]
 
 /-- The zero-field spin-1/2 ring Hamiltonian in the exchange representation. -/
-def hamiltonian (J : ℝ) : State (ZMod N) →ₗ[ℂ] State (ZMod N) :=
+def hamiltonian (J : ℝ) : QuantumTheory.LocalizedSpin.State 1 (ZMod N) →ₗ[ℂ] QuantumTheory.LocalizedSpin.State 1 (ZMod N) :=
   ∑ i : ZMod N, (J : ℂ) •
     ((1 / 2 : ℂ) • LinearMap.id - (exchange i (i + 1)).toLinearMap)
 
@@ -30,7 +30,7 @@ def hamiltonian (J : ℝ) : State (ZMod N) →ₗ[ℂ] State (ZMod N) :=
 def groundEnergy (N : ℕ) (J : ℝ) : ℝ := -J * N / 2
 
 /-- The exchange Hamiltonian measured relative to the polarized energy. -/
-def excitationHamiltonian (J : ℝ) : State (ZMod N) →ₗ[ℂ] State (ZMod N) :=
+def excitationHamiltonian (J : ℝ) : QuantumTheory.LocalizedSpin.State 1 (ZMod N) →ₗ[ℂ] QuantumTheory.LocalizedSpin.State 1 (ZMod N) :=
   (J : ℂ) • ∑ i : ZMod N, (LinearMap.id - (exchange i (i + 1)).toLinearMap)
 
 theorem hamiltonian_eq_excitation_add_ground (J : ℝ) :
@@ -98,7 +98,7 @@ theorem excitationHamiltonian_oneMagnonKet (J : ℝ) (k : ZMod N) :
       k = (k - 1) + 1 := by abel
       _ = k + 1 := by rw [h]
   have hterm (i : ZMod N) :
-      ((LinearMap.id : State (ZMod N) →ₗ[ℂ] State (ZMod N)) -
+      ((LinearMap.id : QuantumTheory.LocalizedSpin.State 1 (ZMod N) →ₗ[ℂ] QuantumTheory.LocalizedSpin.State 1 (ZMod N)) -
         (exchange i (i + 1)).toLinearMap) (oneMagnonKet k) =
         (if i = k then oneMagnonKet k - oneMagnonKet (k + 1) else 0) +
         (if i = k - 1 then oneMagnonKet k - oneMagnonKet (k - 1) else 0) := by
