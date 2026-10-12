@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 
 set_option linter.style.header false
 
