@@ -310,6 +310,45 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_
         .x 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
   simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
 
+/-- The diagonal in-plane crossed-current Pauli kernels separate into a rotationally
+isotropic zeroth harmonic and a traceless second harmonic. Their sum removes `K2` and
+their difference removes `K0`, before taking any momentum or real-space integral.
+
+This is a finite-cutoff pointwise identity; it neither assumes nor proves convergence of
+a regulator limit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+    let k2 := polarFourierSecondCosineAngularKernel (p * radius / hbar)
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+      .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+      .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p
+    (jxx + jyy =
+      2 * (p : ℂ) * (k0 * ((aA * aR - dA * dR) * factor))) ∧
+    (jxx - jyy =
+      2 * (p : ℂ) * (k2 * (bA * bR * factor))) := by
+  dsimp only
+  constructor
+  · simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
+    ring
+  · simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
+    ring
+
 /-- The pointwise Gaussian-crossed radial current entry kernel has the explicit scalar
 first-cosine Pauli coefficient selected by the source direction. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient
