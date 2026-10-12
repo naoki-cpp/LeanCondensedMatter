@@ -12,10 +12,12 @@ Applications* (Springer, 2009), DOI [10.1007/978-0-387-77865-5](https://doi.org/
 Page numbers below refer to printed pages. The book motivates models and derivations;
 it does not replace explicit hypotheses or a Lean proof of an approximation estimate.
 
-SW1 is `proved`: the finite spin representation and exact one-magnon restriction are
+SW1 and SW2 are `proved`: the finite spin representation and exact one-magnon restriction are
 implemented in [SpinHalf/Finite](../../LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean)
-and [Models/Heisenberg](../../LeanCondensedMatter/Models/Heisenberg.lean). SW2 and later
-targets remain `idea`. General-spin representations, infinite-volume order,
+and [Models/Heisenberg](../../LeanCondensedMatter/Models/Heisenberg.lean). The spectrum and
+long-wavelength dispersion are proved in
+[SpinWaveSpectrum](../../LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean).
+SW3 and later targets remain `idea`. General-spin representations, infinite-volume order,
 antiferromagnetic Bogoliubov diagonalization, and thin-film boundary modes are later work.
 
 ## Existing infrastructure
@@ -27,13 +29,17 @@ antiferromagnetic Bogoliubov diagonalization, and thin-film boundary modes are l
 | [Completed free Gibbs theory](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/Completed/FreeGibbs.lean) | Finite-mode trace-class Gibbs construction for strictly positive mode energies; a zero-energy mode needs separate treatment. |
 | [Bosonic quartic interaction](../../LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Interaction.lean) | Existing ordered four-field vertices; a magnon coefficient and its derivation remain model-specific. |
 | [Retarded susceptibility](../../LeanCondensedMatter/QuantumTheory/LinearResponse/RetardedSusceptibility.lean) | Bounded quantum commutator response; microscopic magnetic observables and a comparison with macroscopic susceptibility remain to be constructed. |
-| [Crystal lattice](../../LeanCondensedMatter/Crystal/Lattice.lean) and [Brillouin quotient](../../LeanCondensedMatter/Crystal/Brillouin.lean) | Reciprocal-space conventions for later periodic models; finite-ring Fourier diagonalization should first reuse appropriate Mathlib mathematics. |
+| [Crystal lattice](../../LeanCondensedMatter/Crystal/Lattice.lean) and [Brillouin quotient](../../LeanCondensedMatter/Crystal/Brillouin.lean) | Reciprocal-space conventions for later periodic models; the finite-ring Fourier basis uses Mathlib cyclic characters and orthonormal-basis construction. |
 
 The SW1 survey of pinned Mathlib v4.34.1 uses `EuclideanSpace`, coordinate permutations
 through `LinearIsometryEquiv.piLpCongrLeft`, `LinearMap.isometryOfInner`, and the existing
 symmetric/positive operator APIs. The representation therefore uses canonical finite
 function Hilbert spaces rather than introducing a custom inner product or tensor API.
-Fourier characters and calculus must be surveyed separately before SW2.
+The SW2 survey reuses `ZMod.stdAddChar`, its primitive-character sum, and
+`basisOfOrthonormalOfCardEqFinrank` to construct the normalized Fourier basis in
+[FiniteCyclic](../../LeanCondensedMatter/Analysis/Fourier/FiniteCyclic.lean).
+The small-wavevector limit uses Mathlib's continuous `Real.sinc` and the double-angle
+identity. No custom Fourier transform, inner product, or differentiation theory is needed.
 
 ## Implementation order and acceptance criteria
 
@@ -73,22 +79,25 @@ this intertwining identity for N >= 3. Together with
 and `hamiltonian_polarized` establish the representation and energy claims. Positivity
 is proved under the weaker condition J >= 0; no ground-state uniqueness is claimed.
 
-### SW2: Finite Fourier spectrum and long-wavelength behavior
+### SW2: Finite Fourier spectrum and long-wavelength behavior (`proved`)
 
 Dependency: SW1. Source: (2.90)-(2.94), pp. 48-49.
 
-Prove that normalized finite Fourier modes form an eigenbasis of LJ, with
+`ZMod.fourierBasis` is a complete normalized Fourier basis;
+`oneMagnonLaplacian_fourierBasis` proves its eigenvalue equation for LJ, with
 
 \[
 E_q=2J(1-\cos(2\pi q/N)).
 \]
 
-State the allowed wavevectors for periodic boundary conditions. The q=0 mode has
-zero shifted energy and belongs to the degenerate ground multiplet. Positivity claims
-for other modes must exclude q=0 modulo N.
+`wavevector` gives the representative 2 pi q.val/(N a) for positive lattice spacing a.
+`dispersion_wavevector` identifies its energy with the finite-mode eigenvalue.
+`excitationHamiltonian_fourierMode` transports the equation to the full spin space
+for N >= 3. `oneMagnonEnergy_zero` gives zero shifted energy for q=0;
+`oneMagnonEnergy_pos` proves strict positivity for J > 0 and q != 0 modulo N.
 
 For lattice spacing a > 0, define the continuous dispersion expression
-E(k)=2J(1-cos(ka)) and prove its small-k limit E(k)/k^2 -> J a^2 through nonzero k.
+E(k)=2J(1-cos(ka)). `tendsto_dispersion_div_sq` proves E(k)/k^2 -> J a^2 through nonzero k.
 This limit of an expression does not establish a thermodynamic-limit theorem for states.
 Angular frequency is E/hbar with hbar > 0; group velocity and effective mass are optional
 consequences after the spectrum is established.

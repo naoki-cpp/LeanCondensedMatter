@@ -144,7 +144,7 @@ theorem tendsto_dispersion_div_sq (J a : ℝ) (ha : 0 < a) :
     nlinarith
   unfold dispersion
   rw [hid]
-  field_simp [hk0, ha.ne'] <;> ring
+  field_simp [hk0, ha.ne']
 
 end
 end Models.Heisenberg
