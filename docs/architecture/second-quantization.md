@@ -24,6 +24,8 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
+Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by `QuantumTheory.PeierlsPhase`; concrete hopping families and Fock transports remain downstream.
+
 Particle-statistics-independent site geometry and bond coordinates are owned by `Analysis.LatticeGeometry`, whereas bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
 
 Particle-statistics-independent one-body current semantics are not second-quantization declarations.
