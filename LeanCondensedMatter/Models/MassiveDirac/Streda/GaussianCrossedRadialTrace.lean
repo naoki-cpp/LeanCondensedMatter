@@ -606,7 +606,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar]
   rw [hret_fun, hadv_fun]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag] <;> ring
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
 /-- The radial `Psi` amplitude is a closed scalar Pauli-coefficient expression plus its complex
 conjugate. The final current vector and scalar carry the overall sign from
@@ -739,7 +739,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar]
   rw [hret_fun]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag] <;> ring
+    InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
 /-- On the real-space radial axis, the two-dimensional crossed trace kernel is exactly the radial
 trace kernel assembled from the already reduced Green and current blocks. -/
