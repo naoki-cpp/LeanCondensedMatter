@@ -36,7 +36,6 @@ private theorem purePointBoltzmannWeight_cast_eq_boltzmannWeight
     ((purePointBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
   rw [purePointBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
 
-omit [Fintype Config] in
 /-- `Tr[e^{-βH₀}A]` is the Boltzmann-weighted diagonal trace of `A`. -/
 theorem traceFock_diagonalEvolution_comp_eq_weightedTrace (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
