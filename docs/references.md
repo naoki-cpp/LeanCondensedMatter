@@ -305,4 +305,3 @@ Annotated reference list. One entry per source: full citation, what it is used f
 ## Lean / Mathlib resources
 
 (To be filled)
-
