@@ -12,18 +12,14 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.Interactio
 set_option linter.style.header false
 
 /-!
-# Dyson-to-diagram expansion
+# Quartic Dyson coefficient expansion and continuity
 
-This module proves that the Dyson vertex moment of a quartic interaction equals the sum of
-quartic Wick-diagram amplitudes:
+This module specializes the Common quartic Dyson coefficient expansion to finite fermionic
+free-Gibbs expectations, and establishes continuity of the quartic interaction-picture vertex
+sequence via its scalar imaginary-time factor.
 
-```
-dysonVertexMoment ε β (quarticInteraction g) S =
-  ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
-```
-
-(`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude`), via the general
-finite-temperature Bloch–de Dominicis theorem.
+The Bloch–de Dominicis pairing expansion is proved in `DysonDiagramExpansion/Pairing.lean`;
+the final Dyson-to-Wick-diagram reindexing is proved in `DysonDiagramExpansion/Reindexing.lean`.
 -/
 
 namespace SecondQuantization
