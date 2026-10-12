@@ -279,8 +279,8 @@ or consumer structure changes.
   finite-mode continuity theorem for matrix coefficients of an interaction-picture operator composed
   with a Dyson coefficient, stated for arbitrary interaction `V` rather than the quartic consumer.
 - `SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture` — joint continuity of
-  the public nested vertex-operator product, providing the analytic interface used to lift matrix
-  coefficients to Gibbs-expectation continuity.
+  matrix coefficients of the quartic vertex sequence for arbitrary mode types; this follows from
+  the Common scalar-time-factor decomposition without finite intermediate-state sums.
 - `SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed` — reusable contraction
   estimate bounding truncation error by twice the distance to any fixed point of the truncation.
 - `Combinatorics.Pairing.sign_pairPerm` — canonical parity endpoint identifying the sign of the
