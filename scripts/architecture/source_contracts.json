@@ -154,7 +154,6 @@
       "paths": [
         "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/DiscreteLattice.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/Peierls.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/Bounded.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/BoundedMatrixUnitAdjoint.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/PeierlsContact.lean",

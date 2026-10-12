@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 set_option linter.style.header false
 
 /-!
-# Peierls current variation and the contact response
+# Bounded Peierls current variation and contact response
 
 For one oriented link, the Peierls Hamiltonian satisfies
 
@@ -17,81 +17,18 @@ The measured current must therefore be treated as the source-dependent family
 J(A) = -∂ₐ H(A) = J₀ + A J₁ + O(A²),
 ```
 
-where `J₁ = -∂ₐ² H(0)`. This module constructs `J(A)` and its algebraic derivative `J₁`, then
-transports both through the canonical finite-lattice bounded one-body realization.
+where `J₁ = -∂ₐ² H(0)`. The one-particle operators and their algebraic derivatives are provided by
+`QuantumTheory.PeierlsLattice`. This module transports them through the canonical finite-lattice
+bounded one-body realization.
 
-The foundational derivative remains complexified and algebraic. Observable-variation response
+The source derivative remains complexified and algebraic. Observable-variation response
 theorems consuming the resulting current and contact operators live downstream in
 `Fermionic.Transport`.
 -/
 
 noncomputable section
 
-namespace LocallyFiniteHopping
 
-open QuantumTheory.PeierlsPhase
-open SecondQuantization.Fermionic.Lattice
-variable {Site : Type*} [DecidableEq Site]
-
-
-
-/-- Peierls-dependent one-particle current on an oriented bond, defined as the explicit negative
-link-Hamiltonian derivative. -/
-noncomputable def peierlsBondCurrentOperator (K : LocallyFiniteHopping Site)
-    (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
-  (peierlsCoupling ℏ q * peierlsForwardPhase ℏ q A) •
-      (K.amplitude x y • matrixUnit x y) +
-    ((-peierlsCoupling ℏ q) * peierlsReversePhase ℏ q A) •
-      (K.amplitude y x • matrixUnit y x)
-
-/-- The first source derivative of the Peierls current. Both hopping orientations carry the
-coefficient `-(i q / ℏ)²`; it is kept in factorized form to match the derivative construction. -/
-noncomputable def oneParticleBondContact (K : LocallyFiniteHopping Site)
-    (ℏ q : ℂ) (x y : Site) :
-    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
-  (peierlsCoupling ℏ q * (-peierlsCoupling ℏ q)) •
-      (K.amplitude x y • matrixUnit x y) +
-    ((-peierlsCoupling ℏ q) * peierlsCoupling ℏ q) •
-      (K.amplitude y x • matrixUnit y x)
-
-/-- The bond contact is the zero-source Peierls bond Hamiltonian multiplied by
-`-(i q / ℏ)²`. This is the bond-level diamagnetic identity behind the contact term. -/
-theorem oneParticleBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero
-    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
-    K.oneParticleBondContact ℏ q x y =
-      (-((peierlsCoupling ℏ q) ^ 2)) •
-        K.peierlsBondHamiltonian ℏ q x y 0 := by
-  rw [K.peierlsBondHamiltonian_zero]
-  unfold oneParticleBondContact
-  module
-
-/-- At zero gauge field, the Peierls current family is the continuity-derived current. -/
-@[simp]
-theorem peierlsBondCurrentOperator_zero (K : LocallyFiniteHopping Site)
-    (ℏ q : ℂ) (x y : Site) :
-    K.peierlsBondCurrentOperator ℏ q x y 0 =
-      K.oneParticleBondCurrent ℏ q x y := by
-  unfold peierlsBondCurrentOperator oneParticleBondCurrent bondOperator
-  simp [sub_eq_add_neg]
-
-/-- The source derivative of the Peierls current is the one-particle contact operator. -/
-theorem hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero
-    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
-    HasAlgebraicDerivAt (K.peierlsBondCurrentOperator ℏ q x y)
-      (K.oneParticleBondContact ℏ q x y) 0 := by
-  have hforward := hasAlgebraicDerivAt_smul_const
-    ((hasDerivAt_peierlsForwardPhase_zero ℏ q).const_mul
-      (peierlsCoupling ℏ q))
-    (K.amplitude x y • matrixUnit x y)
-  have hreverse := hasAlgebraicDerivAt_smul_const
-    ((hasDerivAt_peierlsReversePhase_zero ℏ q).const_mul
-      (-peierlsCoupling ℏ q))
-    (K.amplitude y x • matrixUnit y x)
-  unfold peierlsBondCurrentOperator oneParticleBondContact
-  exact hforward.add hreverse
-
-end LocallyFiniteHopping
 
 namespace SecondQuantization
 namespace Fermionic

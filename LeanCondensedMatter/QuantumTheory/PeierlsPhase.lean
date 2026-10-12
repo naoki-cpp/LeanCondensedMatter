@@ -7,7 +7,8 @@ set_option linter.style.header false
 
 The forward and reverse complex Peierls phases and their zero-source derivatives depend only on
 the coupling parameters, not on fermionic/bosonic occupation or a chosen lattice representation.
-Concrete one-body link Hamiltonians and their second-quantized realizations live downstream.
+The corresponding one-particle link Hamiltonians live in `QuantumTheory.PeierlsLattice`,
+with their second-quantized realizations downstream.
 -/
 
 namespace QuantumTheory
