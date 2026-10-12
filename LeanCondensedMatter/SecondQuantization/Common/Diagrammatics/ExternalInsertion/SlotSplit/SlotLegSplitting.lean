@@ -194,7 +194,7 @@ theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_orderedLeg
         (order (orderedQuarticLegEquiv S.card q).1,
           (orderedQuarticLegEquiv S.card q).2) := by
     simp only [leg, orderedLegToDiagramLeg, Equiv.trans_apply,
-      Equiv.prodCongr_apply, Equiv.apply_symm_apply]
+      Equiv.prodCongr_apply]
     cases orderedQuarticLegEquiv S.card q with
     | mk v l => rfl
   have hpos (q : Fin (2 * (2 * S.card))) :
