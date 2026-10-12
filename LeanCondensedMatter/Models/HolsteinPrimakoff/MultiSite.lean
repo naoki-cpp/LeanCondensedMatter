@@ -62,7 +62,7 @@ private theorem preserves_simultaneousSubspace (twiceSpin : ℕ)
     (ψ : FockSpace Mode) (hψ : ψ ∈ simultaneousSubspace twiceSpin) :
     A ψ ∈ simultaneousSubspace twiceSpin := by
   have h : simultaneousSubspace twiceSpin ≤ (simultaneousSubspace twiceSpin).comap A := by
-    rw [simultaneousSubspace_eq_span]
+    conv_lhs => rw [simultaneousSubspace_eq_span]
     apply Submodule.span_le.mpr
     rintro _ ⟨n, hn, rfl⟩
     exact hA n hn
@@ -276,6 +276,7 @@ theorem spinStateEquiv_single (twiceSpin : ℕ)
         ((Finsupp.linearEquivFunOnFinite ℂ ℂ _).symm (Pi.single c 1))) : FockSpace Mode) = _
   rw [Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
     Finsupp.supportedEquivFinsupp_symm_single]
+  rfl
 
 end FiniteSites
 
