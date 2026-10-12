@@ -29,21 +29,30 @@ theorem dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
         (PowerSeries.normalizeByConstantCoeff
           (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
       (quarticWickDiagramMultiplicativeWeight (N := N) ε β g).normalizedObjectMoment := by
+  rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
+  intro S
+  change
+    (S.card.factorial : ℂ) *
+        PowerSeries.coeff S.card
+          (PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g))) =
+      ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
+  rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
   calc
-    Combinatorics.powerSeriesMomentSetFunction (α := Fin N)
-        (PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
-        Common.dysonTraceVertexMomentSetFunction
-          (fermionEnergy ε) β (quarticInteraction g) := by
-      simpa only [dysonPartitionSeries] using
-        (Common.powerSeriesMomentSetFunction_normalizeByConstantCoeff_dysonTraceSeries_eq_dysonTraceVertexMomentSetFunction
-          (α := Fin N) (fermionEnergy ε) β (quarticInteraction g) hZ)
-    _ = (quarticWickDiagramMultiplicativeWeight (N := N) ε β g).normalizedObjectMoment := by
-      ext S
-      change
-        Common.dysonTraceVertexMoment (fermionEnergy ε) β (quarticInteraction g) S =
-          ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
-      exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S
+    (S.card.factorial : ℂ) *
+        normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card =
+      Common.dysonTraceVertexMoment (fermionEnergy ε) β (quarticInteraction g) S := by
+        change (S.card.factorial : ℂ) *
+            normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card =
+          (S.card.factorial : ℂ) *
+            Common.normalizedDysonTraceCoeff (fermionEnergy ε) β
+              (quarticInteraction g) S.card
+        congr 1
+        simp only [normalizedDysonPartitionCoeff, dysonPartitionCoeff_eq_dysonTraceCoeff,
+          Common.normalizedDysonTraceCoeff]
+        rw [← constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)]
+        rfl
+    _ = _ := dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S
 
 end Fermionic
 end SecondQuantization
