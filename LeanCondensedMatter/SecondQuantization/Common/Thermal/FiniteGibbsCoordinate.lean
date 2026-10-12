@@ -53,8 +53,9 @@ theorem traceFock_diagonalEvolution_comp_eq_weightedTrace (energy : Config → �
     traceFock ((diagonalEvolution energy (-β)).comp A) = weightedTrace (boltzmannWeight energy β) A
     := by
   rw [traceFock_eq_sum_matrixCoeff, weightedTrace_eq_sum_matrixCoeff]
-  simp only [matrixCoeff_comp, matrixCoeff_diagonalEvolution, ite_mul, zero_mul,
-    Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [matrixCoeff_diagonalEvolution_comp]
+  rfl
 
 /-- The trace of the free diagonal evolution is the complex Boltzmann weight sum. -/
 theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β : ℝ) :
