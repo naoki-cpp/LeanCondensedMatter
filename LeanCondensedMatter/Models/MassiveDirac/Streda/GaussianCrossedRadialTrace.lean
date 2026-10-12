@@ -328,6 +328,162 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_eq_neg_x_one]
   simp
 
+/-- Finite-cutoff diagonal crossed-current Pauli coefficients split after radial momentum
+integration into independent zeroth- and second-harmonic integrals. No momentum measure is
+added beyond that already present in the real-space Fourier current blocks.
+
+This does not evaluate the integrals or remove the regulators. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    (jxx + jyy =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) *
+            (polarFourierZerothAngularKernel (p * radius / hbar) *
+              ((aA p * aR p - dA p * dR p) * factor))) ∧
+    (jxx - jyy =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) *
+            (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              (bA p * bR p * factor))) := by
+  have hkernel (axis : PauliAxis) (source : Fin 2) :
+      IntervalIntegrable
+        (fun p : ℝ =>
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            axis source v m probeEnergy broadening disorderStrength hbar pMax radius p)
+        volume 0 pMax := by
+    have hentry (i j : Fin 2) :
+        Continuous (fun p : ℝ =>
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) :=
+      continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax i j
+    have hcoeff :
+        Continuous (fun p : ℝ =>
+          InternalSpace.pauliVectorCoefficient
+            (fun i j =>
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) axis) := by
+      cases axis <;>
+        simp only [InternalSpace.pauliVectorCoefficient] <;> fun_prop
+    have heq :
+        (fun p : ℝ => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+          axis source v m probeEnergy broadening disorderStrength hbar pMax radius p) =
+        (fun p : ℝ => InternalSpace.pauliVectorCoefficient
+          (fun i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) axis) := by
+      funext p
+      exact
+        (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
+          axis source v m probeEnergy broadening disorderStrength hbar pMax radius p).symm
+    rw [heq]
+    exact hcoeff.intervalIntegrable 0 pMax
+  have hxx := hkernel .x 0
+  have hyy := hkernel .y 1
+  dsimp only
+  constructor
+  · rw [
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
+    calc
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p) +
+        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p) =
+        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          ∫ p in (0 : ℝ)..pMax,
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p +
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+          rw [intervalIntegral.integral_add hxx hyy]
+          ring
+      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          ∫ p in (0 : ℝ)..pMax,
+            2 * (p : ℂ) *
+              (polarFourierZerothAngularKernel (p * radius / hbar) *
+                ((finiteCutoffContinuumBornDysonScalarCoefficient
+                    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+                   finiteCutoffContinuumBornDysonScalarCoefficient
+                    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax -
+                   finiteCutoffContinuumBornDysonPauliCoefficient .z
+                    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+                   finiteCutoffContinuumBornDysonPauliCoefficient .z
+                    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) *
+                  finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax)) := by
+          apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+          apply intervalIntegral.integral_congr
+          intro p _
+          exact
+            (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
+              v m probeEnergy broadening disorderStrength hbar pMax radius p).1
+  · rw [
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
+    calc
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p) -
+        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p) =
+        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          ∫ p in (0 : ℝ)..pMax,
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p -
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+          rw [intervalIntegral.integral_sub hxx hyy]
+          ring
+      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          ∫ p in (0 : ℝ)..pMax,
+            2 * (p : ℂ) *
+              (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+                (finiteCutoffContinuumBornDysonPauliCoefficient .x
+                    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+                   finiteCutoffContinuumBornDysonPauliCoefficient .x
+                    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+                   finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax)) := by
+          apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+          apply intervalIntegral.integral_congr
+          intro p _
+          exact
+            (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
+              v m probeEnergy broadening disorderStrength hbar pMax radius p).2
+
 /-- The radial `X` topology is a finite scalar sum of positive-radius Green/current entries.
 The two negative-radius Green blocks are replaced by their exact `σ_z` conjugates. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum
