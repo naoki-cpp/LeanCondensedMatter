@@ -50,8 +50,7 @@ theorem orbitalHamiltonian_neg (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) :
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [orbitalHamiltonian, Pi.neg_apply]
-  all_goals ring
-
+ 
 /-- The polynomial multiplying the local `z` polarization in the
 double-commutator evolution. -/
 def orbitalZPolynomial (c₁ c₂ x y z : ℝ) : ℝ :=
@@ -61,10 +60,10 @@ def orbitalZPolynomial (c₁ c₂ x y z : ℝ) : ℝ :=
 /-- The exact matrix double-commutator coefficient for the `z` generator.
 The minus sign compensates for representing the physical Hermitian generator
 as `i G_z`. -/
-def orbitalZDoubleCommutator (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) : ℝ :=
+noncomputable def orbitalZDoubleCommutator (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) : ℝ :=
   let H := orbitalHamiltonian c₁ c₂ k
   let G := generatorZ
-  -(Matrix.trace ((H * (H * G - G * H) - (H * G - G * H) * H) * G)) / 2
+  (-Matrix.trace ((H * (H * G - G * H) - (H * G - G * H) * H) * G)) / 2
 
 theorem orbitalZDoubleCommutator_eq_polynomial (c₁ c₂ : ℝ)
     (k : Fin 3 → ℝ) :
@@ -78,7 +77,7 @@ theorem orbitalZDoubleCommutator_eq_polynomial (c₁ c₂ : ℝ)
 of degree four. It has the same `xᵢ⁴` and `xᵢ²xⱼ²` moments as the normalized
 uniform sphere measure. It is not asserted here to equal sphere integration
 for arbitrary functions. -/
-def evenQuarticCubature (r : ℝ) (f : (Fin 3 → ℝ) → ℝ) : ℝ :=
+noncomputable def evenQuarticCubature (r : ℝ) (f : (Fin 3 → ℝ) → ℝ) : ℝ :=
   (2 / 15 : ℝ) * (f ![r, 0, 0] + f ![0, r, 0] + f ![0, 0, r]) +
     (1 / 15 : ℝ) * f ![r, r, r]
 
@@ -104,12 +103,13 @@ theorem evenQuarticCubature_orbitalZDoubleCommutator
     (c₁ c₂ r : ℝ) :
     evenQuarticCubature r (orbitalZDoubleCommutator c₁ c₂) =
       (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
-  simp only [orbitalZDoubleCommutator_eq_polynomial]
+  change evenQuarticCubature r
+    (fun k => orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)) = _
   exact evenQuarticCubature_orbitalZPolynomial c₁ c₂ r
 
 /-- Conditional orbital relaxation rate after supplying the degree-two
 scattering time and the second-order kinetic closure. -/
-def orbitalRate (ℏ τ₂ c₁ c₂ r : ℝ) : ℝ :=
+noncomputable def orbitalRate (ℏ τ₂ c₁ c₂ r : ℝ) : ℝ :=
   τ₂ / ℏ ^ 2 * evenQuarticCubature r
     (orbitalZDoubleCommutator c₁ c₂)
 
@@ -127,9 +127,9 @@ theorem orbitalRate_nonneg (ℏ τ₂ c₁ c₂ r : ℝ)
 
 /-- Momentum and degree-two scattering times are reciprocals of distinct
 positive collision eigenvalues. -/
-def momentumTime (I₁ : ℝ) : ℝ := I₁⁻¹
-def degreeTwoTime (I₂ : ℝ) : ℝ := I₂⁻¹
-def scatteringRatio (I₁ I₂ : ℝ) : ℝ :=
+noncomputable def momentumTime (I₁ : ℝ) : ℝ := I₁⁻¹
+noncomputable def degreeTwoTime (I₂ : ℝ) : ℝ := I₂⁻¹
+noncomputable def scatteringRatio (I₁ I₂ : ℝ) : ℝ :=
   momentumTime I₁ / degreeTwoTime I₂
 
 theorem scatteringRatio_eq (I₁ I₂ : ℝ) (hI₁ : I₁ ≠ 0)
