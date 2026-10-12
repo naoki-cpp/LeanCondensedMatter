@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
