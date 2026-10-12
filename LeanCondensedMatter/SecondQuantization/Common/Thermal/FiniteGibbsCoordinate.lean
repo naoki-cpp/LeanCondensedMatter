@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
@@ -10,7 +11,8 @@ set_option linter.style.openClassical false
 # Finite Gibbs coordinate formulas
 
 This module owns the finite-coordinate realization of the canonical pure-point Gibbs expectation:
-complex Boltzmann weights, diagonal-evolution trace formulas, and the physical trace-ratio identity.
+complex Boltzmann weights, diagonal-evolution trace formulas, the physical trace-ratio identity,
+and compatibility with coefficientwise operator integration.
 
 These facts are thermal infrastructure independent of Bloch--de Dominicis. Pairing-specific modules
 consume this API downstream; perturbative finite-coordinate calculations may use it directly.
@@ -108,6 +110,20 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
   rw [← purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
   push_cast
   field_simp
+
+/-- The canonical finite Gibbs expectation commutes with coefficientwise finite operator
+integration. -/
+theorem finiteGibbsExpectation_operatorIntervalIntegral
+    (energy : Config → ℝ) (β : ℝ)
+    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
+    (hF : ∀ n : Config, IntervalIntegrable
+      (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
+    finiteGibbsExpectation energy β (operatorIntervalIntegral F a b) =
+      ∫ τ in a..b, finiteGibbsExpectation energy β (F τ) := by
+  simp_rw [finiteGibbsExpectation_eq_sum, matrixCoeff_operatorIntervalIntegral,
+    ← intervalIntegral.integral_const_mul]
+  exact (intervalIntegral.integral_finsetSum fun n _ =>
+    (hF n).const_mul (purePointGibbsProbability energy β n : ℂ)).symm
 
 end Common
 end SecondQuantization
