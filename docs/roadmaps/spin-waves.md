@@ -12,29 +12,32 @@ Applications* (Springer, 2009), DOI [10.1007/978-0-387-77865-5](https://doi.org/
 Page numbers below refer to printed pages. The book motivates models and derivations;
 it does not replace explicit hypotheses or a Lean proof of an approximation estimate.
 
-All spin-wave targets below are `idea`: this document fixes their intended scope, but
-does not claim an implemented Lean interface or a proved spin-wave theorem. Existing
-infrastructure is listed separately. General-spin representations, infinite-volume order,
+SW1 is `proved`: the finite spin representation and exact one-magnon restriction are
+implemented in [SpinHalf/Finite](../../LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean)
+and [Models/Heisenberg](../../LeanCondensedMatter/Models/Heisenberg.lean). SW2 and later
+targets remain `idea`. General-spin representations, infinite-volume order,
 antiferromagnetic Bogoliubov diagonalization, and thin-film boundary modes are later work.
 
 ## Existing infrastructure
 
 | Reusable source | Contribution and boundary |
 | --- | --- |
-| [SpinHalf](../../LeanCondensedMatter/QuantumTheory/SpinHalf.lean) and [Pauli algebra](../../LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean) | Spin-1/2 matrices and Hermitian real spin components; a many-site localized-spin representation is still needed. |
+| [SpinHalf](../../LeanCondensedMatter/QuantumTheory/SpinHalf.lean) and [Pauli algebra](../../LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean) | Spin-1/2 matrices and Hermitian real spin components; [Finite](../../LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean) supplies the full configuration space, site action, exchange identity, and isometric one-magnon embedding. |
 | [Bosonic creation/annihilation](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CreationAnnihilation.lean), [CCR](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CCR.lean), and [number operator](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean) | Algebraic occupation-basis actions and commutators; no identification with a finite spin space is supplied. |
 | [Completed free Gibbs theory](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/Completed/FreeGibbs.lean) | Finite-mode trace-class Gibbs construction for strictly positive mode energies; a zero-energy mode needs separate treatment. |
 | [Bosonic quartic interaction](../../LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Interaction.lean) | Existing ordered four-field vertices; a magnon coefficient and its derivation remain model-specific. |
 | [Retarded susceptibility](../../LeanCondensedMatter/QuantumTheory/LinearResponse/RetardedSusceptibility.lean) | Bounded quantum commutator response; microscopic magnetic observables and a comparison with macroscopic susceptibility remain to be constructed. |
 | [Crystal lattice](../../LeanCondensedMatter/Crystal/Lattice.lean) and [Brillouin quotient](../../LeanCondensedMatter/Crystal/Brillouin.lean) | Reciprocal-space conventions for later periodic models; finite-ring Fourier diagonalization should first reuse appropriate Mathlib mathematics. |
 
-Before implementing each stage, survey the pinned Mathlib declarations for finite function
-spaces, permutation actions, Fourier characters, and the relevant calculus. This roadmap
-does not assert that a particular uninspected Mathlib API is available.
+The SW1 survey of pinned Mathlib v4.34.1 uses `EuclideanSpace`, coordinate permutations
+through `LinearIsometryEquiv.piLpCongrLeft`, `LinearMap.isometryOfInner`, and the existing
+symmetric/positive operator APIs. The representation therefore uses canonical finite
+function Hilbert spaces rather than introducing a custom inner product or tensor API.
+Fourier characters and calculus must be surveyed separately before SW2.
 
 ## Implementation order and acceptance criteria
 
-### SW1: Exact spin-1/2 ferromagnetic ring
+### SW1: Exact spin-1/2 ferromagnetic ring (`proved`)
 
 Source: Section 2.5, pp. 46-50, especially (2.71)-(2.92).
 
@@ -63,8 +66,12 @@ amplitudes into the full spin space and the intertwining identity
 (L_J\psi)_j=J(2\psi_j-\psi_{j-1}-\psi_{j+1}).
 \]
 
-This proves one-magnon invariance and the exact effective operator, not merely a
-formula for a separately defined hopping model.
+The theorem `Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding` proves
+this intertwining identity for N >= 3. Together with
+`hamiltonian_eq_excitation_add_ground` it identifies the shifted full-spin action.
+`hamiltonian_eq_spinSum`, `hamiltonian_isSelfAdjoint`, `excitationHamiltonian_isPositive`,
+and `hamiltonian_polarized` establish the representation and energy claims. Positivity
+is proved under the weaker condition J >= 0; no ground-state uniqueness is claimed.
 
 ### SW2: Finite Fourier spectrum and long-wavelength behavior
 
