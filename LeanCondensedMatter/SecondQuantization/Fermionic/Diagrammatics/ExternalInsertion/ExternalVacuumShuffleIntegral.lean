@@ -470,10 +470,10 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_norma
               (orderedQuarticLegEquiv S.card q).2)) :=
     externalInsertionSlotLegSplitting_right_orderedMixedPosition T externalTime σ q
   by_cases horder : splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2)
-  · rw [if_pos horder]
+  · simp only [horder, ↓reduceIte]
     exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
       ε β T ext vac externalTime σ pr horder
-  · rw [if_neg horder]
+  · simp only [horder, ↓reduceIte]
     have hpair :=
       Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
         splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr)
