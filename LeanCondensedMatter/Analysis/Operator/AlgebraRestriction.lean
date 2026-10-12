@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Algebra.Equiv
+import Mathlib.Algebra.Algebra.Subalgebra.Basic
 import Mathlib.Algebra.Module.Submodule.LinearMap
 
 set_option linter.style.header false
