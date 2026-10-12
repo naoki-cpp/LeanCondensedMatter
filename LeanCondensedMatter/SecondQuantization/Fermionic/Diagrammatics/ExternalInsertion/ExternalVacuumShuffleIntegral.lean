@@ -542,6 +542,66 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
       (Equiv.prod_comp pairEquiv (fun pr => kernel pr.1.1 pr.1.2)).symm
     _ = _ := Fintype.prod_sum_type _
 
+/-- When every transported vacuum pair retains its endpoint order, the
+vacuum factor in the actual assembled mixed-time Wick contraction product is
+the standalone quartic free-Gibbs contraction product.
+
+The external factor still uses ambient-normalized endpoints. If a vacuum pair
+is reversed by the mixed-time ordering, this theorem does not assume the
+fermionic contraction is invariant under that reversal. -/
+theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_lt
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
+      split ext.pairing (vac.pairingInOrder order)
+    let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+    (∀ pr : (vac.pairingInOrder order).NormalizedPair,
+      split (Sum.inr pr.1.1) < split (Sum.inr pr.1.2)) →
+    (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs,
+        kernel pr.1 pr.2) =
+      (∏ pr : ext.pairing.NormalizedPair,
+        kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
+      ∏ pr : (vac.pairingInOrder order).NormalizedPair,
+        flatVertexLegPairValue ε β
+          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+          pr.1.1 pr.1.2 := by
+  intro S order f d split pairEquiv kernel horder
+  have hvac :
+      (∏ pr : (vac.pairingInOrder order).NormalizedPair,
+        kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2) =
+      ∏ pr : (vac.pairingInOrder order).NormalizedPair,
+        flatVertexLegPairValue ε β
+          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+          pr.1.1 pr.1.2 := by
+    apply Fintype.prod_congr
+    intro pr
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
+      ε β T ext vac externalTime σ pr (horder pr)
+  have hsplit :=
+    externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split
+      ε β T ext vac externalTime σ
+  exact hsplit.trans
+    (congrArg
+      (fun z : ℂ =>
+        (∏ pr : ext.pairing.NormalizedPair,
+          kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) * z)
+      hvac)
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
