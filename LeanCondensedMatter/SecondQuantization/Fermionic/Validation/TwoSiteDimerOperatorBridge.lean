@@ -152,7 +152,7 @@ theorem twoSiteDimerContact_one_eq_hamiltonian :
           AlgebraicFock.dGamma (LatticeState TwoSite) T := by
     simpa only [AlgebraicFock.dGammaLinear_apply] using
       (AlgebraicFock.dGammaLinear (LatticeState TwoSite)).map_add S T
-  simp [Lattice.LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping,
+  simp [LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping,
     twoSiteDimerHamiltonian, Lattice.boundedOneBodyOperator_eq,
     hdGammaAdd, boundedDgammaMatrixUnit, add_comm]
 
