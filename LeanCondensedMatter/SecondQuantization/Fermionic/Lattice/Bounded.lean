@@ -186,6 +186,25 @@ noncomputable def boundedPeierlsBondHamiltonian (K : LocallyFiniteHopping Site)
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperator (K.peierlsBondHamiltonian ℏ q x y A)
 
+/-- Canonical bounded realization of the continuity-derived one-particle bond current.
+This identifies the one-body realization with the bounded fermionic current obtained by
+second quantization before transport to the finite Hilbert Fock space. -/
+theorem boundedOneBodyOperator_oneParticleBondCurrent
+    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
+    boundedOneBodyOperator (K.oneParticleBondCurrent ℏ q x y) =
+      boundedBondCurrent ℏ q K x y := by
+  unfold boundedOneBodyOperator boundedOneBodyOperatorLinearMap
+  unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
+  rw [map_smul]
+  change
+    ((Complex.I * q) / ℏ) •
+        boundedLatticeOperator
+          (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
+      boundedLatticeOperator
+        (((Complex.I * q) / ℏ) •
+          AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
+  rw [boundedLatticeOperator_smul]
+
 /-- The Peierls derivative/current equivalence survives the finite-dimensional bounded transport. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
@@ -196,18 +215,8 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
       (boundedOneBodyOperatorLinearMap (Site := Site))
   have hcurrent :
       boundedOneBodyOperatorLinearMap (Site := Site) (K.oneParticleBondCurrent ℏ q x y) =
-        boundedBondCurrent ℏ q K x y := by
-    unfold boundedOneBodyOperatorLinearMap
-    unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
-    rw [map_smul]
-    change
-      ((Complex.I * q) / ℏ) •
-          boundedLatticeOperator
-            (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
-        boundedLatticeOperator
-          (((Complex.I * q) / ℏ) •
-            AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
-    rw [boundedLatticeOperator_smul]
+        boundedBondCurrent ℏ q K x y :=
+    boundedOneBodyOperator_oneParticleBondCurrent K ℏ q x y
   change HasAlgebraicDerivAt
     (fun A => boundedOneBodyOperatorLinearMap (Site := Site)
       (K.peierlsBondHamiltonian ℏ q x y A))
