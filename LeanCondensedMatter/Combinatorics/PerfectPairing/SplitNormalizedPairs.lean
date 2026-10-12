@@ -142,12 +142,15 @@ theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
         rw [Pairing.ofSplit_partner_inr]
         exact congrArg (fun x => e (Sum.inr x))
           ((Q.mem_pairs_iff p.1.1 p.1.2).mp p.2).2
+  change
+    ((Pairing.ofSplit e P Q).normalizedPairOfEndpointEquiv endpointEquiv e pr).1 = _ ∨
+      ((Pairing.ofSplit e P Q).normalizedPairOfEndpointEquiv endpointEquiv e pr).1 = _
   have h :=
     (Pairing.ofSplit e P Q).normalizedPairOfEndpointEquiv_pair_eq_or_swap
       endpointEquiv e hpartner pr
   cases pr with
-  | inl p => simpa [endpointEquiv, Pairing.ofSplitNormalizedPairEquiv] using h
-  | inr p => simpa [endpointEquiv, Pairing.ofSplitNormalizedPairEquiv] using h
+  | inl p => simpa [endpointEquiv] using h
+  | inr p => simpa [endpointEquiv] using h
 
 /-- The contraction product of a pairing reassembled from two independent parts splits into
 two local contraction products when the corresponding normalized pair values agree.
