@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse
