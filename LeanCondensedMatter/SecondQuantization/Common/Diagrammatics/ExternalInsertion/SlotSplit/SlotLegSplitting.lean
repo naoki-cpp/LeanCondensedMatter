@@ -243,7 +243,7 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
           (Fin.elim0 : Fin 0 → ℝ) := by
       funext a
       exact a.elim0
-    simpa only [hzero] using hmap
+    simpa only [hzero, Nat.add_zero] using hmap
   have hposition (q : Fin (2 * (2 * S.card))) :
       splitting (Sum.inr q) =
         externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
