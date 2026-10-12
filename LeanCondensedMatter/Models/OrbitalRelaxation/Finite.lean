@@ -70,7 +70,7 @@ theorem orbitalZDoubleCommutator_eq_polynomial (c₁ c₂ : ℝ)
     orbitalZDoubleCommutator c₁ c₂ k =
       orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2) := by
   simp [orbitalZDoubleCommutator, orbitalHamiltonian, generatorZ,
-    orbitalZPolynomial, Matrix.trace, Matrix.mul_apply, Fin.sum_univ_three]
+    orbitalZPolynomial, Matrix.trace, Fin.sum_univ_three]
   ring
 
 /-- An exact cubature for polynomials even in each coordinate and homogeneous
@@ -103,9 +103,13 @@ theorem evenQuarticCubature_orbitalZDoubleCommutator
     (c₁ c₂ r : ℝ) :
     evenQuarticCubature r (orbitalZDoubleCommutator c₁ c₂) =
       (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
-  change evenQuarticCubature r
-    (fun k => orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)) = _
-  exact evenQuarticCubature_orbitalZPolynomial c₁ c₂ r
+  calc
+    _ = evenQuarticCubature r
+        (fun k => orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)) := by
+          congr 1
+          funext k
+          exact orbitalZDoubleCommutator_eq_polynomial c₁ c₂ k
+    _ = _ := evenQuarticCubature_orbitalZPolynomial c₁ c₂ r
 
 /-- Conditional orbital relaxation rate after supplying the degree-two
 scattering time and the second-order kinetic closure. -/
