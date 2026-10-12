@@ -1,4 +1,5 @@
 import Mathlib.Basic.Complex.Basic
+import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.LinearAlgebra.Finsupp.LSum
 import Mathlib.Tactic.Abel
 
