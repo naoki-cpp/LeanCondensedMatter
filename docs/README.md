@@ -79,4 +79,3 @@ and cross-track targets. Follow these topic documents for details.
 When updating documentation, keep substantive content in the document that owns
 it and link to it from this guide. Keep current design in architecture notes,
 targets and limitations in roadmaps, and enduring decision rationale in ADRs.
-
