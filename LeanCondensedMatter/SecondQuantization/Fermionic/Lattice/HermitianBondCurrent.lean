@@ -30,6 +30,7 @@ noncomputable section
 namespace LocallyFiniteHopping
 
 open QuantumTheory.PeierlsPhase
+open SecondQuantization.Fermionic
 open SecondQuantization.Fermionic.Lattice
 variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
