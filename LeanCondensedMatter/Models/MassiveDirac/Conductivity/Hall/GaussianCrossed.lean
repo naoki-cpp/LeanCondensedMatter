@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
 
 set_option linter.style.header false
@@ -91,6 +92,27 @@ partner is included upstream and the remaining physical normalization is real. -
   rw [Complex.mul_im,
     finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_psi_im]
   simp only [Complex.ofReal_im, mul_zero, zero_mul, add_zero]
+
+
+/-- The exact closed-form crossed correction required to turn the proved non-crossing Ado result
+into the full Gaussian-disorder Ado benchmark.
+
+This is an algebraic *target identity*, not an evaluation of either crossed trace integral:
+the finite-regulator `X` and `Psi` kernels still require their own analytical limits. The
+correction on the left is the required sum of those contributions after taking those limits.
+In particular, the statement does not assert `Psi = 0` or identify an unevaluated crossed
+integral with this expression. -/
+theorem nonCrossingHallConductivity_add_gaussianCrossedTarget_eq_gaussianBenchmark
+    (e hbar m probeEnergy : ℝ) :
+    nonCrossingHallConductivity e hbar m probeEnergy +
+        (4 * e ^ 2 / planckFromReduced hbar) *
+          (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+            (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) =
+      -(8 * e ^ 2 / planckFromReduced hbar) *
+        (probeEnergy * m ^ 3 /
+          (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
+  unfold nonCrossingHallConductivity
+  ring
 
 end
 
