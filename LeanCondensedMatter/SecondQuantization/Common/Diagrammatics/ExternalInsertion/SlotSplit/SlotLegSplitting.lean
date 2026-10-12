@@ -163,6 +163,42 @@ theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition
   simp only [split, fixed, Equiv.trans_apply, Equiv.apply_symm_apply]
   rw [Pairing.ofSplit_partner_inr]
 
+/-- The increasing vertex order of the vacuum complement gives the exact
+ambient mixed-time position of every ordered quartic vacuum leg. -/
+theorem externalInsertionSlotLegSplitting_right_orderedMixedPosition
+    {E N : ℕ} (T : Finset (Fin N))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ)
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin N)) \ T).card))) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let splitting :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    splitting (Sum.inr p) =
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (Sum.inr
+          (⟨(order (orderedQuarticLegEquiv S.card p).1).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv S.card p).2)) := by
+  intro S order splitting
+  have hordered :
+      orderedLegToDiagramLeg S order p =
+        (quarticLegEquiv S).symm
+          (order (orderedQuarticLegEquiv S.card p).1,
+            (orderedQuarticLegEquiv S.card p).2) := by
+    simp only [orderedLegToDiagramLeg, Equiv.trans_apply, Equiv.prodCongr_apply]
+    cases orderedQuarticLegEquiv S.card p with
+    | mk v l => rfl
+  change
+    (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order p))) = _
+  rw [hordered]
+  exact externalInsertionSlotLegSplitting_right_mixedPosition T externalTime σ
+    (order (orderedQuarticLegEquiv S.card p).1)
+    (orderedQuarticLegEquiv S.card p).2
+
 /-- Under the increasing vacuum vertex enumeration, the actual mixed-time
 partner of an assembled vacuum leg is the image of its partner in the vacuum
 diagram's ordered pairing. The explicit vertex-order transport does not assume
