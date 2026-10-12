@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls
+import LeanCondensedMatter.QuantumTheory.PeierlsLattice
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 

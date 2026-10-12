@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact
@@ -15,7 +14,7 @@ set_option linter.style.header false
 # Fermionic lattice models
 
 Canonical lattice/model layer downstream of `Fermionic.Algebra` and upstream of response/transport.
-It owns fermionic second-quantized hopping Hamiltonians and currents, Peierls link families,
+It owns fermionic second-quantized hopping Hamiltonians and currents, bounded Peierls link families,
 finite-lattice bounded realizations, Hermiticity/current equivalences, and geometric current
 aggregation. The locally finite one-particle hopping model lives in `Analysis.DiscreteLattice`,
 and the site geometry in `Analysis.LatticeGeometry`. Generic Kubo, frequency response,

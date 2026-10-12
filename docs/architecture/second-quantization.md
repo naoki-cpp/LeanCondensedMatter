@@ -24,7 +24,10 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
-Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by `QuantumTheory.PeierlsPhase`; concrete hopping families and Fock transports remain downstream.
+Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by
+`QuantumTheory.PeierlsPhase`. One-particle Peierls hopping, link current, and contact operators
+with their algebraic source derivatives are owned by `QuantumTheory.PeierlsLattice`;
+fermionic bounded/Fock transports remain downstream.
 
 The algebraic one-particle space, matrix units, locally finite hopping model, bond operators,
 and local continuity identity are owned by `Analysis.DiscreteLattice`. Fermionic
