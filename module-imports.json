@@ -1551,6 +1551,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.SigmaPermutationSign",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/SigmaPermutationSign.lean",
+      "imports": [],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
       "sourceFile": "LeanCondensedMatter/Combinatorics/SimpleGraphComponentPartition.lean",
       "imports": [],
@@ -1677,6 +1683,14 @@
         "LeanCondensedMatter.Crystal.Translation"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.Heisenberg",
+      "sourceFile": "LeanCondensedMatter/Models/Heisenberg.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.KronigPenney",
@@ -2872,6 +2886,7 @@
       "name": "LeanCondensedMatter.Models",
       "sourceFile": "LeanCondensedMatter/Models.lean",
       "imports": [
+        "LeanCondensedMatter.Models.Heisenberg",
         "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.Parabolic2DEG",
@@ -4055,6 +4070,14 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.SpinHalf"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.SpinHalf",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/SpinHalf.lean",
       "imports": [
@@ -4075,7 +4098,8 @@
         "LeanCondensedMatter.QuantumTheory.Gibbs",
         "LeanCondensedMatter.QuantumTheory.LinearResponse",
         "LeanCondensedMatter.QuantumTheory.Postulates",
-        "LeanCondensedMatter.QuantumTheory.SpinHalf"
+        "LeanCondensedMatter.QuantumTheory.SpinHalf",
+        "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite"
       ],
       "externalImportCount": 0
     },
@@ -5044,8 +5068,10 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.SubsetSplit",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder"
       ],
       "externalImportCount": 0
     },
@@ -6162,9 +6188,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/ParticleNumberCharge.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation"
       ],
       "externalImportCount": 1
     },
@@ -6417,10 +6441,11 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentOrderSign.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign",
+        "LeanCondensedMatter.Combinatorics.SigmaPermutationSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
@@ -6478,6 +6503,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumShuffleIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
         "LeanCondensedMatter.Combinatorics.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",

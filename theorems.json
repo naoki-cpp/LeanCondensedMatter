@@ -5138,6 +5138,7 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "dependencies": [
@@ -5150,9 +5151,10 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6688,6 +6690,7 @@
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
@@ -6709,6 +6712,7 @@
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
@@ -6718,7 +6722,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 16,
+    "compiledConsumerCount": 17,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6773,15 +6777,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (P : Combinatorics.PairingOn γ) (e : β ≃ γ) (f : α ≃ β),\n  (P.transport e).transport f = P.transport (f.trans e)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -6792,15 +6796,19 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit"
+    ],
     "dependencies": [
       "Combinatorics.PairingOn.ext",
       "Combinatorics.PairingOn.transport_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20233,6 +20241,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] {β : ι → Type u_2} [inst_2 : (i : ι) → Fintype (β i)]\n  [inst_3 : (i : ι) → DecidableEq (β i)] (p : (i : ι) → Equiv.Perm (β i)),\n  Equiv.Perm.sign (Equiv.sigmaCongrRight p) = ∏ i, Equiv.Perm.sign (p i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Equiv.Perm.sign_sigmaCongrRight",
+    "module": "LeanCondensedMatter.Combinatorics.SigmaPermutationSign",
+    "externalAxioms": [],
+    "docString": "For a finite family of finite types, the sign of the fiberwise permutation is the\nproduct of the signs of its component permutations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.SigmaPermutationSign.0.Equiv.Perm.sign_sigmaCongrRight_mulSingle"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} (π : Finpartition s) (order : Fin s.card ≃ ↥s)\n  (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders),\n  π.assembleOrder orders (π.shuffleOfOrder order orders h) = order",
     "standardAxioms": [
       "Classical.choice",
@@ -30513,6 +30565,340 @@
       "QuantumTheory.Transport.integral_purePointKuboBastinCommonVertexTransitionIntegrand"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J : ℝ),\n      Models.Heisenberg.excitationHamiltonian J ∘ₗ QuantumTheory.SpinHalf.oneMagnonEmbedding.toLinearMap =\n        QuantumTheory.SpinHalf.oneMagnonEmbedding.toLinearMap ∘ₗ Models.Heisenberg.oneMagnonLaplacian J",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": "The exact one-magnon restriction of the full spin Hamiltonian. The embedding is\nisometric, and this identity proves that its range is invariant. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Models.Heisenberg.excitationHamiltonian_oneMagnonKet",
+      "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.oneMagnonLaplacian_single"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ), 0 ≤ J → (Models.Heisenberg.excitationHamiltonian J).IsPositive",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.excitationHamiltonian_isPositive",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.SpinHalf.id_sub_exchange_isPositive"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J : ℝ) (k : ZMod N),\n      (Models.Heisenberg.excitationHamiltonian J) (QuantumTheory.SpinHalf.oneMagnonKet k) =\n        ↑J •\n          (QuantumTheory.SpinHalf.oneMagnonKet k - QuantumTheory.SpinHalf.oneMagnonKet (k + 1) +\n            (QuantumTheory.SpinHalf.oneMagnonKet k - QuantumTheory.SpinHalf.oneMagnonKet (k - 1)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.excitationHamiltonian_oneMagnonKet",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": "Exact action on a single reversed spin; neighboring sites are understood modulo N. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
+    ],
+    "dependencies": [
+      "QuantumTheory.SpinHalf.exchange_oneMagnonKet",
+      "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.site_ne_next"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ),\n  Models.Heisenberg.hamiltonian J =\n    Models.Heisenberg.excitationHamiltonian J + ↑(Models.Heisenberg.groundEnergy N J) • LinearMap.id",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.hamiltonian_eq_excitation_add_ground",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.hamiltonian_polarized"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.hamiltonian_polarized"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J hbar : ℝ),\n      hbar ≠ 0 →\n        Models.Heisenberg.hamiltonian J = (-2 * ↑J / ↑hbar ^ 2) • ∑ i, QuantumTheory.SpinHalf.spinDot hbar i (i + 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.hamiltonian_eq_spinSum",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": "Equality with the dimensionful Heisenberg spin-product Hamiltonian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.SpinHalf.spinDot_eq_exchange",
+      "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.site_ne_next"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ), IsSelfAdjoint (Models.Heisenberg.hamiltonian J)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.hamiltonian_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Models.Heisenberg.hamiltonian_isSymmetric"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ), (Models.Heisenberg.hamiltonian J).IsSymmetric",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.hamiltonian_isSymmetric",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.hamiltonian_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "QuantumTheory.SpinHalf.exchange_isSymmetric"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.hamiltonian_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ),\n  (Models.Heisenberg.hamiltonian J) QuantumTheory.SpinHalf.polarized =\n    ↑(Models.Heisenberg.groundEnergy N J) • QuantumTheory.SpinHalf.polarized",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Models.Heisenberg.hamiltonian_polarized",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Models.Heisenberg.hamiltonian_eq_excitation_add_ground",
+      "QuantumTheory.SpinHalf.exchange_polarized"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73155,6 +73541,414 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (i j : Site)\n  (ψ : QuantumTheory.SpinHalf.State Site) (c : QuantumTheory.SpinHalf.Configuration Site),\n  ((QuantumTheory.SpinHalf.exchange i j) ψ).ofLp c = ψ.ofLp (c ∘ ⇑(Equiv.swap i j))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.exchange_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (i j : Site),\n  Function.Involutive ⇑(QuantumTheory.SpinHalf.exchange i j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.exchange_involutive",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.SpinHalf.exchange_isSymmetric"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.SpinHalf.exchange_isSymmetric"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (i j : Site),\n  (↑(QuantumTheory.SpinHalf.exchange i j).toLinearEquiv).IsSymmetric",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.exchange_isSymmetric",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.hamiltonian_isSymmetric",
+      "QuantumTheory.SpinHalf.id_sub_exchange_isPositive"
+    ],
+    "dependencies": [
+      "QuantumTheory.SpinHalf.exchange_involutive"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.hamiltonian_isSymmetric",
+      "QuantumTheory.SpinHalf.id_sub_exchange_isPositive"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (i j k : Site),\n  (QuantumTheory.SpinHalf.exchange i j) (QuantumTheory.SpinHalf.oneMagnonKet k) =\n    QuantumTheory.SpinHalf.oneMagnonKet ((Equiv.swap i j) k)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.exchange_oneMagnonKet",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_oneMagnonKet"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_oneMagnonKet"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (i j : Site),\n  (QuantumTheory.SpinHalf.exchange i j) QuantumTheory.SpinHalf.polarized = QuantumTheory.SpinHalf.polarized",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.exchange_polarized",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.hamiltonian_polarized"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.hamiltonian_polarized"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (i j : Site),\n  (LinearMap.id - ↑(QuantumTheory.SpinHalf.exchange i j).toLinearEquiv).IsPositive",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.id_sub_exchange_isPositive",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_isPositive"
+    ],
+    "dependencies": [
+      "QuantumTheory.SpinHalf.exchange_isSymmetric"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_isPositive"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site], ‖QuantumTheory.SpinHalf.polarized‖ = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.norm_polarized",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site], Function.Injective QuantumTheory.SpinHalf.oneDown",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.oneDown_injective",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (ψ : EuclideanSpace ℂ Site),\n  QuantumTheory.SpinHalf.oneMagnonEmbedding ψ = ∑ i, ψ.ofLp i • QuantumTheory.SpinHalf.oneMagnonKet i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.oneMagnonEmbedding_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : DecidableEq Site] (hbar : ℝ) (i j : Site),\n  i ≠ j →\n    QuantumTheory.SpinHalf.spinDot hbar i j =\n      (↑hbar ^ 2 / 4) • (2 • ↑(QuantumTheory.SpinHalf.exchange i j).toLinearEquiv - LinearMap.id)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.SpinHalf.spinDot_eq_exchange",
+    "module": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
+    "externalAxioms": [],
+    "docString": "Spin-1/2 exchange identity, with the same Pauli convention as `spinMatrix`.\nStancil-Prabhakar, Section 2.4, equations (2.63)-(2.70). ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.hamiltonian_eq_spinSum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.hamiltonian_eq_spinSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (ℏ : ℝ) (axis : InternalSpace.PauliAxis),\n  (QuantumTheory.SpinHalf.spinMatrix ℏ) (QuantumTheory.SpinHalf.cartesianBasisVector axis) =\n    ↑(ℏ / 2) • InternalSpace.pauliBasis axis",
     "standardAxioms": [
       "Classical.choice",
@@ -96845,8 +97639,6 @@
     "dependents": [
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
       "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
     ],
@@ -96858,12 +97650,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
       "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96919,7 +97709,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    ∀ (c : ℂ), SecondQuantization.Common.CarriesShift grading (c • A) q",
     "standardAxioms": [
       "Classical.choice",
@@ -96927,7 +97717,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -96938,16 +97728,12 @@
     "docString": "A scalar multiple preserves an operator's support shift. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96961,7 +97747,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} {G : Type u_2} {ι : Type u_3} [inst : AddCommGroup G] {grading : Config → G} (s : Finset ι)\n  (A : ι → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (q : G),\n  (∀ i ∈ s, SecondQuantization.Common.CarriesShift grading (A i) q) →\n    SecondQuantization.Common.CarriesShift grading (∑ i ∈ s, A i) q",
     "standardAxioms": [
       "Classical.choice",
@@ -96969,7 +97755,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -96980,19 +97766,15 @@
     "docString": "A finite sum of operators with a common support shift has that shift. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.CarriesShift.add",
       "SecondQuantization.Common.CarriesShift.zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98232,6 +99014,48 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_3} {InternalLabel : Type u_4} {E N : ℕ} (T : Finset (Fin N))\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (Finset.univ \\ T)) (externalTime : Fin (2 * E) → ℝ)\n  (σ : Fin N → ℝ) (v : ↥(Finset.univ \\ T)) (l : Fin 4),\n  let S := Finset.univ \\ T;\n  have split :=\n    Equiv.trans (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  (d.pairingInMixedOrder externalTime σ).partner\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (Sum.inr (⟨↑v, ⋯⟩, l))) =\n    split (Sum.inr (vac.pairing.partner ((SecondQuantization.Common.quarticLegEquiv S).symm (v, l))))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "The true mixed-order partner of any vacuum-complement leg in an assembled\ndiagram is the image of that leg's partner in the vacuum pairing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplit_partner_inr",
+      "Combinatorics.PairingOn.transport_partner",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -108540,6 +109364,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_fixed"
@@ -108548,11 +109373,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_fixed"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108635,6 +109461,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
@@ -108649,6 +109476,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.pairingInMixedOrder_partner_legPosition",
@@ -108658,7 +109486,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedTimeOrderedAtomicFieldFamily_componentMixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_fixed"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108821,8 +109649,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108834,6 +109662,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
     ],
     "dependencies": [
@@ -108842,7 +109671,54 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity.0.SecondQuantization.Common.supportSlotVertex_of_right_leg"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (T : Finset (Fin N)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ) (v : ↥(Finset.univ \\ T)) (l : Fin 4),\n  let S := Finset.univ \\ T;\n  have split :=\n    Equiv.trans (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  split (Sum.inr ((SecondQuantization.Common.quarticLegEquiv S).symm (v, l))) =\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ (Sum.inr (⟨↑v, ⋯⟩, l))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+    "externalAxioms": [],
+    "docString": "The right-sector leg in a slot splitting occupies the mixed-time position\nof the same actual vacuum vertex leg in the full external-insertion diagram.\n\nThe vertex here is the one given by the quartic leg equivalence of the\ncomplementary finset; no agreement with a separately chosen sorted slot\nenumeration is presumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_interaction"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -121298,7 +122174,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.sign_sigmaCongrRight_eq_prod"
+      "Equiv.Perm.sign_sigmaCongrRight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -130048,8 +130924,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
       "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
     ],
     "dependencies": [
@@ -130062,11 +130936,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
       "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130101,8 +130973,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
       "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
     ],
     "dependencies": [
@@ -130115,141 +130985,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
       "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
     ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.numberOperator i) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.carriesParticleNumberCharge_numberOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "A number operator preserves total particle number. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_create"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.quarticInteractionOn support g) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "A finite, number-conserving quartic interaction also preserves particle number. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.CarriesShift.smul",
-      "SecondQuantization.Common.CarriesShift.sum",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (q : SecondQuantization.Common.QuarticVertexLabel Mode),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.quarticVertexOperator q) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticVertexOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "A number-conserving quartic vertex has zero particle-number shift. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_create"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_quarticInteractionOn"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133854,6 +134592,46 @@
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    Equiv.trans (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv split ext.pairing vac.pairing;\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      d.vertexLabelSequence σ;\n  ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n      kernel pr.1 pr.2 =\n    (∏ pr, kernel (↑(pairEquiv (Sum.inl pr))).1 (↑(pairEquiv (Sum.inl pr))).2) *\n      ∏ pr, kernel (↑(pairEquiv (Sum.inr pr))).1 (↑(pairEquiv (Sum.inr pr))).2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "The free-Gibbs contraction product of an assembled arbitrary-external\ndiagram splits into its left- and right-sector products, evaluated at the\n*ambient normalized pairs* supplied by the binary splitting equivalence.\n\nUnlike a naive product over transported endpoint pairs, this statement does\nnot assume that a slot shuffle preserves the orientation of individual\nfermionic pairs. The remaining physical task is to identify each sector's\nambient-normalized kernel with its standalone local kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150718,6 +151496,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] {β : ι → Type u_2} [inst_2 : (i : ι) → Fintype (β i)]\n  [inst_3 : (i : ι) → DecidableEq (β i)] (i : ι) (p : Equiv.Perm (β i)),\n  Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle i p)) = Equiv.Perm.sign p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.SigmaPermutationSign.0.Equiv.Perm.sign_sigmaCongrRight_mulSingle",
+    "module": "LeanCondensedMatter.Combinatorics.SigmaPermutationSign",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Equiv.Perm.sign_sigmaCongrRight"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Equiv.Perm.sign_sigmaCongrRight"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_2} [inst : DecidableEq α] {s : Finset α} (G : SimpleGraph ↥s) (v w : ↥s),\n  (SimpleGraph.componentSetoidOn✝ G) ↑v ↑w ↔ G.Reachable v w",
     "standardAxioms": [
       "Classical.choice",
@@ -150957,6 +151777,90 @@
     "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} (J : ℝ) (k : ZMod N),\n  (Models.Heisenberg.oneMagnonLaplacian J) (EuclideanSpace.single k 1) =\n    ↑J •\n      (EuclideanSpace.single k 1 - EuclideanSpace.single (k + 1) 1 +\n        (EuclideanSpace.single k 1 - EuclideanSpace.single (k - 1) 1))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.oneMagnonLaplacian_single",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ}, 2 < N → ∀ (i : ZMod N), i ≠ i + 1",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.site_ne_next",
+    "module": "LeanCondensedMatter.Models.Heisenberg",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_oneMagnonKet",
+      "Models.Heisenberg.hamiltonian_eq_spinSum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_oneMagnonKet",
+      "Models.Heisenberg.hamiltonian_eq_spinSum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
       "Quot.sound",
       "propext"
     ],
@@ -172761,92 +173665,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] {β : ι → Type u_2} [inst_2 : (i : ι) → Fintype (β i)]\n  [inst_3 : (i : ι) → DecidableEq (β i)] (p : (i : ι) → Equiv.Perm (β i)),\n  Equiv.Perm.sign (Equiv.sigmaCongrRight p) = ∏ i, Equiv.Perm.sign (p i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.sign_sigmaCongrRight_eq_prod",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.sign_sigmaCongrRight_mulSingle"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] {β : ι → Type u_2} [inst_2 : (i : ι) → Fintype (β i)]\n  [inst_3 : (i : ι) → DecidableEq (β i)] (i : ι) (p : Equiv.Perm (β i)),\n  Equiv.Perm.sign (Equiv.sigmaCongrRight (Pi.mulSingle i p)) = Equiv.Perm.sign p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.sign_sigmaCongrRight_mulSingle",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.sign_sigmaCongrRight_eq_prod"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign.0.SecondQuantization.Fermionic.sign_sigmaCongrRight_eq_prod"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)\n  (p :\n    Fin\n      (2 *\n        (2 * (SecondQuantization.Common.interactionSector ↑B).card +\n          SecondQuantization.Common.ExternalInsertionDiagram.externalPairCount d B))),\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily d.externalLabel externalTime\n      d.vertexLabelSequence σ (d.componentMixedPosition externalTime σ B p) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily\n      (d.componentWickDiagram B).externalLabel (d.componentExternalTime externalTime B)\n      (d.componentWickDiagram B).vertexLabelSequence (d.componentInteractionTime σ B) p",
     "standardAxioms": [
       "Classical.choice",
@@ -173243,6 +174061,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_2} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel M)\n      (SecondQuantization.Common.QuarticVertexLabel M) E n T)\n  (vac : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel M) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    Equiv.trans (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ =\n    Combinatorics.Pairing.ofSplit split ext.pairing vac.pairing",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "The actual mixed-time pairing of a reassembled arbitrary-external diagram\nis a binary split pairing, after transporting the fixed-leg splitting into the\nambient mixed-time order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_trans"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_split"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
