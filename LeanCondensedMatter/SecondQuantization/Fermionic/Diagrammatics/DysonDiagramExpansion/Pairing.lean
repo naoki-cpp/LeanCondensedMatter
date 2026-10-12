@@ -63,11 +63,10 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
           (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
-  rw [flatVertexLegPairValue_eq_finiteGibbsExpectation,
-    quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-    Common.finiteGibbsExpectation_smul,
-    ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  simpa [flatVertexLegPairValue, timedFieldPairContraction_eq,
+    quarticLegFieldForSequence, quarticLegEnergyShiftForSequence,
+    quarticLocalLegEnergyShift, quarticLocalLegOperator,
+    Common.quarticLocalLegOperator, Common.flatVertexIndex, Common.flatLocalLeg]
 
 /-- Canonical pairing evaluation is continuous in the vertex-time assignment. -/
 theorem continuous_flatVertexLegPairingEvaluation {n : ℕ}
