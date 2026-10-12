@@ -44,18 +44,32 @@ theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPair
     ((interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
         rfl v).1
-  simpa only [ExternalInsertionWickDiagram.componentMixedPosition,
-    ExternalInsertionWickDiagram.componentOrderedLeg,
-    ExternalInsertionWickDiagram.componentExternalTime,
-    ExternalInsertionWickDiagram.componentInteractionTime,
-    externalInsertionMixedTimeOrderedAtomicLegPosition, Equiv.symm_apply_apply,
-    fExternal, fInteraction] using
+  have hExternalLabel :
+      d.externalLabel ∘ fExternal = (d.componentWickDiagram B).externalLabel := rfl
+  have hExternalTime :
+      externalTime ∘ fExternal = d.componentExternalTime externalTime B := rfl
+  have hVertexLabel :
+      d.vertexLabelSequence ∘ fInteraction =
+        (d.componentWickDiagram B).vertexLabelSequence := rfl
+  have hInteractionTime :
+      σ ∘ fInteraction = d.componentInteractionTime σ B := rfl
+  have h :=
     externalInsertionMixedTimeOrderedAtomicPairValue_map ε β fExternal fInteraction
       d.externalLabel externalTime d.vertexLabelSequence σ
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
         (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) a)
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
         (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) b)
+  rw [hExternalLabel, hExternalTime, hVertexLabel, hInteractionTime] at h
+  have hposition (p) :
+      externalInsertionMixedTimeOrderedAtomicLegPosition
+          (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv
+            (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) p) = p :=
+    (externalInsertionMixedTimeOrderedAtomicLegEquiv
+      (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).symm_apply_apply p
+  rw [hposition a, hposition b] at h
+  exact h
 
 
 end Fermionic
