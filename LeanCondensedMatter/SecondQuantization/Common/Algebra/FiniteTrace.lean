@@ -4,14 +4,13 @@ import Mathlib.LinearAlgebra.Trace
 set_option linter.style.header false
 
 /-!
-# Finite traces and weighted coordinate sums
+# Finite traces and weight sums
 
-Coordinate formulas on a finite occupation-state type `Config`. This module owns ordinary finite
-traces, weighted traces, and total weights.
+For a finite occupation-state type `Config`, this module owns the canonical linear trace on
+algebraic Fock endomorphisms, its occupation-basis coordinate formula, and finite total weights.
 
-The weight `w : Config → ℂ` is arbitrary, so `weightedTrace` and `weightSum` are raw coordinate
-quantities. A physical Gibbs interpretation only appears after specialization to positive
-Boltzmann weights and comparison with a normalized density operator.
+`weightSum` is an unnormalized scalar coordinate sum, not a Gibbs partition function or state
+until the weights are specialized and normalization is justified.
 -/
 
 namespace SecondQuantization
@@ -46,45 +45,21 @@ theorem traceFock_comp_comm [Fintype Config]
     LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
   simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
 
-/-! ## Weighted coordinate sums -/
+/-! ## Finite scalar weight sums -/
 
 variable [Fintype Config]
-
-/-- **The weighted trace** as the finite linear combination of diagonal matrix-coefficient
-functionals, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
-noncomputable def weightedTrace (w : Config → ℂ) :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
-  ∑ n : Config, w n • matrixCoeffLinear n n
-
-/-- Coordinate formula for the weighted trace. -/
-theorem weightedTrace_eq_sum_matrixCoeff (w : Config → ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    weightedTrace w A = ∑ n : Config, w n * matrixCoeff A n n := by
-  simp [weightedTrace]
 
 /-- **The total weight**, `weightSum(w) := ∑ₙ w(n)`. -/
 noncomputable def weightSum (w : Config → ℂ) : ℂ :=
   ∑ n : Config, w n
 
-/-! ## Identity and diagonal operators -/
+/-! ## Trace of the identity -/
 
 @[simp]
 theorem traceFock_id : traceFock (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) =
     (Fintype.card Config : ℂ) := by
   rw [traceFock_eq_sum_matrixCoeff]
   simp [matrixCoeff_id]
-
-/-- The weighted trace of the identity is the total weight. -/
-theorem weightedTrace_id (w : Config → ℂ) :
-    weightedTrace w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = weightSum w := by
-  rw [weightedTrace_eq_sum_matrixCoeff]
-  simp [weightSum, matrixCoeff_id]
-
-/-- The weighted trace of a diagonal operator is the weighted sum of its eigenvalues. -/
-theorem weightedTrace_diagonalOperator (w a : Config → ℂ) :
-    weightedTrace w (diagonalOperator a) = ∑ n : Config, w n * a n := by
-  rw [weightedTrace_eq_sum_matrixCoeff]
-  simp [matrixCoeff_diagonalOperator]
 
 end Common
 end SecondQuantization
