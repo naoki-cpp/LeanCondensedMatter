@@ -52,60 +52,6 @@ noncomputable def Pairing.ofSplitNormalizedPairEquiv
         Pairing.pairEndpoint_one]
       exact congrArg (fun j => e (Sum.inr j))
         ((Q.mem_pairs_iff x.1.1 x.1.2).mp x.2).2
-
-
-
-
-/-- A pair from either half of a binary splitting keeps its original endpoint order
-whenever the two transported endpoints are already increasing.
-
-Unlike an arbitrary position splitting, this hypothesis rules out an orientation reversal for
-the selected pair. In particular, a nonsymmetric fermionic contraction kernel can then be
-evaluated on the transported endpoints in their original order. -/
-theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (pr : P.NormalizedPair ⊕ Q.NormalizedPair)
-    (horder : match pr with
-      | Sum.inl p => e (Sum.inl p.1.1) < e (Sum.inl p.1.2)
-      | Sum.inr p => e (Sum.inr p.1.1) < e (Sum.inr p.1.2)) :
-    (Pairing.ofSplitNormalizedPairEquiv e P Q pr).1 =
-      match pr with
-      | Sum.inl p => (e (Sum.inl p.1.1), e (Sum.inl p.1.2))
-      | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2)) := by
-  classical
-  let endpointEquiv :
-      (P.NormalizedPair ⊕ Q.NormalizedPair) × Fin 2 ≃
-        Fin (2 * a) ⊕ Fin (2 * b) :=
-    (Equiv.sumProdDistrib P.NormalizedPair Q.NormalizedPair (Fin 2)).trans
-      (Equiv.sumCongr P.pairEndpointEquiv Q.pairEndpointEquiv)
-  have hpartner (s : P.NormalizedPair ⊕ Q.NormalizedPair) :
-      (Pairing.ofSplit e P Q).partner (e (endpointEquiv (s, 0))) =
-        e (endpointEquiv (s, 1)) := by
-    cases s with
-    | inl p =>
-        change (Pairing.ofSplit e P Q).partner (e (Sum.inl p.1.1)) =
-          e (Sum.inl p.1.2)
-        rw [Pairing.ofSplit_partner_inl]
-        exact congrArg (fun x => e (Sum.inl x))
-          ((P.mem_pairs_iff p.1.1 p.1.2).mp p.2).2
-    | inr p =>
-        change (Pairing.ofSplit e P Q).partner (e (Sum.inr p.1.1)) =
-          e (Sum.inr p.1.2)
-        rw [Pairing.ofSplit_partner_inr]
-        exact congrArg (fun x => e (Sum.inr x))
-          ((Q.mem_pairs_iff p.1.1 p.1.2).mp p.2).2
-  have hlt : e (endpointEquiv (pr, 0)) < e (endpointEquiv (pr, 1)) := by
-    cases pr with
-    | inl p => simpa [endpointEquiv] using horder
-    | inr p => simpa [endpointEquiv] using horder
-  change ((Pairing.ofSplit e P Q).normalizedPairOfEndpointEquiv endpointEquiv e pr).1 = _
-  have h :=
-    (Pairing.ofSplit e P Q).normalizedPairOfEndpointEquiv_pair_eq_of_lt
-      endpointEquiv e hpartner pr hlt
-  cases pr with
-  | inl p => simpa [endpointEquiv] using h
-  | inr p => simpa [endpointEquiv] using h
-
 /-- A normalized pair in an arbitrary binary position split has the two transported
 endpoints in either their original order or the reverse order. In particular, neither
 orientation is silently assumed for fermionic kernels. -/
@@ -151,6 +97,32 @@ theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
   cases pr with
   | inl p => simpa [endpointEquiv] using h
   | inr p => simpa [endpointEquiv] using h
+
+/-- A pair from either half of a binary splitting keeps its original endpoint order
+whenever the two transported endpoints are already increasing.
+
+Unlike an arbitrary position splitting, this hypothesis rules out an orientation reversal for
+the selected pair. In particular, a nonsymmetric fermionic contraction kernel can then be
+evaluated on the transported endpoints in their original order. -/
+theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (pr : P.NormalizedPair ⊕ Q.NormalizedPair)
+    (horder : match pr with
+      | Sum.inl p => e (Sum.inl p.1.1) < e (Sum.inl p.1.2)
+      | Sum.inr p => e (Sum.inr p.1.1) < e (Sum.inr p.1.2)) :
+    (Pairing.ofSplitNormalizedPairEquiv e P Q pr).1 =
+      match pr with
+      | Sum.inl p => (e (Sum.inl p.1.1), e (Sum.inl p.1.2))
+      | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2)) := by
+  rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap e P Q pr with h | h
+  · cases pr <;> exact h
+  · have hnormalized :=
+      (Pairing.ofSplit e P Q).pairs_normalized
+        (Pairing.ofSplitNormalizedPairEquiv e P Q pr).2
+    rw [h] at hnormalized
+    cases pr with
+    | inl p => exact (lt_asymm horder hnormalized).elim
+    | inr p => exact (lt_asymm horder hnormalized).elim
 
 /-- The contraction product of a pairing reassembled from two independent parts splits into
 two local contraction products when the corresponding normalized pair values agree.
