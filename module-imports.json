@@ -109,6 +109,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.DiscreteLattice",
+      "sourceFile": "LeanCondensedMatter/Analysis/DiscreteLattice.lean",
+      "imports": [],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Dyson.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/Dyson/Basic.lean",
       "imports": [],
@@ -192,6 +198,12 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
+      "sourceFile": "LeanCondensedMatter/Analysis/Fourier/FiniteCyclic.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
       "sourceFile": "LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean",
       "imports": [],
@@ -273,6 +285,12 @@
       "sourceFile": "LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean",
       "imports": [],
       "externalImportCount": 6
+    },
+    {
+      "name": "LeanCondensedMatter.Analysis.LatticeGeometry",
+      "sourceFile": "LeanCondensedMatter/Analysis/LatticeGeometry.lean",
+      "imports": [],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
@@ -1011,11 +1029,14 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Calculus",
         "LeanCondensedMatter.Analysis.ConservationLaw",
+        "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.Analysis.Dyson",
+        "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
         "LeanCondensedMatter.Analysis.Inequalities",
         "LeanCondensedMatter.Analysis.InfiniteSum",
         "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+        "LeanCondensedMatter.Analysis.LatticeGeometry",
         "LeanCondensedMatter.Analysis.Lorentzian",
         "LeanCondensedMatter.Analysis.Operator",
         "LeanCondensedMatter.Analysis.OrderedSimplex",
@@ -1685,10 +1706,27 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
+      "sourceFile": "LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
+        "LeanCondensedMatter.Models.Heisenberg"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.Heisenberg",
       "sourceFile": "LeanCondensedMatter/Models/Heisenberg.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.HolsteinPrimakoff",
+      "sourceFile": "LeanCondensedMatter/Models/HolsteinPrimakoff.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator"
       ],
       "externalImportCount": 1
     },
@@ -2886,7 +2924,8 @@
       "name": "LeanCondensedMatter.Models",
       "sourceFile": "LeanCondensedMatter/Models.lean",
       "imports": [
-        "LeanCondensedMatter.Models.Heisenberg",
+        "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
+        "LeanCondensedMatter.Models.HolsteinPrimakoff",
         "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.Parabolic2DEG",
@@ -4064,6 +4103,12 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.PeierlsPhase",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/PeierlsPhase.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.Postulates",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Postulates.lean",
       "imports": [],
@@ -4097,6 +4142,7 @@
         "LeanCondensedMatter.QuantumTheory.Entropy.Finite",
         "LeanCondensedMatter.QuantumTheory.Gibbs",
         "LeanCondensedMatter.QuantumTheory.LinearResponse",
+        "LeanCondensedMatter.QuantumTheory.PeierlsPhase",
         "LeanCondensedMatter.QuantumTheory.Postulates",
         "LeanCondensedMatter.QuantumTheory.SpinHalf",
         "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite"
@@ -4349,10 +4395,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/ThermalField.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg"
       ],
       "externalImportCount": 0
     },
@@ -4773,8 +4817,8 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/FiniteWeightedTrace.lean",
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/FiniteTrace.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace"
       ],
@@ -5586,7 +5630,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/KMSRotation.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
@@ -5612,6 +5656,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/Quartic.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture",
         "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic"
       ],
@@ -5781,7 +5826,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
       ],
       "externalImportCount": 6
@@ -5964,8 +6009,9 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsCoordinate.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"
       ],
       "externalImportCount": 0
@@ -5976,8 +6022,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
         "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
       ],
       "externalImportCount": 0
     },
@@ -5988,7 +6033,7 @@
         "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator",
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"
@@ -6423,7 +6468,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentMixedCrossing.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData"
       ],
       "externalImportCount": 0
@@ -7115,15 +7160,16 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/DiscreteLattice.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
+        "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/GeometricCurrent.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.LatticeGeometry",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent"
       ],
       "externalImportCount": 0
@@ -7150,9 +7196,10 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/Peierls.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+        "LeanCondensedMatter.QuantumTheory.PeierlsPhase",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact",
