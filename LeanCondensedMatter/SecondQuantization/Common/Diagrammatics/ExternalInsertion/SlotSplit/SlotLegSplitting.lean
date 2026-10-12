@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
@@ -133,6 +134,40 @@ theorem ExternalInsertionDiagram.ofSlotSplit_pairing
     (ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing =
       Pairing.ofSplit (externalInsertionSlotLegSplitting (E := E) h)
         ext.pairing vac.pairing := rfl
+
+/-- The true mixed-order partner of any vacuum-complement leg in an assembled
+diagram is the image of that leg's partner in the vacuum pairing. -/
+theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_mixedPosition
+    {ExternalLabel InternalLabel : Type*} {E N : ℕ} (T : Finset (Fin N))
+    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (vac : QuarticDiagram InternalLabel N
+      ((Finset.univ : Finset (Fin N)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ)
+    (v : ↥((Finset.univ : Finset (Fin N)) \ T)) (l : Fin 4) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let split :=
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let d := ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    (d.pairingInMixedOrder externalTime σ).partner
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l))) =
+      split (Sum.inr (vac.pairing.partner ((quarticLegEquiv S).symm (v, l)))) := by
+  intro S split d
+  have hpos := externalInsertionSlotLegSplitting_right_mixedPosition
+    T externalTime σ v l
+  change split (Sum.inr ((quarticLegEquiv S).symm (v, l))) = _ at hpos
+  rw [← hpos]
+  let slot := externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+  let fixed := externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+  change ((Pairing.ofSplit slot ext.pairing vac.pairing).transport fixed).partner
+      (split (Sum.inr ((quarticLegEquiv S).symm (v, l)))) =
+    split (Sum.inr (vac.pairing.partner ((quarticLegEquiv S).symm (v, l))))
+  rw [PairingOn.transport_partner]
+  change fixed.symm ((Pairing.ofSplit slot ext.pairing vac.pairing).partner
+      (slot (Sum.inr ((quarticLegEquiv S).symm (v, l))))) =
+    fixed.symm (slot (Sum.inr (vac.pairing.partner ((quarticLegEquiv S).symm (v, l)))))
+  rw [Pairing.ofSplit_partner_inr]
 
 theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
     {S T : Finset (Fin N)} (h : T ⊆ S)
