@@ -214,7 +214,7 @@ theorem comm_spinPlus_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
   apply eq_on_physicalSubspace twiceSpin i _
     ((2 * (hbar : ℂ)) • spinZ hbar twiceSpin i) _ ψ hψ
   intro n hn
-  simp only [ScalarExchange.zetaCommutator_apply, one_smul,
+  simp only [ScalarExchange.zetaCommutator_apply,
     spinPlus_spinMinus_basisState hbar twiceSpin i n hn,
     spinMinus_spinPlus_basisState hbar twiceSpin i n hn,
     LinearMap.smul_apply, spinZ_basisState, smul_smul]
@@ -234,9 +234,9 @@ theorem comm_spinZ_spinPlus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) :
   by_cases hz : n i = 0
   · simp [ScalarExchange.zetaCommutator_apply, spinPlus_basisState_of_zero,
       spinZ_basisState, hz]
-  · simp only [ScalarExchange.zetaCommutator_apply, one_smul, spinPlus_basisState,
+  · simp only [ScalarExchange.zetaCommutator_apply, spinPlus_basisState,
       spinZ_basisState, map_smul, removeOccupation_apply_same,
-      LinearMap.smul_apply, smul_smul]
+      smul_smul]
     rw [pred_cast (n i) hz, ← sub_smul]
     congr 1
     ring
@@ -250,9 +250,9 @@ theorem comm_spinZ_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) :
   change ScalarExchange.zetaCommutator (1 : ℂ) (spinZ hbar twiceSpin i)
     (spinMinus hbar twiceSpin i) (basisState n) =
       (-(hbar : ℂ)) • spinMinus hbar twiceSpin i (basisState n)
-  simp only [ScalarExchange.zetaCommutator_apply, one_smul, spinMinus_basisState,
+  simp only [ScalarExchange.zetaCommutator_apply, spinMinus_basisState,
     spinZ_basisState, map_smul, createOccupation_apply_same,
-    LinearMap.smul_apply, smul_smul, Nat.cast_add, Nat.cast_one]
+    smul_smul, Nat.cast_add, Nat.cast_one]
   rw [← sub_smul]
   congr 1
   ring

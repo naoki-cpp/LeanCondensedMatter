@@ -17,7 +17,8 @@ implemented in [SpinHalf/Finite](../../LeanCondensedMatter/QuantumTheory/SpinHal
 and [Models/Heisenberg](../../LeanCondensedMatter/Models/Heisenberg.lean). The spectrum and
 long-wavelength dispersion are proved in
 [SpinWaveSpectrum](../../LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean).
-SW3 and later targets remain `idea`. General-spin representations, infinite-volume order,
+The exact local Holstein-Primakoff representation in SW3 is also `proved`; its
+many-site and quadratic-model targets, and SW4 onward, remain `idea`. General-spin representations, infinite-volume order,
 antiferromagnetic Bogoliubov diagonalization, and thin-film boundary modes are later work.
 
 ## Existing infrastructure
@@ -102,15 +103,33 @@ This limit of an expression does not establish a thermodynamic-limit theorem for
 Angular frequency is E/hbar with hbar > 0; group velocity and effective mass are optional
 consequences after the spectrum is established.
 
-### SW3: Holstein-Primakoff representation and quadratic magnons
+### SW3: Holstein-Primakoff representation and quadratic magnons (local algebra `proved`)
 
 Source: Section 2.7.1, pp. 55-60, especially (2.146)-(2.166).
 
-Represent 2s by a natural number and make the physical occupation restriction
-0 <= n_j <= 2s explicit. Define the square-root factors on occupation basis states;
-preserve the order of those factors and creation/annihilation operators. Prove that
-the composite spin operators preserve the physical subspace and realize the spin
-algebra, including the endpoint states.
+[Models/HolsteinPrimakoff](../../LeanCondensedMatter/Models/HolsteinPrimakoff.lean)
+implements the exact local representation on the existing algebraic bosonic Fock
+space. `physicalSubspace twiceSpin i` is the span of occupation states with
+n_i <= twiceSpin; other modes are spectators. `spinPlus`, `spinMinus`, and `spinZ`
+preserve this subspace. Their basis actions and endpoint annihilation are proved,
+as are [S+, S-] = 2 hbar Sz and [Sz, S±] = ± hbar S±. The first commutator is
+restricted to the physical sector. These are algebraic-domain statements, not
+Hilbert-space completion or truncated canonical bosonic commutators.
+
+The pinned Mathlib survey reuses `Submodule.span` and kernel/comap containment to
+extend basis identities to every vector in the physical sector. The existing
+`Common.diagonalOperator` implements the square-root factor, existing bosonic
+creation and annihilation supply the oscillator actions, and `Real.sq_sqrt`
+provides the coefficient identities. A custom oscillator or spin matrix is unnecessary.
+The ordered factors use the original equations (2.149)-(2.150), without their later
+low-occupation expansion. Many-site sector identification, cross-site spin relations,
+and the quadratic Hamiltonian remain targets.
+
+For a many-site system, identify the simultaneous occupation restrictions
+0 <= n_j <= 2s with the localized-spin state space and prove cross-site spin
+commutation. The local endpoint and spin-algebra identities above supply the
+single-site representation; the simultaneous sector and its spin-space identification
+still require proof.
 
 Keep this exact representation separate from the quadratic Hamiltonian obtained by
 expanding about the polarized state and retaining terms through degree two. Prove
