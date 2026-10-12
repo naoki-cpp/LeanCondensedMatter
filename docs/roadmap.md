@@ -59,4 +59,3 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Completed fermionic free Fock/domain and thermal theory | C/D | `proved` under explicit boundedness, domain, and summability hypotheses | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
 | Completed bosonic, interacting completed-space, and thermodynamic-limit second quantization | C/D | `idea` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md#open-work) |
 | Higher time-ordered correlation functions, general source insertions, and multi-leg connected expansions | D | `idea` | [second quantization](roadmaps/second-quantization.md) |
-
