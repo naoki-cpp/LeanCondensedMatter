@@ -92,12 +92,7 @@ theorem externalInsertionSlotLegSplitting_right_mixedPosition
         (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
   intro S split
   apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
-  change
-    externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inr ((quarticLegEquiv S).symm (v, l))) =
-      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
-        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)))
+  simp only [split, Equiv.trans_apply, Equiv.apply_symm_apply]
   rw [externalInsertionSlotLegSplitting_right_interaction]
   apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin N))).injective
   rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
