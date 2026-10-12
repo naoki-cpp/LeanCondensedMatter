@@ -44,7 +44,7 @@ abbrev FiniteLatticeHilbertFock (Site : Type*) :=
 variable {Site : Type*} [LinearOrder Site]
 
 /-- The canonical site basis of finitely supported one-particle lattice states. -/
-noncomputable def latticeBasis : Module.Basis Site ℂ (LatticeState Site) :=
+noncomputable def latticeBasis : Module.Basis Site ℂ ((Site →₀ ℂ)) :=
   Finsupp.basisSingleOne
 
 section FiniteLattice
@@ -54,8 +54,8 @@ variable [Fintype Site]
 /-- The complete representation transport from basis-independent exterior-Fock endomorphisms to
 bounded operators on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedLatticeOperatorAlgEquiv :
-    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-        AlgebraicFock (LatticeState Site)) ≃ₐ[ℂ]
+    (AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+        AlgebraicFock ((Site →₀ ℂ))) ≃ₐ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   ((AlgebraicFock.occupationEquiv (latticeBasis (Site := Site))).symm.conjAlgEquiv ℂ).trans
     (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
@@ -63,15 +63,15 @@ noncomputable def boundedLatticeOperatorAlgEquiv :
 /-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
 the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedLatticeOperatorLinearMap :
-    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-        AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
+    (AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+        AlgebraicFock ((Site →₀ ℂ))) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap
 
 /-- The bounded finite-lattice realization of an exterior-Fock algebraic endomorphism. -/
 noncomputable def boundedLatticeOperator
-    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (A : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedLatticeOperatorAlgEquiv A
 
@@ -79,14 +79,14 @@ noncomputable def boundedLatticeOperator
 /-- Linear finite-lattice realization of an arbitrary one-body operator as a bounded Fock-space
 observable. -/
 noncomputable def boundedOneBodyOperatorLinearMap :
-    (LatticeState Site →ₗ[ℂ] LatticeState Site) →ₗ[ℂ]
+    ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   (boundedLatticeOperatorLinearMap (Site := Site)).comp
-    (AlgebraicFock.dGammaLinear (LatticeState Site))
+    (AlgebraicFock.dGammaLinear ((Site →₀ ℂ)))
 
 /-- Bounded Fock-space observable associated with one supplied one-body operator. -/
 noncomputable def boundedOneBodyOperator
-    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    (operator : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperatorLinearMap operator
 
@@ -94,16 +94,16 @@ noncomputable def boundedOneBodyOperator
 /-- Canonical computation rule for the bounded realization of a one-body operator. -/
 @[simp]
 theorem boundedOneBodyOperator_eq
-    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site) :
+    (operator : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
     boundedOneBodyOperator operator =
       boundedLatticeOperator
-        (AlgebraicFock.dGamma (LatticeState Site) operator) :=
+        (AlgebraicFock.dGamma ((Site →₀ ℂ)) operator) :=
   rfl
 
 @[simp]
 theorem boundedLatticeOperator_add
-    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator (A + B) =
       boundedLatticeOperator A + boundedLatticeOperator B := by
   simpa [boundedLatticeOperator] using
@@ -111,8 +111,8 @@ theorem boundedLatticeOperator_add
 
 @[simp]
 theorem boundedLatticeOperator_sub
-    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator (A - B) =
       boundedLatticeOperator A - boundedLatticeOperator B := by
   simpa [boundedLatticeOperator] using
@@ -120,8 +120,8 @@ theorem boundedLatticeOperator_sub
 
 @[simp]
 theorem boundedLatticeOperator_smul (c : ℂ)
-    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (A : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator (c • A) = c • boundedLatticeOperator A := by
   simpa [boundedLatticeOperator] using
     map_smul (boundedLatticeOperatorAlgEquiv (Site := Site)) c A
@@ -129,15 +129,15 @@ theorem boundedLatticeOperator_smul (c : ℂ)
 @[simp]
 theorem boundedLatticeOperator_zero :
     boundedLatticeOperator
-        (0 : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-          AlgebraicFock (LatticeState Site)) = 0 := by
+        (0 : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+          AlgebraicFock ((Site →₀ ℂ))) = 0 := by
   simpa [boundedLatticeOperator] using
     map_zero (boundedLatticeOperatorAlgEquiv (Site := Site))
 
 @[simp]
 theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
-    (F : ι → AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (F : ι → AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator (∑ i ∈ s, F i) =
       ∑ i ∈ s, boundedLatticeOperator (F i) := by
   change boundedLatticeOperatorLinearMap (∑ i ∈ s, F i) = _
@@ -146,8 +146,8 @@ theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
 
 @[simp]
 theorem boundedLatticeOperator_comp
-    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator (A.comp B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
   change
@@ -158,8 +158,8 @@ theorem boundedLatticeOperator_comp
 
 /-- Bounded transport preserves the ordinary Mathlib Lie bracket. -/
 theorem boundedLatticeOperator_lie
-    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
+    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
+      AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator ⁅A, B⁆ =
       ⁅boundedLatticeOperator A, boundedLatticeOperator B⁆ := by
   rw [LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket]
@@ -206,10 +206,10 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
     change
       ((Complex.I * q) / ℏ) •
           boundedLatticeOperator
-            (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+            (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
         boundedLatticeOperator
           (((Complex.I * q) / ℏ) •
-            AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+            AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
     rw [boundedLatticeOperator_smul]
   change HasAlgebraicDerivAt
     (fun A => boundedOneBodyOperatorLinearMap (Site := Site)

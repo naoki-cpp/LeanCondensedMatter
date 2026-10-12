@@ -16,34 +16,30 @@ The fermionic Fock-space `dGamma` implementation is a downstream specialization.
 open scoped BigOperators
 attribute [local instance 100] LieRing.ofAssociativeRing
 
-/-- Algebraic one-particle states on an arbitrary discrete lattice. Every vector has finite support,
-but the site type itself need not be finite. -/
-abbrev LatticeState (Site : Type*) := Site →₀ ℂ
-
 variable {Site : Type*}
 
 /-- The canonical one-particle ket localized at a lattice site. -/
-noncomputable def latticeKet (x : Site) : LatticeState Site :=
+noncomputable def latticeKet (x : Site) : (Site →₀ ℂ) :=
   Finsupp.single x 1
 
 /-- The matrix unit `|x⟩⟨y|` on the algebraic lattice one-particle space. -/
 noncomputable def matrixUnit (x y : Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
-  (Finsupp.lsingle x : ℂ →ₗ[ℂ] LatticeState Site).comp
-    (Finsupp.lapply y : LatticeState Site →ₗ[ℂ] ℂ)
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
+  (Finsupp.lsingle x : ℂ →ₗ[ℂ] (Site →₀ ℂ)).comp
+    (Finsupp.lapply y : (Site →₀ ℂ) →ₗ[ℂ] ℂ)
 
 @[simp]
-theorem matrixUnit_apply (x y : Site) (ψ : LatticeState Site) :
+theorem matrixUnit_apply (x y : Site) (ψ : (Site →₀ ℂ)) :
     matrixUnit x y ψ = Finsupp.single x (ψ y) := by
   rfl
 
 /-- The one-particle projector `|x⟩⟨x|` onto a lattice site. -/
 noncomputable def siteProjector (x : Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   matrixUnit x x
 
 @[simp]
-theorem siteProjector_apply (x : Site) (ψ : LatticeState Site) :
+theorem siteProjector_apply (x : Site) (ψ : (Site →₀ ℂ)) :
     siteProjector x ψ = Finsupp.single x (ψ x) := by
   rfl
 
@@ -55,7 +51,7 @@ variable [DecidableEq Site]
 all sites `y` for which either matrix element `⟨x|h|y⟩` or `⟨y|h|x⟩` can be nonzero. -/
 structure LocallyFiniteHopping (Site : Type*) [DecidableEq Site] where
   /-- The finitely supported image `h |y⟩` of every site ket. -/
-  column : Site → LatticeState Site
+  column : Site → (Site →₀ ℂ)
   /-- A finite set containing every site coupled to a given site in either orientation. -/
   incident : Site → Finset Site
   /-- Every site belongs to its own incident set. -/
@@ -68,19 +64,19 @@ namespace LocallyFiniteHopping
 /-- Finitely supported maps are determined by their values on all site kets. -/
 private theorem linearMap_ext_latticeKet
     {Site W : Type*} [AddCommGroup W] [Module ℂ W]
-    {f g : LatticeState Site →ₗ[ℂ] W}
+    {f g : (Site →₀ ℂ) →ₗ[ℂ] W}
     (h : ∀ x, f (latticeKet x) = g (latticeKet x)) : f = g := by
   apply Finsupp.lhom_ext
   intro x c
-  have hc : (Finsupp.single x c : LatticeState Site) = c • latticeKet x :=
+  have hc : (Finsupp.single x c : (Site →₀ ℂ)) = c • latticeKet x :=
     (Finsupp.smul_single_one x c).symm
   rw [hc, map_smul, map_smul, h]
 
 
 /-- The algebraic one-particle hopping operator determined by its finitely supported columns. -/
 noncomputable def operator (K : LocallyFiniteHopping Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
-  (Finsupp.lift (LatticeState Site) ℂ Site) K.column
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
+  (Finsupp.lift ((Site →₀ ℂ)) ℂ Site) K.column
 
 @[simp]
 theorem operator_single (K : LocallyFiniteHopping Site) (x : Site) (c : ℂ) :
@@ -118,7 +114,7 @@ theorem amplitude_swap_eq_zero_of_not_mem (K : LocallyFiniteHopping Site)
 `h_xy |x⟩⟨y| - h_yx |y⟩⟨x|`.
 -/
 noncomputable def bondOperator (K : LocallyFiniteHopping Site) (x y : Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   K.amplitude x y • matrixUnit x y - K.amplitude y x • matrixUnit y x
 
 /-- Reversing the bond orientation negates the one-particle bond operator. -/

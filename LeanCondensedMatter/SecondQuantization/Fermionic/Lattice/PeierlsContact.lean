@@ -39,7 +39,7 @@ variable {Site : Type*} [DecidableEq Site]
 link-Hamiltonian derivative. -/
 noncomputable def peierlsBondCurrentOperator (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   (peierlsCoupling ℏ q * peierlsForwardPhase ℏ q A) •
       (K.amplitude x y • matrixUnit x y) +
     ((-peierlsCoupling ℏ q) * peierlsReversePhase ℏ q A) •
@@ -49,7 +49,7 @@ noncomputable def peierlsBondCurrentOperator (K : LocallyFiniteHopping Site)
 coefficient `-(i q / ℏ)²`; it is kept in factorized form to match the derivative construction. -/
 noncomputable def oneParticleBondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   (peierlsCoupling ℏ q * (-peierlsCoupling ℏ q)) •
       (K.amplitude x y • matrixUnit x y) +
     ((-peierlsCoupling ℏ q) * peierlsCoupling ℏ q) •
@@ -140,10 +140,10 @@ theorem boundedPeierlsBondCurrent_zero (K : LocallyFiniteHopping Site)
   change
     ((Complex.I * q) / ℏ) •
         boundedLatticeOperator
-          (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+          (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
       boundedLatticeOperator
         (((Complex.I * q) / ℏ) •
-          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+          AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
   rw [boundedLatticeOperator_smul]
 
 /-- The bounded transport preserves the weak algebraic derivative of the Peierls current family. -/

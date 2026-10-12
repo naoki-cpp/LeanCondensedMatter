@@ -44,7 +44,7 @@ def HasHermitianAmplitudes (K : LocallyFiniteHopping Site) : Prop :=
 by `i q / ℏ`. -/
 noncomputable def boundedBondOperator (K : LocallyFiniteHopping Site) (x y : Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+  boundedLatticeOperator (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
 
 /-- Expand the bounded oriented hopping difference into bounded matrix units. -/
 theorem boundedBondOperator_eq (K : LocallyFiniteHopping Site) (x y : Site) :
@@ -53,15 +53,15 @@ theorem boundedBondOperator_eq (K : LocallyFiniteHopping Site) (x y : Site) :
         K.amplitude y x • boundedDgammaMatrixUnit y x := by
   unfold boundedBondOperator LocallyFiniteHopping.bondOperator
   have hdGamma :
-      AlgebraicFock.dGamma (LatticeState Site)
+      AlgebraicFock.dGamma ((Site →₀ ℂ))
           (K.amplitude x y • matrixUnit x y -
             K.amplitude y x • matrixUnit y x) =
         K.amplitude x y •
-            AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y) -
+            AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y) -
           K.amplitude y x •
-            AlgebraicFock.dGamma (LatticeState Site) (matrixUnit y x) := by
+            AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit y x) := by
     change
-      AlgebraicFock.dGammaLinear (LatticeState Site)
+      AlgebraicFock.dGammaLinear ((Site →₀ ℂ))
           (K.amplitude x y • matrixUnit x y -
             K.amplitude y x • matrixUnit y x) = _
     rw [map_sub, map_smul, map_smul]

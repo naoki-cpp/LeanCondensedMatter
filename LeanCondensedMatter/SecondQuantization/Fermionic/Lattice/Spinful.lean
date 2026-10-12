@@ -34,7 +34,7 @@ def spinfulSite {Site : Type*} (x : Site) (s : Fin 2) : SpinfulSite Site :=
 /-- Apply one internal `2 × 2` matrix identically at every spatial lattice site. -/
 noncomputable def internalOneBody
     {Site : Type*} [Fintype Site] (S : InternalSpace.PauliMatrix) :
-    LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) := by
+    (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ) := by
   classical
   exact ∑ x : Site, ∑ a : Fin 2, ∑ b : Fin 2,
     S a b • matrixUnit (spinfulSite x a) (spinfulSite x b)
@@ -43,7 +43,7 @@ noncomputable def internalOneBody
 noncomputable def internalOneBodyLinear
     {Site : Type*} [Fintype Site] :
     InternalSpace.PauliMatrix →ₗ[ℂ]
-      (LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site)) where
+      ((SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ)) where
   toFun := internalOneBody
   map_add' := by
     classical
