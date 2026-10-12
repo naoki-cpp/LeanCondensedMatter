@@ -224,6 +224,58 @@ theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_orderedLeg
     _ = embed ((vac.pairingInOrder order).partner p) :=
       hpos ((vac.pairingInOrder order).partner p)
 
+/-- Reassembling with the vacuum pairing transported to the increasing
+complementary vertex order gives the same actual mixed-time pairing.
+
+The right leg of the splitting is reindexed via orderedLegToDiagramLeg;
+the intrinsic quartic vertex enumeration need not agree with orderIsoOfFin. -/
+theorem ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum
+    {ExternalLabel InternalLabel : Type*} {E N : ℕ} (T : Finset (Fin N))
+    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (vac : QuarticDiagram InternalLabel N
+      ((Finset.univ : Finset (Fin N)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let splitting :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+        externalTime σ =
+      Pairing.ofSplit splitting ext.pairing (vac.pairingInOrder order) := by
+  intro S order splitting
+  let slot := externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+  let fixed := externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+  let leg := orderedLegToDiagramLeg S order
+  have hleft (p : Fin (2 * (2 * T.card + E))) :
+      splitting (Sum.inl p) = fixed.symm (slot (Sum.inl p)) := rfl
+  have hright (q : Fin (2 * (2 * S.card))) :
+      splitting (Sum.inr q) = fixed.symm (slot (Sum.inr (leg q))) := rfl
+  have hvac (q : Fin (2 * (2 * S.card))) :
+      vac.pairing.partner (leg q) =
+        leg ((vac.pairingInOrder order).partner q) := by
+    change vac.pairing.partner (leg q) =
+      leg ((vac.pairing.transport leg).partner q)
+    rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+  have hfixed :
+      (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+          externalTime σ =
+        (Pairing.ofSplit slot ext.pairing vac.pairing).transport fixed := rfl
+  rw [hfixed]
+  refine PairingOn.ext (Equiv.ext fun i => ?_)
+  obtain ⟨u, rfl⟩ := splitting.surjective i
+  cases u with
+  | inl p =>
+      rw [Pairing.ofSplit_partner_inl, hleft, hleft,
+        PairingOn.transport_partner, Equiv.apply_symm_apply,
+        Pairing.ofSplit_partner_inl]
+  | inr q =>
+      rw [Pairing.ofSplit_partner_inr, hright, hright,
+        PairingOn.transport_partner, Equiv.apply_symm_apply,
+        Pairing.ofSplit_partner_inr, hvac]
+
 theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
     {S T : Finset (Fin N)} (h : T ⊆ S)
     (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
