@@ -25,7 +25,7 @@ variable {Site : Type*} [Fintype Site] [DecidableEq Site]
 abbrev Configuration (Site : Type*) := Site → Fin 2
 
 /-- The full finite-spin Hilbert space. -/
-abbrev State (Site : Type*) [Fintype Site] := EuclideanSpace ℂ (Configuration Site)
+abbrev State (Site : Type*) := EuclideanSpace ℂ (Configuration Site)
 
 /-- The action of a two-level matrix at a single site. -/
 def atSite (A : InternalSpace.PauliMatrix) (i : Site) : State Site →ₗ[ℂ] State Site where
