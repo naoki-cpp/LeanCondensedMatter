@@ -50,14 +50,14 @@ variable {Site : Type*} [Fintype Site]
 noncomputable def spinOneBodyLinear
     (spinScale : ℝ) :
     QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
-      (LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site)) :=
+      ((SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ)) :=
   ((internalOneBodyLinear (Site := Site)).restrictScalars ℝ).comp
     (QuantumTheory.SpinHalf.spinMatrix spinScale)
 
 /-- One-particle spin-1/2 observable associated with a spin-space component vector. -/
 noncomputable def spinOneBody
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site) :=
+    (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ) :=
   spinOneBodyLinear spinScale spinComponent
 
 @[simp]
@@ -72,7 +72,7 @@ variable [LinearOrder Site]
 /-- With velocity fixed, the bounded spin-current observable is real-linear in the transported
 spin-space component. -/
 noncomputable def boundedSpinCurrentLinear
-    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) :
     QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
       (FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
@@ -82,7 +82,7 @@ noncomputable def boundedSpinCurrentLinear
 
 @[simp]
 theorem boundedSpinCurrentLinear_apply
-    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     boundedSpinCurrentLinear velocity spinScale spinComponent =
       boundedSymmetrizedVelocityCurrent velocity (spinOneBody spinScale spinComponent) :=
@@ -90,7 +90,7 @@ theorem boundedSpinCurrentLinear_apply
 
 /-- Neutral fixed-observable response channel for a finite spin current selected by a spin-space component vector and driven by an electric bond-current source. -/
 noncomputable def boundedSpinCurrentBondSourceResponseChannel
-    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace)
     (ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
@@ -110,7 +110,7 @@ noncomputable def boundedSpinCurrentBondSourceRetardedSusceptibility
       (FiniteLatticeHilbertFock (SpinfulSite Site)))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
       (FiniteLatticeHilbertFock (SpinfulSite Site)))
-    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
+    (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace)
     (ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
