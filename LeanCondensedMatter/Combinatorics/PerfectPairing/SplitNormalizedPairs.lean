@@ -113,13 +113,13 @@ theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (pr : P.NormalizedPair ⊕ Q.NormalizedPair) :
     (Pairing.ofSplitNormalizedPairEquiv e P Q pr).1 =
-        match pr with
-        | Sum.inl p => (e (Sum.inl p.1.1), e (Sum.inl p.1.2))
-        | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2)) ∨
+        (match pr with
+         | Sum.inl p => (e (Sum.inl p.1.1), e (Sum.inl p.1.2))
+         | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2))) ∨
       (Pairing.ofSplitNormalizedPairEquiv e P Q pr).1 =
-        match pr with
-        | Sum.inl p => (e (Sum.inl p.1.2), e (Sum.inl p.1.1))
-        | Sum.inr p => (e (Sum.inr p.1.2), e (Sum.inr p.1.1)) := by
+        (match pr with
+         | Sum.inl p => (e (Sum.inl p.1.2), e (Sum.inl p.1.1))
+         | Sum.inr p => (e (Sum.inr p.1.2), e (Sum.inr p.1.1))) := by
   classical
   let endpointEquiv :
       (P.NormalizedPair ⊕ Q.NormalizedPair) × Fin 2 ≃
