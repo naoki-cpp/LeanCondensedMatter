@@ -97463,51 +97463,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S) (w : InternalLabel → ℂ),\n  (-1) ^ S.card * d.vertexWeight w =\n    ∏ B, (-1) ^ (SecondQuantization.Common.interactionSector ↑B).card * (d.restrictComponent B).vertexWeight w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentVertexProduct",
-    "externalAxioms": [],
-    "docString": "The Dyson sign and interaction-vertex weight factor together over all connected components. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.sum_interactionSector_card_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} (s : SecondQuantization.Common.Statistics)\n  {S : Finset (Fin N)} (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (pairValue : Fin (2 * (2 * S.card + E)) → Fin (2 * (2 * S.card + E)) → ℂ)\n  (localPairValue :\n    (B : ↥d.vertexGraph.componentPartition.parts) →\n      Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B)) →\n        Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B)) → ℂ),\n  (∀ (B : ↥d.vertexGraph.componentPartition.parts)\n      (a b : Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))),\n      pairValue (d.componentDiagramLeg B a) (d.componentDiagramLeg B b) = localPairValue B a b) →\n    d.pairing.evaluation (Combinatorics.Pairing.weight s d.pairing) pairValue =\n      ↑s.zetaInt ^ d.interComponentCrossingCount *\n        ∏ B,\n          (d.restrictComponent B).pairing.evaluation (Combinatorics.Pairing.weight s (d.restrictComponent B).pairing)\n            (localPairValue B)",
     "standardAxioms": [
       "Classical.choice",
@@ -98906,7 +98861,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -98918,7 +98873,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
@@ -98927,10 +98881,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115979,14 +115932,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "compiledConsumerCount": 2,
@@ -120703,7 +120656,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Common.sum_interactionSector_card_eq",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "crossModuleDirectWrapper": false,
