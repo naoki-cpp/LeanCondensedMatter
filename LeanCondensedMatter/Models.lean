@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.KronigPenney
-import LeanCondensedMatter.Models.Heisenberg
+import LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum
 import LeanCondensedMatter.Models.MassiveDirac
 import LeanCondensedMatter.Models.Parabolic2DEG
 import LeanCondensedMatter.Models.RashbaExchange

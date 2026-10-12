@@ -22,7 +22,7 @@ def fourierMode (q : ZMod N) : EuclideanSpace ℂ (ZMod N) :=
   WithLp.toLp 2 fun j => (Real.sqrt N : ℂ)⁻¹ * stdAddChar (q * j)
 
 theorem stdAddChar_conj (j : ZMod N) :
-    conj (stdAddChar j) = stdAddChar (-j) := by
+    (starRingEnd ℂ) (stdAddChar j) = stdAddChar (-j) := by
   rw [stdAddChar_apply, stdAddChar_apply, AddChar.map_neg_eq_inv,
     Circle.coe_inv_eq_conj]
 
@@ -44,7 +44,7 @@ theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
       inner ℂ (fourierMode q j) (fourierMode r j) =
         ((Real.sqrt N : ℂ)⁻¹) ^ 2 * stdAddChar ((r - q) * j) := by
     simp only [fourierMode, PiLp.toLp_apply, RCLike.inner_apply, map_mul,
-      map_inv₀, Complex.conj_ofReal, stdAddChar_conj, sub_mul,
+      map_inv₀, Complex.conj_ofReal, stdAddChar_conj, add_mul,
       AddChar.map_add_eq_mul, sub_eq_add_neg, neg_mul]
     ring
   rw [PiLp.inner_apply]
