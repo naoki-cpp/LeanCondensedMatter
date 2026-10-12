@@ -897,7 +897,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
- /-- Express the X radial crossed trace with the second Fourier harmonic
+/-- Express the X radial crossed trace with the second Fourier harmonic
 integrated explicitly: the source-y, Pauli-y current is no longer an independent coefficient.
 This is a regulated exact identity, not an evaluation of the diagram or a regulator limit. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_second_harmonic_components
@@ -988,7 +988,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_seco
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
       v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax)
 
- /-- Express the Psi radial crossed trace with the second Fourier harmonic
+/-- Express the Psi radial crossed trace with the second Fourier harmonic
 integrated explicitly: the source-y, Pauli-y current is no longer an independent coefficient.
 This is a regulated exact identity, not an evaluation of the diagram or a regulator limit. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_second_harmonic_components
