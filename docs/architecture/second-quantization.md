@@ -340,8 +340,8 @@ connected-cycle series remains available for arbitrary exchange weight where its
 hypotheses hold.
 
 Formal Bose/Fermi grand-partition series and connected-cycle identities are consumed directly from
-the Gibbs-level owner with the appropriate exchange weight. The fermionic and bosonic thermal
-modules own the determinant and inverse-determinant identities for their actual partition functions.
+the Gibbs-level owner with the appropriate exchange weight. The bosonic thermal modules own the
+inverse-determinant identity for the convergent occupation-space partition function.
 Bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
 thermal modules. No formal series is evaluated at one by this construction.
 
