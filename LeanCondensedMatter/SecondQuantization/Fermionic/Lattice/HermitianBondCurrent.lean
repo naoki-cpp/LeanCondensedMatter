@@ -81,3 +81,38 @@ theorem star_boundedBondOperator
 end LocallyFiniteHopping
 
 end
+namespace SecondQuantization
+namespace Fermionic
+namespace Lattice
+
+open QuantumTheory.PeierlsPhase
+variable {Site : Type*} [LinearOrder Site] [Fintype Site]
+
+/-- The bounded current is the pure-imaginary Peierls coefficient times the bounded oriented
+hopping difference. -/
+theorem boundedBondCurrent_eq_peierlsCoupling_smul
+    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
+    boundedBondCurrent ℏ q K x y =
+      peierlsCoupling ℏ q • K.boundedBondOperator x y := by
+  unfold boundedBondCurrent bondCurrent LocallyFiniteHopping.boundedBondOperator peierlsCoupling
+  rw [boundedLatticeOperator_smul]
+
+/-- Physical real parameters automatically give a self-adjoint bounded bond current. -/
+theorem isSelfAdjoint_boundedBondCurrent_ofReal
+    (K : LocallyFiniteHopping Site) (hK : K.HasHermitianAmplitudes)
+    (ℏ q : ℝ) (x y : Site) :
+    IsSelfAdjoint (boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y) := by
+  rw [isSelfAdjoint_iff, boundedBondCurrent_eq_peierlsCoupling_smul]
+  rw [star_smul, K.star_boundedBondOperator hK]
+  have hc : star (peierlsCoupling (ℏ : ℂ) (q : ℂ)) =
+      -peierlsCoupling (ℏ : ℂ) (q : ℂ) := by
+    simp [peierlsCoupling]
+    ring
+  rw [hc]
+  simp
+
+end Lattice
+end Fermionic
+end SecondQuantization
+
+end
