@@ -40,7 +40,7 @@ noncomputable def boundedIntrinsicFluxRetardedResponse
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
       (FiniteLatticeHilbertFock Site))
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
   (boundedOneBodyRetardedResponseLinearMap system expectation source t s).comp Φ
 
@@ -54,8 +54,8 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
       (FiniteLatticeHilbertFock Site))
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (d : Test →ₗ[ℂ] OneForm)
-    (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (J : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
+    (J : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ J)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
@@ -76,7 +76,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_of_differentialEquivalent
       (FiniteLatticeHilbertFock Site))
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (d : Test →ₗ[ℂ] OneForm)
-    (J₁ J₂ : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (J₁ J₂ : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (hJ : _root_.ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂)
     (t s : ℝ) (f : Test) :
     boundedIntrinsicFluxRetardedResponse system expectation source J₁ t s (d f) =
@@ -96,7 +96,7 @@ theorem boundedIntrinsicFluxRetardedResponse_current_eq_of_eq_differential
       (FiniteLatticeHilbertFock Site))
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (d : Test →ₗ[ℂ] OneForm)
-    (Φ : Test →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
+    (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d Φ)
     (t s : ℝ) (α : OneForm) (f : Test) (hα : α = d f) :
     boundedIntrinsicFluxRetardedResponse system expectation source R.current t s α =

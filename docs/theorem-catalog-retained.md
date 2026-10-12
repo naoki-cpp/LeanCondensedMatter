@@ -448,23 +448,23 @@ or consumer structure changes.
   For an externally connected left piece and strictly decreasing inherited vacuum times, the
   complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
   fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.self_mem` — defining locality
+- `LocallyFiniteHopping.self_mem` — defining locality
   invariant of `LocallyFiniteHopping`: every site lies in its finite incident neighborhood. The
   generated projection is part of the model contract even when it has no compiled theorem consumer.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_latticeKet` — canonical
+- `LocallyFiniteHopping.operator_latticeKet` — canonical
   `[simp]` evaluation of the hopping operator on a localized site ket.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_eq` — canonical `[simp]`
+- `LocallyFiniteHopping.amplitude_eq` — canonical `[simp]`
   normalization of the named hopping matrix element to the corresponding column coefficient.
   Source-level validation proofs use this rule even when simplification erases the compiled
   dependency edge.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_eq_zero_of_not_mem` —
+- `LocallyFiniteHopping.amplitude_eq_zero_of_not_mem` —
   canonical incoming-locality consequence: hopping amplitudes vanish outside the finite incident
   neighborhood.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.amplitude_swap_eq_zero_of_not_mem` —
+- `LocallyFiniteHopping.amplitude_swap_eq_zero_of_not_mem` —
   canonical outgoing-locality companion to `amplitude_eq_zero_of_not_mem`.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.bondOperator_swap` — canonical
+- `LocallyFiniteHopping.bondOperator_swap` — canonical
   orientation-reversal law for the one-particle bond-current operator.
-- `SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.lie_siteProjector` —
+- `LocallyFiniteHopping.lie_siteProjector` —
   one-particle local continuity identity expressing the hopping/projector commutator as the finite
   outgoing bond-operator sum.
 - `SecondQuantization.Fermionic.Lattice.bondCurrent_swap` — physical orientation-reversal law for

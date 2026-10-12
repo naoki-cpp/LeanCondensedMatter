@@ -21,11 +21,11 @@ variable {Site : Type*}
 
 /-- The second quantization of a lattice matrix unit factors into creation and annihilation fields. -/
 theorem dGamma_matrixUnit (x y : Site) :
-    AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y) =
-      (AlgebraicFock.create (LatticeState Site) (latticeKet x)).comp
-        (AlgebraicFock.annihilateDual (LatticeState Site) (Finsupp.lapply y)) := by
+    AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y) =
+      (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x)).comp
+        (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply y)) := by
   have hRankOne :
-      (Finsupp.lapply y : Module.Dual ℂ (LatticeState Site)).smulRight (latticeKet x) =
+      (Finsupp.lapply y : Module.Dual ℂ ((Site →₀ ℂ))).smulRight (latticeKet x) =
         matrixUnit x y := by
     apply LinearMap.ext
     intro ψ
@@ -33,7 +33,7 @@ theorem dGamma_matrixUnit (x y : Site) :
     simp [latticeKet]
   rw [← hRankOne]
   exact AlgebraicFock.dGamma_dualRankOne
-    (LatticeState Site) (latticeKet x) (Finsupp.lapply y)
+    ((Site →₀ ℂ)) (latticeKet x) (Finsupp.lapply y)
 
 end
 end Lattice

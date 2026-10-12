@@ -33,7 +33,7 @@ noncomputable def boundedOneBodyRetardedResponseLinearMap
       (FiniteLatticeHilbertFock Site))
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (t s : ℝ) :
-    (LatticeState Site →ₗ[ℂ] LatticeState Site) →ₗ[ℂ] ℂ :=
+    ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ[ℂ] ℂ :=
   (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
       system expectation source t s).comp
     (boundedOneBodyOperatorLinearMap (Site := Site))

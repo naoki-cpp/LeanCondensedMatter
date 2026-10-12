@@ -145,14 +145,14 @@ theorem twoSiteDimerContact_one_eq_hamiltonian :
   rw [Lattice.boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
   norm_num [peierlsCoupling]
   unfold Lattice.boundedPeierlsBondHamiltonian
-  rw [Lattice.LocallyFiniteHopping.peierlsBondHamiltonian_zero]
-  have hdGammaAdd (S T : LatticeState TwoSite →ₗ[ℂ] LatticeState TwoSite) :
-      AlgebraicFock.dGamma (LatticeState TwoSite) (S + T) =
-        AlgebraicFock.dGamma (LatticeState TwoSite) S +
-          AlgebraicFock.dGamma (LatticeState TwoSite) T := by
+  rw [LocallyFiniteHopping.peierlsBondHamiltonian_zero]
+  have hdGammaAdd (S T : (TwoSite →₀ ℂ) →ₗ[ℂ] (TwoSite →₀ ℂ)) :
+      AlgebraicFock.dGamma ((TwoSite →₀ ℂ)) (S + T) =
+        AlgebraicFock.dGamma ((TwoSite →₀ ℂ)) S +
+          AlgebraicFock.dGamma ((TwoSite →₀ ℂ)) T := by
     simpa only [AlgebraicFock.dGammaLinear_apply] using
-      (AlgebraicFock.dGammaLinear (LatticeState TwoSite)).map_add S T
-  simp [Lattice.LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping,
+      (AlgebraicFock.dGammaLinear ((TwoSite →₀ ℂ))).map_add S T
+  simp [LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping,
     twoSiteDimerHamiltonian, Lattice.boundedOneBodyOperator_eq,
     hdGammaAdd, boundedDgammaMatrixUnit, add_comm]
 

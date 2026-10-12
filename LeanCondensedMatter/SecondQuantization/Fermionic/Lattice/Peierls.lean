@@ -32,16 +32,13 @@ the complex parameter keeps the algebraic derivative statement independent of an
 real-linear operator layer.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Lattice
+namespace LocallyFiniteHopping
 
 open QuantumTheory.PeierlsPhase
-open scoped BigOperators
-
+open SecondQuantization.Fermionic.Lattice
 variable {Site : Type*} [DecidableEq Site]
 
-namespace LocallyFiniteHopping
+
 
 /-- The two oriented hopping terms on a link with opposite Peierls phases.
 
@@ -51,7 +48,7 @@ are owned by `Lattice.GeometricCurrent` and `Lattice.GeometricPeierls`; response
 specializations remain downstream in `Fermionic.Transport`. -/
 noncomputable def peierlsBondHamiltonian (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   peierlsForwardPhase ℏ q A •
       (K.amplitude x y • matrixUnit x y) +
     peierlsReversePhase ℏ q A •
@@ -68,7 +65,7 @@ theorem peierlsBondHamiltonian_zero (K : LocallyFiniteHopping Site)
 /-- The one-particle continuity-derived current on an oriented bond. -/
 noncomputable def oneParticleBondCurrent (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   peierlsCoupling ℏ q • K.bondOperator x y
 
 /-- The Peierls link Hamiltonian has derivative equal to minus the one-particle bond current. -/
@@ -90,7 +87,3 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonian_zero
   abel
 
 end LocallyFiniteHopping
-
-end Lattice
-end Fermionic
-end SecondQuantization

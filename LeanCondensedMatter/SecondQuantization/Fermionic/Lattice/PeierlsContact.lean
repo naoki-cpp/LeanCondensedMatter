@@ -25,25 +25,21 @@ theorems consuming the resulting current and contact operators live downstream i
 `Fermionic.Transport`.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Lattice
-
-open QuantumTheory.PeierlsPhase
-
 noncomputable section
 
-section Algebraic
+namespace LocallyFiniteHopping
 
+open QuantumTheory.PeierlsPhase
+open SecondQuantization.Fermionic.Lattice
 variable {Site : Type*} [DecidableEq Site]
 
-namespace LocallyFiniteHopping
+
 
 /-- Peierls-dependent one-particle current on an oriented bond, defined as the explicit negative
 link-Hamiltonian derivative. -/
 noncomputable def peierlsBondCurrentOperator (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   (peierlsCoupling ℏ q * peierlsForwardPhase ℏ q A) •
       (K.amplitude x y • matrixUnit x y) +
     ((-peierlsCoupling ℏ q) * peierlsReversePhase ℏ q A) •
@@ -53,7 +49,7 @@ noncomputable def peierlsBondCurrentOperator (K : LocallyFiniteHopping Site)
 coefficient `-(i q / ℏ)²`; it is kept in factorized form to match the derivative construction. -/
 noncomputable def oneParticleBondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
-    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
   (peierlsCoupling ℏ q * (-peierlsCoupling ℏ q)) •
       (K.amplitude x y • matrixUnit x y) +
     ((-peierlsCoupling ℏ q) * peierlsCoupling ℏ q) •
@@ -97,7 +93,11 @@ theorem hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero
 
 end LocallyFiniteHopping
 
-end Algebraic
+namespace SecondQuantization
+namespace Fermionic
+namespace Lattice
+
+open QuantumTheory.PeierlsPhase
 
 section Bounded
 
@@ -140,10 +140,10 @@ theorem boundedPeierlsBondCurrent_zero (K : LocallyFiniteHopping Site)
   change
     ((Complex.I * q) / ℏ) •
         boundedLatticeOperator
-          (AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)) =
+          (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
       boundedLatticeOperator
         (((Complex.I * q) / ℏ) •
-          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+          AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
   rw [boundedLatticeOperator_smul]
 
 /-- The bounded transport preserves the weak algebraic derivative of the Peierls current family. -/
@@ -156,7 +156,8 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
 
 end Bounded
 
-end
 end Lattice
 end Fermionic
 end SecondQuantization
+
+end

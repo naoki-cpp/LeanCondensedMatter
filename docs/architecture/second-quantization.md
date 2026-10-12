@@ -26,6 +26,10 @@ was first developed.
 
 Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by `QuantumTheory.PeierlsPhase`; concrete hopping families and Fock transports remain downstream.
 
+The algebraic one-particle space, matrix units, locally finite hopping model, bond operators,
+and local continuity identity are owned by `Analysis.DiscreteLattice`. Fermionic
+`dGamma` Hamiltonians, charge densities, and bond currents remain in `Fermionic.Lattice`.
+
 Particle-statistics-independent site geometry and bond coordinates are owned by `Analysis.LatticeGeometry`, whereas bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
 
 Particle-statistics-independent one-body current semantics are not second-quantization declarations.

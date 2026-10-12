@@ -36,7 +36,7 @@ variable {Site : Type*}
 
 private theorem latticeBasis_coord_eq_lapply (y : Site) :
     (latticeBasis (Site := Site)).coord y =
-      (Finsupp.lapply y : Module.Dual ℂ (LatticeState Site)) := by
+      (Finsupp.lapply y : Module.Dual ℂ ((Site →₀ ℂ))) := by
   apply LinearMap.ext
   intro ψ
   change ψ y = ψ y
@@ -51,7 +51,7 @@ variable [Fintype Site]
 /-- Bounded finite-Hilbert realization of a second-quantized one-particle matrix unit. -/
 noncomputable def boundedDgammaMatrixUnit (x y : Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))
+  boundedLatticeOperator (AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y))
 
 /-- The bounded matrix-unit realization is the finite-Hilbert creation-annihilation bilinear. -/
 theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
@@ -59,12 +59,12 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
       (finiteHilbertCreate x).comp (finiteHilbertAnnihilate y) := by
   change Common.finiteHilbertOperatorAlgEquiv
       (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
-        (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))) = _
+        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y))) = _
   rw [dGamma_matrixUnit]
   have hConj := map_mul
     (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site)))
-    (AlgebraicFock.create (LatticeState Site) (latticeKet x))
-    (AlgebraicFock.annihilateDual (LatticeState Site) (Finsupp.lapply y))
+    (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x))
+    (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply y))
   simp only [Module.End.mul_eq_comp] at hConj
   rw [hConj]
   have hx : latticeBasis (Site := Site) x = latticeKet x := rfl
