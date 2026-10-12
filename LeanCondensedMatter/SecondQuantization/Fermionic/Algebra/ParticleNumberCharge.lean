@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
@@ -58,15 +57,7 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
       (particleNumber n : ℤ) + 1
     omega
 
-/-! ## Composite operators and fermion parity -/
-
-/-- A number operator preserves total particle number. -/
-theorem carriesParticleNumberCharge_numberOperator (i : Mode) :
-    Common.CarriesShift
-      (fun n : Occupation Mode => (particleNumber n : ℤ)) (numberOperator i) 0 := by
-  simpa [numberOperator] using
-    (carriesParticleNumberCharge_create i).comp
-      (carriesParticleNumberCharge_annihilate i)
+/-! ## Fermion parity -/
 
 /-- A sum of one creation and one annihilation operator has fermion parity one,
 although its two summands carry opposite integer particle-number shifts. -/

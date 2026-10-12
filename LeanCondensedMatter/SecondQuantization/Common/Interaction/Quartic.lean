@@ -1,5 +1,4 @@
 import Mathlib
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 
 set_option linter.style.header false
@@ -118,35 +117,5 @@ def quarticInteraction [Fintype Mode]
   quarticInteractionOn Finset.univ create annihilate g
 
 end
-variable {Mode Config : Type*}
-
-/-- Two creation and two annihilation maps with opposite fixed charges preserve the grading.
-This uses only support shifts, not CAR/CCR or a finite configuration type. -/
-theorem carriesShift_quarticVertexOperator {G : Type*} [AddCommGroup G]
-    (grading : Config 竊・G) (charge : G)
-    (create annihilate : Mode 竊・AlgebraicFock Config 竊停ｗ[邃・ AlgebraicFock Config)
-    (hcreate : 竏 i, CarriesShift grading (create i) charge)
-    (hannihilate : 竏 i, CarriesShift grading (annihilate i) (-charge))
-    (q : QuarticVertexLabel Mode) :
-    CarriesShift grading (quarticVertexOperator create annihilate q) 0 := by
-  have h := (hcreate q.create竄・.comp
-    ((hcreate q.create竄・.comp ((hannihilate q.annihilate竄・.comp
-      (hannihilate q.annihilate竄・))
-  have hcharge : charge + (charge + (-charge + -charge)) = 0 := by abel
-  simpa only [quarticVertexOperator, hcharge] using h
-
-/-- A finite-support sum of neutral quartic vertices preserves the same grading. -/
-theorem carriesShift_quarticInteractionOn {G : Type*} [AddCommGroup G]
-    (grading : Config 竊・G) (charge : G)
-    (create annihilate : Mode 竊・AlgebraicFock Config 竊停ｗ[邃・ AlgebraicFock Config)
-    (hcreate : 竏 i, CarriesShift grading (create i) charge)
-    (hannihilate : 竏 i, CarriesShift grading (annihilate i) (-charge))
-    (support : Finset (QuarticVertexLabel Mode)) (g : QuarticVertexLabel Mode 竊・邃・ :
-    CarriesShift grading (quarticInteractionOn support create annihilate g) 0 := by
-  apply CarriesShift.sum
-  intro q _
-  exact (carriesShift_quarticVertexOperator grading charge create annihilate
-    hcreate hannihilate q).smul (g q)
-
 end Common
 end SecondQuantization
