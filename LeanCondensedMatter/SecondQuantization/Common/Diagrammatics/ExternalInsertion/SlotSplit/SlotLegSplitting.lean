@@ -229,10 +229,21 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
           (Fin.elim0 : Fin 0 → Fin (2 * E)) f
           (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
             (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) p))) := by
-    apply externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
-    · intro a b _
+    have hmap :=
+      externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+        (E₁ := 0) (E₂ := E) (m := S.card) (n := N)
+        (fExternal := (Fin.elim0 : Fin 0 → Fin (2 * E)))
+        (fInteraction := f)
+        (by
+          intro a b _
+          exact a.elim0)
+        (S.orderIsoOfFin rfl).strictMono externalTime σ
+    have hzero :
+        externalTime ∘ (Fin.elim0 : Fin 0 → Fin (2 * E)) =
+          (Fin.elim0 : Fin 0 → ℝ) := by
+      funext a
       exact a.elim0
-    · exact (S.orderIsoOfFin rfl).strictMono
+    simpa only [hzero] using hmap
   have hposition (q : Fin (2 * (2 * S.card))) :
       splitting (Sum.inr q) =
         externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
@@ -249,6 +260,7 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
     exact externalInsertionSlotLegSplitting_right_orderedMixedPosition
       T externalTime σ q
   intro p q hpq
+  change splitting (Sum.inr p) < splitting (Sum.inr q)
   rw [hposition p, hposition q]
   exact hembed (hlocal hpq)
 
