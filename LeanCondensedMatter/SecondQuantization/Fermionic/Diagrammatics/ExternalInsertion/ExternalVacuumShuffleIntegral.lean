@@ -714,7 +714,13 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flat
   have h :=
     externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum
       ε β T ext vac externalTime σ
-  simpa only [horder, ↓reduceIte] using h
+  calc
+    _ = _ := h
+    _ = _ := by
+      congr 1
+      apply Fintype.prod_congr
+      intro pr
+      simp only [horder pr, ↓reduceIte]
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
