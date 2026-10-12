@@ -35,7 +35,7 @@ def quarticFreeThermalField (q : QuarticVertexLabel Mode) (l : Fin 4) : FreeTher
 theorem FreeThermalField.operator_quarticFreeThermalField
     (q : QuarticVertexLabel Mode) (l : Fin 4) :
     FreeThermalField.operator (quarticFreeThermalField q l) =
-      Common.quarticLocalLegOperator create annihilate q l := by
+      Common.quarticLocalLegOperator Bosonic.create Bosonic.annihilate q l := by
   cases h : Common.quarticLocalLeg q l <;>
     simp [quarticFreeThermalField, Common.quarticLocalLegOperator,
       FreeThermalField.operator, h]
@@ -56,7 +56,7 @@ bosonic Gibbs/Wick layer. -/
 theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) :
     quarticFreeThermalOrderedProduct q =
-      Common.quarticVertexSequenceOperator create annihilate q := by
+      Common.quarticVertexSequenceOperator Bosonic.create Bosonic.annihilate q := by
   simp only [quarticFreeThermalOrderedProduct, FreeThermalField.orderedProduct, List.map_ofFn,
     quarticFreeThermalFieldFamily, Common.quarticVertexSequenceOperator]
   change
@@ -64,7 +64,7 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : �
       (fun i : Fin n => fun l : Fin 4 =>
         FreeThermalField.operator (quarticFreeThermalField (q i) l)))).prod =
       (List.ofFn (fun i : Fin n =>
-        Common.quarticVertexOperator create annihilate (q i))).prod
+        Common.quarticVertexOperator Bosonic.create Bosonic.annihilate (q i))).prod
   rw [Common.prod_orderedQuarticLegFamily_eq_vertexProducts]
   apply congrArg List.prod
   apply congrArg List.ofFn
