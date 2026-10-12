@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
+import LeanCondensedMatter.QuantumTheory.SpinfulLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
@@ -11,7 +11,8 @@ set_option linter.style.header false
 This module gives a concrete generalized-current response on the finite spinful lattice
 `Site × Fin 2`. A spin-space vector `n : SpinHalf.SpinSpace` selects the measured spin
 observable `S(n) = ℏ_spin (n · σ) / 2`; the Pauli coordinates remain internal representation data.
-The measured spin current is
+The corresponding one-particle spin-1/2 observable lives in
+`QuantumTheory.SpinfulLattice`. The measured spin current is
 
 ```text
 J^(S(n)) = dΓ( 1/2 {v, S(n)} ),
@@ -41,31 +42,11 @@ namespace Transport
 
 open _root_.SecondQuantization.Fermionic.Lattice
 open QuantumTheory.LinearResponse
+open QuantumTheory.SpinfulLattice
 
 noncomputable section
 
 variable {Site : Type*} [Fintype Site]
-
-/-- One-particle spin-1/2 observable as a real-linear function of spin space. -/
-noncomputable def spinOneBodyLinear
-    (spinScale : ℝ) :
-    QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
-      ((SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ)) :=
-  ((internalOneBodyLinear (Site := Site)).restrictScalars ℝ).comp
-    (QuantumTheory.SpinHalf.spinMatrix spinScale)
-
-/-- One-particle spin-1/2 observable associated with a spin-space component vector. -/
-noncomputable def spinOneBody
-    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ) :=
-  spinOneBodyLinear spinScale spinComponent
-
-@[simp]
-theorem spinOneBodyLinear_apply
-    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    spinOneBodyLinear (Site := Site) spinScale spinComponent =
-      spinOneBody (Site := Site) spinScale spinComponent :=
-  rfl
 
 variable [LinearOrder Site]
 
