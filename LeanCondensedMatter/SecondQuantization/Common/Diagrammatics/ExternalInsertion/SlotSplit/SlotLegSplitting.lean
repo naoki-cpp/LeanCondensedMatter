@@ -193,7 +193,10 @@ theorem ExternalInsertionDiagram.ofSlotSplit_partner_right_orderedLeg
       leg q = (quarticLegEquiv S).symm
         (order (orderedQuarticLegEquiv S.card q).1,
           (orderedQuarticLegEquiv S.card q).2) := by
-    simp [leg, orderedLegToDiagramLeg]
+    simp only [leg, orderedLegToDiagramLeg, Equiv.trans_apply,
+      Equiv.prodCongr_apply, Equiv.apply_symm_apply]
+    cases orderedQuarticLegEquiv S.card q with
+    | mk v l => rfl
   have hpos (q : Fin (2 * (2 * S.card))) :
       split (Sum.inr (leg q)) = embed q := by
     rw [hordered]
