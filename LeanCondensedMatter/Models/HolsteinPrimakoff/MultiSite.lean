@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.HolsteinPrimakoff
 import LeanCondensedMatter.QuantumTheory.LocalizedSpin
+import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
 import Mathlib.LinearAlgebra.Finsupp.Supported
 import Mathlib.Algebra.Algebra.Subalgebra.Lattice
 
@@ -277,6 +278,53 @@ theorem spinStateEquiv_single (twiceSpin : ℕ)
   rw [Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
     Finsupp.supportedEquivFinsupp_symm_single]
   rfl
+
+/-- The exact action of the local HP spin algebra on the full finite-spin state space.
+Restriction to the all-site physical sector precedes transport through the state equivalence. -/
+def spinRepresentation (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) :
+    spinAlgebra hbar twiceSpin i →ₐ[ℂ]
+      Module.End ℂ (QuantumTheory.LocalizedSpin.State twiceSpin Mode) :=
+  ((spinStateEquiv (Mode := Mode) twiceSpin).symm.conjAlgEquiv ℂ).toAlgHom.comp
+    ((spinAlgebra hbar twiceSpin i).restrictEnd (simultaneousSubspace twiceSpin)
+      (fun A hA ψ hψ => mem_simultaneousSubspace_of_mem_spinAlgebra hbar twiceSpin i A hA ψ hψ))
+
+/-- The state identification intertwines the finite-spin action with the original
+bosonic operator, including products and linear combinations in the local spin algebra. -/
+theorem spinRepresentation_intertwines (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
+    (A : spinAlgebra hbar twiceSpin i)
+    (ψ : QuantumTheory.LocalizedSpin.State twiceSpin Mode) :
+    (spinStateEquiv twiceSpin (spinRepresentation hbar twiceSpin i A ψ) : FockSpace Mode) =
+      A.val (spinStateEquiv twiceSpin ψ) := by
+  change ((spinStateEquiv twiceSpin) ((spinStateEquiv twiceSpin).symm
+    ((A.val.restrict (fun ψ hψ =>
+      mem_simultaneousSubspace_of_mem_spinAlgebra hbar twiceSpin i A.val A.property ψ hψ))
+        (spinStateEquiv twiceSpin ψ))) : FockSpace Mode) = _
+  rw [LinearEquiv.apply_symm_apply]
+  rfl
+
+/-- The transported local algebras commute on the finite-spin state space at distinct sites. -/
+theorem commute_spinRepresentation_of_ne (hbar : ℝ) (twiceSpin : ℕ)
+    {i j : Mode} (hij : i ≠ j)
+    (A : spinAlgebra hbar twiceSpin i) (B : spinAlgebra hbar twiceSpin j) :
+    Commute (spinRepresentation hbar twiceSpin i A)
+      (spinRepresentation hbar twiceSpin j B) := by
+  change (spinRepresentation hbar twiceSpin i A).comp
+    (spinRepresentation hbar twiceSpin j B) =
+      (spinRepresentation hbar twiceSpin j B).comp (spinRepresentation hbar twiceSpin i A)
+  apply LinearMap.ext
+  intro ψ
+  apply (spinStateEquiv twiceSpin).injective
+  apply Subtype.ext
+  change (spinStateEquiv twiceSpin
+    (spinRepresentation hbar twiceSpin i A (spinRepresentation hbar twiceSpin j B ψ)) :
+      FockSpace Mode) =
+    (spinStateEquiv twiceSpin
+      (spinRepresentation hbar twiceSpin j B (spinRepresentation hbar twiceSpin i A ψ)) :
+        FockSpace Mode)
+  simp_rw [spinRepresentation_intertwines]
+  exact LinearMap.congr_fun
+    (commute_of_mem_spinAlgebra hbar twiceSpin hij A.property B.property).eq
+      (spinStateEquiv twiceSpin ψ)
 
 end FiniteSites
 
