@@ -87,6 +87,28 @@ theorem Pairing.weight_eq_mul_of_crossingCount_mod_two_eq (s : Statistics)
   rw [← pow_add]
   exact zetaInt_pow_eq_of_mod_two_eq s h
 
+/-- The exchange-statistics weight of a binary assembled pairing is the product
+of the two local weights, multiplied by the parity sign of right-before-left
+ambient position inversions. The two embeddings preserve local endpoint order;
+no ordering condition between the two sectors is imposed. -/
+theorem Pairing.weight_ofSplit_eq_positionInversions_mul (s : Statistics)
+    {a b n : ℕ} (e : PositionSplitting a b n)
+    (left : Pairing a) (right : Pairing b)
+    (hleft : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
+    (hright : StrictMono (fun j : Fin (2 * b) => e (Sum.inr j))) :
+    (Pairing.ofSplit e left right).weight s =
+      (s.zetaInt : ℂ) ^
+        (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
+          if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
+        (left.weight s * right.weight s) := by
+  simp only [Pairing.weight]
+  rw [Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
+    e left right hleft hright, pow_add, pow_add]
+  rw [zetaInt_pow_eq_of_mod_two_eq s
+    (Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
+      e left right)]
+  ac_rfl
+
 /-- A finite-family version of `Pairing.weight_eq_mul_of_crossingCount_mod_two_eq`: once the global
 crossing count is identified modulo two with the sum of local crossing counts, the global exchange
 weight is the product of all local exchange weights. -/
