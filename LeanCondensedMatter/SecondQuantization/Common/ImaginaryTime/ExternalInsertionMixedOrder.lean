@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Data.Fintype.EquivFin
@@ -338,6 +339,7 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of
       canonicalExternalInsertionTimedEvents 0 n =
         List.ofFn (fun i : Fin n => (Sum.inr i : ExternalInsertionTimedEvent 0 n)) := by
     unfold canonicalExternalInsertionTimedEvents
+    rw [List.ofFn_congr (Nat.zero_add n)]
     apply congrArg List.ofFn
     funext i
     have h := finSumFinEquiv_symm_apply_natAdd (m := 0) i
@@ -538,8 +540,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_st
     unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
     simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
       finCongr_apply]
-    rw [hlist]
-    simp [leg, List.get_ofFn]
+    simp [hlist, leg, List.get_ofFn]
   have hposition (q : Fin (2 * (2 * n))) :
       position q = Fin.cast hcard q := by
     apply (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
@@ -548,8 +549,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_st
     exact (hforward q).symm
   intro p q hpq
   change position p < position q
-  rw [hposition p, hposition q]
-  exact (Fin.castOrderIso hcard).strictMono hpq
+  simpa only [hposition] using (Fin.castOrderIso hcard).strictMono hpq
 
 /-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
 noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
