@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
 set_option linter.style.header false

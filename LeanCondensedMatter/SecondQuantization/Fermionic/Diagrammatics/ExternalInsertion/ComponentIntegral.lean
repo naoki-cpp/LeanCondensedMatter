@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
@@ -9,7 +10,7 @@ set_option linter.style.header false
 # Ordered-simplex component factorization for external insertions
 
 The fixed-time Dyson amplitude already provides standalone connected-component integrands. This
-module defines their ordered-simplex amplitudes and applies the finite-family shuffle theorem to the
+module consumes their basic ordered-simplex amplitudes and applies the finite-family shuffle theorem to the
 component-local integrands. The product of standalone component integrals is recovered after summing
 over all order-preserving interleavings of the component-local interaction slots.
 -/
@@ -22,50 +23,6 @@ open Common
 open scoped BigOperators
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-/-- Ordered-simplex contribution of one arbitrary external-insertion diagram, before the Dyson
-sign. -/
-noncomputable def ExternalInsertionWickDiagram.orderedSimplexContribution
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) : ℂ :=
-  intervalIntegral.orderedSimplexIntegral n β
-    (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
-
-/-- Integrated arbitrary-external-insertion amplitude including the order-`n` Dyson sign. -/
-noncomputable def ExternalInsertionWickDiagram.dysonAmplitude
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) : ℂ :=
-  (-1 : ℂ) ^ n * d.orderedSimplexContribution ε β g externalTime
-
-
-/-- Dyson amplitude with the interaction vertices assigned to the ordered-simplex slots by an
-explicit global interaction order. -/
-noncomputable def ExternalInsertionWickDiagram.orderedDysonAmplitude
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ)
-    (order : QuarticVertexOrder (Finset.univ : Finset (Fin n))) : ℂ :=
-  intervalIntegral.orderedSimplexIntegral
-    (Finset.univ : Finset (Fin n)).card β
-    (fun τ =>
-      d.dysonFixedTimeAmplitude ε β g externalTime
-        (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩)))
-
-/-- Integrating the Dyson-signed fixed-time amplitude is the integrated Dyson amplitude. -/
-theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) :
-    intervalIntegral.orderedSimplexIntegral n β
-        (fun σ => d.dysonFixedTimeAmplitude ε β g externalTime σ) =
-      d.dysonAmplitude ε β g externalTime := by
-  unfold ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
-    ExternalInsertionWickDiagram.dysonAmplitude
-    ExternalInsertionWickDiagram.orderedSimplexContribution
-  exact intervalIntegral.orderedSimplexIntegral_smul n β
-    ((-1 : ℂ) ^ n) (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- Pulling an assembled global interaction order back to one component gives exactly that

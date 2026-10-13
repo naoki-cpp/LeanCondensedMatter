@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 
 set_option linter.style.header false
