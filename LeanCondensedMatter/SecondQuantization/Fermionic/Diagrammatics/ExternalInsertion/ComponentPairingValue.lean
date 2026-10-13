@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
@@ -22,61 +22,6 @@ open Common
 open scoped BigOperators
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The mixed-order crossing count is the sum of component-local mixed crossing counts and
-the residual crossings between distinct components. -/
-theorem ExternalInsertionWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder externalTime σ).crossingCount =
-      (∑ B : d.vertexGraph.componentPartition.parts,
-        ((d.componentOrderedDiagram B).pairingInMixedOrder
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).crossingCount) +
-      (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-        (d.componentMixedPairEquiv externalTime σ) := by
-  rw [Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter
-    (d.pairingInMixedOrder externalTime σ)
-    (d.componentMixedPairEquiv externalTime σ)]
-  apply congrArg (fun k : ℕ =>
-    k + (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-      (d.componentMixedPairEquiv externalTime σ))
-  apply Finset.sum_congr rfl
-  intro B _
-  exact Pairing.componentCrossingCount_self_eq
-    (d.pairingInMixedOrder externalTime σ)
-    ((d.componentOrderedDiagram B).pairingInMixedOrder
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B))
-    (d.componentMixedPairEquiv externalTime σ) B
-    (Equiv.refl _)
-    (d.componentMixedPosition externalTime σ B)
-    (d.componentMixedPosition_strictMono externalTime σ B)
-    (fun pr => by
-      simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The exchange-statistics weight of the mixed-order pairing factors into a residual
-inter-component weight and the standalone mixed-order component weights. -/
-theorem ExternalInsertionWickDiagram.pairingInMixedOrder_weight_eq_inter_mul_prod_components
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (s : Common.Statistics)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder externalTime σ).weight s =
-      (s.zetaInt : ℂ) ^
-        (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-          (d.componentMixedPairEquiv externalTime σ) *
-      ∏ B : d.vertexGraph.componentPartition.parts,
-        ((d.componentOrderedDiagram B).pairingInMixedOrder
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).weight s := by
-  simp only [Pairing.weight]
-  rw [d.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter externalTime σ,
-    pow_add, ← Finset.prod_pow_eq_pow_sum]
-  ac_rfl
 
 /-- The concrete mixed pairing evaluation factors into the residual mixed inter-component fermionic
 sign and the standalone mixed pairing values of all connected components. -/
