@@ -171,10 +171,10 @@ theorem pointGroupMatrixRepresentation_injective (X : AtomicConfiguration E Spec
 A basis of the discrete translation lattice extends to a real basis of the ambient vector
 space. In this basis every diagonal coefficient of the point-group linear part is an integer.
 This basis-free trace integrality is the arithmetic input to the crystallographic restriction. -/
-theorem exists_int_trace_pointGroup (X : AtomicConfiguration E Species)
+theorem exists_int_trace_pointGroup [FiniteDimensional ℝ V]
+    (X : AtomicConfiguration E Species)
     (hX : X.Periodic (V := V)) (g : X.pointGroup (V := V))
-    {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (b : Module.Basis ι ℤ
+    (b : Module.Basis (Fin 2) ℤ
       (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
     ∃ z : ℤ, LinearMap.trace ℝ V
       (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap = (z : ℝ) := by
@@ -182,15 +182,15 @@ theorem exists_int_trace_pointGroup (X : AtomicConfiguration E Species)
     AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))
   letI : DiscreteTopology L := hX.discreteTranslations
   letI : IsZLattice ℝ L := hX.isZLattice
-  let rb : Module.Basis ι ℝ V := b.ofZLatticeBasis ℝ L
+  let rb : Module.Basis (Fin 2) ℝ V := b.ofZLatticeBasis ℝ L
   let T : V →ₗ[ℝ] V := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
-  let z : ℤ := ∑ i : ι, (b.repr (X.pointGroupLatticeEquiv (V := V) g (b i))) i
+  let z : ℤ := ∑ i : Fin 2, (b.repr (X.pointGroupLatticeEquiv (V := V) g (b i))) i
   refine ⟨z, ?_⟩
   change LinearMap.trace ℝ V T = (z : ℝ)
   rw [LinearMap.trace_eq_matrix_trace ℝ rb T]
-  change (∑ i : ι, rb.repr (T (rb i)) i) = (z : ℝ)
+  simp only [Matrix.trace, Matrix.diag_apply, LinearMap.toMatrix_apply]
   rw [show (z : ℝ) =
-    ∑ i : ι, ((b.repr (X.pointGroupLatticeEquiv (V := V) g (b i))) i : ℝ) by
+    ∑ i : Fin 2, ((b.repr (X.pointGroupLatticeEquiv (V := V) g (b i))) i : ℝ) by
       simp [z]]
   apply Finset.sum_congr rfl
   intro i _
