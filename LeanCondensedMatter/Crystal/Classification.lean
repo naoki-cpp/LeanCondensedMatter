@@ -197,7 +197,8 @@ theorem exists_int_trace_pointGroup [FiniteDimensional ℝ V]
   have hi : T (rb i) =
       ((X.pointGroupLatticeEquiv (V := V) g (b i) : L) : V) := by
     change T (rb i) = (g : V ≃ₗᵢ[ℝ] V) (b i)
-    simp only [T, rb, Module.Basis.ofZLatticeBasis_apply]
+    simp only [T, rb, Module.Basis.ofZLatticeBasis_apply,
+      LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv]
   rw [hi]
   exact b.ofZLatticeBasis_repr_apply ℝ L
     (X.pointGroupLatticeEquiv (V := V) g (b i)) i
