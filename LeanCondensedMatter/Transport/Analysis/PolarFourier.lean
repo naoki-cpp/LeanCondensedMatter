@@ -138,7 +138,7 @@ private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
   have hphase := (Complex.hasDerivAt_exp _).comp θ harg
   convert hphase using 1
   · rfl
-  · push_cast
+  · simp [polarFourierRadialPhase]
     ring
 
 /-- Angular integration by parts: the first Fourier harmonic is constrained by the
@@ -154,6 +154,18 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
   let phase : ℝ → ℂ := polarFourierRadialPhase z
   let sine : ℝ → ℂ := fun θ => ((Real.sin θ : ℝ) : ℂ)
   let cosine : ℝ → ℂ := fun θ => ((Real.cos θ : ℝ) : ℂ)
+  have hcphase : Continuous phase := by
+    dsimp [phase, polarFourierRadialPhase]
+    fun_prop
+  have hcsin : Continuous sine := by
+    dsimp [sine]
+    fun_prop
+  have hccos : Continuous cosine := by
+    dsimp [cosine]
+    fun_prop
+  have hcvprime : Continuous
+      (fun θ => (-Complex.I * (z : ℂ) * sine θ) * phase θ) :=
+    ((continuous_const.mul hcsin).mul hcphase)
   have hsin : ∀ θ : ℝ, HasDerivAt sine (cosine θ) θ := by
     intro θ
     simpa [sine, cosine] using (Real.hasDerivAt_sin θ).ofReal_comp
@@ -170,17 +182,15 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       (u := sine) (v := phase) (u' := cosine)
       (v' := fun θ => (-Complex.I * (z : ℂ) * sine θ) * phase θ)
       (fun θ _ => hsin θ) (fun θ _ => hphase θ)
-      (by apply Continuous.intervalIntegrable; fun_prop)
-      (by apply Continuous.intervalIntegrable; fun_prop)
+      (hccos.intervalIntegrable _ _)
+      (hcvprime.intervalIntegrable _ _)
     simpa [sine, cosine] using h
   have hcosInt : IntervalIntegrable (fun θ : ℝ => cosine θ * phase θ)
       volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
+    exact (hccos.mul hcphase).intervalIntegrable _ _
   have hsinSqInt : IntervalIntegrable
       (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
+    exact (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
   have hfirst :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), cosine θ * phase θ) =
         (Complex.I * (z : ℂ)) *
@@ -200,6 +210,7 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
         phase θ -
           phase θ * (cosine θ ^ 2 - sine θ ^ 2) := by
     have h : sine θ ^ 2 + cosine θ ^ 2 = 1 := by
+      change (((Real.sin θ : ℝ) : ℂ) ^ 2) + (((Real.cos θ : ℝ) : ℂ) ^ 2) = 1
       exact_mod_cast Real.sin_sq_add_cos_sq θ
     linear_combination (phase θ) * h
   have hsecond :
@@ -220,10 +231,8 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
             polarFourierSecondCosineAngularKernel z := by
         rw [intervalIntegral.integral_sub]
         · rfl
-        · apply Continuous.intervalIntegrable
-          fun_prop
-        · apply Continuous.intervalIntegrable
-          fun_prop
+        · exact hcphase.intervalIntegrable _ _
+        · exact (hcphase.mul ((hccos.pow 2).sub (hcsin.pow 2))).intervalIntegrable _ _
   have hfirstKernel :
       polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *
