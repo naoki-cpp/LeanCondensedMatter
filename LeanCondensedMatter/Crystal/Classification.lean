@@ -9,6 +9,7 @@ import Mathlib.Algebra.Module.Submodule.Map
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.LinearAlgebra.Trace
 import Mathlib.Analysis.InnerProductSpace.Trace
+import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 
 /-!
 # Classification-facing crystal symmetry
@@ -351,6 +352,86 @@ theorem pointGroup_sq_eq_one_of_trace_eq_neg_two
   intro x
   change f (f x) = x
   rw [hneg (f x), hneg x, neg_neg]
+
+
+/-- A power identity for the matrix of a point-group linear part transfers to the
+point-group element itself. This is independent of crystallographic periodicity. -/
+theorem pointGroup_pow_eq_one_of_toMatrix_pow_eq_one
+    (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
+    (b : Module.Basis (Fin 2) ℝ V) (n : ℕ)
+    (h : (LinearMap.toMatrix b b
+      (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap) ^ n = 1) :
+    g ^ n = 1 := by
+  let f : V ≃ₗᵢ[ℝ] V := g
+  let T : V →ₗ[ℝ] V := f.toLinearEquiv.toLinearMap
+  have hT : T ^ n = 1 := by
+    apply (LinearMap.toMatrix b b).injective
+    rw [← LinearMap.toMatrix_pow, LinearMap.toMatrix_one]
+    exact h
+  have hpow_map (k : ℕ) : ∀ x : V, (T ^ k) x = (f ^ k) x := by
+    induction k with
+    | zero =>
+        intro x
+        simp
+    | succ k ih =>
+        intro x
+        rw [pow_succ, pow_succ, Module.End.mul_apply]
+        change (T ^ k) (T x) = (f ^ k) (f x)
+        exact ih (f x)
+  apply Subtype.ext
+  apply LinearIsometryEquiv.ext
+  intro x
+  change (f ^ n) x = x
+  rw [← hpow_map n x]
+  exact LinearMap.congr_fun hT x
+
+
+/-- For a rank-two periodic crystal, every orientation-preserving point-group element
+has an allowed crystallographic rotation power: one, two, three, four, or six.
+
+The determinant-one assumption is stated explicitly in terms of the real linear part;
+reflection/determinant-minus-one elements are handled separately. -/
+theorem pointGroup_rotation_power_of_det_one
+    [FiniteDimensional ℝ V]
+    (X : AtomicConfiguration E Species) (hX : X.Periodic (V := V))
+    (g : X.pointGroup (V := V))
+    (b : Module.Basis (Fin 2) ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))))
+    (o : OrthonormalBasis (Fin 2) ℝ V)
+    (hdet : LinearMap.det (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap = 1) :
+    g = 1 ∨ g ^ 2 = 1 ∨ g ^ 3 = 1 ∨ g ^ 4 = 1 ∨ g ^ 6 = 1 := by
+  let T : V →ₗ[ℝ] V := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
+  let M : Matrix (Fin 2) (Fin 2) ℝ := LinearMap.toMatrix o.toBasis o.toBasis T
+  have hdetM : M.det = 1 := by
+    rw [show M.det = LinearMap.det T from LinearMap.det_toMatrix o.toBasis T]
+    exact hdet
+  obtain ⟨z, hlo, hhi, htrace⟩ := X.exists_int_trace_pointGroup_bounded hX g b o
+  change LinearMap.trace ℝ V T = (z : ℝ) at htrace
+  have htraceM : M.trace = (z : ℝ) := by
+    rw [show M.trace = LinearMap.trace ℝ V T from
+      (LinearMap.trace_eq_matrix_trace ℝ o.toBasis T).symm]
+    exact htrace
+  have hcases : z = -2 ∨ z = -1 ∨ z = 0 ∨ z = 1 ∨ z = 2 := by omega
+  rcases hcases with hz | hz | hz | hz | hz
+  · right; left
+    exact X.pointGroup_sq_eq_one_of_trace_eq_neg_two g o (by simpa [hz] using htrace)
+  · right; right; left
+    have hM : M ^ 3 = 1 :=
+      M.pow_three_eq_one_of_trace_neg_one_det_one
+        (by simpa [hz] using htraceM) hdetM
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 3 hM
+  · right; right; right; left
+    have hM : M ^ 4 = 1 :=
+      M.pow_four_eq_one_of_trace_zero_det_one
+        (by simpa [hz] using htraceM) hdetM
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 4 hM
+  · right; right; right; right
+    have hM : M ^ 6 = 1 :=
+      M.pow_six_eq_one_of_trace_one_det_one
+        (by simpa [hz] using htraceM) hdetM
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 6 hM
+  · left
+    exact X.pointGroup_eq_one_of_trace_eq_two g o (by simpa [hz] using htrace)
 
 end
 
