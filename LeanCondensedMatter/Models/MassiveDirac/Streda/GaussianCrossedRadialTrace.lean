@@ -306,6 +306,88 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
         .z source v m probeEnergy broadening disorderStrength hbar pMax radius p
 
+/-- The four non-diagonal first-harmonic channels of the regulated Gaussian-crossed
+radial current are exact source-resolved scalar momentum integrals. The source-x and
+source-y Pauli-scalar and Pauli-z components all use the same Fourier K1 kernel,
+with distinct spectral coefficient combinations and signs.
+
+These finite-cutoff identities reuse the physical Fourier momentum measure and do
+not evaluate the radial integrals or remove the regulators. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+        0 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((aR p * bA p + aA p * bR p) * factor))) ∧
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+        1 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor))) ∧
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((bR p * dA p + bA p * dR p) * factor))) ∧
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .z 1 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor))) := by
+  dsimp only
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral
+      0 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
+    apply congrArg (fun w : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * w)
+    apply intervalIntegral.integral_congr
+    intro p _
+    rfl
+  · rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral
+      1 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
+    apply congrArg (fun w : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * w)
+    apply intervalIntegral.integral_congr
+    intro p _
+    rfl
+  · rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+      .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
+    apply congrArg (fun w : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * w)
+    apply intervalIntegral.integral_congr
+    intro p _
+    rfl
+  · rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+      .z 1 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
+    apply congrArg (fun w : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * w)
+    apply intervalIntegral.integral_congr
+    intro p _
+    rfl
+
 /-- The zeroth-radius crossed-current block has neither a Pauli-scalar nor a
 longitudinal Pauli-z component. Both channels carry the first angular Fourier
 harmonic, which vanishes at the origin before momentum integration.
