@@ -290,7 +290,15 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
           (E := E) T v l wk.1 wk.2
       dsimp only at hiff
       simp only [Equiv.apply_symm_apply]
-      rw [hiff]
+      have hiff' :
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order
+                ((orderedQuarticLegEquiv S.card).symm wk))) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
+            (order wk.1).1 < v.1 := by
+        simpa [externalInsertionInteractionLeg] using hiff
+      rw [hiff']
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
 complementary piece. -/
