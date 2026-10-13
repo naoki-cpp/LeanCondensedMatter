@@ -38,7 +38,7 @@ noncomputable def finiteCutoffContinuumBornDysonShiftMatrix
     finiteCutoffContinuumBornEffectiveMass
       side v m probeEnergy broadening disorderStrength hbar pMax • sigmaZ
 
-private theorem finiteCutoffContinuumBornDysonShiftMatrix_det
+theorem finiteCutoffContinuumBornDysonShiftMatrix_det
     (side : SpectralSide)
     (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     (finiteCutoffContinuumBornDysonShiftMatrix
