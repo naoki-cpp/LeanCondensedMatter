@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign
-import LeanCondensedMatter.Combinatorics.SigmaPermutationSign
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentMixedCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentShuffle
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign
 
 set_option linter.style.header false
@@ -32,18 +32,6 @@ private theorem orderedBlockInversionCount_castTotalEquiv
 
 
 variable {Mode : Type*}
-
-/-- Relative permutation from fixed component-local atomic positions to mixed-time component-local
-atomic positions. -/
-noncomputable def ExternalInsertionWickDiagram.relativeComponentShuffle
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    Equiv.Perm (Fin (2 * (2 * n + E))) :=
-  (FamilySlotShuffleTo.castTotalEquiv
-      (m := 2 * (2 * (Finset.univ : Finset (Fin n)).card + E))
-      (n := 2 * (2 * n + E)) (by simp) d.componentLegShuffle).relativePerm
-    (d.componentMixedPositionShuffle externalTime σ)
 
 /-- The relative permutation between fixed and mixed component shuffles carries exactly the fixed
 external regrouping sign and the residual mixed inter-component crossing sign. -/
@@ -81,82 +69,6 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hfixed]
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hmixed.symm]
   simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-
-
-/-- The relative component shuffle sign is the ambient mixed-time ordering sign times the product
-of the component-local mixed-time ordering signs. This is the final permutation-sign bridge needed
-to turn mixed-pairing factorization into a fixed-time amplitude factorization. -/
-theorem ExternalInsertionWickDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    Equiv.Perm.sign (d.relativeComponentShuffle externalTime σ) =
-      Equiv.Perm.sign
-          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) *
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          Equiv.Perm.sign
-            (externalInsertionStandardToMixedAtomicPositionEquiv
-              (d.componentExternalTime externalTime B)
-              (d.componentInteractionTime σ B)) := by
-  classical
-  let fixedShuffle :=
-    FamilySlotShuffleTo.castTotalEquiv
-      (m := 2 * (2 * (Finset.univ : Finset (Fin n)).card + E))
-      (n := 2 * (2 * n + E)) (by simp) d.componentLegShuffle
-  let globalPerm :=
-    externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ
-  let localPerm :
-      ∀ B : d.vertexGraph.componentPartition.parts,
-        Equiv.Perm
-          (Fin (2 * (2 * (interactionSector
-            (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-              d.externalPairCount B))) :=
-    fun B =>
-      (externalInsertionMixedTimeAmbientPositionEquiv
-        (d.componentExternalTime externalTime B)
-        (d.componentInteractionTime σ B)).trans
-        (finCongr (by simp))
-  have hmixed :
-      (d.componentMixedPositionShuffle externalTime σ).slotEquiv =
-        (Equiv.sigmaCongrRight localPerm).trans
-          (fixedShuffle.slotEquiv.trans globalPerm) := by
-    apply Equiv.ext
-    rintro ⟨B, p⟩
-    apply Fin.ext
-    rfl
-  have hrelative :
-      d.relativeComponentShuffle externalTime σ =
-        ((fixedShuffle.slotEquiv.symm.trans
-            (Equiv.sigmaCongrRight localPerm)).trans
-          fixedShuffle.slotEquiv).trans globalPerm := by
-    unfold ExternalInsertionWickDiagram.relativeComponentShuffle
-      FamilySlotShuffleTo.relativePerm
-    change fixedShuffle.slotEquiv.symm.trans
-        (d.componentMixedPositionShuffle externalTime σ).slotEquiv = _
-    rw [hmixed]
-    apply Equiv.ext
-    intro p
-    rfl
-  rw [hrelative, Equiv.Perm.sign_trans,
-    Equiv.Perm.sign_symm_trans_trans,
-    Equiv.Perm.sign_sigmaCongrRight]
-  change Equiv.Perm.sign globalPerm *
-      (∏ B : d.vertexGraph.componentPartition.parts,
-        Equiv.Perm.sign (localPerm B)) =
-    Equiv.Perm.sign globalPerm * _
-  congr 1
-  apply Finset.prod_congr rfl
-  intro B _
-  have hperm :
-      localPerm B =
-        (externalInsertionStandardToMixedAtomicPositionEquiv
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).symm := by
-    apply Equiv.ext
-    intro p
-    apply Fin.ext
-    rfl
-  rw [hperm, Equiv.Perm.sign_symm]
 
 
 end Fermionic
