@@ -831,8 +831,8 @@ theorem externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mu
     let mixedSplit :=
       (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
     StrictAnti (σ ∘ f) →
-      (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
-          externalTime σ |>.weight Common.Statistics.fermion =
+      ((ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+          externalTime σ).weight Common.Statistics.fermion =
         (Common.Statistics.fermion.zetaInt : ℂ) ^
           (∑ i : Fin (2 * (2 * T.card + E)),
             ∑ j : Fin (2 * (2 * S.card)),
